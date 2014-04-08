@@ -1,0 +1,86 @@
+﻿using System;
+
+namespace iArsenal.Web
+{
+    public partial class iArsenalMaster : System.Web.UI.MasterPage
+    {
+        private string _userName = string.Empty;
+        /// <summary>
+        /// Current User Name
+        /// </summary>
+        public string UserName
+        {
+            set
+            {
+                _userName = value;
+            }
+        }
+
+        private int _userId = -1;
+        /// <summary>
+        /// Current User ID
+        /// </summary>
+        public int UserID
+        {
+            set
+            {
+                _userId = value;
+            }
+        }
+
+        private string _userKey = string.Empty;
+        /// <summary>
+        /// Current User Key
+        /// </summary>
+        public string UserKey
+        {
+            set
+            {
+                _userKey = value;
+            }
+        }
+
+        private string _memberName = string.Empty;
+        /// <summary>
+        /// Current Member Name
+        /// </summary>
+        public string MemberName
+        {
+            set
+            {
+                _memberName = value;
+            }
+        }
+
+        private int _memberId = -1;
+        /// <summary>
+        /// Current Member ID
+        /// </summary>
+        public int MemberID
+        {
+            set
+            {
+                _memberId = value;
+            }
+        }
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            ctrlHeader.UserID = this._userId;
+            ctrlHeader.UserName = this._userName;
+            ctrlHeader.UserKey = this._userKey;
+            ctrlHeader.MemberID = this._memberId;
+            ctrlHeader.MemberName = this._memberName;
+        }
+
+        protected override void OnPreRender(EventArgs e)
+        {
+            base.OnPreRender(e);
+
+            if (!string.IsNullOrEmpty(this.masterHead.Title))
+            {
+                this.masterHead.Title = string.Format("阿森纳中国官方球迷会 服务中心 iArsenal.cn | {0}", this.Page.Title);
+            }
+        }
+    }
+}

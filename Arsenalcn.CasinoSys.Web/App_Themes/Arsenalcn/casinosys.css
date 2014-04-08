@@ -1,0 +1,308 @@
+﻿/* CSS Version CasinoSys */
+/* Version: 1.2.6 || Date: 2013-2-17|| Author: Cyrano */
+/* Cascading Style Sheets Level 2 Revision 1 */
+
+/** CasinoSys Common **/
+.CasinoSys_Agree
+{
+    background: url(images/CasinoSys/agree.gif) no-repeat;
+    width: 16px;
+    height: 17px;
+    display: block;
+    margin: 0px auto;
+}
+
+.CasinoSys_Disagree
+{
+    background: url(images/CasinoSys/disagree.gif) no-repeat;
+    width: 16px;
+    height: 17px;
+    display: block;
+    margin: 0px auto;
+}
+
+.CasinoSys_Good
+{
+    background: url(images/CasinoSys/ClubStar3.gif) repeat left top;
+    width: 20px;
+    height: 20px;
+    display: block;
+    margin: 0px auto;
+}
+
+.CasinoSys_True
+{
+    background: url(images/CasinoSys/ClubStar2.gif) repeat left top;
+    width: 20px;
+    height: 20px;
+    display: block;
+    margin: 0px auto;
+}
+
+.CasinoSys_False
+{
+    background: url(images/CasinoSys/ClubStar1.gif) repeat left top;
+    width: 20px;
+    height: 20px;
+    display: block;
+    margin: 0px auto;
+}
+
+.RowCasinoSys_True td
+{
+    color: #da7b00;
+    font-weight: bold;
+    background: #f5f5f5 url(images/listbg.jpg) no-repeat top left;
+}
+
+.CasinoSys_TopRankEM
+{
+    display: block;
+    text-align: right;
+}
+
+.CasinoSys_GameName
+{
+    white-space: nowrap;
+    text-align: center;
+}
+
+    .CasinoSys_GameName img
+    {
+        width: 32px;
+        height: 32px;
+        border: 1px solid #ccc;
+        background: #f5f5f5;
+        padding: 2px;
+    }
+
+    .CasinoSys_GameName em
+    {
+        font-size: 14px;
+    }
+
+.CasinoSys_BetInfo
+{
+    font-size: 9px;
+    font-family: Verdana;
+    color: #666;
+    display: block;
+    margin: 2px;
+    white-space: nowrap;
+    text-decoration: none;
+}
+
+.CasinoSys_Tip
+{
+    background: #fff48d;
+    text-align: left;
+    margin: 0px 1px;
+    padding: 3px;
+}
+
+    .CasinoSys_Tip label, .CasinoSys_Tip span
+    {
+        font-weight: bold;
+        color: #444;
+        background: url(images/CasinoSys/Tip.gif) no-repeat 5px 1px;
+        padding-left: 20px;
+        font-size: 12px;
+        line-height: 1.6;
+    }
+
+.CasinoSys_Notice
+{
+    font-size: 9pt;
+    line-height: 1.6;
+    color: #333;
+    padding: 10px;
+    background: #fff48d;
+    font-weight: bold;
+    text-align: justify;
+}
+/** CasinoSys_Header **/
+.CasinoSys_Header, .CategoryHeader
+{
+    background: #fef5f4;
+    border-bottom: 2px solid #9c824a;
+    margin: 0px 1px;
+}
+
+    .CategoryHeader ul
+    {
+        margin: 0px;
+    }
+
+        .CategoryHeader ul li
+        {
+            float: left;
+            margin: 6px;
+            display: inline;
+        }
+
+            .CategoryHeader ul li img, .CasinoSys_CategoryImg
+            {
+                width: 50px;
+                height: 50px;
+                border: 1px solid #9c824a;
+                padding: 2px;
+                background: #ccc;
+                cursor: pointer;
+            }
+
+            .CategoryHeader ul li.Current img
+            {
+                border: 2px dashed #aa0000;
+            }
+
+    .CasinoSys_Header .ClubBtnGroup
+    {
+        text-align: right;
+        padding: 10px;
+    }
+
+    .CasinoSys_Header .GamblerItemList
+    {
+        float: left;
+        margin: 8px;
+    }
+
+        .CasinoSys_Header .GamblerItemList ul li
+        {
+            margin: 8px;
+            font-weight: bold;
+            color: #555;
+            background: url(images/LiIcon.gif) no-repeat left 4px;
+            padding-left: 8px;
+        }
+
+    .CasinoSys_Header .NoList
+    {
+        width: auto;
+    }
+
+        .CasinoSys_Header .NoList ul li
+        {
+            background: none;
+            padding: 0px;
+        }
+
+    .CasinoSys_Header .GameItemList
+    {
+        float: left;
+        margin: 10px;
+        display: inline;
+    }
+
+        .CasinoSys_Header .GameItemList a.StrongLink
+        {
+            font-weight: bold;
+            font-size: 14px;
+            color: #da7b00;
+            text-decoration: underline;
+        }
+
+        .CasinoSys_Header .GameItemList ul li
+        {
+            margin: 8px;
+            font-weight: bold;
+            color: #555;
+            background: url(images/LiIcon.gif) no-repeat left 4px;
+            padding-left: 8px;
+            list-style: none;
+            text-align: left;
+        }
+
+    .CasinoSys_Header .CasinoSys_GameBet em, .CasinoSys_Header .CasinoSys_GameName em
+    {
+        font-family: Verdana;
+        font-size: 14px;
+        color: #da7b00;
+        font-weight: bold;
+        padding: 0px 5px;
+    }
+
+    .CasinoSys_Header .CasinoSys_GameBet ul li
+    {
+        background: url(images/LiIcon.gif) no-repeat left 6px;
+    }
+
+        .CasinoSys_Header .CasinoSys_GameBet ul li a
+        {
+            color: #aa0000;
+            text-decoration: underline;
+        }
+
+    .CasinoSys_Header .CasinoSys_GameName img
+    {
+        width: 64px;
+        height: 64px;
+        border: 1px solid #ccc;
+        background: #f5f5f5;
+        padding: 3px;
+    }
+
+    .CasinoSys_Header .CasinoSys_CategoryName
+    {
+        text-align: center;
+        font-weight: bold;
+        color: #333;
+        margin: 5px;
+        font-size: 10.5pt;
+    }
+
+    .CasinoSys_Header .CasinoSys_GameGround
+    {
+        text-align: center;
+        font-weight: bold;
+        color: #aa0000;
+        margin: 5px;
+        font-family: Arial;
+        font-size: 10px;
+    }
+
+    .CasinoSys_Header .CasinoSys_GameTime
+    {
+        text-align: center;
+        font-weight: bold;
+        color: #9c824a;
+        margin: 5px;
+        font-family: Arial;
+    }
+
+    .CasinoSys_Header .Clear
+    {
+        clear: both;
+    }
+
+/* CasinoSys_MainInfo */
+.CasinoSys_MainInfo
+{
+    background: #f7f7f7 url(images/listbg.jpg) no-repeat top left;
+}
+
+/* CasinoSys_GroupList */
+.CasinoSys_GroupList
+{
+    margin: 1px;
+    background: #fff;
+    border-top: 1px solid #9c824a;
+    position: relative;
+}
+
+    .CasinoSys_GroupList .DataView
+    {
+        float: left;
+        width: 48%;
+        margin: 5px;
+        border: 1px solid #9c824a;
+    }
+
+        .CasinoSys_GroupList .DataView .CasinoSys_GameName img
+        {
+            width: 30px;
+            height: 30px;
+            border: 1px solid #eee;
+            background: #f5f5f5;
+            padding: 1px;
+        }

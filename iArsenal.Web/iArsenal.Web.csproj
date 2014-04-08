@@ -1,0 +1,825 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E42857D7-A0A4-4974-890C-BE5E6C36E600}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>iArsenal.Web</RootNamespace>
+    <AssemblyName>iArsenal.Web</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <UseIISExpress>false</UseIISExpress>
+    <TargetFrameworkProfile />
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>4.0</OldToolsVersion>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="AdminMemberView.aspx" />
+    <Content Include="AdminConfig.aspx" />
+    <Content Include="AdminMember.aspx" />
+    <Content Include="App_Themes\Arsenalcn\acn.css" />
+    <Content Include="App_Themes\Arsenalcn\base.css" />
+    <Content Include="App_Themes\Arsenalcn\component.css" />
+    <Content Include="App_Themes\Arsenalcn\dataView.css" />
+    <Content Include="App_Themes\Arsenalcn\iarsenal.css" />
+    <Content Include="App_Themes\Arsenalcn\images\ACN_Logo.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\arrow_undo.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\avataronline.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\bbs_title_bg.jpg" />
+    <Content Include="App_Themes\Arsenalcn\images\BodyBG.png" />
+    <Content Include="App_Themes\Arsenalcn\images\cancel.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\cardactive.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\cash.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\collapsed_no.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\collapsed_yes.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\forumfooterBg.png" />
+    <Content Include="App_Themes\Arsenalcn\images\headbg.jpg" />
+    <Content Include="App_Themes\Arsenalcn\images\join.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\LiIcon.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\Listbg.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\Listbg.jpg" />
+    <Content Include="App_Themes\Arsenalcn\images\LiTitle.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\logo.png" />
+    <Content Include="App_Themes\Arsenalcn\images\magic.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\manage.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\member.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\menulia.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\menuliaover.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\menu_bg.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\menu_itemline.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\navbg.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\pm_0.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\pm_1.gif" />
+    <Content Include="AdminOrder.aspx" />
+    <Content Include="AdminOrderItem.aspx" />
+    <Content Include="AdminOrderItemView.aspx" />
+    <Content Include="App_Themes\Arsenalcn\images\reset.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\Select.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\sitepath.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\submit.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\title_bg.jpg" />
+    <Content Include="App_Themes\Arsenalcn\images\topItem_col.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\topItem_exp.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\ViewClub.gif" />
+    <Content Include="App_Themes\iArsenal\images\icon-sale.gif" />
+    <Content Include="App_Themes\iArsenal\images\icon-addwish.gif" />
+    <Content Include="App_Themes\iArsenal\images\bg_arsenalGlobal.gif" />
+    <Content Include="App_Themes\iArsenal\images\bg_iArsenalNav.gif" />
+    <Content Include="App_Themes\iArsenal\images\bg_iArsenalTitle.png" />
+    <Content Include="App_Themes\iArsenal\images\icon-cancel.gif" />
+    <Content Include="App_Themes\iArsenal\images\topItem_col.gif" />
+    <Content Include="App_Themes\iArsenal\images\topItem_exp.gif" />
+    <Content Include="App_Themes\iArsenal\images\pagination.png" />
+    <Content Include="App_Themes\iArsenal\images\workflow-node-active.png" />
+    <Content Include="App_Themes\iArsenal\images\workflow-node-inactive.png" />
+    <Content Include="App_Themes\iArsenal\images\workflow-node-start.png" />
+    <Content Include="Control\iArsenalFooter.ascx" />
+    <Content Include="Control\iArsenalHeader.ascx" />
+    <Content Include="Control\PortalBulkOrderInfo.ascx" />
+    <Content Include="Control\PortalMatchInfo.ascx" />
+    <Content Include="Control\PortalPaymentInfo.ascx" />
+    <Content Include="Control\PortalSitePath.ascx" />
+    <Content Include="AdminOrderView.aspx" />
+    <Content Include="AdminMatchTicket.aspx" />
+    <Content Include="AdminMatchTicketView.aspx" />
+    <Content Include="AdminMemberPeriod.aspx" />
+    <Content Include="AdminMemberPeriodView.aspx" />
+    <Content Include="Control\PortalWorkflowInfo.ascx" />
+    <Content Include="iArsenalOrderView_ArsenalDirect.aspx" />
+    <Content Include="iArsenalOrder_ArsenalDirect.aspx" />
+    <Content Include="iArsenalMemberPeriod.aspx" />
+    <Content Include="iArsenalOrderView_MatchTicket.aspx" />
+    <Content Include="iArsenalOrder_MatchTicket.aspx" />
+    <Content Include="iArsenalOrder_MatchList.aspx" />
+    <Content Include="iArsenalOrderView_LondonTravel.aspx" />
+    <Content Include="iArsenalOrder_LondonTravel.aspx" />
+    <Content Include="iArsenalOrderView_TicketBeijing.aspx" />
+    <Content Include="iArsenalOrder.aspx" />
+    <Content Include="iArsenalOrderView_ReplicaKit.aspx" />
+    <Content Include="Scripts\jquery-1.10.2.js" />
+    <Content Include="Scripts\jquery-ui-1.10.4.min.js" />
+    <Content Include="Scripts\jquery.slides.min.js" />
+    <Content Include="Scripts\jquery.ui\images\animated-overlay.gif" />
+    <Content Include="Scripts\jquery.ui\jquery-ui.min.css" />
+    <Content Include="Scripts\json2.js" />
+    <Content Include="UploadFiles\Banner\banner20120511.png" />
+    <Content Include="UploadFiles\Banner\banner20120512.png" />
+    <Content Include="UploadFiles\Banner\banner20120531.png" />
+    <Content Include="UploadFiles\Banner\banner20120707.png" />
+    <Content Include="UploadFiles\Banner\banner20120715.png" />
+    <Content Include="UploadFiles\Banner\banner20120812.png" />
+    <Content Include="UploadFiles\Banner\banner20130418.png" />
+    <Content Include="UploadFiles\Banner\banner20130518.png" />
+    <Content Include="UploadFiles\Banner\banner20130710.png" />
+    <Content Include="UploadFiles\Banner\banner20130711.png" />
+    <Content Include="UploadFiles\Banner\banner20130713.png" />
+    <Content Include="UploadFiles\Banner\banner20130714.png" />
+    <Content Include="UploadFiles\Banner\banner20130903.png" />
+    <Content Include="UploadFiles\Banner\banner20130905.png" />
+    <Content Include="UploadFiles\Banner\banner20140204.png" />
+    <Content Include="UploadFiles\Banner\banner20140205.png" />
+    <Content Include="UploadFiles\logo_ArsenalChina.png" />
+    <Content Include="App_Themes\iArsenal\images\menu_ahover.gif" />
+    <Content Include="App_Themes\iArsenal\portal.css" />
+    <Content Include="App_Themes\iArsenal\base.css" />
+    <Content Include="App_Themes\iArsenal\component.css" />
+    <Content Include="App_Themes\iArsenal\dataView.css" />
+    <Content Include="iArsenalMemberRegister.aspx" />
+    <Content Include="iArsenalOrder_ReplicaKit.aspx" />
+    <Content Include="Scripts\jquery.ui\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Scripts\jquery.ui\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Scripts\jquery.ui\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Scripts\jquery.ui\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Scripts\jquery.ui\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Scripts\jquery.ui\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Scripts\jquery.ui\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Scripts\jquery.ui\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Scripts\jquery.ui\images\ui-icons_222222_256x240.png" />
+    <Content Include="Scripts\jquery.ui\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Scripts\jquery.ui\images\ui-icons_454545_256x240.png" />
+    <Content Include="Scripts\jquery.ui\images\ui-icons_888888_256x240.png" />
+    <Content Include="Scripts\jquery.ui\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Control\AdminFieldToolBar.ascx" />
+    <Content Include="Control\AdminPanel.ascx" />
+    <Content Include="Control\CustomPagerInfo.ascx" />
+    <Content Include="Control\DNTFooter.ascx" />
+    <Content Include="Control\DNTHeader.ascx" />
+    <Content Include="Control\FieldTooBar.ascx" />
+    <Content Include="AdminProduct.aspx" />
+    <Content Include="AdminProductView.aspx" />
+    <Content Include="Default.aspx" />
+    <Content Include="Scripts\iarsenal.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AdminMemberView.aspx.cs">
+      <DependentUpon>AdminMemberView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminMemberView.aspx.designer.cs">
+      <DependentUpon>AdminMemberView.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminConfig.aspx.cs">
+      <DependentUpon>AdminConfig.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminConfig.aspx.designer.cs">
+      <DependentUpon>AdminConfig.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminMember.aspx.cs">
+      <DependentUpon>AdminMember.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminMember.aspx.designer.cs">
+      <DependentUpon>AdminMember.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminOrder.aspx.cs">
+      <DependentUpon>AdminOrder.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminOrder.aspx.designer.cs">
+      <DependentUpon>AdminOrder.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminOrderItem.aspx.cs">
+      <DependentUpon>AdminOrderItem.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminOrderItem.aspx.designer.cs">
+      <DependentUpon>AdminOrderItem.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminOrderItemView.aspx.cs">
+      <DependentUpon>AdminOrderItemView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminOrderItemView.aspx.designer.cs">
+      <DependentUpon>AdminOrderItemView.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminMemberPeriod.aspx.cs">
+      <DependentUpon>AdminMemberPeriod.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminMemberPeriod.aspx.designer.cs">
+      <DependentUpon>AdminMemberPeriod.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminMemberPeriodView.aspx.cs">
+      <DependentUpon>AdminMemberPeriodView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminMemberPeriodView.aspx.designer.cs">
+      <DependentUpon>AdminMemberPeriodView.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Control\PortalBulkOrderInfo.ascx.cs">
+      <DependentUpon>PortalBulkOrderInfo.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Control\PortalBulkOrderInfo.ascx.designer.cs">
+      <DependentUpon>PortalBulkOrderInfo.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Control\PortalWorkflowInfo.ascx.cs">
+      <DependentUpon>PortalWorkflowInfo.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Control\PortalWorkflowInfo.ascx.designer.cs">
+      <DependentUpon>PortalWorkflowInfo.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="iArsenalOrderView_ArsenalDirect.aspx.cs">
+      <DependentUpon>iArsenalOrderView_ArsenalDirect.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="iArsenalOrderView_ArsenalDirect.aspx.designer.cs">
+      <DependentUpon>iArsenalOrderView_ArsenalDirect.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="iArsenalOrder_ArsenalDirect.aspx.cs">
+      <DependentUpon>iArsenalOrder_ArsenalDirect.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="iArsenalOrder_ArsenalDirect.aspx.designer.cs">
+      <DependentUpon>iArsenalOrder_ArsenalDirect.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="iArsenalMemberPeriod.aspx.cs">
+      <DependentUpon>iArsenalMemberPeriod.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="iArsenalMemberPeriod.aspx.designer.cs">
+      <DependentUpon>iArsenalMemberPeriod.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="PageBase\MemberPageBase.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Control\iArsenalFooter.ascx.cs">
+      <DependentUpon>iArsenalFooter.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Control\iArsenalFooter.ascx.designer.cs">
+      <DependentUpon>iArsenalFooter.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Control\iArsenalHeader.ascx.cs">
+      <DependentUpon>iArsenalHeader.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Control\iArsenalHeader.ascx.designer.cs">
+      <DependentUpon>iArsenalHeader.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Control\PortalMatchInfo.ascx.cs">
+      <DependentUpon>PortalMatchInfo.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Control\PortalMatchInfo.ascx.designer.cs">
+      <DependentUpon>PortalMatchInfo.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Control\PortalPaymentInfo.ascx.cs">
+      <DependentUpon>PortalPaymentInfo.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Control\PortalPaymentInfo.ascx.designer.cs">
+      <DependentUpon>PortalPaymentInfo.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Control\PortalSitePath.ascx.cs">
+      <DependentUpon>PortalSitePath.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Control\PortalSitePath.ascx.designer.cs">
+      <DependentUpon>PortalSitePath.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminOrderView.aspx.cs">
+      <DependentUpon>AdminOrderView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminOrderView.aspx.designer.cs">
+      <DependentUpon>AdminOrderView.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminMatchTicket.aspx.cs">
+      <DependentUpon>AdminMatchTicket.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminMatchTicket.aspx.designer.cs">
+      <DependentUpon>AdminMatchTicket.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminMatchTicketView.aspx.cs">
+      <DependentUpon>AdminMatchTicketView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminMatchTicketView.aspx.designer.cs">
+      <DependentUpon>AdminMatchTicketView.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="iArsenalOrderView_MatchTicket.aspx.cs">
+      <DependentUpon>iArsenalOrderView_MatchTicket.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="iArsenalOrderView_MatchTicket.aspx.designer.cs">
+      <DependentUpon>iArsenalOrderView_MatchTicket.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="iArsenalOrder_MatchTicket.aspx.cs">
+      <DependentUpon>iArsenalOrder_MatchTicket.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="iArsenalOrder_MatchTicket.aspx.designer.cs">
+      <DependentUpon>iArsenalOrder_MatchTicket.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="iArsenalOrder_MatchList.aspx.cs">
+      <DependentUpon>iArsenalOrder_MatchList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="iArsenalOrder_MatchList.aspx.designer.cs">
+      <DependentUpon>iArsenalOrder_MatchList.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="iArsenalOrderView_LondonTravel.aspx.cs">
+      <DependentUpon>iArsenalOrderView_LondonTravel.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="iArsenalOrderView_LondonTravel.aspx.designer.cs">
+      <DependentUpon>iArsenalOrderView_LondonTravel.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="iArsenalOrder_LondonTravel.aspx.cs">
+      <DependentUpon>iArsenalOrder_LondonTravel.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="iArsenalOrder_LondonTravel.aspx.designer.cs">
+      <DependentUpon>iArsenalOrder_LondonTravel.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="iArsenalOrderView_TicketBeijing.aspx.cs">
+      <DependentUpon>iArsenalOrderView_TicketBeijing.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="iArsenalOrderView_TicketBeijing.aspx.designer.cs">
+      <DependentUpon>iArsenalOrderView_TicketBeijing.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="iArsenalMemberRegister.aspx.cs">
+      <DependentUpon>iArsenalMemberRegister.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="iArsenalMemberRegister.aspx.designer.cs">
+      <DependentUpon>iArsenalMemberRegister.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="iArsenalOrder.aspx.cs">
+      <DependentUpon>iArsenalOrder.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="iArsenalOrder.aspx.designer.cs">
+      <DependentUpon>iArsenalOrder.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="iArsenalOrderView_ReplicaKit.aspx.cs">
+      <DependentUpon>iArsenalOrderView_ReplicaKit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="iArsenalOrderView_ReplicaKit.aspx.designer.cs">
+      <DependentUpon>iArsenalOrderView_ReplicaKit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="iArsenalOrder_ReplicaKit.aspx.cs">
+      <DependentUpon>iArsenalOrder_ReplicaKit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="iArsenalOrder_ReplicaKit.aspx.designer.cs">
+      <DependentUpon>iArsenalOrder_ReplicaKit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="iArsenalMaster.Master.cs">
+      <DependentUpon>iArsenalMaster.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="iArsenalMaster.Master.designer.cs">
+      <DependentUpon>iArsenalMaster.Master</DependentUpon>
+    </Compile>
+    <Compile Include="ServerACNCallback.ashx.cs">
+      <DependentUpon>ServerACNCallback.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="PageBase\AdminPageBase.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PageBase\AcnPageBase.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Control\AdminFieldToolBar.ascx.cs">
+      <DependentUpon>AdminFieldToolBar.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Control\AdminFieldToolBar.ascx.designer.cs">
+      <DependentUpon>AdminFieldToolBar.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Control\AdminPanel.ascx.cs">
+      <DependentUpon>AdminPanel.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Control\AdminPanel.ascx.designer.cs">
+      <DependentUpon>AdminPanel.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Control\CustomPagerInfo.ascx.cs">
+      <DependentUpon>CustomPagerInfo.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Control\CustomPagerInfo.ascx.designer.cs">
+      <DependentUpon>CustomPagerInfo.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Control\DNTFooter.ascx.cs">
+      <DependentUpon>DNTFooter.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Control\DNTFooter.ascx.designer.cs">
+      <DependentUpon>DNTFooter.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Control\DNTHeader.ascx.cs">
+      <DependentUpon>DNTHeader.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Control\DNTHeader.ascx.designer.cs">
+      <DependentUpon>DNTHeader.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Control\FieldTooBar.ascx.cs">
+      <DependentUpon>FieldTooBar.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Control\FieldTooBar.ascx.designer.cs">
+      <DependentUpon>FieldTooBar.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminProduct.aspx.cs">
+      <DependentUpon>AdminProduct.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminProduct.aspx.designer.cs">
+      <DependentUpon>AdminProduct.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminProductView.aspx.cs">
+      <DependentUpon>AdminProductView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminProductView.aspx.designer.cs">
+      <DependentUpon>AdminProductView.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="DefaultMaster.master.cs">
+      <DependentUpon>DefaultMaster.master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DefaultMaster.master.designer.cs">
+      <DependentUpon>DefaultMaster.master</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServerAcnCheck.ashx.cs">
+      <DependentUpon>ServerAcnCheck.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="ServerMemberCheck.ashx.cs">
+      <DependentUpon>ServerMemberCheck.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="ServerOrderItemCheck.ashx.cs">
+      <DependentUpon>ServerOrderItemCheck.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="ServerOrderView.ashx.cs">
+      <DependentUpon>ServerOrderView.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="ServerProductCheck.ashx.cs">
+      <DependentUpon>ServerProductCheck.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="ServerRegionCheck.ashx.cs">
+      <DependentUpon>ServerRegionCheck.ashx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="UploadFiles\Product\1500.jpg" />
+    <Content Include="UploadFiles\Product\20120727.jpg" />
+    <Content Include="UploadFiles\Product\20125.jpg" />
+    <Content Include="UploadFiles\Product\405624N.jpg" />
+    <Content Include="UploadFiles\Product\405631R.jpg" />
+    <Content Include="UploadFiles\Product\423988O.jpg" />
+    <Content Include="UploadFiles\Product\423988W.jpg" />
+    <Content Include="UploadFiles\Product\423995O.jpg" />
+    <Content Include="UploadFiles\Product\423995R.jpg" />
+    <Content Include="UploadFiles\Product\423997W.jpg" />
+    <Content Include="UploadFiles\Product\423998O.jpg" />
+    <Content Include="UploadFiles\Product\423998R.jpg" />
+    <Content Include="UploadFiles\Product\423999G.jpg" />
+    <Content Include="UploadFiles\Product\424002O.jpg" />
+    <Content Include="UploadFiles\Product\436721T.jpg" />
+    <Content Include="UploadFiles\Product\436722R.jpg" />
+    <Content Include="UploadFiles\Product\479288R.jpg" />
+    <Content Include="UploadFiles\Product\479289R.jpg" />
+    <Content Include="UploadFiles\Product\479290P.jpg" />
+    <Content Include="UploadFiles\Product\479291P.jpg" />
+    <Content Include="UploadFiles\Product\479293F.jpg" />
+    <Content Include="UploadFiles\Product\479293G.jpg" />
+    <Content Include="UploadFiles\Product\479295J.jpg" />
+    <Content Include="UploadFiles\Product\479295R.jpg" />
+    <Content Include="UploadFiles\Product\479295T.jpg" />
+    <Content Include="UploadFiles\Product\479299R.jpg" />
+    <Content Include="UploadFiles\Product\479302R.jpg" />
+    <Content Include="UploadFiles\Product\479303R.jpg" />
+    <Content Include="UploadFiles\Product\479304P.jpg" />
+    <Content Include="UploadFiles\Product\479305P.jpg" />
+    <Content Include="UploadFiles\Product\479307F.jpg" />
+    <Content Include="UploadFiles\Product\479307G.jpg" />
+    <Content Include="UploadFiles\Product\47930HK.jpg" />
+    <Content Include="UploadFiles\Product\480048R.jpg" />
+    <Content Include="UploadFiles\Product\532855J.jpg" />
+    <Content Include="UploadFiles\Product\532855T.jpg" />
+    <Content Include="UploadFiles\Product\532857Y.jpg" />
+    <Content Include="UploadFiles\Product\532863Y.jpg" />
+    <Content Include="UploadFiles\Product\532866Y.jpg" />
+    <Content Include="UploadFiles\Product\542831B.jpg" />
+    <Content Include="UploadFiles\Product\542831P.jpg" />
+    <Content Include="UploadFiles\Product\542832B.jpg" />
+    <Content Include="UploadFiles\Product\542832P.jpg" />
+    <Content Include="UploadFiles\Product\547942Y.jpg" />
+    <Content Include="UploadFiles\Product\587675Y.jpg" />
+    <Content Include="UploadFiles\Product\A0645.jpg" />
+    <Content Include="UploadFiles\Product\A1774.jpg" />
+    <Content Include="UploadFiles\Product\A1868.jpg" />
+    <Content Include="UploadFiles\Product\A2358.jpg" />
+    <Content Include="UploadFiles\Product\A2392.jpg" />
+    <Content Include="UploadFiles\Product\A23983A.jpg" />
+    <Content Include="UploadFiles\Product\A23984A.jpg" />
+    <Content Include="UploadFiles\Product\A2411.jpg" />
+    <Content Include="UploadFiles\Product\A2443.jpg" />
+    <Content Include="UploadFiles\Product\A2484.jpg" />
+    <Content Include="UploadFiles\Product\A2590.jpg" />
+    <Content Include="UploadFiles\Product\A2720.jpg" />
+    <Content Include="UploadFiles\Product\A27201.jpg" />
+    <Content Include="UploadFiles\Product\A27202.jpg" />
+    <Content Include="UploadFiles\Product\A2864.jpg" />
+    <Content Include="UploadFiles\Product\A2992.jpg" />
+    <Content Include="UploadFiles\Product\A2995.jpg" />
+    <Content Include="UploadFiles\Product\A3165.jpg" />
+    <Content Include="UploadFiles\Product\A3225.jpg" />
+    <Content Include="UploadFiles\Product\A3229.jpg" />
+    <Content Include="UploadFiles\Product\A32291.jpg" />
+    <Content Include="UploadFiles\Product\A3344.jpg" />
+    <Content Include="UploadFiles\Product\A3345.jpg" />
+    <Content Include="UploadFiles\Product\A3347.jpg" />
+    <Content Include="UploadFiles\Product\A3349.jpg" />
+    <Content Include="UploadFiles\Product\A3361.jpg" />
+    <Content Include="UploadFiles\Product\A3407.jpg" />
+    <Content Include="UploadFiles\Product\A3424.jpg" />
+    <Content Include="UploadFiles\Product\A3431.jpg" />
+    <Content Include="UploadFiles\Product\A3460.jpg" />
+    <Content Include="UploadFiles\Product\A3717.jpg" />
+    <Content Include="UploadFiles\Product\A3746.jpg" />
+    <Content Include="UploadFiles\Product\A3760.jpg" />
+    <Content Include="UploadFiles\Product\A3847.jpg" />
+    <Content Include="UploadFiles\Product\A3866.jpg" />
+    <Content Include="UploadFiles\Product\A3870.jpg" />
+    <Content Include="UploadFiles\Product\A3944.jpg" />
+    <Content Include="UploadFiles\Product\A4073.jpg" />
+    <Content Include="UploadFiles\Product\A4268.jpg" />
+    <Content Include="UploadFiles\Product\A4277.jpg" />
+    <Content Include="UploadFiles\Product\A4278.jpg" />
+    <Content Include="UploadFiles\Product\A4315.jpg" />
+    <Content Include="UploadFiles\Product\A4318.jpg" />
+    <Content Include="UploadFiles\Product\A4326.jpg" />
+    <Content Include="UploadFiles\Product\A4347.jpg" />
+    <Content Include="UploadFiles\Product\a4371.jpg" />
+    <Content Include="UploadFiles\Product\A4389.jpg" />
+    <Content Include="UploadFiles\Product\A4400.jpg" />
+    <Content Include="UploadFiles\Product\A4412.jpg" />
+    <Content Include="UploadFiles\Product\A4503.jpg" />
+    <Content Include="UploadFiles\Product\A4509.jpg" />
+    <Content Include="UploadFiles\Product\A4513.jpg" />
+    <Content Include="UploadFiles\Product\A4532.jpg" />
+    <Content Include="UploadFiles\Product\A4551.jpg" />
+    <Content Include="UploadFiles\Product\A45511.jpg" />
+    <Content Include="UploadFiles\Product\A4622.jpg" />
+    <Content Include="UploadFiles\Product\A4629.jpg" />
+    <Content Include="UploadFiles\Product\A4648.jpg" />
+    <Content Include="UploadFiles\Product\A4660.jpg" />
+    <Content Include="UploadFiles\Product\A4670.jpg" />
+    <Content Include="UploadFiles\Product\A4676.jpg" />
+    <Content Include="UploadFiles\Product\A4678.jpg" />
+    <Content Include="UploadFiles\Product\A4683.jpg" />
+    <Content Include="UploadFiles\Product\A4685.jpg" />
+    <Content Include="UploadFiles\Product\A4688.jpg" />
+    <Content Include="UploadFiles\Product\A4690.jpg" />
+    <Content Include="UploadFiles\Product\A4704.jpg" />
+    <Content Include="UploadFiles\Product\A4722.jpg" />
+    <Content Include="UploadFiles\Product\A4729.jpg" />
+    <Content Include="UploadFiles\Product\A4730.jpg" />
+    <Content Include="UploadFiles\Product\A9178.jpg" />
+    <Content Include="UploadFiles\Product\A9195.jpg" />
+    <Content Include="UploadFiles\Product\A9198.jpg" />
+    <Content Include="UploadFiles\Product\A9232.jpg" />
+    <Content Include="UploadFiles\Product\A9233.jpg" />
+    <Content Include="UploadFiles\Product\A9241.jpg" />
+    <Content Include="UploadFiles\Product\A9252-1.jpg" />
+    <Content Include="UploadFiles\Product\A9252-2.jpg" />
+    <Content Include="UploadFiles\Product\A9252-3.jpg" />
+    <Content Include="UploadFiles\Product\A9252-4.jpg" />
+    <Content Include="UploadFiles\Product\A9252-5.jpg" />
+    <Content Include="UploadFiles\Product\A9252.jpg" />
+    <Content Include="UploadFiles\Product\A9256.jpg" />
+    <Content Include="UploadFiles\Product\A9257.jpg" />
+    <Content Include="UploadFiles\Product\A93824.jpg" />
+    <Content Include="UploadFiles\Product\A9427.jpg" />
+    <Content Include="UploadFiles\Product\A9429.jpg" />
+    <Content Include="UploadFiles\Product\A9430.jpg" />
+    <Content Include="UploadFiles\Product\A9453.jpg" />
+    <Content Include="UploadFiles\Product\a9466.jpg" />
+    <Content Include="UploadFiles\Product\a9487.jpg" />
+    <Content Include="UploadFiles\Product\a9488.jpg" />
+    <Content Include="UploadFiles\Product\A9502.jpg" />
+    <Content Include="UploadFiles\Product\A9507.jpg" />
+    <Content Include="UploadFiles\Product\A9508.jpg" />
+    <Content Include="UploadFiles\Product\a9534.jpg" />
+    <Content Include="UploadFiles\Product\a9535.jpg" />
+    <Content Include="UploadFiles\Product\A9548.jpg" />
+    <Content Include="UploadFiles\Product\A9559.jpg" />
+    <Content Include="UploadFiles\Product\A9560.jpg" />
+    <Content Include="UploadFiles\Product\a9564.jpg" />
+    <Content Include="UploadFiles\Product\A9565.jpg" />
+    <Content Include="UploadFiles\Product\a9566.jpg" />
+    <Content Include="UploadFiles\Product\A9567.jpg" />
+    <Content Include="UploadFiles\Product\a9571.jpg" />
+    <Content Include="UploadFiles\Product\a9596.jpg" />
+    <Content Include="UploadFiles\Product\A9597.jpg" />
+    <Content Include="UploadFiles\Product\A95971.jpg" />
+    <Content Include="UploadFiles\Product\A9598.jpg" />
+    <Content Include="UploadFiles\Product\A9601.jpg" />
+    <Content Include="UploadFiles\Product\A9602.jpg" />
+    <Content Include="UploadFiles\Product\A9604.jpg" />
+    <Content Include="UploadFiles\Product\A9605.jpg" />
+    <Content Include="UploadFiles\Product\A9621.jpg" />
+    <Content Include="UploadFiles\Product\A9627.jpg" />
+    <Content Include="UploadFiles\Product\A9629.jpg" />
+    <Content Include="UploadFiles\Product\A9634.jpg" />
+    <Content Include="UploadFiles\Product\A9642.jpg" />
+    <Content Include="UploadFiles\Product\a9667.jpg" />
+    <Content Include="UploadFiles\Product\A9673.jpg" />
+    <Content Include="UploadFiles\Product\A9674.jpg" />
+    <Content Include="UploadFiles\Product\A9678.jpg" />
+    <Content Include="UploadFiles\Product\A9680.jpg" />
+    <Content Include="UploadFiles\Product\A96801.jpg" />
+    <Content Include="UploadFiles\Product\A9684.jpg" />
+    <Content Include="UploadFiles\Product\A96841.jpg" />
+    <Content Include="UploadFiles\Product\A9690.jpg" />
+    <Content Include="UploadFiles\Product\A9691.jpg" />
+    <Content Include="UploadFiles\Product\A9722.jpg" />
+    <Content Include="UploadFiles\Product\A9737.jpg" />
+    <Content Include="UploadFiles\Product\A9751.jpg" />
+    <Content Include="UploadFiles\Product\A97511.jpg" />
+    <Content Include="UploadFiles\Product\A9766.jpg" />
+    <Content Include="UploadFiles\Product\A97661.jpg" />
+    <Content Include="UploadFiles\Product\A9772.jpg" />
+    <Content Include="UploadFiles\Product\A9787.jpg" />
+    <Content Include="UploadFiles\Product\A97871.jpg" />
+    <Content Include="UploadFiles\Product\A9793.jpg" />
+    <Content Include="UploadFiles\Product\A97931.jpg" />
+    <Content Include="UploadFiles\Product\A97932.jpg" />
+    <Content Include="UploadFiles\Product\A9801.jpg" />
+    <Content Include="UploadFiles\Product\A9821.jpg" />
+    <Content Include="UploadFiles\Product\A9822.jpg" />
+    <Content Include="UploadFiles\Product\A9867.jpg" />
+    <Content Include="UploadFiles\Product\A9871.jpg" />
+    <Content Include="UploadFiles\Product\A98711.jpg" />
+    <Content Include="UploadFiles\Product\A9888.jpg" />
+    <Content Include="UploadFiles\Product\A9893.jpg" />
+    <Content Include="UploadFiles\Product\A9907.jpg" />
+    <Content Include="UploadFiles\Product\A9908.jpg" />
+    <Content Include="UploadFiles\Product\A99081.jpg" />
+    <Content Include="UploadFiles\Product\a9912.jpg" />
+    <Content Include="UploadFiles\Product\A9921.jpg" />
+    <Content Include="UploadFiles\Product\A9923.jpg" />
+    <Content Include="UploadFiles\Product\A9924.jpg" />
+    <Content Include="UploadFiles\Product\a9927.jpg" />
+    <Content Include="UploadFiles\Product\A9941.jpg" />
+    <Content Include="UploadFiles\Product\A9951.jpg" />
+    <Content Include="UploadFiles\Product\A9952.jpg" />
+    <Content Include="UploadFiles\Product\AC1971R.jpg" />
+    <Content Include="UploadFiles\Product\AFC-Band.jpg" />
+    <Content Include="UploadFiles\Product\BA3294W.jpg" />
+    <Content Include="UploadFiles\Product\BA3295R.jpg" />
+    <Content Include="UploadFiles\Product\BA3295R3.jpg" />
+    <Content Include="UploadFiles\Product\BA3296R-1.jpg" />
+    <Content Include="UploadFiles\Product\BA3296R.jpg" />
+    <Content Include="UploadFiles\Product\BA4288R.jpg" />
+    <Content Include="UploadFiles\Product\H23980A.jpg" />
+    <Content Include="UploadFiles\Product\H24003L.jpg" />
+    <Content Include="UploadFiles\Product\H24005Y.jpg" />
+    <Content Include="UploadFiles\Product\H24017B.jpg" />
+    <Content Include="UploadFiles\Product\n98navy.jpg" />
+    <Content Include="UploadFiles\Product\n98red.jpg" />
+    <Content Include="UploadFiles\Product\Walcott.jpg" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DefaultMaster.master" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Arsenalcn.Common\Arsenalcn.Common.csproj">
+      <Project>{8258A2E1-6821-4BAE-9111-3FBB65703FE0}</Project>
+      <Name>Arsenalcn.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\iArsenal.Entity\iArsenal.Entity.csproj">
+      <Project>{BAB0E195-5717-4CC8-B599-B265708D353A}</Project>
+      <Name>iArsenal.Entity</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ServerAcnCheck.ashx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ServerACNCallback.ashx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Themes\Arsenalcn\acn.skin" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ServerProductCheck.ashx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="iArsenalMaster.Master" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Themes\iArsenal\portal.skin" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ServerMemberCheck.ashx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Data\ipdata.config" />
+    <None Include="Properties\PublishProfiles\iArsenal.Web.pubxml" />
+    <Content Include="ServerOrderView.ashx" />
+    <Content Include="ServerOrderItemCheck.ashx" />
+    <Content Include="ServerRegionCheck.ashx" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>4323</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>
+          </IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

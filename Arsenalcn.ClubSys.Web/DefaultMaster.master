@@ -1,0 +1,31 @@
+﻿<%@ Master Language="C#" CodeBehind="DefaultMaster.master.cs" Inherits="Arsenalcn.ClubSys.Web.DefaultMaster" %>
+
+<%@ Register Src="Control/DNTHeader.ascx" TagName="DNTHeader" TagPrefix="uc1" %>
+<%@ Register Src="Control/DNTFooter.ascx" TagName="DNTFooter" TagPrefix="uc2" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>ACN球会(ACN.ClubSys) - 阿森纳中国官方球迷会 Arsenalcn.com</title>
+    <link rel="icon" href="http://www.arsenalcn.com/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="http://www.arsenalcn.com/favicon.ico" type="image/x-icon" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="keywords" content="Arsenal,Arsenalcn,ACN,iArsenal,阿森纳中国官方球迷会,阿森纳论坛,阿森纳,阿森纳球迷" />
+    <meta name="description" content="阿森纳中国球迷会,官方,官方球迷会,阿森纳中国,中国分会" />
+    <script type="text/javascript" src="scripts/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="scripts/ClubSys.js"></script>
+    <asp:ContentPlaceHolder ID="cphHead" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div id="ACN_Wrap">
+            <uc1:DNTHeader ID="ctrlHeader" runat="server" />
+            <asp:ContentPlaceHolder ID="cphMain" runat="server">
+            </asp:ContentPlaceHolder>
+            <div class="Clear">
+            </div>
+        </div>
+        <uc2:DNTFooter ID="ctrlFooter" runat="server" />
+    </form>
+</body>
+</html>

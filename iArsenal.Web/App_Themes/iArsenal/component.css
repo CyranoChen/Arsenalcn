@@ -1,0 +1,126 @@
+﻿/* CSS Version Component for Portal */
+/* Version: 1.1 || Date: 2014-02-04 || Author: Cyrano */
+/* Cascading Style Sheets Level 2 Revision 1 */
+
+/** ASP.NET Component **/
+.InputBtn
+{
+    padding: 5px 10px;
+    font-size: 10.5pt;
+    font-weight: bold;
+    color: #666666;
+    border: 1px solid #999999;
+    background: #EEEEEE;
+    margin: 2px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+    .InputBtn:hover
+    {
+        color: #aa0000;
+        border: 1px solid #333333;
+        background: #fff;
+        white-space: nowrap;
+    }
+
+a.LinkBtn
+{
+    display: inline-block;
+    padding: 5px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #666666;
+    border: 1px solid #999999;
+    background: #EEEEEE;
+    text-decoration: none;
+    margin: 2px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+    a.LinkBtn:hover
+    {
+        text-decoration: none;
+        color: #aa0000;
+        border: 1px solid #333333;
+        white-space: nowrap;
+    }
+
+/** Form Component **/
+select
+{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 10.5pt;
+    color: #666666;
+    border: 1px solid #999999;
+    background: #FFFFFF;
+    margin: 1px;
+}
+
+.CheckBox label, .RadioButtonList label
+{
+    margin-left: 2px;
+    margin-right: 10px;
+}
+
+input::-webkit-input-placeholder
+{
+    color: #ccc;
+}
+
+input:-moz-placeholder
+{
+    color: #ccc;
+}
+
+input:-ms-input-placeholder
+{
+    color: #ccc;
+}
+
+textarea
+{
+    font-size: 10.5pt;
+}
+
+.TextBox
+{
+    font-family: Arial, Helvetica, sans-serif;
+    border: 1px solid #ccc;
+    background: #FFFFFF;
+    color: #545454;
+    padding: 4px;
+    font-size: 10.5pt;
+}
+
+.TextBoxRead
+{
+    font-family: Arial, Helvetica, sans-serif;
+    border: 1px solid #ccc;
+    background: #eee;
+    color: #333;
+    padding: 4px;
+    font-size: 10.5pt;
+}
+
+.TextBox:hover
+{
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #c0ddfc;
+    padding: 4px;
+    border: 1px double #3399ff;
+    color: #000;
+}
+
+.ValiSpan
+{
+    color: #aa0000;
+    font-weight: bold;
+    font-family: Verdana;
+}
+
+.BtnDefault
+{
+    display: none;
+}

@@ -1,0 +1,772 @@
+﻿/* CSS Version ClubSys */
+/* Version: 1.6.5 || Date: 2011-4-24 || Author: Cyrano */
+/* Cascading Style Sheets Level 2 Revision 1 */
+
+/** ClubSys ShowTopic **/
+.ClubSys_ShowTopic
+{
+    background: url(images/clubsys/ClubLogo.gif) no-repeat left 5px;
+    padding: 5px 0px 5px 20px;
+    margin: 5px;
+}
+
+.ClubSys_ShowTopicCrown
+{
+    background: url(images/clubsys/ClubCrown.gif) no-repeat left 5px;
+    padding: 5px 0px 5px 24px;
+}
+.ClubSys_ShowTopic a, .ClubSys_ShowTopicCrown a
+{
+    color: #333;
+    font-weight: bold;
+    text-decoration: underline;
+}
+.ClubSys_ShowTopic em, .ClubSys_ShowTopicCrown em
+{
+    color: #aa0000;
+    padding: 0px 4px;
+    font-weight: bold;
+    font-size: 10px;
+    font-family: Arial, Verdana, Tahoma;
+}
+/** ClubSys Common **/
+.ClubSys_Rank
+{
+    background: url(images/clubsys/ClubStar3.gif) repeat left top;
+    height: 20px;
+    margin: 0px auto;
+}
+.ClubSys_Star1
+{
+    background: url(images/clubsys/ClubStar1.gif) repeat left top;
+    height: 20px;
+    width: 20px;
+}
+.ClubSys_Star2
+{
+    background: url(images/clubsys/ClubStar2.gif) repeat left top;
+    height: 20px;
+    width: 20px;
+}
+.ClubSys_Star3
+{
+    background: url(images/clubsys/ClubStar3.gif) repeat left top;
+    height: 20px;
+    width: 20px;
+}
+.ClubSys_Agree
+{
+    background: url(images/clubsys/agree.gif) no-repeat;
+    width: 16px;
+    height: 17px;
+    display: block;
+    margin: 0px auto;
+}
+.ClubSys_Disagree
+{
+    background: url(images/clubsys/disagree.gif) no-repeat;
+    width: 16px;
+    height: 17px;
+    display: block;
+    margin: 0px auto;
+}
+.ClubSys_Star
+{
+    background: url(images/clubsys/star.gif) no-repeat;
+    width: 16px;
+    height: 16px;
+    display: block;
+    margin: 0px auto;
+}
+.ClubSys_Cash
+{
+    background: url(images/clubsys/cash.gif) no-repeat;
+    width: 18px;
+    height: 16px;
+    display: block;
+    margin: 0px auto;
+}
+.ClubSys_Tip
+{
+    background: #fff48d;
+    text-align: left;
+    margin: 0px 1px;
+    padding: 3px;
+}
+.ClubSys_Tip label, .ClubSys_Tip span
+{
+    font-weight: bold;
+    color: #444;
+    background: url(images/clubsys/Tip.gif) no-repeat 5px 1px;
+    padding-left: 20px;
+    font-size: 12px;
+    line-height: 1.6;
+}
+.ClubSys_Notice
+{
+    font-size: 9pt;
+    line-height: 1.6;
+    color: #333;
+    padding: 10px;
+    background: #fff48d;
+    font-weight: bold;
+    text-align: justify;
+}
+.ClubSys_Crown
+{
+    background: url(images/clubsys/crown.gif) no-repeat top center;
+    width: 55px;
+    height: 40px;
+    display: block;
+    margin: 5px auto;
+}
+.ClubSys_FlagTop
+{
+    /*background: url(images/clubsys/FlagTop.gif) no-repeat top left;*/
+}
+/** ClubSys Strip **/
+.ClubSys_Strip
+{
+    margin-left: 10px;
+    font-size: 9pt;
+    font-weight: bold;
+    display: inline-block;
+    height: 16px;
+    color: #333;
+}
+.SHIRT
+{
+    background: url(images/clubsys/shirt.gif) no-repeat top left;
+    padding-left: 22px;
+}
+.SHORTS
+{
+    background: url(images/clubsys/shorts.gif) no-repeat top left;
+    padding-left: 24px;
+}
+.SOCK
+{
+    background: url(images/clubsys/sock.gif) no-repeat top left;
+    padding-left: 18px;
+}
+.CARD
+{
+    background: url(images/clubsys/card.gif) no-repeat top left;
+    padding-left: 20px;
+}
+.VIDEO
+{
+    background: url(images/clubsys/video.gif) no-repeat top left;
+    padding-left: 20px;
+}
+.CASH
+{
+    background: url(images/clubsys/cash.gif) no-repeat top left;
+    padding-left: 22px;
+}
+.RATE
+{
+    color: #aa0000;
+}
+.ClubSys_StripLV
+{
+}
+.ClubSys_PlayerLV
+{
+    background: url(images/clubsys/PlayerLV.gif) repeat top left;
+    height: 20px;
+    margin: 0px auto;
+}
+.ClubSys_PlayerLV1
+{
+    color: #ad30d9;
+    margin: 0px 2px;
+}
+.ClubSys_PlayerLV2
+{
+    color: #73d930;
+    margin: 0px 2px;
+}
+.ClubSys_PlayerLV3
+{
+    color: #304dd9;
+    margin: 0px 2px;
+}
+.ClubSys_PlayerLV4
+{
+    color: #aa9d2c;
+    margin: 0px 2px;
+}
+.ClubSys_PlayerLV5
+{
+    color: #d11915;
+    margin: 0px 2px;
+}
+
+/** ClubSys_GetStrip **/
+.ClubSys_GetStrip
+{
+    background: #aa0000 url(images/clubsys/ClubGetStripBg.gif) no-repeat top center;
+    margin: 1px;
+    text-align: center;
+}
+#GoogleAdv #AdvContainer
+{
+    padding: 20px;
+    text-align: center;
+}
+#GoogleAdv #AdvContainer #AdvLoading
+{
+    width: 468px;
+    height: 60px;
+    background: #fff url(images/clubsys/advLoading.gif) no-repeat center center;
+    border: 1px dashed #9c824a;
+    border-top: none;
+    margin: auto;
+}
+#GoogleAdv #AdvContainer #AdvTips
+{
+    background: #fff48d;
+    padding: 8px 0px;
+    margin: auto;
+    width: 468px;
+    border: 1px dashed #9c824a;
+    color: #da7b00;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.ClubSys_PlayerStripPH
+{
+    text-align: center;
+    background: #f7f7f7 url(images/listbg.jpg) no-repeat top left;
+    margin: 1px 0px;
+}
+a.ClubSys_LuckyGet
+{
+    color: #042e68;
+    background: url(images/clubsys/bonus.gif) no-repeat top left;
+    padding-left: 14px;
+    font-weight: bold;
+    text-decoration: underline;
+}
+a.ClubSys_LuckyGet:hover
+{
+    color: #aa0000;
+    font-weight: bold;
+}
+/** ClubSys_Header **/
+.ClubSys_Header
+{
+    background: #fef5f4;
+    border-bottom: 2px solid #9c824a;
+    margin: 0px 1px;
+}
+.ClubSys_Header table
+{
+    width: 100%;
+}
+.ClubSys_Header .ClubLogo
+{
+    width: 80px;
+    padding: 10px;
+    text-align: center;
+    vertical-align: top;
+}
+.ClubSys_Header .ClubTitle
+{
+    font-size: 26px;
+    font-weight: bold;
+    color: #aa0000;
+    font-family: Vernada,黑体;
+    padding: 5px;
+}
+.ClubSys_Header .ClubDesc
+{
+    color: #666;
+    font-size: 13px;
+    line-height: 1.5;
+    padding: 3px;
+    text-align: left;
+    vertical-align: top;
+}
+.ClubSys_Header .ClubBtnGroup
+{
+    text-align: right;
+    padding: 10px;
+}
+.ClubSys_Header .ClubSys_Rank, .ClubSys_Header .ClubSys_PlayerLV
+{
+    float: right;
+    margin: 5px;
+    margin-top: 30px;
+}
+.ClubSys_Header .PlayerCard
+{
+    float: left;
+    margin: 5px;
+}
+.ClubSys_Header .ClubSys_Item
+{
+    font-weight: bold;
+    color: #333;
+    margin: 5px;
+    text-indent: 15px;
+}
+.ClubSys_Header .PlayerItemList
+{
+    float: left;
+    width: 150px;
+    margin: 8px;
+}
+.ClubSys_Header .PlayerItemList ul li
+{
+    margin: 10px;
+    font-weight: bold;
+    color: #333;
+}
+/* ClubSys_CollectionInfo */
+.ClubSys_CollectionInfo
+{
+    margin: 0px 1px 1px 1px;
+    text-align: center;
+    background: #fff url(images/clubsys/CollectionInfoBg.jpg) repeat-y center top;
+}
+.ClubSys_CollectionInfo .ClubSys_ItemPH
+{
+    position: relative;
+    margin: 8px;
+    padding: 10px;
+    float: left;
+    text-align: center;
+    display: inline;
+    width: 145px;
+}
+.ClubSys_CollectionInfo .ClubSys_ItemPH_Border
+{
+    width: 200px;
+}
+/*.ClubSys_ItemPH_Border object, .ClubSys_ItemPH_Border embed
+{
+    border: 2px solid #9c824a;
+}*/
+.ClubSys_ItemPH .CurrentStrip
+{
+    position: absolute;
+    left: 40px;
+    top: 0px;
+    background: url(images/clubsys/CurrentStrip.gif) no-repeat top center;
+    width: 30px;
+    height: 29px;
+    display: block;
+}
+.ClubSys_ItemPH a.BtnSetCurrent
+{
+    display: none;
+    position: absolute;
+    right: 0px;
+    bottom: 15px;
+    background: url(images/clubsys/BtnSetCurrent.gif) no-repeat bottom center;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+.ClubSys_ItemPH a.BtnCancelCurrent
+{
+    display: none;
+    position: absolute;
+    right: 0px;
+    bottom: 15px;
+    background: url(images/clubsys/BtnCancelCurrent.gif) no-repeat bottom center;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+.ClubSys_ItemPH a.BtnActive
+{
+    display: none;
+    position: absolute;
+    right: 0px;
+    bottom: 15px;
+    background: url(images/clubsys/BtnActive.gif) no-repeat bottom center;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+/*.ClubSys_ItemPH a.BtnDesc
+{
+    display: none;
+    position: absolute;
+    right: 0px;
+    bottom: 45px;
+    background: url(images/clubsys/BtnDesc.gif) no-repeat top center;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}*/
+.ClubSys_ItemPH a.SwfViewBtn
+{
+    display: none;
+    position: absolute;
+    right: 0px;
+    bottom: 45px;
+    background: url(images/clubsys/zoomin.gif) no-repeat top center;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+.ClubSys_ItemPH:hover a.SwfViewBtn, .ClubSys_ItemPH:hover a.BtnActive, .ClubSys_ItemPH:hover a.BtnSetCurrent, .ClubSys_ItemPH:hover a.BtnDesc, .ClubSys_ItemPH:hover a.BtnCancelCurrent
+{
+    display: block;
+}
+.SwfViewBtnLeft
+{
+    background: url(images/clubsys/zoomin.gif) no-repeat top center;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    float: right;
+    display: inline;
+    margin: 5px;
+}
+
+/* ClubSys_ProfileInfo */
+.ClubSys_ProfileInfo
+{
+    position: relative;
+    text-align: center;
+    width: 500px;
+    margin: 0px auto;
+}
+.ClubSys_ProfileInfo a
+{
+    display: inline-block;
+    width: 180px;
+    height: 200px;
+    margin: 30px;
+}
+.ClubSys_ProfileInfo a.BtnCardActive
+{
+    background: url(images/clubsys/PlayerCardCountBg.gif) no-repeat top center;
+}
+.ClubSys_ProfileInfo a.BtnVideoActive
+{
+    background: url(images/clubsys/VideoCardCountBg.gif) no-repeat top center;
+}
+.ClubSys_ProfileInfo span
+{
+    position: absolute;
+    font-size: 20px;
+    font-family: Georgia, Tahoma, Verdana;
+    font-weight: bold;
+    color: #fff;
+    z-index: 1000;
+    display: block;
+    text-align: center;
+}
+.ClubSys_ProfileInfo span.VideoActiveCount
+{
+    font-size: 28px;
+    bottom: 52px;
+    left: 52px;
+    width: 50px;
+}
+.ClubSys_ProfileInfo span.VideoCount
+{
+    font-size: 22px;
+    bottom: 50px;
+    left: 97px;
+    width: 40px;
+}
+.ClubSys_ProfileInfo span.CardActiveCount
+{
+    font-size: 28px;
+    bottom: 52px;
+    right: 160px;
+    width: 50px;
+}
+.ClubSys_ProfileInfo span.CardCount
+{
+    font-size: 22px;
+    bottom: 50px;
+    right: 123px;
+    width: 40px;
+}
+
+/* ClubSys_MainInfo */
+.ClubSys_MainInfo
+{
+    background: #f7f7f7 url(images/listbg.jpg) no-repeat top left;
+}
+.ClubSys_MainInfo em
+{
+    font-weight: bold;
+    font-family: Georgia, Tahoma, Verdana;
+    font-size: 13px;
+}
+.ClubSys_MainInfo .BaseInfoPanel
+{
+    float: left;
+    display: inline;
+    margin: 5px;
+    width: 60%;
+}
+.ClubSys_MainInfo .BaseInfoPanel dl
+{
+    float: left;
+    display: inline;
+    margin: 5px;
+    width: 47%;
+}
+.ClubSys_MainInfo .BaseInfoPanel dl dt
+{
+    font-size: 13px;
+    padding: 5px;
+    color: #444;
+    font-weight: bold;
+    line-height: 1.5;
+}
+.ClubSys_MainInfo .BaseInfoPanel dl dd
+{
+    font-size: 13px;
+    padding: 5px;
+    color: #444;
+    font-weight: bold;
+    line-height: 1.5;
+}
+.ClubSys_MainInfo .BaseInfoPanel dl dd a
+{
+    color: #aa0000;
+    font-weight: bold;
+    text-decoration: underline;
+}
+.ClubSys_MainInfo .BaseInfoPanel dl dd:hover, .ClubSys_MainInfo .BaseInfoPanel dl dt:hover
+{
+    background: #f2f2f2;
+}
+.ClubSys_MainInfo .BaseInfoPanel dl dt label, .ClubSys_MainInfo .BaseInfoPanel dl dd label
+{
+    text-align: right;
+    color: #666;
+    display: inline-block;
+    padding: 0px 2px 0px 10px;
+    font-weight: normal;
+    background: url(images/LiIcon.gif) no-repeat 0px 6px;
+}
+.ClubSys_AdminPanel
+{
+    margin: 5px;
+}
+.ClubSys_AdminPanel ul li
+{
+    text-align: left;
+    padding: 3px 0px 3px 20px;
+    font-size: 12px;
+    background: url(images/clubsys/worker.gif) no-repeat left 3px;
+}
+.ClubSys_AdminPanel ul li.Manager
+{
+    background: url(images/clubsys/manager.gif) no-repeat left 3px;
+}
+.ClubSys_AdminPanel ul li a
+{
+    text-decoration: underline;
+    font-weight: bold;
+}
+.ClubSys_AdminPanel ul li a:hover
+{
+    font-weight: bold;
+}
+.ClubSys_MainInfo .AdminPanel
+{
+    float: right;
+    display: inline;
+    margin: 5px;
+    width: 35%;
+    border-left: 1px dashed #ccc;
+}
+.ClubSys_MainInfo .AdminPanel ul
+{
+    margin: 0px 10px;
+    clear: both;
+}
+.ClubSys_MainInfo .AdminPanel ul li
+{
+    padding: 5px 0px 5px 20px;
+    font-size: 13px;
+    background: url(images/clubsys/worker.gif) no-repeat left 5px;
+}
+.ClubSys_MainInfo .AdminPanel ul li:hover
+{
+    background-color: #f2f2f2;
+}
+.ClubSys_MainInfo .AdminPanel ul li.Manager
+{
+    background: url(images/clubsys/manager.gif) no-repeat left 5px;
+}
+.ClubSys_MainInfo .AdminPanel ul li a
+{
+    font-size: 13px;
+    font-weight: bold;
+    color: #aa0000;
+    text-decoration: underline;
+}
+.ClubSys_MainInfo .AdminPanel .CreateDate
+{
+    text-align: left;
+    color: #666;
+    font-weight: bold;
+    font-size: 12px;
+    margin: 10px;
+}
+.ClubSys_MainInfo .AdminPanel .CreateDate em
+{
+    font-size: 14px;
+    font-weight: bold;
+    padding: 0px 2px;
+}
+
+/* ClubSys_RankInfo */
+.ClubSys_DVRankItemPanel
+{
+    background: transparent;
+    float: none;
+    text-align: left;
+}
+.ClubSys_DVRankItemPanel ul li
+{
+    background: url(images/LiIcon.gif) no-repeat 0px 5px;
+    padding-left: 10px;
+    margin: 3px;
+    white-space: nowrap;
+}
+.ClubSys_DVRankItemPanel ul li em
+{
+    font-family: Georgia;
+    font-size: 12px;
+}
+
+.ClubSys_RankInfo
+{
+    background: #fff;
+    margin: 0px 1px 1px 1px;
+    height: auto;
+}
+.ClubSys_RankInfo .RankChartPanel
+{
+    float: left;
+    width: 220px;
+    height: 220px;
+}
+.ClubSys_RankInfo .RankItemPanel
+{
+    margin: 5px;
+    float: left;
+    width: 400px;
+}
+.ClubSys_RankInfo .RankItemPanel dl dt
+{
+    margin: 5px;
+    text-align: right;
+}
+.ClubSys_RankInfo .RankItemPanel dl dt a
+{
+    text-decoration: underline;
+    background: url(images/LiIcon.gif) no-repeat 0px 5px;
+    padding-left: 10px;
+    cursor: pointer;
+}
+.ClubSys_RankInfo .RankItemPanel dl dd
+{
+    margin: 10px 5px;
+    display: block;
+    clear: both;
+    height: 25px;
+}
+.ClubSys_RankInfo .RankItemPanel dl dd:hover
+{
+    background: #f2f2f2;
+}
+.ClubSys_RankInfo .RankItemPanel dl dd label
+{
+    font-weight: bold;
+    font-size: 14px;
+    color: #666;
+    width: 80px;
+    float: left;
+}
+.ClubSys_RankInfo .RankItemPanel dl dd em
+{
+    font-family: Georgia, Tahoma, Verdana;
+    float: left;
+    width: 80px;
+    padding: 0px 10px;
+    text-align: right;
+    font-size: 12px;
+    white-space: nowrap;
+}
+.ClubSys_RankInfo .RankItemPanel dl dd .RankLevel
+{
+    width: 200px;
+    background: #eee;
+    border: 1px solid #ccc;
+    float: left;
+    height: 15px;
+}
+.ClubSys_RankInfo .RankItemPanel dl dd .RankLevel a
+{
+    background: url(images/clubsys/RankLevelBg.gif) no-repeat;
+    border: 1px solid #fff;
+    height: 13px;
+    display: block;
+    font-size: 11px;
+    text-align: right;
+    font-weight: bold;
+    color: #aa0000;
+}
+.ClubSys_RankInfo .RankItemPanel dl dd .RankLevel a:hover
+{
+    text-decoration: none;
+}
+.ClubSys_RankInfo .RankPointPanel
+{
+    float: right;
+    margin: 10px;
+    display: inline;
+}
+.ClubSys_RankInfo .RankPointPanel .RankPoint
+{
+    width: 100px;
+    display: block;
+    font-size: 60px;
+    color: #aa0000;
+    font-weight: bold;
+    text-align: center;
+    font-family: Arial;
+}
+.ClubSys_RankInfo .ClubSys_RankDetailPanel
+{
+    background: #fdffd3;
+    font-size: 14px;
+    margin: 1px;
+    padding: 5px;
+}
+.ClubSys_RankInfo .ClubSys_RankDetailPanel p
+{
+    color: #aa0000;
+    font-weight: bold;
+    line-height: 1.6;
+}
+.ClubSys_RankInfo .ClubSys_RankDetailPanel ul
+{
+    margin: 10px;
+}
+.ClubSys_RankInfo .ClubSys_RankDetailPanel ul li
+{
+    line-height: 1.8;
+    background: url(images/LiIcon.gif) no-repeat 0px 7px;
+    padding-left: 10px;
+    margin: 5px;
+    font-size: 12px;
+    color: #666;
+}

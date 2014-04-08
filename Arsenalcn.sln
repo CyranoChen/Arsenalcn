@@ -1,0 +1,106 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iArsenal.Web", "iArsenal.Web\iArsenal.Web.csproj", "{E42857D7-A0A4-4974-890C-BE5E6C36E600}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iArsenal.Entity", "iArsenal.Entity\iArsenal.Entity.csproj", "{BAB0E195-5717-4CC8-B599-B265708D353A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iArsenal.DataAccess", "iArsenal.DataAccess\iArsenal.DataAccess.csproj", "{9EBCC8CF-BAB8-4356-8F6F-238E6D846760}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arsenalcn.Common", "Arsenalcn.Common\Arsenalcn.Common.csproj", "{8258A2E1-6821-4BAE-9111-3FBB65703FE0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arsenalcn.ClubSys.Web", "Arsenalcn.ClubSys.Web\Arsenalcn.ClubSys.Web.csproj", "{32CF12A8-B988-43D9-9934-265A13A7DF82}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arsenalcn.ClubSys.Entity", "Arsenalcn.ClubSys.Entity\Arsenalcn.ClubSys.Entity.csproj", "{C84E7700-0E7C-4C98-AE70-70EFB99B8D8E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arsenalcn.ClubSys.DataAccess", "Arsenalcn.ClubSys.DataAccess\Arsenalcn.ClubSys.DataAccess.csproj", "{75829613-19BE-4D73-967E-19D3B5F7CB84}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arsenalcn.CasinoSys.Web", "Arsenalcn.CasinoSys.Web\Arsenalcn.CasinoSys.Web.csproj", "{06DDCDDF-F83F-4153-8F74-947EECF2C40B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arsenalcn.Event", "Arsenalcn.Event\Arsenalcn.Event.csproj", "{2FD842D7-9D05-4EDB-A5BB-1D60E48E5BC5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arsenalcn.CasinoSys.Entity", "Arsenalcn.CasinoSys.Entity\Arsenalcn.CasinoSys.Entity.csproj", "{CD9A6BD8-88B6-45F4-B41D-7DC11E173B78}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arsenalcn.CasinoSys.DataAccess", "Arsenalcn.CasinoSys.DataAccess\Arsenalcn.CasinoSys.DataAccess.csproj", "{F7122A3E-CCFB-496D-89D1-09D54AF11135}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arsenal.Web", "Arsenal.Web\Arsenal.Web.csproj", "{2F427066-57F9-495F-B91A-F4D0D097C949}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arsenal.Entity", "Arsenal.Entity\Arsenal.Entity.csproj", "{18F784E1-6AC9-488C-9F00-B1CF2D5A8893}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arsenal.DataAccess", "Arsenal.DataAccess\Arsenal.DataAccess.csproj", "{37CC8A18-346F-4FDF-AF3D-C12C36D047EB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arsenal.Service", "Arsenal.Service\Arsenal.Service.csproj", "{3C09C04B-77CD-474E-9AB6-A4510079ABD3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E42857D7-A0A4-4974-890C-BE5E6C36E600}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E42857D7-A0A4-4974-890C-BE5E6C36E600}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E42857D7-A0A4-4974-890C-BE5E6C36E600}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E42857D7-A0A4-4974-890C-BE5E6C36E600}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BAB0E195-5717-4CC8-B599-B265708D353A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BAB0E195-5717-4CC8-B599-B265708D353A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BAB0E195-5717-4CC8-B599-B265708D353A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BAB0E195-5717-4CC8-B599-B265708D353A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9EBCC8CF-BAB8-4356-8F6F-238E6D846760}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EBCC8CF-BAB8-4356-8F6F-238E6D846760}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9EBCC8CF-BAB8-4356-8F6F-238E6D846760}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9EBCC8CF-BAB8-4356-8F6F-238E6D846760}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8258A2E1-6821-4BAE-9111-3FBB65703FE0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8258A2E1-6821-4BAE-9111-3FBB65703FE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8258A2E1-6821-4BAE-9111-3FBB65703FE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8258A2E1-6821-4BAE-9111-3FBB65703FE0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32CF12A8-B988-43D9-9934-265A13A7DF82}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32CF12A8-B988-43D9-9934-265A13A7DF82}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32CF12A8-B988-43D9-9934-265A13A7DF82}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32CF12A8-B988-43D9-9934-265A13A7DF82}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C84E7700-0E7C-4C98-AE70-70EFB99B8D8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C84E7700-0E7C-4C98-AE70-70EFB99B8D8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C84E7700-0E7C-4C98-AE70-70EFB99B8D8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C84E7700-0E7C-4C98-AE70-70EFB99B8D8E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75829613-19BE-4D73-967E-19D3B5F7CB84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75829613-19BE-4D73-967E-19D3B5F7CB84}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75829613-19BE-4D73-967E-19D3B5F7CB84}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75829613-19BE-4D73-967E-19D3B5F7CB84}.Release|Any CPU.Build.0 = Release|Any CPU
+		{06DDCDDF-F83F-4153-8F74-947EECF2C40B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06DDCDDF-F83F-4153-8F74-947EECF2C40B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{06DDCDDF-F83F-4153-8F74-947EECF2C40B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{06DDCDDF-F83F-4153-8F74-947EECF2C40B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2FD842D7-9D05-4EDB-A5BB-1D60E48E5BC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2FD842D7-9D05-4EDB-A5BB-1D60E48E5BC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2FD842D7-9D05-4EDB-A5BB-1D60E48E5BC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2FD842D7-9D05-4EDB-A5BB-1D60E48E5BC5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD9A6BD8-88B6-45F4-B41D-7DC11E173B78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD9A6BD8-88B6-45F4-B41D-7DC11E173B78}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD9A6BD8-88B6-45F4-B41D-7DC11E173B78}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD9A6BD8-88B6-45F4-B41D-7DC11E173B78}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7122A3E-CCFB-496D-89D1-09D54AF11135}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7122A3E-CCFB-496D-89D1-09D54AF11135}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7122A3E-CCFB-496D-89D1-09D54AF11135}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7122A3E-CCFB-496D-89D1-09D54AF11135}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F427066-57F9-495F-B91A-F4D0D097C949}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F427066-57F9-495F-B91A-F4D0D097C949}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F427066-57F9-495F-B91A-F4D0D097C949}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F427066-57F9-495F-B91A-F4D0D097C949}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18F784E1-6AC9-488C-9F00-B1CF2D5A8893}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18F784E1-6AC9-488C-9F00-B1CF2D5A8893}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18F784E1-6AC9-488C-9F00-B1CF2D5A8893}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18F784E1-6AC9-488C-9F00-B1CF2D5A8893}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37CC8A18-346F-4FDF-AF3D-C12C36D047EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37CC8A18-346F-4FDF-AF3D-C12C36D047EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37CC8A18-346F-4FDF-AF3D-C12C36D047EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37CC8A18-346F-4FDF-AF3D-C12C36D047EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C09C04B-77CD-474E-9AB6-A4510079ABD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C09C04B-77CD-474E-9AB6-A4510079ABD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C09C04B-77CD-474E-9AB6-A4510079ABD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C09C04B-77CD-474E-9AB6-A4510079ABD3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

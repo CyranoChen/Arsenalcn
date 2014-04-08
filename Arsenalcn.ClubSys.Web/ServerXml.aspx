@@ -1,0 +1,1 @@
+﻿<%@ Page Language="C#" CodeBehind="ServerXml.aspx.cs" Inherits="Arsenalcn.ClubSys.Web.ServerXml" EnableTheming="false" Theme="" %>

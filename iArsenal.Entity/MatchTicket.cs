@@ -1,0 +1,240 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+
+using iArsenal.Entity.Arsenal;
+using iArsenal.Entity.ServiceProvider;
+
+namespace iArsenal.Entity
+{
+    public class MatchTicket
+    {
+        public MatchTicket() { }
+
+        private MatchTicket(Match m)
+        {
+            InitMatchTicket(m);
+        }
+
+        private void InitMatchTicket(Match m)
+        {
+            if (m != null)
+            {
+                // Match Info Initializer
+
+                MatchGuid = m.MatchGuid;
+                TeamGuid = m.TeamGuid;
+                TeamName = m.TeamName;
+                IsHome = m.IsHome;
+                ResultHome = m.ResultHome;
+                ResultAway = m.ResultAway;
+                PlayTime = m.PlayTime;
+
+                PlayTimeLocal = ConvertToDST(PlayTime);
+
+                LeagueGuid = m.LeagueGuid;
+                LeagueName = m.LeagueName;
+                Round = m.Round;
+
+                #region Generate Match ResultInfo
+
+                if (ResultHome.HasValue && ResultAway.HasValue)
+                {
+                    if (IsHome)
+                        ResultInfo = ResultHome.Value.ToString() + "：" + ResultAway.Value.ToString();
+                    else
+                        ResultInfo = ResultAway.Value.ToString() + "：" + ResultHome.Value.ToString();
+                }
+                else
+                    ResultInfo = string.Empty;
+
+                #endregion
+
+                // Ticket Info Initializer
+
+                DataRow dr = DataAccess.MatchTicket.GetMatchTicketByID(MatchGuid);
+
+                if (dr != null)
+                {
+                    ProductCode = dr["ProductCode"].ToString();
+                    ProductInfo = Product.Cache.Load(ProductCode).Name;
+                    Deadline = (DateTime)dr["Deadline"];
+                    IsActive = Convert.ToBoolean(dr["IsActive"]);
+                    Remark = dr["Remark"].ToString();
+                }
+                else
+                {
+                    ProductCode = string.Empty;
+                    ProductInfo = string.Empty;
+                    Deadline = m.PlayTime.AddMonths(-2).AddDays(-7);
+                    IsActive = m.IsActive;
+                    Remark = string.Empty;
+                }
+            }
+            else
+                throw new Exception("Unable to init MatchTicket.");
+        }
+
+        public void Select()
+        {
+            var svc = RemoteServiceProvider.GetWebService();
+            
+            Match m = new Match();
+
+            if (svc != null)
+            {
+                m = svc.GetMatchs().ToList<Match>().Find(match => match.MatchGuid.Equals(MatchGuid));
+
+                if (m != null)
+                    InitMatchTicket(m);
+            }
+            else
+                throw new Exception("Unable to init MatchTicket. (Webservice Error)");
+        }
+
+        public void Update()
+        {
+            DataAccess.MatchTicket.UpdateMatchTicket(MatchGuid, ProductCode, Deadline, IsActive, Remark);
+        }
+
+        public void Insert()
+        {
+            DataAccess.MatchTicket.InsertMatchTicket(MatchGuid, ProductCode, Deadline, IsActive, Remark);
+        }
+
+        public void Delete()
+        {
+            DataAccess.MatchTicket.DeleteMatchTicket(MatchGuid);
+        }
+
+        public static List<MatchTicket> GetMatchTickets()
+        {
+            var svc = RemoteServiceProvider.GetWebService();
+
+            List<Match> mlist = new List<Match>();
+            List<MatchTicket> list = new List<MatchTicket>();
+
+            if (svc != null)
+            {
+                mlist = svc.GetMatchs().ToList<Match>();
+
+                foreach (Match m in mlist)
+                {
+                    list.Add(new MatchTicket(m));
+                }
+            }
+            else
+            {
+                list = null;
+            }
+
+            return list;
+        }
+
+         private static DateTime ConvertToDST(DateTime date)
+         {
+             DateTime begDST = new DateTime(date.Year, 3, 31);
+             DateTime endDST = new DateTime(date.Year, 11, 1);
+
+             if (begDST.DayOfWeek != DayOfWeek.Sunday)
+                 begDST = begDST.AddDays(-((int)begDST.DayOfWeek));
+
+             if (endDST.DayOfWeek == DayOfWeek.Sunday)
+                 endDST = endDST.AddDays(-7);
+             else
+                 endDST = endDST.AddDays(-((int)endDST.DayOfWeek));
+
+             if (date.AddHours(-7) > begDST && date.AddHours(-7) < endDST)
+             {
+                 return date.AddHours(-7);
+             }
+
+             return date.AddHours(-8);  
+         }
+
+        public static class Cache
+        {
+            static Cache()
+            {
+                InitCache();
+            }
+
+            public static void RefreshCache()
+            {
+                InitCache();
+            }
+
+            private static void InitCache()
+            {
+                MatchTicketList = GetMatchTickets();
+            }
+
+            public static MatchTicket Load(Guid guid)
+            {
+                return MatchTicketList.Find(mt => mt.MatchGuid.Equals(guid));
+            }
+
+            public static List<MatchTicket> MatchTicketList;
+        }
+
+        #region Members and Properties
+
+        // Match Info Properties
+
+        public Guid MatchGuid
+        { get; set; }
+
+        public Guid TeamGuid
+        { get; set; }
+
+        public string TeamName
+        { get; set; }
+
+        public Boolean IsHome
+        { get; set; }
+
+        public int? ResultHome
+        { get; set; }
+
+        public int? ResultAway
+        { get; set; }
+
+        public string ResultInfo
+        { get; set; }
+
+        public DateTime PlayTime
+        { get; set; }
+
+        public DateTime PlayTimeLocal
+        { get; set; }
+
+        public Guid? LeagueGuid
+        { get; set; }
+
+        public string LeagueName
+        { get; set; }
+
+        public int? Round
+        { get; set; }
+
+        // Ticket Info Properties
+
+        public string ProductCode
+        { get; set; }
+
+        public string ProductInfo
+        { get; set; }
+
+        public DateTime Deadline
+        { get; set; }
+
+        public Boolean IsActive
+        { get; set; }
+
+        public string Remark
+        { get; set; }
+
+        #endregion
+    }
+}

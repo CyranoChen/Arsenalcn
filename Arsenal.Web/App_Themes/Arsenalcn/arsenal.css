@@ -1,0 +1,137 @@
+﻿/* CSS Version Arsenal */
+/* Version: 1.1 || Date: 2013-2-17 || Author: Cyrano */
+/* Cascading Style Sheets Level 2 Revision 1 */
+
+/** Arsenal Common **/
+.Arsenal_Tip
+{
+    background: #fff48d;
+    text-align: left;
+    margin: 0px 1px;
+    padding: 3px;
+}
+
+    .Arsenal_Tip label, .Arsenal_Tip span
+    {
+        font-weight: bold;
+        color: #444;
+        background: url(images/Arsenal/Tip.gif) no-repeat 5px 1px;
+        padding-left: 20px;
+        font-size: 12px;
+        line-height: 1.6;
+    }
+
+.Arsenal_Notice
+{
+    font-size: 9pt;
+    line-height: 1.6;
+    color: #333;
+    padding: 10px;
+    background: #fff48d;
+    font-weight: bold;
+    text-align: justify;
+}
+
+/** Arsenal Header **/
+.Arsenal_Header
+{
+    background: none;
+    border: none;
+    margin: 0px;
+}
+
+    .Arsenal_Header .GameItemList
+    {
+        float: left;
+        margin: 5px;
+        display: inline;
+    }
+
+        .Arsenal_Header .GameItemList a.StrongLink
+        {
+            font-weight: bold;
+            font-size: 14px;
+            color: #da7b00;
+            text-decoration: underline;
+        }
+
+    .Arsenal_Header .Arsenal_GameName
+    {
+        position: relative;
+    }
+
+        .Arsenal_Header .Arsenal_GameName span
+        {
+            font-family: Arial;
+            font-weight: bold;
+            font-size: 20px;
+            width: 50px;
+            text-align: center;
+            position: absolute;
+            top: 2px;
+            color: #aa0000;
+        }
+
+        .Arsenal_Header .Arsenal_GameName em
+        {
+            font-family: Verdana;
+            font-size: 14px;
+            color: #da7b00;
+            font-weight: bold;
+            padding: 0px 5px;
+        }
+
+        .Arsenal_Header .Arsenal_GameName img
+        {
+            width: 36px;
+            height: 36px;
+            border: 1px solid #ccc;
+            background: #f5f5f5;
+            padding: 2px;
+        }
+
+    .Arsenal_Header .Arsenal_CategoryName
+    {
+        text-align: center;
+        font-weight: bold;
+        color: #333;
+        margin: 5px;
+        font-size: 10.5pt;
+    }
+
+    .Arsenal_Header .Arsenal_GameTime
+    {
+        text-align: center;
+        font-weight: bold;
+        color: #9c824a;
+        margin: 5px;
+        font-family: Arial;
+        font-size: 10.5pt;
+    }
+
+        .Arsenal_Header .Arsenal_GameTime a
+        {
+            font-size: 10px;
+            font-style: italic;
+            font-weight: bold;
+            color: #aa0000;
+            margin: 0px 5px;
+        }
+
+    .Arsenal_Header .Clear
+    {
+        clear: both;
+    }
+
+/* Arsenal MainInfo */
+.Arsenal_MainInfo
+{
+    background: #f7f7f7 url(images/listbg.jpg) no-repeat top left;
+}
+
+    .Arsenal_MainInfo em
+    {
+        font-weight: bold;
+        font-family: Georgia, Tahoma, Verdana;
+        font-size: 13px;
+    }

@@ -1,0 +1,682 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{06DDCDDF-F83F-4153-8F74-947EECF2C40B}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Arsenalcn.CasinoSys.Web</RootNamespace>
+    <AssemblyName>Arsenalcn.CasinoSys.Web</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>4.0</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <UseIISExpress>false</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Discuz.Entity, Version=2.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\RefDll\3.6.601\Discuz.Entity.dll</HintPath>
+    </Reference>
+    <Reference Include="Discuz.Forum, Version=2.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\RefDll\3.6.601\Discuz.Forum.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AdminBet.aspx.cs">
+      <DependentUpon>AdminBet.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminBet.aspx.designer.cs">
+      <DependentUpon>AdminBet.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminGambler.aspx.cs">
+      <DependentUpon>AdminGambler.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminGambler.aspx.designer.cs">
+      <DependentUpon>AdminGambler.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminConfig.aspx.cs">
+      <DependentUpon>AdminConfig.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminConfig.aspx.designer.cs">
+      <DependentUpon>AdminConfig.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminGroup.aspx.cs">
+      <DependentUpon>AdminGroup.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminGroup.aspx.designer.cs">
+      <DependentUpon>AdminGroup.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminMatch.aspx.cs">
+      <DependentUpon>AdminMatch.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminMatch.aspx.designer.cs">
+      <DependentUpon>AdminMatch.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminMatchAdd.aspx.cs">
+      <DependentUpon>AdminMatchAdd.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminMatchAdd.aspx.designer.cs">
+      <DependentUpon>AdminMatchAdd.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CasinoBetClubLog.aspx.cs">
+      <DependentUpon>CasinoBetClubLog.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CasinoBetClubLog.aspx.designer.cs">
+      <DependentUpon>CasinoBetClubLog.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CasinoItemContainer.aspx.cs">
+      <DependentUpon>CasinoItemContainer.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CasinoItemContainer.aspx.designer.cs">
+      <DependentUpon>CasinoItemContainer.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CasinoBetLog.aspx.cs">
+      <DependentUpon>CasinoBetLog.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CasinoBetLog.aspx.designer.cs">
+      <DependentUpon>CasinoBetLog.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CasinoGambler.aspx.cs">
+      <DependentUpon>CasinoGambler.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CasinoGambler.aspx.designer.cs">
+      <DependentUpon>CasinoGambler.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CasinoGame.aspx.cs">
+      <DependentUpon>CasinoGame.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CasinoGame.aspx.designer.cs">
+      <DependentUpon>CasinoGame.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CasinoGameBet.aspx.cs">
+      <DependentUpon>CasinoGameBet.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CasinoGameBet.aspx.designer.cs">
+      <DependentUpon>CasinoGameBet.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CasinoPortal.aspx.cs">
+      <DependentUpon>CasinoPortal.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CasinoPortal.aspx.designer.cs">
+      <DependentUpon>CasinoPortal.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CasinoTeam.aspx.cs">
+      <DependentUpon>CasinoTeam.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CasinoTeam.aspx.designer.cs">
+      <DependentUpon>CasinoTeam.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Common\AdminBasePage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Common\BasePage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Control\AdminFieldToolBar.ascx.cs">
+      <DependentUpon>AdminFieldToolBar.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Control\AdminFieldToolBar.ascx.designer.cs">
+      <DependentUpon>AdminFieldToolBar.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Control\AdminPanel.ascx.cs">
+      <DependentUpon>AdminPanel.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Control\AdminPanel.ascx.designer.cs">
+      <DependentUpon>AdminPanel.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Control\CasinoHeader.ascx.cs">
+      <DependentUpon>CasinoHeader.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Control\CasinoHeader.ascx.designer.cs">
+      <DependentUpon>CasinoHeader.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Control\DNTFooter.ascx.cs">
+      <DependentUpon>DNTFooter.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Control\DNTFooter.ascx.designer.cs">
+      <DependentUpon>DNTFooter.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Control\DNTHeader.ascx.cs">
+      <DependentUpon>DNTHeader.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Control\DNTHeader.ascx.designer.cs">
+      <DependentUpon>DNTHeader.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Control\FieldTooBar.ascx.cs">
+      <DependentUpon>FieldTooBar.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Control\FieldTooBar.ascx.designer.cs">
+      <DependentUpon>FieldTooBar.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Control\GamblerHeader.ascx.cs">
+      <DependentUpon>GamblerHeader.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Control\GamblerHeader.ascx.designer.cs">
+      <DependentUpon>GamblerHeader.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Control\LeagueHeader.ascx.cs">
+      <DependentUpon>LeagueHeader.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Control\LeagueHeader.ascx.designer.cs">
+      <DependentUpon>LeagueHeader.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Control\LeftPanel.ascx.cs">
+      <DependentUpon>LeftPanel.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Control\LeftPanel.ascx.designer.cs">
+      <DependentUpon>LeftPanel.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Control\MenuTabBar.ascx.cs">
+      <DependentUpon>MenuTabBar.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Control\MenuTabBar.ascx.designer.cs">
+      <DependentUpon>MenuTabBar.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Control\TopGamblerList.ascx.cs">
+      <DependentUpon>TopGamblerList.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Control\TopGamblerList.ascx.designer.cs">
+      <DependentUpon>TopGamblerList.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Control\TopMatchList.ascx.cs">
+      <DependentUpon>TopMatchList.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Control\TopMatchList.ascx.designer.cs">
+      <DependentUpon>TopMatchList.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Control\TeamHeader.ascx.cs">
+      <DependentUpon>TeamHeader.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Control\TeamHeader.ascx.designer.cs">
+      <DependentUpon>TeamHeader.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="DefaultMaster.master.cs">
+      <DependentUpon>DefaultMaster.master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DefaultMaster.master.designer.cs">
+      <DependentUpon>DefaultMaster.master</DependentUpon>
+    </Compile>
+    <Compile Include="MyBetLog.aspx.cs">
+      <DependentUpon>MyBetLog.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MyBetLog.aspx.designer.cs">
+      <DependentUpon>MyBetLog.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MyBonusLog.aspx.cs">
+      <DependentUpon>MyBonusLog.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MyBonusLog.aspx.designer.cs">
+      <DependentUpon>MyBonusLog.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MyCoupon.aspx.cs">
+      <DependentUpon>MyCoupon.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MyCoupon.aspx.designer.cs">
+      <DependentUpon>MyCoupon.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MyGambler.aspx.cs">
+      <DependentUpon>MyGambler.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MyGambler.aspx.designer.cs">
+      <DependentUpon>MyGambler.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="CasinoRank.aspx.cs">
+      <DependentUpon>CasinoRank.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CasinoRank.aspx.designer.cs">
+      <DependentUpon>CasinoRank.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CasinoGroup.aspx.cs">
+      <DependentUpon>CasinoGroup.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CasinoGroup.aspx.designer.cs">
+      <DependentUpon>CasinoGroup.aspx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="AdminGroup.aspx" />
+    <Content Include="CasinoBetClubLog.aspx" />
+    <Content Include="DefaultMaster.master" />
+    <Content Include="Scripts\casinosys.js" />
+    <Content Include="Scripts\jquery-1.7.1.min.js" />
+    <Content Include="UploadFiles\League\AsiaTour2011.gif" />
+    <Content Include="UploadFiles\League\AsiaTour2012.gif" />
+    <Content Include="UploadFiles\League\CapitalOneCup.gif" />
+    <Content Include="UploadFiles\League\CarlingCup.gif" />
+    <Content Include="UploadFiles\League\Champions.gif" />
+    <Content Include="UploadFiles\League\EmiratesCup.gif" />
+    <Content Include="UploadFiles\League\England.gif" />
+    <Content Include="UploadFiles\League\EuroCup2012.gif" />
+    <Content Include="UploadFiles\League\FACup.gif" />
+    <Content Include="UploadFiles\League\FALogo.gif" />
+    <Content Include="UploadFiles\League\FIFA.gif" />
+    <Content Include="UploadFiles\League\France.gif" />
+    <Content Include="UploadFiles\League\German.gif" />
+    <Content Include="UploadFiles\League\Italy.gif" />
+    <Content Include="UploadFiles\League\Spain.gif" />
+    <Content Include="UploadFiles\League\WorldCup2010.gif" />
+    <Content Include="UploadFiles\Team\England\Aldershot.gif" />
+    <Content Include="UploadFiles\Team\England\Arsenal.gif" />
+    <Content Include="UploadFiles\Team\England\AstonVilla.gif" />
+    <Content Include="UploadFiles\Team\England\Barnet.gif" />
+    <Content Include="UploadFiles\Team\England\Barnsley.gif" />
+    <Content Include="UploadFiles\Team\England\BirminghamCity.gif" />
+    <Content Include="UploadFiles\Team\England\Blackburn.gif" />
+    <Content Include="UploadFiles\Team\England\Blackpool.gif" />
+    <Content Include="UploadFiles\Team\England\Bolton.gif" />
+    <Content Include="UploadFiles\Team\England\Bradford.gif" />
+    <Content Include="UploadFiles\Team\England\Brighton.gif" />
+    <Content Include="UploadFiles\Team\England\Burnley.gif" />
+    <Content Include="UploadFiles\Team\England\CardiffCity.gif" />
+    <Content Include="UploadFiles\Team\England\Charlton.gif" />
+    <Content Include="UploadFiles\Team\England\Chelsea.gif" />
+    <Content Include="UploadFiles\Team\England\Coventry.gif" />
+    <Content Include="UploadFiles\Team\England\CrystalPalace.gif" />
+    <Content Include="UploadFiles\Team\England\Derby.gif" />
+    <Content Include="UploadFiles\Team\England\Everton.gif" />
+    <Content Include="UploadFiles\Team\England\Fulham.gif" />
+    <Content Include="UploadFiles\Team\England\Huddersfield.gif" />
+    <Content Include="UploadFiles\Team\England\HullCity.gif" />
+    <Content Include="UploadFiles\Team\England\Ipswich.gif" />
+    <Content Include="UploadFiles\Team\England\Leeds.gif" />
+    <Content Include="UploadFiles\Team\England\Leicester.gif" />
+    <Content Include="UploadFiles\Team\England\LeytonOrient.gif" />
+    <Content Include="UploadFiles\Team\England\Liverpool.gif" />
+    <Content Include="UploadFiles\Team\England\ManCity.gif" />
+    <Content Include="UploadFiles\Team\England\ManUtd.gif" />
+    <Content Include="UploadFiles\Team\England\Millwall.gif" />
+    <Content Include="UploadFiles\Team\England\Newcastle.gif" />
+    <Content Include="UploadFiles\Team\England\Norwich.gif" />
+    <Content Include="UploadFiles\Team\England\Notts.gif" />
+    <Content Include="UploadFiles\Team\England\Portsmouth.gif" />
+    <Content Include="UploadFiles\Team\England\QPR.gif" />
+    <Content Include="UploadFiles\Team\England\Reading.gif" />
+    <Content Include="UploadFiles\Team\England\Shrewsbury.gif" />
+    <Content Include="UploadFiles\Team\England\Southampton.gif" />
+    <Content Include="UploadFiles\Team\England\StokeCity.gif" />
+    <Content Include="UploadFiles\Team\England\Sunderland.gif" />
+    <Content Include="UploadFiles\Team\England\Swansea.gif" />
+    <Content Include="UploadFiles\Team\England\Tottenham.gif" />
+    <Content Include="UploadFiles\Team\England\WBA.gif" />
+    <Content Include="UploadFiles\Team\England\WestHamUtd.gif" />
+    <Content Include="UploadFiles\Team\England\Wigan.gif" />
+    <Content Include="UploadFiles\Team\England\Wolverhampton.gif" />
+    <Content Include="UploadFiles\Team\France\Auxerre.gif" />
+    <Content Include="UploadFiles\Team\France\Bordeaux.gif" />
+    <Content Include="UploadFiles\Team\France\Boulogne.gif" />
+    <Content Include="UploadFiles\Team\France\Grenoble.gif" />
+    <Content Include="UploadFiles\Team\France\LeMans.gif" />
+    <Content Include="UploadFiles\Team\France\Lens.gif" />
+    <Content Include="UploadFiles\Team\France\Lille.gif" />
+    <Content Include="UploadFiles\Team\France\Lorient.gif" />
+    <Content Include="UploadFiles\Team\France\Lyon.gif" />
+    <Content Include="UploadFiles\Team\France\Marseille.gif" />
+    <Content Include="UploadFiles\Team\France\Monaco.gif" />
+    <Content Include="UploadFiles\Team\France\Montpellier.gif" />
+    <Content Include="UploadFiles\Team\France\Nancy.gif" />
+    <Content Include="UploadFiles\Team\France\Nice.gif" />
+    <Content Include="UploadFiles\Team\France\PSG.gif" />
+    <Content Include="UploadFiles\Team\France\Rennes.gif" />
+    <Content Include="UploadFiles\Team\France\SaintEtienne.gif" />
+    <Content Include="UploadFiles\Team\France\Sochaux.gif" />
+    <Content Include="UploadFiles\Team\France\Toulouse.gif" />
+    <Content Include="UploadFiles\Team\France\Valenciennes.gif" />
+    <Content Include="UploadFiles\Team\German\BayernMunchen.gif" />
+    <Content Include="UploadFiles\Team\German\Bochum.gif" />
+    <Content Include="UploadFiles\Team\German\Dortmund.gif" />
+    <Content Include="UploadFiles\Team\German\Frankfurt.gif" />
+    <Content Include="UploadFiles\Team\German\Freiburg.gif" />
+    <Content Include="UploadFiles\Team\German\Hamburger.gif" />
+    <Content Include="UploadFiles\Team\German\Hannover96.gif" />
+    <Content Include="UploadFiles\Team\German\HerthaBerlin.gif" />
+    <Content Include="UploadFiles\Team\German\Hoffenheim.gif" />
+    <Content Include="UploadFiles\Team\German\Koeln.gif" />
+    <Content Include="UploadFiles\Team\German\Leverkusen.gif" />
+    <Content Include="UploadFiles\Team\German\Mainz.gif" />
+    <Content Include="UploadFiles\Team\German\Monchengladbach.gif" />
+    <Content Include="UploadFiles\Team\German\Nuernberg.gif" />
+    <Content Include="UploadFiles\Team\German\Schalke04.gif" />
+    <Content Include="UploadFiles\Team\German\Stuttgart.gif" />
+    <Content Include="UploadFiles\Team\German\WerderBremen.gif" />
+    <Content Include="UploadFiles\Team\German\Wolfsburg.gif" />
+    <Content Include="UploadFiles\Team\Italy\ACMilan.gif" />
+    <Content Include="UploadFiles\Team\Italy\Atalanta.gif" />
+    <Content Include="UploadFiles\Team\Italy\Bari.gif" />
+    <Content Include="UploadFiles\Team\Italy\Bologna.gif" />
+    <Content Include="UploadFiles\Team\Italy\Brescia.gif" />
+    <Content Include="UploadFiles\Team\Italy\Cagliari.gif" />
+    <Content Include="UploadFiles\Team\Italy\Catania.gif" />
+    <Content Include="UploadFiles\Team\Italy\Cesena.gif" />
+    <Content Include="UploadFiles\Team\Italy\Chievo.gif" />
+    <Content Include="UploadFiles\Team\Italy\Fiorentina.gif" />
+    <Content Include="UploadFiles\Team\Italy\Genoa.gif" />
+    <Content Include="UploadFiles\Team\Italy\Internazionale.gif" />
+    <Content Include="UploadFiles\Team\Italy\Juventus.gif" />
+    <Content Include="UploadFiles\Team\Italy\Lazio.gif" />
+    <Content Include="UploadFiles\Team\Italy\Lecce.gif" />
+    <Content Include="UploadFiles\Team\Italy\Livorno.gif" />
+    <Content Include="UploadFiles\Team\Italy\Napoli.gif" />
+    <Content Include="UploadFiles\Team\Italy\Novara.gif" />
+    <Content Include="UploadFiles\Team\Italy\Palermo.gif" />
+    <Content Include="UploadFiles\Team\Italy\Parma.gif" />
+    <Content Include="UploadFiles\Team\Italy\Pescara.gif" />
+    <Content Include="UploadFiles\Team\Italy\Roma.gif" />
+    <Content Include="UploadFiles\Team\Italy\Sampdoria.gif" />
+    <Content Include="UploadFiles\Team\Italy\Siena.gif" />
+    <Content Include="UploadFiles\Team\Italy\Torino.gif" />
+    <Content Include="UploadFiles\Team\Italy\Udinese.gif" />
+    <Content Include="UploadFiles\Team\Nation\Algeria.gif" />
+    <Content Include="UploadFiles\Team\Nation\Argentina.gif" />
+    <Content Include="UploadFiles\Team\Nation\Australia.gif" />
+    <Content Include="UploadFiles\Team\Nation\Austria.gif" />
+    <Content Include="UploadFiles\Team\Nation\Belarus.gif" />
+    <Content Include="UploadFiles\Team\Nation\Belgium.gif" />
+    <Content Include="UploadFiles\Team\Nation\Bolivia.gif" />
+    <Content Include="UploadFiles\Team\Nation\Bosnia.gif" />
+    <Content Include="UploadFiles\Team\Nation\Brazil.gif" />
+    <Content Include="UploadFiles\Team\Nation\Bulgaria.gif" />
+    <Content Include="UploadFiles\Team\Nation\Cameroon.gif" />
+    <Content Include="UploadFiles\Team\Nation\Canada.gif" />
+    <Content Include="UploadFiles\Team\Nation\Chile.gif" />
+    <Content Include="UploadFiles\Team\Nation\China.gif" />
+    <Content Include="UploadFiles\Team\Nation\Colombia.gif" />
+    <Content Include="UploadFiles\Team\Nation\CostaRica.gif" />
+    <Content Include="UploadFiles\Team\Nation\Croatia.gif" />
+    <Content Include="UploadFiles\Team\Nation\Czech.gif" />
+    <Content Include="UploadFiles\Team\Nation\Denmark.gif" />
+    <Content Include="UploadFiles\Team\Nation\Ecuador.gif" />
+    <Content Include="UploadFiles\Team\Nation\Egypt.gif" />
+    <Content Include="UploadFiles\Team\Nation\England.gif" />
+    <Content Include="UploadFiles\Team\Nation\Finland.gif" />
+    <Content Include="UploadFiles\Team\Nation\France.gif" />
+    <Content Include="UploadFiles\Team\Nation\Germany.gif" />
+    <Content Include="UploadFiles\Team\Nation\Ghana.gif" />
+    <Content Include="UploadFiles\Team\Nation\Greece.gif" />
+    <Content Include="UploadFiles\Team\Nation\Honduras.gif" />
+    <Content Include="UploadFiles\Team\Nation\Hungary.gif" />
+    <Content Include="UploadFiles\Team\Nation\Indonesia.gif" />
+    <Content Include="UploadFiles\Team\Nation\Iran.gif" />
+    <Content Include="UploadFiles\Team\Nation\Iraq.gif" />
+    <Content Include="UploadFiles\Team\Nation\Ireland.gif" />
+    <Content Include="UploadFiles\Team\Nation\Israel.gif" />
+    <Content Include="UploadFiles\Team\Nation\Italy.gif" />
+    <Content Include="UploadFiles\Team\Nation\IvoryCoast.gif" />
+    <Content Include="UploadFiles\Team\Nation\Japan.gif" />
+    <Content Include="UploadFiles\Team\Nation\Liechtenstein.gif" />
+    <Content Include="UploadFiles\Team\Nation\Malaysia.gif" />
+    <Content Include="UploadFiles\Team\Nation\Mexico.gif" />
+    <Content Include="UploadFiles\Team\Nation\Netherlands.gif" />
+    <Content Include="UploadFiles\Team\Nation\NewZealand.gif" />
+    <Content Include="UploadFiles\Team\Nation\Nigeria.gif" />
+    <Content Include="UploadFiles\Team\Nation\NorthKorea.gif" />
+    <Content Include="UploadFiles\Team\Nation\Norway.gif" />
+    <Content Include="UploadFiles\Team\Nation\Paraguay.gif" />
+    <Content Include="UploadFiles\Team\Nation\Peru.gif" />
+    <Content Include="UploadFiles\Team\Nation\Poland.gif" />
+    <Content Include="UploadFiles\Team\Nation\Portugal.gif" />
+    <Content Include="UploadFiles\Team\Nation\Romania.gif" />
+    <Content Include="UploadFiles\Team\Nation\Russia.gif" />
+    <Content Include="UploadFiles\Team\Nation\Scotland.gif" />
+    <Content Include="UploadFiles\Team\Nation\Serbia.gif" />
+    <Content Include="UploadFiles\Team\Nation\Slovakia.gif" />
+    <Content Include="UploadFiles\Team\Nation\Slovenia.gif" />
+    <Content Include="UploadFiles\Team\Nation\SouthAfrica.gif" />
+    <Content Include="UploadFiles\Team\Nation\SouthKorea.gif" />
+    <Content Include="UploadFiles\Team\Nation\Spain.gif" />
+    <Content Include="UploadFiles\Team\Nation\Sweden.gif" />
+    <Content Include="UploadFiles\Team\Nation\Switzerland.gif" />
+    <Content Include="UploadFiles\Team\Nation\Tunisia.gif" />
+    <Content Include="UploadFiles\Team\Nation\Turkey.gif" />
+    <Content Include="UploadFiles\Team\Nation\Ukraine.gif" />
+    <Content Include="UploadFiles\Team\Nation\Ulster.gif" />
+    <Content Include="UploadFiles\Team\Nation\Uruguay.gif" />
+    <Content Include="UploadFiles\Team\Nation\USA.gif" />
+    <Content Include="UploadFiles\Team\Nation\Uzbekistan.gif" />
+    <Content Include="UploadFiles\Team\Nation\Venezuela.gif" />
+    <Content Include="UploadFiles\Team\Nation\Vietnam.gif" />
+    <Content Include="UploadFiles\Team\Nation\Wales.gif" />
+    <Content Include="UploadFiles\Team\Other\BocaJuniors.gif" />
+    <Content Include="UploadFiles\Team\Other\HangzhouGreentown.gif" />
+    <Content Include="UploadFiles\Team\Other\Kitchee.gif" />
+    <Content Include="UploadFiles\Team\Other\NagoyaGrampus.gif" />
+    <Content Include="UploadFiles\Team\Other\NewYorkRedBulls.gif" />
+    <Content Include="UploadFiles\Team\Other\ShanghaiShenhua.gif" />
+    <Content Include="UploadFiles\Team\Other\UrawaReds.gif" />
+    <Content Include="UploadFiles\Team\Spain\Almeria.gif" />
+    <Content Include="UploadFiles\Team\Spain\AtleticoMadrid.gif" />
+    <Content Include="UploadFiles\Team\Spain\Barcelona.gif" />
+    <Content Include="UploadFiles\Team\Spain\Betis.gif" />
+    <Content Include="UploadFiles\Team\Spain\Bilbao.gif" />
+    <Content Include="UploadFiles\Team\Spain\CeltaVigo.gif" />
+    <Content Include="UploadFiles\Team\Spain\DeportivoLaCoruna.gif" />
+    <Content Include="UploadFiles\Team\Spain\Espanyol.gif" />
+    <Content Include="UploadFiles\Team\Spain\Getafe.gif" />
+    <Content Include="UploadFiles\Team\Spain\Gijon.gif" />
+    <Content Include="UploadFiles\Team\Spain\Granada.gif" />
+    <Content Include="UploadFiles\Team\Spain\Hercules.gif" />
+    <Content Include="UploadFiles\Team\Spain\Levante.gif" />
+    <Content Include="UploadFiles\Team\Spain\Malaga.gif" />
+    <Content Include="UploadFiles\Team\Spain\Mallorca.gif" />
+    <Content Include="UploadFiles\Team\Spain\Osasuna.gif" />
+    <Content Include="UploadFiles\Team\Spain\RealMadrid.gif" />
+    <Content Include="UploadFiles\Team\Spain\RealSociedad.gif" />
+    <Content Include="UploadFiles\Team\Spain\RealValladolid.gif" />
+    <Content Include="UploadFiles\Team\Spain\RealZaragoza.gif" />
+    <Content Include="UploadFiles\Team\Spain\Santander.gif" />
+    <Content Include="UploadFiles\Team\Spain\Sevilla.gif" />
+    <Content Include="UploadFiles\Team\Spain\Tenerife.gif" />
+    <Content Include="UploadFiles\Team\Spain\Valencia.gif" />
+    <Content Include="UploadFiles\Team\Spain\Vallecano.gif" />
+    <Content Include="UploadFiles\Team\Spain\Villarreal.gif" />
+    <Content Include="UploadFiles\Team\Spain\Xerez.gif" />
+    <Content Include="UploadFiles\Team\UEFA\Ajax.gif" />
+    <Content Include="UploadFiles\Team\UEFA\Anderlecht.gif" />
+    <Content Include="UploadFiles\Team\UEFA\APOEL.gif" />
+    <Content Include="UploadFiles\Team\UEFA\AZ.gif" />
+    <Content Include="UploadFiles\Team\UEFA\Basel.gif" />
+    <Content Include="UploadFiles\Team\UEFA\Bate.gif" />
+    <Content Include="UploadFiles\Team\UEFA\Benfica.gif" />
+    <Content Include="UploadFiles\Team\UEFA\Besiktas.gif" />
+    <Content Include="UploadFiles\Team\UEFA\Braga.gif" />
+    <Content Include="UploadFiles\Team\UEFA\Bursaspor.gif" />
+    <Content Include="UploadFiles\Team\UEFA\Celtic.gif" />
+    <Content Include="UploadFiles\Team\UEFA\CFR.gif" />
+    <Content Include="UploadFiles\Team\UEFA\Copenhagen.gif" />
+    <Content Include="UploadFiles\Team\UEFA\CSKA.gif" />
+    <Content Include="UploadFiles\Team\UEFA\DebreceniVSC.gif" />
+    <Content Include="UploadFiles\Team\UEFA\DinamoZagreb.gif" />
+    <Content Include="UploadFiles\Team\UEFA\Dkyiv.gif" />
+    <Content Include="UploadFiles\Team\UEFA\Galatasaray.gif" />
+    <Content Include="UploadFiles\Team\UEFA\Genk.gif" />
+    <Content Include="UploadFiles\Team\UEFA\Hapoel.gif" />
+    <Content Include="UploadFiles\Team\UEFA\Legia.gif" />
+    <Content Include="UploadFiles\Team\UEFA\MaccabiHaifa.gif" />
+    <Content Include="UploadFiles\Team\UEFA\Neusiedl.gif" />
+    <Content Include="UploadFiles\Team\UEFA\Nordsjaelland.gif" />
+    <Content Include="UploadFiles\Team\UEFA\Olympiakos.gif" />
+    <Content Include="UploadFiles\Team\UEFA\OtelulGalati.gif" />
+    <Content Include="UploadFiles\Team\UEFA\Panathinaikos.gif" />
+    <Content Include="UploadFiles\Team\UEFA\Partizan.gif" />
+    <Content Include="UploadFiles\Team\UEFA\Plzen.gif" />
+    <Content Include="UploadFiles\Team\UEFA\Porto.gif" />
+    <Content Include="UploadFiles\Team\UEFA\Rangers.gif" />
+    <Content Include="UploadFiles\Team\UEFA\RubinKazan.gif" />
+    <Content Include="UploadFiles\Team\UEFA\Shakhtar.gif" />
+    <Content Include="UploadFiles\Team\UEFA\Spartak.gif" />
+    <Content Include="UploadFiles\Team\UEFA\StandardLiege.gif" />
+    <Content Include="UploadFiles\Team\UEFA\SturmGraz.gif" />
+    <Content Include="UploadFiles\Team\UEFA\Trabzonspor.gif" />
+    <Content Include="UploadFiles\Team\UEFA\Twente.gif" />
+    <Content Include="UploadFiles\Team\UEFA\Urziceni.gif" />
+    <Content Include="UploadFiles\Team\UEFA\Zenit.gif" />
+    <Content Include="UploadFiles\Team\UEFA\Zilina.gif" />
+    <Content Include="UploadFiles\Team\UEFA\Zurich.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="AdminBet.aspx" />
+    <Content Include="AdminGambler.aspx" />
+    <Content Include="AdminConfig.aspx" />
+    <Content Include="AdminMatch.aspx" />
+    <Content Include="App_Themes\Arsenalcn\casinosys.css" />
+    <Content Include="CasinoBetLog.aspx" />
+    <Content Include="CasinoGame.aspx" />
+    <Content Include="CasinoGameBet.aspx" />
+    <Content Include="CasinoPortal.aspx" />
+    <Content Include="Control\AdminFieldToolBar.ascx" />
+    <Content Include="Control\AdminPanel.ascx" />
+    <Content Include="Control\CasinoHeader.ascx" />
+    <Content Include="Control\DNTFooter.ascx" />
+    <Content Include="Control\DNTHeader.ascx" />
+    <Content Include="Control\FieldTooBar.ascx" />
+    <Content Include="Control\GamblerHeader.ascx" />
+    <Content Include="Control\LeftPanel.ascx" />
+    <Content Include="Control\MenuTabBar.ascx" />
+    <Content Include="Default.aspx" />
+    <Content Include="MyBetLog.aspx" />
+    <Content Include="MyBonusLog.aspx" />
+    <Content Include="MyGambler.aspx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Arsenalcn.CasinoSys.Entity\Arsenalcn.CasinoSys.Entity.csproj">
+      <Project>{CD9A6BD8-88B6-45F4-B41D-7DC11E173B78}</Project>
+      <Name>Arsenalcn.CasinoSys.Entity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Arsenalcn.Common\Arsenalcn.Common.csproj">
+      <Project>{8258A2E1-6821-4BAE-9111-3FBB65703FE0}</Project>
+      <Name>Arsenalcn.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="AdminMatchAdd.aspx" />
+    <Content Include="App_Themes\Arsenalcn\images\casinosys\agree.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\casinosys\ClubStar1.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\casinosys\ClubStar2.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\casinosys\ClubStar3.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\casinosys\disagree.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\casinosys\Tip.gif" />
+    <Content Include="CasinoItemContainer.aspx" />
+    <Content Include="CasinoGambler.aspx" />
+    <Content Include="CasinoTeam.aspx" />
+    <Content Include="Control\LeagueHeader.ascx" />
+    <Content Include="Control\TopGamblerList.ascx" />
+    <Content Include="Control\TopMatchList.ascx" />
+    <Content Include="Control\TeamHeader.ascx" />
+    <Content Include="MyCoupon.aspx" />
+    <Content Include="CasinoRank.aspx" />
+    <Content Include="CasinoGroup.aspx" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\PublishProfiles\Arsenal.CasinoSys.Web.pubxml" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>6250</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>
+          </IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

@@ -1,0 +1,295 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{2F427066-57F9-495F-B91A-F4D0D097C949}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Arsenal.Web</RootNamespace>
+    <AssemblyName>Arsenal.Web</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <UseIISExpress>false</UseIISExpress>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>4.0</OldToolsVersion>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Discuz.Common">
+      <HintPath>..\RefDll\3.6.Custom\Discuz.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Discuz.Entity">
+      <HintPath>..\RefDll\3.6.Custom\Discuz.Entity.dll</HintPath>
+    </Reference>
+    <Reference Include="Discuz.Forum">
+      <HintPath>..\RefDll\3.6.Custom\Discuz.Forum.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="AdminConfig.aspx" />
+    <Content Include="AdminDNTMessage.aspx" />
+    <Content Include="AdminLeague.aspx" />
+    <Content Include="AdminLeagueView.aspx" />
+    <Content Include="AdminMatch.aspx" />
+    <Content Include="AdminMatchView.aspx" />
+    <Content Include="AdminTeam.aspx" />
+    <Content Include="AdminTeamView.aspx" />
+    <Content Include="AdminVideoView.aspx" />
+    <Content Include="AdminVideo.aspx" />
+    <Content Include="App_Themes\Arsenalcn\arsenal.css" />
+    <Content Include="ArsenalMatchContainer.aspx" />
+    <Content Include="Control\AdminFieldToolBar.ascx" />
+    <Content Include="Control\AdminPanel.ascx" />
+    <Content Include="Control\CustomPagerInfo.ascx" />
+    <Content Include="Control\DNTFooter.ascx" />
+    <Content Include="Control\DNTHeader.ascx" />
+    <Content Include="Control\FieldTooBar.ascx" />
+    <Content Include="AdminPlayer.aspx" />
+    <Content Include="AdminPlayerView.aspx" />
+    <Content Include="Default.aspx" />
+    <Content Include="Scripts\arsenal.js" />
+    <Content Include="Scripts\jquery-1.7.1.min.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AdminConfig.aspx.cs">
+      <DependentUpon>AdminConfig.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminConfig.aspx.designer.cs">
+      <DependentUpon>AdminConfig.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminDNTMessage.aspx.cs">
+      <DependentUpon>AdminDNTMessage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminDNTMessage.aspx.designer.cs">
+      <DependentUpon>AdminDNTMessage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminLeague.aspx.cs">
+      <DependentUpon>AdminLeague.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminLeague.aspx.designer.cs">
+      <DependentUpon>AdminLeague.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminLeagueView.aspx.cs">
+      <DependentUpon>AdminLeagueView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminLeagueView.aspx.designer.cs">
+      <DependentUpon>AdminLeagueView.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminMatch.aspx.cs">
+      <DependentUpon>AdminMatch.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminMatch.aspx.designer.cs">
+      <DependentUpon>AdminMatch.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminMatchView.aspx.cs">
+      <DependentUpon>AdminMatchView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminMatchView.aspx.designer.cs">
+      <DependentUpon>AdminMatchView.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminTeam.aspx.cs">
+      <DependentUpon>AdminTeam.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminTeam.aspx.designer.cs">
+      <DependentUpon>AdminTeam.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminTeamView.aspx.cs">
+      <DependentUpon>AdminTeamView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminTeamView.aspx.designer.cs">
+      <DependentUpon>AdminTeamView.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminVideoView.aspx.cs">
+      <DependentUpon>AdminVideoView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminVideoView.aspx.designer.cs">
+      <DependentUpon>AdminVideoView.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminVideo.aspx.cs">
+      <DependentUpon>AdminVideo.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminVideo.aspx.designer.cs">
+      <DependentUpon>AdminVideo.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ArsenalMatchContainer.aspx.cs">
+      <DependentUpon>ArsenalMatchContainer.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ArsenalMatchContainer.aspx.designer.cs">
+      <DependentUpon>ArsenalMatchContainer.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Common\AdminBasePage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Common\BasePage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Control\AdminFieldToolBar.ascx.cs">
+      <DependentUpon>AdminFieldToolBar.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Control\AdminFieldToolBar.ascx.designer.cs">
+      <DependentUpon>AdminFieldToolBar.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Control\AdminPanel.ascx.cs">
+      <DependentUpon>AdminPanel.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Control\AdminPanel.ascx.designer.cs">
+      <DependentUpon>AdminPanel.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Control\CustomPagerInfo.ascx.cs">
+      <DependentUpon>CustomPagerInfo.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Control\CustomPagerInfo.ascx.designer.cs">
+      <DependentUpon>CustomPagerInfo.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Control\DNTFooter.ascx.cs">
+      <DependentUpon>DNTFooter.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Control\DNTFooter.ascx.designer.cs">
+      <DependentUpon>DNTFooter.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Control\DNTHeader.ascx.cs">
+      <DependentUpon>DNTHeader.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Control\DNTHeader.ascx.designer.cs">
+      <DependentUpon>DNTHeader.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Control\FieldTooBar.ascx.cs">
+      <DependentUpon>FieldTooBar.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Control\FieldTooBar.ascx.designer.cs">
+      <DependentUpon>FieldTooBar.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminPlayer.aspx.cs">
+      <DependentUpon>AdminPlayer.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminPlayer.aspx.designer.cs">
+      <DependentUpon>AdminPlayer.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminPlayerView.aspx.cs">
+      <DependentUpon>AdminPlayerView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminPlayerView.aspx.designer.cs">
+      <DependentUpon>AdminPlayerView.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="DefaultMaster.master.cs">
+      <DependentUpon>DefaultMaster.master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DefaultMaster.master.designer.cs">
+      <DependentUpon>DefaultMaster.master</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Themes\Arsenalcn\images\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Arsenal.Entity\Arsenal.Entity.csproj">
+      <Project>{18F784E1-6AC9-488C-9F00-B1CF2D5A8893}</Project>
+      <Name>Arsenal.Entity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Arsenalcn.Common\Arsenalcn.Common.csproj">
+      <Project>{8258A2E1-6821-4BAE-9111-3FBB65703FE0}</Project>
+      <Name>Arsenalcn.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DefaultMaster.master" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\PublishProfiles\Arsenal.Web.pubxml" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>6421</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>
+          </IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

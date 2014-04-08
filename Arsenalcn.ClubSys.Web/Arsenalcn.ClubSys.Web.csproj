@@ -1,0 +1,828 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{32CF12A8-B988-43D9-9934-265A13A7DF82}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Arsenalcn.ClubSys.Web</RootNamespace>
+    <AssemblyName>Arsenalcn.ClubSys.Web</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>4.0</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <UseIISExpress>false</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Discuz.Entity">
+      <HintPath>..\RefDll\3.6.Custom\Discuz.Entity.dll</HintPath>
+    </Reference>
+    <Reference Include="Discuz.Forum">
+      <HintPath>..\RefDll\3.6.Custom\Discuz.Forum.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="AdminConfig.aspx" />
+    <Content Include="AdminEvent.aspx" />
+    <Content Include="App_Themes\Arsenalcn\images\clubsys\ClubCrown.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\clubsys\crown.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\collapsed_no.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\collapsed_yes.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\logo.png" />
+    <Content Include="App_Themes\Arsenalcn\images\menulia.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\menuliaover.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\navbg.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\sitepath.gif" />
+    <Content Include="Default.aspx" />
+    <Content Include="Scripts\jquery-1.7.1.min.js" />
+    <Content Include="Scripts\jquery.pagination.js" />
+    <Content Include="UploadFiles\ClubLogo.gif" />
+    <Content Include="UploadFiles\PlayerLogo.gif" />
+    <Content Include="UploadFiles\StripFace\%2420.jpg" />
+    <Content Include="UploadFiles\StripFace\%2422.jpg" />
+    <Content Include="UploadFiles\StripFace\%2440.jpg" />
+    <Content Include="UploadFiles\StripFace\%2454.jpg" />
+    <Content Include="UploadFiles\StripFace\%2457.jpg" />
+    <Content Include="UploadFiles\StripFace\00.jpg" />
+    <Content Include="UploadFiles\StripFace\01.jpg" />
+    <Content Include="UploadFiles\StripFace\03.jpg" />
+    <Content Include="UploadFiles\StripFace\04.jpg" />
+    <Content Include="UploadFiles\StripFace\05.jpg" />
+    <Content Include="UploadFiles\StripFace\06.jpg" />
+    <Content Include="UploadFiles\StripFace\07.jpg" />
+    <Content Include="UploadFiles\StripFace\08.jpg" />
+    <Content Include="UploadFiles\StripFace\09.jpg" />
+    <Content Include="UploadFiles\StripFace\10.jpg" />
+    <Content Include="UploadFiles\StripFace\11.jpg" />
+    <Content Include="UploadFiles\StripFace\12.jpg" />
+    <Content Include="UploadFiles\StripFace\13.jpg" />
+    <Content Include="UploadFiles\StripFace\14.jpg" />
+    <Content Include="UploadFiles\StripFace\15.jpg" />
+    <Content Include="UploadFiles\StripFace\16.jpg" />
+    <Content Include="UploadFiles\StripFace\17.jpg" />
+    <Content Include="UploadFiles\StripFace\19.jpg" />
+    <Content Include="UploadFiles\StripFace\20.jpg" />
+    <Content Include="UploadFiles\StripFace\21.jpg" />
+    <Content Include="UploadFiles\StripFace\22.jpg" />
+    <Content Include="UploadFiles\StripFace\23.jpg" />
+    <Content Include="UploadFiles\StripFace\24.jpg" />
+    <Content Include="UploadFiles\StripFace\25.jpg" />
+    <Content Include="UploadFiles\StripFace\26.jpg" />
+    <Content Include="UploadFiles\StripFace\28.jpg" />
+    <Content Include="UploadFiles\StripFace\30.jpg" />
+    <Content Include="UploadFiles\StripFace\31.jpg" />
+    <Content Include="UploadFiles\StripFace\Legend.jpg" />
+    <Content Include="UploadFiles\StripLegend\Adams.jpg" />
+    <Content Include="UploadFiles\StripLegend\Adebayor.jpg" />
+    <Content Include="UploadFiles\StripLegend\Aliadiere.jpg" />
+    <Content Include="UploadFiles\StripLegend\Almunia.jpg" />
+    <Content Include="UploadFiles\StripLegend\Anelka.jpg" />
+    <Content Include="UploadFiles\StripLegend\Arshavin.jpg" />
+    <Content Include="UploadFiles\StripLegend\Baptista.jpg" />
+    <Content Include="UploadFiles\StripLegend\Bartley.jpg" />
+    <Content Include="UploadFiles\StripLegend\Benayoun.jpg" />
+    <Content Include="UploadFiles\StripLegend\Bergkamp.jpg" />
+    <Content Include="UploadFiles\StripLegend\Bischoff.jpg" />
+    <Content Include="UploadFiles\StripLegend\Campbell.jpg" />
+    <Content Include="UploadFiles\StripLegend\Chamakh.jpg" />
+    <Content Include="UploadFiles\StripLegend\Clichy.jpg" />
+    <Content Include="UploadFiles\StripLegend\Cole.jpg" />
+    <Content Include="UploadFiles\StripLegend\DaSilva.jpg" />
+    <Content Include="UploadFiles\StripLegend\Denilson.jpg" />
+    <Content Include="UploadFiles\StripLegend\Dixon.jpg" />
+    <Content Include="UploadFiles\StripLegend\Eboue.jpg" />
+    <Content Include="UploadFiles\StripLegend\Edu.jpg" />
+    <Content Include="UploadFiles\StripLegend\Fabregas.jpg" />
+    <Content Include="UploadFiles\StripLegend\Flamini.jpg" />
+    <Content Include="UploadFiles\StripLegend\Gallas.jpg" />
+    <Content Include="UploadFiles\StripLegend\Gervinho.jpg" />
+    <Content Include="UploadFiles\StripLegend\Gilberto.jpg" />
+    <Content Include="UploadFiles\StripLegend\Henry.jpg" />
+    <Content Include="UploadFiles\StripLegend\Hleb.jpg" />
+    <Content Include="UploadFiles\StripLegend\Kanu.jpg" />
+    <Content Include="UploadFiles\StripLegend\Keown.jpg" />
+    <Content Include="UploadFiles\StripLegend\Lansbury.jpg" />
+    <Content Include="UploadFiles\StripLegend\Lauren.jpg" />
+    <Content Include="UploadFiles\StripLegend\Lehmann.jpg" />
+    <Content Include="UploadFiles\StripLegend\Ljungberg.jpg" />
+    <Content Include="UploadFiles\StripLegend\Mannone.jpg" />
+    <Content Include="UploadFiles\StripLegend\Merida.jpg" />
+    <Content Include="UploadFiles\StripLegend\Nasri.jpg" />
+    <Content Include="UploadFiles\StripLegend\Overmars.jpg" />
+    <Content Include="UploadFiles\StripLegend\Parlour.jpg" />
+    <Content Include="UploadFiles\StripLegend\Petit.jpg" />
+    <Content Include="UploadFiles\StripLegend\Pires.jpg" />
+    <Content Include="UploadFiles\StripLegend\Reyes.jpg" />
+    <Content Include="UploadFiles\StripLegend\Santos.jpg" />
+    <Content Include="UploadFiles\StripLegend\Senderos.jpg" />
+    <Content Include="UploadFiles\StripLegend\Silvestre.jpg" />
+    <Content Include="UploadFiles\StripLegend\Silvinho.jpg" />
+    <Content Include="UploadFiles\StripLegend\Song.jpg" />
+    <Content Include="UploadFiles\StripLegend\Squillaci.jpg" />
+    <Content Include="UploadFiles\StripLegend\Suker.jpg" />
+    <Content Include="UploadFiles\StripLegend\Toure.jpg" />
+    <Content Include="UploadFiles\StripLegend\Traore.jpg" />
+    <Content Include="UploadFiles\StripLegend\VanBronckhorst.jpg" />
+    <Content Include="UploadFiles\StripLegend\VanPersie.jpg" />
+    <Content Include="UploadFiles\StripLegend\Vela.jpg" />
+    <Content Include="UploadFiles\StripLegend\Vieira.jpg" />
+    <Content Include="UploadFiles\StripLegend\Wiltord.jpg" />
+    <Content Include="UploadFiles\StripLegend\Winterburn.jpg" />
+    <Content Include="UploadFiles\StripLegend\Wright.jpg" />
+    <Content Include="UploadFiles\StripLV\shirt0.gif" />
+    <Content Include="UploadFiles\StripLV\shirt1.gif" />
+    <Content Include="UploadFiles\StripLV\shirt2.gif" />
+    <Content Include="UploadFiles\StripLV\shirt3.gif" />
+    <Content Include="UploadFiles\StripLV\shirt4.gif" />
+    <Content Include="UploadFiles\StripLV\shirt5.gif" />
+    <Content Include="UploadFiles\StripLV\shorts0.gif" />
+    <Content Include="UploadFiles\StripLV\shorts1.gif" />
+    <Content Include="UploadFiles\StripLV\shorts2.gif" />
+    <Content Include="UploadFiles\StripLV\shorts3.gif" />
+    <Content Include="UploadFiles\StripLV\shorts4.gif" />
+    <Content Include="UploadFiles\StripLV\shorts5.gif" />
+    <Content Include="UploadFiles\StripLV\sock0.gif" />
+    <Content Include="UploadFiles\StripLV\sock1.gif" />
+    <Content Include="UploadFiles\StripLV\sock2.gif" />
+    <Content Include="UploadFiles\StripLV\sock3.gif" />
+    <Content Include="UploadFiles\StripLV\sock4.gif" />
+    <Content Include="UploadFiles\StripLV\sock5.gif" />
+    <Content Include="UploadFiles\StripPhoto\%2420.jpg" />
+    <Content Include="UploadFiles\StripPhoto\%2422.jpg" />
+    <Content Include="UploadFiles\StripPhoto\%2440.jpg" />
+    <Content Include="UploadFiles\StripPhoto\%2454.jpg" />
+    <Content Include="UploadFiles\StripPhoto\%2457.jpg" />
+    <Content Include="UploadFiles\StripPhoto\00.jpg" />
+    <Content Include="UploadFiles\StripPhoto\01.jpg" />
+    <Content Include="UploadFiles\StripPhoto\03.jpg" />
+    <Content Include="UploadFiles\StripPhoto\04.jpg" />
+    <Content Include="UploadFiles\StripPhoto\05.jpg" />
+    <Content Include="UploadFiles\StripPhoto\06.jpg" />
+    <Content Include="UploadFiles\StripPhoto\07.jpg" />
+    <Content Include="UploadFiles\StripPhoto\08.jpg" />
+    <Content Include="UploadFiles\StripPhoto\09.jpg" />
+    <Content Include="UploadFiles\StripPhoto\10.jpg" />
+    <Content Include="UploadFiles\StripPhoto\11.jpg" />
+    <Content Include="UploadFiles\StripPhoto\12.jpg" />
+    <Content Include="UploadFiles\StripPhoto\13.jpg" />
+    <Content Include="UploadFiles\StripPhoto\14.jpg" />
+    <Content Include="UploadFiles\StripPhoto\15.jpg" />
+    <Content Include="UploadFiles\StripPhoto\16.jpg" />
+    <Content Include="UploadFiles\StripPhoto\17.jpg" />
+    <Content Include="UploadFiles\StripPhoto\19.jpg" />
+    <Content Include="UploadFiles\StripPhoto\20.jpg" />
+    <Content Include="UploadFiles\StripPhoto\21.jpg" />
+    <Content Include="UploadFiles\StripPhoto\22.jpg" />
+    <Content Include="UploadFiles\StripPhoto\23.jpg" />
+    <Content Include="UploadFiles\StripPhoto\24.jpg" />
+    <Content Include="UploadFiles\StripPhoto\25.jpg" />
+    <Content Include="UploadFiles\StripPhoto\26.jpg" />
+    <Content Include="UploadFiles\StripPhoto\28.jpg" />
+    <Content Include="UploadFiles\StripPhoto\30.jpg" />
+    <Content Include="UploadFiles\StripPhoto\31.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AdminAward.aspx.cs">
+      <DependentUpon>AdminAward.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminAward.aspx.designer.cs">
+      <DependentUpon>AdminAward.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminClubInfo.aspx.cs">
+      <DependentUpon>AdminClubInfo.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminClubInfo.aspx.designer.cs">
+      <DependentUpon>AdminClubInfo.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminConfig.aspx.cs">
+      <DependentUpon>AdminConfig.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminConfig.aspx.designer.cs">
+      <DependentUpon>AdminConfig.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminEvent.aspx.cs">
+      <DependentUpon>AdminEvent.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminEvent.aspx.designer.cs">
+      <DependentUpon>AdminEvent.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminHistory.aspx.cs">
+      <DependentUpon>AdminHistory.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminHistory.aspx.designer.cs">
+      <DependentUpon>AdminHistory.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminPlayer.aspx.cs">
+      <DependentUpon>AdminPlayer.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminPlayer.aspx.designer.cs">
+      <DependentUpon>AdminPlayer.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminRank.aspx.cs">
+      <DependentUpon>AdminRank.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminRank.aspx.designer.cs">
+      <DependentUpon>AdminRank.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminStrip.aspx.cs">
+      <DependentUpon>AdminStrip.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminStrip.aspx.designer.cs">
+      <DependentUpon>AdminStrip.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ClubCardFusion.aspx.cs">
+      <DependentUpon>ClubCardFusion.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ClubCardFusion.aspx.designer.cs">
+      <DependentUpon>ClubCardFusion.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ClubBingo.aspx.cs">
+      <DependentUpon>ClubBingo.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ClubBingo.aspx.designer.cs">
+      <DependentUpon>ClubBingo.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ClubHistory.aspx.cs">
+      <DependentUpon>ClubHistory.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ClubHistory.aspx.designer.cs">
+      <DependentUpon>ClubHistory.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ClubLuckyPlayerLog.aspx.cs">
+      <DependentUpon>ClubLuckyPlayerLog.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ClubLuckyPlayerLog.aspx.designer.cs">
+      <DependentUpon>ClubLuckyPlayerLog.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ClubMember.aspx.cs">
+      <DependentUpon>ClubMember.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ClubMember.aspx.designer.cs">
+      <DependentUpon>ClubMember.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ClubPlayer.aspx.cs">
+      <DependentUpon>ClubPlayer.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ClubPlayer.aspx.designer.cs">
+      <DependentUpon>ClubPlayer.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ClubPortal.aspx.cs">
+      <DependentUpon>ClubPortal.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ClubPortal.aspx.designer.cs">
+      <DependentUpon>ClubPortal.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ClubRank.aspx.cs">
+      <DependentUpon>ClubRank.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ClubRank.aspx.designer.cs">
+      <DependentUpon>ClubRank.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ClubStrip.aspx.cs">
+      <DependentUpon>ClubStrip.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ClubStrip.aspx.designer.cs">
+      <DependentUpon>ClubStrip.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ClubView.aspx.cs">
+      <DependentUpon>ClubView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ClubView.aspx.designer.cs">
+      <DependentUpon>ClubView.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Common\AdminBasePage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Common\BasePage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Common\CollectionBase.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Control\AdminFieldToolBar.ascx.cs">
+      <DependentUpon>AdminFieldToolBar.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Control\AdminFieldToolBar.ascx.designer.cs">
+      <DependentUpon>AdminFieldToolBar.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Control\AdminPanel.ascx.cs">
+      <DependentUpon>AdminPanel.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Control\AdminPanel.ascx.designer.cs">
+      <DependentUpon>AdminPanel.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Control\ClubSysHeader.ascx.cs">
+      <DependentUpon>ClubSysHeader.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Control\ClubSysHeader.ascx.designer.cs">
+      <DependentUpon>ClubSysHeader.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Control\CollectionCard.ascx.cs">
+      <DependentUpon>CollectionCard.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Control\CollectionCard.ascx.designer.cs">
+      <DependentUpon>CollectionCard.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Control\CollectionInactiveCard.ascx.cs">
+      <DependentUpon>CollectionInactiveCard.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Control\CollectionInactiveCard.ascx.designer.cs">
+      <DependentUpon>CollectionInactiveCard.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Control\CollectionInactiveVideo.ascx.cs">
+      <DependentUpon>CollectionInactiveVideo.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Control\CollectionInactiveVideo.ascx.designer.cs">
+      <DependentUpon>CollectionInactiveVideo.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Control\CollectionTabBar.ascx.cs">
+      <DependentUpon>CollectionTabBar.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Control\CollectionTabBar.ascx.designer.cs">
+      <DependentUpon>CollectionTabBar.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Control\CollectionVideo.ascx.cs">
+      <DependentUpon>CollectionVideo.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Control\CollectionVideo.ascx.designer.cs">
+      <DependentUpon>CollectionVideo.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Control\DailyVideoExhibit.ascx.cs">
+      <DependentUpon>DailyVideoExhibit.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Control\DailyVideoExhibit.ascx.designer.cs">
+      <DependentUpon>DailyVideoExhibit.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Control\DNTFooter.ascx.cs">
+      <DependentUpon>DNTFooter.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Control\DNTFooter.ascx.designer.cs">
+      <DependentUpon>DNTFooter.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Control\DNTHeader.ascx.cs">
+      <DependentUpon>DNTHeader.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Control\DNTHeader.ascx.designer.cs">
+      <DependentUpon>DNTHeader.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Control\FieldToolBar.ascx.cs">
+      <DependentUpon>FieldToolBar.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Control\FieldToolBar.ascx.designer.cs">
+      <DependentUpon>FieldToolBar.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Control\GoogleAdv.ascx.cs">
+      <DependentUpon>GoogleAdv.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Control\GoogleAdv.ascx.designer.cs">
+      <DependentUpon>GoogleAdv.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Control\LeftPanel.ascx.cs">
+      <DependentUpon>LeftPanel.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Control\LeftPanel.ascx.designer.cs">
+      <DependentUpon>LeftPanel.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Control\ManageMenuTabBar.ascx.cs">
+      <DependentUpon>ManageMenuTabBar.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Control\ManageMenuTabBar.ascx.designer.cs">
+      <DependentUpon>ManageMenuTabBar.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Control\MenuTabBar.ascx.cs">
+      <DependentUpon>MenuTabBar.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Control\MenuTabBar.ascx.designer.cs">
+      <DependentUpon>MenuTabBar.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Control\PlayerHeader.ascx.cs">
+      <DependentUpon>PlayerHeader.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Control\PlayerHeader.ascx.designer.cs">
+      <DependentUpon>PlayerHeader.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Control\PortalClubList.ascx.cs">
+      <DependentUpon>PortalClubList.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Control\PortalClubList.ascx.designer.cs">
+      <DependentUpon>PortalClubList.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Control\TopClubList.ascx.cs">
+      <DependentUpon>TopClubList.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Control\TopClubList.ascx.designer.cs">
+      <DependentUpon>TopClubList.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Control\TopPlayerList.ascx.cs">
+      <DependentUpon>TopPlayerList.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Control\TopPlayerList.ascx.designer.cs">
+      <DependentUpon>TopPlayerList.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Control\ClubVideo.ascx.cs">
+      <DependentUpon>ClubVideo.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Control\ClubVideo.ascx.designer.cs">
+      <DependentUpon>ClubVideo.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MyCollection.aspx.cs">
+      <DependentUpon>MyCollection.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MyCollection.aspx.designer.cs">
+      <DependentUpon>MyCollection.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MyPlayerInfoContainer.aspx.cs">
+      <DependentUpon>MyPlayerInfoContainer.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MyPlayerInfoContainer.aspx.designer.cs">
+      <DependentUpon>MyPlayerInfoContainer.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ServerActivateCard.aspx.cs">
+      <DependentUpon>ServerActivateCard.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServerActivateCard.aspx.designer.cs">
+      <DependentUpon>ServerActivateCard.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ServerCardFusion.aspx.cs">
+      <DependentUpon>ServerCardFusion.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServerCardFusion.aspx.designer.cs">
+      <DependentUpon>ServerCardFusion.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ServerGoogleAdv.aspx.cs">
+      <DependentUpon>ServerGoogleAdv.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServerGoogleAdv.aspx.designer.cs">
+      <DependentUpon>ServerGoogleAdv.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ServerXml.aspx.cs">
+      <DependentUpon>ServerXml.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServerXml.aspx.designer.cs">
+      <DependentUpon>ServerXml.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ManageApplication.aspx.cs">
+      <DependentUpon>ManageApplication.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ManageApplication.aspx.designer.cs">
+      <DependentUpon>ManageApplication.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="DefaultMaster.master.cs">
+      <DependentUpon>DefaultMaster.master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DefaultMaster.master.designer.cs">
+      <DependentUpon>DefaultMaster.master</DependentUpon>
+    </Compile>
+    <Compile Include="ManageClub.aspx.cs">
+      <DependentUpon>ManageClub.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ManageClub.aspx.designer.cs">
+      <DependentUpon>ManageClub.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ManageMember.aspx.cs">
+      <DependentUpon>ManageMember.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ManageMember.aspx.designer.cs">
+      <DependentUpon>ManageMember.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MyHistoryLog.aspx.cs">
+      <DependentUpon>MyHistoryLog.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MyHistoryLog.aspx.designer.cs">
+      <DependentUpon>MyHistoryLog.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MyCreateClub.aspx.cs">
+      <DependentUpon>MyCreateClub.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MyCreateClub.aspx.designer.cs">
+      <DependentUpon>MyCreateClub.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MyPlayerProfile.aspx.cs">
+      <DependentUpon>MyPlayerProfile.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MyPlayerProfile.aspx.designer.cs">
+      <DependentUpon>MyPlayerProfile.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServerGetStrip.aspx.cs">
+      <DependentUpon>ServerGetStrip.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServerGetStrip.aspx.designer.cs">
+      <DependentUpon>ServerGetStrip.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ClubVideoView.aspx.cs">
+      <DependentUpon>ClubVideoView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ClubVideoView.aspx.designer.cs">
+      <DependentUpon>ClubVideoView.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ManageExtcredit.aspx.cs">
+      <DependentUpon>ManageExtcredit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ManageExtcredit.aspx.designer.cs">
+      <DependentUpon>ManageExtcredit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ClubVideo.aspx.cs">
+      <DependentUpon>ClubVideo.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ClubVideo.aspx.designer.cs">
+      <DependentUpon>ClubVideo.aspx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="AdminAward.aspx" />
+    <Content Include="AdminClubInfo.aspx" />
+    <Content Include="AdminHistory.aspx" />
+    <Content Include="AdminPlayer.aspx" />
+    <Content Include="AdminRank.aspx" />
+    <Content Include="AdminStrip.aspx" />
+    <Content Include="App_Themes\Arsenalcn\acn.css" />
+    <Content Include="App_Themes\Arsenalcn\acn.skin" />
+    <Content Include="App_Themes\Arsenalcn\base.css" />
+    <Content Include="App_Themes\Arsenalcn\clubsys.css" />
+    <Content Include="App_Themes\Arsenalcn\component.css" />
+    <Content Include="App_Themes\Arsenalcn\dataView.css" />
+    <Content Include="App_Themes\Arsenalcn\images\ACN_Logo.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\arrow_undo.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\avataronline.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\bbs_title_bg.jpg" />
+    <Content Include="App_Themes\Arsenalcn\images\BodyBG.png" />
+    <Content Include="App_Themes\Arsenalcn\images\cancel.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\cardactive.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\cash.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\clubsys\agree.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\clubsys\bonus.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\clubsys\BtnActive.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\clubsys\BtnCancelCurrent.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\clubsys\BtnDesc.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\clubsys\BtnSetCurrent.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\clubsys\card.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\clubsys\cash.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\clubsys\ClubGetStripBg.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\clubsys\ClubRank.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\clubsys\ClubStar1.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\clubsys\ClubStar2.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\clubsys\ClubStar3.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\clubsys\ClubLogo.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\clubsys\CollectionInfoBg.jpg" />
+    <Content Include="App_Themes\Arsenalcn\images\clubsys\CurrentStrip.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\clubsys\disagree.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\clubsys\manager.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\clubsys\PlayerCardCountBg.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\clubsys\PlayerLV.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\clubsys\RankLevelBg.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\clubsys\shirt.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\clubsys\shorts.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\clubsys\sock.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\clubsys\star.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\clubsys\Tip.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\clubsys\video.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\clubsys\VideoCardCountBg.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\clubsys\worker.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\clubsys\zoomin.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\forumfooterBg.png" />
+    <Content Include="App_Themes\Arsenalcn\images\headbg.jpg" />
+    <Content Include="App_Themes\Arsenalcn\images\IconTop1.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\IconTop2.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\IconTop3.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\IconTop4.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\IconTop5.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\IconTop6.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\IconTop7.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\IconTop8.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\IconTop9.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\join.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\LiIcon.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\Listbg.jpg" />
+    <Content Include="App_Themes\Arsenalcn\images\LiTitle.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\magic.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\manage.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\member.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\menu_bg.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\menu_itemline.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\reset.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\Select.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\submit.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\title_bg.jpg" />
+    <Content Include="App_Themes\Arsenalcn\images\topItem_col.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\topItem_exp.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\ViewClub.gif" />
+    <Content Include="ClubCardFusion.aspx" />
+    <Content Include="ClubBingo.aspx" />
+    <Content Include="ClubHistory.aspx" />
+    <Content Include="ClubLuckyPlayerLog.aspx" />
+    <Content Include="ClubMember.aspx" />
+    <Content Include="ClubPlayer.aspx" />
+    <Content Include="ClubPortal.aspx" />
+    <Content Include="ClubRank.aspx" />
+    <Content Include="ClubStrip.aspx" />
+    <Content Include="ClubView.aspx" />
+    <Content Include="Control\AdminFieldToolBar.ascx" />
+    <Content Include="Control\AdminPanel.ascx" />
+    <Content Include="Control\ClubSysHeader.ascx" />
+    <Content Include="Control\CollectionCard.ascx" />
+    <Content Include="Control\CollectionInactiveCard.ascx" />
+    <Content Include="Control\CollectionInactiveVideo.ascx" />
+    <Content Include="Control\CollectionTabBar.ascx" />
+    <Content Include="Control\CollectionVideo.ascx" />
+    <Content Include="Control\DailyVideoExhibit.ascx" />
+    <Content Include="Control\DNTFooter.ascx" />
+    <Content Include="Control\DNTHeader.ascx" />
+    <Content Include="Control\FieldToolBar.ascx" />
+    <Content Include="Control\GoogleAdv.ascx" />
+    <Content Include="Control\LeftPanel.ascx" />
+    <Content Include="Control\ManageMenuTabBar.ascx" />
+    <Content Include="Control\MenuTabBar.ascx" />
+    <Content Include="Control\PlayerHeader.ascx" />
+    <Content Include="Control\PortalClubList.ascx" />
+    <Content Include="Control\TopClubList.ascx" />
+    <Content Include="Control\TopPlayerList.ascx" />
+    <Content Include="Control\ClubVideo.ascx" />
+    <Content Include="MyCollection.aspx" />
+    <Content Include="MyPlayerInfoContainer.aspx" />
+    <Content Include="ServerActivateCard.aspx" />
+    <Content Include="ServerCardFusion.aspx" />
+    <Content Include="ServerXml.aspx" />
+    <Content Include="ManageApplication.aspx" />
+    <Content Include="DefaultMaster.master" />
+    <Content Include="ManageClub.aspx" />
+    <Content Include="ManageMember.aspx" />
+    <Content Include="MyHistoryLog.aspx" />
+    <Content Include="MyCreateClub.aspx" />
+    <Content Include="MyPlayerProfile.aspx" />
+    <Content Include="Scripts\clubsys.js" />
+    <Content Include="ServerGetStrip.aspx" />
+    <Content Include="swf\PlayerCard.swf" />
+    <Content Include="swf\PlayerCardActive.swf" />
+    <Content Include="swf\PlayerVideoActive.swf" />
+    <Content Include="swf\RankChart.swf" />
+    <Content Include="swf\RankChart_s.swf" />
+    <Content Include="swf\ShowCardActive.swf" />
+    <Content Include="swf\ShowCardFusion.swf" />
+    <Content Include="swf\ShowGetStrip.swf" />
+    <Content Include="swf\ShowVideoRoom.swf" />
+    <Content Include="swf\UserStrip.swf" />
+    <Content Include="swf\UserVideo.swf" />
+    <Content Include="ClubVideoView.aspx" />
+    <Content Include="ManageExtcredit.aspx" />
+    <Content Include="ClubVideo.aspx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Arsenal.Entity\Arsenal.Entity.csproj">
+      <Project>{18F784E1-6AC9-488C-9F00-B1CF2D5A8893}</Project>
+      <Name>Arsenal.Entity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Arsenalcn.ClubSys.DataAccess\Arsenalcn.ClubSys.DataAccess.csproj">
+      <Project>{75829613-19BE-4D73-967E-19D3B5F7CB84}</Project>
+      <Name>Arsenalcn.ClubSys.DataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Arsenalcn.ClubSys.Entity\Arsenalcn.ClubSys.Entity.csproj">
+      <Project>{C84E7700-0E7C-4C98-AE70-70EFB99B8D8E}</Project>
+      <Name>Arsenalcn.ClubSys.Entity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Arsenalcn.Common\Arsenalcn.Common.csproj">
+      <Project>{8258A2E1-6821-4BAE-9111-3FBB65703FE0}</Project>
+      <Name>Arsenalcn.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Themes\Arsenalcn\images\clubsys\AdvLoading.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\clubsys\FlagTop.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\Listbg.gif" />
+    <Content Include="ServerGoogleAdv.aspx" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\PublishProfiles\Arsenalcn.ClubSys.Web.pubxml" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>2215</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>
+          </IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

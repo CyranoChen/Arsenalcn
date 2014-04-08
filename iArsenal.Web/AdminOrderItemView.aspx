@@ -11,6 +11,7 @@
             display: none;
         }
     </style>
+
 </asp:Content>
 <asp:Content ID="cphMain" ContentPlaceHolderID="cphMain" runat="server">
     <uc1:AdminPanel ID="pnlAdmin" runat="server" />

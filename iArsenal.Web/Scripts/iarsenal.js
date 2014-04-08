@@ -1,5 +1,5 @@
 ﻿/* Javascript Version iArsenal */
-/* Version: 1.7.4 || Date: 2014-03-04 || Author: Cyrano */
+/* Version: 1.7.5 || Date: 2014-04-08 || Author: Cyrano */
 /* type="text/javascript" */
 
 $(document).ready(function () {
@@ -189,7 +189,7 @@ function ProductCheck() {
                 if (data.result != "error" && JSON.stringify(data) != "{}") {
                     $tbProductCode.val(data.Code);
                     $tbProductGuid.val(data.ProductGuid);
-                    $tbProductName.val($.formart("{0} ({1})", data.DisplayName, data.Name));
+                    $tbProductName.val($.format("{0} ({1})", data.DisplayName, data.Name));
                     $tbProductUnitPrice.val(data.PriceCNY.toLocaleString());
 
                     var totalPrice = Number(data.PriceCNY) * Number($tbProductQuantity.val().trim());

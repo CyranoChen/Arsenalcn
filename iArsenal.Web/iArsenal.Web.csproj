@@ -781,13 +781,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\ipdata.config" />
-    <None Include="Properties\PublishProfiles\iArsenal.Web.pubxml" />
     <Content Include="ServerOrderView.ashx" />
     <Content Include="ServerOrderItemCheck.ashx" />
     <Content Include="ServerRegionCheck.ashx" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\PublishProfiles\iArsenal.Deployment.pubxml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

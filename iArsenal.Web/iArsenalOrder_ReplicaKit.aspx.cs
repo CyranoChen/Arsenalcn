@@ -442,6 +442,9 @@ namespace iArsenal.Web
 
                     trans.Commit();
 
+                    //Renew OrderType after Insert OrderItem and transcation commited
+                    o.Update();
+
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", string.Format("alert('订单({0})保存成功');window.location.href = 'iArsenalOrderView_ReplicaKit.aspx?OrderID={0}'", o.OrderID.ToString()), true);
                 }
                 catch (Exception ex)

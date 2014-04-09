@@ -62,6 +62,12 @@ namespace iArsenal.Web.PageBase
             //not Login
             if (AnonymousRedirect && UID == -1)
             {
+                //Response.SetCookie(new HttpCookie("session_key", "1234567890"));
+                //Response.SetCookie(new HttpCookie("uid", "443"));
+                //Response.SetCookie(new HttpCookie("user_name", "cyrano"));
+
+                //string loginURL = "default.aspx";
+
                 Response.Clear();
 
                 string loginURL = string.Format("{0}?api_key={1}&next={2}", ConfigGlobal.APILoginURL, ConfigGlobal.APIAppKey, Request.Url.PathAndQuery);

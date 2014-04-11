@@ -53,10 +53,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Discuz.Entity">
-      <HintPath>..\RefDll\3.6.Custom\Discuz.Entity.dll</HintPath>
+      <HintPath>..\workspace\backup\3.6.Custom\Discuz.Entity.dll</HintPath>
     </Reference>
     <Reference Include="Discuz.Forum">
-      <HintPath>..\RefDll\3.6.Custom\Discuz.Forum.dll</HintPath>
+      <HintPath>..\workspace\backup\3.6.Custom\Discuz.Forum.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

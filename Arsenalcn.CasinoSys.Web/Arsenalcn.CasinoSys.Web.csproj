@@ -44,13 +44,13 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Discuz.Entity, Version=2.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Discuz.Entity, Version=3.6.711.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\RefDll\3.6.601\Discuz.Entity.dll</HintPath>
+      <HintPath>..\workspace\backup\3.6.Custom\Discuz.Entity.dll</HintPath>
     </Reference>
-    <Reference Include="Discuz.Forum, Version=2.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Discuz.Forum, Version=3.6.711.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\RefDll\3.6.601\Discuz.Forum.dll</HintPath>
+      <HintPath>..\workspace\backup\3.6.Custom\Discuz.Forum.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

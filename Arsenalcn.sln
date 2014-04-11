@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arsenal.DataAccess", "Arsen
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arsenal.Service", "Arsenal.Service\Arsenal.Service.csproj", "{3C09C04B-77CD-474E-9AB6-A4510079ABD3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arsenalcn.Framework", "Arsenalcn.Framework\Arsenalcn.Framework\Arsenalcn.Framework.csproj", "{EA1999A1-7681-42D7-AA74-6220D628CE06}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -99,6 +101,10 @@ Global
 		{3C09C04B-77CD-474E-9AB6-A4510079ABD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3C09C04B-77CD-474E-9AB6-A4510079ABD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3C09C04B-77CD-474E-9AB6-A4510079ABD3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA1999A1-7681-42D7-AA74-6220D628CE06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA1999A1-7681-42D7-AA74-6220D628CE06}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA1999A1-7681-42D7-AA74-6220D628CE06}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA1999A1-7681-42D7-AA74-6220D628CE06}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

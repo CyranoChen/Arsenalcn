@@ -10,7 +10,6 @@ namespace Arsenalcn.Framework.Models
         public DateTime CreateTime { get; set; }
 
         //public virtual ICollection<Organization> Organizations { get; set; }
-        //public virtual ICollection<User> Users { get; set; }
-
+        public virtual ICollection<User> Users { get; set; }
     }
 }

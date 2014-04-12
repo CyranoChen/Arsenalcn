@@ -1,0 +1,70 @@
+﻿@model Arsenalcn.Framework.Models.Organization
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Organization</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(m => m.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(m => m.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(m => m.CreateTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(m => m.CreateTime)
+        </dd>
+
+    </dl>
+
+</div>
+
+<table class="table">
+    <tr>
+        <th>
+            ID
+        </th>
+        <th>
+            Name
+        </th>
+        <th>
+            CreateTime
+        </th>
+        <th>
+        </th>
+    </tr>
+    @foreach (var item in Model.Users)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreateTime)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+            </td>
+        </tr>
+    }
+</table>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

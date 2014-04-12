@@ -17,6 +17,7 @@ namespace Arsenalcn.Framework.DataAccess
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            // 去除生成数据库的表名不为复数
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
         }
     }

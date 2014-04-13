@@ -33,7 +33,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arsenal.DataAccess", "Arsen
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arsenal.Service", "Arsenal.Service\Arsenal.Service.csproj", "{3C09C04B-77CD-474E-9AB6-A4510079ABD3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arsenalcn.Framework", "Arsenalcn.Framework\Arsenalcn.Framework\Arsenalcn.Framework.csproj", "{EA1999A1-7681-42D7-AA74-6220D628CE06}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arsenalcn.Framework", "Arsenalcn.Framework\Arsenalcn.Framework.csproj", "{EA1999A1-7681-42D7-AA74-6220D628CE06}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

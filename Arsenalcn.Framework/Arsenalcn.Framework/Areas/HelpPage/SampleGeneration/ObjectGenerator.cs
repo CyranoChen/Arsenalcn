@@ -13,7 +13,7 @@ namespace Arsenalcn.Framework.Areas.HelpPage
     /// </summary>
     public class ObjectGenerator
     {
-        private const int DefaultCollectionSize = 3;
+        internal const int DefaultCollectionSize = 2;
         private readonly SimpleTypeObjectGenerator SimpleObjectGenerator = new SimpleTypeObjectGenerator();
 
         /// <summary>

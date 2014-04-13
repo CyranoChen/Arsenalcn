@@ -786,9 +786,6 @@
     <Content Include="ServerRegionCheck.ashx" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Properties\PublishProfiles\iArsenal.Deployment.pubxml" />
   </ItemGroup>
   <PropertyGroup>

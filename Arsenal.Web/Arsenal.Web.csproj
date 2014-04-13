@@ -257,7 +257,7 @@
     <Content Include="DefaultMaster.master" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Properties\PublishProfiles\Arsenal.Web.pubxml" />
+    <None Include="Properties\PublishProfiles\Arsenal.Deployment.pubxml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

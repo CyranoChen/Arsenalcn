@@ -644,7 +644,7 @@
     <Content Include="CasinoGroup.aspx" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Properties\PublishProfiles\Arsenal.CasinoSys.Web.pubxml" />
+    <None Include="Properties\PublishProfiles\Arsenalcn.CasinoSys.Deployment.pubxml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

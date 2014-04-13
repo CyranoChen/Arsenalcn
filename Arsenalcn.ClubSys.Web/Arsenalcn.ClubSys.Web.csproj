@@ -790,7 +790,7 @@
     <Content Include="ServerGoogleAdv.aspx" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Properties\PublishProfiles\Profile1.pubxml" />
+    <None Include="Properties\PublishProfiles\Arsenalcn.ClubSys.Deployment.pubxml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

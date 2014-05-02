@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="85203beb54b2444b934f4b55ed991c4c" Name="Core" DisplayType="true" >
+        <EntityTypeShape EntityType="Framework.User" Width="1.5" PointX="6.125" PointY="3.25" />
+        <EntityTypeShape EntityType="Framework.Account" Width="1.5" PointX="9.375" PointY="3.25" />
+        <AssociationConnector Association="Framework.UserAccount" />
+        <EntityTypeShape EntityType="Framework.Role" Width="1.5" PointX="3.625" PointY="3.25" />
+        <AssociationConnector Association="Framework.RoleUser" />
+        <EntityTypeShape EntityType="Framework.Entity" Width="1.5" PointX="6.125" PointY="0.5" />
+        <InheritanceConnector EntityType="Framework.Role" />
+        <InheritanceConnector EntityType="Framework.User" />
+        <InheritanceConnector EntityType="Framework.Account" />
+        <EntityTypeShape EntityType="Framework.Privilege" Width="1.5" PointX="1.125" PointY="3.25" />
+        <InheritanceConnector EntityType="Framework.Privilege" />
+        <EntityTypeShape EntityType="Framework.Node" Width="1.5" PointX="3.875" PointY="1.375" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

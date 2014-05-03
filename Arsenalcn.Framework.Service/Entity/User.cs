@@ -11,62 +11,51 @@ namespace Arsenalcn.Framework.Entity
     [MetadataType(typeof(User.Metadata))]
     public class User : Entity<long>
     {
-        public virtual ICollection<Auction> Selling { get; private set; }
+        public User()
+        {
+            Accounts = new Collection<Account>();
+            //Payments = new Collection<Payment>();
+            //Selling = new Collection<Auction>();
+            //WatchedAuctions = new Collection<Auction>();
+        }
+
+        protected override string GenerateKey()
+        {
+            if (string.IsNullOrWhiteSpace(Name))
+                throw new EntityKeyGenerationException(this.GetType(), "User.Name is empty");
+
+            return KeyGenerator.Generate(Name);
+        }
+
+        [Unique]
+        public string Name { get; set; }
 
         public virtual string DisplayName
         {
-            get { return _displayName ?? Username; }
+            get { return _displayName ?? Name; }
             set { _displayName = value; }
         }
         private string _displayName;
 
-        [Unique]
-        public string EmailAddress { get; set; }
+        public string Mobile { get; set; }
 
-        public virtual ICollection<Payment> Payments { get; private set; }
+        public string Email { get; set; }
 
-        [Unique]
-        public string Username { get; set; }
-
-        public virtual ICollection<Auction> WatchedAuctions { get; private set; }
-
-
-        public User()
-        {
-            Payments = new Collection<Payment>();
-            Selling = new Collection<Auction>();
-            WatchedAuctions = new Collection<Auction>();
-        }
-
-
-        protected override string GenerateKey()
-        {
-            if(string.IsNullOrWhiteSpace(Username))
-                throw new EntityKeyGenerationException(GetType(), "Username is empty");
-
-            return KeyGenerator.Generate(Username);
-        }
-
-
-        public void Bid(Auction auction, Currency bidAmount)
-        {
-            Contract.Requires(auction != null);
-            Contract.Requires(bidAmount != null);
-
-            auction.PostBid(this, bidAmount);
-        }
-
+        public virtual ICollection<Account> Accounts { get; set; }
 
         public class Metadata
         {
-            [Required, StringLength(50)]
+            [Required, StringLength(50, MinimumLength = 1)]
+            public object Name;
+
+            [Required, StringLength(100)]
             public object DisplayName;
 
-            [Required, StringLength(100, MinimumLength = 5)]
-            public object EmailAddress;
+            [Required, StringLength(20, MinimumLength = 10)]
+            public object Mobile;
 
-            [Required, StringLength(100, MinimumLength = 3)]
-            public object Username;
+            [Required, StringLength(100, MinimumLength = 5)]
+            public object Email;
         }
     }
 }

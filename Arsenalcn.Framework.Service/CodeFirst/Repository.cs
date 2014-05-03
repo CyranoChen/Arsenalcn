@@ -8,21 +8,23 @@ using System.Linq.Expressions;
 
 using Arsenalcn.Framework.Entity;
 
-namespace Arsenalcn.Framework.DataAccess
+namespace Arsenalcn.Framework.DataAccess.CodeFirst
 {
     public interface IRepository : IDisposable
     {
-        void Insert<TModel>(TModel instance) where TModel : class, IEntity;
-        void Insert<TModel>(IEnumerable<TModel> instances) where TModel : class, IEntity;
+        void Add<TModel>(TModel instance) where TModel : class, IEntity;
+        void Add<TModel>(IEnumerable<TModel> instances) where TModel : class, IEntity;
 
-        void Delete<TModel>(object key) where TModel : class, IEntity;
-        void Delete<TModel>(TModel instance) where TModel : class, IEntity;
-        void Delete<TModel>(Expression<Func<TModel, bool>> predicate) where TModel : class, IEntity;
+        void Remove<TModel>(object key) where TModel : class, IEntity;
+        void Remove<TModel>(TModel instance) where TModel : class, IEntity;
+        void Remove<TModel>(Expression<Func<TModel, bool>> predicate) where TModel : class, IEntity;
 
-        TModel Select<TModel>(object key) where TModel : class, IEntity;
-        TModel Select<TModel>(Expression<Func<TModel, bool>> predicate, params string[] includePaths) where TModel : class, IEntity;
+        TModel Single<TModel>(object key) where TModel : class, IEntity;
+        TModel Single<TModel>(Expression<Func<TModel, bool>> predicate, params string[] includePaths) where TModel : class, IEntity;
 
-        IQueryable<TModel> Query<TModel>(params string[] includePaths) where TModel : class, IEntity;
+        //void Update<TModel>(TModel instance) where TModel : class, IEntity;
+
+        IQueryable<TModel> All<TModel>(params string[] includePaths) where TModel : class, IEntity;
         IQueryable<TModel> Query<TModel>(Expression<Func<TModel, bool>> predicate, params string[] includePaths) where TModel : class, IEntity;
     }
 
@@ -49,7 +51,7 @@ namespace Arsenalcn.Framework.DataAccess
             _context.Dispose();
         }
 
-        public void Insert<TModel>(TModel instance)
+        public void Add<TModel>(TModel instance)
             where TModel : class, IEntity
         {
             Contract.Requires(instance != null);
@@ -60,28 +62,27 @@ namespace Arsenalcn.Framework.DataAccess
                 _context.SaveChanges();
         }
 
-        public void Insert<TModel>(IEnumerable<TModel> instances)
+        public void Add<TModel>(IEnumerable<TModel> instances)
             where TModel : class, IEntity
         {
             Contract.Requires(instances != null);
 
             foreach (var instance in instances)
             {
-                Insert(instance);
+                Add(instance);
             }
         }
 
-
-        public void Delete<TModel>(object id) 
+        public void Remove<TModel>(object id)
             where TModel : class, IEntity
         {
             Contract.Requires(id != null);
 
-            var instance = Select<TModel>(id);
-            Delete(instance);
+            var instance = Single<TModel>(id);
+            Remove(instance);
         }
 
-        public void Delete<TModel>(TModel instance)
+        public void Remove<TModel>(TModel instance)
             where TModel : class, IEntity
         {
             Contract.Requires(instance != null);
@@ -90,17 +91,16 @@ namespace Arsenalcn.Framework.DataAccess
                 _context.Set<TModel>().Remove(instance);
         }
 
-        public void Delete<TModel>(Expression<Func<TModel, bool>> predicate)
+        public void Remove<TModel>(Expression<Func<TModel, bool>> predicate)
             where TModel : class, IEntity
         {
             Contract.Requires(predicate != null);
 
-            TModel entity = Select(predicate);
-            Delete(entity);
+            TModel entity = Single(predicate);
+            Remove(entity);
         }
 
-
-        public TModel Select<TModel>(object id)
+        public TModel Single<TModel>(object id)
             where TModel : class, IEntity
         {
             Contract.Requires(id != null);
@@ -109,7 +109,7 @@ namespace Arsenalcn.Framework.DataAccess
             return instance;
         }
 
-        public TModel Select<TModel>(Expression<Func<TModel, bool>> predicate, params string[] includePaths)
+        public TModel Single<TModel>(Expression<Func<TModel, bool>> predicate, params string[] includePaths)
             where TModel : class, IEntity
         {
             Contract.Requires(predicate != null);
@@ -118,7 +118,16 @@ namespace Arsenalcn.Framework.DataAccess
             return instance;
         }
 
-        public IQueryable<TModel> Query<TModel>(params string[] includePaths)
+        //public void Update<TModel>(TModel instance)
+        //    where TModel : class, IEntity
+        //{
+        //    Contract.Requires(instance != null);
+
+        //    if (instance != null)
+        //        _context.Entry(instance).State = EntityState.Modified;
+        //}
+
+        public IQueryable<TModel> All<TModel>(params string[] includePaths)
             where TModel : class, IEntity
         {
             return Query<TModel>(x => true, includePaths);

@@ -49,6 +49,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CodeFirst\FrameworkContext.cs" />
+    <Compile Include="CodeFirst\FrameworkInitializer.cs" />
+    <Compile Include="CodeFirst\Repository.cs" />
+    <Compile Include="Entity\Account.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Entity\Annotations\UniqueAttribute.cs" />
+    <Compile Include="Entity\Base\Entity.cs" />
+    <Compile Include="Entity\Base\EntityKeyGenerationException.cs" />
+    <Compile Include="Entity\User.cs" />
     <Compile Include="ModelFirst\Account.cs">
       <DependentUpon>Framework.tt</DependentUpon>
     </Compile>
@@ -69,9 +79,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Framework.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="ModelFirst\Node.cs">
-      <DependentUpon>Framework.tt</DependentUpon>
     </Compile>
     <Compile Include="ModelFirst\Privilege.cs">
       <DependentUpon>Framework.tt</DependentUpon>
@@ -113,6 +120,7 @@
   <ItemGroup>
     <Content Include="ModelFirst\Framework.edmx.sql" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

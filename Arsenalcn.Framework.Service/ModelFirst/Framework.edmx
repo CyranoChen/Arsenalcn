@@ -7,15 +7,14 @@
     <Schema Namespace="Framework.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
   <EntityContainer Name="FrameworkStoreContainer">
     <EntitySet Name="Entities" EntityType="Framework.Store.Entities" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="Nodes" EntityType="Framework.Store.Nodes" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="Entities_User" EntityType="Framework.Store.Entities_User" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Users" EntityType="Framework.Store.Users" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Entities_Account" EntityType="Framework.Store.Entities_Account" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Entities_Role" EntityType="Framework.Store.Entities_Role" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Entities_Privilege" EntityType="Framework.Store.Entities_Privilege" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="UserAccount" EntityType="Framework.Store.UserAccount" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="RoleUser" EntityType="Framework.Store.RoleUser" store:Type="Tables" Schema="dbo" />
     <AssociationSet Name="FK_UserAccount_User" Association="Framework.Store.FK_UserAccount_User">
-      <End Role="User" EntitySet="Entities_User" />
+      <End Role="User" EntitySet="Users" />
       <End Role="UserAccount" EntitySet="UserAccount" />
     </AssociationSet>
     <AssociationSet Name="FK_UserAccount_Account" Association="Framework.Store.FK_UserAccount_Account">
@@ -27,12 +26,8 @@
       <End Role="RoleUser" EntitySet="RoleUser" />
     </AssociationSet>
     <AssociationSet Name="FK_RoleUser_User" Association="Framework.Store.FK_RoleUser_User">
-      <End Role="User" EntitySet="Entities_User" />
+      <End Role="User" EntitySet="Users" />
       <End Role="RoleUser" EntitySet="RoleUser" />
-    </AssociationSet>
-    <AssociationSet Name="FK_User_inherits_Entity" Association="Framework.Store.FK_User_inherits_Entity">
-      <End Role="Entity" EntitySet="Entities" />
-      <End Role="User" EntitySet="Entities_User" />
     </AssociationSet>
     <AssociationSet Name="FK_Account_inherits_Entity" Association="Framework.Store.FK_Account_inherits_Entity">
       <End Role="Entity" EntitySet="Entities" />
@@ -60,23 +55,16 @@
     <Property Name="UpdateTime" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Remark" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
-  <EntityType Name="Nodes">
+  <EntityType Name="Users">
     <Key>
       <PropertyRef Name="ID" />
     </Key>
     <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
-  </EntityType>
-  <EntityType Name="Entities_User">
-    <Key>
-      <PropertyRef Name="TID" />
-    </Key>
-    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="DisplayName" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Gender" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Mobile" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Email" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="TID" Type="uniqueidentifier" Nullable="false" />
   </EntityType>
   <EntityType Name="Entities_Account">
     <Key>
@@ -104,29 +92,29 @@
   </EntityType>
   <EntityType Name="UserAccount">
     <Key>
-      <PropertyRef Name="Users_TID" />
+      <PropertyRef Name="Users_ID" />
       <PropertyRef Name="Accounts_TID" />
     </Key>
-    <Property Name="Users_TID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Users_ID" Type="int" Nullable="false" />
     <Property Name="Accounts_TID" Type="uniqueidentifier" Nullable="false" />
   </EntityType>
   <EntityType Name="RoleUser">
     <Key>
       <PropertyRef Name="Roles_TID" />
-      <PropertyRef Name="Users_TID" />
+      <PropertyRef Name="Users_ID" />
     </Key>
     <Property Name="Roles_TID" Type="uniqueidentifier" Nullable="false" />
-    <Property Name="Users_TID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Users_ID" Type="int" Nullable="false" />
   </EntityType>
   <Association Name="FK_UserAccount_User">
-    <End Role="User" Type="Framework.Store.Entities_User" Multiplicity="1" />
+    <End Role="User" Type="Framework.Store.Users" Multiplicity="1" />
     <End Role="UserAccount" Type="Framework.Store.UserAccount" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="User">
-        <PropertyRef Name="TID" />
+        <PropertyRef Name="ID" />
       </Principal>
       <Dependent Role="UserAccount">
-        <PropertyRef Name="Users_TID" />
+        <PropertyRef Name="Users_ID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -156,27 +144,13 @@
   </Association>
   <Association Name="FK_RoleUser_User">
     <End Role="RoleUser" Type="Framework.Store.RoleUser" Multiplicity="*" />
-    <End Role="User" Type="Framework.Store.Entities_User" Multiplicity="1" />
+    <End Role="User" Type="Framework.Store.Users" Multiplicity="1" />
     <ReferentialConstraint>
       <Principal Role="User">
-        <PropertyRef Name="TID" />
+        <PropertyRef Name="ID" />
       </Principal>
       <Dependent Role="RoleUser">
-        <PropertyRef Name="Users_TID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_User_inherits_Entity">
-    <End Role="Entity" Type="Framework.Store.Entities" Multiplicity="1">
-      <OnDelete Action="Cascade" />
-    </End>
-    <End Role="User" Type="Framework.Store.Entities_User" Multiplicity="0..1" />
-    <ReferentialConstraint>
-      <Principal Role="Entity">
-        <PropertyRef Name="TID" />
-      </Principal>
-      <Dependent Role="User">
-        <PropertyRef Name="TID" />
+        <PropertyRef Name="Users_ID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -228,18 +202,22 @@
       <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="Framework" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
         <EntityContainer Name="FrameworkContainer" annotation:LazyLoadingEnabled="true">
           <AssociationSet Name="UserAccount" Association="Framework.UserAccount">
-            <End Role="User" EntitySet="Entities" />
+            <End Role="User" EntitySet="Users" />
             <End Role="Account" EntitySet="Entities" />
           </AssociationSet>
           <AssociationSet Name="RoleUser" Association="Framework.RoleUser">
             <End Role="Role" EntitySet="Entities" />
-            <End Role="User" EntitySet="Entities" />
+            <End Role="User" EntitySet="Users" />
           </AssociationSet>
           <EntitySet Name="Entities" EntityType="Framework.Entity" />
-          <EntitySet Name="Nodes" EntityType="Framework.Node" />
+          <EntitySet Name="Users" EntityType="Framework.User" />
           </EntityContainer>
-        <EntityType Name="User" BaseType="Framework.Entity">
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" />
           <Property Name="DisplayName" Type="String" Nullable="false" />
           <Property Name="Gender" Nullable="false" Type="String" />
           <Property Name="Mobile" Type="String" Nullable="false" />
@@ -282,13 +260,6 @@
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Code" Type="String" Nullable="false" />
         </EntityType>
-        <EntityType Name="Node">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" />
-        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -306,16 +277,6 @@
           <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
           <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
           <ScalarProperty Name="Remark" ColumnName="Remark" />
-        </MappingFragment>
-      </EntityTypeMapping>
-      <EntityTypeMapping TypeName="IsTypeOf(Framework.User)">
-        <MappingFragment StoreEntitySet="Entities_User">
-          <ScalarProperty Name="TID" ColumnName="TID" />
-          <ScalarProperty Name="ID" ColumnName="ID" />
-          <ScalarProperty Name="DisplayName" ColumnName="DisplayName" />
-          <ScalarProperty Name="Gender" ColumnName="Gender" />
-          <ScalarProperty Name="Mobile" ColumnName="Mobile" />
-          <ScalarProperty Name="Email" ColumnName="Email" />
         </MappingFragment>
       </EntityTypeMapping>
       <EntityTypeMapping TypeName="IsTypeOf(Framework.Account)">
@@ -340,17 +301,21 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Nodes">
-      <EntityTypeMapping TypeName="IsTypeOf(Framework.Node)">
-        <MappingFragment StoreEntitySet="Nodes">
+    <EntitySetMapping Name="Users">
+      <EntityTypeMapping TypeName="IsTypeOf(Framework.User)">
+        <MappingFragment StoreEntitySet="Users">
           <ScalarProperty Name="ID" ColumnName="ID" />
           <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="DisplayName" ColumnName="DisplayName" />
+          <ScalarProperty Name="Gender" ColumnName="Gender" />
+          <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <AssociationSetMapping Name="UserAccount" TypeName="Framework.UserAccount" StoreEntitySet="UserAccount">
       <EndProperty Name="User">
-        <ScalarProperty Name="TID" ColumnName="Users_TID" />
+        <ScalarProperty Name="ID" ColumnName="Users_ID" />
       </EndProperty>
       <EndProperty Name="Account">
         <ScalarProperty Name="TID" ColumnName="Accounts_TID" />
@@ -361,7 +326,7 @@
         <ScalarProperty Name="TID" ColumnName="Roles_TID" />
       </EndProperty>
       <EndProperty Name="User">
-        <ScalarProperty Name="TID" ColumnName="Users_TID" />
+        <ScalarProperty Name="ID" ColumnName="Users_ID" />
       </EndProperty>
     </AssociationSetMapping>
   </EntityContainerMapping>

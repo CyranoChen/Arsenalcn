@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+
 using Arsenalcn.Framework.Entity;
 using Arsenalcn.Framework.DataAccess.CodeFirst;
 
@@ -13,12 +14,17 @@ namespace Arsenalcn.Framework.Web.Controllers
 {
     public class UserController : Controller
     {
-        private FrameworkContext db = new FrameworkContext();
+        private readonly IRepository repo;
+
+        public UserController(IRepository repository)
+        {
+            repo = repository;
+        }
 
         // GET: /User/
         public ActionResult Index()
         {
-            return View(db.Users.ToList());
+            return View(repo.All<User>().ToList());
         }
 
         // GET: /User/Details/5
@@ -28,7 +34,9 @@ namespace Arsenalcn.Framework.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            User user = db.Users.Find(id);
+
+            User user = repo.Single<User>(id);
+
             if (user == null)
             {
                 return HttpNotFound();
@@ -51,8 +59,8 @@ namespace Arsenalcn.Framework.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Users.Add(user);
-                db.SaveChanges();
+                repo.Add<User>(user);
+
                 return RedirectToAction("Index");
             }
 
@@ -66,7 +74,9 @@ namespace Arsenalcn.Framework.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            User user = db.Users.Find(id);
+
+            User user = repo.Single<User>(id);
+
             if (user == null)
             {
                 return HttpNotFound();
@@ -83,10 +93,9 @@ namespace Arsenalcn.Framework.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(user).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                repo.Update<User>(user);
             }
+
             return View(user);
         }
 
@@ -97,7 +106,9 @@ namespace Arsenalcn.Framework.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            User user = db.Users.Find(id);
+
+            User user = repo.Single<User>(id);
+
             if (user == null)
             {
                 return HttpNotFound();
@@ -110,19 +121,9 @@ namespace Arsenalcn.Framework.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(long id)
         {
-            User user = db.Users.Find(id);
-            db.Users.Remove(user);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
+            repo.Remove<User>(id);
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
+            return RedirectToAction("Index");
         }
     }
 }

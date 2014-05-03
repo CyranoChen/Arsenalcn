@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 05/02/2014 23:32:09
--- Generated from EDMX file: C:\Projects\Arsenalcn\Arsenalcn.Framework.DataAccess\ModelFirst\Framework.edmx
+-- Date Created: 05/03/2014 13:10:33
+-- Generated from EDMX file: C:\Projects\Arsenalcn\Arsenalcn.Framework.Service\ModelFirst\Framework.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -85,21 +85,14 @@ CREATE TABLE [dbo].[Entities] (
 );
 GO
 
--- Creating table 'Nodes'
-CREATE TABLE [dbo].[Nodes] (
+-- Creating table 'Users'
+CREATE TABLE [dbo].[Users] (
     [ID] int IDENTITY(1,1) NOT NULL,
-    [Name] nvarchar(max)  NOT NULL
-);
-GO
-
--- Creating table 'Entities_User'
-CREATE TABLE [dbo].[Entities_User] (
-    [ID] int IDENTITY(1,1) NOT NULL,
+    [Name] nvarchar(max)  NOT NULL,
     [DisplayName] nvarchar(max)  NOT NULL,
     [Gender] nvarchar(max)  NOT NULL,
     [Mobile] nvarchar(max)  NOT NULL,
-    [Email] nvarchar(max)  NOT NULL,
-    [TID] uniqueidentifier  NOT NULL
+    [Email] nvarchar(max)  NOT NULL
 );
 GO
 
@@ -129,7 +122,7 @@ GO
 
 -- Creating table 'UserAccount'
 CREATE TABLE [dbo].[UserAccount] (
-    [Users_TID] uniqueidentifier  NOT NULL,
+    [Users_ID] int  NOT NULL,
     [Accounts_TID] uniqueidentifier  NOT NULL
 );
 GO
@@ -137,7 +130,7 @@ GO
 -- Creating table 'RoleUser'
 CREATE TABLE [dbo].[RoleUser] (
     [Roles_TID] uniqueidentifier  NOT NULL,
-    [Users_TID] uniqueidentifier  NOT NULL
+    [Users_ID] int  NOT NULL
 );
 GO
 
@@ -151,16 +144,10 @@ ADD CONSTRAINT [PK_Entities]
     PRIMARY KEY CLUSTERED ([TID] ASC);
 GO
 
--- Creating primary key on [ID] in table 'Nodes'
-ALTER TABLE [dbo].[Nodes]
-ADD CONSTRAINT [PK_Nodes]
+-- Creating primary key on [ID] in table 'Users'
+ALTER TABLE [dbo].[Users]
+ADD CONSTRAINT [PK_Users]
     PRIMARY KEY CLUSTERED ([ID] ASC);
-GO
-
--- Creating primary key on [TID] in table 'Entities_User'
-ALTER TABLE [dbo].[Entities_User]
-ADD CONSTRAINT [PK_Entities_User]
-    PRIMARY KEY CLUSTERED ([TID] ASC);
 GO
 
 -- Creating primary key on [TID] in table 'Entities_Account'
@@ -181,28 +168,28 @@ ADD CONSTRAINT [PK_Entities_Privilege]
     PRIMARY KEY CLUSTERED ([TID] ASC);
 GO
 
--- Creating primary key on [Users_TID], [Accounts_TID] in table 'UserAccount'
+-- Creating primary key on [Users_ID], [Accounts_TID] in table 'UserAccount'
 ALTER TABLE [dbo].[UserAccount]
 ADD CONSTRAINT [PK_UserAccount]
-    PRIMARY KEY CLUSTERED ([Users_TID], [Accounts_TID] ASC);
+    PRIMARY KEY CLUSTERED ([Users_ID], [Accounts_TID] ASC);
 GO
 
--- Creating primary key on [Roles_TID], [Users_TID] in table 'RoleUser'
+-- Creating primary key on [Roles_TID], [Users_ID] in table 'RoleUser'
 ALTER TABLE [dbo].[RoleUser]
 ADD CONSTRAINT [PK_RoleUser]
-    PRIMARY KEY CLUSTERED ([Roles_TID], [Users_TID] ASC);
+    PRIMARY KEY CLUSTERED ([Roles_TID], [Users_ID] ASC);
 GO
 
 -- --------------------------------------------------
 -- Creating all FOREIGN KEY constraints
 -- --------------------------------------------------
 
--- Creating foreign key on [Users_TID] in table 'UserAccount'
+-- Creating foreign key on [Users_ID] in table 'UserAccount'
 ALTER TABLE [dbo].[UserAccount]
 ADD CONSTRAINT [FK_UserAccount_User]
-    FOREIGN KEY ([Users_TID])
-    REFERENCES [dbo].[Entities_User]
-        ([TID])
+    FOREIGN KEY ([Users_ID])
+    REFERENCES [dbo].[Users]
+        ([ID])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
 
@@ -229,27 +216,18 @@ ADD CONSTRAINT [FK_RoleUser_Role]
     ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
 
--- Creating foreign key on [Users_TID] in table 'RoleUser'
+-- Creating foreign key on [Users_ID] in table 'RoleUser'
 ALTER TABLE [dbo].[RoleUser]
 ADD CONSTRAINT [FK_RoleUser_User]
-    FOREIGN KEY ([Users_TID])
-    REFERENCES [dbo].[Entities_User]
-        ([TID])
+    FOREIGN KEY ([Users_ID])
+    REFERENCES [dbo].[Users]
+        ([ID])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_RoleUser_User'
 CREATE INDEX [IX_FK_RoleUser_User]
 ON [dbo].[RoleUser]
-    ([Users_TID]);
-GO
-
--- Creating foreign key on [TID] in table 'Entities_User'
-ALTER TABLE [dbo].[Entities_User]
-ADD CONSTRAINT [FK_User_inherits_Entity]
-    FOREIGN KEY ([TID])
-    REFERENCES [dbo].[Entities]
-        ([TID])
-    ON DELETE CASCADE ON UPDATE NO ACTION;
+    ([Users_ID]);
 GO
 
 -- Creating foreign key on [TID] in table 'Entities_Account'

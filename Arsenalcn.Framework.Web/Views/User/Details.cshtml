@@ -1,4 +1,4 @@
-﻿@model Arsenalcn.Framework.DataAccess.ModelFirst.User
+﻿@model Arsenalcn.Framework.Entity.User
 
 @{
     ViewBag.Title = "Details";
@@ -19,75 +19,11 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.ObjectType)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ObjectType)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.IsActive)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.IsActive)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Key)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Key)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.CreateTime)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CreateTime)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.UpdateTime)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.UpdateTime)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Remark)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Remark)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ID)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ID)
-        </dd>
-
-        <dt>
             @Html.DisplayNameFor(model => model.DisplayName)
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.DisplayName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Gender)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Gender)
         </dd>
 
         <dt>
@@ -106,9 +42,17 @@
             @Html.DisplayFor(model => model.Email)
         </dd>
 
+        <dt>
+            @Html.DisplayNameFor(model => model.KEY)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.KEY)
+        </dd>
+
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.TID }) |
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
     @Html.ActionLink("Back to List", "Index")
 </p>

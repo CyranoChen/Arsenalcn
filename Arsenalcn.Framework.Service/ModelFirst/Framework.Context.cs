@@ -16,7 +16,7 @@ namespace Arsenalcn.Framework.DataAccess.ModelFirst
     public partial class FrameworkContainer : DbContext
     {
         public FrameworkContainer()
-            : base("name=FrameworkContainer")
+            : base("name=FrameworkContextModelFirst")
         {
         }
     
@@ -26,8 +26,6 @@ namespace Arsenalcn.Framework.DataAccess.ModelFirst
         }
     
         public virtual DbSet<Entity> Entities { get; set; }
-        public virtual DbSet<Node> Nodes { get; set; }
-
-        public System.Data.Entity.DbSet<Arsenalcn.Framework.DataAccess.ModelFirst.User> Users { get; set; }
+        public virtual DbSet<User> Users { get; set; }
     }
 }

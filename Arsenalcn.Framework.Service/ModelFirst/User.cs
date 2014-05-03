@@ -12,7 +12,7 @@ namespace Arsenalcn.Framework.DataAccess.ModelFirst
     using System;
     using System.Collections.Generic;
     
-    public partial class User : Entity
+    public partial class User
     {
         public User()
         {
@@ -21,6 +21,7 @@ namespace Arsenalcn.Framework.DataAccess.ModelFirst
         }
     
         public int ID { get; set; }
+        public string Name { get; set; }
         public string DisplayName { get; set; }
         public string Gender { get; set; }
         public string Mobile { get; set; }

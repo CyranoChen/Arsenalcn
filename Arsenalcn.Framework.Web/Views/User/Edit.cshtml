@@ -1,4 +1,4 @@
-﻿@model Arsenalcn.Framework.DataAccess.ModelFirst.User
+﻿@model Arsenalcn.Framework.Entity.User
 
 @{
     ViewBag.Title = "Edit";
@@ -15,7 +15,7 @@
         <h4>User</h4>
         <hr />
         @Html.ValidationSummary(true)
-        @Html.HiddenFor(model => model.TID)
+        @Html.HiddenFor(model => model.ID)
 
         <div class="form-group">
             @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-2" })
@@ -26,74 +26,10 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.ObjectType, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ObjectType)
-                @Html.ValidationMessageFor(model => model.ObjectType)
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.IsActive, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.IsActive)
-                @Html.ValidationMessageFor(model => model.IsActive)
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Key, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Key)
-                @Html.ValidationMessageFor(model => model.Key)
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.CreateTime, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.CreateTime)
-                @Html.ValidationMessageFor(model => model.CreateTime)
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.UpdateTime, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.UpdateTime)
-                @Html.ValidationMessageFor(model => model.UpdateTime)
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Remark, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Remark)
-                @Html.ValidationMessageFor(model => model.Remark)
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.ID, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ID)
-                @Html.ValidationMessageFor(model => model.ID)
-            </div>
-        </div>
-
-        <div class="form-group">
             @Html.LabelFor(model => model.DisplayName, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.DisplayName)
                 @Html.ValidationMessageFor(model => model.DisplayName)
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Gender, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Gender)
-                @Html.ValidationMessageFor(model => model.Gender)
             </div>
         </div>
 

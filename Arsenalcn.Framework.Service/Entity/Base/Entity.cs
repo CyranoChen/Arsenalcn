@@ -2,6 +2,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.Contracts;
 using System.Web;
+
 using Arsenalcn.Framework.DataAnnotations;
 
 namespace Arsenalcn.Framework.Entity
@@ -14,34 +15,40 @@ namespace Arsenalcn.Framework.Entity
         /// <remarks>
         /// This is the identifier that should be exposed via the web, etc.
         /// </remarks>
-        string Key { get; }
+        string KEY { get; }
     }
 
-    public abstract class Entity<TId> : IEntity, IEquatable<Entity<TId>>
-        where TId : struct
+    public abstract class Entity<TID> : IEntity, IEquatable<Entity<TID>>
+        where TID : struct
     {
         [Key]
-        public virtual TId Id
+        public virtual TID ID
         {
             get
             {
-                if (_id == null && typeof(TId) == typeof(Guid))
+                if (_id == null && typeof(TID) == typeof(Guid))
                     _id = Guid.NewGuid();
 
-                return _id == null ? default(TId) : (TId)_id;
+                return _id == null ? default(TID) : (TID)_id;
             }
-            protected set { _id = value; }
+            set { _id = value; }
         }
         private object _id;
 
         [Unique, StringLength(50)]
-        public virtual string Key
+        public virtual string KEY
         {
             get { return _key = _key ?? GenerateKey(); }
             protected set { _key = value; }
         }
         private string _key;
 
+        //[Timestamp]
+        //public byte[] RowVersion
+        //{
+        //    get;
+        //    set;
+        //}
 
         protected virtual string GenerateKey()
         {
@@ -52,44 +59,44 @@ namespace Arsenalcn.Framework.Entity
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != typeof(Entity<TId>)) return false;
-            return Equals((Entity<TId>)obj);
+            if (obj.GetType() != typeof(Entity<TID>)) return false;
+            return Equals((Entity<TID>)obj);
         }
 
-        public bool Equals(Entity<TId> other)
+        public bool Equals(Entity<TID> other)
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
             if (other.GetType() != GetType()) return false;
 
-            if (default(TId).Equals(Id) || default(TId).Equals(other.Id))
+            if (default(TID).Equals(ID) || default(TID).Equals(other.ID))
                 return Equals(other._key, _key);
 
-            return other.Id.Equals(Id);
+            return other.ID.Equals(ID);
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                if (default(TId).Equals(Id))
-                    return Key.GetHashCode() * 397;
+                if (default(TID).Equals(ID))
+                    return KEY.GetHashCode() * 397;
 
-                return Id.GetHashCode();
+                return ID.GetHashCode();
             }
         }
 
         public override string ToString()
         {
-            return Key;
+            return KEY;
         }
 
-        public static bool operator ==(Entity<TId> left, Entity<TId> right)
+        public static bool operator ==(Entity<TID> left, Entity<TID> right)
         {
             return Equals(left, right);
         }
 
-        public static bool operator !=(Entity<TId> left, Entity<TId> right)
+        public static bool operator !=(Entity<TID> left, Entity<TID> right)
         {
             return !Equals(left, right);
         }

@@ -13,8 +13,12 @@ namespace Arsenalcn.Framework.DataAccess.CodeFirst
         //public DbSet<Auction> Auctions { get; set; }
         //public DbSet<Bid> Bids { get; set; }
         //public DbSet<Category> Categories { get; set; }
+
+        //public DbSet<IEntity> IEntities { get; set; }
+        public DbSet<EntityBase> Entities { get; set; }
         public DbSet<User> Users { get; set; }
-        //public DbSet<Account> Accounts { get; set; }
+        public DbSet<Account> Accounts { get; set; }
+        public DbSet<Role> Roles { get; set; }
 
         public FrameworkContext()
             : base("FrameworkContextCodeFirst")

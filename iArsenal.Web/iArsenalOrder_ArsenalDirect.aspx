@@ -41,9 +41,9 @@
     </script>
 </asp:Content>
 <asp:Content ID="cphMain" ContentPlaceHolderID="cphMain" runat="server">
-    <div id="banner" style="height: 380px">
-        <a href="http://arsenaldirect.arsenal.com/" target="_blank">
-            <img src="uploadfiles/banner/banner20140204.png" alt="阿森纳官方纪念品团购服务" /></a>
+    <div id="banner" style="height: 250px">
+        <a href="http://arsenaldirect.arsenal.com/new-in/the-fa-cup/icat/facup" target="_blank">
+            <img src="uploadfiles/banner/banner20140521.png" alt="阿森纳官方纪念品团购服务" /></a>
     </div>
     <div id="ACN_Main">
         <uc1:PortalSitePath ID="ucPortalSitePath" runat="server" />

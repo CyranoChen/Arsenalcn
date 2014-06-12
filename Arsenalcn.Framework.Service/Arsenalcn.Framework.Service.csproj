@@ -51,14 +51,7 @@
   <ItemGroup>
     <Compile Include="CodeFirst\FrameworkContext.cs" />
     <Compile Include="CodeFirst\FrameworkInitializer.cs" />
-    <Compile Include="CodeFirst\Repository.cs" />
-    <Compile Include="Entity\Account.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Entity\Annotations\UniqueAttribute.cs" />
-    <Compile Include="Entity\Base\Entity.cs" />
-    <Compile Include="Entity\Base\EntityKeyGenerationException.cs" />
-    <Compile Include="Entity\User.cs" />
     <Compile Include="ModelFirst\Account.cs">
       <DependentUpon>Framework.tt</DependentUpon>
     </Compile>
@@ -120,7 +113,12 @@
   <ItemGroup>
     <Content Include="ModelFirst\Framework.edmx.sql" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Arsenalcn.Framework.Entity\Arsenalcn.Framework.Entity.csproj">
+      <Project>{825f3510-b9ba-4c0d-90aa-f0dc6649d907}</Project>
+      <Name>Arsenalcn.Framework.Entity</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -69,6 +69,7 @@
     <Content Include="App_Themes\Arsenalcn\images\navbg.gif" />
     <Content Include="App_Themes\Arsenalcn\images\sitepath.gif" />
     <Content Include="Default.aspx" />
+    <Content Include="MyAdvertisementContainer.aspx" />
     <Content Include="Scripts\jquery-1.7.1.min.js" />
     <Content Include="Scripts\jquery.pagination.js" />
     <Content Include="UploadFiles\ClubLogo.gif" />
@@ -498,6 +499,13 @@
     </Compile>
     <Compile Include="Control\ClubVideo.ascx.designer.cs">
       <DependentUpon>ClubVideo.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MyAdvertisementContainer.aspx.cs">
+      <DependentUpon>MyAdvertisementContainer.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MyAdvertisementContainer.aspx.designer.cs">
+      <DependentUpon>MyAdvertisementContainer.aspx</DependentUpon>
     </Compile>
     <Compile Include="MyCollection.aspx.cs">
       <DependentUpon>MyCollection.aspx</DependentUpon>

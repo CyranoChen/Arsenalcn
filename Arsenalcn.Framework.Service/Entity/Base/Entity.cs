@@ -15,7 +15,9 @@ namespace Arsenalcn.Framework.Entity
         /// <remarks>
         /// This is the identifier that should be exposed via the web, etc.
         /// </remarks>
-        string KEY { get; }
+
+        //object ID { get; set; }
+        string Key { get; }
     }
 
     public abstract class Entity<TID> : IEntity, IEquatable<Entity<TID>>
@@ -36,12 +38,14 @@ namespace Arsenalcn.Framework.Entity
         private object _id;
 
         [Unique, StringLength(50)]
-        public virtual string KEY
+        public virtual string Key
         {
             get { return _key = _key ?? GenerateKey(); }
             protected set { _key = value; }
         }
         private string _key;
+
+
 
         //[Timestamp]
         //public byte[] RowVersion
@@ -80,7 +84,7 @@ namespace Arsenalcn.Framework.Entity
             unchecked
             {
                 if (default(TID).Equals(ID))
-                    return KEY.GetHashCode() * 397;
+                    return Key.GetHashCode() * 397;
 
                 return ID.GetHashCode();
             }
@@ -88,7 +92,7 @@ namespace Arsenalcn.Framework.Entity
 
         public override string ToString()
         {
-            return KEY;
+            return Key;
         }
 
         public static bool operator ==(Entity<TID> left, Entity<TID> right)

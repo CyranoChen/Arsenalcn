@@ -8,6 +8,7 @@ using Discuz.Forum;
 
 using Arsenalcn.ClubSys.Entity;
 using Arsenalcn.ClubSys.DataAccess;
+using Arsenalcn.Common;
 
 namespace Arsenalcn.ClubSys.DataAccess
 {

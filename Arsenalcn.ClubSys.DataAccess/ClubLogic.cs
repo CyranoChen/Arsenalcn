@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
-using System.IO;
 using System.Collections.Generic;
 using System.Web;
 
 using Microsoft.ApplicationBlocks.Data;
 
 using Arsenalcn.ClubSys.Entity;
+using Arsenalcn.Common;
 
 namespace Arsenalcn.ClubSys.DataAccess
 {

@@ -11,6 +11,7 @@ using System.Web.UI.HtmlControls;
 
 using Arsenalcn.ClubSys.DataAccess;
 using Arsenalcn.ClubSys.Entity;
+using Arsenalcn.Common;
 
 namespace Arsenalcn.ClubSys.Web
 {
@@ -20,7 +21,7 @@ namespace Arsenalcn.ClubSys.Web
         {
             base.OnInit(e);
 
-            PlayerDataSouce.ConnectionString = DataAccess.SQLConn.ConnectionString();
+            PlayerDataSouce.ConnectionString = SQLConn.GetConnection().ConnectionString;
         }
 
         protected void Page_Load(object sender, EventArgs e)

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Arsenalcn.Common;
+using System;
 using System.Web.UI.WebControls;
 
 namespace Arsenalcn.ClubSys.Web
@@ -9,7 +10,7 @@ namespace Arsenalcn.ClubSys.Web
         {
             base.OnInit(e);
 
-            ClubInfoDataSouce.ConnectionString = DataAccess.SQLConn.ConnectionString();
+            ClubInfoDataSouce.ConnectionString = SQLConn.GetConnection().ConnectionString;
         }
 
         protected void Page_Load(object sender, EventArgs e)

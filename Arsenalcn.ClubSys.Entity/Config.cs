@@ -5,7 +5,7 @@ using Arsenalcn.Common.Entity;
 
 namespace Arsenalcn.ClubSys.Entity
 {
-    public class ConfigGlobal
+    public class ConfigGlobal: Config
     {
         ConfigGlobal() { }
 
@@ -17,24 +17,7 @@ namespace Arsenalcn.ClubSys.Entity
         {
             get
             {
-                List<Config> list = Config.GetConfigs().FindAll(delegate(Config c) { return c.ConfigSystem.Equals(currSystem); });
-
-                if (list != null && list.Count > 0)
-                {
-                    Dictionary<string, string> dict = new Dictionary<string, string>();
-
-                    foreach (Config c in list)
-                    {
-                        try { dict.Add(c.ConfigKey.ToUpper(), c.ConfigValue); }
-                        catch { continue; }
-                    }
-
-                    return dict;
-                }
-                else
-                {
-                    return null;
-                }
+                return Config.GetDictionaryByConfigSystem(currSystem);
             }
         }
 

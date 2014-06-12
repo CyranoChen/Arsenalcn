@@ -46,7 +46,6 @@
   <ItemGroup>
     <Compile Include="AdvLog.cs" />
     <Compile Include="ClubLogic.cs" />
-    <Compile Include="SqlHelper\SQLConn.cs" />
     <Compile Include="Enum.cs" />
     <Compile Include="FortuneContributeAlgorithm.cs" />
     <Compile Include="LuckyPlayer.cs" />
@@ -56,7 +55,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RankAlgorithm.cs" />
     <Compile Include="RankLevel.cs" />
-    <Compile Include="SqlHelper\SQLHelper.cs" />
     <Compile Include="UserClubLogic.cs" />
     <Compile Include="UserVideo.cs" />
   </ItemGroup>
@@ -68,6 +66,10 @@
     <ProjectReference Include="..\Arsenalcn.ClubSys.Entity\Arsenalcn.ClubSys.Entity.csproj">
       <Project>{C84E7700-0E7C-4C98-AE70-70EFB99B8D8E}</Project>
       <Name>Arsenalcn.ClubSys.Entity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Arsenalcn.Common\Arsenalcn.Common.csproj">
+      <Project>{8258a2e1-6821-4bae-9111-3fbb65703fe0}</Project>
+      <Name>Arsenalcn.Common</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -4,6 +4,7 @@ using System.Data;
 using Microsoft.ApplicationBlocks.Data;
 
 using Arsenalcn.ClubSys.Entity;
+using Arsenalcn.Common;
 
 namespace Arsenalcn.ClubSys.DataAccess
 {

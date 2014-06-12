@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Arsenalcn.Common;
+using System;
 using System.Data.SqlClient;
 
 namespace Arsenalcn.ClubSys.DataAccess

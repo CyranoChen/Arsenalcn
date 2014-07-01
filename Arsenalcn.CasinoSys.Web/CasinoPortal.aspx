@@ -5,15 +5,43 @@
 <%@ Register Src="Control/LeftPanel.ascx" TagName="LeftPanel" TagPrefix="uc1" %>
 <%@ Register Src="Control/FieldTooBar.ascx" TagName="FieldTooBar" TagPrefix="uc2" %>
 <%@ Register Src="Control/MenuTabBar.ascx" TagName="MenuTabBar" TagPrefix="uc3" %>
-<asp:Content ID="Content1" ContentPlaceHolderID="cphHead" runat="server">
+<asp:Content ID="cphHead" ContentPlaceHolderID="cphHead" runat="server">
+    <script type="text/javascript">
+        var p = "http", d = "static";
+        if (document.location.protocol == "https:")
+        { p += "s"; d = "engine"; }
+        var z = document.createElement("script");
+        z.type = "text/javascript";
+        z.async = true;
+        z.src = p + "://" + d + ".adzerk.net/ados.js";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(z, s);
+    </script>
+    <script type="text/javascript">
+        var ados = ados || {};
+        ados.run = ados.run || [];
+        ados.run.push(function () {
+            /* load placement for account: Bodog, site: Arsenalcntaobao, size: 180x30 - 180 x 30*/
+            ados_add_placement(6641, 63640, "azk22313", 243);
+            ados_load();
+        });
+    </script>
 </asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="cphMain" runat="server">
+<asp:Content ID="cphMain" ContentPlaceHolderID="cphMain" runat="server">
     <uc1:LeftPanel ID="ctrlLeftPanel" runat="server" />
     <div id="MainPanel">
         <uc2:FieldTooBar ID="ctrlFieldTooBar" runat="server" />
         <uc3:MenuTabBar ID="ctrlMenuTabBar" runat="server" />
-        <div class="CasinoSys_Tip">
-            <span>博彩只能使用博彩币；单场比赛可以多次投注；赔率固定不会变化。</span></div>
+        <div class="FunctionBar">
+            <div class="DivFloatLeft CasinoSys_Tip">
+                <span>博彩只能使用博彩币；单场比赛可以多次投注；赔率固定不会变化。</span>
+            </div>
+            <div class="DivFloatRight">
+                <div id="azk22313"></div>
+            </div>
+            <div class="Clear">
+            </div>
+        </div>
         <asp:GridView ID="gvMatch" runat="server" PageSize="100" OnRowDataBound="gvMatch_RowDataBound">
             <Columns>
                 <asp:TemplateField HeaderText="分类">
@@ -36,8 +64,7 @@
                 <asp:TemplateField HeaderText="vs" ItemStyle-Width="20">
                     <ItemTemplate>
                         <a href="CasinoTeam.aspx?Match=<%# DataBinder.Eval(Container.DataItem, "MatchGuid") %>">
-                            <em title="<%# DataBinder.Eval(Container.DataItem, "Ground") %>(<%# DataBinder.Eval(Container.DataItem, "Capacity") %>)">
-                                vs</em></a>
+                            <em title="<%# DataBinder.Eval(Container.DataItem, "Ground") %>(<%# DataBinder.Eval(Container.DataItem, "Capacity") %>)">vs</em></a>
                     </ItemTemplate>
                 </asp:TemplateField>
                 <asp:TemplateField HeaderText="客队" ItemStyle-HorizontalAlign="Left">

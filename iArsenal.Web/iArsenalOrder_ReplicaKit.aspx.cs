@@ -62,14 +62,14 @@ namespace iArsenal.Web
             {
                 if (!string.IsNullOrEmpty(Request.QueryString["Type"]) && Request.QueryString["Type"].Equals("Away", StringComparison.OrdinalIgnoreCase))
                 {
-                    Page.Title = "阿森纳2012/13赛季客场球衣许愿单";
-                    hlReplicaKitPage.NavigateUrl = "http://arsenaldirect.arsenal.com/replica-kit/away-kit/icat/awaykit/";
+                    Page.Title = "阿森纳2014/15赛季客场球衣许愿单";
+                    hlReplicaKitPage.NavigateUrl = "http://arsenaldirect.arsenal.com/puma/icat/pumakit";
                     return ProductType.ReplicaKitAway;
                 }
                 else
                 {
-                    Page.Title = "阿森纳2012/14赛季主场球衣许愿单";
-                    hlReplicaKitPage.NavigateUrl = "http://arsenaldirect.arsenal.com/replica-kit/home-kit/icat/homekit/";
+                    Page.Title = "阿森纳2014/15赛季主场球衣许愿单";
+                    hlReplicaKitPage.NavigateUrl = "http://arsenaldirect.arsenal.com/puma/icat/pumakit";
                     return ProductType.ReplicaKitHome;
                 }
             }

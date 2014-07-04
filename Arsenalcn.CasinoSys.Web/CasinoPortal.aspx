@@ -98,6 +98,7 @@
                 <asp:TemplateField HeaderText="投注">
                     <ItemTemplate>
                         <asp:HyperLink ID="BtnBet" runat="server" CssClass="LinkBtn" ToolTip="您的投注记录"></asp:HyperLink>
+                        <asp:HyperLink ID="BtnBet_Bodog" runat="server" CssClass="LinkBtn" ToolTip="博狗投注"></asp:HyperLink>
                     </ItemTemplate>
                 </asp:TemplateField>
             </Columns>

@@ -5,6 +5,8 @@ using System.Web.UI.WebControls;
 
 using Arsenalcn.CasinoSys.Entity;
 
+using Discuz.Forum;
+
 namespace Arsenalcn.CasinoSys.Web
 {
     public partial class CasinoPortal : Common.BasePage
@@ -131,6 +133,24 @@ namespace Arsenalcn.CasinoSys.Web
                             {
                                 btnBet.Visible = false;
                             }
+
+                            // Adv Bodog Bet Button
+
+                            HyperLink btnBetBodog = e.Row.FindControl("btnBet_Bodog") as HyperLink;
+
+                            //管理人员或100积分以上会员看不到广告
+                            if (btnBetBodog == null || this.useradminid > 0 || this.usergroupid > 12)
+                            {
+                                btnBetBodog.Visible = false;
+                            }
+
+                            if (btnBetBodog != null && this.CurrentGambler != null)
+                            {
+                                btnBetBodog.Text = "博狗投注 <span class=\"CasinoSys_BetInfo\">Bodog</span>";
+                                btnBetBodog.NavigateUrl = "http://record.slk61.com/_S9AEnQlJCqtPt_LV3gWenWNd7ZgqdRLk/68/?tc=olm36230";
+                                btnBetBodog.Target = "_blank";
+                            }
+
                         }
                     }
                 }

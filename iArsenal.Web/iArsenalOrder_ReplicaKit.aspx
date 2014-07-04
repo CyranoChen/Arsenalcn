@@ -118,8 +118,8 @@
                         <td style="text-align: left" colspan="3">
                             <asp:RadioButtonList ID="rblOrderPostage" runat="server" RepeatDirection="Horizontal"
                                 RepeatLayout="Flow" CssClass="RadioButtonList">
-                                <asp:ListItem Text="6元（江浙沪 - 顺丰速运）" Value="6"></asp:ListItem>
-                                <asp:ListItem Text="12元（全国其他地区 - 顺丰速运）" Value="12" Selected="True"></asp:ListItem>
+                                <asp:ListItem Text="10元（江浙沪 - 顺丰速运）" Value="10"></asp:ListItem>
+                                <asp:ListItem Text="18元（全国其他地区 - 顺丰速运）" Value="18" Selected="True"></asp:ListItem>
                             </asp:RadioButtonList>
                         </td>
                     </tr>
@@ -164,7 +164,6 @@
                             <asp:CheckBox ID="cbArsenalFont" runat="server" Text="阿森纳字体" ToolTip="只限当前现役球员" />
                             <a href="http://arsenaldirect.arsenal.com/icat/kitbuilder/" target="_blank">【效果体验】</a>
                             <asp:Label ID="lblPriceArsenalFont" runat="server" CssClass="PriceArsenalFont"></asp:Label>
-                            <span>-- 港版勿选</span>
                         </td>
                     </tr>
                     <tr class="Row" style="display: none">
@@ -202,7 +201,6 @@
                                 <asp:ListItem Text="1个" Value="1"></asp:ListItem>
                             </asp:RadioButtonList>
                             <asp:Label ID="lblPriceChampionPatch" runat="server"></asp:Label>
-                            <span>-- 港版勿选</span>
                         </td>
                     </tr>
                     <tr class="AlternatingRow">

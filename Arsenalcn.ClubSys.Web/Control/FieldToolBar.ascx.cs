@@ -129,12 +129,12 @@ namespace Arsenalcn.ClubSys.Web.Control
             Player gPlayer = PlayerStrip.GetPlayerInfo(this.userid);
 
             List<Club> clubs = ClubLogic.GetActiveUserClubs(player.UserID);
-            bool IsLuckyPlayerLeader = clubs.Exists(delegate(Club club) { return ClubLogic.GetClubLeads(club.ID.Value).Exists(delegate(UserClub uc) { return uc.Userid == this.userid; }); });
+            bool isLuckyPlayerLeader = clubs.Exists(delegate(Club club) { return ClubLogic.GetClubLeads(club.ID.Value).Exists(delegate(UserClub uc) { return uc.Userid == this.userid; }); });
 
             string script = string.Empty;
             bool CanGetLuckyPlayerBonus = false;
 
-            if ((gPlayer.UserID == player.UserID) || IsLuckyPlayerLeader)
+            if ((gPlayer.UserID == player.UserID) || isLuckyPlayerLeader)
                 CanGetLuckyPlayerBonus = true;
 
             if (player != null && gPlayer != null && !ConfigGlobal.LuckyPlayerBonusGot && CanGetLuckyPlayerBonus)
@@ -166,6 +166,8 @@ namespace Arsenalcn.ClubSys.Web.Control
                 }
 
                 LuckyPlayer.SetBonusGot(gPlayer.ID, bonusToClub, clubID, player.ID);
+
+                ConfigGlobal.Cache.RefreshCache();
 
                 script = string.Format("alert('您已获得幸运球员奖金{0}枪手币，球会获得{1}枪手币');", bonusToUser, bonusToClub);
 

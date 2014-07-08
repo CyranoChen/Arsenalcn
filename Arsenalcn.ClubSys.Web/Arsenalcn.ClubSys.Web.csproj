@@ -76,12 +76,10 @@
     <Content Include="UploadFiles\PlayerLogo.gif" />
     <Content Include="UploadFiles\StripFace\%2420.jpg" />
     <Content Include="UploadFiles\StripFace\%2422.jpg" />
-    <Content Include="UploadFiles\StripFace\%2440.jpg" />
+    <Content Include="UploadFiles\StripFace\%2430.jpg" />
     <Content Include="UploadFiles\StripFace\%2454.jpg" />
-    <Content Include="UploadFiles\StripFace\%2457.jpg" />
     <Content Include="UploadFiles\StripFace\00.jpg" />
     <Content Include="UploadFiles\StripFace\01.jpg" />
-    <Content Include="UploadFiles\StripFace\03.jpg" />
     <Content Include="UploadFiles\StripFace\04.jpg" />
     <Content Include="UploadFiles\StripFace\05.jpg" />
     <Content Include="UploadFiles\StripFace\06.jpg" />
@@ -98,15 +96,15 @@
     <Content Include="UploadFiles\StripFace\17.jpg" />
     <Content Include="UploadFiles\StripFace\19.jpg" />
     <Content Include="UploadFiles\StripFace\20.jpg" />
-    <Content Include="UploadFiles\StripFace\21.jpg" />
     <Content Include="UploadFiles\StripFace\22.jpg" />
     <Content Include="UploadFiles\StripFace\23.jpg" />
     <Content Include="UploadFiles\StripFace\24.jpg" />
     <Content Include="UploadFiles\StripFace\25.jpg" />
-    <Content Include="UploadFiles\StripFace\26.jpg" />
     <Content Include="UploadFiles\StripFace\28.jpg" />
-    <Content Include="UploadFiles\StripFace\30.jpg" />
+    <Content Include="UploadFiles\StripFace\29.jpg" />
     <Content Include="UploadFiles\StripFace\31.jpg" />
+    <Content Include="UploadFiles\StripFace\44.jpg" />
+    <Content Include="UploadFiles\StripFace\58.jpg" />
     <Content Include="UploadFiles\StripFace\Legend.jpg" />
     <Content Include="UploadFiles\StripLegend\Adams.jpg" />
     <Content Include="UploadFiles\StripLegend\Adebayor.jpg" />
@@ -185,12 +183,10 @@
     <Content Include="UploadFiles\StripLV\sock5.gif" />
     <Content Include="UploadFiles\StripPhoto\%2420.jpg" />
     <Content Include="UploadFiles\StripPhoto\%2422.jpg" />
-    <Content Include="UploadFiles\StripPhoto\%2440.jpg" />
+    <Content Include="UploadFiles\StripPhoto\%2430.jpg" />
     <Content Include="UploadFiles\StripPhoto\%2454.jpg" />
-    <Content Include="UploadFiles\StripPhoto\%2457.jpg" />
     <Content Include="UploadFiles\StripPhoto\00.jpg" />
     <Content Include="UploadFiles\StripPhoto\01.jpg" />
-    <Content Include="UploadFiles\StripPhoto\03.jpg" />
     <Content Include="UploadFiles\StripPhoto\04.jpg" />
     <Content Include="UploadFiles\StripPhoto\05.jpg" />
     <Content Include="UploadFiles\StripPhoto\06.jpg" />
@@ -207,15 +203,15 @@
     <Content Include="UploadFiles\StripPhoto\17.jpg" />
     <Content Include="UploadFiles\StripPhoto\19.jpg" />
     <Content Include="UploadFiles\StripPhoto\20.jpg" />
-    <Content Include="UploadFiles\StripPhoto\21.jpg" />
     <Content Include="UploadFiles\StripPhoto\22.jpg" />
     <Content Include="UploadFiles\StripPhoto\23.jpg" />
     <Content Include="UploadFiles\StripPhoto\24.jpg" />
     <Content Include="UploadFiles\StripPhoto\25.jpg" />
-    <Content Include="UploadFiles\StripPhoto\26.jpg" />
     <Content Include="UploadFiles\StripPhoto\28.jpg" />
-    <Content Include="UploadFiles\StripPhoto\30.jpg" />
+    <Content Include="UploadFiles\StripPhoto\29.jpg" />
     <Content Include="UploadFiles\StripPhoto\31.jpg" />
+    <Content Include="UploadFiles\StripPhoto\44.jpg" />
+    <Content Include="UploadFiles\StripPhoto\58.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdminAward.aspx.cs">

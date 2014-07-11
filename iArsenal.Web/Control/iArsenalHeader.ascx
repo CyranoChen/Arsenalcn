@@ -25,7 +25,7 @@
     <ul>
         <li class="nol"><a href="default.aspx">首页</a></li>
         <li><a href="iArsenalOrder_ReplicaKit.aspx?Type=Home">2014/15赛季主场球衣</a></li>
-        <li style="display:none"><a href="iArsenalOrder_ReplicaKit.aspx?Type=Away">2013/14赛季客场球衣</a></li>
+        <li><a href="iArsenalOrder_ReplicaKit.aspx?Type=Away">2014/15赛季客场球衣</a></li>
         <li style="display:none"><a href="iArsenalOrder_LondonTravel.aspx">2013/14赛季伦敦行</a></li>
         <li><a href="iArsenalOrder_MatchList.aspx">2014/15赛季主场球票</a></li>
         <li><a href="iArsenalOrder_ArsenalDirect.aspx">阿森纳官方纪念品团购</a></li>

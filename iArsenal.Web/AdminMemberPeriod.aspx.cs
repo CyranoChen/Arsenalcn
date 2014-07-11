@@ -63,6 +63,13 @@ namespace iArsenal.Web
                         returnValue = returnValue && mp.MemberCardNo.ToLower().Contains(tmpString.ToLower());
                 }
 
+                if (ViewState["MemberClass"] != null)
+                {
+                    tmpString = ViewState["MemberClass"].ToString();
+                    if (!string.IsNullOrEmpty(tmpString) && tmpString != "0")
+                        returnValue = returnValue && ((int)mp.MemberClass).ToString().Equals(tmpString);
+                }
+
                 return returnValue;
             });
 
@@ -151,6 +158,11 @@ namespace iArsenal.Web
                 ViewState["MemberCardNo"] = tbMemberCardNo.Text.Trim();
             else
                 ViewState["MemberCardNo"] = string.Empty;
+
+            if (!string.IsNullOrEmpty(ddlMemberClass.SelectedValue) && !ddlMemberClass.SelectedValue.Equals("0"))
+                ViewState["MemberClass"] = ddlMemberClass.SelectedValue;
+            else
+                ViewState["MemberClass"] = string.Empty;
 
             MemberPeriodID = 0;
             gvMemberPeriod.PageIndex = 0;

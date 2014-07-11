@@ -13,6 +13,15 @@ namespace iArsenal.Web {
     public partial class iArsenalOrder_ReplicaKit {
         
         /// <summary>
+        /// ltrlBannerImage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ltrlBannerImage;
+        
+        /// <summary>
         /// ucPortalSitePath control.
         /// </summary>
         /// <remarks>
@@ -211,22 +220,13 @@ namespace iArsenal.Web {
         protected global::System.Web.UI.WebControls.Label lblPricePlayerDetail;
         
         /// <summary>
-        /// cbArsenalFont control.
+        /// trCustomPrinting control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox cbArsenalFont;
-        
-        /// <summary>
-        /// lblPriceArsenalFont control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblPriceArsenalFont;
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow trCustomPrinting;
         
         /// <summary>
         /// tbPlayerNumber control.
@@ -245,6 +245,24 @@ namespace iArsenal.Web {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox tbPlayerName;
+        
+        /// <summary>
+        /// cbArsenalFont control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox cbArsenalFont;
+        
+        /// <summary>
+        /// lblPriceArsenalFont control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblPriceArsenalFont;
         
         /// <summary>
         /// rblPremierPatch control.

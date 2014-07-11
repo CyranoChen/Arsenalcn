@@ -21,6 +21,15 @@
                 ProductCheckByID($(this).val());
             });
 
+            var $ddlPlayerDetail = $("#tdPrinting select");
+            var $trCustomPrinting = $(".CustomPrinting");
+            $ddlPlayerDetail.change(function () {
+                if ($(this).val() == "custom")
+                    $trCustomPrinting.show();
+                else
+                    $trCustomPrinting.hide();
+            });
+
             var $rbPremierPatch = $("#tdPremierPatch input:radio");
             var $rbChampionPatch = $("#tdChampionPatch input:radio");
 
@@ -37,9 +46,10 @@
     </script>
 </asp:Content>
 <asp:Content ID="cphMain" ContentPlaceHolderID="cphMain" runat="server">
-    <div id="banner" style="height: 380px">
-        <a href="http://bbs.arsenalcn.com/showtopic-105064.aspx" target="_blank">
-            <img src="uploadfiles/banner/banner20140205.png" alt="阿森纳新赛季主客场球衣许愿单" /></a>
+    <div id="banner" style="height: 250px">
+        <a href="http://bbs.arsenalcn.com/showtopic-107237.aspx" target="_blank">
+            <asp:Literal ID="ltrlBannerImage" runat="server"></asp:Literal>
+        </a>
     </div>
     <div id="ACN_Main">
         <uc1:PortalSitePath ID="ucPortalSitePath" runat="server" />
@@ -145,28 +155,20 @@
                             <asp:DropDownList ID="ddlOrderItemSize" runat="server" Visible="false">
                                 <asp:ListItem Value="0" Text="--请选择球衣尺寸--"></asp:ListItem>
                             </asp:DropDownList>
-                            <asp:TextBox ID="tbOrderItemSize" runat="server" CssClass="TextBox" Width="100px" MaxLength="10"></asp:TextBox>
+                            <asp:TextBox ID="tbOrderItemSize" runat="server" CssClass="TextBox" Width="35px" MaxLength="10"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="rfvOrderItemSize" runat="server" ControlToValidate="tbOrderItemSize"
                                 Display="Dynamic" ErrorMessage="*" CssClass="ValiSpan"></asp:RequiredFieldValidator>
+                            <a href="http://bbs.arsenalcn.com/showtopic.aspx?topicid=107237&postid=1794623#1794623" target="_blank">【欧版尺码表】</a>
                         </td>
                         <td class="FieldHeader">印字印号：
                         </td>
-                        <td style="text-align: left">
+                        <td style="text-align: left" id="tdPrinting">
                             <asp:DropDownList ID="ddlPlayerDetail" runat="server" OnDataBound="ddlPlayerDetail_DataBound" Width="150px">
                             </asp:DropDownList>
                             <asp:Label ID="lblPricePlayerDetail" runat="server" CssClass="PricePlayerDetail"></asp:Label>
                         </td>
                     </tr>
-                    <tr class="Row">
-                        <td class="FieldHeader">特殊字体：
-                        </td>
-                        <td style="text-align: left" colspan="3" id="tdArsenalFont">
-                            <asp:CheckBox ID="cbArsenalFont" runat="server" Text="阿森纳字体" ToolTip="只限当前现役球员" />
-                            <a href="http://arsenaldirect.arsenal.com/icat/kitbuilder/" target="_blank">【效果体验】</a>
-                            <asp:Label ID="lblPriceArsenalFont" runat="server" CssClass="PriceArsenalFont"></asp:Label>
-                        </td>
-                    </tr>
-                    <tr class="Row" style="display: none">
+                    <tr class="Row CustomPrinting" id="trCustomPrinting" runat="server" style="display: none">
                         <td class="FieldHeader">个性化印号：
                         </td>
                         <td style="text-align: left">
@@ -178,7 +180,16 @@
                             <asp:TextBox ID="tbPlayerName" runat="server" CssClass="TextBox" Width="150px" MaxLength="20"></asp:TextBox>
                         </td>
                     </tr>
-                    <tr class="AlternatingRow">
+                    <tr class="AlternatingRow" style="display:none">
+                        <td class="FieldHeader">特殊字体：
+                        </td>
+                        <td style="text-align: left" colspan="3" id="tdArsenalFont">
+                            <asp:CheckBox ID="cbArsenalFont" runat="server" Text="阿森纳字体" ToolTip="只限当前现役球员" />
+                            <a href="http://arsenaldirect.arsenal.com/icat/kitbuilder/" target="_blank">【效果体验】</a>
+                            <asp:Label ID="lblPriceArsenalFont" runat="server" CssClass="PriceArsenalFont"></asp:Label>
+                        </td>
+                    </tr>
+                    <tr class="Row">
                         <td class="FieldHeader">英超袖标：
                         </td>
                         <td style="text-align: left" colspan="3" id="tdPremierPatch">
@@ -191,7 +202,7 @@
                             <asp:Label ID="lblPricePremierPatch" runat="server"></asp:Label>
                         </td>
                     </tr>
-                    <tr class="Row">
+                    <tr class="AlternatingRow">
                         <td class="FieldHeader">欧冠袖标：
                         </td>
                         <td style="text-align: left" colspan="3" id="tdChampionPatch">
@@ -203,7 +214,7 @@
                             <asp:Label ID="lblPriceChampionPatch" runat="server"></asp:Label>
                         </td>
                     </tr>
-                    <tr class="AlternatingRow">
+                    <tr class="Row">
                         <td class="FieldHeader">备注：
                         </td>
                         <td style="text-align: left" colspan="3">
@@ -241,9 +252,9 @@
                 <h3 class="Col" onclick="$(this).toggleClass('Col'); $(this).toggleClass('Exp'); $(this).next('div').toggle('normal');">
                     <a>球衣印字印号说明</a></h3>
                 <div class="Block">
-                    <p>(1). 从2013/14赛季开始，传统印号也改为胶印，可以选择下拉框中的现役球员印字印号；如需自定义印字印号，请在下拉框中任选，并备注中说明。</p>
-                    <p>(2). 特殊字体“阿森纳字体”为胶印，具体效果可<a href="http://arsenaldirect.arsenal.com/icat/kitbuilder/" target="_blank">【点击体验】</a>，阿森纳字体不接受自定义印字印号。选择了阿森纳字体后，印字印号会自动按阿森纳字体的费用结算。</p>
-                    <p>(3). 因球衣定制的特殊性（选印名字、号码、袖标等个性化选择），应提交订单后尽快付款；若拒付全额款项的，我们将视为无效的订单，敬请配合和谅解。</p>
+                    <p>(1). 您可以下拉框中选择现役球员印字印号；如需自定义印字印号，请在下拉框中选择<em>自定义</em>，并出现的文本框中填写号码与印字。</p>
+                    <p style="display:none">(2). 特殊字体“阿森纳字体”为胶印，具体效果可<a href="http://arsenaldirect.arsenal.com/icat/kitbuilder/" target="_blank">【点击体验】</a>，阿森纳字体不接受自定义印字印号。选择了阿森纳字体后，印字印号会自动按阿森纳字体的费用结算。</p>
+                    <p>(2). 因球衣定制的特殊性（选印名字、号码、袖标等个性化选择），应提交订单后尽快付款；若拒付全额款项的，我们将视为无效的订单，敬请配合和谅解。</p>
                 </div>
             </div>
         </div>

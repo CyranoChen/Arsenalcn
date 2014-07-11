@@ -23,6 +23,7 @@ namespace iArsenal.Entity
                 MemberID = Convert.ToInt32(dr["MemberID"]);
                 MemberName = dr["MemberName"].ToString();
                 MemberCardNo = dr["MemberCardNo"].ToString();
+                MemberClass = (MemberClassType)Enum.Parse(typeof(MemberClassType), dr["MemberClass"].ToString());
 
                 if (!Convert.IsDBNull(dr["OrderID"]))
                     OrderID = Convert.ToInt32(dr["OrderID"]);
@@ -49,12 +50,12 @@ namespace iArsenal.Entity
 
         public void Update()
         {
-            DataAccess.MemberPeriod.UpdateMemberPeriod(MemberPeriodID, MemberID, MemberName, MemberCardNo, OrderID, StartDate, EndDate, IsActive, Description, Remark);
+            DataAccess.MemberPeriod.UpdateMemberPeriod(MemberPeriodID, MemberID, MemberName, MemberCardNo, (int)MemberClass, OrderID, StartDate, EndDate, IsActive, Description, Remark);
         }
 
         public void Insert()
         {
-            DataAccess.MemberPeriod.InsertMemberPeriod(MemberPeriodID, MemberID, MemberName, MemberCardNo, OrderID, StartDate, EndDate, IsActive, Description, Remark);
+            DataAccess.MemberPeriod.InsertMemberPeriod(MemberPeriodID, MemberID, MemberName, MemberCardNo, (int)MemberClass, OrderID, StartDate, EndDate, IsActive, Description, Remark);
         }
 
         public void Delete()
@@ -95,7 +96,6 @@ namespace iArsenal.Entity
         }
 
 
-
         #region Members and Properties
 
         public int MemberPeriodID
@@ -108,6 +108,9 @@ namespace iArsenal.Entity
         { get; set; }
 
         public string MemberCardNo
+        { get; set; }
+
+        public MemberClassType MemberClass
         { get; set; }
 
         public int? OrderID
@@ -129,5 +132,13 @@ namespace iArsenal.Entity
         { get; set; }
 
         #endregion
+
     }
+
+    public enum MemberClassType
+    {
+        Red = 1,
+        Silver = 2
+    }
+
 }

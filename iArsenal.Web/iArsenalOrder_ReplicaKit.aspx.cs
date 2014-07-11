@@ -28,12 +28,14 @@ namespace iArsenal.Web
                         ddlPlayerDetail.DataBind();
 
                         ddlPlayerDetail.Items.Insert(0, new ListItem("--请选择印字印号--", string.Empty));
+                        ddlPlayerDetail.Items.Insert(1, new ListItem("【自定义】", "custom"));
                     }
                 }
                 catch
                 {
                     ddlPlayerDetail.Items.Clear();
                     ddlPlayerDetail.Items.Insert(0, new ListItem("--请选择印字印号--", string.Empty));
+                    ddlPlayerDetail.Items.Insert(1, new ListItem("【自定义】", "custom"));
                 }
 
                 #endregion
@@ -62,14 +64,18 @@ namespace iArsenal.Web
             {
                 if (!string.IsNullOrEmpty(Request.QueryString["Type"]) && Request.QueryString["Type"].Equals("Away", StringComparison.OrdinalIgnoreCase))
                 {
-                    Page.Title = "阿森纳2014/15赛季客场球衣许愿单";
-                    hlReplicaKitPage.NavigateUrl = "http://arsenaldirect.arsenal.com/puma/icat/pumakit";
+                    Page.Title = "阿森纳2014/15赛季客场PUMA球衣许愿单";
+                    hlReplicaKitPage.NavigateUrl = "http://arsenaldirect.arsenal.com/puma-kit/puma-away-kit/icat/pumaaway";
+                    ltrlBannerImage.Text = string.Format("<img src=\"uploadfiles/banner/banner20140711.png\" alt=\"{0}\" />", Page.Title); ;
+
                     return ProductType.ReplicaKitAway;
                 }
                 else
                 {
-                    Page.Title = "阿森纳2014/15赛季主场球衣许愿单";
-                    hlReplicaKitPage.NavigateUrl = "http://arsenaldirect.arsenal.com/puma/icat/pumakit";
+                    Page.Title = "阿森纳2014/15赛季主场PUMA球衣许愿单";
+                    hlReplicaKitPage.NavigateUrl = "http://arsenaldirect.arsenal.com/puma-kit/puma-home-kit/icat/pumahome";
+                    ltrlBannerImage.Text = string.Format("<img src=\"uploadfiles/banner/banner20140710.png\" alt=\"{0}\" />", Page.Title); ;
+
                     return ProductType.ReplicaKitHome;
                 }
             }
@@ -222,6 +228,15 @@ namespace iArsenal.Web
                         if (player != null)
                         {
                             ddlPlayerDetail.SelectedValue = player.PlayerGuid.ToString();
+                        }
+                        else if (oiNumber.Remark.Equals("custom") && oiName.Remark.Equals("custom"))
+                        {
+                            // Custom Player Number & Name Printing
+                            ddlPlayerDetail.SelectedValue = "custom";
+
+                            trCustomPrinting.Style.Add("display", "");
+                            tbPlayerNumber.Text = oiNumber.Size;
+                            tbPlayerName.Text = oiName.Size;
                         }
                         else
                         {
@@ -392,28 +407,62 @@ namespace iArsenal.Web
                         {
                             Product pNumber = Product.Cache.Load(ProductType.PlayerNumber).Find(p => p.IsActive);
                             Product pName = Product.Cache.Load(ProductType.PlayerName).Find(p => p.IsActive);
-                            ArsenalPlayer player = Player.Cache.Load(new Guid(ddlPlayerDetail.SelectedValue));
 
-                            if (pNumber == null || pName == null || player == null)
+                            if (pNumber == null || pName == null)
                                 throw new Exception("无印号信息，请联系管理员");
 
-                            // New Order Item for Arsenal Font
-                            if (cbArsenalFont.Checked)
+                            if (ddlPlayerDetail.SelectedValue.Equals("custom"))
                             {
-                                Product pFont = Product.Cache.Load(ProductType.ArsenalFont).Find(p => p.IsActive);
+                                // Custom Printing
 
-                                if (pFont == null)
-                                    throw new Exception("无特殊字体信息，请联系管理员");
+                                if (string.IsNullOrEmpty(tbPlayerNumber.Text.Trim()) || string.IsNullOrEmpty(tbPlayerName.Text.Trim()))
+                                    throw new Exception("请填写自定义印字印号");
 
-                                OrderItemBase.WishOrderItem(m, pFont, o, string.Empty, 1, null, string.Empty, trans);
+                                // New Order Item for Arsenal Font
+                                if (cbArsenalFont.Checked)
+                                {
+                                    Product pFont = Product.Cache.Load(ProductType.ArsenalFont).Find(p => p.IsActive);
 
-                                OrderItemBase.WishOrderItem(m, pNumber, o, player.SquadNumber.ToString(), 1, 0f, player.PlayerGuid.ToString(), trans);
-                                OrderItemBase.WishOrderItem(m, pName, o, player.LastName, 1, 0f, player.PlayerGuid.ToString(), trans);
+                                    if (pFont == null)
+                                        throw new Exception("无特殊字体信息，请联系管理员");
+
+                                    OrderItemBase.WishOrderItem(m, pFont, o, string.Empty, 1, null, string.Empty, trans);
+
+                                    OrderItemBase.WishOrderItem(m, pNumber, o, tbPlayerNumber.Text.Trim(), 1, 0f, "custom", trans);
+                                    OrderItemBase.WishOrderItem(m, pName, o, tbPlayerName.Text.Trim(), 1, 0f, "custom", trans);
+                                }
+                                else
+                                {
+                                    OrderItemBase.WishOrderItem(m, pNumber, o, tbPlayerNumber.Text.Trim(), 1, null, "custom", trans);
+                                    OrderItemBase.WishOrderItem(m, pName, o, tbPlayerName.Text.Trim(), 1, null, "custom", trans);
+                                }
                             }
                             else
                             {
-                                OrderItemBase.WishOrderItem(m, pNumber, o, player.SquadNumber.ToString(), 1, null, player.PlayerGuid.ToString(), trans);
-                                OrderItemBase.WishOrderItem(m, pName, o, player.LastName, 1, null, player.PlayerGuid.ToString(), trans);
+                                // Arsenal Player Printing
+                                ArsenalPlayer player = Player.Cache.Load(new Guid(ddlPlayerDetail.SelectedValue));
+
+                                if (player == null)
+                                    throw new Exception("无球员信息，请联系管理员");
+
+                                // New Order Item for Arsenal Font
+                                if (cbArsenalFont.Checked)
+                                {
+                                    Product pFont = Product.Cache.Load(ProductType.ArsenalFont).Find(p => p.IsActive);
+
+                                    if (pFont == null)
+                                        throw new Exception("无特殊字体信息，请联系管理员");
+
+                                    OrderItemBase.WishOrderItem(m, pFont, o, string.Empty, 1, null, string.Empty, trans);
+
+                                    OrderItemBase.WishOrderItem(m, pNumber, o, player.SquadNumber.ToString(), 1, 0f, player.PlayerGuid.ToString(), trans);
+                                    OrderItemBase.WishOrderItem(m, pName, o, player.LastName, 1, 0f, player.PlayerGuid.ToString(), trans);
+                                }
+                                else
+                                {
+                                    OrderItemBase.WishOrderItem(m, pNumber, o, player.SquadNumber.ToString(), 1, null, player.PlayerGuid.ToString(), trans);
+                                    OrderItemBase.WishOrderItem(m, pName, o, player.LastName, 1, null, player.PlayerGuid.ToString(), trans);
+                                }
                             }
                         }
 

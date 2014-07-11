@@ -46,6 +46,7 @@ namespace iArsenal.Web
                 tbMemberID.Text = mp.MemberID.ToString();
                 tbMemberName.Text = mp.MemberName;
                 cbIsActive.Checked = mp.IsActive;
+                ddlMemberClass.SelectedValue = ((int)mp.MemberClass).ToString();
                 tbMemberCardNo.Text = mp.MemberCardNo;
 
                 if (mp.OrderID.HasValue)
@@ -90,6 +91,12 @@ namespace iArsenal.Web
 
                 mp.MemberName = tbMemberName.Text.Trim();
                 mp.IsActive = cbIsActive.Checked;
+
+                if (!string.IsNullOrEmpty(ddlMemberClass.SelectedValue))
+                    mp.MemberClass = (MemberClassType)Enum.Parse(typeof(MemberClassType), ddlMemberClass.SelectedValue);
+                else
+                    throw new Exception("MemberClass can't be empty");
+
                 mp.MemberCardNo = tbMemberCardNo.Text.Trim();
 
                 if (!string.IsNullOrEmpty(tbOrderID.Text.Trim()))

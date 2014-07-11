@@ -62,20 +62,31 @@
                         </td>
                     </tr>
                     <tr class="AlternatingRow">
+                        <td class="FieldHeader">会员等级:
+                        </td>
+                        <td style="text-align: left">
+                            <asp:DropDownList ID="ddlMemberClass" runat="server">
+                                <asp:ListItem Text="--请选择会员等级--" Selected="True"></asp:ListItem>
+                                <asp:ListItem Text="红会员" Value="1"></asp:ListItem>
+                                <asp:ListItem Text="银会员" Value="2"></asp:ListItem>
+                            </asp:DropDownList>
+                        </td>
                         <td class="FieldHeader">会员卡号:
                         </td>
                         <td style="text-align: left">
                             <asp:TextBox ID="tbMemberCardNo" runat="server" CssClass="TextBox" Width="200px"></asp:TextBox>
                         </td>
+                    </tr>
+                    <tr class="Row">
                         <td class="FieldHeader">订单信息:
                         </td>
-                        <td style="text-align: left" id="tdAcnInfo">
+                        <td style="text-align: left" id="tdAcnInfo" colspan="3">
                             <asp:TextBox ID="tbOrderID" runat="server" CssClass="TextBox OrderID" Width="50px"></asp:TextBox>
                             <asp:TextBox ID="tbOrderPrice" runat="server" CssClass="TextBoxRead OrderPrice"></asp:TextBox>
                             <a id="btnOrderCheck" class="LinkBtn" href="javascript:OrderCheck()">检查</a>
                         </td>
                     </tr>
-                    <tr class="Row">
+                    <tr class="AlternatingRow">
                         <td class="FieldHeader">开始时间:
                         </td>
                         <td style="text-align: left" id="tdStartDate">
@@ -87,7 +98,7 @@
                             <asp:TextBox ID="tbEndDate" runat="server" CssClass="TextBox" Width="200px"></asp:TextBox>
                         </td>
                     </tr>
-                    <tr class="AlternatingRow">
+                    <tr class="Row">
                         <td class="FieldHeader">简介:
                         </td>
                         <td style="text-align: left" colspan="3">
@@ -95,7 +106,7 @@
                                 TextMode="MultiLine"></asp:TextBox>
                         </td>
                     </tr>
-                    <tr class="Row">
+                    <tr class="AlternatingRow">
                         <td class="FieldHeader">备注:
                         </td>
                         <td style="text-align: left" colspan="3">

@@ -179,6 +179,12 @@ namespace iArsenal.Web
                         btnSubmit.Visible = false;
                         btnModify.Visible = false;
                         btnCancel.Visible = true;
+
+                        if (string.IsNullOrEmpty(o.Remark))
+                        {
+                            lblOrderRemark.Text = "<em>请尽快按右侧提示框的付款方式进行球衣全额支付。<br />我们会在收到您的款项后，为您安排确认并下单。</em>";
+                            phOrderRemark.Visible = true;
+                        }
                     }
                     else
                     {
@@ -216,7 +222,7 @@ namespace iArsenal.Web
                     o.Price = Convert.ToSingle(tbOrderPrice.Text.Trim());
                     o.Update();
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", string.Format("alert('谢谢您的订购，您的订单已经提交成功。\\r\\n请尽快付款以完成订单确认，订单号为：{0}'); window.location.href = window.location.href", o.OrderID.ToString()), true);
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", string.Format("alert('谢谢您的订购，您的订单已经提交成功。\\r\\n请尽快通过支付宝或银行转帐付款，以完成订单确认。\\r\\n订单号为：{0}'); window.location.href = window.location.href", o.OrderID.ToString()), true);
                 }
                 else
                 {

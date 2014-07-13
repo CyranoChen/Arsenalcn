@@ -31,6 +31,11 @@ namespace Arsenal.Entity
 
                 DisplayName = dr["DisplayName"].ToString();
 
+                if (!Convert.IsDBNull(dr["PrintingName"]))
+                    PrintingName = dr["PrintingName"].ToString();
+                else
+                    PrintingName = null;
+
                 if (!string.IsNullOrEmpty(dr["Position"].ToString()))
                     Position = (PlayerPostionType)Enum.Parse(typeof(PlayerPostionType), dr["Position"].ToString());
                 else
@@ -84,7 +89,7 @@ namespace Arsenal.Entity
             if (Position != PlayerPostionType.Null)
                 _position = Position.ToString();
 
-            DataAccess.Player.UpdatePlayer(PlayerGuid, FirstName, LastName, DisplayName, _position, SquadNumber, FaceURL, PhotoURL, Offset, IsLegend, IsLoan, Birthday, Born, Starts, Subs, Apps, Goals, JoinDate, Joined, Left, Debut, FirstGoal, PreviousClubs, Profile);
+            DataAccess.Player.UpdatePlayer(PlayerGuid, FirstName, LastName, DisplayName, PrintingName, _position, SquadNumber, FaceURL, PhotoURL, Offset, IsLegend, IsLoan, Birthday, Born, Starts, Subs, Apps, Goals, JoinDate, Joined, Left, Debut, FirstGoal, PreviousClubs, Profile);
         }
 
         public void Insert()
@@ -93,7 +98,7 @@ namespace Arsenal.Entity
             if (Position != PlayerPostionType.Null)
                 _position = Position.ToString();
 
-            DataAccess.Player.InsertPlayer(PlayerGuid, FirstName, LastName, DisplayName, _position, SquadNumber, FaceURL, PhotoURL, Offset, IsLegend, IsLoan, Birthday, Born, Starts, Subs, Apps, Goals, JoinDate, Joined, Left, Debut, FirstGoal, PreviousClubs, Profile);
+            DataAccess.Player.InsertPlayer(PlayerGuid, FirstName, LastName, DisplayName, PrintingName, _position, SquadNumber, FaceURL, PhotoURL, Offset, IsLegend, IsLoan, Birthday, Born, Starts, Subs, Apps, Goals, JoinDate, Joined, Left, Debut, FirstGoal, PreviousClubs, Profile);
         }
 
         public void Delete()
@@ -176,6 +181,9 @@ namespace Arsenal.Entity
         { get; set; }
 
         public string DisplayName
+        { get; set; }
+
+        public string PrintingName
         { get; set; }
 
         public PlayerPostionType Position

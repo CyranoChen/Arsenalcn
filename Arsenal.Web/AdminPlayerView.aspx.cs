@@ -53,6 +53,11 @@ namespace Arsenal.Web
                 else
                     tbLastName.Text = string.Empty;
 
+                if (!string.IsNullOrEmpty(p.PrintingName))
+                    tbPrintingName.Text = p.PrintingName;
+                else
+                    tbPrintingName.Text = string.Empty;
+
                 if (p.Position == PlayerPostionType.Null)
                     ddlPosition.SelectedValue = string.Empty;
                 else
@@ -119,6 +124,11 @@ namespace Arsenal.Web
                     p.DisplayName = _pName.Trim();
                 else
                     throw new Exception("请输入球员姓名");
+
+                if (!string.IsNullOrEmpty(tbPrintingName.Text.Trim()))
+                    p.PrintingName = tbPrintingName.Text.Trim();
+                else
+                    p.PrintingName = null;
 
                 if (!string.IsNullOrEmpty(ddlPosition.SelectedValue))
                     p.Position = (PlayerPostionType)Enum.Parse(typeof(PlayerPostionType), ddlPosition.SelectedValue);

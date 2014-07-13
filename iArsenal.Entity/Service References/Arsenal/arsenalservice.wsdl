@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://service.arsenal.cn/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:s1="http://microsoft.com/wsdl/types/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://service.arsenal.cn/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://service.arsenal.cn/" xmlns:s1="http://microsoft.com/wsdl/types/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://service.arsenal.cn/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
   <wsdl:types>
     <s:schema elementFormDefault="qualified" targetNamespace="http://service.arsenal.cn/">
       <s:import namespace="http://microsoft.com/wsdl/types/" />
@@ -61,7 +61,8 @@
           <s:element minOccurs="0" maxOccurs="1" name="FirstName" type="s:string" />
           <s:element minOccurs="0" maxOccurs="1" name="LastName" type="s:string" />
           <s:element minOccurs="0" maxOccurs="1" name="DisplayName" type="s:string" />
-          <s:element minOccurs="1" maxOccurs="1" name="Position" type="tns:PlayerPosition" />
+          <s:element minOccurs="0" maxOccurs="1" name="PrintingName" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Position" type="tns:PlayerPostionType" />
           <s:element minOccurs="1" maxOccurs="1" name="SquadNumber" type="s:int" />
           <s:element minOccurs="0" maxOccurs="1" name="FaceURL" type="s:string" />
           <s:element minOccurs="0" maxOccurs="1" name="PhotoURL" type="s:string" />
@@ -83,7 +84,7 @@
           <s:element minOccurs="0" maxOccurs="1" name="Profile" type="s:string" />
         </s:sequence>
       </s:complexType>
-      <s:simpleType name="PlayerPosition">
+      <s:simpleType name="PlayerPostionType">
         <s:restriction base="s:string">
           <s:enumeration value="Null" />
           <s:enumeration value="Goalkeeper" />
@@ -124,9 +125,73 @@
           <s:element minOccurs="1" maxOccurs="1" name="LeagueCountInfo" type="s:int" />
         </s:sequence>
       </s:complexType>
+      <s:element name="GetLeagues">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetLeaguesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetLeaguesResult" type="tns:ArrayOfLeague" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfLeague">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="League" nillable="true" type="tns:League" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="League">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="LeagueGuid" type="s1:guid" />
+          <s:element minOccurs="0" maxOccurs="1" name="LeagueName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="LeagueOrgName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="LeagueSeason" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="LeagueTime" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="LeagueLogo" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="LeagueOrder" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="IsActive" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="TeamCountInfo" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="LeagueNameInfo" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetVideos">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetVideosResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetVideosResult" type="tns:ArrayOfVideo" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfVideo">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Video" nillable="true" type="tns:Video" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Video">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="VideoGuid" type="s1:guid" />
+          <s:element minOccurs="0" maxOccurs="1" name="FileName" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ArsenalMatchGuid" nillable="true" type="s1:guid" />
+          <s:element minOccurs="1" maxOccurs="1" name="GoalPlayerGuid" nillable="true" type="s1:guid" />
+          <s:element minOccurs="0" maxOccurs="1" name="GoalPlayerName" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="AssistPlayerGuid" nillable="true" type="s1:guid" />
+          <s:element minOccurs="0" maxOccurs="1" name="AssistPlayerName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="GoalRank" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="TeamworkRank" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="VideoLength" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="VideoWidth" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="VideoHeight" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="GoalYear" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Opponent" type="s:string" />
+        </s:sequence>
+      </s:complexType>
       <s:element name="ArrayOfMatch" nillable="true" type="tns:ArrayOfMatch" />
       <s:element name="ArrayOfPlayer" nillable="true" type="tns:ArrayOfPlayer" />
       <s:element name="ArrayOfTeam" nillable="true" type="tns:ArrayOfTeam" />
+      <s:element name="ArrayOfLeague" nillable="true" type="tns:ArrayOfLeague" />
+      <s:element name="ArrayOfVideo" nillable="true" type="tns:ArrayOfVideo" />
     </s:schema>
     <s:schema elementFormDefault="qualified" targetNamespace="http://microsoft.com/wsdl/types/">
       <s:simpleType name="guid">
@@ -154,6 +219,18 @@
   <wsdl:message name="GetTeamsSoapOut">
     <wsdl:part name="parameters" element="tns:GetTeamsResponse" />
   </wsdl:message>
+  <wsdl:message name="GetLeaguesSoapIn">
+    <wsdl:part name="parameters" element="tns:GetLeagues" />
+  </wsdl:message>
+  <wsdl:message name="GetLeaguesSoapOut">
+    <wsdl:part name="parameters" element="tns:GetLeaguesResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetVideosSoapIn">
+    <wsdl:part name="parameters" element="tns:GetVideos" />
+  </wsdl:message>
+  <wsdl:message name="GetVideosSoapOut">
+    <wsdl:part name="parameters" element="tns:GetVideosResponse" />
+  </wsdl:message>
   <wsdl:message name="GetMatchsHttpGetIn" />
   <wsdl:message name="GetMatchsHttpGetOut">
     <wsdl:part name="Body" element="tns:ArrayOfMatch" />
@@ -166,6 +243,14 @@
   <wsdl:message name="GetTeamsHttpGetOut">
     <wsdl:part name="Body" element="tns:ArrayOfTeam" />
   </wsdl:message>
+  <wsdl:message name="GetLeaguesHttpGetIn" />
+  <wsdl:message name="GetLeaguesHttpGetOut">
+    <wsdl:part name="Body" element="tns:ArrayOfLeague" />
+  </wsdl:message>
+  <wsdl:message name="GetVideosHttpGetIn" />
+  <wsdl:message name="GetVideosHttpGetOut">
+    <wsdl:part name="Body" element="tns:ArrayOfVideo" />
+  </wsdl:message>
   <wsdl:message name="GetMatchsHttpPostIn" />
   <wsdl:message name="GetMatchsHttpPostOut">
     <wsdl:part name="Body" element="tns:ArrayOfMatch" />
@@ -177,6 +262,14 @@
   <wsdl:message name="GetTeamsHttpPostIn" />
   <wsdl:message name="GetTeamsHttpPostOut">
     <wsdl:part name="Body" element="tns:ArrayOfTeam" />
+  </wsdl:message>
+  <wsdl:message name="GetLeaguesHttpPostIn" />
+  <wsdl:message name="GetLeaguesHttpPostOut">
+    <wsdl:part name="Body" element="tns:ArrayOfLeague" />
+  </wsdl:message>
+  <wsdl:message name="GetVideosHttpPostIn" />
+  <wsdl:message name="GetVideosHttpPostOut">
+    <wsdl:part name="Body" element="tns:ArrayOfVideo" />
   </wsdl:message>
   <wsdl:portType name="ServiceArsenalSoap">
     <wsdl:operation name="GetMatchs">
@@ -193,6 +286,16 @@
       <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Arsenal.Entity.Team.Cache.TeamList</wsdl:documentation>
       <wsdl:input message="tns:GetTeamsSoapIn" />
       <wsdl:output message="tns:GetTeamsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetLeagues">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Arsenal.Entity.League.Cache.LeagueList</wsdl:documentation>
+      <wsdl:input message="tns:GetLeaguesSoapIn" />
+      <wsdl:output message="tns:GetLeaguesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetVideos">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Arsenal.Entity.Video.Cache.VideoList</wsdl:documentation>
+      <wsdl:input message="tns:GetVideosSoapIn" />
+      <wsdl:output message="tns:GetVideosSoapOut" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:portType name="ServiceArsenalHttpGet">
@@ -211,6 +314,16 @@
       <wsdl:input message="tns:GetTeamsHttpGetIn" />
       <wsdl:output message="tns:GetTeamsHttpGetOut" />
     </wsdl:operation>
+    <wsdl:operation name="GetLeagues">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Arsenal.Entity.League.Cache.LeagueList</wsdl:documentation>
+      <wsdl:input message="tns:GetLeaguesHttpGetIn" />
+      <wsdl:output message="tns:GetLeaguesHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetVideos">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Arsenal.Entity.Video.Cache.VideoList</wsdl:documentation>
+      <wsdl:input message="tns:GetVideosHttpGetIn" />
+      <wsdl:output message="tns:GetVideosHttpGetOut" />
+    </wsdl:operation>
   </wsdl:portType>
   <wsdl:portType name="ServiceArsenalHttpPost">
     <wsdl:operation name="GetMatchs">
@@ -227,6 +340,16 @@
       <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Arsenal.Entity.Team.Cache.TeamList</wsdl:documentation>
       <wsdl:input message="tns:GetTeamsHttpPostIn" />
       <wsdl:output message="tns:GetTeamsHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetLeagues">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Arsenal.Entity.League.Cache.LeagueList</wsdl:documentation>
+      <wsdl:input message="tns:GetLeaguesHttpPostIn" />
+      <wsdl:output message="tns:GetLeaguesHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetVideos">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Arsenal.Entity.Video.Cache.VideoList</wsdl:documentation>
+      <wsdl:input message="tns:GetVideosHttpPostIn" />
+      <wsdl:output message="tns:GetVideosHttpPostOut" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="ServiceArsenalSoap" type="tns:ServiceArsenalSoap">
@@ -251,6 +374,24 @@
     </wsdl:operation>
     <wsdl:operation name="GetTeams">
       <soap:operation soapAction="http://service.arsenal.cn/GetTeams" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLeagues">
+      <soap:operation soapAction="http://service.arsenal.cn/GetLeagues" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetVideos">
+      <soap:operation soapAction="http://service.arsenal.cn/GetVideos" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -288,6 +429,24 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="GetLeagues">
+      <soap12:operation soapAction="http://service.arsenal.cn/GetLeagues" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetVideos">
+      <soap12:operation soapAction="http://service.arsenal.cn/GetVideos" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
   </wsdl:binding>
   <wsdl:binding name="ServiceArsenalHttpGet" type="tns:ServiceArsenalHttpGet">
     <http:binding verb="GET" />
@@ -311,6 +470,24 @@
     </wsdl:operation>
     <wsdl:operation name="GetTeams">
       <http:operation location="/GetTeams" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLeagues">
+      <http:operation location="/GetLeagues" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetVideos">
+      <http:operation location="/GetVideos" />
       <wsdl:input>
         <http:urlEncoded />
       </wsdl:input>
@@ -348,19 +525,37 @@
         <mime:mimeXml part="Body" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="GetLeagues">
+      <http:operation location="/GetLeagues" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetVideos">
+      <http:operation location="/GetVideos" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
   </wsdl:binding>
   <wsdl:service name="ServiceArsenal">
     <wsdl:port name="ServiceArsenalSoap" binding="tns:ServiceArsenalSoap">
-      <soap:address location="http://localhost/services/arsenalservice.asmx" />
+      <soap:address location="http://vm-win2008r2/services/arsenalservice.asmx" />
     </wsdl:port>
     <wsdl:port name="ServiceArsenalSoap12" binding="tns:ServiceArsenalSoap12">
-      <soap12:address location="http://localhost/services/arsenalservice.asmx" />
+      <soap12:address location="http://vm-win2008r2/services/arsenalservice.asmx" />
     </wsdl:port>
     <wsdl:port name="ServiceArsenalHttpGet" binding="tns:ServiceArsenalHttpGet">
-      <http:address location="http://localhost/services/arsenalservice.asmx" />
+      <http:address location="http://vm-win2008r2/services/arsenalservice.asmx" />
     </wsdl:port>
     <wsdl:port name="ServiceArsenalHttpPost" binding="tns:ServiceArsenalHttpPost">
-      <http:address location="http://localhost/services/arsenalservice.asmx" />
+      <http:address location="http://vm-win2008r2/services/arsenalservice.asmx" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

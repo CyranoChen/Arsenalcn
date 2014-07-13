@@ -88,11 +88,15 @@
     <WebReferences Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <None Include="Service References\Arsenal\arsenalservice.wsdl" />
+    <None Include="Service References\Arsenal\League.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
     <None Include="Service References\Arsenal\Match.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </None>
@@ -106,12 +110,15 @@
     <None Include="Service References\Arsenal\Team.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </None>
+    <None Include="Service References\Arsenal\Video.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <WebReferenceUrl Include="http://localhost/services/arsenalservice.asmx">
+    <WebReferenceUrl Include="http://vm-win2008r2/services/arsenalservice.asmx">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Service References\Arsenal\</RelPath>
-      <UpdateFromURL>http://localhost/services/arsenalservice.asmx</UpdateFromURL>
+      <UpdateFromURL>http://vm-win2008r2/services/arsenalservice.asmx</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>

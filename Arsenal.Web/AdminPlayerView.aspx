@@ -21,24 +21,21 @@
                 </thead>
                 <tbody id="phBasicInfo">
                     <tr class="Row">
-                        <td class="FieldHeader" style="width: 30%">
-                            球员GUID:
+                        <td class="FieldHeader" style="width: 30%">球员GUID:
                         </td>
                         <td align="left">
                             <asp:TextBox ID="tbPlayerGuid" runat="server" CssClass="TextBoxRead" Width="300px"></asp:TextBox>
                         </td>
                     </tr>
                     <tr class="AlternatingRow">
-                        <td class="FieldHeader">
-                            First Name(名):
+                        <td class="FieldHeader">First Name(名):
                         </td>
                         <td align="left">
                             <asp:TextBox ID="tbFirstName" runat="server" CssClass="TextBox" Width="300px"></asp:TextBox>
                         </td>
                     </tr>
                     <tr class="Row">
-                        <td class="FieldHeader">
-                            Last Name(姓):
+                        <td class="FieldHeader">Last Name(姓):
                         </td>
                         <td align="left">
                             <asp:TextBox ID="tbLastName" runat="server" CssClass="TextBox" Width="300px"></asp:TextBox>
@@ -46,9 +43,15 @@
                                 ErrorMessage="*" CssClass="ValiSpan" Display="Dynamic" />
                         </td>
                     </tr>
+                    <tr class="Row">
+                        <td class="FieldHeader">球衣印字:
+                        </td>
+                        <td align="left">
+                            <asp:TextBox ID="tbPrintingName" runat="server" CssClass="TextBox" Width="300px"></asp:TextBox>
+                        </td>
+                    </tr>
                     <tr class="AlternatingRow">
-                        <td class="FieldHeader">
-                            球场位置:
+                        <td class="FieldHeader">球场位置:
                         </td>
                         <td align="left">
                             <asp:DropDownList ID="ddlPosition" runat="server" Width="300px">
@@ -62,8 +65,7 @@
                         </td>
                     </tr>
                     <tr class="Row">
-                        <td class="FieldHeader">
-                            球员号码:
+                        <td class="FieldHeader">球员号码:
                         </td>
                         <td align="left">
                             <asp:TextBox ID="tbSquadNumber" runat="server" CssClass="TextBox" MaxLength="2" Width="40px"
@@ -73,8 +75,7 @@
                         </td>
                     </tr>
                     <tr class="AlternatingRow">
-                        <td class="FieldHeader">
-                            头像:
+                        <td class="FieldHeader">头像:
                         </td>
                         <td align="left">
                             <asp:TextBox ID="tbFaceURL" runat="server" CssClass="TextBox" Width="300px" Text="UploadFiles/StripFace/Legend.jpg"></asp:TextBox>
@@ -83,16 +84,14 @@
                         </td>
                     </tr>
                     <tr class="Row">
-                        <td class="FieldHeader">
-                            照片:
+                        <td class="FieldHeader">照片:
                         </td>
                         <td align="left">
                             <asp:TextBox ID="tbPhotoURL" runat="server" CssClass="TextBox" Width="300px" Text="UploadFiles/StripPhoto/"></asp:TextBox>
                         </td>
                     </tr>
                     <tr class="AlternatingRow">
-                        <td class="FieldHeader">
-                            偏移量:
+                        <td class="FieldHeader">偏移量:
                         </td>
                         <td align="left">
                             <asp:TextBox ID="tbOffset" runat="server" CssClass="TextBox" Width="40px" Text="50"></asp:TextBox>
@@ -101,8 +100,7 @@
                         </td>
                     </tr>
                     <tr class="Row">
-                        <td class="FieldHeader">
-                            是否离队:
+                        <td class="FieldHeader">是否离队:
                         </td>
                         <td align="left">
                             <asp:CheckBox ID="cbLegend" Text="是否离队" ToolTip="现役为false, 离队为true" runat="server"
@@ -110,8 +108,7 @@
                         </td>
                     </tr>
                     <tr class="AlternatingRow">
-                        <td class="FieldHeader">
-                            是否租借:
+                        <td class="FieldHeader">是否租借:
                         </td>
                         <td align="left">
                             <asp:CheckBox ID="cbLoan" Text="是否租借" ToolTip="现役为false, 租借为true" runat="server"
@@ -131,96 +128,84 @@
                 </thead>
                 <tbody id="phDetailInfo">
                     <tr class="Row">
-                        <td class="FieldHeader" style="width: 30%">
-                            生日:
+                        <td class="FieldHeader" style="width: 30%">生日:
                         </td>
                         <td align="left">
                             <asp:TextBox ID="tbBirthday" runat="server" CssClass="TextBox" Width="400px"></asp:TextBox>
                         </td>
                     </tr>
                     <tr class="AlternatingRow">
-                        <td class="FieldHeader">
-                            出生地:
+                        <td class="FieldHeader">出生地:
                         </td>
                         <td align="left">
                             <asp:TextBox ID="tbBorn" runat="server" CssClass="TextBox" Width="400px"></asp:TextBox>
                         </td>
                     </tr>
                     <tr class="Row">
-                        <td class="FieldHeader">
-                            首发数:
+                        <td class="FieldHeader">首发数:
                         </td>
                         <td align="left">
                             <asp:TextBox ID="tbStarts" runat="server" CssClass="TextBox" Width="40px" Text="0"></asp:TextBox>
                         </td>
                     </tr>
                     <tr class="AlternatingRow">
-                        <td class="FieldHeader">
-                            替补数:
+                        <td class="FieldHeader">替补数:
                         </td>
                         <td align="left">
                             <asp:TextBox ID="tbSubs" runat="server" CssClass="TextBox" Width="40px" Text="0"></asp:TextBox>
                         </td>
                     </tr>
                     <tr class="Row">
-                        <td class="FieldHeader">
-                            进球数:
+                        <td class="FieldHeader">进球数:
                         </td>
                         <td align="left">
                             <asp:TextBox ID="tbGoals" runat="server" CssClass="TextBox" Width="40px" Text="0"></asp:TextBox>
                         </td>
                     </tr>
                     <tr class="AlternatingRow">
-                        <td class="FieldHeader">
-                            加盟时间:
+                        <td class="FieldHeader">加盟时间:
                         </td>
                         <td align="left">
                             <asp:TextBox ID="tbJoinDate" runat="server" CssClass="TextBox" Width="400px" ToolTip="yyyy-MM-dd"></asp:TextBox>
                         </td>
                     </tr>
                     <tr class="Row">
-                        <td class="FieldHeader">
-                            加盟(年):
+                        <td class="FieldHeader">加盟(年):
                         </td>
                         <td align="left">
                             <asp:TextBox ID="tbJoined" runat="server" CssClass="TextBox" Width="400px" ToolTip="yyyy-MM-dd"></asp:TextBox>
                         </td>
                     </tr>
                     <tr class="AlternatingRow">
-                        <td class="FieldHeader">
-                            离队(年):
+                        <td class="FieldHeader">离队(年):
                         </td>
                         <td align="left">
                             <asp:TextBox ID="tbLeft" runat="server" CssClass="TextBox" Width="400px" ToolTip="yyyy"></asp:TextBox>
                         </td>
                     </tr>
                     <tr class="Row">
-                        <td class="FieldHeader">
-                            首次上场:
+                        <td class="FieldHeader">首次上场:
                         </td>
                         <td align="left">
                             <asp:TextBox ID="tbDebut" runat="server" CssClass="TextBox" Width="400px"></asp:TextBox>
                         </td>
                     </tr>
                     <tr class="AlternatingRow">
-                        <td class="FieldHeader">
-                            首次进球:
+                        <td class="FieldHeader">首次进球:
                         </td>
                         <td align="left">
                             <asp:TextBox ID="tbFirstGoal" runat="server" CssClass="TextBox" Width="400px"></asp:TextBox>
                         </td>
                     </tr>
                     <tr class="Row">
-                        <td class="FieldHeader">
-                            前球队:
+                        <td class="FieldHeader">前球队:
                         </td>
                         <td align="left">
                             <asp:TextBox ID="tbPreviousClubs" runat="server" CssClass="TextBox" Width="400px"></asp:TextBox>
                         </td>
                     </tr>
                     <tr class="AlternatingRow">
-                        <td class="FieldHeader">
-                            档案:
+                        <td class="FieldHeader">档案:
                         </td>
                         <td align="left">
                             <asp:TextBox ID="tbProfile" runat="server" CssClass="TextBox" Width="400px" TextMode="MultiLine"

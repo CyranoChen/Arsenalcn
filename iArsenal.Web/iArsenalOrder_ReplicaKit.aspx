@@ -180,7 +180,7 @@
                             <asp:TextBox ID="tbPlayerName" runat="server" CssClass="TextBox" Width="150px" MaxLength="20"></asp:TextBox>
                         </td>
                     </tr>
-                    <tr class="AlternatingRow" style="display:none">
+                    <tr class="AlternatingRow" style="display: none">
                         <td class="FieldHeader">特殊字体：
                         </td>
                         <td style="text-align: left" colspan="3" id="tdArsenalFont">
@@ -253,7 +253,7 @@
                     <a>球衣印字印号说明</a></h3>
                 <div class="Block">
                     <p>(1). 您可以下拉框中选择现役球员印字印号；如需自定义印字印号，请在下拉框中选择<em>自定义</em>，并出现的文本框中填写号码与印字。</p>
-                    <p style="display:none">(2). 特殊字体“阿森纳字体”为胶印，具体效果可<a href="http://arsenaldirect.arsenal.com/icat/kitbuilder/" target="_blank">【点击体验】</a>，阿森纳字体不接受自定义印字印号。选择了阿森纳字体后，印字印号会自动按阿森纳字体的费用结算。</p>
+                    <p style="display: none">(2). 特殊字体“阿森纳字体”为胶印，具体效果可<a href="http://arsenaldirect.arsenal.com/icat/kitbuilder/" target="_blank">【点击体验】</a>，阿森纳字体不接受自定义印字印号。选择了阿森纳字体后，印字印号会自动按阿森纳字体的费用结算。</p>
                     <p>(2). 因球衣定制的特殊性（选印名字、号码、袖标等个性化选择），应提交订单后尽快付款；若拒付全额款项的，我们将视为无效的订单，敬请配合和谅解。</p>
                 </div>
             </div>

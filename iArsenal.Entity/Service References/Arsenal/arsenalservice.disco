@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <discovery xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.xmlsoap.org/disco/">
-  <contractRef ref="http://localhost/services/arsenalservice.asmx?wsdl" docRef="http://localhost/services/arsenalservice.asmx" xmlns="http://schemas.xmlsoap.org/disco/scl/" />
-  <soap address="http://localhost/services/arsenalservice.asmx" xmlns:q1="http://service.arsenal.cn/" binding="q1:ServiceArsenalSoap" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
-  <soap address="http://localhost/services/arsenalservice.asmx" xmlns:q2="http://service.arsenal.cn/" binding="q2:ServiceArsenalSoap12" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
+  <contractRef ref="http://vm-win2008r2/services/arsenalservice.asmx?wsdl" docRef="http://vm-win2008r2/services/arsenalservice.asmx" xmlns="http://schemas.xmlsoap.org/disco/scl/" />
+  <soap address="http://vm-win2008r2/services/arsenalservice.asmx" xmlns:q1="http://service.arsenal.cn/" binding="q1:ServiceArsenalSoap" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
+  <soap address="http://vm-win2008r2/services/arsenalservice.asmx" xmlns:q2="http://service.arsenal.cn/" binding="q2:ServiceArsenalSoap12" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
 </discovery>

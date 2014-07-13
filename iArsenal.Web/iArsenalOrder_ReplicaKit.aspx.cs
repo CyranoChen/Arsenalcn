@@ -242,7 +242,11 @@ namespace iArsenal.Web
                         {
                             try
                             {
-                                player = Player.Cache.PlayerList.Find(ap => ap.LastName.Equals(oiName.Size, StringComparison.OrdinalIgnoreCase) && ap.SquadNumber.Equals(Convert.ToInt16(oiNumber.Size)));
+                                player = Player.Cache.PlayerList.Find(ap =>
+                                    (ap.PrintingName.Equals(oiName.Size, StringComparison.OrdinalIgnoreCase)
+                                    || ap.LastName.Equals(oiName.Size, StringComparison.OrdinalIgnoreCase)
+                                    || ap.FirstName.Equals(oiName.Size, StringComparison.OrdinalIgnoreCase))
+                                    && ap.SquadNumber.Equals(Convert.ToInt16(oiNumber.Size)));
 
                                 if (player != null)
                                     ddlPlayerDetail.SelectedValue = player.PlayerGuid.ToString();
@@ -445,6 +449,8 @@ namespace iArsenal.Web
                                 if (player == null)
                                     throw new Exception("无球员信息，请联系管理员");
 
+                                string _printingName = GetArsenalPlayerPrintingName(player);
+
                                 // New Order Item for Arsenal Font
                                 if (cbArsenalFont.Checked)
                                 {
@@ -456,12 +462,12 @@ namespace iArsenal.Web
                                     OrderItemBase.WishOrderItem(m, pFont, o, string.Empty, 1, null, string.Empty, trans);
 
                                     OrderItemBase.WishOrderItem(m, pNumber, o, player.SquadNumber.ToString(), 1, 0f, player.PlayerGuid.ToString(), trans);
-                                    OrderItemBase.WishOrderItem(m, pName, o, player.LastName, 1, 0f, player.PlayerGuid.ToString(), trans);
+                                    OrderItemBase.WishOrderItem(m, pName, o, _printingName, 1, 0f, player.PlayerGuid.ToString(), trans);
                                 }
                                 else
                                 {
                                     OrderItemBase.WishOrderItem(m, pNumber, o, player.SquadNumber.ToString(), 1, null, player.PlayerGuid.ToString(), trans);
-                                    OrderItemBase.WishOrderItem(m, pName, o, player.LastName, 1, null, player.PlayerGuid.ToString(), trans);
+                                    OrderItemBase.WishOrderItem(m, pName, o, _printingName, 1, null, player.PlayerGuid.ToString(), trans);
                                 }
                             }
                         }
@@ -523,8 +529,46 @@ namespace iArsenal.Web
             {
                 ArsenalPlayer p = Player.Cache.Load(new Guid(li.Value));
 
-                li.Text = string.Format("{1} ({0})", p.SquadNumber.ToString(), p.LastName);
-                //li.Value = string.Format("{0}|{1}", p.SquadNumber.ToString(), p.LastName);
+                if (p != null)
+                {
+                    li.Text = string.Format("{1} ({0})", p.SquadNumber.ToString(), GetArsenalPlayerPrintingName(p).ToUpper());
+                    //li.Value = string.Format("{0}|{1}", p.SquadNumber.ToString(), p.LastName);
+                }
+            }
+        }
+
+        private string GetArsenalPlayerPrintingName(ArsenalPlayer ap)
+        {
+            string _strPrintingName = string.Empty;
+
+            if (ap != null)
+            {
+                if (!string.IsNullOrEmpty(ap.PrintingName))
+                {
+                    _strPrintingName = ap.PrintingName;
+                }
+                else
+                {
+                    if (!string.IsNullOrEmpty(ap.LastName))
+                    {
+                        _strPrintingName = ap.LastName;
+                    }
+                    else if (!string.IsNullOrEmpty(ap.FirstName))
+                    {
+                        _strPrintingName = ap.FirstName;
+
+                    }
+                    else
+                    {
+                        _strPrintingName = ap.DisplayName;
+                    }
+                }
+
+                return _strPrintingName;
+            }
+            else
+            {
+                return null;
             }
         }
     }

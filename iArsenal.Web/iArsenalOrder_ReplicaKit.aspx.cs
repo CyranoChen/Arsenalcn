@@ -519,7 +519,7 @@ namespace iArsenal.Web
             {
                 Product p = Product.Cache.Load(new Guid(li.Value));
 
-                li.Text = string.Format("({0}) {1} - 售价{3}元", p.Code, p.DisplayName, p.Name, p.PriceCNY.ToString("f2"));
+                li.Text = string.Format("({0}) {1} - 售价 ￥{3}", p.Code, p.DisplayName, p.Name, p.PriceCNY.ToString("f2"));
             }
         }
 

@@ -168,6 +168,8 @@ namespace iArsenal.Entity
                         return new Order_Travel(id);
                     case OrderBaseType.Wish:
                         return new Order_Wish(id);
+                    case OrderBaseType.MemberShip:
+                        return new Order_MemberShip(id);
                     default:
                         return new OrderBase(id);
                 }
@@ -279,6 +281,11 @@ namespace iArsenal.Entity
                     || oiList.Exists(oi => oi.ProductGuid.Equals(Guid.Empty)))
                 {
                     OrderType = OrderBaseType.Wish;
+                }
+                else if (oiList.Exists(oi => Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.ReplicaKitHome)
+                    || Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.ReplicaKitAway)))
+                {
+                    OrderType = OrderBaseType.MemberShip;
                 }
                 else
                 {
@@ -402,6 +409,7 @@ namespace iArsenal.Entity
         ReplicaKit,
         Ticket,
         Travel,
-        Wish
+        Wish,
+        MemberShip
     }
 }

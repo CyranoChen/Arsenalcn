@@ -8,8 +8,7 @@
     <link href="Scripts/jquery.ui/jquery-ui.min.css" type="text/css" rel="stylesheet" />
     <script type="text/javascript" src="Scripts/jquery-ui-1.10.4.min.js"></script>
     <style type="text/css">
-        #tdMatchResult input.TextBox
-        {
+        #tdMatchResult input.TextBox {
             text-align: center;
         }
     </style>
@@ -87,8 +86,17 @@
                     <tr class="Row">
                         <td class="FieldHeader">比赛等级:
                         </td>
-                        <td style="text-align: left;" colspan="3">
+                        <td style="text-align: left;">
                             <asp:DropDownList ID="ddlProductCode" runat="server">
+                            </asp:DropDownList>
+                        </td>
+                        <td class="FieldHeader">适用会员:
+                        </td>
+                        <td style="text-align: left;">
+                            <asp:DropDownList ID="ddlAllowMemberClass" runat="server">
+                                <asp:ListItem Text="--全部--" Selected="True"></asp:ListItem>
+                                <asp:ListItem Text="普通会员" Value="1"></asp:ListItem>
+                                <asp:ListItem Text="高级会员" Value="2"></asp:ListItem>
                             </asp:DropDownList>
                         </td>
                     </tr>

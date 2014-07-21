@@ -60,6 +60,12 @@ namespace iArsenal.Entity
                     ProductCode = dr["ProductCode"].ToString();
                     ProductInfo = Product.Cache.Load(ProductCode).Name;
                     Deadline = (DateTime)dr["Deadline"];
+
+                    if (!Convert.IsDBNull(dr["AllowMemberClass"]))
+                        AllowMemberClass = Convert.ToInt16(dr["AllowMemberClass"]);
+                    else
+                        AllowMemberClass = null;
+
                     IsActive = Convert.ToBoolean(dr["IsActive"]);
                     Remark = dr["Remark"].ToString();
                 }
@@ -68,6 +74,7 @@ namespace iArsenal.Entity
                     ProductCode = string.Empty;
                     ProductInfo = string.Empty;
                     Deadline = m.PlayTime.AddMonths(-2).AddDays(-7);
+                    AllowMemberClass = null;
                     IsActive = m.IsActive;
                     Remark = string.Empty;
                 }
@@ -79,7 +86,7 @@ namespace iArsenal.Entity
         public void Select()
         {
             var svc = RemoteServiceProvider.GetWebService();
-            
+
             Match m = new Match();
 
             if (svc != null)
@@ -95,12 +102,12 @@ namespace iArsenal.Entity
 
         public void Update()
         {
-            DataAccess.MatchTicket.UpdateMatchTicket(MatchGuid, ProductCode, Deadline, IsActive, Remark);
+            DataAccess.MatchTicket.UpdateMatchTicket(MatchGuid, ProductCode, Deadline, AllowMemberClass, IsActive, Remark);
         }
 
         public void Insert()
         {
-            DataAccess.MatchTicket.InsertMatchTicket(MatchGuid, ProductCode, Deadline, IsActive, Remark);
+            DataAccess.MatchTicket.InsertMatchTicket(MatchGuid, ProductCode, Deadline, AllowMemberClass, IsActive, Remark);
         }
 
         public void Delete()
@@ -132,26 +139,47 @@ namespace iArsenal.Entity
             return list;
         }
 
-         private static DateTime ConvertToDST(DateTime date)
-         {
-             DateTime begDST = new DateTime(date.Year, 3, 31);
-             DateTime endDST = new DateTime(date.Year, 11, 1);
+        private static DateTime ConvertToDST(DateTime date)
+        {
+            DateTime begDST = new DateTime(date.Year, 3, 31);
+            DateTime endDST = new DateTime(date.Year, 11, 1);
 
-             if (begDST.DayOfWeek != DayOfWeek.Sunday)
-                 begDST = begDST.AddDays(-((int)begDST.DayOfWeek));
+            if (begDST.DayOfWeek != DayOfWeek.Sunday)
+                begDST = begDST.AddDays(-((int)begDST.DayOfWeek));
 
-             if (endDST.DayOfWeek == DayOfWeek.Sunday)
-                 endDST = endDST.AddDays(-7);
-             else
-                 endDST = endDST.AddDays(-((int)endDST.DayOfWeek));
+            if (endDST.DayOfWeek == DayOfWeek.Sunday)
+                endDST = endDST.AddDays(-7);
+            else
+                endDST = endDST.AddDays(-((int)endDST.DayOfWeek));
 
-             if (date.AddHours(-7) > begDST && date.AddHours(-7) < endDST)
-             {
-                 return date.AddHours(-7);
-             }
+            if (date.AddHours(-7) > begDST && date.AddHours(-7) < endDST)
+            {
+                return date.AddHours(-7);
+            }
 
-             return date.AddHours(-8);  
-         }
+            return date.AddHours(-8);
+        }
+
+        public bool CheckMemberCanPurchase(MemberPeriod mp)
+        {
+            // Check Member Class for Purchase the MatchTicket
+
+            if (AllowMemberClass.HasValue)
+            {
+                if (mp != null && mp.IsActive && (int)mp.MemberClass >= AllowMemberClass.Value)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return true;
+            }
+        }
 
         public static class Cache
         {
@@ -227,6 +255,9 @@ namespace iArsenal.Entity
         { get; set; }
 
         public DateTime Deadline
+        { get; set; }
+
+        public int? AllowMemberClass
         { get; set; }
 
         public Boolean IsActive

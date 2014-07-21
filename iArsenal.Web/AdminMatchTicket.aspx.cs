@@ -104,6 +104,13 @@ namespace iArsenal.Web
                         returnValue = returnValue && mt.ProductCode.Equals(tmpString, StringComparison.OrdinalIgnoreCase);
                 }
 
+                if (ViewState["AllowMemberClass"] != null)
+                {
+                    tmpString = ViewState["AllowMemberClass"].ToString();
+                    if (!string.IsNullOrEmpty(tmpString) && mt.AllowMemberClass.HasValue)
+                        returnValue = returnValue && mt.AllowMemberClass.Equals(Convert.ToInt16(tmpString));
+                }
+
                 if (ViewState["TeamName"] != null)
                 {
                     tmpString = ViewState["TeamName"].ToString();
@@ -239,6 +246,19 @@ namespace iArsenal.Web
                 ViewState["ProductCode"] = ddlProductCode.SelectedValue;
             else
                 ViewState["ProductCode"] = string.Empty;
+
+            MatchGuid = Guid.Empty;
+            gvMatchTicket.PageIndex = 0;
+
+            BindData();
+        }
+
+        protected void ddlAllowMemberClass_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(ddlAllowMemberClass.SelectedValue))
+                ViewState["AllowMemberClass"] = ddlAllowMemberClass.SelectedValue;
+            else
+                ViewState["AllowMemberClass"] = string.Empty;
 
             MatchGuid = Guid.Empty;
             gvMatchTicket.PageIndex = 0;

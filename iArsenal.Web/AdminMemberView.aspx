@@ -153,7 +153,7 @@
                         <td style="text-align: left">
                             <asp:TextBox ID="tbMSN" runat="server" CssClass="TextBox" Width="200px"></asp:TextBox>
                         </td>
-                        <td class="FieldHeader">QQ:
+                        <td class="FieldHeader">微信/QQ:
                         </td>
                         <td style="text-align: left">
                             <asp:TextBox ID="tbQQ" runat="server" CssClass="TextBox" Width="200px"></asp:TextBox>

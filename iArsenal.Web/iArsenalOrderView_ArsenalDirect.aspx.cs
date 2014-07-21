@@ -279,7 +279,7 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}');window.location.href = 'iArsenalOrder_ArsenalDirect.aspx'", ex.Message.ToString()), true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}');", ex.Message.ToString()), true);
             }
         }
 
@@ -311,7 +311,7 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}');window.location.href = 'iArsenalOrder_ArsenalDirect.aspx'", ex.Message.ToString()), true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}');", ex.Message.ToString()), true);
             }
         }
 
@@ -342,7 +342,7 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}');window.location.href = 'iArsenalOrder_ArsenalDirect.aspx'", ex.Message.ToString()), true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}');", ex.Message.ToString()), true);
             }
         }
     }

@@ -47,6 +47,8 @@
     <Compile Include="Config.cs" />
     <Compile Include="MemberPeriod.cs" />
     <Compile Include="MatchTicket.cs" />
+    <Compile Include="ModelOrder\OrderItemMemberShip.cs" />
+    <Compile Include="ModelOrder\OrderMemberShip.cs" />
     <Compile Include="ModelOrder\OrderWish.cs" />
     <Compile Include="ModelOrder\OrderTravel.cs" />
     <Compile Include="ModelOrder\OrderTicket.cs" />

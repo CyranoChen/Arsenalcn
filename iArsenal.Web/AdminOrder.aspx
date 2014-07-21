@@ -38,6 +38,7 @@
                     <asp:ListItem Value="Wish" Text="团购"></asp:ListItem>
                     <asp:ListItem Value="Ticket" Text="球票"></asp:ListItem>
                     <asp:ListItem Value="Travel" Text="观赛"></asp:ListItem>
+                    <asp:ListItem Value="MemberShip" Text="会费"></asp:ListItem>
                 </asp:DropDownList>
                 <asp:DropDownList ID="ddlStatus" runat="server">
                     <asp:ListItem Value="" Text="--状态--" Selected="True"></asp:ListItem>
@@ -75,12 +76,15 @@
                 <asp:BoundField HeaderText="创建时间" DataField="CreateTime" DataFormatString="{0:yyyy-MM-dd HH:mm:ss}" />
                 <asp:BoundField HeaderText="价格" DataField="Price" DataFormatString="<em>{0:f2}</em>"
                     HtmlEncode="false" ItemStyle-HorizontalAlign="Right" />
+                <asp:TemplateField HeaderText="类型">
+                    <ItemTemplate>
+                        <asp:Label ID="lblProductType" runat="server"></asp:Label>
+                    </ItemTemplate>
+                </asp:TemplateField>
                 <asp:BoundField HeaderText="优惠" DataField="Sale" NullDisplayText="/" DataFormatString="<em>{0:f2}</em>"
                     HtmlEncode="false" ItemStyle-HorizontalAlign="Right" />
                 <asp:BoundField HeaderText="定金" DataField="Deposit" NullDisplayText="/" DataFormatString="{0:f2}"
                     HtmlEncode="false" ItemStyle-HorizontalAlign="Right" />
-                <asp:BoundField HeaderText="邮费" DataField="Postage" DataFormatString="{0:f2}" HtmlEncode="false"
-                    ItemStyle-HorizontalAlign="Right" />
                 <asp:TemplateField HeaderText="状态">
                     <ItemTemplate>
                         <asp:Label ID="lblOrderStatus" runat="server"></asp:Label>

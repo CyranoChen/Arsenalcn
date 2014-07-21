@@ -18,7 +18,7 @@
 </asp:Content>
 <asp:Content ID="cphMain" ContentPlaceHolderID="cphMain" runat="server">
     <div id="banner" style="height: 250px">
-        <a href="http://bbs.arsenalcn.com/showtopic-104999.aspx" target="_blank">
+        <a href="http://bbs.arsenalcn.com/showtopic-107269.aspx" target="_blank">
             <img src="uploadfiles/banner/banner20130518.png" alt="阿森纳新赛季比赛主场球票预订" /></a>
     </div>
     <div id="ACN_Main">
@@ -58,6 +58,11 @@
                 <asp:TemplateField HeaderText="截止时间|比赛结果">
                     <ItemTemplate>
                         <asp:Label ID="lblMatchDeadlineOrResult" runat="server"></asp:Label>
+                    </ItemTemplate>
+                </asp:TemplateField>
+                <asp:TemplateField HeaderText="预订限制">
+                    <ItemTemplate>
+                        <asp:HyperLink ID="hlAllowMemberClass" runat="server" Target="_blank"></asp:HyperLink>
                     </ItemTemplate>
                 </asp:TemplateField>
                 <asp:TemplateField HeaderText="操作">

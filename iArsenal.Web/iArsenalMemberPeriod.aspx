@@ -14,16 +14,18 @@
             });
         });
     </script>
+    <style type="text/css">
+    </style>
 </asp:Content>
 <asp:Content ID="cphMain" ContentPlaceHolderID="cphMain" runat="server">
     <div id="banner">
-        <a href="#">
-            <img src="uploadfiles/banner/banner20120511.png" alt="阿森纳中国官方球迷会会籍管理" /></a>
+        <a href="http://bbs.arsenalcn.com/showtopic.aspx?topicid=107269&postid=1795109#1795109" target="_blank">
+            <img src="uploadfiles/banner/banner20120511.png" alt="球迷会收费会员说明与积分制度" /></a>
     </div>
     <div id="ACN_Main">
         <uc1:PortalSitePath ID="ucPortalSitePath" runat="server" />
         <div id="mainPanel">
-            <div class="FunctionBar">
+            <div class="FunctionBar" style="display: none">
                 <div class="DivFloatLeft">
                     会籍查询：
                     <asp:TextBox ID="tbMemberCardNo" runat="server" CssClass="TextBox" Width="200px"></asp:TextBox>
@@ -34,15 +36,23 @@
                 <div class="Clear">
                 </div>
             </div>
+            <div class="MemberPeriod_Entrance">
+                <div class="ApplyContainer">
+                    <a class="Core" href="iArsenalOrder_MemberShip.aspx?Type=Core" title="注册本赛季ACN普通(Core)会员"></a>
+                </div>
+                <div class="ApplyContainer">
+                    <a class="Premier" href="iArsenalOrder_MemberShip.aspx?Type=Premier" title="注册本赛季ACN高级(Premier)会员"></a>
+                </div>
+            </div>
             <asp:GridView ID="gvMemberPeriod" runat="server" DataKeyNames="MemberPeriodID">
                 <Columns>
-                    <asp:BoundField HeaderText="标识" DataField="MemberPeriodID" />
+                    <asp:BoundField HeaderText="标识" DataField="MemberPeriodID" Visible="false" />
                     <asp:BoundField HeaderText="卡号" DataField="MemberCardNo" />
+                    <asp:BoundField HeaderText="等级" DataField="MemberClass" DataFormatString="<em>{0}</em>" HtmlEncode="false" />
                     <asp:BoundField HeaderText="开始时间" DataField="StartDate" DataFormatString="{0:yyyy-MM-dd}" />
                     <asp:BoundField HeaderText="结束时间" DataField="EndDate" DataFormatString="{0:yyyy-MM-dd}" />
                     <asp:HyperLinkField HeaderText="订单编号" DataTextField="OrderID"
                         DataNavigateUrlFields="OrderID" DataNavigateUrlFormatString="ServerOrderView.ashx?OrderID={0}" />
-                    <asp:BoundField HeaderText="状态" DataField="IsActive" />
                 </Columns>
             </asp:GridView>
         </div>

@@ -148,13 +148,13 @@ namespace iArsenal.Web {
         protected global::System.Web.UI.WebControls.Label lblMatchTicketRank;
         
         /// <summary>
-        /// lblOrderItem_Quantity control.
+        /// lblMatchTicketAllowMemberClass control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblOrderItem_Quantity;
+        protected global::System.Web.UI.WebControls.Label lblMatchTicketAllowMemberClass;
         
         /// <summary>
         /// lblOrderItem_TravelDate control.

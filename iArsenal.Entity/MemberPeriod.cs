@@ -137,8 +137,7 @@ namespace iArsenal.Entity
 
     public enum MemberClassType
     {
-        Red = 1,
-        Silver = 2
+        Core = 1,
+        Premier = 2
     }
-
 }

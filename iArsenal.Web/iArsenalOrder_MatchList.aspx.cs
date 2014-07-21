@@ -141,6 +141,7 @@ namespace iArsenal.Web
                 Literal ltrlTeamInfo = e.Row.FindControl("ltrlTeamInfo") as Literal;
                 Label lblMatchTicketRank = e.Row.FindControl("lblMatchTicketRank") as Label;
                 Label lblMatchDeadlineOrResult = e.Row.FindControl("lblMatchDeadlineOrResult") as Label;
+                HyperLink hlAllowMemberClass = e.Row.FindControl("hlAllowMemberClass") as HyperLink;
                 HyperLink hlTicketApply = e.Row.FindControl("hlTicketApply") as HyperLink;
 
                 if (ltrlTeamInfo != null)
@@ -168,6 +169,32 @@ namespace iArsenal.Web
                 else
                 {
                     lblMatchDeadlineOrResult.Text = string.Format("<em>{0}</em>", mt.Deadline.ToString("yyyy-MM-dd"));
+                }
+
+                if (hlAllowMemberClass != null && mt.AllowMemberClass.HasValue)
+                {
+                    if (mt.AllowMemberClass.Value == 1)
+                    {
+                        hlAllowMemberClass.Text = "Core";
+                        hlAllowMemberClass.ToolTip = "普通(Core)会员以上可预订";
+                        hlAllowMemberClass.NavigateUrl = "iArsenalMemberPeriod.aspx";
+                        hlAllowMemberClass.Visible = true;
+                    }
+                    else if (mt.AllowMemberClass.Value == 2)
+                    {
+                        hlAllowMemberClass.Text = "<em>Premier</em>";
+                        hlAllowMemberClass.ToolTip = "只限高级(Premier)会员可预订";
+                        hlAllowMemberClass.NavigateUrl = "iArsenalMemberPeriod.aspx";
+                        hlAllowMemberClass.Visible = true;
+                    }
+                    else
+                    {
+                        hlAllowMemberClass.Visible = false;
+                    }
+                }
+                else
+                {
+                    hlAllowMemberClass.Visible = false;
                 }
 
                 if (hlTicketApply != null && mt.Deadline >= DateTime.Now.AddDays(-1))

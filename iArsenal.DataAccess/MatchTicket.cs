@@ -20,14 +20,16 @@ namespace iArsenal.DataAccess
                 return ds.Tables[0].Rows[0];
         }
 
-        public static void UpdateMatchTicket(Guid matchGuid, string productCode, DateTime deadline, bool isActive, string remark)
+        public static void UpdateMatchTicket(Guid matchGuid, string productCode, DateTime deadline, int? allowMemberClass, bool isActive, string remark)
         {
-            string sql = @"UPDATE dbo.iArsenal_MatchTicket SET ProductCode = @productCode, Deadline = @deadline, IsActive = @isActive, Remark = @remark WHERE MatchGuid = @matchGuid";
+            string sql = @"UPDATE dbo.iArsenal_MatchTicket SET ProductCode = @productCode, Deadline = @deadline, AllowMemberClass = @allowMemberClass,
+                                 IsActive = @isActive, Remark = @remark WHERE MatchGuid = @matchGuid";
 
             SqlParameter[] para = {
                                       new SqlParameter("@matchGuid", matchGuid),
                                       new SqlParameter("@productCode", productCode),
                                       new SqlParameter("@deadline", deadline),
+                                      new SqlParameter("@allowMemberClass", !allowMemberClass.HasValue ? (object)DBNull.Value : (object)allowMemberClass.Value),
                                       new SqlParameter("@isActive", isActive),
                                       new SqlParameter("@remark", remark)
                                   };
@@ -35,15 +37,16 @@ namespace iArsenal.DataAccess
             SqlHelper.ExecuteNonQuery(SQLConn.GetConnection(), CommandType.Text, sql, para);
         }
 
-        public static void InsertMatchTicket(Guid matchGuid, string productCode, DateTime deadline, bool isActive, string remark)
+        public static void InsertMatchTicket(Guid matchGuid, string productCode, DateTime deadline, int? allowMemberClass, bool isActive, string remark)
         {
-            string sql = @"INSERT INTO dbo.iArsenal_MatchTicket (MatchGuid, ProductCode, Deadline, IsActive, Remark) 
-                               VALUES (@matchGuid, @productCode, @deadline, @isActive, @remark)";
+            string sql = @"INSERT INTO dbo.iArsenal_MatchTicket (MatchGuid, ProductCode, Deadline, AllowMemberClass, IsActive, Remark) 
+                               VALUES (@matchGuid, @productCode, @deadline, @allowMemberClass, @isActive, @remark)";
 
             SqlParameter[] para = {
                                       new SqlParameter("@matchGuid", matchGuid),
                                       new SqlParameter("@productCode", productCode),
                                       new SqlParameter("@deadline", deadline),
+                                      new SqlParameter("@allowMemberClass", !allowMemberClass.HasValue ? (object)DBNull.Value : (object)allowMemberClass.Value),
                                       new SqlParameter("@isActive", isActive),
                                       new SqlParameter("@remark", remark)
                                   };
@@ -62,7 +65,8 @@ namespace iArsenal.DataAccess
 
         public static DataTable GetMatchTickets()
         {
-            string sql = @"SELECT MatchGuid, ProductCode, Deadline, IsActive, Remark FROM iArsenal_MatchTicket ORDER BY Deadline DESC";
+            string sql = @"SELECT MatchGuid, ProductCode, Deadline, AllowMemberClass, IsActive, Remark 
+                                 FROM iArsenal_MatchTicket ORDER BY Deadline DESC";
 
             DataSet ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql);
 

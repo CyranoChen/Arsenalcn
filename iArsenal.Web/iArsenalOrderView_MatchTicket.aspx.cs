@@ -38,6 +38,8 @@ namespace iArsenal.Web
             {
                 lblMemberName.Text = string.Format("<b>{0}</b> (<em>NO.{1}</em>)", this.MemberName, this.MID.ToString());
 
+                bool _isMemberCouldPurchase = true;
+
                 if (OrderID > 0)
                 {
                     //OrderBase o = new OrderBase();
@@ -144,6 +146,8 @@ namespace iArsenal.Web
                                     throw new Exception("无相关比赛信息，请联系管理员");
                                 }
 
+                                _isMemberCouldPurchase = mt.CheckMemberCanPurchase(this.CurrentMemberPeriod);
+
                                 Product p = Product.Cache.Load(mt.ProductCode);
 
                                 if (p == null)
@@ -163,6 +167,19 @@ namespace iArsenal.Web
                                     else
                                     {
                                         lblMatchTicketRank.Text = string.Empty;
+                                    }
+
+                                    if (mt.AllowMemberClass.HasValue && mt.AllowMemberClass.Value == 2)
+                                    {
+                                        lblMatchTicketAllowMemberClass.Text = "<em>只限高级会员(Premier)</em>";
+                                    }
+                                    else if (mt.AllowMemberClass.HasValue && mt.AllowMemberClass == 1)
+                                    {
+                                        lblMatchTicketAllowMemberClass.Text = "<em>普通会员(Core)以上</em>";
+                                    }
+                                    else
+                                    {
+                                        lblMatchTicketAllowMemberClass.Text = "无";
                                     }
 
                                     ctrlPortalMatchInfo.MatchGuid = mt.MatchGuid;
@@ -188,11 +205,6 @@ namespace iArsenal.Web
                         {
                             lblOrderItem_TravelDate.Text = string.Empty;
                         }
-
-                        // Set Order Ticket Quantity
-
-                        lblOrderItem_Quantity.Text = oiMatchTicket.Quantity.ToString();
-
                     }
                     else
                     {
@@ -212,6 +224,15 @@ namespace iArsenal.Web
                         btnSubmit.Visible = true;
                         btnModify.Visible = true;
                         btnCancel.Visible = true;
+
+                        if (!_isMemberCouldPurchase)
+                        {
+                            lblOrderRemark.Text = @"<em style='line-height: 1.8'>由于球票供应有限，所有主场球票预订均只向(Core/Premier)会员开放。<br />
+                                                                   <a href='iArsenalMemberPeriod.aspx' target='_blank' style='background: #fff48d'>【点击这里】请在续费或升级会员资格后，才能提交订单。</a></em>";
+                            phOrderRemark.Visible = true;
+
+                            btnSubmit.Visible = false;
+                        }
                     }
                     else if (o.Status.Equals(OrderStatusType.Submitted))
                     {
@@ -264,7 +285,7 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}');window.location.href = 'iArsenalOrder_MatchTicket.aspx'", ex.Message.ToString()), true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}');", ex.Message.ToString()), true);
             }
         }
 
@@ -290,7 +311,7 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}');window.location.href = 'iArsenalOrder_MatchTicket.aspx'", ex.Message.ToString()), true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}');", ex.Message.ToString()), true);
             }
         }
 
@@ -321,7 +342,7 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}');window.location.href = 'iArsenalOrder_LondonTravel.aspx'", ex.Message.ToString()), true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}');", ex.Message.ToString()), true);
             }
         }
     }

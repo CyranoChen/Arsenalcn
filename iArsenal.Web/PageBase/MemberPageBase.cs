@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Text.RegularExpressions;
+using System.Collections.Generic;
 
 using Arsenalcn.Common.Entity;
 using iArsenal.Entity;
@@ -11,6 +11,8 @@ namespace iArsenal.Web.PageBase
         public int MID { get; set; }
 
         public string MemberName { get; set; }
+
+        public MemberPeriod CurrentMemberPeriod { get; set; }
 
         protected override void OnInitComplete(EventArgs e)
         {
@@ -33,6 +35,18 @@ namespace iArsenal.Web.PageBase
                     member.LastLoginTime = DateTime.Now;
 
                     member.Update();
+
+                    // Set the Current Available Member Period
+                    List<MemberPeriod> list = MemberPeriod.GetMemberPeriods(this.MID).FindAll(mp => mp.IsActive);
+
+                    if (list != null & list.Count > 0)
+                    {
+                        this.CurrentMemberPeriod = list.Find(mp => mp.StartDate <= DateTime.Now && mp.EndDate >= DateTime.Now);
+                    }
+                    else
+                    {
+                        this.CurrentMemberPeriod = null;
+                    }
                 }
                 else
                 {

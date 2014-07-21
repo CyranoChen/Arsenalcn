@@ -82,6 +82,16 @@ namespace iArsenal.Web
 
                 ddlProductCode.SelectedValue = mt.ProductCode;
                 tbDeadline.Text = mt.Deadline.ToString("yyyy-MM-dd");
+
+                if (mt.AllowMemberClass.HasValue)
+                {
+                    ddlAllowMemberClass.SelectedValue = mt.AllowMemberClass.Value.ToString();
+                }
+                else
+                {
+                    ddlAllowMemberClass.SelectedValue = string.Empty;
+                }
+
                 cbIsActive.Checked = mt.IsActive;
                 tbRemark.Text = mt.Remark;
 
@@ -144,7 +154,16 @@ namespace iArsenal.Web
                 if (!string.IsNullOrEmpty(tbDeadline.Text.Trim()) && DateTime.TryParse(tbDeadline.Text.Trim(), out _deadline))
                     mt.Deadline = _deadline;
                 else
-                    mt.Deadline = mt.PlayTime.AddMonths(-2);
+                    mt.Deadline = mt.PlayTime.AddMonths(-2).AddDays(-7);
+
+                if (!string.IsNullOrEmpty(ddlAllowMemberClass.SelectedValue))
+                {
+                    mt.AllowMemberClass = Convert.ToInt16(ddlAllowMemberClass.SelectedValue);
+                }
+                else
+                {
+                    mt.AllowMemberClass = null;
+                }
 
                 mt.IsActive = cbIsActive.Checked;
                 mt.Remark = tbRemark.Text.Trim();

@@ -38,6 +38,8 @@
                     <asp:ListItem Value="11" Text="观赛同伴"></asp:ListItem>
                     <asp:ListItem Value="20" Text="主场球票"></asp:ListItem>
                     <asp:ListItem Value="21" Text="友谊赛球票"></asp:ListItem>
+                    <asp:ListItem Value="31" Text="会员费(Core)"></asp:ListItem>
+                    <asp:ListItem Value="32" Text="会员费(Premier)"></asp:ListItem>
                     <asp:ListItem Value="0" Text="其他"></asp:ListItem>
                 </asp:DropDownList>
                 <asp:DropDownList ID="ddlIsActive" runat="server">

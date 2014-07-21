@@ -69,7 +69,7 @@
                         </td>
                     </tr>
                     <tr class="Row">
-                        <td class="FieldHeader">QQ：
+                        <td class="FieldHeader">微信/QQ：
                         </td>
                         <td style="text-align: left">
                             <asp:Label ID="lblMemberQQ" runat="server"></asp:Label>

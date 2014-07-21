@@ -69,7 +69,7 @@
                         </td>
                     </tr>
                     <tr class="Row">
-                        <td class="FieldHeader">QQ：
+                        <td class="FieldHeader">微信/QQ：
                         </td>
                         <td style="text-align: left">
                             <asp:TextBox ID="tbQQ" runat="server" CssClass="TextBox" Width="300px"></asp:TextBox>
@@ -108,6 +108,25 @@
                         <li><a href="iArsenalMemberPeriod.aspx">会籍查询</a></li>
                         <li><a href="iArsenalOrder.aspx">订单查询</a></li>
                     </ul>
+                </div>
+            </div>
+            <div class="InfoPanel">
+                <h3 class="Col" onclick="$(this).toggleClass('Col'); $(this).toggleClass('Exp'); $(this).next('div').toggle('normal');">
+                    <a>实名会员注册说明</a></h3>
+                <div class="Block">
+                    <p>(1). 阿森纳中国官方球迷会（ACN）服务中心，采用实名信息备案注册方式。</p>
+
+                    <p>(2). 免费注册登记后，即可参与阿森纳主客场球衣预订，官方正品纪念品预订，各项球迷会线上线下观赛聚会等活动。</p>
+
+                    <p>(3). 如需预订或购买阿森纳主场球票，则需升级为<a href="iArsenalMemberPeriod.aspx" target="_blank"><em>【收费会员】</em></a>。</p>
+
+                    <p>(4). 阿森纳中国官方球迷会（ACN）承诺不向除阿森纳官方俱乐部之外的任何第三方，透露您的个人信息与联系方式。</p>
+
+                    <p>
+                        (5). 球迷会客服联系方式：<br />
+                        微信号：<em>iArsenalcn【推荐】</em><br />
+                        Email：<a href="mailto:webmaster@arsenalcn.com"><em>webmaster@arsenalcn.com</em></a>
+                    </p>
                 </div>
             </div>
         </div>

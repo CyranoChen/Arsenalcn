@@ -66,7 +66,7 @@ namespace iArsenal.Web
                 if (ViewState["MemberClass"] != null)
                 {
                     tmpString = ViewState["MemberClass"].ToString();
-                    if (!string.IsNullOrEmpty(tmpString) && tmpString != "0")
+                    if (!string.IsNullOrEmpty(tmpString))
                         returnValue = returnValue && ((int)mp.MemberClass).ToString().Equals(tmpString);
                 }
 
@@ -159,7 +159,7 @@ namespace iArsenal.Web
             else
                 ViewState["MemberCardNo"] = string.Empty;
 
-            if (!string.IsNullOrEmpty(ddlMemberClass.SelectedValue) && !ddlMemberClass.SelectedValue.Equals("0"))
+            if (!string.IsNullOrEmpty(ddlMemberClass.SelectedValue))
                 ViewState["MemberClass"] = ddlMemberClass.SelectedValue;
             else
                 ViewState["MemberClass"] = string.Empty;

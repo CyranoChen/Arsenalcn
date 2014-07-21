@@ -39,7 +39,7 @@
                     <asp:BoundField HeaderText="创建时间" DataField="CreateTime" DataFormatString="{0:yyyy-MM-dd HH:mm}" />
                     <asp:BoundField HeaderText="定金" DataField="Deposit" NullDisplayText="/" DataFormatString="{0:f2}"
                         ItemStyle-HorizontalAlign="Right" Visible="false" />
-                    <asp:BoundField HeaderText="邮费" DataField="Postage" DataFormatString="{0:f2}" ItemStyle-HorizontalAlign="Right" />
+                    <asp:BoundField HeaderText="类型" DataField="OrderType" />
                     <asp:TemplateField HeaderText="价格" ItemStyle-HorizontalAlign="Right">
                         <ItemTemplate>
                             <asp:Label ID="lblPriceInfo" runat="server"></asp:Label>

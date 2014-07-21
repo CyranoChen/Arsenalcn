@@ -10,7 +10,7 @@
 namespace iArsenal.Web {
     
     
-    public partial class iArsenalOrder_MatchTicket {
+    public partial class iArsenalOrder_MemberShip {
         
         /// <summary>
         /// ucPortalSitePath control.
@@ -184,49 +184,49 @@ namespace iArsenal.Web {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvEmail;
         
         /// <summary>
-        /// lblMatchTicketInfo control.
+        /// lblMemberClass control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblMatchTicketInfo;
+        protected global::System.Web.UI.WebControls.Label lblMemberClass;
         
         /// <summary>
-        /// lblMatchTicketPlayTime control.
+        /// tbMemberCardNo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblMatchTicketPlayTime;
+        protected global::System.Web.UI.WebControls.TextBox tbMemberCardNo;
         
         /// <summary>
-        /// lblMatchTicketRank control.
+        /// rfvMemberCardNo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblMatchTicketRank;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvMemberCardNo;
         
         /// <summary>
-        /// lblAllowMemberClass control.
+        /// rvMemberCardNo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblAllowMemberClass;
+        protected global::System.Web.UI.WebControls.RangeValidator rvMemberCardNo;
         
         /// <summary>
-        /// tbTravelDate control.
+        /// lblEndDate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbTravelDate;
+        protected global::System.Web.UI.WebControls.Label lblEndDate;
         
         /// <summary>
         /// tbOrderDescription control.
@@ -245,14 +245,5 @@ namespace iArsenal.Web {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnSubmit;
-        
-        /// <summary>
-        /// ctrlPortalMatchInfo control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::iArsenal.Web.Control.PortalMatchInfo ctrlPortalMatchInfo;
     }
 }

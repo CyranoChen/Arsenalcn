@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" MasterPageFile="iArsenalMaster.Master" AutoEventWireup="true"
-    CodeBehind="iArsenalOrderView_MatchTicket.aspx.cs" Inherits="iArsenal.Web.iArsenalOrderView_MatchTicket"
+    CodeBehind="iArsenalOrderView_MemberShip.aspx.cs" Inherits="iArsenal.Web.iArsenalOrderView_MemberShip"
     Title="订单信息查看" Theme="iArsenal" %>
 
 <%@ Register Src="Control/PortalSitePath.ascx" TagName="PortalSitePath" TagPrefix="uc1" %>
@@ -22,7 +22,7 @@
                 <thead>
                     <tr class="Header">
                         <th colspan="4" style="text-align: left">
-                            <a name="anchorBack" id="anchorBack">感谢您预订阿森纳新赛季比赛主场球票，请仔细确认并提交预订信息：</a>
+                            <a name="anchorBack" id="anchorBack">感谢您登记注册为ACN收费会员，请仔细确认并提交登记信息：</a>
                         </th>
                     </tr>
                 </thead>
@@ -98,34 +98,21 @@
                         </td>
                     </tr>
                     <tr class="Row">
-                        <td class="FieldHeader">比赛信息：
-                        </td>
+                        <td class="FieldHeader">会籍等级：</td>
                         <td style="text-align: left" colspan="3">
-                            <asp:Label ID="lblMatchTicketInfo" runat="server"></asp:Label>
+                            <asp:Label ID="lblMemberClass" runat="server"></asp:Label>
                         </td>
                     </tr>
                     <tr class="AlternatingRow">
-                        <td class="FieldHeader">比赛时间：
-                        </td>
-                        <td style="text-align: left; white-space: nowrap;">
-                            <asp:Label ID="lblMatchTicketPlayTime" runat="server"></asp:Label>
-                        </td>
-                        <td class="FieldHeader">比赛等级：
-                        </td>
-                        <td style="text-align: left; white-space: nowrap;">
-                            <asp:Label ID="lblMatchTicketRank" runat="server"></asp:Label>
-                        </td>
-                    </tr>
-                    <tr class="Row">
-                        <td class="FieldHeader">预订限制：
+                        <td class="FieldHeader">专属卡号：
                         </td>
                         <td style="text-align: left">
-                            <asp:Label ID="lblMatchTicketAllowMemberClass" runat="server"></asp:Label>
+                            <asp:Label ID="lblMemberCardNo" runat="server"></asp:Label>
                         </td>
-                        <td class="FieldHeader">出行时间：
+                        <td class="FieldHeader">会籍有效期：
                         </td>
                         <td style="text-align: left">
-                            <asp:Label ID="lblOrderItem_TravelDate" runat="server"></asp:Label>
+                            <asp:Label ID="lblEndDate" runat="server"></asp:Label>
                         </td>
                     </tr>
                     <tr class="AlternatingRow">
@@ -173,20 +160,7 @@
                 <h3 class="Col" onclick="$(this).toggleClass('Col'); $(this).toggleClass('Exp'); $(this).next('div').toggle('normal');">
                     <a>其他补充说明</a></h3>
                 <div class="Block">
-                    <p>(1). 由于一般订票时间与比赛时间的间隔时间较长，我们建议会员对于A/B/C级比赛球票用淘宝交易方式，可通过访问<a href="http://arsenalcn.taobao.com" target="_blank"><em>球迷会淘宝商城</em></a>，拍下相应级别的球票。</p>
-
-                    <p>(2). 特价球票（非A/B/C级比赛，如联赛杯）建议用支付宝或银行转帐交易。对于普通比赛球票，如没有淘宝帐号，亦可采用支付宝或银行转账交易。</p>
-
-                    <p>(3). 球票原则上只采用人民币交易，如需通过英磅交易或有其他需求，请与负责人联系。</p>
-
-                    <p>(4). 订票者可在预订截止时间之前，申请退票，我们会全额退还球票款项（不包括收费会员年费）；截止时间之后，原则上不可退票，如有特殊需求，请与负责人联系。</p>
-
-                    <p>
-                        (5). 票务负责人联系方式：<br />
-                        微信号：<em>iArsenalcn【推荐】</em><br />
-                        QQ：<em>22287842，Cyrano Chen</em><br />
-                        Email：<a href="mailto:webmaster@arsenalcn.com"><em>webmaster@arsenalcn.com</em></a>
-                    </p>
+                 
                 </div>
             </div>
         </div>

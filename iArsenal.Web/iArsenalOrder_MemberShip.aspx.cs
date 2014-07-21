@@ -5,16 +5,10 @@ using iArsenal.Entity;
 
 namespace iArsenal.Web
 {
-    public partial class iArsenalOrder_MatchTicket : PageBase.MemberPageBase
+    public partial class iArsenalOrder_MemberShip : PageBase.MemberPageBase
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            #region Assign Control Property
-
-            ctrlPortalMatchInfo.MatchGuid = MatchGuid;
-
-            #endregion
-
             if (!IsPostBack)
             {
                 InitForm();
@@ -35,26 +29,44 @@ namespace iArsenal.Web
             }
         }
 
-        private Guid MatchGuid
+        private ProductType CurrProductType
         {
             get
             {
-                if (OrderID > 0)
+                if (!string.IsNullOrEmpty(Request.QueryString["Type"]) && Request.QueryString["Type"].Equals("Core", StringComparison.OrdinalIgnoreCase))
                 {
-                    Order_Ticket o = new Order_Ticket(OrderID);
+                    Page.Title = string.Format("ACN{0}/{1}赛季普通(Core)会员登记", CurrSeasonDeadline.AddYears(-1).Year.ToString(), CurrSeasonDeadline.ToString("yy"));
+                    //hlReplicaKitPage.NavigateUrl = "http://arsenaldirect.arsenal.com/puma-kit/puma-away-kit/icat/pumaaway";
+                    //ltrlBannerImage.Text = string.Format("<img src=\"uploadfiles/banner/banner20140711.png\" alt=\"{0}\" />", Page.Title); ;
 
-                    if (o.OIMatchTicket != null)
-                    { return Guid.Empty; }
-                    else
-                    { return o.OIMatchTicket.MatchGuid; }
-                }
-                else if (!string.IsNullOrEmpty(Request.QueryString["MatchGuid"]))
-                {
-                    try { return new Guid(Request.QueryString["MatchGuid"]); }
-                    catch { return Guid.Empty; }
+                    return ProductType.MemberShipCore;
                 }
                 else
-                    return Guid.Empty;
+                {
+                    Page.Title = string.Format("ACN{0}/{1}赛季高级(Premier)会员登记", CurrSeasonDeadline.AddYears(-1).Year.ToString(), CurrSeasonDeadline.ToString("yy"));
+                    //hlReplicaKitPage.NavigateUrl = "http://arsenaldirect.arsenal.com/puma-kit/puma-home-kit/icat/pumahome";
+                    //ltrlBannerImage.Text = string.Format("<img src=\"uploadfiles/banner/banner20140710.png\" alt=\"{0}\" />", Page.Title); ;
+
+                    return ProductType.MemberShipPremier;
+                }
+            }
+        }
+
+        private DateTime CurrSeasonDeadline
+        {
+            get
+            {
+                // Set Default Deadline yyyy-06-30 23:59:59
+                DateTime _seasonDeadline = new DateTime(DateTime.Now.Year, 7, 1).AddSeconds(-1);
+
+                if (DateTime.Now >= _seasonDeadline)
+                {
+                    return _seasonDeadline.AddYears(1);
+                }
+                else
+                {
+                    return _seasonDeadline;
+                }
             }
         }
 
@@ -65,70 +77,12 @@ namespace iArsenal.Web
                 lblMemberName.Text = string.Format("<b>{0}</b> (<em>NO.{1}</em>)", this.MemberName, this.MID.ToString());
                 lblMemberACNInfo.Text = string.Format("<b>{0}</b> (<em>ID.{1}</em>)", this.Username, this.UID.ToString());
 
-                if (MatchGuid.Equals(Guid.Empty))
-                {
-                    Response.Redirect("iArsenalOrder_MatchList.aspx");
-                    Response.Clear();
-                }
-
-                MatchTicket mt = MatchTicket.Cache.Load(MatchGuid);
-
-                if (mt == null)
-                {
-                    throw new Exception("无相关比赛信息，请联系管理员");
-                }
-
-                if (OrderID <= 0 && mt.Deadline < DateTime.Now)
-                {
-                    throw new Exception("此球票预定已过截至时间，请联系管理员");
-                }
-
-                //if (!mt.IsMemberCouldPurchase(this.CurrentMemberPeriod))
-                //{
-                //    ClientScript.RegisterClientScriptBlock(typeof(string), "failed",
-                //        string.Format("alert('由于球票数量紧张，所有阿森纳主场球票预订，均只向收费会员开放，请在跳转页面后续费或升级会员资格');window.location.href = 'iArsenalMemberPeriod.aspx'"), true);
-                //}
-
-                Product p = Product.Cache.Load(mt.ProductCode);
-
-                if (p == null)
-                {
-                    throw new Exception("无相关商品信息，请联系管理员");
-                }
-                else
-                {
-                    lblMatchTicketInfo.Text = string.Format("<em>【{0}】{1}({2})</em>", mt.LeagueName, mt.TeamName, Team.Cache.Load(mt.TeamGuid).TeamEnglishName);
-                    lblMatchTicketPlayTime.Text = string.Format("<em>【伦敦】{0}</em>", mt.PlayTimeLocal.ToString("yyyy-MM-dd HH:mm"));
-
-                    string _strRank = mt.ProductInfo.Trim();
-                    if (lblMatchTicketRank != null && !string.IsNullOrEmpty(_strRank))
-                    {
-                        lblMatchTicketRank.Text = string.Format("<em>{0} - {1}</em>", _strRank.Substring(_strRank.Length - 7, 7), p.PriceInfo);
-                    }
-                    else
-                    {
-                        lblMatchTicketRank.Text = string.Empty;
-                    }
-
-                    if (mt.AllowMemberClass.HasValue && mt.AllowMemberClass.Value == 2)
-                    {
-                        lblAllowMemberClass.Text = "<em>只限高级会员(Premier)</em>";
-                    }
-                    else if (mt.AllowMemberClass.HasValue && mt.AllowMemberClass == 1)
-                    {
-                        lblAllowMemberClass.Text = "<em>普通会员(Core)以上</em>";
-                    }
-                    else
-                    {
-                        lblAllowMemberClass.Text = "无";
-                    }
-                }
-
                 if (OrderID > 0)
                 {
-                    OrderBase o = new OrderBase();
-                    o.OrderID = OrderID;
-                    o.Select();
+                    //OrderBase o = new OrderBase();
+                    //o.OrderID = OrderID;
+                    //o.Select();
+                    Order_MemberShip o = new Order_MemberShip(OrderID);
 
                     if (ConfigAdmin.IsPluginAdmin(UID) && o != null)
                     {
@@ -196,17 +150,35 @@ namespace iArsenal.Web
                             throw new Exception("此订单无效或非当前用户订单");
                     }
 
-                    // Get OrderItem by Order ID
-                    OrderItemBase oi = OrderItemBase.GetOrderItems(OrderID).Find(oiMatchTicket => oiMatchTicket.IsActive && oiMatchTicket.ProductGuid.Equals(p.ProductGuid));
+                    // Whether Core or Premier MemberShip
+                    OrderItem_MemberShip oiMemberShip = null;
 
-                    if (oi != null)
+                    if (o.OIMemberShipCore != null && o.OIMemberShipCore.IsActive)
                     {
-                        //tbQuantity.Text = oi.Quantity.ToString();
-                        tbTravelDate.Text = oi.Size.ToString();
+                        oiMemberShip = (OrderItem_Core)o.OIMemberShipCore;
+                    }
+                    else if (o.OIMemberShipPremier != null && o.OIMemberShipPremier.IsActive)
+                    {
+                        oiMemberShip = (OrderItem_Premier)o.OIMemberShipPremier;
                     }
                     else
                     {
-                        throw new Exception("此订单未填写订票信息");
+                        throw new Exception("此订单未登记会籍信息");
+                    }
+
+                    Product p = Product.Cache.Load(oiMemberShip.ProductGuid);
+
+                    if (p != null)
+                    {
+                        lblMemberClass.Text = string.Format("<em>ACN {0}赛季【{1}】- 售价 {2}</em>",
+                            oiMemberShip.Season, p.DisplayName, p.PriceInfo);
+
+                        tbMemberCardNo.Text = oiMemberShip.MemberCardNo;
+                        lblEndDate.Text = string.Format("<em>{0}</em>", CurrSeasonDeadline.ToString("yyyy-MM-dd"));
+                    }
+                    else
+                    {
+                        throw new Exception("无相关会籍可申请，请联系管理员");
                     }
                 }
                 else
@@ -257,12 +229,25 @@ namespace iArsenal.Web
                     tbQQ.Text = m.QQ;
                     tbEmail.Text = m.Email;
 
-                    tbTravelDate.Text = mt.PlayTime.AddDays(-2).ToString("yyyy-MM-dd");
+                    Product pMemberShip = Product.Cache.Load(CurrProductType).Find(p => p.IsActive);
+
+                    if (pMemberShip != null)
+                    {
+                        lblMemberClass.Text = string.Format("<em>ACN {0}/{1}赛季【{2}】- 售价 {3}</em>",
+                            CurrSeasonDeadline.AddYears(-1).Year.ToString(), CurrSeasonDeadline.ToString("yy"),
+                            pMemberShip.DisplayName, pMemberShip.PriceInfo);
+
+                        lblEndDate.Text = string.Format("<em>{0}</em>", CurrSeasonDeadline.ToString("yyyy-MM-dd"));
+                    }
+                    else
+                    {
+                        throw new Exception("无相关会籍可申请，请联系管理员");
+                    }
                 }
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}');window.location.href = 'iArsenalOrder_MatchList.aspx'", ex.Message.ToString()), true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}');window.location.href = 'iArsenalMemberPeriod.aspx'", ex.Message.ToString()), true);
             }
         }
 
@@ -275,24 +260,12 @@ namespace iArsenal.Web
 
                 try
                 {
-                    if (MatchGuid.Equals(Guid.Empty))
-                    {
-                        Response.Redirect("iArsenalOrder_MatchList.aspx");
-                        Response.Clear();
-                    }
-
-                    MatchTicket mt = MatchTicket.Cache.Load(MatchGuid);
-
-                    if (mt == null)
-                    {
-                        throw new Exception("无相关比赛信息，请联系管理员");
-                    }
-
                     Member m = new Member();
                     m.MemberID = this.MID;
                     m.Select();
 
                     // Update Member Information
+
                     #region Get Member Nation & Region
                     string _nation = ddlNation.SelectedValue;
 
@@ -414,22 +387,27 @@ namespace iArsenal.Web
                         //Remove Order Item of this Order
                         if (o.OrderID.Equals(OrderID))
                         {
-                            int countOrderItem = OrderItemBase.RemoveOrderItemByOrderID(o.OrderID, trans);
+                            int countOrderItem = OrderItemBase.RemoveOrderItemByOrderID(o.OrderID);
                         }
 
                         //New Order Items
-                        Product p = Product.Cache.Load(mt.ProductCode);
+                        Product pMembership = Product.Cache.Load(CurrProductType).Find(p => p.IsActive);
 
-                        if (p == null)
-                            throw new Exception("无相关商品信息，请联系管理员");
+                        if (pMembership == null)
+                            throw new Exception("无相关会籍可申请，请联系管理员");
 
-                        // Genernate Travel Date
-                        DateTime _date;
-                        if (!string.IsNullOrEmpty(tbTravelDate.Text.Trim()) && !DateTime.TryParse(tbTravelDate.Text.Trim(), out _date))
-                            throw new Exception("请正确填写计划出行时间");
+                        // Validate Member Card No
+                        int _cardNo = 0;
+                        if (!string.IsNullOrEmpty(tbMemberCardNo.Text.Trim()) && int.TryParse(tbMemberCardNo.Text.Trim(), out _cardNo))
+                        {
 
-                        // Every Member can only purchase ONE ticket of each match
-                        OrderItemBase.WishOrderItem(m, p, o, tbTravelDate.Text.Trim(), 1, null, mt.MatchGuid.ToString(), trans);
+                        }
+                        else
+                        {
+                            throw new Exception("请正确填写会员卡号");
+                        }
+
+                        OrderItemBase.WishOrderItem(m, pMembership, o, CurrSeasonDeadline.ToString("yyyy-MM-dd"), 1, null, _cardNo.ToString(), trans);
                     }
 
                     trans.Commit();
@@ -437,7 +415,7 @@ namespace iArsenal.Web
                     //Renew OrderType after Insert OrderItem and transcation commited
                     o.Update();
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", string.Format("alert('订单({0})保存成功');window.location.href = 'iArsenalOrderView_MatchTicket.aspx?OrderID={0}'", o.OrderID.ToString()), true);
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", string.Format("alert('订单({0})保存成功');window.location.href = 'iArsenalOrderView_MemberShip.aspx?OrderID={0}'", o.OrderID.ToString()), true);
                 }
                 catch (Exception ex)
                 {

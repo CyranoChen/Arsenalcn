@@ -67,8 +67,8 @@
                         <td style="text-align: left">
                             <asp:DropDownList ID="ddlMemberClass" runat="server">
                                 <asp:ListItem Text="--请选择会员等级--" Selected="True"></asp:ListItem>
-                                <asp:ListItem Text="红会员" Value="1"></asp:ListItem>
-                                <asp:ListItem Text="银会员" Value="2"></asp:ListItem>
+                                <asp:ListItem Text="普通会员" Value="1"></asp:ListItem>
+                                <asp:ListItem Text="高级会员" Value="2"></asp:ListItem>
                             </asp:DropDownList>
                         </td>
                         <td class="FieldHeader">会员卡号:

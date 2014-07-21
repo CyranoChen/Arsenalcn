@@ -82,6 +82,12 @@ namespace iArsenal.Entity
                     case ProductType.TicketBeijing:
                         ProductTypeInfo = "友谊赛球票";
                         break;
+                    case ProductType.MemberShipCore:
+                        ProductTypeInfo = "会员费(Core)";
+                        break;
+                    case ProductType.MemberShipPremier:
+                        ProductTypeInfo = "会员费(Premier)";
+                        break;
                     case ProductType.Other:
                         ProductTypeInfo = "/";
                         break;
@@ -331,6 +337,8 @@ namespace iArsenal.Entity
         TravelPartner = 11,
         MatchTicket = 20,
         TicketBeijing = 21,
+        MemberShipCore = 31,
+        MemberShipPremier = 32,
         Other = 0
     }
 

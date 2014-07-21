@@ -3,90 +3,75 @@
 /* Cascading Style Sheets Level 2 Revision 1 */
 
 /*** Template for Portal ***/
-*
-{
+* {
     margin: 0;
     padding: 0;
 }
 
-body
-{
+body {
     background: #6d2c34 url(images/bg_arsenalGlobal.gif) repeat;
 }
 
-frameset
-{
+frameset {
     margin: 0px;
     padding: 0px;
     border: none;
 }
 
-h1, h2, h3, h4, h5
-{
+h1, h2, h3, h4, h5 {
     font-size: 12px;
 }
 
-em, cite, strong, th
-{
+em, cite, strong, th {
     font-style: normal;
     font-weight: normal;
 }
 
-select option
-{
+select option {
     padding-left: 4px;
 }
 
-ul, li
-{
+ul, li {
     list-style: none;
 }
 
-a
-{
+a {
     color: #333333;
     text-decoration: none;
 }
 
-    a:hover
-    {
+    a:hover {
         color: #aa0000;
         text-decoration: underline;
     }
 
-em
-{
+em {
     color: #aa0000;
     font-weight: bold;
 }
 
-span.Sale
-{
+span.Sale {
     background: url(images/icon-sale.gif) no-repeat left top;
     padding-left: 20px;
 }
 
 /** Portal #Header **/
-#header
-{
+#header {
     overflow: hidden;
     padding: 0px 5px;
     background: #852b37;
     height: 120px;
 }
 
-    #header h1
-    {
+    #header h1 {
         float: left;
     }
 
-    #header #userPanel
-    {
+    #header #userPanel {
         float: right;
     }
 
-        #header #userPanel h2
-        {
+        #header #userPanel h2 {
             display: block;
             background: url(images/bg_iArsenalTitle.png) no-repeat left top;
             width: 400px;
@@ -94,45 +79,38 @@ span.Sale
             cursor: pointer;
         }
 
-        #header #userPanel .UserInfo
-        {
+        #header #userPanel .UserInfo {
             margin: 15px;
             text-align: right;
             color: #fff;
             font-weight: normal;
         }
 
-            #header #userPanel .UserInfo em
-            {
+            #header #userPanel .UserInfo em {
                 color: #fff000;
             }
 
-            #header #userPanel .UserInfo a
-            {
+            #header #userPanel .UserInfo a {
                 color: #fff;
             }
 
-                #header #userPanel .UserInfo a:hover
-                {
+                #header #userPanel .UserInfo a:hover {
                     color: #fff000;
                 }
 
 /** Portal #menubar **/
-#menubar
-{
+#menubar {
     background: #7c6a38;
     overflow: hidden;
     border-top: 1px solid #9a8347;
     height: 30px;
 }
 
-    #menubar ul
-    {
+    #menubar ul {
         padding: 0px 40px;
     }
 
-        #menubar ul li
-        {
+        #menubar ul li {
             display: inline;
             float: left;
             height: 30px;
@@ -140,18 +118,15 @@ span.Sale
             border-left: 1px solid #9a8347;
         }
 
-            #menubar ul li.nol
-            {
+            #menubar ul li.nol {
                 border-left: none;
             }
 
-            #menubar ul li.nor
-            {
+            #menubar ul li.nor {
                 border-right: none;
             }
 
-            #menubar ul li a
-            {
+            #menubar ul li a {
                 display: inline-block;
                 color: #fff;
                 font-weight: bold;
@@ -160,15 +135,13 @@ span.Sale
                 padding: 0px 20px;
             }
 
-                #menubar ul li a:hover, #menubar ul li a.selected
-                {
+                #menubar ul li a:hover, #menubar ul li a.selected {
                     text-decoration: none;
                     background: #aa0000 url(images/menu_ahover.gif) repeat-x;
                 }
 
 /** Portal.Banner **/
-#banner
-{
+#banner {
     border: 1px solid #9a8347;
     border-left: none;
     border-right: none;
@@ -178,22 +151,19 @@ span.Sale
 }
 
 /** Portal.Nav **/
-#nav
-{
+#nav {
     background: url(images/bg_iArsenalNav.gif) no-repeat left 6px;
     margin: 10px 20px;
     border-bottom: 1px dashed #ccc;
 }
 
-    #nav #sitepath
-    {
+    #nav #sitepath {
         padding: 10px;
         text-indent: 16px;
     }
 
 /** Portal.Footer **/
-#footer
-{
+#footer {
     border-top: 1px solid #9c824a;
     background: #eeeeee;
     padding: 20px 0;
@@ -201,61 +171,51 @@ span.Sale
     clear: both;
 }
 
-#footlinks
-{
+#footlinks {
     float: right;
     margin-right: 10px;
     text-align: right;
 }
 
-    #footlinks a
-    {
+    #footlinks a {
         text-decoration: underline;
     }
 
-    #footlinks p
-    {
+    #footlinks p {
         margin-bottom: 5px;
     }
 
-#footer img
-{
+#footer img {
     float: left;
     margin: 0 10px 0 10px;
 }
 
-#copyright, #debuginfo
-{
+#copyright, #debuginfo {
     font: 0.83em/1.5em Verdana, Arial, Helvetica, sans-serif;
 }
 
-    #copyright a
-    {
+    #copyright a {
         color: #aa0000;
         font-weight: bold;
     }
 
-    #copyright em
-    {
+    #copyright em {
         color: #FF9D25;
         font-weight: bold;
     }
 
-#debuginfo
-{
+#debuginfo {
     color: #999;
 }
 
-.scrolltop
-{
+.scrolltop {
     cursor: pointer;
 }
 
 
 
 /** ACN_MainStyle **/
-#ACN_Wrap
-{
+#ACN_Wrap {
     text-align: left;
     margin: auto;
     width: 980px;
@@ -264,47 +224,41 @@ span.Sale
     border-bottom: none;
 }
 
-#ACN_Main
-{
+#ACN_Main {
     background: #fff;
     border: 1px solid #9c824a;
     border-left: none;
     border-right: none;
 }
 
-#leftPanel
-{
+#leftPanel {
     display: inline;
     width: 280px;
     float: left;
     background: #fff;
 }
 
-#rightPanel
-{
+#rightPanel {
     display: inline;
     width: 280px;
     float: right;
     background: #fff;
 }
 
-#mainPanel
-{
+#mainPanel {
     display: inline;
     width: 698px;
     float: left;
     background: #fff;
 }
 
-.FooterBtnBar
-{
+.FooterBtnBar {
     margin: 20px;
     text-align: center;
 }
 
 /** Portal.OrderView WorkflowInfo **/
-.WorkflowInfo
-{
+.WorkflowInfo {
     display: block;
     width: 620px;
     height: 35px;
@@ -312,16 +266,14 @@ span.Sale
     overflow: hidden;
 }
 
-    .WorkflowInfo ul
-    {
+    .WorkflowInfo ul {
         background: url(images/workflow-node-start.png) no-repeat left top;
         padding-left: 18px;
         display: block;
         height: 35px;
     }
 
-        .WorkflowInfo ul li
-        {
+        .WorkflowInfo ul li {
             float: left;
             width: 20%;
             text-align: center;
@@ -329,22 +281,49 @@ span.Sale
             background: url(images/workflow-node-inactive.png) no-repeat right top;
         }
 
-            .WorkflowInfo ul li.Active
-            {
+            .WorkflowInfo ul li.Active {
                 background: url(images/workflow-node-active.png) no-repeat right top;
                 color: #aa0000;
                 font-weight: bold;
             }
 
+/** Portal.MemberPeriod Application Entrance **/
+.MemberPeriod_Entrance {
+    display: block;
+    width: 700px;
+    height: 200px;
+    margin: auto;
+    overflow: hidden;
+}
+
+    .MemberPeriod_Entrance .ApplyContainer {
+        float: left;
+        display: inline-block;
+    }
+
+        .MemberPeriod_Entrance .ApplyContainer a.Core {
+            display: block;
+            background: url(images/entrance-apply-for-core.png) no-repeat left top;
+            width: 340px;
+            height: 200px;
+        }
+
+        .MemberPeriod_Entrance .ApplyContainer a.Premier {
+            display: block;
+            background: url(images/entrance-apply-for-premier.png) no-repeat left top;
+            width: 340px;
+            height: 200px;
+        }
+
+
+
 /** Portal.MatchTicket TeamInfo **/
-.MatchTicket_TeamInfo
-{
+.MatchTicket_TeamInfo {
     text-align: center;
     white-space: nowrap;
 }
 
-    .MatchTicket_TeamInfo img
-    {
+    .MatchTicket_TeamInfo img {
         width: 32px;
         height: 32px;
         border: 1px solid #ccc;
@@ -352,22 +331,19 @@ span.Sale
         padding: 2px;
     }
 
-.MatchTicket_MatchInfo
-{
+.MatchTicket_MatchInfo {
     text-align: center;
     white-space: nowrap;
 }
 
-    .MatchTicket_MatchInfo a.StrongLink
-    {
+    .MatchTicket_MatchInfo a.StrongLink {
         font-size: 10.5pt;
         font-weight: bold;
         padding: 0px 2px;
         display: none;
     }
 
-    .MatchTicket_MatchInfo img
-    {
+    .MatchTicket_MatchInfo img {
         width: 64px;
         height: 64px;
         border: 1px solid #ccc;
@@ -376,8 +352,7 @@ span.Sale
         margin: 0px 15px;
     }
 
-.MatchTicket_CategoryName
-{
+.MatchTicket_CategoryName {
     text-align: center;
     font-weight: bold;
     color: #333;
@@ -385,8 +360,7 @@ span.Sale
     font-size: 10.5pt;
 }
 
-.MatchTicket_TicketInfo
-{
+.MatchTicket_TicketInfo {
     text-align: center;
     font-weight: bold;
     color: #aa0000;
@@ -395,8 +369,7 @@ span.Sale
     font-size: 12px;
 }
 
-.MatchTicket_GameTime
-{
+.MatchTicket_GameTime {
     text-align: center;
     font-weight: bold;
     color: #9c824a;
@@ -406,31 +379,26 @@ span.Sale
 
 
 /** Portal.ArsenalDirect WishList **/
-.ArsenalDirect_WishList
-{
+.ArsenalDirect_WishList {
 }
 
-    .ArsenalDirect_WishList .CommandRow td input.WishOrderItemListInfo
-    {
+    .ArsenalDirect_WishList .CommandRow td input.WishOrderItemListInfo {
         display: none;
     }
 
-    .ArsenalDirect_WishList .CommandRow td a.AddBtn
-    {
+    .ArsenalDirect_WishList .CommandRow td a.AddBtn {
         display: inline-block;
         cursor: pointer;
         background: #EEEEEE url(images/icon-addwish.gif) no-repeat 2px 2px;
         width: 85px;
     }
 
-    .ArsenalDirect_WishList .SelectedRow td
-    {
+    .ArsenalDirect_WishList .SelectedRow td {
         text-align: left;
         white-space: nowrap;
     }
 
-        .ArsenalDirect_WishList .SelectedRow td a.DelBtn
-        {
+        .ArsenalDirect_WishList .SelectedRow td a.DelBtn {
             display: inline-block;
             cursor: pointer;
             background: url(images/icon-cancel.gif) no-repeat left 3px;
@@ -438,8 +406,7 @@ span.Sale
             height: 16px;
         }
 
-        .ArsenalDirect_WishList .SelectedRow td span.ProductPriceInfo
-        {
+        .ArsenalDirect_WishList .SelectedRow td span.ProductPriceInfo {
             display: inline-block;
             white-space: nowrap;
         }

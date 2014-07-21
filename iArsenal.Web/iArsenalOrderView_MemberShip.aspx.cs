@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.Script.Serialization;
 
+using Arsenalcn.Common.Entity;
 using iArsenal.Entity;
 
 namespace iArsenal.Web
 {
-    public partial class iArsenalOrderView_TicketBeijing : PageBase.MemberPageBase
+    public partial class iArsenalOrderView_MemberShip : PageBase.MemberPageBase
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -34,12 +38,14 @@ namespace iArsenal.Web
             {
                 lblMemberName.Text = string.Format("<b>{0}</b> (<em>NO.{1}</em>)", this.MemberName, this.MID.ToString());
 
+                bool _isMemberCouldPurchase = true;
+
                 if (OrderID > 0)
                 {
                     //OrderBase o = new OrderBase();
                     //o.OrderID = OrderID;
                     //o.Select();
-                    Order_Ticket o = new Order_Ticket(OrderID);
+                    Order_MemberShip o = new Order_MemberShip(OrderID);
 
                     if (ConfigAdmin.IsPluginAdmin(UID) && o != null)
                     {
@@ -65,17 +71,48 @@ namespace iArsenal.Web
                     m.MemberID = o.MemberID;
                     m.Select();
 
-                    if (m == null || !m.IsActive)
-                        throw new Exception("无此会员信息");
-
-                    lblMemberIDCardNo.Text = string.Format("<em>{0}</em>", m.IDCardNo);
-                    lblMemberEmail.Text = string.Format("<em>{0}</em>", m.Email);
-                    lblMemberRegion.Text = m.RegionInfo;
                     lblOrderMobile.Text = string.Format("<em>{0}</em>", o.Mobile);
-                    lblOrderPayment.Text = o.PaymentInfo;
-                    lblOrderDescription.Text = o.Description;
+
+                    #region Set Member Nation & Region
+                    if (!string.IsNullOrEmpty(m.Nation))
+                    {
+                        if (m.Nation.Equals("中国"))
+                        {
+                            lblMemberRegion.Text = "中国 ";
+
+                            string[] region = m.Region.Split('|');
+                            int _regionID = int.MinValue;
+
+                            for (int i = 0; i < region.Length; i++)
+                            {
+                                if (int.TryParse(region[i], out _regionID))
+                                {
+                                    lblMemberRegion.Text += DictionaryItem.Cache.Load(_regionID).Name + " ";
+                                }
+                                else
+                                    continue;
+                            }
+                        }
+                        else
+                        {
+                            lblMemberRegion.Text = m.Nation;
+                        }
+                    }
+                    else
+                    {
+                        lblMemberRegion.Text = "无";
+                    }
+                    #endregion
+
+                    lblMemberIDCardNo.Text = m.IDCardNo;
+                    lblMemberPassportNo.Text = m.PassportNo;
+                    lblMemberPassportName.Text = m.PassportName;
+                    lblMemberQQ.Text = string.Format("<em>{0}</em>", m.QQ);
+                    lblMemberEmail.Text = string.Format("<em>{0}</em>", m.Email);
+
                     lblOrderID.Text = string.Format("<em>{0}</em>", o.OrderID.ToString());
                     lblOrderCreateTime.Text = o.CreateTime.ToString("yyyy-MM-dd HH:mm");
+                    lblOrderDescription.Text = o.Description;
 
                     if (!string.IsNullOrEmpty(o.Remark))
                     {
@@ -91,38 +128,44 @@ namespace iArsenal.Web
                     float price = 0f;
                     string priceInfo = string.Empty;
 
-                    OrderItem_TicketBeijing oiTicket = o.OITicketBeijing;
-                    if (oiTicket != null && oiTicket.IsActive)
+                    // Whether Core or Premier MemberShip
+                    OrderItem_MemberShip oiMemberShip = null;
+
+                    if (o.OIMemberShipCore != null && o.OIMemberShipCore.IsActive)
                     {
-                        lblOrderItem_TicketBeijing.Text = string.Format("<em>{0}</em>", oiTicket.ProductName);
-                        tbOrderItem_TicketBeijing.Text = oiTicket.ProductGuid.ToString();
-                        lblOrderItemQuantity.Text = oiTicket.Quantity.ToString();
-
-                        if (oiTicket.Size.Equals("1"))
-                            lblOrderItemSize.Text = "一层看台";
-                        else if (oiTicket.Size.Equals("2"))
-                            lblOrderItemSize.Text = "二层看台";
-                        else
-                            lblOrderItemSize.Text = "不介意";
-
-                        lblOrderItemRemak.Text = oiTicket.Remark;
+                        oiMemberShip = (OrderItem_Core)o.OIMemberShipCore;
+                    }
+                    else if (o.OIMemberShipPremier != null && o.OIMemberShipPremier.IsActive)
+                    {
+                        oiMemberShip = (OrderItem_Premier)o.OIMemberShipPremier;
                     }
                     else
                     {
-                        throw new Exception("此订单未购买球票商品");
+                        throw new Exception("此订单未登记会籍信息");
                     }
+
+                    Product p = Product.Cache.Load(oiMemberShip.ProductGuid);
+
+                    if (p != null)
+                    {
+                        lblMemberClass.Text = string.Format("<em>ACN {0}赛季【{1}】</em>", oiMemberShip.Season, p.DisplayName);
+
+                        lblMemberCardNo.Text = string.Format("<em>{0}</em>", oiMemberShip.MemberCardNo);
+                        lblEndDate.Text = string.Format("<em>{0}</em>", oiMemberShip.EndDate.ToString("yyyy-MM-dd"));
+                    }
+                    else
+                    {
+                        throw new Exception("无相关会籍可申请，请联系管理员");
+                    }
+
 
                     // Set Order Price
 
-                    price = oiTicket.TotalPrice;
-                    priceInfo = string.Format("<合计> {0} × {1}", oiTicket.UnitPrice.ToString("f2"), oiTicket.Quantity.ToString(), price.ToString("f2"));
-
-                    if (!o.Sale.HasValue)
-                        lblOrderPrice.Text = string.Format("{0} = <em>{1}</em>元 (CNY)", priceInfo, price.ToString("f2"));
-                    else
-                        lblOrderPrice.Text = string.Format("{0} = <em>{1}</em>元<br /><结算价>：<em>{2}</em>元 (CNY)", priceInfo, price.ToString("f2"), o.Sale.Value.ToString("f2"));
+                    price = oiMemberShip.TotalPrice;
+                    priceInfo = string.Format("<合计> {2}：{0} × {1}", oiMemberShip.UnitPrice.ToString("f2"), oiMemberShip.Quantity.ToString(), Product.Cache.Load(oiMemberShip.ProductGuid).DisplayName);
 
                     tbOrderPrice.Text = price.ToString();
+                    lblOrderPrice.Text = string.Format("{0} = <em>{1}</em>元", priceInfo, price.ToString("f2"));
 
                     if (o.Status.Equals(OrderStatusType.Draft))
                     {
@@ -174,6 +217,10 @@ namespace iArsenal.Web
 
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", string.Format("alert('谢谢您的订购，您的订单已经提交成功。\\r\\n请尽快付款以完成订单确认，订单号为：{0}'); window.location.href = window.location.href", o.OrderID.ToString()), true);
                 }
+                else
+                {
+                    throw new Exception("此订单无效或非当前用户订单");
+                }
             }
             catch (Exception ex)
             {
@@ -194,7 +241,11 @@ namespace iArsenal.Web
                     if (o == null || !o.MemberID.Equals(MID) || !o.IsActive)
                         throw new Exception("此订单无效或非当前用户订单");
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", string.Format("window.location.href = 'iArsenalOrder_TicketBeijing.aspx?OrderID={0}'", o.OrderID.ToString()), true);
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", string.Format("window.location.href = 'iArsenalOrder_MemberShip.aspx?OrderID={0}'", o.OrderID.ToString()), true);
+                }
+                else
+                {
+                    throw new Exception("此订单无效或非当前用户订单");
                 }
             }
             catch (Exception ex)
@@ -221,7 +272,11 @@ namespace iArsenal.Web
                     o.Price = Convert.ToSingle(tbOrderPrice.Text.Trim());
                     o.Update();
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", string.Format("alert('此订单({0})已经取消');window.location.href = 'iArsenalOrder.aspx'", o.OrderID.ToString()), true);
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", string.Format("alert('此订单({0})已经取消');window.location.href = 'iArsenalMemberPeriod.aspx'", o.OrderID.ToString()), true);
+                }
+                else
+                {
+                    throw new Exception("此订单无效或非当前用户订单");
                 }
             }
             catch (Exception ex)

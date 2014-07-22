@@ -184,6 +184,15 @@ namespace iArsenal.Web {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvEmail;
         
         /// <summary>
+        /// tbMemberClass control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox tbMemberClass;
+        
+        /// <summary>
         /// lblMemberClass control.
         /// </summary>
         /// <remarks>
@@ -245,5 +254,23 @@ namespace iArsenal.Web {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnSubmit;
+        
+        /// <summary>
+        /// pnlMemberCore control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlMemberCore;
+        
+        /// <summary>
+        /// pnlMemberPremier control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlMemberPremier;
     }
 }

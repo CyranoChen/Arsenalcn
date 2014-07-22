@@ -147,7 +147,7 @@
                 </Columns>
             </asp:GridView>
             <div class="FooterBtnBar">
-                <asp:Button ID="btnSubmit" runat="server" CssClass="InputBtn Submit" Text="保存订单"
+                <asp:Button ID="btnSubmit" runat="server" CssClass="InputBtn SubmitBtn" Text="保存订单"
                     OnClick="btnSubmit_Click" OnClientClick="return confirm('保存该订单信息')" />
                 <asp:Button ID="btnCalc" runat="server" CssClass="InputBtn" Text="计算总价" OnClick="btnCalc_Click"
                     OnClientClick="return confirm('重新计算本订单所有许愿总价？')" />

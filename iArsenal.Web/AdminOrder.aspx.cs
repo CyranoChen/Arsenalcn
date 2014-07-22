@@ -106,37 +106,8 @@ namespace iArsenal.Web
                 {
                     tmpString = ViewState["ProductType"].ToString();
                     if (!string.IsNullOrEmpty(tmpString))
-                    {
-                        List<OrderItemBase> oiList = OrderItemBase.GetOrderItems(o.OrderID).FindAll(oi => oi.IsActive && Product.Cache.Load(oi.ProductGuid) != null);
-
-                        switch (tmpString)
-                        {
-                            case "ReplicaKit":
-                                returnValue = returnValue && oiList.Exists(oi =>
-                                    Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.ReplicaKitHome)
-                                    || Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.ReplicaKitAway));
-                                break;
-                            case "Wish":
-                                returnValue = returnValue && oiList.Exists(oi => Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.Other));
-                                break;
-                            case "Ticket":
-                                returnValue = returnValue && oiList.Exists(oi =>
-                                    Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.MatchTicket)
-                                    || Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.TicketBeijing));
-                                break;
-                            case "Travel":
-                                returnValue = returnValue && oiList.Exists(oi => Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.TravelPlan));
-                                break;
-                            case "MemberShip":
-                                returnValue = returnValue && oiList.Exists(oi =>
-                                    Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.MemberShipCore)
-                                    || Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.MemberShipPremier));
-                                break;
-                            default:
-                                returnValue = returnValue && true;
-                                break;
-                        }
-                    }
+                        returnValue = returnValue &&
+                            o.OrderType.HasValue ? o.OrderType.Value.ToString().Equals(tmpString) : false;
                 }
 
                 if (ViewState["Status"] != null)
@@ -730,56 +701,19 @@ namespace iArsenal.Web
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                string _strProductType = string.Empty;
                 string _strStatus = string.Empty;
                 OrderBase o = e.Row.DataItem as OrderBase;
 
                 Label lblProductType = e.Row.FindControl("lblProductType") as Label;
                 Label lblOrderStatus = e.Row.FindControl("lblOrderStatus") as Label;
 
-                if (lblProductType != null)
+                if (lblProductType != null && o.OrderType.HasValue)
                 {
-                    if (ViewState["ProductType"] != null && !string.IsNullOrEmpty(ddlProductType.SelectedValue))
-                    {
-                        _strProductType = ddlProductType.SelectedItem.Text;
-                    }
-                    else
-                    {
-                        List<OrderItemBase> oiList = OrderItemBase.GetOrderItems(o.OrderID).FindAll(oi => oi.IsActive && Product.Cache.Load(oi.ProductGuid) != null);
-
-                        if (oiList.Exists(oi =>
-                                    Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.ReplicaKitHome)
-                                    || Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.ReplicaKitAway)))
-                        {
-                            _strProductType = ddlProductType.Items.FindByValue("ReplicaKit").Text;
-                        }
-                        else if (oiList.Exists(oi => Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.Other)))
-                        {
-                            _strProductType = ddlProductType.Items.FindByValue("Wish").Text;
-                        }
-                        else if (oiList.Exists(oi =>
-                                    Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.MatchTicket)
-                                    || Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.TicketBeijing)))
-                        {
-                            _strProductType = ddlProductType.Items.FindByValue("Ticket").Text;
-                        }
-                        else if (oiList.Exists(oi => Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.TravelPlan)))
-                        {
-                            _strProductType = ddlProductType.Items.FindByValue("Travel").Text;
-                        }
-                        else if (oiList.Exists(oi =>
-                                    Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.MemberShipCore)
-                                    || Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.MemberShipPremier)))
-                        {
-                            _strProductType = ddlProductType.Items.FindByValue("MemberShip").Text;
-                        }
-                        else
-                        {
-                            lblProductType.Visible = false;
-                        }
-                    }
-
-                    lblProductType.Text = string.Format("<em>{0}</em>", _strProductType);
+                    lblProductType.Text = string.Format("<em>{0}</em>", ddlProductType.Items.FindByValue(o.OrderType.Value.ToString()).Text);
+                }
+                else
+                {
+                    lblProductType.Visible = false;
                 }
 
                 if (lblOrderStatus != null)

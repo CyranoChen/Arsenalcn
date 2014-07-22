@@ -1,10 +1,9 @@
 ﻿/* CSS Version Component for Portal */
-/* Version: 1.1 || Date: 2014-02-04 || Author: Cyrano */
+/* Version: 1.1.1 || Date: 2014-07-22 || Author: Cyrano */
 /* Cascading Style Sheets Level 2 Revision 1 */
 
 /** ASP.NET Component **/
-.InputBtn
-{
+.InputBtn {
     padding: 5px 10px;
     font-size: 10.5pt;
     font-weight: bold;
@@ -16,16 +15,33 @@
     white-space: nowrap;
 }
 
-    .InputBtn:hover
-    {
+    .InputBtn:hover {
         color: #aa0000;
         border: 1px solid #333333;
         background: #fff;
         white-space: nowrap;
     }
 
-a.LinkBtn
-{
+.SubmitBtn {
+    padding: 5px 10px;
+    font-size: 10.5pt;
+    font-weight: bold;
+    color: #aa0000;
+    border: 1px solid #999999;
+    background: #fff48d;
+    margin: 2px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+    .SubmitBtn:hover {
+        color: #990000;
+        border: 1px solid #333333;
+        background: #ffd800;
+        white-space: nowrap;
+    }
+
+a.LinkBtn {
     display: inline-block;
     padding: 5px;
     font-size: 12px;
@@ -39,8 +55,7 @@ a.LinkBtn
     white-space: nowrap;
 }
 
-    a.LinkBtn:hover
-    {
+    a.LinkBtn:hover {
         text-decoration: none;
         color: #aa0000;
         border: 1px solid #333333;
@@ -48,8 +63,7 @@ a.LinkBtn
     }
 
 /** Form Component **/
-select
-{
+select {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 10.5pt;
     color: #666666;
@@ -58,34 +72,28 @@ select
     margin: 1px;
 }
 
-.CheckBox label, .RadioButtonList label
-{
+.CheckBox label, .RadioButtonList label {
     margin-left: 2px;
     margin-right: 10px;
 }
 
-input::-webkit-input-placeholder
-{
+input::-webkit-input-placeholder {
     color: #ccc;
 }
 
-input:-moz-placeholder
-{
+input:-moz-placeholder {
     color: #ccc;
 }
 
-input:-ms-input-placeholder
-{
+input:-ms-input-placeholder {
     color: #ccc;
 }
 
-textarea
-{
+textarea {
     font-size: 10.5pt;
 }
 
-.TextBox
-{
+.TextBox {
     font-family: Arial, Helvetica, sans-serif;
     border: 1px solid #ccc;
     background: #FFFFFF;
@@ -94,8 +102,7 @@ textarea
     font-size: 10.5pt;
 }
 
-.TextBoxRead
-{
+.TextBoxRead {
     font-family: Arial, Helvetica, sans-serif;
     border: 1px solid #ccc;
     background: #eee;
@@ -104,8 +111,7 @@ textarea
     font-size: 10.5pt;
 }
 
-.TextBox:hover
-{
+.TextBox:hover {
     font-family: Arial, Helvetica, sans-serif;
     background-color: #c0ddfc;
     padding: 4px;
@@ -113,14 +119,12 @@ textarea
     color: #000;
 }
 
-.ValiSpan
-{
+.ValiSpan {
     color: #aa0000;
     font-weight: bold;
     font-family: Verdana;
 }
 
-.BtnDefault
-{
+.BtnDefault {
     display: none;
 }

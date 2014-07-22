@@ -13,7 +13,7 @@
         var cacheOrderItem = {};
 
         $(function () {
-            var $btnSubmit = $(".FooterBtnBar .Submit");
+            var $btnSubmit = $(".FooterBtnBar .SubmitBtn");
 
             $.getJSON("ServerOrderItemCheck.ashx", { OrderItem: "0" }, function (data, status, xhr) {
                 if (status == "success" && data != null) {
@@ -141,7 +141,7 @@
                 </tbody>
             </table>
             <div class="FooterBtnBar">
-                <asp:Button ID="btnSubmit" runat="server" Text="保存订单信息" CssClass="InputBtn Submit"
+                <asp:Button ID="btnSubmit" runat="server" Text="保存订单信息" CssClass="InputBtn SubmitBtn"
                     OnClick="btnSubmit_Click" OnClientClick="return PackageWishOrderItemList($('tbody.ArsenalDirect_WishList'))" />
                 <input id="btnReset" type="reset" value="重置表单" class="InputBtn" />
             </div>

@@ -1,5 +1,5 @@
 ﻿/* Javascript Version iArsenal */
-/* Version: 1.7.5 || Date: 2014-04-08 || Author: Cyrano */
+/* Version: 1.7.6 || Date: 2014-07-22 || Author: Cyrano */
 /* type="text/javascript" */
 
 $(document).ready(function () {
@@ -149,7 +149,7 @@ function AcnCheck() {
     var $tbAcnID = $("#tdAcnInfo .AcnID");
     var $tbAcnName = $("#tdAcnInfo .AcnName");
     var $tbAcnSessionKey = $("#tdAcnInfo .AcnSessionKey");
-    var $btnSubmit = $(".FooterBtnBar .Submit");
+    var $btnSubmit = $(".FooterBtnBar .SubmitBtn");
     $btnSubmit.prop("disabled", true);
 
     if ($tbAcnID.val().trim() != "") {
@@ -180,7 +180,7 @@ function ProductCheck() {
     var $tbProductUnitPrice = $(".ProductInfo .ProductUnitPrice");
     var $tbProductQuantity = $(".ProductInfo .ProductQuantity");
     var $lblProductTotalPrice = $(".ProductInfo .ProductTotalPrice");
-    var $btnSubmit = $(".FooterBtnBar .Submit");
+    var $btnSubmit = $(".FooterBtnBar .SubmitBtn");
     $btnSubmit.prop("disabled", true);
 
     if ($tbProductCode.val().trim() != "") {
@@ -240,7 +240,7 @@ function ProductCheckByID(pGuid) {
 function MemberCheck() {
     var $tbMemberID = $("#tdMemberInfo .MemberID");
     var $tbMemberName = $("#tdMemberInfo .MemberName");
-    var $btnSubmit = $(".FooterBtnBar .Submit");
+    var $btnSubmit = $(".FooterBtnBar .SubmitBtn");
     $btnSubmit.prop("disabled", true);
 
     if ($tbMemberID.val().trim() != "") {

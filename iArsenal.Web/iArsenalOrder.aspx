@@ -24,6 +24,14 @@
                 <div class="DivFloatLeft">
                     订单查询：
                     <asp:TextBox ID="tbOrderID" runat="server" CssClass="TextBox" Width="200px"></asp:TextBox>
+                    <asp:DropDownList ID="ddlProductType" runat="server">
+                        <asp:ListItem Value="" Text="--类型--" Selected="True"></asp:ListItem>
+                        <asp:ListItem Value="ReplicaKit" Text="球衣"></asp:ListItem>
+                        <asp:ListItem Value="Wish" Text="团购"></asp:ListItem>
+                        <asp:ListItem Value="Ticket" Text="球票"></asp:ListItem>
+                        <asp:ListItem Value="Travel" Text="观赛"></asp:ListItem>
+                        <asp:ListItem Value="MemberShip" Text="会费"></asp:ListItem>
+                    </asp:DropDownList>
                     <asp:LinkButton ID="btnFilter" runat="server" Text="搜索订单" CssClass="LinkBtn" OnClick="btnFilter_Click"></asp:LinkButton>
                 </div>
                 <div class="DivFloatRight">
@@ -39,7 +47,11 @@
                     <asp:BoundField HeaderText="创建时间" DataField="CreateTime" DataFormatString="{0:yyyy-MM-dd HH:mm}" />
                     <asp:BoundField HeaderText="定金" DataField="Deposit" NullDisplayText="/" DataFormatString="{0:f2}"
                         ItemStyle-HorizontalAlign="Right" Visible="false" />
-                    <asp:BoundField HeaderText="类型" DataField="OrderType" />
+                    <asp:TemplateField HeaderText="类型">
+                        <ItemTemplate>
+                            <asp:Label ID="lblProductType" runat="server"></asp:Label>
+                        </ItemTemplate>
+                    </asp:TemplateField>
                     <asp:TemplateField HeaderText="价格" ItemStyle-HorizontalAlign="Right">
                         <ItemTemplate>
                             <asp:Label ID="lblPriceInfo" runat="server"></asp:Label>

@@ -282,8 +282,8 @@ namespace iArsenal.Entity
                 {
                     OrderType = OrderBaseType.Wish;
                 }
-                else if (oiList.Exists(oi => Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.ReplicaKitHome)
-                    || Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.ReplicaKitAway)))
+                else if (oiList.Exists(oi => Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.MemberShipCore)
+                    || Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.MemberShipPremier)))
                 {
                     OrderType = OrderBaseType.MemberShip;
                 }

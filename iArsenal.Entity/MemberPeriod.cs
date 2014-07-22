@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-
-using Arsenalcn.Common.Entity;
+using System.Data.SqlClient;
 
 namespace iArsenal.Entity
 {
@@ -48,19 +47,19 @@ namespace iArsenal.Entity
                 InitMemberPeriod(dr);
         }
 
-        public void Update()
+        public void Update(SqlTransaction trans = null)
         {
-            DataAccess.MemberPeriod.UpdateMemberPeriod(MemberPeriodID, MemberID, MemberName, MemberCardNo, (int)MemberClass, OrderID, StartDate, EndDate, IsActive, Description, Remark);
+            DataAccess.MemberPeriod.UpdateMemberPeriod(MemberPeriodID, MemberID, MemberName, MemberCardNo, (int)MemberClass, OrderID, StartDate, EndDate, IsActive, Description, Remark, trans);
         }
 
-        public void Insert()
+        public void Insert(SqlTransaction trans = null)
         {
-            DataAccess.MemberPeriod.InsertMemberPeriod(MemberPeriodID, MemberID, MemberName, MemberCardNo, (int)MemberClass, OrderID, StartDate, EndDate, IsActive, Description, Remark);
+            DataAccess.MemberPeriod.InsertMemberPeriod(MemberPeriodID, MemberID, MemberName, MemberCardNo, (int)MemberClass, OrderID, StartDate, EndDate, IsActive, Description, Remark, trans);
         }
 
-        public void Delete()
+        public void Delete(SqlTransaction trans = null)
         {
-            DataAccess.MemberPeriod.DeleteMemberPeriod(MemberPeriodID);
+            DataAccess.MemberPeriod.DeleteMemberPeriod(MemberPeriodID, trans);
         }
 
         public static List<MemberPeriod> GetMemberPeriods()

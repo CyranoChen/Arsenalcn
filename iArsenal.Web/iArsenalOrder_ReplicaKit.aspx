@@ -155,7 +155,7 @@
                             <asp:DropDownList ID="ddlOrderItemSize" runat="server" Visible="false">
                                 <asp:ListItem Value="0" Text="--请选择球衣尺寸--"></asp:ListItem>
                             </asp:DropDownList>
-                            <asp:TextBox ID="tbOrderItemSize" runat="server" CssClass="TextBox" Width="35px" MaxLength="10"></asp:TextBox>
+                            <asp:TextBox ID="tbOrderItemSize" runat="server" CssClass="TextBox" Width="50px" MaxLength="5"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="rfvOrderItemSize" runat="server" ControlToValidate="tbOrderItemSize"
                                 Display="Dynamic" ErrorMessage="*" CssClass="ValiSpan"></asp:RequiredFieldValidator>
                             <a href="http://bbs.arsenalcn.com/showtopic.aspx?topicid=107237&postid=1794623#1794623" target="_blank">【欧版尺码表】</a>
@@ -225,7 +225,7 @@
                 </tbody>
             </table>
             <div class="FooterBtnBar">
-                <asp:Button ID="btnSubmit" runat="server" Text="保存订单信息" CssClass="InputBtn" OnClick="btnSubmit_Click" />
+                <asp:Button ID="btnSubmit" runat="server" Text="保存订单信息" CssClass="InputBtn SubmitBtn" OnClick="btnSubmit_Click" />
                 <input id="btnReset" type="reset" value="重置表单" class="InputBtn" />
             </div>
         </div>
@@ -252,7 +252,7 @@
                 <h3 class="Col" onclick="$(this).toggleClass('Col'); $(this).toggleClass('Exp'); $(this).next('div').toggle('normal');">
                     <a>球衣印字印号说明</a></h3>
                 <div class="Block">
-                    <p>(1). 您可以下拉框中选择现役球员印字印号；如需自定义印字印号，请在下拉框中选择<em>自定义</em>，并出现的文本框中填写号码与印字。</p>
+                    <p>(1). 您可以下拉框中选择现役球员印字印号；如需自定义印字印号，请在下拉框选<em>自定义</em>，并出现的文本框中填写号码与印字即可。</p>
                     <p style="display: none">(2). 特殊字体“阿森纳字体”为胶印，具体效果可<a href="http://arsenaldirect.arsenal.com/icat/kitbuilder/" target="_blank">【点击体验】</a>，阿森纳字体不接受自定义印字印号。选择了阿森纳字体后，印字印号会自动按阿森纳字体的费用结算。</p>
                     <p>(2). 因球衣定制的特殊性（选印名字、号码、袖标等个性化选择），应提交订单后尽快付款；若拒付全额款项的，我们将视为无效的订单，敬请配合和谅解。</p>
                 </div>

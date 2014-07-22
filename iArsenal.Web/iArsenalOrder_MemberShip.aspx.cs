@@ -33,22 +33,56 @@ namespace iArsenal.Web
         {
             get
             {
-                if (!string.IsNullOrEmpty(Request.QueryString["Type"]) && Request.QueryString["Type"].Equals("Core", StringComparison.OrdinalIgnoreCase))
+                ProductType _pt = ProductType.MemberShipPremier;
+
+                # region Check whether core or premier membership
+                if (OrderID > 0)
+                {
+                    Order_MemberShip o = new Order_MemberShip(OrderID);
+                    OrderItem_MemberShip oiMemberShip = null;
+
+                    if (o.OIMemberShipCore != null && o.OIMemberShipCore.IsActive)
+                    {
+                        oiMemberShip = (OrderItem_Core)o.OIMemberShipCore;
+                    }
+                    else if (o.OIMemberShipPremier != null && o.OIMemberShipPremier.IsActive)
+                    {
+                        oiMemberShip = (OrderItem_Premier)o.OIMemberShipPremier;
+                    }
+                    else
+                    {
+                        throw new Exception("此订单未登记会籍信息");
+                    }
+
+                    _pt = Product.Cache.Load(oiMemberShip.ProductGuid).ProductType;
+                }
+                else
+                {
+                    if (!string.IsNullOrEmpty(Request.QueryString["Type"]) && Request.QueryString["Type"].Equals("Core", StringComparison.OrdinalIgnoreCase))
+                    {
+                        _pt = ProductType.MemberShipCore;
+                    }
+                    else
+                    {
+                        _pt = ProductType.MemberShipPremier;
+                    }
+                }
+                #endregion
+
+                if (_pt.Equals(ProductType.MemberShipCore))
                 {
                     Page.Title = string.Format("ACN{0}/{1}赛季普通(Core)会员登记", CurrSeasonDeadline.AddYears(-1).Year.ToString(), CurrSeasonDeadline.ToString("yy"));
-                    //hlReplicaKitPage.NavigateUrl = "http://arsenaldirect.arsenal.com/puma-kit/puma-away-kit/icat/pumaaway";
-                    //ltrlBannerImage.Text = string.Format("<img src=\"uploadfiles/banner/banner20140711.png\" alt=\"{0}\" />", Page.Title); ;
-
-                    return ProductType.MemberShipCore;
+                    pnlMemberCore.Visible = true;
+                    pnlMemberPremier.Visible = false;
                 }
                 else
                 {
                     Page.Title = string.Format("ACN{0}/{1}赛季高级(Premier)会员登记", CurrSeasonDeadline.AddYears(-1).Year.ToString(), CurrSeasonDeadline.ToString("yy"));
-                    //hlReplicaKitPage.NavigateUrl = "http://arsenaldirect.arsenal.com/puma-kit/puma-home-kit/icat/pumahome";
-                    //ltrlBannerImage.Text = string.Format("<img src=\"uploadfiles/banner/banner20140710.png\" alt=\"{0}\" />", Page.Title); ;
-
-                    return ProductType.MemberShipPremier;
+                    pnlMemberCore.Visible = false;
+                    pnlMemberPremier.Visible = true;
                 }
+
+                return _pt;
             }
         }
 
@@ -153,11 +187,11 @@ namespace iArsenal.Web
                     // Whether Core or Premier MemberShip
                     OrderItem_MemberShip oiMemberShip = null;
 
-                    if (o.OIMemberShipCore != null && o.OIMemberShipCore.IsActive)
+                    if (CurrProductType.Equals(ProductType.MemberShipCore))
                     {
                         oiMemberShip = (OrderItem_Core)o.OIMemberShipCore;
                     }
-                    else if (o.OIMemberShipPremier != null && o.OIMemberShipPremier.IsActive)
+                    else if (CurrProductType.Equals(ProductType.MemberShipPremier))
                     {
                         oiMemberShip = (OrderItem_Premier)o.OIMemberShipPremier;
                     }
@@ -166,12 +200,13 @@ namespace iArsenal.Web
                         throw new Exception("此订单未登记会籍信息");
                     }
 
-                    Product p = Product.Cache.Load(oiMemberShip.ProductGuid);
+                    Product pMemberShip = Product.Cache.Load(oiMemberShip.ProductGuid);
 
-                    if (p != null)
+                    if (pMemberShip != null)
                     {
+                        tbMemberClass.Text = ((int)pMemberShip.ProductType).ToString();
                         lblMemberClass.Text = string.Format("<em>ACN {0}赛季【{1}】- 售价 {2}</em>",
-                            oiMemberShip.Season, p.DisplayName, p.PriceInfo);
+                            oiMemberShip.Season, pMemberShip.DisplayName, pMemberShip.PriceInfo);
 
                         tbMemberCardNo.Text = oiMemberShip.MemberCardNo;
                         lblEndDate.Text = string.Format("<em>{0}</em>", CurrSeasonDeadline.ToString("yyyy-MM-dd"));
@@ -233,6 +268,7 @@ namespace iArsenal.Web
 
                     if (pMemberShip != null)
                     {
+                        tbMemberClass.Text = ((int)pMemberShip.ProductType).ToString();
                         lblMemberClass.Text = string.Format("<em>ACN {0}/{1}赛季【{2}】- 售价 {3}</em>",
                             CurrSeasonDeadline.AddYears(-1).Year.ToString(), CurrSeasonDeadline.ToString("yy"),
                             pMemberShip.DisplayName, pMemberShip.PriceInfo);
@@ -391,23 +427,32 @@ namespace iArsenal.Web
                         }
 
                         //New Order Items
-                        Product pMembership = Product.Cache.Load(CurrProductType).Find(p => p.IsActive);
-
-                        if (pMembership == null)
-                            throw new Exception("无相关会籍可申请，请联系管理员");
-
-                        // Validate Member Card No
-                        int _cardNo = 0;
-                        if (!string.IsNullOrEmpty(tbMemberCardNo.Text.Trim()) && int.TryParse(tbMemberCardNo.Text.Trim(), out _cardNo))
+                        if (!string.IsNullOrEmpty(tbMemberClass.Text.Trim()))
                         {
+                            ProductType _currProductType = (ProductType)Enum.Parse(typeof(ProductType), tbMemberClass.Text.Trim());
+                            Product pMembership = Product.Cache.Load(_currProductType).Find(p => p.IsActive);
+
+                            if (pMembership == null)
+                                throw new Exception("无相关会籍可申请，请联系管理员");
+
+                            // Validate Member Card No
+                            int _cardNo = 0;
+                            if (!string.IsNullOrEmpty(tbMemberCardNo.Text.Trim()) && int.TryParse(tbMemberCardNo.Text.Trim(), out _cardNo))
+                            {
+
+                            }
+                            else
+                            {
+                                throw new Exception("请正确填写会员卡号");
+                            }
+
+                            OrderItemBase.WishOrderItem(m, pMembership, o, CurrSeasonDeadline.ToString("yyyy-MM-dd"), 1, null, _cardNo.ToString(), trans);
 
                         }
                         else
                         {
-                            throw new Exception("请正确填写会员卡号");
+                            throw new Exception("此订单未登记会籍信息");
                         }
-
-                        OrderItemBase.WishOrderItem(m, pMembership, o, CurrSeasonDeadline.ToString("yyyy-MM-dd"), 1, null, _cardNo.ToString(), trans);
                     }
 
                     trans.Commit();

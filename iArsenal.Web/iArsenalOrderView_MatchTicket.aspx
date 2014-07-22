@@ -157,7 +157,7 @@
                 </tbody>
             </table>
             <div class="FooterBtnBar">
-                <asp:Button ID="btnSubmit" runat="server" Text="确认并提交" CssClass="InputBtn" OnClick="btnSubmit_Click"
+                <asp:Button ID="btnSubmit" runat="server" Text="确认并提交" CssClass="InputBtn SubmitBtn" OnClick="btnSubmit_Click"
                     OnClientClick="return confirm('确定提交此订单?(提交后无法修改)')" />
                 <asp:Button ID="btnModify" runat="server" Text="修改" CssClass="InputBtn" OnClick="btnModify_Click" />
                 <asp:Button ID="btnCancel" runat="server" Text="取消" CssClass="InputBtn" OnClick="btnCancel_Click"
@@ -183,7 +183,7 @@
 
                     <p>
                         (5). 票务负责人联系方式：<br />
-                        微信号：<em>iArsenalcn【推荐】</em><br />
+                        微信号：<em>iArsenalcn【推荐】加入时请注明<em>【球票】</em>字样</em>。<br />
                         QQ：<em>22287842，Cyrano Chen</em><br />
                         Email：<a href="mailto:webmaster@arsenalcn.com"><em>webmaster@arsenalcn.com</em></a>
                     </p>

@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Script.Serialization;
 
 using Arsenalcn.Common.Entity;
 using iArsenal.Entity;
+using System.Data.SqlClient;
 
 namespace iArsenal.Web
 {
@@ -38,8 +37,6 @@ namespace iArsenal.Web
             {
                 lblMemberName.Text = string.Format("<b>{0}</b> (<em>NO.{1}</em>)", this.MemberName, this.MID.ToString());
 
-                bool _isMemberCouldPurchase = true;
-
                 if (OrderID > 0)
                 {
                     //OrderBase o = new OrderBase();
@@ -50,6 +47,10 @@ namespace iArsenal.Web
                     if (ConfigAdmin.IsPluginAdmin(UID) && o != null)
                     {
                         lblMemberName.Text = string.Format("<b>{0}</b> (<em>NO.{1}</em>)", o.MemberName, o.MemberID.ToString());
+
+                        // Show the button of Generate Member Period
+                        if (o.Status.Equals(OrderStatusType.Confirmed))
+                        { btnGenMemberPeriod.Visible = true; }
                     }
                     else
                     {
@@ -282,6 +283,157 @@ namespace iArsenal.Web
             catch (Exception ex)
             {
                 ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}');", ex.Message.ToString()), true);
+            }
+        }
+
+        protected void btnGenMemberPeriod_Click(object sender, EventArgs e)
+        {
+            using (SqlConnection conn = ConfigGlobal.SQLConnectionStrings)
+            {
+                conn.Open();
+                SqlTransaction trans = conn.BeginTransaction();
+
+                try
+                {
+                    if (OrderID > 0)
+                    {
+                        Order_MemberShip o = new Order_MemberShip(OrderID);
+
+                        if (ConfigAdmin.IsPluginAdmin(UID) && o != null && o.Status.Equals(OrderStatusType.Confirmed))
+                        {
+                            // Whether Core or Premier MemberShip
+                            OrderItem_MemberShip oiMemberShip = null;
+
+                            if (o.OIMemberShipCore != null && o.OIMemberShipCore.IsActive)
+                            {
+                                oiMemberShip = (OrderItem_Core)o.OIMemberShipCore;
+                            }
+                            else if (o.OIMemberShipPremier != null && o.OIMemberShipPremier.IsActive)
+                            {
+                                oiMemberShip = (OrderItem_Premier)o.OIMemberShipPremier;
+                            }
+                            else
+                            {
+                                throw new Exception("此订单未登记会籍信息");
+                            }
+
+                            Product p = Product.Cache.Load(oiMemberShip.ProductGuid);
+
+                            if (p == null)
+                            {
+                                throw new Exception("无相关会籍可申请，请联系管理员");
+                            }
+
+                            // Get all Member Period of current season
+                            List<MemberPeriod> list = MemberPeriod.GetMemberPeriods().FindAll(mp =>
+                                mp.IsActive && mp.StartDate <= DateTime.Now && mp.EndDate >= DateTime.Now);
+
+                            bool _updateFlag = false;
+
+                            // Valiate the Member Period Information
+                            if (list != null && list.Count > 0)
+                            {
+                                if (list.Exists(mp =>
+                                    mp.MemberID.Equals(o.MemberID) && mp.MemberName.Equals(o.MemberName)
+                                    && p.ProductType.Equals(ProductType.MemberShipCore)))
+                                {
+                                    throw new Exception("此会员当前赛季已经有会籍信息");
+                                }
+                                else if (list.Exists(mp =>
+                                                mp.MemberID.Equals(o.MemberID) && mp.MemberName.Equals(o.MemberName)
+                                                && mp.MemberClass.Equals(MemberClassType.Core))
+                                            && p.ProductType.Equals(ProductType.MemberShipPremier))
+                                {
+                                    _updateFlag = true;
+                                }
+
+                                if (!_updateFlag && list.Exists(mp => !mp.MemberID.Equals(o.MemberID)
+                                    && mp.MemberCardNo.Equals(oiMemberShip.MemberCardNo, StringComparison.OrdinalIgnoreCase)))
+                                {
+                                    throw new Exception("此会员卡号已被其他会员占用");
+                                }
+                            }
+
+                            if (_updateFlag)
+                            {
+                                // Level up the core member to premier for current season
+                                MemberPeriod mp = list.Find(mpCore =>
+                                    mpCore.MemberID.Equals(o.MemberID) && mpCore.MemberName.Equals(o.MemberName)
+                                    && mpCore.MemberClass.Equals(MemberClassType.Core));
+
+                                mp.MemberClass = MemberClassType.Premier;
+
+                                // not update MemberCardNo of the core member
+                                oiMemberShip.MemberCardNo = mp.MemberCardNo;
+
+                                mp.EndDate = oiMemberShip.EndDate;
+
+                                mp.Description = string.Format("Season {0} \\r\\n于 {1} 升级为【{2}】会籍，原会籍订单号：{3}", oiMemberShip.Season,
+                                    DateTime.Now.ToString("yyyy-MM-dd HH:mm"), mp.MemberClass.ToString(), mp.OrderID.ToString());
+
+                                mp.OrderID = OrderID;
+
+                                mp.Update(trans);
+                            }
+                            else
+                            {
+                                // Insert new Member Period for current season
+                                MemberPeriod mp = new MemberPeriod();
+
+                                mp.MemberID = o.MemberID;
+                                mp.MemberName = o.MemberName;
+                                mp.MemberCardNo = oiMemberShip.MemberCardNo;
+
+                                if (p.ProductType.Equals(ProductType.MemberShipCore))
+                                {
+                                    mp.MemberClass = MemberClassType.Core;
+                                }
+                                else if (p.ProductType.Equals(ProductType.MemberShipPremier))
+                                {
+                                    mp.MemberClass = MemberClassType.Premier;
+                                }
+                                else
+                                {
+                                    throw new Exception("此订单无相关会籍信息");
+                                }
+
+                                mp.OrderID = OrderID;
+                                mp.StartDate = DateTime.Now;
+                                mp.EndDate = oiMemberShip.EndDate;
+                                mp.IsActive = true;
+                                mp.Description = string.Format("Season {0}", oiMemberShip.Season);
+                                mp.Remark = string.Empty;
+
+                                mp.Insert(trans);
+                            }
+
+                            // Update Order Status
+                            o.Status = OrderStatusType.Delivered;
+                            o.UpdateTime = DateTime.Now;
+                            o.Update(trans);
+
+                            trans.Commit();
+
+                            ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", string.Format("alert('【{0}】会籍 (卡号：{1}) 保存成功');window.location.href = window.location.href", p.ProductType.ToString(), oiMemberShip.MemberCardNo), true);
+                        }
+                        else
+                        {
+                            throw new Exception("此订单无效,请联系管理员");
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception("此订单无效,请联系管理员");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    trans.Rollback();
+
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}')", ex.Message.ToString()), true);
+                }
+
+                conn.Close();
             }
         }
     }

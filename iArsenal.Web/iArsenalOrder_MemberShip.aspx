@@ -7,7 +7,7 @@
     <link href="Scripts/jquery.ui/jquery-ui.min.css" type="text/css" rel="stylesheet" />
     <script type="text/javascript" src="Scripts/jquery-ui-1.10.4.min.js"></script>
     <style type="text/css">
-        input.Region1, input.Region2 {
+        input.MemberClass, input.Region1, input.Region2 {
             display: none;
         }
     </style>
@@ -125,6 +125,7 @@
                     <tr class="Row">
                         <td class="FieldHeader">会籍等级：</td>
                         <td style="text-align: left" colspan="3">
+                            <asp:TextBox ID="tbMemberClass" runat="server" CssClass="MemberClass"></asp:TextBox>
                             <asp:Label ID="lblMemberClass" runat="server"></asp:Label>
                         </td>
                     </tr>
@@ -155,21 +156,38 @@
                 </tbody>
             </table>
             <div class="FooterBtnBar">
-                <asp:Button ID="btnSubmit" runat="server" Text="保存订单信息" CssClass="InputBtn" OnClick="btnSubmit_Click" />
+                <asp:Button ID="btnSubmit" runat="server" Text="保存订单信息" CssClass="InputBtn SubmitBtn" OnClick="btnSubmit_Click" />
                 <input id="btnReset" type="reset" value="重置表单" class="InputBtn" />
             </div>
         </div>
         <div id="rightPanel">
-            <div class="InfoPanel">
+            <asp:Panel ID="pnlMemberCore" CssClass="InfoPanel" runat="server">
                 <h3 class="Col" onclick="$(this).toggleClass('Col'); $(this).toggleClass('Exp'); $(this).next('div').toggle('normal');">
-                    <a>预约报名须知</a></h3>
+                    <a>ACN(Core)会员福利</a></h3>
                 <div class="Block">
+                    <p>(1). 由于球迷会球票预订者过多，导致上个赛季多场比赛供不应求。应俱乐部要求，官方球迷会应配合维持球场秩序，并严格确认购票者身份，特推出球迷会收费会员制度。</p>
+                    <p>(2). Arsenalcn Core Member作为普通收费会员，在实名登记真实信息后，可预订阿森纳主场<em>非</em>（A级或特定重要比赛，如收官站、旅游旺季比赛）的其他比赛球票。</p>
+                    <p>(3). ACN(Core)会员年费(赛季)为<em>180元</em>。</p>
+                    <p>(4). ACN(Core)会员可预订的比赛，原则上可<em>确保有票</em>。</p>
                 </div>
-            </div>
+            </asp:Panel>
+            <asp:Panel ID="pnlMemberPremier" CssClass="InfoPanel" runat="server">
+                <h3 class="Col" onclick="$(this).toggleClass('Col'); $(this).toggleClass('Exp'); $(this).next('div').toggle('normal');">
+                    <a>ACN(Premier)会员福利</a></h3>
+                <div class="Block">
+                    <p>(1). 由于球迷会球票预订者过多，导致上个赛季多场比赛供不应求。应俱乐部要求，官方球迷会应配合维持球场秩序，并严格确认购票者身份，特推出球迷会收费会员制度。</p>
+                    <p>(2). Arsenalcn Premier Member作为高级收费会员，在实名登记真实信息后，可预订<em>阿森纳主场所有比赛球票</em>。</p>
+                    <p>(3). ACN(Premier)会员年费(赛季)为<em>480元</em>。</p>
+                    <p>(4). ACN(Premier)会员可预订的<em>A级或特定重要比赛</em>，不确保一定有票。一旦球票紧张，将根据会员积分情况，球票付款确认的时间顺序优先分配。</p>
+                </div>
+            </asp:Panel>
             <div class="InfoPanel">
                 <h3 class="Col" onclick="$(this).toggleClass('Col'); $(this).toggleClass('Exp'); $(this).next('div').toggle('normal');">
-                    <a>出行日程安排（暂定）</a></h3>
+                    <a>申请方式与相关说明</a></h3>
                 <div class="Block">
+                    <p>(1). 球迷会会员实名登记，并缴纳一个赛季的年费，方有资格成为收费会员并实名登记真实信息后，<a href="iArsenalOrder_MatchList.aspx" target="_blank"><em>可预订主场球票</em></a>。此收费会员与阿森纳官方俱乐部红会员(Red Member)等会员制无关。</p>
+                    <p>(2). 收费会员一旦确认支付年费并获得资格后，当前一个赛季均有效，可预订或购买多场比赛球票。每赛季联赛结束的月底，为会员资格到期时间。下个赛季需重新续费。</p>
+                    <p>(3). 收费会员在未成功购买球票之前，可随时选择放弃收费会员资格，我们会在每个季度末结算会费，并予以退还；但是，任何收费会员（包括普通与高级）只要通过球迷会渠道，成功购买过任何一场比赛球票，当赛季所交年费<em>恕不退还</em>。</p>
                 </div>
             </div>
         </div>

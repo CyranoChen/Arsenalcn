@@ -172,7 +172,7 @@
                 <uc3:CustomPagerInfo ID="ctrlCustomPagerInfo" runat="server" />
             </div>
             <div class="FooterBtnBar">
-                <asp:Button ID="btnSubmit" runat="server" CssClass="InputBtn Submit" Text="保存商品"
+                <asp:Button ID="btnSubmit" runat="server" CssClass="InputBtn SubmitBtn" Text="保存商品"
                     OnClick="btnSubmit_Click" OnClientClick="return confirm('保存该商品信息')" />
                 <asp:Button ID="btnCancel" runat="server" CssClass="InputBtn" Text="返回" OnClick="btnCancel_Click" />
                 <asp:Button ID="btnDelete" runat="server" CssClass="InputBtn" Text="删除商品" OnClick="btnDelete_Click"

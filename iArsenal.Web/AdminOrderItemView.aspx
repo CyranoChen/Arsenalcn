@@ -127,7 +127,7 @@
                 </tbody>
             </table>
             <div class="FooterBtnBar">
-                <asp:Button ID="btnSubmit" runat="server" CssClass="InputBtn Submit" Text="保存许愿"
+                <asp:Button ID="btnSubmit" runat="server" CssClass="InputBtn SubmitBtn" Text="保存许愿"
                     OnClick="btnSubmit_Click" OnClientClick="return confirm('保存该许愿信息')" />
                 <asp:Button ID="btnCancel" runat="server" CssClass="InputBtn" Text="返回" OnClick="btnCancel_Click" />
                 <asp:Button ID="btnBackOrder" runat="server" CssClass="InputBtn" Text="返回订单" OnClick="btnBackOrder_Click" Visible="false" />

@@ -52,6 +52,14 @@ namespace iArsenal.Web
                             returnValue = returnValue && o.OrderID.Equals(Convert.ToInt32(tmpString));
                     }
 
+                    if (ViewState["ProductType"] != null)
+                    {
+                        tmpString = ViewState["ProductType"].ToString();
+                        if (!string.IsNullOrEmpty(tmpString))
+                            returnValue = returnValue &&
+                                o.OrderType.HasValue ? o.OrderType.Value.ToString().Equals(tmpString) : false;
+                    }
+
                     // Find all Orders which belong to Current Member & Active
                     returnValue = returnValue && o.IsActive;
 
@@ -140,6 +148,24 @@ namespace iArsenal.Web
             }
         }
 
+        protected void btnFilter_Click(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(tbOrderID.Text.Trim()))
+                ViewState["OrderID"] = tbOrderID.Text.Trim();
+            else
+                ViewState["OrderID"] = string.Empty;
+
+            if (!string.IsNullOrEmpty(ddlProductType.SelectedValue))
+                ViewState["ProductType"] = ddlProductType.SelectedValue;
+            else
+                ViewState["ProductType"] = string.Empty;
+
+            OrderID = 0;
+            gvOrder.PageIndex = 0;
+
+            BindData();
+        }
+
         protected void gvOrder_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
@@ -147,8 +173,18 @@ namespace iArsenal.Web
                 string _strStatus = string.Empty;
                 OrderBase o = e.Row.DataItem as OrderBase;
 
+                Label lblProductType = e.Row.FindControl("lblProductType") as Label;
                 Label lblOrderStatus = e.Row.FindControl("lblOrderStatus") as Label;
                 Label lblPriceInfo = e.Row.FindControl("lblPriceInfo") as Label;
+
+                if (lblProductType != null && o.OrderType.HasValue)
+                {
+                    lblProductType.Text = string.Format("<em>{0}</em>", ddlProductType.Items.FindByValue(o.OrderType.Value.ToString()).Text);
+                }
+                else
+                {
+                    lblProductType.Visible = false;
+                }
 
                 if (lblOrderStatus != null)
                 {
@@ -174,19 +210,6 @@ namespace iArsenal.Web
                     lblPriceInfo.Text = string.Format("<em>￥{0}</em>", o.PriceInfo);
                 }
             }
-        }
-
-        protected void btnFilter_Click(object sender, EventArgs e)
-        {
-            if (!string.IsNullOrEmpty(tbOrderID.Text.Trim()))
-                ViewState["OrderID"] = tbOrderID.Text.Trim();
-            else
-                ViewState["OrderID"] = string.Empty;
-
-            OrderID = 0;
-            gvOrder.PageIndex = 0;
-
-            BindData();
         }
     }
 }

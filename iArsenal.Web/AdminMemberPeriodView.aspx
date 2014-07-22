@@ -117,7 +117,7 @@
                 </tbody>
             </table>
             <div class="FooterBtnBar">
-                <asp:Button ID="btnSubmit" runat="server" CssClass="InputBtn Submit" Text="保存会籍"
+                <asp:Button ID="btnSubmit" runat="server" CssClass="InputBtn SubmitBtn" Text="保存会籍"
                     OnClick="btnSubmit_Click" OnClientClick="return confirm('保存该会员收费会籍信息')" />
                 <asp:Button ID="btnCancel" runat="server" CssClass="InputBtn" Text="返回" OnClick="btnCancel_Click" />
                 <asp:Button ID="btnBackMember" runat="server" CssClass="InputBtn" Text="返回会员" OnClick="btnBackMember_Click" Visible="false" />

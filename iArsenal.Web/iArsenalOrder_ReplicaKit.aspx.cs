@@ -62,22 +62,57 @@ namespace iArsenal.Web
         {
             get
             {
-                if (!string.IsNullOrEmpty(Request.QueryString["Type"]) && Request.QueryString["Type"].Equals("Away", StringComparison.OrdinalIgnoreCase))
+                ProductType _pt = ProductType.ReplicaKitHome;
+
+                # region Check whether home or away replicakit
+
+                if (OrderID > 0)
+                {
+                    Order_ReplicaKit o = new Order_ReplicaKit(OrderID);
+                    OrderItemBase oi_ReplicaKit = null;
+
+                    if (o.OIReplicaKitAway != null && o.OIReplicaKitAway.IsActive)
+                    {
+                        oi_ReplicaKit = (OrderItem_ReplicaKitAway)o.OIReplicaKitAway;
+                    }
+                    else if (o.OIReplicaKitHome != null && o.OIReplicaKitHome.IsActive)
+                    {
+                        oi_ReplicaKit = (OrderItem_ReplicaKitHome)o.OIReplicaKitHome;
+                    }
+                    else
+                    {
+                        throw new Exception("此订单未购买球衣商品");
+                    }
+
+                    _pt = Product.Cache.Load(oi_ReplicaKit.ProductGuid).ProductType;
+                }
+                else
+                {
+                    if (!string.IsNullOrEmpty(Request.QueryString["Type"]) && Request.QueryString["Type"].Equals("Away", StringComparison.OrdinalIgnoreCase))
+                    {
+                        _pt = ProductType.ReplicaKitAway;
+                    }
+                    else
+                    {
+                        _pt = ProductType.ReplicaKitHome;
+                    }
+                }
+                #endregion
+
+                if (_pt.Equals(ProductType.ReplicaKitAway))
                 {
                     Page.Title = "阿森纳2014/15赛季客场PUMA球衣许愿单";
                     hlReplicaKitPage.NavigateUrl = "http://arsenaldirect.arsenal.com/puma-kit/puma-away-kit/icat/pumaaway";
-                    ltrlBannerImage.Text = string.Format("<img src=\"uploadfiles/banner/banner20140711.png\" alt=\"{0}\" />", Page.Title); ;
-
-                    return ProductType.ReplicaKitAway;
+                    ltrlBannerImage.Text = string.Format("<img src=\"uploadfiles/banner/banner20140711.png\" alt=\"{0}\" />", Page.Title);
                 }
                 else
                 {
                     Page.Title = "阿森纳2014/15赛季主场PUMA球衣许愿单";
                     hlReplicaKitPage.NavigateUrl = "http://arsenaldirect.arsenal.com/puma-kit/puma-home-kit/icat/pumahome";
-                    ltrlBannerImage.Text = string.Format("<img src=\"uploadfiles/banner/banner20140710.png\" alt=\"{0}\" />", Page.Title); ;
-
-                    return ProductType.ReplicaKitHome;
+                    ltrlBannerImage.Text = string.Format("<img src=\"uploadfiles/banner/banner20140710.png\" alt=\"{0}\" />", Page.Title);
                 }
+
+                return _pt;
             }
         }
 
@@ -118,13 +153,13 @@ namespace iArsenal.Web
                     // Whether Home or Away ReplicaKit
                     OrderItemBase oiReplicaKit = null;
 
-                    if (o.OIReplicaKitHome != null && o.OIReplicaKitHome.IsActive)
-                    {
-                        oiReplicaKit = (OrderItem_ReplicaKitHome)o.OIReplicaKitHome;
-                    }
-                    else if (o.OIReplicaKitAway != null && o.OIReplicaKitAway.IsActive)
+                    if (CurrProductType.Equals(ProductType.ReplicaKitAway))
                     {
                         oiReplicaKit = (OrderItem_ReplicaKitAway)o.OIReplicaKitAway;
+                    }
+                    else if (CurrProductType.Equals(ProductType.ReplicaKitHome))
+                    {
+                        oiReplicaKit = (OrderItem_ReplicaKitHome)o.OIReplicaKitHome;
                     }
                     else
                     {

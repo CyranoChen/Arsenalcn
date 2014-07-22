@@ -20,7 +20,7 @@ namespace iArsenal.DataAccess
                 return ds.Tables[0].Rows[0];
         }
 
-        public static void UpdateMemberPeriod(int mpID, int memberID, string memberName, string memberCardNo, int memberClass, int? orderID, DateTime startDate, DateTime endDate, Boolean isActive, string description, string remark)
+        public static void UpdateMemberPeriod(int mpID, int memberID, string memberName, string memberCardNo, int memberClass, int? orderID, DateTime startDate, DateTime endDate, Boolean isActive, string description, string remark, SqlTransaction trans = null)
         {
             string sql = @"UPDATE dbo.iArsenal_MemberPeriod SET MemberID = @memberID, MemberName = @memberName, MemberCardNo = @memberCardNo, MemberClass = @memberClass,
                                 OrderID = @orderID, StartDate = @startDate, EndDate = @endDate, IsActive = @isActive, [Description] = @description, Remark = @remark WHERE ID = @mpID";
@@ -39,10 +39,13 @@ namespace iArsenal.DataAccess
                                       new SqlParameter("@remark", remark)
                                   };
 
-            SqlHelper.ExecuteNonQuery(SQLConn.GetConnection(), CommandType.Text, sql, para);
+            if (trans == null)
+            { SqlHelper.ExecuteNonQuery(SQLConn.GetConnection(), CommandType.Text, sql, para); }
+            else
+            { SqlHelper.ExecuteNonQuery(trans, CommandType.Text, sql, para); }
         }
 
-        public static void InsertMemberPeriod(int mpID, int memberID, string memberName, string memberCardNo, int memberClass, int? orderID, DateTime startDate, DateTime endDate, Boolean isActive, string description, string remark)
+        public static void InsertMemberPeriod(int mpID, int memberID, string memberName, string memberCardNo, int memberClass, int? orderID, DateTime startDate, DateTime endDate, Boolean isActive, string description, string remark, SqlTransaction trans = null)
         {
             string sql = @"INSERT INTO dbo.iArsenal_MemberPeriod (MemberID, MemberName, MemberCardNo, MemberClass, OrderID,  StartDate, EndDate, IsActive, [Description], Remark) 
                                VALUES (@memberID, @memberName, @memberCardNo, @memberClass, @orderID, @startDate, @endDate, @isActive, @description, @remark)";
@@ -61,16 +64,22 @@ namespace iArsenal.DataAccess
                                       new SqlParameter("@remark", remark)
                                   };
 
-            SqlHelper.ExecuteNonQuery(SQLConn.GetConnection(), CommandType.Text, sql, para);
+            if (trans == null)
+            { SqlHelper.ExecuteNonQuery(SQLConn.GetConnection(), CommandType.Text, sql, para); }
+            else
+            { SqlHelper.ExecuteNonQuery(trans, CommandType.Text, sql, para); }
         }
 
-        public static void DeleteMemberPeriod(int mpID)
+        public static void DeleteMemberPeriod(int mpID, SqlTransaction trans = null)
         {
             string sql = "DELETE dbo.iArsenal_MemberPeriod WHERE ID = @mpID";
 
             SqlParameter[] para = { new SqlParameter("@mpID", mpID) };
 
-            SqlHelper.ExecuteNonQuery(SQLConn.GetConnection(), CommandType.Text, sql, para);
+            if (trans == null)
+            { SqlHelper.ExecuteNonQuery(SQLConn.GetConnection(), CommandType.Text, sql, para); }
+            else
+            { SqlHelper.ExecuteNonQuery(trans, CommandType.Text, sql, para); }
         }
 
         public static DataTable GetMemberPeriods()

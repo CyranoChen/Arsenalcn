@@ -168,7 +168,7 @@
                 </tbody>
             </table>
             <div class="FooterBtnBar">
-                <asp:Button ID="btnSubmit" runat="server" Text="保存订单信息" CssClass="InputBtn" OnClick="btnSubmit_Click" />
+                <asp:Button ID="btnSubmit" runat="server" Text="保存订单信息" CssClass="InputBtn SubmitBtn" OnClick="btnSubmit_Click" />
                 <input id="btnReset" type="reset" value="重置表单" class="InputBtn" />
                 <input id="btnBack" type="button" value="返回比赛列表" class="InputBtn" onclick="window.location.href = 'iArsenalOrder_MatchList.aspx';" />
             </div>

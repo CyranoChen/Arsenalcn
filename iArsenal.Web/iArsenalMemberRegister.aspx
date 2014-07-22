@@ -94,7 +94,7 @@
                 </tbody>
             </table>
             <div class="FooterBtnBar">
-                <asp:Button ID="btnSubmit" runat="server" Text="提交会员信息" CssClass="InputBtn" OnClick="btnSubmit_Click" />
+                <asp:Button ID="btnSubmit" runat="server" Text="提交会员信息" CssClass="InputBtn SubmitBtn" OnClick="btnSubmit_Click" />
                 <input id="btnReset" type="reset" value="重置表单" class="InputBtn" />
             </div>
         </div>

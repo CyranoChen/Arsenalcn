@@ -146,7 +146,7 @@
                 </Columns>
             </asp:GridView>
             <div class="FooterBtnBar">
-                <asp:Button ID="btnSubmit" runat="server" CssClass="InputBtn Submit" Text="保存球票"
+                <asp:Button ID="btnSubmit" runat="server" CssClass="InputBtn SubmitBtn" Text="保存球票"
                     OnClick="btnSubmit_Click" OnClientClick="return confirm('保存球票信息')" />
                 <asp:Button ID="btnCancel" runat="server" CssClass="InputBtn" Text="返回" OnClick="btnCancel_Click" />
                 <asp:Button ID="btnDelete" runat="server" CssClass="InputBtn" Text="删除球票" OnClick="btnDelete_Click"

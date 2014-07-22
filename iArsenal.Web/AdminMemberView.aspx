@@ -260,7 +260,7 @@
                 </Columns>
             </asp:GridView>
             <div class="FooterBtnBar">
-                <asp:Button ID="btnSubmit" runat="server" CssClass="InputBtn Submit" Text="保存会员"
+                <asp:Button ID="btnSubmit" runat="server" CssClass="InputBtn SubmitBtn" Text="保存会员"
                     OnClick="btnSubmit_Click" OnClientClick="return confirm('保存该会员实名信息')" />
                 <input id="btnAcnCheckSubmit" type="button" value="检查ACN信息" class="InputBtn" onclick="AcnCheck()" />
                 <asp:Button ID="btnCancel" runat="server" CssClass="InputBtn" Text="返回" OnClick="btnCancel_Click" />

@@ -167,24 +167,22 @@ namespace Arsenalcn.CasinoSys.Web
 
         protected void btnMatchResult_Click(object sender, EventArgs e)
         {
-            Guid? guid = Entity.CasinoItem.GetCasinoItemGuidByMatch(CurrentMatch, CasinoItem.CasinoType.MatchResult);
-
-            if (guid.HasValue)
+            try
             {
-                if (Entity.CasinoItem.GetCasinoItem(guid.Value).CloseTime < DateTime.Now)
-                {
-                    this.ClientScript.RegisterClientScriptBlock(typeof(string), "failed", "alert('已超出投注截止时间'); window.location.href = window.location.href;", true);
-                    return;
-                }
+                Guid? guid = Entity.CasinoItem.GetCasinoItemGuidByMatch(CurrentMatch, CasinoItem.CasinoType.MatchResult);
 
-                if (Entity.Bet.GetUserCasinoItemAllBet(this.userid, guid.Value).Count > 0)
+                if (guid.HasValue)
                 {
-                    this.ClientScript.RegisterClientScriptBlock(typeof(string), "failed", "alert('你已经投过此注'); window.location.href = window.location.href;", true);
-                    return;
-                }
+                    if (Entity.CasinoItem.GetCasinoItem(guid.Value).CloseTime < DateTime.Now)
+                    {
+                        throw new Exception("已超出投注截止时间");
+                    }
 
-                try
-                {
+                    if (Entity.Bet.GetUserCasinoItemAllBet(this.userid, guid.Value).Count > 0)
+                    {
+                        throw new Exception("已经投过此注，不能重复猜比分");
+                    }
+
                     Bet bet = new Bet();
                     bet.BetAmount = null;
                     bet.BetRate = null;
@@ -198,35 +196,52 @@ namespace Arsenalcn.CasinoSys.Web
 
                     bet.Insert(matchResult);
 
-                    this.ClientScript.RegisterClientScriptBlock(typeof(string), "save", "alert('投注成功'); window.location.href = window.location.href;", true);
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('投注成功'); window.location.href = window.location.href;", true);
                 }
-                catch
-                {
-                    this.ClientScript.RegisterClientScriptBlock(typeof(string), "failed", "alert('投注失败'); window.location.href = window.location.href;", true);
-                }
+
+            }
+            catch (Exception ex)
+            {
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}')", ex.Message.ToString()), true);
             }
         }
 
         protected void btnSingleChoice_Click(object sender, EventArgs e)
         {
-            Guid? guid = Entity.CasinoItem.GetCasinoItemGuidByMatch(CurrentMatch, CasinoItem.CasinoType.SingleChoice);
-
-            if (guid.HasValue)
+            try
             {
-                if (Entity.CasinoItem.GetCasinoItem(guid.Value).CloseTime < DateTime.Now)
-                {
-                    this.ClientScript.RegisterClientScriptBlock(typeof(string), "failed", "alert('已超出投注截止时间'); window.location.href = window.location.href;", true);
-                    return;
-                }
+                Guid? guid = Entity.CasinoItem.GetCasinoItemGuidByMatch(CurrentMatch, CasinoItem.CasinoType.SingleChoice);
 
-                try
+                if (guid.HasValue)
                 {
+                    if (Entity.CasinoItem.GetCasinoItem(guid.Value).CloseTime < DateTime.Now)
+                    { throw new Exception("已超出投注截止时间"); }
+
+                    //Gambler in Lower could not bet above the SingleBetLimit of DefaultLeague (Contest)
+                    Match m = new Match(CurrentMatch);
+
+                    if (m.LeagueGuid.Equals(ConfigGlobal.DefaultLeagueID))
+                    {
+                        if (Entity.Gambler.GetGamblerTotalBetByUserID(this.userid, m.LeagueGuid) < ConfigGlobal.TotalBetStandard)
+                        {
+                            float _alreadyMatchBet = Entity.Bet.GetUserMatchTotalBet(this.userid, CurrentMatch);
+                            float _currentMatchBet = 0f;
+
+                            if (!string.IsNullOrEmpty(tbBet.Text.Trim()) && Single.TryParse(tbBet.Text.Trim(), out _currentMatchBet))
+                            {
+                                if (_alreadyMatchBet + _currentMatchBet > ConfigGlobal.SingleBetLimit)
+                                { throw new Exception(string.Format("下半赛区博彩玩家单场投注不能超过{0}博彩币", ConfigGlobal.SingleBetLimit.ToString("f2"))); }
+                            }
+                        }
+                    }
+
+
                     //get selected option
                     Entity.SingleChoice item = (Entity.SingleChoice)Entity.CasinoItem.GetCasinoItem(guid.Value);
                     Entity.ChoiceOption seletedOption = item.Options.Find(delegate(Entity.ChoiceOption option) { return option.OptionValue == rblSingleChoice.SelectedValue; });
 
                     Entity.Bet bet = new Arsenalcn.CasinoSys.Entity.Bet();
-                    bet.BetAmount = Convert.ToSingle(tbBet.Text);
+                    bet.BetAmount = Convert.ToSingle(tbBet.Text.Trim());
                     bet.BetRate = seletedOption.OptionRate;
                     bet.CasinoItemGuid = guid.Value;
                     bet.UserID = this.userid;
@@ -234,12 +249,12 @@ namespace Arsenalcn.CasinoSys.Web
 
                     bet.Insert(seletedOption.OptionValue);
 
-                    this.ClientScript.RegisterClientScriptBlock(typeof(string), "save", "alert('投注成功'); window.location.href = window.location.href;", true);
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('投注成功'); window.location.href = window.location.href;", true);
                 }
-                catch
-                {
-                    this.ClientScript.RegisterClientScriptBlock(typeof(string), "failed", "alert('投注失败'); window.location.href = window.location.href;", true);
-                }
+            }
+            catch (Exception ex)
+            {
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}')", ex.Message.ToString()), true);
             }
         }
 

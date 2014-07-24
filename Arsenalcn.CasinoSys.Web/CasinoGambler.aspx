@@ -14,11 +14,18 @@
         <uc3:MenuTabBar ID="ctrlMenuTabBar" runat="server" />
         <div class="FunctionBar">
             <div class="DivFloatLeft">
-                <asp:DropDownList ID="ddlOrderClause" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlOrderClause_SelectedIndexChanged">
+                <asp:DropDownList ID="ddlOrderClause" runat="server" AutoPostBack="true"
+                    OnSelectedIndexChanged="ddlOrderClause_SelectedIndexChanged">
                     <asp:ListItem Text="按盈亏总量排序" Value="Profit" Selected="True"></asp:ListItem>
                     <asp:ListItem Text="按盈亏率排序" Value="ProfitRate"></asp:ListItem>
                     <asp:ListItem Text="按投注总量排序" Value="TotalBet"></asp:ListItem>
                     <asp:ListItem Text="按RP奖励排序" Value="RPBonus"></asp:ListItem>
+                </asp:DropDownList>
+                <asp:DropDownList ID="ddlContestArea" runat="server" AutoPostBack="true"
+                    OnSelectedIndexChanged="ddlContestArea_SelectedIndexChanged">
+                    <asp:ListItem Text="--请选择赛区--" Value="" Selected="True"></asp:ListItem>
+                    <asp:ListItem Text="上半赛区" Value="Upper"></asp:ListItem>
+                    <asp:ListItem Text="下半赛区" Value="Lower"></asp:ListItem>
                 </asp:DropDownList>
             </div>
             <div class="DivFloatRight">
@@ -33,7 +40,8 @@
                     HtmlEncode="false" />
                 <asp:TemplateField>
                     <HeaderTemplate>
-                        用户名</HeaderTemplate>
+                        用户名
+                    </HeaderTemplate>
                     <ItemTemplate>
                         <a href="MyBonusLog.aspx?UserID=<%#DataBinder.Eval(Container.DataItem, "UserID") %>"
                             target="_blank" class="StrongLink">

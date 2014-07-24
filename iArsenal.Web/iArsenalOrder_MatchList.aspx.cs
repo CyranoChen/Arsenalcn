@@ -197,7 +197,7 @@ namespace iArsenal.Web
                     hlAllowMemberClass.Visible = false;
                 }
 
-                if (hlTicketApply != null && mt.Deadline >= DateTime.Now.AddDays(-1))
+                if (hlTicketApply != null && mt.Deadline > DateTime.Now)
                 {
                     hlTicketApply.NavigateUrl = string.Format("iArsenalOrder_MatchTicket.aspx?MatchGuid={0}", mt.MatchGuid.ToString());
                     hlTicketApply.Target = "_self";

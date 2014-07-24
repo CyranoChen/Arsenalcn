@@ -8,8 +8,8 @@
     <div class="Block">
         <ul>
             <li class="LiTitle"><a onclick="$(this).parent().parent().siblings('ul').hide();$('ul#GamblerProfit').show();">
-                <asp:Literal ID="ltrlProfit" runat="server"></asp:Literal></a>|<a onclick="$(this).parent().parent().siblings('ul').hide();$('ul#GamblerRP').show();"><asp:Literal
-                    ID="ltrlRP" runat="server"></asp:Literal></a>|<a onclick="$(this).parent().parent().siblings('ul').hide();$('ul#GamblerBet').show();"><asp:Literal
+                <asp:Literal ID="ltrlProfit" runat="server"></asp:Literal></a> | <a onclick="$(this).parent().parent().siblings('ul').hide();$('ul#GamblerRP').show();"><asp:Literal
+                    ID="ltrlRP" runat="server"></asp:Literal></a> | <a onclick="$(this).parent().parent().siblings('ul').hide();$('ul#GamblerBet').show();"><asp:Literal
                         ID="ltrlBet" runat="server"></asp:Literal></a></li>
         </ul>
         <asp:Repeater ID="rptGamblerProfit" runat="server">

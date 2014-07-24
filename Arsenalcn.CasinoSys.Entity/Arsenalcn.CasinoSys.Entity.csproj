@@ -69,6 +69,7 @@
     <Compile Include="Config.cs" />
     <Compile Include="BetDetail.cs" />
     <Compile Include="AcnClubSys\UserClub.cs" />
+    <Compile Include="Custom\CasinoGambler.cs" />
     <Compile Include="Group.cs" />
     <Compile Include="GroupTeam.cs" />
     <Compile Include="League.cs" />

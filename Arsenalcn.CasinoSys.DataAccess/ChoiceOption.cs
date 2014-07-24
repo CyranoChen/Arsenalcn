@@ -53,7 +53,7 @@ namespace Arsenalcn.CasinoSys.DataAccess
 
             Object obj = SqlHelper.ExecuteScalar(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@guid", itemGuid), new SqlParameter("@optionValue", optionValue));
 
-            return Convert.ToSingle(obj);
+            return obj.Equals(DBNull.Value) ? 0f : Convert.ToSingle(obj);
         }
 
         public static int GetOptionTotalCount(Guid itemGuid, string optionValue)
@@ -65,7 +65,7 @@ namespace Arsenalcn.CasinoSys.DataAccess
 
             Object obj = SqlHelper.ExecuteScalar(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@guid", itemGuid), new SqlParameter("@optionValue", optionValue));
 
-            return Convert.ToInt32(obj);
+            return obj.Equals(DBNull.Value) ? 0 : Convert.ToInt32(obj);
         }
     }
 }

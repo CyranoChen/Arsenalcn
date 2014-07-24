@@ -49,22 +49,22 @@ namespace Arsenalcn.CasinoSys.Web.Control {
         protected global::System.Web.UI.WebControls.Literal ltrlUserRP;
         
         /// <summary>
-        /// TopGamblerList1 control.
+        /// ctrlTopContestList control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Arsenalcn.CasinoSys.Web.Control.TopGamblerList TopGamblerList1;
+        protected global::Arsenalcn.CasinoSys.Web.Control.TopContestList ctrlTopContestList;
         
         /// <summary>
-        /// TopMatchList1 control.
+        /// ctrlTopGamblerList control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Arsenalcn.CasinoSys.Web.Control.TopMatchList TopMatchList1;
+        protected global::Arsenalcn.CasinoSys.Web.Control.TopGamblerList ctrlTopGamblerList;
         
         /// <summary>
         /// pnlDev control.

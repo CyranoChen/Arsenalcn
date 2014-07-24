@@ -112,7 +112,7 @@ namespace Arsenalcn.CasinoSys.DataAccess
 
             Object obj = SqlHelper.ExecuteScalar(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@groupGuid", groupGuid), new SqlParameter("@teamGuid", teamGuid));
 
-            return Convert.ToInt32(obj);
+            return obj.Equals(DBNull.Value) ? 0 : Convert.ToInt32(obj);
         }
 
         public static DataTable GetRelationGroupTeamByGroupGuid(Guid groupGuid)
@@ -186,7 +186,7 @@ namespace Arsenalcn.CasinoSys.DataAccess
         {
             string sql = "UPDATE dbo.Arsenal_RelationGroupTeam SET PositionNo = @positionNo, TotalPlayed = @totalPlayed, HomeWon = @homeWon, HomeDraw = @homeDraw, HomeLost = @homeLost, HomeGoalFor = @homeGoalFor, HomeGoalAgainst = @homeGoalAgainst, HomeGoalDiff = @homeGoalDiff, HomePoints = @homePoints, AwayWon = @awayWon, AwayDraw = @awayDraw, AwayLost = @awayLost, AwayGoalFor = @awayGoalFor, AwayGoalAgainst = @awayGoalAgainst, AwayGoalDiff = @awayGoalDiff, AwayPoints = @awayPoints, TotalPoints = @totalPoints WHERE GroupGuid = @groupGuid AND TeamGuid = @teamGuid";
 
-            SqlParameter[] para = { new SqlParameter("@groupGuid", groupGuid), new SqlParameter("@teamGuid", teamGuid), new SqlParameter("@positionNo", positionNo), new SqlParameter("@totalPlayed", totalPlayed), new SqlParameter("@homeWon", homeWon), new SqlParameter("@homeDraw", homeDraw), new SqlParameter("@homeLost", homeLost), new SqlParameter("@homeGoalFor", homeGoalFor), new SqlParameter("@homeGoalAgainst", homeGoalAgainst), new SqlParameter("@homeGoalDiff", homeGoalDiff), new SqlParameter("@homePoints", homePoints), new SqlParameter("@awayWon",awayWon), new SqlParameter("@awayDraw", awayDraw), new SqlParameter("@awayLost", awayLost), new SqlParameter("@awayGoalFor", awayGoalFor), new SqlParameter("@awayGoalAgainst", awayGoalAgainst), new SqlParameter("@awayGoalDiff",awayGoalDiff), new SqlParameter("@awayPoints", awayPoints), new SqlParameter("@totalPoints", totalPoints) };
+            SqlParameter[] para = { new SqlParameter("@groupGuid", groupGuid), new SqlParameter("@teamGuid", teamGuid), new SqlParameter("@positionNo", positionNo), new SqlParameter("@totalPlayed", totalPlayed), new SqlParameter("@homeWon", homeWon), new SqlParameter("@homeDraw", homeDraw), new SqlParameter("@homeLost", homeLost), new SqlParameter("@homeGoalFor", homeGoalFor), new SqlParameter("@homeGoalAgainst", homeGoalAgainst), new SqlParameter("@homeGoalDiff", homeGoalDiff), new SqlParameter("@homePoints", homePoints), new SqlParameter("@awayWon", awayWon), new SqlParameter("@awayDraw", awayDraw), new SqlParameter("@awayLost", awayLost), new SqlParameter("@awayGoalFor", awayGoalFor), new SqlParameter("@awayGoalAgainst", awayGoalAgainst), new SqlParameter("@awayGoalDiff", awayGoalDiff), new SqlParameter("@awayPoints", awayPoints), new SqlParameter("@totalPoints", totalPoints) };
 
             SqlHelper.ExecuteNonQuery(SQLConn.GetConnection(), CommandType.Text, sql, para);
         }

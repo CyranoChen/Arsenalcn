@@ -34,7 +34,7 @@
         <uc3:MenuTabBar ID="ctrlMenuTabBar" runat="server" />
         <div class="FunctionBar">
             <div class="DivFloatLeft CasinoSys_Tip">
-                <span>博彩只能使用博彩币；单场比赛可以多次投注；赔率固定不会变化。</span>
+                <span>只使用博彩币；单场可多次投注；赔率固定不变化；博彩按120分钟(如加时)计；</span>
             </div>
             <div class="DivFloatRight">
                 <div id="azk22313"></div>

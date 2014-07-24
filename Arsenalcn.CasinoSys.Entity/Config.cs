@@ -125,7 +125,37 @@ namespace Arsenalcn.CasinoSys.Entity
                 }
                 catch
                 {
-                    return new Guid("504762a9-7ba5-403f-88dd-af5415359a83");
+                    return Guid.Empty;
+                }
+            }
+        }
+
+        public static float SingleBetLimit
+        {
+            get
+            {
+                try
+                {
+                    return Convert.ToSingle(ConfigDictionary["SingleBetLimit"]);
+                }
+                catch
+                {
+                    return 50000f;
+                }
+            }
+        }
+
+        public static float TotalBetStandard
+        {
+            get
+            {
+                try
+                {
+                    return Convert.ToSingle(ConfigDictionary["TotalBetStandard"]);
+                }
+                catch
+                {
+                    return 1000000f;
                 }
             }
         }

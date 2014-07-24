@@ -61,7 +61,7 @@ namespace Arsenalcn.CasinoSys.DataAccess
 
             Object obj = SqlHelper.ExecuteScalar(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@teamGuid", teamGuid));
 
-            return Convert.ToInt32(obj);
+            return obj.Equals(DBNull.Value) ? 0 : Convert.ToInt32(obj);
         }
 
         public static int GetRelationLeagueTeamCount(Guid leagueGuid, Guid teamGuid)
@@ -70,7 +70,7 @@ namespace Arsenalcn.CasinoSys.DataAccess
 
             Object obj = SqlHelper.ExecuteScalar(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@leagueGuid", leagueGuid), new SqlParameter("@teamGuid", teamGuid));
 
-            return Convert.ToInt32(obj);
+            return obj.Equals(DBNull.Value) ? 0 : Convert.ToInt32(obj);
         }
 
         public static void InsertRelationLeagueTeam(Guid leagueGuid, Guid teamGuid)

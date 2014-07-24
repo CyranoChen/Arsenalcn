@@ -59,18 +59,18 @@ namespace Arsenalcn.CasinoSys.Entity
                 return DataAccess.Gambler.GetGambler();
         }
 
-        public static DataTable GetGamblerProfitView(Guid leagueGuid)
+        public static float GetGamblerTotalBetByUserID(int userID, Guid? leagueGuid = null)
         {
-            if (leagueGuid != Guid.Empty)
-                return DataAccess.Gambler.GetGamblerProfitView(leagueGuid);
+            if (leagueGuid.HasValue)
+                return DataAccess.Gambler.GetGamblerTotalBetByUserID(userID, leagueGuid.Value);
             else
-                return DataAccess.Gambler.GetGamblerProfitView();
+                return DataAccess.Gambler.GetGamblerTotalBetByUserID(userID);
         }
 
-        public static int GetGamblerRPByUserID(int userID, Guid leagueGuid)
+        public static int GetGamblerRPByUserID(int userID, Guid? leagueGuid = null)
         {
-            if (leagueGuid != Guid.Empty)
-                return DataAccess.Gambler.GetGamblerRPByUserID(userID, leagueGuid);
+            if (leagueGuid.HasValue)
+                return DataAccess.Gambler.GetGamblerRPByUserID(userID, leagueGuid.Value);
             else
                 return DataAccess.Gambler.GetGamblerRPByUserID(userID);
         }

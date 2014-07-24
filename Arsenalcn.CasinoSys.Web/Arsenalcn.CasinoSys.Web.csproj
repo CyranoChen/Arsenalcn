@@ -232,6 +232,13 @@
     <Compile Include="Control\MenuTabBar.ascx.designer.cs">
       <DependentUpon>MenuTabBar.ascx</DependentUpon>
     </Compile>
+    <Compile Include="Control\TopContestList.ascx.cs">
+      <DependentUpon>TopContestList.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Control\TopContestList.ascx.designer.cs">
+      <DependentUpon>TopContestList.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Control\TopGamblerList.ascx.cs">
       <DependentUpon>TopGamblerList.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -314,6 +321,7 @@
   <ItemGroup>
     <Content Include="AdminGroup.aspx" />
     <Content Include="CasinoBetClubLog.aspx" />
+    <Content Include="Control\TopContestList.ascx" />
     <Content Include="DefaultMaster.master" />
     <Content Include="Scripts\casinosys.js" />
     <Content Include="Scripts\jquery-1.7.1.min.js" />

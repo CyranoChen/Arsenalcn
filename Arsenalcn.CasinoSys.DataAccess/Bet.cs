@@ -93,7 +93,7 @@ namespace Arsenalcn.CasinoSys.DataAccess
 
             Object obj = SqlHelper.ExecuteScalar(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@userid", userid), new SqlParameter("@guid", matchGuid));
 
-            return Convert.ToSingle(obj);
+            return obj.Equals(DBNull.Value) ? 0f : Convert.ToSingle(obj);
         }
 
         public static DataTable GetUserMatchAllBet(int userid, Guid matchGuid)
@@ -158,7 +158,7 @@ namespace Arsenalcn.CasinoSys.DataAccess
 
             Object obj = SqlHelper.ExecuteScalar(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@itemGuid", itemGuid));
 
-            return Convert.ToSingle(obj);
+            return obj.Equals(DBNull.Value) ? 0f : Convert.ToSingle(obj);
         }
 
         public static float GetTotalEarningByBankerGuid(Guid bankerGuid)
@@ -169,7 +169,7 @@ namespace Arsenalcn.CasinoSys.DataAccess
 
             Object obj = SqlHelper.ExecuteScalar(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@bankerGuid", bankerGuid));
 
-            return Convert.ToSingle(obj);
+            return obj.Equals(DBNull.Value) ? 0f : Convert.ToSingle(obj);
         }
 
         public static DataTable GetAllBetByTimeDiff(int timeDiff)
@@ -190,7 +190,7 @@ namespace Arsenalcn.CasinoSys.DataAccess
 
             Object obj = SqlHelper.ExecuteScalar(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@userid", userid));
 
-            return Convert.ToSingle(obj);
+            return obj.Equals(DBNull.Value) ? 0f : Convert.ToSingle(obj);
         }
 
         public static float GetUserTotalWinCash(int userid)
@@ -199,7 +199,7 @@ namespace Arsenalcn.CasinoSys.DataAccess
 
             Object obj = SqlHelper.ExecuteScalar(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@userid", userid));
 
-            return Convert.ToSingle(obj);
+            return obj.Equals(DBNull.Value) ? 0f : Convert.ToSingle(obj);
         }
 
         public static int GetUserTotalWinLoseCount(int userid, bool isWin)
@@ -221,7 +221,7 @@ namespace Arsenalcn.CasinoSys.DataAccess
             if (Convert.IsDBNull(obj) || obj == null)
                 return 0;
 
-            return Convert.ToSingle(obj);
+            return obj.Equals(DBNull.Value) ? 0f : Convert.ToSingle(obj);
         }
 
         public static float GetMatchTopEarning(Guid matchGuid)
@@ -234,7 +234,7 @@ namespace Arsenalcn.CasinoSys.DataAccess
             if (Convert.IsDBNull(obj) || obj == null)
                 return 0;
 
-            return Convert.ToSingle(obj);
+            return obj.Equals(DBNull.Value) ? 0f : Convert.ToSingle(obj);
         }
 
         public static DataTable GetUserBetHistoryView(int userid)

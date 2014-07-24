@@ -10,51 +10,42 @@
 namespace Arsenalcn.CasinoSys.Web.Control {
     
     
-    public partial class TopMatchList {
+    public partial class TopContestList {
         
         /// <summary>
-        /// pnlMatchTop control.
+        /// pnlContestTop control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlMatchTop;
+        protected global::System.Web.UI.WebControls.Panel pnlContestTop;
         
         /// <summary>
-        /// ltrlEarning control.
+        /// ltrlContestTitle control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltrlEarning;
+        protected global::System.Web.UI.WebControls.Literal ltrlContestTitle;
         
         /// <summary>
-        /// ltrlLoss control.
+        /// rptContestUpper control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltrlLoss;
+        protected global::System.Web.UI.WebControls.Repeater rptContestUpper;
         
         /// <summary>
-        /// rptMatchEarning control.
+        /// rptContestLower control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rptMatchEarning;
-        
-        /// <summary>
-        /// rptMatchLoss control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rptMatchLoss;
+        protected global::System.Web.UI.WebControls.Repeater rptContestLower;
     }
 }

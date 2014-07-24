@@ -83,7 +83,7 @@ namespace Arsenalcn.CasinoSys.DataAccess
 
             Object obj = SqlHelper.ExecuteScalar(SQLConn.GetConnection(), CommandType.Text, sql);
 
-            return Convert.ToInt32(obj);
+            return obj.Equals(DBNull.Value) ? 0 : Convert.ToInt32(obj);
         }
 
         public static DataTable GetOpenMatchView(int casinoValidDays)

@@ -12,7 +12,8 @@
         <uc2:AdminFieldToolBar ID="ctrlAdminFieldToolBar" runat="server" />
         <div class="CasinoSys_Tip">
             <asp:TextBox ID="tbUserName" runat="server" Text="-请输入用户名-" CssClass="TextBox"></asp:TextBox>
-            <asp:LinkButton ID="btnQuery" runat="server" Text="搜索" CssClass="LinkBtn" OnClick="btnQuery_Click"></asp:LinkButton></div>
+            <asp:LinkButton ID="btnQuery" runat="server" Text="搜索" CssClass="LinkBtn" OnClick="btnQuery_Click"></asp:LinkButton>
+        </div>
         <asp:GridView ID="gvGambler" runat="server" OnRowDataBound="gvGambler_RowDataBound"
             DataKeyNames="UserID" OnRowCancelingEdit="gvGambler_RowCancelingEdit" OnRowEditing="gvGambler_RowEditing"
             OnRowUpdating="gvGambler_RowUpdating" OnRowCommand="gvGambler_RowCommand" OnPageIndexChanging="gvGambler_PageIndexChanging">
@@ -20,12 +21,19 @@
                 <asp:BoundField DataField="UserID" Visible="false" />
                 <asp:BoundField DataField="ID" HeaderText="编号" ReadOnly="true" />
                 <asp:BoundField DataField="UserName" HeaderText="用户名" ReadOnly="true" />
-                <asp:BoundField DataField="QSB" HeaderText="枪手币" ReadOnly="true" ItemStyle-HorizontalAlign="Right" />
-                <asp:BoundField DataField="RP" HeaderText="RP" ReadOnly="true" />
+                <asp:TemplateField HeaderText="枪手币" ItemStyle-HorizontalAlign="Right">
+                    <ItemTemplate>
+                        <asp:Label ID="lblQSB" runat="server"></asp:Label>
+                    </ItemTemplate>
+                </asp:TemplateField>
+                <asp:TemplateField HeaderText="RP">
+                    <ItemTemplate>
+                        <asp:Label ID="lblRP" runat="server"></asp:Label>
+                    </ItemTemplate>
+                </asp:TemplateField>
                 <asp:TemplateField HeaderText="现金(博彩币)" ItemStyle-HorizontalAlign="Right">
                     <ItemTemplate>
-                        <em>
-                            <%# ((double)DataBinder.Eval(Container.DataItem, "Cash")).ToString("N2") %></em>
+                        <asp:Label ID="lblCash" runat="server"></asp:Label>
                     </ItemTemplate>
                     <EditItemTemplate>
                         <asp:TextBox ID="tbCash" runat="server" CssClass="TextBox" Width="80"></asp:TextBox>
@@ -33,8 +41,7 @@
                 </asp:TemplateField>
                 <asp:TemplateField HeaderText="猜对">
                     <ItemTemplate>
-                        <em>
-                            <%#DataBinder.Eval(Container.DataItem, "Win") %></em>
+                        <asp:Label ID="lblWin" runat="server"></asp:Label>
                     </ItemTemplate>
                     <EditItemTemplate>
                         <asp:TextBox ID="tbWin" runat="server" CssClass="TextBox" Width="40"></asp:TextBox>
@@ -42,8 +49,7 @@
                 </asp:TemplateField>
                 <asp:TemplateField HeaderText="猜错">
                     <ItemTemplate>
-                        <em>
-                            <%#DataBinder.Eval(Container.DataItem, "Lose") %></em>
+                        <asp:Label ID="lblLose" runat="server"></asp:Label>
                     </ItemTemplate>
                     <EditItemTemplate>
                         <asp:TextBox ID="tbLose" runat="server" CssClass="TextBox" Width="40"></asp:TextBox>

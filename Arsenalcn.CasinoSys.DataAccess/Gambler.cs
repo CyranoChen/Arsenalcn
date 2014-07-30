@@ -8,15 +8,11 @@ namespace Arsenalcn.CasinoSys.DataAccess
 {
     public class Gambler
     {
-        public static DataRow GetGamblerByUserID(int userid, SqlTransaction trans)
+        public static DataRow GetGamblerByID(int gID)
         {
-            string sql = "SELECT * FROM AcnCasino_Gambler WHERE UserID = @userid";
+            string sql = "SELECT * FROM dbo.AcnCasino_Gambler WHERE ID = @gID";
 
-            DataSet ds;
-            if (trans == null)
-                ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@userid", userid));
-            else
-                ds = SqlHelper.ExecuteDataset(trans, CommandType.Text, sql, new SqlParameter("@userid", userid));
+            DataSet ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@gID", gID));
 
             if (ds.Tables[0].Rows.Count == 0)
                 return null;
@@ -24,43 +20,42 @@ namespace Arsenalcn.CasinoSys.DataAccess
                 return ds.Tables[0].Rows[0];
         }
 
-        public static DataTable GetGambler()
+        public static DataRow GetGamblerByUserID(int userID)
         {
-            string sql = "SELECT * FROM AcnCasino_Gambler Order By TotalBet DESC, Cash DESC, WIN DESC, LOSE DESC, ID";
+            string sql = "SELECT * FROM dbo.AcnCasino_Gambler WHERE UserID = @userID";
 
-            DataSet ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql);
+            DataSet ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@userID", userID));
 
             if (ds.Tables[0].Rows.Count == 0)
                 return null;
             else
-                return ds.Tables[0];
+                return ds.Tables[0].Rows[0];
         }
 
-        public static DataTable GetGambler(string username)
+        public static void UpdateGambler(int gID, int userID, string userName, float cash, float totalBet, int win, int lose, int? rpBonus, int? contestRank,
+            int totalRank, int? banker, DateTime joinDate, bool isActive, string description, string remark, SqlTransaction trans = null)
         {
-            string sql = @"SELECT * FROM AcnCasino_Gambler WHERE UserName LIKE @username 
-                                 Order By TotalBet DESC, Cash DESC, WIN DESC, LOSE DESC, ID";
+            string sql = @"UPDATE dbo.AcnCasino_Gambler SET UserID = @userID, UserName = @userName, Cash = @cash, TotalBet = @totalBet, 
+                                  Win = @win, Lose = @lose, RPBonus = @rpBonus, ContestRank = @contestRank, TotalRank = @totalRank, Banker = @banker,
+                                  JoinDate = @joinDate, IsActive = @isActive, [Description] = @description, Remark = @remark WHERE ID = @gID";
 
-            DataSet ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@username", '%' + username + '%'));
-
-            if (ds.Tables[0].Rows.Count == 0)
-                return null;
-            else
-                return ds.Tables[0];
-        }
-
-        public static void InsertGambler(int userid, string username)
-        {
-            string sql = "INSERT INTO AcnCasino_Gambler VALUES (@userid, @username, 0, 0, 0, 0, 0, 1)";
-
-            SqlHelper.ExecuteNonQuery(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@userid", userid), new SqlParameter("@username", username));
-        }
-
-        public static void UpdateGambler(int userid, float cash, float totalBet, int win, int lose, int totalBanker, bool isActive, SqlTransaction trans)
-        {
-            string sql = "UPDATE AcnCasino_Gambler SET Cash = @cash, TotalBet = @totalBet, Win = @win, Lose = @lose, TotalBanker = @totalBanker, isActive = @isActive WHERE UserID = @userid";
-
-            SqlParameter[] para = { new SqlParameter("@userid", userid), new SqlParameter("@cash", cash), new SqlParameter("@totalBet", totalBet), new SqlParameter("@win", win), new SqlParameter("@lose", lose), new SqlParameter("@totalBanker", totalBanker), new SqlParameter("@isActive", isActive) };
+            SqlParameter[] para = { 
+                                      new SqlParameter("@gID", gID), 
+                                      new SqlParameter("@userID", userID), 
+                                      new SqlParameter("@userName", userName), 
+                                      new SqlParameter("@cash", cash), 
+                                      new SqlParameter("@totalBet", totalBet), 
+                                      new SqlParameter("@win", win), 
+                                      new SqlParameter("@lose", lose), 
+                                      new SqlParameter("@rpBonus", !rpBonus.HasValue ? (object)DBNull.Value : (object)rpBonus.Value),    
+                                      new SqlParameter("@contestRank", !contestRank.HasValue ? (object)DBNull.Value : (object)contestRank.Value),
+                                      new SqlParameter("@totalRank", totalRank),
+                                      new SqlParameter("@banker", !banker.HasValue ? (object)DBNull.Value : (object)banker.Value),
+                                      new SqlParameter("@joinDate", joinDate), 
+                                      new SqlParameter("@isActive", isActive),
+                                      new SqlParameter("@description", description),
+                                      new SqlParameter("@remark", remark)
+                                  };
 
             if (trans != null)
             {
@@ -72,13 +67,64 @@ namespace Arsenalcn.CasinoSys.DataAccess
             }
         }
 
-        public static int GetGamblerCount()
+        public static int InsertGambler(int gID, int userID, string userName, float cash, float totalBet, int win, int lose, int? rpBonus, int? contestRank,
+            int totalRank, int? banker, DateTime joinDate, bool isActive, string description, string remark, SqlTransaction trans = null)
         {
-            string sql = "SELECT COUNT(*) FROM AcnCasino_Gambler WHERE IsActive = 1";
+            string sql = @"INSERT INTO dbo.AcnCasino_Gambler (UserID, UserName, Cash, TotalBet, Win, Lose, RPBonus, ContestRank, 
+                                 TotalRank, Banker, JoinDate, IsActive, Description, Remark)  
+                                 VALUES (@userID, @userName, @cash, @totalBet, @win, @lose, @rpBonus, @ContestRank, 
+                                 @totalRank, @banker, @joinDate, @isActive, @description, @remark);
+                                 SELECT SCOPE_IDENTITY();";
 
-            Object obj = SqlHelper.ExecuteScalar(SQLConn.GetConnection(), CommandType.Text, sql);
+            SqlParameter[] para = { 
+                                      new SqlParameter(), 
+                                      new SqlParameter("@userID", userID), 
+                                      new SqlParameter("@userName", userName), 
+                                      new SqlParameter("@cash", cash), 
+                                      new SqlParameter("@totalBet", totalBet), 
+                                      new SqlParameter("@win", win), 
+                                      new SqlParameter("@lose", lose), 
+                                      new SqlParameter("@rpBonus", !rpBonus.HasValue ? (object)DBNull.Value : (object)rpBonus.Value),    
+                                      new SqlParameter("@contestRank", !contestRank.HasValue ? (object)DBNull.Value : (object)contestRank.Value),
+                                      new SqlParameter("@totalRank", totalRank),
+                                      new SqlParameter("@banker", !banker.HasValue ? (object)DBNull.Value : (object)banker.Value),
+                                      new SqlParameter("@joinDate", joinDate), 
+                                      new SqlParameter("@isActive", isActive),
+                                      new SqlParameter("@description", description),
+                                      new SqlParameter("@remark", remark)
+                                  };
 
-            return obj.Equals(DBNull.Value) ? 0 : Convert.ToInt32(obj);
+            if (trans == null)
+            { return Convert.ToInt32(SqlHelper.ExecuteScalar(SQLConn.GetConnection(), CommandType.Text, sql, para)); }
+            else
+            { return Convert.ToInt32(SqlHelper.ExecuteScalar(trans, CommandType.Text, sql, para)); }
+
+            //SqlHelper.ExecuteNonQuery(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@userid", userid), new SqlParameter("@username", username));
+        }
+
+        public static void DeleteGambler(int gID, SqlTransaction trans = null)
+        {
+            string sql = "DELETE dbo.AcnCasino_Gambler WHERE ID = @gID";
+
+            SqlParameter[] para = { new SqlParameter("@gID", gID) };
+
+            if (trans == null)
+            { SqlHelper.ExecuteNonQuery(SQLConn.GetConnection(), CommandType.Text, sql, para); }
+            else
+            { SqlHelper.ExecuteNonQuery(trans, CommandType.Text, sql, para); }
+        }
+
+        public static DataTable GetGamblers()
+        {
+            string sql = @"SELECT  ID, UserID, UserName, Cash, TotalBet, Win, Lose, RPBonus, ContestRank, TotalRank, Banker, JoinDate, IsActive, Description, Remark  
+                                  FROM AcnCasino_Gambler Order By TotalBet DESC, Cash DESC, WIN DESC, LOSE DESC, ID";
+
+            DataSet ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql);
+
+            if (ds.Tables[0].Rows.Count == 0)
+                return null;
+            else
+                return ds.Tables[0];
         }
 
         public static DataTable GetGamblerProfitView()

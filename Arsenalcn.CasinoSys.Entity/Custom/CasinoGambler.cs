@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Text;
 
 namespace Arsenalcn.CasinoSys.Entity
 {
@@ -20,18 +19,19 @@ namespace Arsenalcn.CasinoSys.Entity
             {
                 UserID = Convert.ToInt32(dr["UserID"]);
                 UserName = dr["UserName"].ToString();
-                Win = Convert.ToInt16(dr["Win"]);
-                Lose = Convert.ToInt16(dr["Lose"]);
+                Win = Convert.ToInt32(dr["Win"]);
+                Lose = Convert.ToInt32(dr["Lose"]);
+                MatchBet = Convert.ToInt32(dr["MatchBet"]);
                 Earning = Convert.ToSingle(dr["Earning"]);
                 TotalBet = Convert.ToSingle(dr["TotalBet"]);
 
                 if (!Convert.IsDBNull(dr["RPBet"]))
-                    RPBet = Convert.ToInt16(dr["RPBet"]);
+                    RPBet = Convert.ToInt32(dr["RPBet"]);
                 else
                     RPBet = null;
 
                 if (!Convert.IsDBNull(dr["RPBonus"]))
-                    RPBonus = Convert.ToInt16(dr["RPBonus"]);
+                    RPBonus = Convert.ToInt32(dr["RPBonus"]);
                 else
                     RPBonus = null;
 
@@ -81,6 +81,132 @@ namespace Arsenalcn.CasinoSys.Entity
                 }
             }
 
+            // 进入最终名次排行榜的标准（评选要求）同时满足以下3个条件：
+            //1、赛季中必须投注博采币次数达到10个单场及以上（反复多次投注同一场比赛只能算是1次）；
+            //2、赛季中参与累计投注量达到5,000菠菜币及以上；
+            //3、赛季中并且获得RP+3及以上，即猜对本赛季3场以上的比赛比分。
+            return list.FindAll(delegate(CasinoGambler cg)
+            { return cg.MatchBet >= 10 && cg.TotalBet >= 5000f && cg.RPBonus >= 3; });
+        }
+
+        public static List<CasinoGambler> SortCasinoGambler(List<CasinoGambler> list, string orderKeyword)
+        {
+            if (orderKeyword.Equals("ProfitRate", StringComparison.OrdinalIgnoreCase))
+            {
+                list.Sort(delegate(Entity.CasinoGambler cg1, Entity.CasinoGambler cg2)
+                {
+                    return !cg2.ProfitRate.Equals(cg1.ProfitRate) ?
+                        cg2.ProfitRate.CompareTo(cg1.ProfitRate) : cg2.Profit.CompareTo(cg1.Profit);
+                });
+            }
+            else if (orderKeyword.Equals("TotalBet", StringComparison.OrdinalIgnoreCase))
+            {
+                list.Sort(delegate(Entity.CasinoGambler cg1, Entity.CasinoGambler cg2)
+                {
+                    return !cg2.TotalBet.Equals(cg1.TotalBet) ?
+                        cg2.TotalBet.CompareTo(cg1.TotalBet) : cg2.Profit.CompareTo(cg1.Profit);
+                });
+            }
+            else if (orderKeyword.Equals("RPBonus", StringComparison.OrdinalIgnoreCase))
+            {
+                list.Sort(delegate(Entity.CasinoGambler cg1, Entity.CasinoGambler cg2)
+                {
+                    if (!cg1.RPBonus.HasValue && !cg2.RPBonus.HasValue)
+                    {
+                        return cg2.Profit.CompareTo(cg1.Profit);
+                    }
+                    else if (cg1.RPBonus.HasValue && !cg2.RPBonus.HasValue)
+                    {
+                        return -1;
+                    }
+                    else if (!cg1.RPBonus.HasValue && cg2.RPBonus.HasValue)
+                    {
+                        return 1;
+                    }
+                    else
+                    {
+                        return !cg2.RPBonus.Value.Equals(cg1.RPBonus.Value) ?
+                            cg2.RPBonus.Value - cg1.RPBonus.Value : cg2.Profit.CompareTo(cg1.Profit);
+                    }
+                });
+            }
+            else
+            {
+                list.Sort(delegate(Entity.CasinoGambler cg1, Entity.CasinoGambler cg2)
+                {
+                    return cg2.Profit.CompareTo(cg1.Profit);
+                });
+            }
+
+            //    orderClause = string.Format("{0} DESC, Profit DESC, RPBonus DESC, TotalBet DESC", orderKeyword);
+            //else if (orderKeyword == "TotalBet")
+            //    orderClause = string.Format("{0} DESC, Profit DESC, RPBonus DESC, ProfitRate DESC", orderKeyword);
+            //else if (orderKeyword == "RPBonus")
+            //    orderClause = string.Format("{0} DESC, Profit DESC, ProfitRate DESC, TotalBet DESC", orderKeyword);
+            //else
+            //    orderClause = "Profit DESC, RPBonus DESC, ProfitRate DESC, TotalBet DESC";
+
+            int _rank = 1;
+
+            foreach (Entity.CasinoGambler cg in list)
+            {
+                cg.Rank = _rank++;
+
+                //dr["Profit"] = Convert.ToSingle(dr["Earning"]) - Convert.ToSingle(dr["TotalBet"]);
+                //if (Convert.ToSingle(dr["TotalBet"]) > 0f)
+                //    dr["ProfitRate"] = Convert.ToSingle(dr["Profit"]) / Convert.ToSingle(dr["TotalBet"]) * 100;
+                //else
+                //    dr["ProfitRate"] = 0;
+
+                //int RPBonus = Entity.Gambler.GetGamblerRPByUserID(Convert.ToInt32(dr["UserID"]), CurrentLeague);
+
+                //if (RPBonus > 0)
+                //    dr["RPBonus"] = RPBonus;
+            }
+
+            return list;
+        }
+
+        public static List<CasinoGambler> SortCasinoGambler(List<CasinoGambler> list)
+        {
+            if (list != null && list.Count > 0)
+            {
+                Dictionary<int, int> dictCasinoGambler = new Dictionary<int, int>();
+                string[] arrayOrderKeyword = { "ProfitRate", "TotalBet", "RPBonus", "Profit" };
+
+                // Sort List<CasinoGambler> by different orderKeywords
+                foreach (string s in arrayOrderKeyword)
+                {
+                    List<CasinoGambler> sortedList = SortCasinoGambler(list, s);
+
+                    // Insert CasinoGambler instance into Dictionary or Add the rank of exist instance
+                    if (sortedList != null && sortedList.Count > 0)
+                    {
+                        foreach (CasinoGambler cg in sortedList)
+                        {
+                            if (dictCasinoGambler.ContainsKey(cg.UserID))
+                            {
+                                dictCasinoGambler[cg.UserID] += cg.Rank;
+                            }
+                            else
+                            {
+                                dictCasinoGambler.Add(cg.UserID, cg.Rank);
+                            }
+                        }
+                    }
+                }
+
+                // Update the Rank of every list Gamblers
+                foreach (CasinoGambler cg in list)
+                {
+                    cg.Rank = dictCasinoGambler[cg.UserID];
+                }
+
+                // Sort the final list
+                list.Sort(delegate(CasinoGambler cg1, CasinoGambler cg2)
+                { return !cg1.Rank.Equals(cg2.Rank) ? cg1.Rank - cg2.Rank : cg2.Profit.CompareTo(cg1.Profit); });
+            }
+
             return list;
         }
 
@@ -96,6 +222,9 @@ namespace Arsenalcn.CasinoSys.Entity
         { get; set; }
 
         public int Lose
+        { get; set; }
+
+        public int MatchBet
         { get; set; }
 
         public float Earning

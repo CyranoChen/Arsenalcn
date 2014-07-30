@@ -38,7 +38,6 @@ namespace Arsenalcn.Event
             }
             #endregion
 
-
             #region Generate Video on LeftPanel
             try
             {
@@ -89,6 +88,7 @@ namespace Arsenalcn.Event
             {
                 Arsenalcn.CasinoSys.Entity.Gambler.GamblerStatistics();
                 Arsenalcn.CasinoSys.Entity.Gambler.TopGamblerMonthlyStatistics();
+                Arsenalcn.CasinoSys.Entity.Gambler.Cache.RefreshCache();
             }
             catch (Exception ex)
             {

@@ -16,7 +16,8 @@
             <div class="DivFloatLeft">
                 <asp:DropDownList ID="ddlOrderClause" runat="server" AutoPostBack="true"
                     OnSelectedIndexChanged="ddlOrderClause_SelectedIndexChanged">
-                    <asp:ListItem Text="按盈亏总量排序" Value="Profit" Selected="True"></asp:ListItem>
+                    <asp:ListItem Text="--请选择排名方式--" Value="" Selected="True"></asp:ListItem>
+                    <asp:ListItem Text="按盈亏总量排序" Value="Profit"></asp:ListItem>
                     <asp:ListItem Text="按盈亏率排序" Value="ProfitRate"></asp:ListItem>
                     <asp:ListItem Text="按投注总量排序" Value="TotalBet"></asp:ListItem>
                     <asp:ListItem Text="按RP奖励排序" Value="RPBonus"></asp:ListItem>

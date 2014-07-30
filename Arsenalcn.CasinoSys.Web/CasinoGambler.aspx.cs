@@ -125,7 +125,14 @@ namespace Arsenalcn.CasinoSys.Web
 
             if (list != null && list.Count > 0)
             {
-                list = SortCasinoGambler(list, ddlOrderClause.SelectedValue);
+                if (!string.IsNullOrEmpty(ddlOrderClause.SelectedValue))
+                {
+                    list = Entity.CasinoGambler.SortCasinoGambler(list, ddlOrderClause.SelectedValue);
+                }
+                else
+                {
+                    list = Entity.CasinoGambler.SortCasinoGambler(list);
+                }
             }
 
             gvGamlber.DataSource = list;
@@ -151,84 +158,6 @@ namespace Arsenalcn.CasinoSys.Web
             gvGamlber.PageIndex = 0;
 
             BindData();
-        }
-
-        private List<Entity.CasinoGambler> SortCasinoGambler(List<Entity.CasinoGambler> list, string orderKeyword)
-        {
-            if (orderKeyword.Equals("ProfitRate", StringComparison.OrdinalIgnoreCase))
-            {
-                list.Sort(delegate(Entity.CasinoGambler cg1, Entity.CasinoGambler cg2)
-                {
-                    return !cg2.ProfitRate.Equals(cg1.ProfitRate) ?
-                        cg2.ProfitRate.CompareTo(cg1.ProfitRate) : cg2.Profit.CompareTo(cg1.Profit);
-                });
-            }
-            else if (orderKeyword.Equals("TotalBet", StringComparison.OrdinalIgnoreCase))
-            {
-                list.Sort(delegate(Entity.CasinoGambler cg1, Entity.CasinoGambler cg2)
-                {
-                    return !cg2.TotalBet.Equals(cg1.TotalBet) ?
-                        cg2.TotalBet.CompareTo(cg1.TotalBet) : cg2.Profit.CompareTo(cg1.Profit);
-                });
-            }
-            else if (orderKeyword.Equals("RPBonus", StringComparison.OrdinalIgnoreCase))
-            {
-                list.Sort(delegate(Entity.CasinoGambler cg1, Entity.CasinoGambler cg2)
-                {
-                    if (!cg1.RPBonus.HasValue && !cg2.RPBonus.HasValue)
-                    {
-                        return cg2.Profit.CompareTo(cg1.Profit);
-                    }
-                    else if (cg1.RPBonus.HasValue && !cg2.RPBonus.HasValue)
-                    {
-                        return -1;
-                    }
-                    else if (!cg1.RPBonus.HasValue && cg2.RPBonus.HasValue)
-                    {
-                        return 1;
-                    }
-                    else
-                    {
-                        return !cg2.RPBonus.Value.Equals(cg1.RPBonus.Value) ?
-                            cg2.RPBonus.Value - cg1.RPBonus.Value : cg2.Profit.CompareTo(cg1.Profit);
-                    }
-                });
-            }
-            else
-            {
-                list.Sort(delegate(Entity.CasinoGambler cg1, Entity.CasinoGambler cg2)
-                {
-                    return cg2.Profit.CompareTo(cg1.Profit);
-                });
-            }
-
-            //    orderClause = string.Format("{0} DESC, Profit DESC, RPBonus DESC, TotalBet DESC", orderKeyword);
-            //else if (orderKeyword == "TotalBet")
-            //    orderClause = string.Format("{0} DESC, Profit DESC, RPBonus DESC, ProfitRate DESC", orderKeyword);
-            //else if (orderKeyword == "RPBonus")
-            //    orderClause = string.Format("{0} DESC, Profit DESC, ProfitRate DESC, TotalBet DESC", orderKeyword);
-            //else
-            //    orderClause = "Profit DESC, RPBonus DESC, ProfitRate DESC, TotalBet DESC";
-
-            int _rank = 1;
-
-            foreach (Entity.CasinoGambler cg in list)
-            {
-                cg.Rank = _rank++;
-
-                //dr["Profit"] = Convert.ToSingle(dr["Earning"]) - Convert.ToSingle(dr["TotalBet"]);
-                //if (Convert.ToSingle(dr["TotalBet"]) > 0f)
-                //    dr["ProfitRate"] = Convert.ToSingle(dr["Profit"]) / Convert.ToSingle(dr["TotalBet"]) * 100;
-                //else
-                //    dr["ProfitRate"] = 0;
-
-                //int RPBonus = Entity.Gambler.GetGamblerRPByUserID(Convert.ToInt32(dr["UserID"]), CurrentLeague);
-
-                //if (RPBonus > 0)
-                //    dr["RPBonus"] = RPBonus;
-            }
-
-            return list;
         }
     }
 }

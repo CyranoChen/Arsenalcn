@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 
-using Discuz.Entity;
 using Discuz.Forum;
 
 namespace Arsenalcn.CasinoSys.Entity
@@ -11,52 +11,157 @@ namespace Arsenalcn.CasinoSys.Entity
     {
         public Gambler() { }
 
-        public Gambler(int userid, SqlTransaction trans)
+        private Gambler(DataRow dr)
         {
-            DataRow dr = DataAccess.Gambler.GetGamblerByUserID(userid, trans);
-
-            if (dr == null)
-            {
-                //create a gambler for this user
-                ShortUserInfo sUser = AdminUsers.GetShortUserInfo(userid);
-
-                DataAccess.Gambler.InsertGambler(userid, sUser.Username.Trim());
-
-                //reload dr
-                dr = DataAccess.Gambler.GetGamblerByUserID(userid, null);
-            }
-
             InitGambler(dr);
+        }
+
+        public Gambler(int userID, SqlTransaction trans = null)
+        {
+            DataRow dr = DataAccess.Gambler.GetGamblerByUserID(userID);
+
+            if (dr != null)
+            {
+                InitGambler(dr);
+            }
+            else
+            {
+                #region Insert new Gambler for new user
+                UserID = userID;
+                UserName = AdminUsers.GetShortUserInfo(userID).Username.Trim();
+                Cash = 0f;
+                TotalBet = 0f;
+                Win = 0;
+                Lose = 0;
+                RPBonus = null;
+                ContestRank = null;
+                TotalRank = 0;
+                Banker = 0;
+                JoinDate = DateTime.Now;
+                IsActive = true;
+                Description = string.Empty;
+                Remark = string.Empty;
+
+                this.Insert(trans);
+                #endregion
+            }
         }
 
         private void InitGambler(DataRow dr)
         {
             if (dr != null)
             {
+                GamblerID = Convert.ToInt32(dr["ID"]);
                 UserID = Convert.ToInt32(dr["UserID"]);
                 UserName = Convert.ToString(dr["UserName"]);
                 Cash = Convert.ToSingle(dr["Cash"]);
                 TotalBet = Convert.ToSingle(dr["TotalBet"]);
                 Win = Convert.ToInt32(dr["Win"]);
                 Lose = Convert.ToInt32(dr["Lose"]);
-                TotalBanker = Convert.ToInt32(dr["TotalBanker"]);
+
+                if (!Convert.IsDBNull(dr["RPBonus"]))
+                    RPBonus = Convert.ToInt32(dr["RPBonus"]);
+                else
+                    RPBonus = null;
+
+                if (!Convert.IsDBNull(dr["ContestRank"]))
+                    ContestRank = Convert.ToInt32(dr["ContestRank"]);
+                else
+                    ContestRank = null;
+
+                TotalRank = Convert.ToInt32(dr["TotalRank"]);
+
+                if (!Convert.IsDBNull(dr["Banker"]))
+                    Banker = Convert.ToInt32(dr["Banker"]);
+                else
+                    Banker = null;
+
+                JoinDate = Convert.ToDateTime(dr["JoinDate"]);
                 IsActive = Convert.ToBoolean(dr["IsActive"]);
+                Description = dr["Description"].ToString();
+                Remark = dr["Remark"].ToString();
             }
             else
                 throw new Exception("Unable to init Gambler.");
         }
 
-        public void Update(SqlTransaction trans)
+        public void Select()
         {
-            DataAccess.Gambler.UpdateGambler(this.UserID, Cash, TotalBet, Win, Lose, TotalBanker, IsActive, trans);
+            DataRow dr = DataAccess.Gambler.GetGamblerByID(GamblerID);
+
+            if (dr != null)
+                InitGambler(dr);
         }
 
-        public static DataTable GetGambler(string username)
+        public void Select(int userID)
         {
-            if (!string.IsNullOrEmpty(username))
-                return DataAccess.Gambler.GetGambler(username);
-            else
-                return DataAccess.Gambler.GetGambler();
+            DataRow dr = DataAccess.Gambler.GetGamblerByUserID(userID);
+
+            if (dr != null)
+                InitGambler(dr);
+        }
+
+        public void Update(SqlTransaction trans = null)
+        {
+            DataAccess.Gambler.UpdateGambler(GamblerID, UserID, UserName, Cash, TotalBet, Win, Lose, RPBonus, ContestRank, TotalRank,
+                Banker, JoinDate, IsActive, Description, Remark, trans);
+        }
+
+        public void Insert(SqlTransaction trans = null)
+        {
+            GamblerID = DataAccess.Gambler.InsertGambler(GamblerID, UserID, UserName, Cash, TotalBet, Win, Lose, RPBonus, ContestRank, TotalRank,
+                Banker, JoinDate, IsActive, Description, Remark, trans);
+        }
+
+        public void Delete(SqlTransaction trans = null)
+        {
+            DataAccess.Gambler.DeleteGambler(GamblerID, trans);
+        }
+
+        public static List<Gambler> GetGamblers()
+        {
+            DataTable dt = DataAccess.Gambler.GetGamblers();
+            List<Gambler> list = new List<Gambler>();
+
+            if (dt != null)
+            {
+                foreach (DataRow dr in dt.Rows)
+                {
+                    list.Add(new Gambler(dr));
+                }
+            }
+
+            return list;
+        }
+
+        public static class Cache
+        {
+            static Cache()
+            {
+                InitCache();
+            }
+
+            public static void RefreshCache()
+            {
+                InitCache();
+            }
+
+            private static void InitCache()
+            {
+                GamblerList = GetGamblers();
+            }
+
+            public static Gambler Load(Guid guid)
+            {
+                return GamblerList.Find(delegate(Gambler g) { return g.GamblerID.Equals(guid); });
+            }
+
+            public static Gambler LoadByUserID(int userID)
+            {
+                return GamblerList.Find(delegate(Gambler g) { return g.UserID.Equals(userID); });
+            }
+
+            public static List<Gambler> GamblerList;
         }
 
         public static float GetGamblerTotalBetByUserID(int userID, Guid? leagueGuid = null)
@@ -77,40 +182,67 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public static void GamblerStatistics()
         {
-            DataTable dt = DataAccess.Gambler.GetGambler();
+            List<Gambler> listGambler = Gambler.GetGamblers();
+            List<CasinoGambler> listCasinoGambler = CasinoGambler.GetCasinoGamblers();
+            List<CasinoGambler> listCasinoCamblerContest = CasinoGambler.GetCasinoGamblers(ConfigGlobal.DefaultLeagueID);
 
-            if (dt != null)
+            if (listGambler != null && listGambler.Count > 0 && listCasinoGambler != null && listCasinoGambler.Count > 0)
             {
-                foreach (DataRow dr in dt.Rows)
+                foreach (Gambler g in listGambler)
                 {
-                    Gambler gambler = new Gambler((int)dr["UserID"], null);
-                    gambler.TotalBet = DataAccess.Bet.GetUserTotalBetCash(gambler.UserID);
-                    gambler.Win = DataAccess.Bet.GetUserTotalWinLoseCount(gambler.UserID, true);
-                    gambler.Lose = DataAccess.Bet.GetUserTotalWinLoseCount(gambler.UserID, false);
+                    CasinoGambler cg = listCasinoGambler.Find(
+                        delegate(CasinoGambler casinoGambler) { return casinoGambler.UserID.Equals(g.UserID); });
 
-                    if (gambler.Cash > 0)
-                        gambler.IsActive = true;
+                    if (cg != null)
+                        g.InitGambler(cg);
+
+                    CasinoGambler cgc = listCasinoCamblerContest.Find(
+                        delegate(CasinoGambler casinoGambler) { return casinoGambler.UserID.Equals(g.UserID); });
+
+                    if (cgc != null)
+                        g.ContestRank = cgc.Rank;
                     else
-                        gambler.IsActive = false;
+                        g.ContestRank = null;
 
-                    gambler.Update(null);
+                    g.Update();
                 }
             }
         }
 
         public static void GamblerStatistics(int userID)
         {
-            Gambler gambler = new Gambler(userID, null);
-            gambler.TotalBet = DataAccess.Bet.GetUserTotalBetCash(gambler.UserID);
-            gambler.Win = DataAccess.Bet.GetUserTotalWinLoseCount(gambler.UserID, true);
-            gambler.Lose = DataAccess.Bet.GetUserTotalWinLoseCount(gambler.UserID, false);
+            Gambler g = new Gambler(userID);
+            CasinoGambler cg = CasinoGambler.GetCasinoGamblers().Find(
+                delegate(CasinoGambler casinoGambler) { return casinoGambler.UserID.Equals(userID); });
+            CasinoGambler cgc = CasinoGambler.GetCasinoGamblers(ConfigGlobal.DefaultLeagueID).Find(
+                delegate(CasinoGambler casinoGambler) { return casinoGambler.UserID.Equals(userID); });
 
-            if (gambler.Cash > 0)
-                gambler.IsActive = true;
-            else
-                gambler.IsActive = false;
+            if (g != null && cg != null)
+            {
+                g.InitGambler(cg);
 
-            gambler.Update(null);
+                if (cgc != null)
+                    g.ContestRank = cgc.Rank;
+                else
+                    g.ContestRank = null;
+            }
+
+            g.Update();
+        }
+
+        private void InitGambler(CasinoGambler cg)
+        {
+            if (cg != null)
+            {
+                TotalBet = cg.TotalBet;
+                Win = cg.Win;
+                Lose = cg.Lose;
+                RPBonus = cg.RPBonus;
+                TotalRank = cg.Rank;
+
+                // TODO: Add Gambler become Banker
+                Banker = null;
+            }
         }
 
         public static void TopGamblerMonthlyStatistics()
@@ -145,11 +277,16 @@ namespace Arsenalcn.CasinoSys.Entity
             }
         }
 
+        #region Members and Properties
+
+        public int GamblerID
+        { get; set; }
+
         public int UserID
-        { get; private set; }
+        { get; set; }
 
         public string UserName
-        { get; private set; }
+        { get; set; }
 
         public float Cash
         { get; set; }
@@ -163,10 +300,30 @@ namespace Arsenalcn.CasinoSys.Entity
         public int Lose
         { get; set; }
 
-        public int TotalBanker
+        public int? RPBonus
+        { get; set; }
+
+        public int? ContestRank
+        { get; set; }
+
+        public int TotalRank
+        { get; set; }
+
+        public int? Banker
+        { get; set; }
+
+        public DateTime JoinDate
         { get; set; }
 
         public bool IsActive
         { get; set; }
+
+        public string Description
+        { get; set; }
+
+        public string Remark
+        { get; set; }
+
+        #endregion
     }
 }

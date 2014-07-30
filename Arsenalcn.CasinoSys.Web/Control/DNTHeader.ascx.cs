@@ -24,7 +24,7 @@ namespace Arsenalcn.CasinoSys.Web.Control
 
             ltrlTitle.Text = string.Format("<a href=\"/index.aspx\">{0}</a> &raquo; <a href=\"default.aspx\">{1}</a> &raquo; <strong>{2}</strong>", "阿森纳中国官方球迷会", ConfigGlobal.PluginDisplayName, this.Page.Title);
 
-            ltrlGamblerCount.Text = Gambler.GetGambler(string.Empty).Rows.Count.ToString();
+            ltrlGamblerCount.Text = Gambler.Cache.GamblerList.Count.ToString();
             ltrlGameCount.Text = (CasinoItem.GetMatchCasinoItemCount() + CasinoItem.GetOtherCasinoItemCount()).ToString();
 
             Banker defaultBanker = new Banker(Banker.DefaultBankerID);

@@ -1,6 +1,8 @@
 ﻿using System;
-using System.Data;
+using System.Collections.Generic;
 using System.Web.UI.WebControls;
+
+using Arsenalcn.CasinoSys.Entity;
 
 using Discuz.Forum;
 
@@ -24,27 +26,22 @@ namespace Arsenalcn.CasinoSys.Web
             if (ViewState["username"] != null)
                 queryUsername = ViewState["username"].ToString();
 
-            DataTable dt = Entity.Gambler.GetGambler(queryUsername);
-
-            if (dt != null)
+            List<Gambler> list = Entity.Gambler.GetGamblers().FindAll(delegate(Gambler g)
             {
-                int uid = int.MinValue;
-                dt.Columns.Add("QSB", typeof(string));
-                dt.Columns.Add("RP", typeof(string));
+                Boolean returnValue = true;
+                string tmpString = string.Empty;
 
-                foreach (DataRow dr in dt.Rows)
+                if (ViewState["username"] != null)
                 {
-                    uid = Convert.ToInt32(dr["UserID"]);
-
-                    if (AdminUsers.GetUserInfo(uid) != null)
-                    {
-                        dr["QSB"] = AdminUsers.GetUserExtCredits(uid, 2).ToString("N2");
-                        dr["RP"] = AdminUsers.GetUserExtCredits(uid, 4).ToString();
-                    }
+                    tmpString = ViewState["username"].ToString();
+                    if (!string.IsNullOrEmpty(tmpString) && tmpString != "-请输入用户名-")
+                        returnValue = returnValue && g.UserName.Contains(tmpString);
                 }
-            }
 
-            gvGambler.DataSource = dt;
+                return returnValue;
+            });
+
+            gvGambler.DataSource = list;
             gvGambler.DataBind();
         }
 
@@ -52,24 +49,46 @@ namespace Arsenalcn.CasinoSys.Web
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                DataRowView drv = e.Row.DataItem as DataRowView;
+                Gambler g = e.Row.DataItem as Gambler;
+
+                Label lblQSB = e.Row.FindControl("lblQSB") as Label;
+                Label lblRP = e.Row.FindControl("lblRP") as Label;
+                Label lblCash = e.Row.FindControl("lblCash") as Label;
+                Label lblWin = e.Row.FindControl("lblWin") as Label;
+                Label lblLose = e.Row.FindControl("lblLose") as Label;
 
                 TextBox tbCash = e.Row.FindControl("tbCash") as TextBox;
                 TextBox tbWin = e.Row.FindControl("tbWin") as TextBox;
                 TextBox tbLose = e.Row.FindControl("tbLose") as TextBox;
+
                 LinkButton btnResetGambler = e.Row.FindControl("btnResetGambler") as LinkButton;
 
-                if (tbCash != null)
-                    tbCash.Text = ((double)drv["Cash"]).ToString("N2");
+                if (AdminUsers.GetUserInfo(g.UserID) != null && lblQSB != null && lblRP != null)
+                {
+                    lblQSB.Text = AdminUsers.GetUserExtCredits(g.UserID, 2).ToString("N2");
+                    lblRP.Text = AdminUsers.GetUserExtCredits(g.UserID, 4).ToString();
+                }
 
-                if (tbWin != null)
-                    tbWin.Text = drv["Win"].ToString();
+                if (lblCash != null && tbCash != null)
+                {
+                    lblCash.Text = string.Format("<em>{0}<em>", g.Cash.ToString("f2"));
+                    tbCash.Text = g.Cash.ToString("N2");
+                }
 
-                if (tbLose != null)
-                    tbLose.Text = drv["Lose"].ToString();
+                if (lblWin != null && tbWin != null)
+                {
+                    lblWin.Text = string.Format("<em>{0}</em>", g.Win.ToString());
+                    tbWin.Text = g.Win.ToString();
+                }
+
+                if (lblLose != null && tbLose != null)
+                {
+                    lblLose.Text = string.Format("<em>{0}</em>", g.Lose.ToString());
+                    tbLose.Text = g.Lose.ToString();
+                }
 
                 if (btnResetGambler != null)
-                    btnResetGambler.CommandArgument = drv["UserID"].ToString();
+                    btnResetGambler.CommandArgument = g.UserID.ToString();
             }
         }
 
@@ -128,9 +147,9 @@ namespace Arsenalcn.CasinoSys.Web
 
                     this.ClientScript.RegisterClientScriptBlock(typeof(string), "success", "alert('统计玩家信息成功');", true);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    this.ClientScript.RegisterClientScriptBlock(typeof(string), "failed", "alert('统计玩家信息失败');", true);
+                    this.ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}');", ex.Message), true);
                 }
             }
         }

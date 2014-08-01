@@ -35,20 +35,16 @@
             <div class="Clear">
             </div>
         </div>
-        <asp:GridView ID="gvGamlber" runat="server" PageSize="20" OnPageIndexChanging="gvGamlber_PageIndexChanging">
+        <asp:GridView ID="gvGamlber" runat="server" PageSize="20"
+            OnPageIndexChanging="gvGamlber_PageIndexChanging" OnRowDataBound="gvGamlber_RowDataBound">
             <Columns>
-                <asp:BoundField DataField="Rank" HeaderText="排行" DataFormatString="<em>{0}</em>"
-                    HtmlEncode="false" />
-                <asp:TemplateField>
-                    <HeaderTemplate>
-                        用户名
-                    </HeaderTemplate>
+                <asp:TemplateField HeaderText="排行">
                     <ItemTemplate>
-                        <a href="MyBonusLog.aspx?UserID=<%#DataBinder.Eval(Container.DataItem, "UserID") %>"
-                            target="_blank" class="StrongLink">
-                            <%#DataBinder.Eval(Container.DataItem, "UserName") %></a>
+                        <asp:Label ID="lblRank" runat="server"></asp:Label>
                     </ItemTemplate>
                 </asp:TemplateField>
+                <asp:HyperLinkField HeaderText="用户名" DataTextField="UserName" DataNavigateUrlFields="UserID"
+                    DataNavigateUrlFormatString="MyBonusLog.aspx?UserID={0}" Target="_blank" ControlStyle-CssClass="StrongLink" />
                 <asp:BoundField DataField="Win" HeaderText="猜中" DataFormatString="{0}" />
                 <asp:BoundField DataField="Lose" HeaderText="猜错" DataFormatString="{0}" />
                 <asp:BoundField DataField="Profit" DataFormatString="<em>{0:N2}</em>" ItemStyle-HorizontalAlign="Right"

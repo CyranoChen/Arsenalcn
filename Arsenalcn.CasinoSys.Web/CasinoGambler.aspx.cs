@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Data;
+using System.Collections.Generic;
 using System.Web.UI.WebControls;
 
 using Arsenalcn.CasinoSys.Entity;
-using System.Collections.Generic;
 
 namespace Arsenalcn.CasinoSys.Web
 {
@@ -158,6 +157,28 @@ namespace Arsenalcn.CasinoSys.Web
             gvGamlber.PageIndex = 0;
 
             BindData();
+        }
+
+        protected void gvGamlber_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                Entity.CasinoGambler cg = e.Row.DataItem as Entity.CasinoGambler;
+
+                Label lblRank = e.Row.FindControl("lblRank") as Label;
+
+                if (lblRank != null)
+                {
+                    if (!string.IsNullOrEmpty(ddlOrderClause.SelectedValue))
+                    {
+                        lblRank.Text = string.Format("<em>{0}</em>", cg.Rank.ToString());
+                    }
+                    else
+                    {
+                        lblRank.Text = string.Format("<em>{0}</em>({1})", cg.Rank.ToString(), cg.Credit.ToString());
+                    }
+                }
+            }
         }
     }
 }

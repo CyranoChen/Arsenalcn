@@ -18,9 +18,7 @@
         </h3>
         <div class="Block">
             <ul>
-                <li class="LiTitle">博彩币:<em style="font-size: 12px; margin: 0px 2px">
-                    <asp:Literal ID="ltrlCash" runat="server"></asp:Literal>
-                    (RP:<asp:Literal ID="ltrlUserRP" runat="server"></asp:Literal>)</em></li>
+                <asp:Literal ID="ltrlMyGamblerInfo" runat="server"></asp:Literal>
                 <li><a href="MyGambler.aspx">我的账户(充值|套现)</a></li>
                 <li><a href="MyCoupon.aspx">我的投注单</a></li>
                 <li><a href="MyBetLog.aspx">我的中奖查询</a></li>
@@ -28,9 +26,9 @@
             </ul>
         </div>
     </asp:Panel>
-    <uc1:TopContestList ID="ctrlTopContestList" runat="server" Visible="false" />
+    <uc1:TopContestList ID="ctrlTopContestList" runat="server" />
     <uc2:TopGamblerList ID="ctrlTopGamblerList" runat="server" />
-    <asp:Panel ID="pnlDev" runat="server" CssClass="InfoPanel">
+    <asp:Panel ID="pnlDev" runat="server" CssClass="InfoPanel" Visible="false">
         <h3 class="Col" onclick="$(this).toggleClass('Col'); $(this).toggleClass('Exp'); $(this).next('div').toggle('normal');">
             <a>程序开发与支持</a>
         </h3>

@@ -134,7 +134,7 @@ namespace Arsenalcn.CasinoSys.DataAccess
                 DateTime monthStart = iDay.AddDays(1 - iDay.Day);
                 DateTime nextStart = monthStart.AddMonths(1);
 
-                string sql = string.Format(@"SELECT TOP 9 * FROM dbo.AcnCasino_Gambler gambler INNER JOIN 
+                string sql = string.Format(@"SELECT TOP 5 * FROM dbo.AcnCasino_Gambler gambler INNER JOIN 
                         (SELECT UserID, SUM(ISNULL(Earning, 0) - ISNULL(Bet, 0)) AS profit FROM dbo.AcnCasino_Bet 
                         WHERE (Earning IS NOT NULL) AND (Bet IS NOT NULL) AND (BetTime >= '{0}') AND (BetTime < '{1}')
                         GROUP BY UserID) bet ON gambler.UserID = bet.UserID ORDER BY Profit DESC", monthStart, nextStart);
@@ -161,7 +161,7 @@ namespace Arsenalcn.CasinoSys.DataAccess
                 DateTime monthStart = iDay.AddDays(1 - iDay.Day);
                 DateTime nextStart = monthStart.AddMonths(1);
 
-                string sql = string.Format(@"SELECT TOP 9 * FROM dbo.AcnCasino_Gambler gambler INNER JOIN
+                string sql = string.Format(@"SELECT TOP 5 * FROM dbo.AcnCasino_Gambler gambler INNER JOIN
                         (SELECT UserID, SUM(ISNULL(Bet, 0)) AS TotalBetMonthly FROM dbo.AcnCasino_Bet 
                         WHERE (Bet IS NOT NULL) AND (BetTime >= '{0}') AND (BetTime < '{1}')
                         GROUP BY UserID) bet ON gambler.UserID = bet.UserID ORDER BY TotalBetMonthly DESC", monthStart, nextStart);
@@ -188,7 +188,7 @@ namespace Arsenalcn.CasinoSys.DataAccess
                 DateTime monthStart = iDay.AddDays(1 - iDay.Day);
                 DateTime nextStart = monthStart.AddMonths(1);
 
-                string sql = string.Format(@"SELECT TOP 9 dbo.AcnCasino_Gambler.UserID, dbo.AcnCasino_Gambler.UserName, COUNT(*) AS RPBonus
+                string sql = string.Format(@"SELECT TOP 5 dbo.AcnCasino_Gambler.UserID, dbo.AcnCasino_Gambler.UserName, COUNT(*) AS RPBonus
                          FROM dbo.AcnCasino_Gambler INNER JOIN dbo.AcnCasino_Bet ON dbo.AcnCasino_Gambler.UserID = dbo.AcnCasino_Bet.UserID
                          WHERE (dbo.AcnCasino_Bet.Earning = 0) AND (dbo.AcnCasino_Bet.EarningDesc = 'RP+1') AND (dbo.AcnCasino_Bet.IsWin = 1) AND (BetTime >= '{0}') AND (BetTime < '{1}')
                          GROUP BY dbo.AcnCasino_Gambler.UserID, dbo.AcnCasino_Gambler.UserName ORDER BY RPBonus DESC", monthStart, nextStart);

@@ -18,8 +18,8 @@
             DataKeyNames="UserID" OnRowCancelingEdit="gvGambler_RowCancelingEdit" OnRowEditing="gvGambler_RowEditing"
             OnRowUpdating="gvGambler_RowUpdating" OnRowCommand="gvGambler_RowCommand" OnPageIndexChanging="gvGambler_PageIndexChanging">
             <Columns>
-                <asp:BoundField DataField="UserID" Visible="false" />
-                <asp:BoundField DataField="ID" HeaderText="编号" ReadOnly="true" />
+                <asp:BoundField DataField="GamblerID" Visible="false" />
+                <asp:BoundField DataField="UserID" HeaderText="编号" ReadOnly="true" />
                 <asp:BoundField DataField="UserName" HeaderText="用户名" ReadOnly="true" />
                 <asp:TemplateField HeaderText="枪手币" ItemStyle-HorizontalAlign="Right">
                     <ItemTemplate>

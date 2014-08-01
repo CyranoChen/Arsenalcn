@@ -151,6 +151,7 @@ namespace Arsenalcn.CasinoSys.Entity
             foreach (Entity.CasinoGambler cg in list)
             {
                 cg.Rank = _rank++;
+                cg.Credit = cg.Rank;
 
                 //dr["Profit"] = Convert.ToSingle(dr["Earning"]) - Convert.ToSingle(dr["TotalBet"]);
                 //if (Convert.ToSingle(dr["TotalBet"]) > 0f)
@@ -199,12 +200,19 @@ namespace Arsenalcn.CasinoSys.Entity
                 // Update the Rank of every list Gamblers
                 foreach (CasinoGambler cg in list)
                 {
-                    cg.Rank = dictCasinoGambler[cg.UserID];
+                    cg.Credit = dictCasinoGambler[cg.UserID];
                 }
 
                 // Sort the final list
                 list.Sort(delegate(CasinoGambler cg1, CasinoGambler cg2)
-                { return !cg1.Rank.Equals(cg2.Rank) ? cg1.Rank - cg2.Rank : cg2.Profit.CompareTo(cg1.Profit); });
+                {
+                    return !cg1.Credit.Value.Equals(cg2.Credit.Value)
+                      ? cg1.Credit.Value - cg2.Credit.Value : cg2.Profit.CompareTo(cg1.Profit);
+                });
+
+                int _rank = 1;
+                foreach (CasinoGambler cg in list)
+                { cg.Rank = _rank++; }
             }
 
             return list;
@@ -249,6 +257,9 @@ namespace Arsenalcn.CasinoSys.Entity
         { get; set; }
 
         public int Rank
+        { get; set; }
+
+        public int? Credit
         { get; set; }
 
         #endregion

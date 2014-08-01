@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
 using System.Web.UI.WebControls;
 
 using Arsenalcn.CasinoSys.Entity;
-
-using Discuz.Forum;
 
 namespace Arsenalcn.CasinoSys.Web
 {

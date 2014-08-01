@@ -13,21 +13,23 @@
                 <a href="http://bbs.arsenalcn.com/showtopic-107283.aspx" target="_blank"><em style="font-size: 12px; text-decoration: none">【规则】</em></a>
             </li>
         </ul>
-        <asp:Repeater ID="rptContestUpper" runat="server">
+        <asp:Repeater ID="rptContestUpper" runat="server" OnItemDataBound="rptContestUpper_ItemDataBound">
             <HeaderTemplate>
                 <ul id="ContestUpper">
             </HeaderTemplate>
             <ItemTemplate>
+                <asp:Literal ID="ltrlUpperGamblerRank" runat="server"></asp:Literal>
             </ItemTemplate>
             <FooterTemplate>
                 </ul>
             </FooterTemplate>
         </asp:Repeater>
-        <asp:Repeater ID="rptContestLower" runat="server">
+        <asp:Repeater ID="rptContestLower" runat="server" OnItemDataBound="rptContestLower_ItemDataBound">
             <HeaderTemplate>
                 <ul id="ContestLower" style="display: none">
             </HeaderTemplate>
             <ItemTemplate>
+                <asp:Literal ID="ltrlLowerGamblerRank" runat="server"></asp:Literal>
             </ItemTemplate>
             <FooterTemplate>
                 </ul>

@@ -69,21 +69,30 @@ namespace Arsenalcn.CasinoSys.Web
                     lblRP.Text = AdminUsers.GetUserExtCredits(g.UserID, 4).ToString();
                 }
 
-                if (lblCash != null && tbCash != null)
+                if (lblCash != null)
                 {
-                    lblCash.Text = string.Format("<em>{0}<em>", g.Cash.ToString("f2"));
+                    lblCash.Text = string.Format("<em>{0}<em>", g.Cash.ToString("N2"));
+                }
+                else if (tbCash != null)
+                {
                     tbCash.Text = g.Cash.ToString("N2");
                 }
 
-                if (lblWin != null && tbWin != null)
+                if (lblWin != null)
                 {
                     lblWin.Text = string.Format("<em>{0}</em>", g.Win.ToString());
+                }
+                else if (tbWin != null)
+                {
                     tbWin.Text = g.Win.ToString();
                 }
 
-                if (lblLose != null && tbLose != null)
+                if (lblLose != null)
                 {
                     lblLose.Text = string.Format("<em>{0}</em>", g.Lose.ToString());
+                }
+                else if (tbLose != null)
+                {
                     tbLose.Text = g.Lose.ToString();
                 }
 

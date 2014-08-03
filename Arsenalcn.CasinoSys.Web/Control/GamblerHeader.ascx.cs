@@ -25,7 +25,7 @@ namespace Arsenalcn.CasinoSys.Web.Control
 
             if (UserID > 0)
             {
-                Entity.Gambler currentGamlber = new Arsenalcn.CasinoSys.Entity.Gambler(UserID, null);
+                Entity.Gambler currentGamlber = new Entity.Gambler(UserID);
 
                 ltrlTotalBet.Text = currentGamlber.TotalBet.ToString("N2");
                 ltrlWin.Text = currentGamlber.Win.ToString();

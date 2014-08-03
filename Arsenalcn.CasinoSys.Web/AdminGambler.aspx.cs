@@ -107,7 +107,7 @@ namespace Arsenalcn.CasinoSys.Web
             TextBox tbWin = gvGambler.Rows[gvGambler.EditIndex].FindControl("tbWin") as TextBox;
             TextBox tbLose = gvGambler.Rows[gvGambler.EditIndex].FindControl("tbLose") as TextBox;
 
-            Entity.Gambler gambler = new Entity.Gambler((int)gvGambler.DataKeys[gvGambler.EditIndex].Value, null);
+            Entity.Gambler gambler = new Entity.Gambler((int)gvGambler.DataKeys[gvGambler.EditIndex].Value);
 
             if (gambler != null && tbCash != null && tbWin != null && tbLose != null)
             {

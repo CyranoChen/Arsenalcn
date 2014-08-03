@@ -81,7 +81,7 @@ namespace Arsenalcn.CasinoSys.Entity
                     if (BetCheck())
                     {
                         //update gambler statistics
-                        Gambler gambler = new Gambler(UserID, null);
+                        Gambler gambler = new Gambler(UserID, trans);
                         gambler.TotalBet += BetAmount.GetValueOrDefault(0f);
 
                         if (BetAmount.HasValue)
@@ -117,10 +117,10 @@ namespace Arsenalcn.CasinoSys.Entity
                 SqlTransaction trans = conn.BeginTransaction();
                 try
                 {
-                    if (BetCheck())
+                    if (BetCheck(trans))
                     {
                         //update gambler statistics
-                        Gambler gambler = new Gambler(UserID, null);
+                        Gambler gambler = new Gambler(UserID, trans);
                         gambler.TotalBet += BetAmount.GetValueOrDefault(0f);
 
                         if (BetAmount.HasValue)
@@ -211,7 +211,7 @@ namespace Arsenalcn.CasinoSys.Entity
             }
         }
 
-        public bool BetCheck()
+        public bool BetCheck(SqlTransaction trans = null)
         {
             //check close time
             Entity.CasinoItem item = Entity.CasinoItem.GetCasinoItem(CasinoItemGuid);
@@ -228,7 +228,7 @@ namespace Arsenalcn.CasinoSys.Entity
             //check user account
             if (BetAmount.HasValue)
             {
-                Gambler gamber = new Gambler(UserID, null);
+                Gambler gamber = new Gambler(UserID, trans);
                 if (gamber.Cash < BetAmount.Value)
                     return false;
             }

@@ -20,11 +20,20 @@ namespace Arsenalcn.CasinoSys.DataAccess
                 return ds.Tables[0].Rows[0];
         }
 
-        public static DataRow GetGamblerByUserID(int userID)
+        public static DataRow GetGamblerByUserID(int userID, SqlTransaction trans = null)
         {
             string sql = "SELECT * FROM dbo.AcnCasino_Gambler WHERE UserID = @userID";
 
-            DataSet ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@userID", userID));
+            DataSet ds = null;
+
+            if (trans == null)
+            {
+                ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@userID", userID));
+            }
+            else
+            {
+                ds = SqlHelper.ExecuteDataset(trans, CommandType.Text, sql, new SqlParameter("@userID", userID));
+            }
 
             if (ds.Tables[0].Rows.Count == 0)
                 return null;
@@ -57,14 +66,10 @@ namespace Arsenalcn.CasinoSys.DataAccess
                                       new SqlParameter("@remark", remark)
                                   };
 
-            if (trans != null)
-            {
-                SqlHelper.ExecuteNonQuery(trans, CommandType.Text, sql, para);
-            }
+            if (trans == null)
+            { SqlHelper.ExecuteNonQuery(SQLConn.GetConnection(), CommandType.Text, sql, para); }
             else
-            {
-                SqlHelper.ExecuteNonQuery(SQLConn.GetConnection(), CommandType.Text, sql, para);
-            }
+            { SqlHelper.ExecuteNonQuery(trans, CommandType.Text, sql, para); }
         }
 
         public static int InsertGambler(int gID, int userID, string userName, float cash, float totalBet, int win, int lose, int? rpBonus, int? contestRank,

@@ -18,7 +18,7 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public Gambler(int userID, SqlTransaction trans = null)
         {
-            DataRow dr = DataAccess.Gambler.GetGamblerByUserID(userID);
+            DataRow dr = DataAccess.Gambler.GetGamblerByUserID(userID, trans);
 
             if (dr != null)
             {

@@ -75,11 +75,11 @@
     <Content Include="UploadFiles\ClubLogo.gif" />
     <Content Include="UploadFiles\PlayerLogo.gif" />
     <Content Include="UploadFiles\StripFace\%2420.jpg" />
-    <Content Include="UploadFiles\StripFace\%2422.jpg" />
-    <Content Include="UploadFiles\StripFace\%2430.jpg" />
+    <Content Include="UploadFiles\StripFace\%2425.jpg" />
     <Content Include="UploadFiles\StripFace\%2454.jpg" />
     <Content Include="UploadFiles\StripFace\00.jpg" />
     <Content Include="UploadFiles\StripFace\01.jpg" />
+    <Content Include="UploadFiles\StripFace\02.jpg" />
     <Content Include="UploadFiles\StripFace\03.jpg" />
     <Content Include="UploadFiles\StripFace\04.jpg" />
     <Content Include="UploadFiles\StripFace\05.jpg" />
@@ -90,6 +90,7 @@
     <Content Include="UploadFiles\StripFace\10.jpg" />
     <Content Include="UploadFiles\StripFace\11.jpg" />
     <Content Include="UploadFiles\StripFace\12.jpg" />
+    <Content Include="UploadFiles\StripFace\13.jpg" />
     <Content Include="UploadFiles\StripFace\14.jpg" />
     <Content Include="UploadFiles\StripFace\15.jpg" />
     <Content Include="UploadFiles\StripFace\16.jpg" />
@@ -97,11 +98,13 @@
     <Content Include="UploadFiles\StripFace\18.jpg" />
     <Content Include="UploadFiles\StripFace\19.jpg" />
     <Content Include="UploadFiles\StripFace\20.jpg" />
+    <Content Include="UploadFiles\StripFace\21.jpg" />
     <Content Include="UploadFiles\StripFace\22.jpg" />
     <Content Include="UploadFiles\StripFace\24.jpg" />
-    <Content Include="UploadFiles\StripFace\25.jpg" />
     <Content Include="UploadFiles\StripFace\27.jpg" />
+    <Content Include="UploadFiles\StripFace\28.jpg" />
     <Content Include="UploadFiles\StripFace\31.jpg" />
+    <Content Include="UploadFiles\StripFace\34.jpg" />
     <Content Include="UploadFiles\StripFace\35.jpg" />
     <Content Include="UploadFiles\StripFace\Legend.jpg" />
     <Content Include="UploadFiles\StripLegend\Adams.jpg" />
@@ -146,6 +149,7 @@
     <Content Include="UploadFiles\StripLegend\Merida.jpg" />
     <Content Include="UploadFiles\StripLegend\Nasri.jpg" />
     <Content Include="UploadFiles\StripLegend\Overmars.jpg" />
+    <Content Include="UploadFiles\StripLegend\Park.jpg" />
     <Content Include="UploadFiles\StripLegend\Parlour.jpg" />
     <Content Include="UploadFiles\StripLegend\Petit.jpg" />
     <Content Include="UploadFiles\StripLegend\Pires.jpg" />
@@ -188,11 +192,11 @@
     <Content Include="UploadFiles\StripLV\sock4.gif" />
     <Content Include="UploadFiles\StripLV\sock5.gif" />
     <Content Include="UploadFiles\StripPhoto\%2420.jpg" />
-    <Content Include="UploadFiles\StripPhoto\%2422.jpg" />
-    <Content Include="UploadFiles\StripPhoto\%2430.jpg" />
+    <Content Include="UploadFiles\StripPhoto\%2425.jpg" />
     <Content Include="UploadFiles\StripPhoto\%2454.jpg" />
     <Content Include="UploadFiles\StripPhoto\00.jpg" />
     <Content Include="UploadFiles\StripPhoto\01.jpg" />
+    <Content Include="UploadFiles\StripPhoto\02.jpg" />
     <Content Include="UploadFiles\StripPhoto\03.jpg" />
     <Content Include="UploadFiles\StripPhoto\04.jpg" />
     <Content Include="UploadFiles\StripPhoto\05.jpg" />
@@ -203,6 +207,7 @@
     <Content Include="UploadFiles\StripPhoto\10.jpg" />
     <Content Include="UploadFiles\StripPhoto\11.jpg" />
     <Content Include="UploadFiles\StripPhoto\12.jpg" />
+    <Content Include="UploadFiles\StripPhoto\13.jpg" />
     <Content Include="UploadFiles\StripPhoto\14.jpg" />
     <Content Include="UploadFiles\StripPhoto\15.jpg" />
     <Content Include="UploadFiles\StripPhoto\16.jpg" />
@@ -210,11 +215,13 @@
     <Content Include="UploadFiles\StripPhoto\18.jpg" />
     <Content Include="UploadFiles\StripPhoto\19.jpg" />
     <Content Include="UploadFiles\StripPhoto\20.jpg" />
+    <Content Include="UploadFiles\StripPhoto\21.jpg" />
     <Content Include="UploadFiles\StripPhoto\22.jpg" />
     <Content Include="UploadFiles\StripPhoto\24.jpg" />
-    <Content Include="UploadFiles\StripPhoto\25.jpg" />
     <Content Include="UploadFiles\StripPhoto\27.jpg" />
+    <Content Include="UploadFiles\StripPhoto\28.jpg" />
     <Content Include="UploadFiles\StripPhoto\31.jpg" />
+    <Content Include="UploadFiles\StripPhoto\34.jpg" />
     <Content Include="UploadFiles\StripPhoto\35.jpg" />
   </ItemGroup>
   <ItemGroup>

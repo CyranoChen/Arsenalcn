@@ -47,7 +47,7 @@ namespace Arsenalcn.CasinoSys.Web.Common
 
             if (userid != -1)
             {
-                CurrentGambler = new Gambler(userid, null);
+                CurrentGambler = new Gambler(userid);
             }
         }
     }

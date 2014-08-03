@@ -215,7 +215,7 @@ namespace Arsenalcn.CasinoSys.Entity
                     {
                         //single choice bonus
                         Entity.CasinoItem item = Entity.CasinoItem.GetCasinoItem(itemGuid.Value);
-                        Entity.Banker banker = new Arsenalcn.CasinoSys.Entity.Banker(item.BankerID);
+                        Entity.Banker banker = new Entity.Banker(item.BankerID);
 
                         float totalEarning = 0f;
 

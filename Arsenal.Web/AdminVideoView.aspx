@@ -84,25 +84,34 @@
                         </td>
                     </tr>
                     <tr class="AlternatingRow">
-
+                        <td class="FieldHeader">格式:
+                        </td>
+                        <td style="text-align: left;">
+                            <asp:DropDownList ID="ddlExt" runat="server">
+                                <asp:ListItem Value=".mp4" Text="video/mp4" Selected="True"></asp:ListItem>
+                                <asp:ListItem Value=".flv" Text="video/flv"></asp:ListItem>
+                            </asp:DropDownList>
+                            <asp:RequiredFieldValidator runat="server" ID="rfvExt" ControlToValidate="ddlExt"
+                                ErrorMessage="*" CssClass="ValiSpan" Display="Dynamic" />
+                        </td>
+                        <td class="FieldHeader">长度:
+                        </td>
+                        <td style="text-align: left;">
+                            <asp:TextBox ID="tbVideoLength" runat="server" CssClass="TextBox" Text="60" Width="30px"></asp:TextBox>
+                            <asp:RequiredFieldValidator runat="server" ID="rfvVideoLength" ControlToValidate="tbVideoLength"
+                                ErrorMessage="*" CssClass="ValiSpan" Display="Dynamic" />
+                        </td>
+                    </tr>
+                    <tr class="Row">
                         <td class="FieldHeader">宽度:
                         </td>
                         <td style="text-align: left;">
-                            <asp:TextBox ID="tbVideoWidth" runat="server" CssClass="TextBox" Text="480" Width="30px"></asp:TextBox>
+                            <asp:TextBox ID="tbVideoWidth" runat="server" CssClass="TextBox" Text="640" Width="30px"></asp:TextBox>
                         </td>
                         <td class="FieldHeader">高度:
                         </td>
                         <td style="text-align: left;">
-                            <asp:TextBox ID="tbVideoHeight" runat="server" CssClass="TextBox" Text="270" Width="30px"></asp:TextBox>
-                        </td>
-                    </tr>
-                    <tr class="AlternatingRow">
-                        <td class="FieldHeader">长度:
-                        </td>
-                        <td style="text-align: left;" colspan="3">
-                            <asp:TextBox ID="tbVideoLength" runat="server" CssClass="TextBox" Text="60" Width="30px"></asp:TextBox>
-                            <asp:RequiredFieldValidator runat="server" ID="rfvVideoLength" ControlToValidate="tbVideoLength"
-                                ErrorMessage="*" CssClass="ValiSpan" Display="Dynamic" />
+                            <asp:TextBox ID="tbVideoHeight" runat="server" CssClass="TextBox" Text="360" Width="30px"></asp:TextBox>
                         </td>
                     </tr>
                 </tbody>

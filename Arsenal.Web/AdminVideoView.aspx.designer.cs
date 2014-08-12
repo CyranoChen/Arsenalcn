@@ -130,22 +130,22 @@ namespace Arsenal.Web {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvTRank;
         
         /// <summary>
-        /// tbVideoWidth control.
+        /// ddlExt control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbVideoWidth;
+        protected global::System.Web.UI.WebControls.DropDownList ddlExt;
         
         /// <summary>
-        /// tbVideoHeight control.
+        /// rfvExt control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbVideoHeight;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvExt;
         
         /// <summary>
         /// tbVideoLength control.
@@ -164,6 +164,24 @@ namespace Arsenal.Web {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvVideoLength;
+        
+        /// <summary>
+        /// tbVideoWidth control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox tbVideoWidth;
+        
+        /// <summary>
+        /// tbVideoHeight control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox tbVideoHeight;
         
         /// <summary>
         /// btnSubmit control.

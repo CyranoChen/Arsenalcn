@@ -161,6 +161,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -238,6 +239,10 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Arsenalcn.Framework.Entity\Arsenalcn.Framework.Entity.csproj">
+      <Project>{825f3510-b9ba-4c0d-90aa-f0dc6649d907}</Project>
+      <Name>Arsenalcn.Framework.Entity</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Arsenalcn.Framework.Service\Arsenalcn.Framework.Service.csproj">
       <Project>{4e564f18-a9d4-4d0e-8517-d81c3ecfceb4}</Project>
       <Name>Arsenalcn.Framework.Service</Name>

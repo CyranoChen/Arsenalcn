@@ -263,7 +263,7 @@ namespace Arsenalcn.ClubSys.DataAccess
             Guid? guid = UserVideo.GetRandomVideo(-1, 4, 5, null);
             if ((guid.HasValue) && (ConfigGlobal.DailyVideoActive == true))
             {
-                if (ConfigGlobal.DailyVideoGuid == guid.Value.ToString())
+                if (ConfigGlobal.DailyVideoGuid.Equals(guid.Value))
                     guid = UserVideo.GetRandomVideo(-1, 4, 5, null);
 
                 return guid;

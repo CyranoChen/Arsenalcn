@@ -267,11 +267,22 @@ namespace Arsenalcn.ClubSys.Entity
             }
         }
 
-        public static string DailyVideoGuid
+        public static Guid DailyVideoGuid
         {
             get
             {
-                return ConfigDictionary["DailyVideoGuid"];
+                try
+                {
+                    string tmpID = ConfigDictionary["DailyVideoGuid"];
+                    if (!string.IsNullOrEmpty(tmpID))
+                        return new Guid(tmpID);
+                    else
+                        throw new Exception();
+                }
+                catch
+                {
+                    return Guid.Empty;
+                }
             }
         }
 

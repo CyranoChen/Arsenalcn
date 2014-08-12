@@ -103,6 +103,19 @@ namespace Arsenal.Entity
             }
         }
 
+        public static string ArsenalVideoUrl
+        {
+            get
+            {
+                string tmpUrl = ConfigDictionary["ArsenalVideoUrl"];
+
+                if (!string.IsNullOrEmpty(tmpUrl))
+                    return tmpUrl;
+                else
+                    return "http://ftp.arsenalcn.com/playervideo/";
+            }
+        }
+
         #endregion
     }
 

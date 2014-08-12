@@ -90,7 +90,7 @@ namespace Arsenalcn.ClubSys.Web.Control
                 lblPlayerVideoPath.Text = string.Format("swf/PlayerVideoActive.swf?XMLURL=ServerXml.aspx%3FUserVideoID={0}", dr["ID"].ToString());
 
                 LinkButton btnSwfView = e.Item.FindControl("btnSwfView") as LinkButton;
-                btnSwfView.OnClientClick = "GenFrame('swf/ShowVideoRoom.swf?XMLURL=ServerXml.aspx%3FUserVideoID=" + dr["ID"].ToString() + "', '480', '300', true); return false";
+                btnSwfView.OnClientClick = "GenFlashFrame('swf/ShowVideoRoom.swf?XMLURL=ServerXml.aspx%3FUserVideoID=" + dr["ID"].ToString() + "', '480', '300', true); return false";
 
                 LinkButton btnSetCurrent = e.Item.FindControl("btnSetCurrent") as LinkButton;
                 Label lblCurrent = e.Item.FindControl("lblSetCurrent") as Label;

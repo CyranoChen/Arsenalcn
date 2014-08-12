@@ -6,12 +6,11 @@
         <a>每日集锦赏析</a>
     </h3>
     <div class="Block ClubSys_CollectionInfo" style="margin: 0px;">
-        <div class="SwfViewBtnLeft" onclick="GenFrame('swf/ShowVideoRoom.swf?XMLURL=ServerXml.aspx%3FVideoGuid=<%=VideoGuid %>', '480', '300', true)">
-        </div>
+        <asp:Literal ID="ltrlViewBtnLeft" runat="server"></asp:Literal>
         <div class="ClubSys_ItemPH" style="float: none; margin: 0px; padding: 0px;">
 
             <script type="text/javascript">
-                GenSwfObject('PlayerVideoActive', 'swf/PlayerVideoActive.swf?XMLURL=ServerXml.aspx%3FVideoGuid=<%=VideoGuid %>&ShowEffect=true', '160', '200');
+                GenSwfObject('PlayerVideoActive', 'swf/PlayerVideoActive.swf?XMLURL=ServerXml.aspx%3FVideoGuid=<%=VideoGuid.ToString() %>&ShowEffect=true', '160', '200');
             </script>
 
         </div>

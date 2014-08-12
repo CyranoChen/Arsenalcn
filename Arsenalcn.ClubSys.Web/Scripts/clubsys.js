@@ -212,7 +212,49 @@ function GenConllectInfoItem(obj) {
     return $dataItem;
 }
 
-function GenFrame(swfSrc, swfWidth, swfHeight, showClose) {
+function GenVideoFrame(videoSrc, videoWidth, videoHeight, showClose) {
+    //alert(videoSrc);
+    if (document.getElementById("PageCoverLayout") == null) {
+        divMask = document.createElement("div");
+        divMask.setAttribute("id", "PageCoverLayout");
+        divMask.style.height = document.documentElement.scrollHeight + "px";
+
+        document.body.appendChild(divMask);
+    }
+
+    var divVideo = document.getElementById("PageCoverLayoutAjax");
+
+    if (divVideo == null) {
+        divVideo = document.createElement("div");
+        divVideo.setAttribute("id", "PageCoverLayoutAjax");
+
+        document.body.appendChild(divVideo);
+    }
+
+    var video = '<video width="' + videoWidth + '" height="' + videoHeight + '" controls="controls" style="background: #000" preload="auto">';
+    video = video + '<source src="' + videoSrc + '" type="video/mp4">';
+    video = video + 'Your browser does not support the video tag.';
+    video = video + '</video>';
+
+    divVideo.innerHTML = video;
+
+    if (showClose != null && showClose == true) {
+        btnClose = document.createElement("a");
+        btnClose.setAttribute("id", "btnClose");
+        btnClose.innerHTML = "关闭";
+        btnClose.href = "javascript:HideFrame();";
+
+        divBtn = document.createElement("div");
+        divBtn.setAttribute("style", "text-align:center;margin-top:10px;");
+
+        divBtn.appendChild(btnClose);
+        divVideo.appendChild(divBtn);
+    }
+
+    ShowFrame();
+}
+
+function GenFlashFrame(swfSrc, swfWidth, swfHeight, showClose) {
     //alert(swfSrc);
     if (document.getElementById("PageCoverLayout") == null) {
         divMask = document.createElement("div");
@@ -259,26 +301,26 @@ function GenFrame(swfSrc, swfWidth, swfHeight, showClose) {
 
 function HideFrame() {
     divMask = document.getElementById("PageCoverLayout");
-    divSwf = document.getElementById("PageCoverLayoutAjax");
+    divFrame = document.getElementById("PageCoverLayoutAjax");
 
     if (divMask != null)
         divMask.style.display = "none";
 
-    if (divSwf != null)
-        document.body.removeChild(divSwf);
+    if (divFrame != null)
+        document.body.removeChild(divFrame);
     //divSwf.style.display = "none";
 }
 
 function ShowFrame() {
     divMask = document.getElementById("PageCoverLayout");
-    divSwf = document.getElementById("PageCoverLayoutAjax");
-    divSwf.style.top = document.documentElement.scrollTop + "px";
+    divFrame = document.getElementById("PageCoverLayoutAjax");
+    divFrame.style.top = document.documentElement.scrollTop + "px";
 
     if (divMask != null)
         divMask.style.display = "";
 
-    if (divSwf != null)
-        divSwf.style.display = "";
+    if (divFrame != null)
+        divFrame.style.display = "";
 }
 
 // Rank Panel Switch 

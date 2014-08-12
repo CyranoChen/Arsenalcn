@@ -100,7 +100,7 @@ namespace Arsenalcn.ClubSys.Web
                 StrSwfContent += "</div>";
                 ltrlVideo.Text = StrSwfContent;
 
-                btnSwfView.OnClientClick = "GenFrame('swf/ShowVideoRoom.swf?XMLURL=ServerXml.aspx%3FUserVideoID=" + drv["ID"].ToString() + "', '480', '300', true); return false";
+                btnSwfView.OnClientClick = "GenFlashFrame('swf/ShowVideoRoom.swf?XMLURL=ServerXml.aspx%3FUserVideoID=" + drv["ID"].ToString() + "', '480', '300', true); return false";
             }
         }
 

@@ -72,6 +72,7 @@
     <Content Include="MyAdvertisementContainer.aspx" />
     <Content Include="Scripts\jquery-1.7.1.min.js" />
     <Content Include="Scripts\jquery.pagination.js" />
+    <Content Include="TestShowVideo.html" />
     <Content Include="UploadFiles\ClubLogo.gif" />
     <Content Include="UploadFiles\PlayerLogo.gif" />
     <Content Include="UploadFiles\StripFace\%2420.jpg" />

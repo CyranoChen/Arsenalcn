@@ -5,10 +5,10 @@ using System.Data.SqlClient;
 using System.Text;
 
 using Arsenalcn.ClubSys.Entity;
+using Arsenalcn.Common;
 
 using Discuz.Entity;
 using Discuz.Forum;
-using Arsenalcn.Common;
 
 namespace Arsenalcn.ClubSys.DataAccess
 {

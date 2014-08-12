@@ -624,7 +624,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Arsenalcn.CasinoSys.Entity\Arsenalcn.CasinoSys.Entity.csproj">
-      <Project>{CD9A6BD8-88B6-45F4-B41D-7DC11E173B78}</Project>
+      <Project>{cd9a6bd8-88b6-45f4-b41d-7dc11e173b78}</Project>
       <Name>Arsenalcn.CasinoSys.Entity</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arsenalcn.Common\Arsenalcn.Common.csproj">

@@ -992,7 +992,7 @@
       <Name>Arsenalcn.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\iArsenal.Entity\iArsenal.Entity.csproj">
-      <Project>{BAB0E195-5717-4CC8-B599-B265708D353A}</Project>
+      <Project>{bab0e195-5717-4cc8-b599-b265708d353a}</Project>
       <Name>iArsenal.Entity</Name>
     </ProjectReference>
   </ItemGroup>

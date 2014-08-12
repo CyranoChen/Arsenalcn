@@ -82,16 +82,6 @@
     <Compile Include="Team.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Arsenalcn.CasinoSys.DataAccess\Arsenalcn.CasinoSys.DataAccess.csproj">
-      <Project>{F7122A3E-CCFB-496D-89D1-09D54AF11135}</Project>
-      <Name>Arsenalcn.CasinoSys.DataAccess</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Arsenalcn.Common\Arsenalcn.Common.csproj">
-      <Project>{8258A2E1-6821-4BAE-9111-3FBB65703FE0}</Project>
-      <Name>Arsenalcn.Common</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
       <Visible>False</Visible>
       <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
@@ -108,7 +98,16 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Arsenalcn.CasinoSys.DataAccess\Arsenalcn.CasinoSys.DataAccess.csproj">
+      <Project>{f7122a3e-ccfb-496d-89d1-09d54af11135}</Project>
+      <Name>Arsenalcn.CasinoSys.DataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Arsenalcn.Common\Arsenalcn.Common.csproj">
+      <Project>{8258a2e1-6821-4bae-9111-3fbb65703fe0}</Project>
+      <Name>Arsenalcn.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

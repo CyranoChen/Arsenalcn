@@ -75,7 +75,6 @@
     <Content Include="TestShowVideo.html" />
     <Content Include="UploadFiles\ClubLogo.gif" />
     <Content Include="UploadFiles\PlayerLogo.gif" />
-    <Content Include="UploadFiles\StripFace\%2420.jpg" />
     <Content Include="UploadFiles\StripFace\%2425.jpg" />
     <Content Include="UploadFiles\StripFace\%2454.jpg" />
     <Content Include="UploadFiles\StripFace\00.jpg" />
@@ -83,7 +82,6 @@
     <Content Include="UploadFiles\StripFace\02.jpg" />
     <Content Include="UploadFiles\StripFace\03.jpg" />
     <Content Include="UploadFiles\StripFace\04.jpg" />
-    <Content Include="UploadFiles\StripFace\05.jpg" />
     <Content Include="UploadFiles\StripFace\06.jpg" />
     <Content Include="UploadFiles\StripFace\07.jpg" />
     <Content Include="UploadFiles\StripFace\08.jpg" />
@@ -127,9 +125,11 @@
     <Content Include="UploadFiles\StripLegend\DaSilva.jpg" />
     <Content Include="UploadFiles\StripLegend\Denilson.jpg" />
     <Content Include="UploadFiles\StripLegend\Dixon.jpg" />
+    <Content Include="UploadFiles\StripLegend\Djourou.jpg" />
     <Content Include="UploadFiles\StripLegend\Eastmond.jpg" />
     <Content Include="UploadFiles\StripLegend\Eboue.jpg" />
     <Content Include="UploadFiles\StripLegend\Edu.jpg" />
+    <Content Include="UploadFiles\StripLegend\Eisfeld.jpg" />
     <Content Include="UploadFiles\StripLegend\Fabiański.jpg" />
     <Content Include="UploadFiles\StripLegend\Fabregas.jpg" />
     <Content Include="UploadFiles\StripLegend\Flamini.jpg" />
@@ -168,6 +168,7 @@
     <Content Include="UploadFiles\StripLegend\VanBronckhorst.jpg" />
     <Content Include="UploadFiles\StripLegend\VanPersie.jpg" />
     <Content Include="UploadFiles\StripLegend\Vela.jpg" />
+    <Content Include="UploadFiles\StripLegend\Vermaelen.jpg" />
     <Content Include="UploadFiles\StripLegend\Vieira.jpg" />
     <Content Include="UploadFiles\StripLegend\Viviano.jpg" />
     <Content Include="UploadFiles\StripLegend\Wiltord.jpg" />
@@ -192,7 +193,6 @@
     <Content Include="UploadFiles\StripLV\sock3.gif" />
     <Content Include="UploadFiles\StripLV\sock4.gif" />
     <Content Include="UploadFiles\StripLV\sock5.gif" />
-    <Content Include="UploadFiles\StripPhoto\%2420.jpg" />
     <Content Include="UploadFiles\StripPhoto\%2425.jpg" />
     <Content Include="UploadFiles\StripPhoto\%2454.jpg" />
     <Content Include="UploadFiles\StripPhoto\00.jpg" />
@@ -200,7 +200,6 @@
     <Content Include="UploadFiles\StripPhoto\02.jpg" />
     <Content Include="UploadFiles\StripPhoto\03.jpg" />
     <Content Include="UploadFiles\StripPhoto\04.jpg" />
-    <Content Include="UploadFiles\StripPhoto\05.jpg" />
     <Content Include="UploadFiles\StripPhoto\06.jpg" />
     <Content Include="UploadFiles\StripPhoto\07.jpg" />
     <Content Include="UploadFiles\StripPhoto\08.jpg" />
@@ -787,7 +786,7 @@
       <Name>Arsenal.Entity</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arsenalcn.ClubSys.DataAccess\Arsenalcn.ClubSys.DataAccess.csproj">
-      <Project>{75829613-19BE-4D73-967E-19D3B5F7CB84}</Project>
+      <Project>{75829613-19be-4d73-967e-19d3b5f7cb84}</Project>
       <Name>Arsenalcn.ClubSys.DataAccess</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arsenalcn.ClubSys.Entity\Arsenalcn.ClubSys.Entity.csproj">

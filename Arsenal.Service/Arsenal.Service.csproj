@@ -61,13 +61,13 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Properties\PublishProfiles\Arsenal.Service.pubxml" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Arsenal.Entity\Arsenal.Entity.csproj">
       <Project>{18f784e1-6ac9-488c-9f00-b1cf2d5a8893}</Project>
       <Name>Arsenal.Entity</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\PublishProfiles\Arsenal.Service.pubxml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

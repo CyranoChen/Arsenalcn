@@ -75,11 +75,11 @@
       <Name>Arsenalcn.CasinoSys.Entity</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arsenalcn.ClubSys.DataAccess\Arsenalcn.ClubSys.DataAccess.csproj">
-      <Project>{75829613-19BE-4D73-967E-19D3B5F7CB84}</Project>
+      <Project>{75829613-19be-4d73-967e-19d3b5f7cb84}</Project>
       <Name>Arsenalcn.ClubSys.DataAccess</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arsenalcn.Common\Arsenalcn.Common.csproj">
-      <Project>{8258A2E1-6821-4BAE-9111-3FBB65703FE0}</Project>
+      <Project>{8258a2e1-6821-4bae-9111-3fbb65703fe0}</Project>
       <Name>Arsenalcn.Common</Name>
     </ProjectReference>
   </ItemGroup>

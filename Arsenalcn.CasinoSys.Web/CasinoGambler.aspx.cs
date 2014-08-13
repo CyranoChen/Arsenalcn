@@ -86,9 +86,12 @@ namespace Arsenalcn.CasinoSys.Web
         {
             League l = new League(ContestLeague);
 
-            hlGamblerLeagueView.Text = string.Format("{0}{1}排行榜", l.LeagueName.ToString(), l.LeagueSeason.ToString());
-            hlGamblerLeagueView.NavigateUrl = string.Format("CasinoGambler.aspx?League={0}", ContestLeague.ToString());
-            hlGamblerLeagueView.Target = "_self";
+            if (l != null)
+            {
+                hlGamblerLeagueView.Text = string.Format("{0}{1}排行榜", l.LeagueName.ToString(), l.LeagueSeason.ToString());
+                hlGamblerLeagueView.NavigateUrl = string.Format("CasinoGambler.aspx?League={0}", ContestLeague.ToString());
+                hlGamblerLeagueView.Target = "_self";
+            }
 
             List<Entity.CasinoGambler> list = null;
 

@@ -64,7 +64,7 @@
       <Name>Arsenal.Entity</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arsenalcn.ClubSys.Entity\Arsenalcn.ClubSys.Entity.csproj">
-      <Project>{C84E7700-0E7C-4C98-AE70-70EFB99B8D8E}</Project>
+      <Project>{c84e7700-0e7c-4c98-ae70-70efb99b8d8e}</Project>
       <Name>Arsenalcn.ClubSys.Entity</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arsenalcn.Common\Arsenalcn.Common.csproj">

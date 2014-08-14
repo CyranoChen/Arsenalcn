@@ -21,6 +21,9 @@ namespace Arsenalcn.ClubSys.DataAccess
             if (un == null)
                 return false;
 
+            if (un.IsActive)
+                return false;
+
             if (un.UserID != userid)
                 return false;
 
@@ -1230,7 +1233,8 @@ namespace Arsenalcn.ClubSys.DataAccess
                     }
                     else
                     {
-                        bonusCash += Convert.ToSingle(result) * bonusRate / 10;
+                        // Player Cash Bonus
+                        bonusCash += Convert.ToSingle(ConfigGlobal.BingoGetCost) * bonusRate;
                         bonusCash += Convert.ToSingle(ConfigGlobal.BingoGetCost) + Convert.ToSingle(ConfigGlobal.BingoCost);
                     }
 

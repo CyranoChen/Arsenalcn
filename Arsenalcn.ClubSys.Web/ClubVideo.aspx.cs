@@ -100,9 +100,23 @@ namespace Arsenalcn.ClubSys.Web
                 StrSwfContent += "</div>";
                 ltrlVideo.Text = StrSwfContent;
 
-                btnSwfView.OnClientClick = "GenFlashFrame('swf/ShowVideoRoom.swf?XMLURL=ServerXml.aspx%3FUserVideoID=" + drv["ID"].ToString() + "', '480', '300', true); return false";
+                ArsenalVideo v = new ArsenalVideo();
+                v.VideoGuid = new Guid(drv["VideoGuid"].ToString());
+                v.Select();
+
+                //btnSwfView.OnClientClick = "GenFlashFrame('swf/ShowVideoRoom.swf?XMLURL=ServerXml.aspx%3FUserVideoID=" + drv["ID"].ToString() + "', '480', '300', true); return false";
+
+                if (v.FileName.ToUpper().Contains(".mp4".ToUpper()))
+                {
+                    btnSwfView.OnClientClick = string.Format("GenVideoFrame('{0}', '{1}', '{2}', true); return false", Arsenal.Entity.ConfigGlobal.ArsenalVideoUrl + v.FileName, v.VideoWidth.ToString(), v.VideoHeight.ToString());
+                }
+                else if (v.FileName.ToUpper().Contains(".flv".ToUpper()))
+                {
+                    string _swfUrl = string.Format("swf/ShowVideoRoom.swf?XMLURL=ServerXml.aspx%3FUserVideoID={0}", drv["ID"].ToString());
+
+                    btnSwfView.OnClientClick = string.Format("GenFlashFrame('{0}', '{1}', '{2}', true); return false", _swfUrl, v.VideoWidth.ToString(), v.VideoHeight.ToString());
+                }
             }
         }
-
     }
 }

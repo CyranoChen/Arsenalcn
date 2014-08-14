@@ -86,11 +86,26 @@ namespace Arsenalcn.ClubSys.Web.Control
                 Label lblPlayerVideoID = e.Item.FindControl("lblPlayerVideoID") as Label;
                 Label lblPlayerVideoPath = e.Item.FindControl("lblPlayerVideoPath") as Label;
 
+                ArsenalVideo v = new ArsenalVideo();
+                v.VideoGuid = new Guid(dr["VideoGuid"].ToString());
+                v.Select();
+
                 lblPlayerVideoID.Text = dr["ID"].ToString();
                 lblPlayerVideoPath.Text = string.Format("swf/PlayerVideoActive.swf?XMLURL=ServerXml.aspx%3FUserVideoID={0}", dr["ID"].ToString());
 
                 LinkButton btnSwfView = e.Item.FindControl("btnSwfView") as LinkButton;
-                btnSwfView.OnClientClick = "GenFlashFrame('swf/ShowVideoRoom.swf?XMLURL=ServerXml.aspx%3FUserVideoID=" + dr["ID"].ToString() + "', '480', '300', true); return false";
+                //btnSwfView.OnClientClick = "GenFlashFrame('swf/ShowVideoRoom.swf?XMLURL=ServerXml.aspx%3FUserVideoID=" + dr["ID"].ToString() + "', '480', '300', true); return false";
+
+                if (v.FileName.ToUpper().Contains(".mp4".ToUpper()))
+                {
+                    btnSwfView.OnClientClick = string.Format("GenVideoFrame('{0}', '{1}', '{2}', true); return false", Arsenal.Entity.ConfigGlobal.ArsenalVideoUrl + v.FileName, v.VideoWidth.ToString(), v.VideoHeight.ToString());
+                }
+                else if (v.FileName.ToUpper().Contains(".flv".ToUpper()))
+                {
+                    string _swfUrl = string.Format("swf/ShowVideoRoom.swf?XMLURL=ServerXml.aspx%3FUserVideoID={0}", dr["ID"].ToString());
+
+                    btnSwfView.OnClientClick = string.Format("GenFlashFrame('{0}', '{1}', '{2}', true); return false", _swfUrl, v.VideoWidth.ToString(), v.VideoHeight.ToString());
+                }
 
                 LinkButton btnSetCurrent = e.Item.FindControl("btnSetCurrent") as LinkButton;
                 Label lblCurrent = e.Item.FindControl("lblSetCurrent") as Label;

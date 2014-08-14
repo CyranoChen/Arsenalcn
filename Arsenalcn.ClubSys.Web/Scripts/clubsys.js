@@ -1,5 +1,5 @@
 ﻿/* Javascript Version ClubSys */
-/* Version: 1.6.3 || Date: 2014-01-19 || Author:cao262,Cyrano */
+/* Version: 1.6.4 || Date: 2014-08-13 || Author:cao262,Cyrano */
 /* type="text/javascript" */
 
 $(function () {

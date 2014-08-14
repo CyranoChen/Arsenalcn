@@ -19,7 +19,7 @@ namespace Arsenalcn.ClubSys.Web.Control
                 List<UserNumber> items = PlayerStrip.GetMyNumbers(ProfileUserID);
 
                 items.RemoveAll(delegate(UserNumber un) { return un.ArsenalPlayerGuid.HasValue; });
-                
+
                 rptVideo.DataSource = items;
                 rptVideo.DataBind();
             }
@@ -53,7 +53,7 @@ namespace Arsenalcn.ClubSys.Web.Control
 
                             //postback to another url
                             //btnActive.PostBackUrl = "MyPlayerCardActive.aspx?unID=" + un.ID.ToString();
-                            btnActive.OnClientClick = "GenFlashFrame('swf/ShowCardActive.swf?XMLURL=ServerXml.aspx%3FCardID=" + un.ID.ToString() + "', '160', '200'); return false";
+                            btnActive.OnClientClick = "GenFlashFrame('swf/ShowCardActive.swf?XMLURL=ServerXml.aspx%3FCardID=" + un.ID.ToString() + "', '160', '200', true); return false";
                         }
                         else
                         {

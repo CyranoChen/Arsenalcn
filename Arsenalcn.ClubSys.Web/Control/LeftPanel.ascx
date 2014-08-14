@@ -40,7 +40,7 @@
     </asp:Panel>
     <uc3:DailyVideoExhibit ID="ctrlDailyVideoExhibit" runat="server" />
     <uc2:TopPlayerList ID="ctrlTopPlayerList" runat="server" />
-    <asp:Panel ID="pnlDev" runat="server" CssClass="InfoPanel">
+    <asp:Panel ID="pnlDev" runat="server" CssClass="InfoPanel" Visible="false">
         <h3 class="Col" onclick="$(this).toggleClass('Col'); $(this).toggleClass('Exp'); $(this).next('div').toggle('normal');">
             <a>程序开发与支持</a>
         </h3>

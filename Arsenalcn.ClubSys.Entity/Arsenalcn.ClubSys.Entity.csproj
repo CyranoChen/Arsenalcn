@@ -53,7 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Arsenalcn.Common\Arsenalcn.Common.csproj">
-      <Project>{8258A2E1-6821-4BAE-9111-3FBB65703FE0}</Project>
+      <Project>{8258a2e1-6821-4bae-9111-3fbb65703fe0}</Project>
       <Name>Arsenalcn.Common</Name>
     </ProjectReference>
   </ItemGroup>

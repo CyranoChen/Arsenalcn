@@ -938,6 +938,7 @@
     <Content Include="UploadFiles\Product\AFC-Band.jpg" />
     <Content Include="UploadFiles\Product\B47706R.jpg" />
     <Content Include="UploadFiles\Product\B47707Y.jpg" />
+    <Content Include="UploadFiles\Product\B47708N.jpg" />
     <Content Include="UploadFiles\Product\BA3294W.jpg" />
     <Content Include="UploadFiles\Product\BA3295R.jpg" />
     <Content Include="UploadFiles\Product\BA3295R3.jpg" />
@@ -958,6 +959,8 @@
     <Content Include="UploadFiles\Product\J46462R.jpg" />
     <Content Include="UploadFiles\Product\J46464Y.jpg" />
     <Content Include="UploadFiles\Product\J46465Y.jpg" />
+    <Content Include="UploadFiles\Product\J46466N.jpg" />
+    <Content Include="UploadFiles\Product\J46467N.jpg" />
     <Content Include="UploadFiles\Product\J46472B.jpg" />
     <Content Include="UploadFiles\Product\J46472W.jpg" />
     <Content Include="UploadFiles\Product\M46375B.jpg" />
@@ -968,6 +971,8 @@
     <Content Include="UploadFiles\Product\M46448R.jpg" />
     <Content Include="UploadFiles\Product\M46449Y.jpg" />
     <Content Include="UploadFiles\Product\M46451Y.jpg" />
+    <Content Include="UploadFiles\Product\M46452N.jpg" />
+    <Content Include="UploadFiles\Product\M46454N.jpg" />
     <Content Include="UploadFiles\Product\M46461B.jpg" />
     <Content Include="UploadFiles\Product\M46461W.jpg" />
     <Content Include="UploadFiles\Product\n98navy.jpg" />
@@ -978,6 +983,8 @@
     <Content Include="UploadFiles\Product\SC2314W.jpg" />
     <Content Include="UploadFiles\Product\T47703R.jpg" />
     <Content Include="UploadFiles\Product\T47704Y.jpg" />
+    <Content Include="UploadFiles\Product\T47705N.jpg" />
+    <Content Include="UploadFiles\Product\W46470N.jpg" />
     <Content Include="UploadFiles\Product\W46473R.jpg" />
     <Content Include="UploadFiles\Product\W46475Y.jpg" />
     <Content Include="UploadFiles\Product\Walcott.jpg" />

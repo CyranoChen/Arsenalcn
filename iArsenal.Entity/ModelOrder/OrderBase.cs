@@ -264,7 +264,8 @@ namespace iArsenal.Entity
             if (oiList != null && oiList.Count > 0)
             {
                 if (oiList.Exists(oi => Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.ReplicaKitHome)
-                    || Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.ReplicaKitAway)))
+                    || Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.ReplicaKitAway)
+                    || Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.ReplicaKitCup)))
                 {
                     OrderType = OrderBaseType.ReplicaKit;
                 }

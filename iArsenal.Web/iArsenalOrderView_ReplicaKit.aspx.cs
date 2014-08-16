@@ -47,6 +47,10 @@ namespace iArsenal.Web
                     {
                         oiReplicaKit = (OrderItem_ReplicaKitHome)o.OIReplicaKitHome;
                     }
+                    else if (o.OIReplicaKitCup != null && o.OIReplicaKitCup.IsActive)
+                    {
+                        oiReplicaKit = (OrderItem_ReplicaKitCup)o.OIReplicaKitCup;
+                    }
                     else if (o.OIReplicaKitAway != null && o.OIReplicaKitAway.IsActive)
                     {
                         oiReplicaKit = (OrderItem_ReplicaKitAway)o.OIReplicaKitAway;

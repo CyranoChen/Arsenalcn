@@ -36,6 +36,23 @@ namespace iArsenal.Entity
         }
     }
 
+    public class OrderItem_ReplicaKitCup : OrderItemBase
+    {
+        public OrderItem_ReplicaKitCup() { }
+
+        public OrderItem_ReplicaKitCup(int id)
+            : base(id)
+        {
+            if (ProductGuid == null)
+                throw new Exception("Loading OrderItem failed.");
+
+            Product p = Product.Cache.Load(ProductGuid);
+
+            if (!p.ProductType.Equals(ProductType.ReplicaKitCup))
+                throw new Exception("The OrderItem is not the type of ReplicaKitCup.");
+        }
+    }
+
     public class OrderItem_PlayerNumber : OrderItemBase
     {
         public OrderItem_PlayerNumber() { }

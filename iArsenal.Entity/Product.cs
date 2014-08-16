@@ -55,6 +55,9 @@ namespace iArsenal.Entity
                     case ProductType.ReplicaKitAway:
                         ProductTypeInfo = "客场球衣";
                         break;
+                    case ProductType.ReplicaKitCup:
+                        ProductTypeInfo = "杯赛球衣";
+                        break;
                     case ProductType.PlayerName:
                         ProductTypeInfo = "印名字";
                         break;
@@ -333,6 +336,7 @@ namespace iArsenal.Entity
         ArsenalFont = 5,
         PremiershipPatch = 6,
         ChampionshipPatch = 7,
+        ReplicaKitCup = 8,
         TravelPlan = 10,
         TravelPartner = 11,
         MatchTicket = 20,

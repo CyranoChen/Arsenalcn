@@ -790,11 +790,11 @@
       <Name>Arsenalcn.ClubSys.DataAccess</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arsenalcn.ClubSys.Entity\Arsenalcn.ClubSys.Entity.csproj">
-      <Project>{C84E7700-0E7C-4C98-AE70-70EFB99B8D8E}</Project>
+      <Project>{c84e7700-0e7c-4c98-ae70-70efb99b8d8e}</Project>
       <Name>Arsenalcn.ClubSys.Entity</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arsenalcn.Common\Arsenalcn.Common.csproj">
-      <Project>{8258A2E1-6821-4BAE-9111-3FBB65703FE0}</Project>
+      <Project>{8258a2e1-6821-4bae-9111-3fbb65703fe0}</Project>
       <Name>Arsenalcn.Common</Name>
     </ProjectReference>
   </ItemGroup>

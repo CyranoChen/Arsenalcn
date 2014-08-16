@@ -53,6 +53,7 @@
                                 <asp:ListItem Value="" Text="--类型--" Selected="True"></asp:ListItem>
                                 <asp:ListItem Value="1" Text="主场球衣"></asp:ListItem>
                                 <asp:ListItem Value="2" Text="客场球衣"></asp:ListItem>
+                                <asp:ListItem Value="8" Text="杯赛球衣"></asp:ListItem>
                                 <asp:ListItem Value="3" Text="印名字"></asp:ListItem>
                                 <asp:ListItem Value="4" Text="印号码"></asp:ListItem>
                                 <asp:ListItem Value="5" Text="特殊字体"></asp:ListItem>

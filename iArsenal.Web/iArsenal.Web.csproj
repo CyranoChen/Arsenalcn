@@ -169,6 +169,8 @@
     <Content Include="UploadFiles\Banner\banner20140710.png" />
     <Content Include="UploadFiles\Banner\banner20140711.png" />
     <Content Include="UploadFiles\Banner\banner20140712.png" />
+    <Content Include="UploadFiles\Banner\banner20140815.png" />
+    <Content Include="UploadFiles\Banner\banner20140816.png" />
     <Content Include="UploadFiles\logo_ArsenalChina.png" />
     <Content Include="App_Themes\iArsenal\images\menu_ahover.gif" />
     <Content Include="App_Themes\iArsenal\portal.css" />

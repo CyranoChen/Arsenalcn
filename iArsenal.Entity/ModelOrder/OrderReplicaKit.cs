@@ -22,7 +22,10 @@ namespace iArsenal.Entity
                 oiBase = oiList.Find(oi => Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.ReplicaKitAway));
                 if (oiBase != null) { OIReplicaKitAway = new OrderItem_ReplicaKitAway(oiBase.OrderItemID); }
 
-                if (OIReplicaKitHome != null || OIReplicaKitAway != null)
+                oiBase = oiList.Find(oi => Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.ReplicaKitCup));
+                if (oiBase != null) { OIReplicaKitCup = new OrderItem_ReplicaKitCup(oiBase.OrderItemID); }
+
+                if (OIReplicaKitHome != null || OIReplicaKitAway != null || OIReplicaKitCup != null)
                 {
                     base.URLOrderView = "iArsenalOrderView_ReplicaKit.aspx";
 
@@ -70,6 +73,8 @@ namespace iArsenal.Entity
         public OrderItem_ReplicaKitHome OIReplicaKitHome { get; set; }
 
         public OrderItem_ReplicaKitAway OIReplicaKitAway { get; set; }
+
+        public OrderItem_ReplicaKitCup OIReplicaKitCup { get; set; }
 
         public OrderItem_PlayerNumber OIPlayerNumber { get; set; }
 

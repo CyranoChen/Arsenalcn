@@ -53,7 +53,8 @@
                         <asp:Literal ID="ltrlMatchOpponentInfo" runat="server"></asp:Literal>
                     </ItemTemplate>
                 </asp:TemplateField>
-                <asp:HyperLinkField DataTextField="点击浏览视频" HeaderText="文件路径" DataNavigateUrlFields="VideoFilePath" Target="_blank" />
+                <asp:HyperLinkField DataTextField="VideoType" HeaderText="文件路径" DataTextFormatString="点击浏览视频"
+                    DataNavigateUrlFields="VideoFilePath" Target="_blank" />
                 <asp:BoundField DataField="GoalRank" DataFormatString="<em>{0}</em>" HtmlEncodeFormatString="false"
                     HeaderText="G" ControlStyle-CssClass="TextBox" ControlStyle-Width="10px" />
                 <asp:BoundField DataField="TeamworkRank" DataFormatString="<em>{0}</em>" HtmlEncodeFormatString="false"

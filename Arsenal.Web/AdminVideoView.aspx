@@ -98,7 +98,7 @@
                                 <asp:ListItem Value="mp4" Text="video/mp4" Selected="True"></asp:ListItem>
                                 <asp:ListItem Value="flv" Text="video/flv"></asp:ListItem>
                             </asp:DropDownList>
-                            <asp:RequiredFieldValidator runat="server" ID="rfvExt" ControlToValidate="ddlExt"
+                            <asp:RequiredFieldValidator runat="server" ID="rfvVideoType" ControlToValidate="ddlVideoType"
                                 ErrorMessage="*" CssClass="ValiSpan" Display="Dynamic" />
                         </td>
                         <td class="FieldHeader">长度:

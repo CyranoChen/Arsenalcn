@@ -54,9 +54,7 @@ namespace Arsenal.Entity
                 GoalYear = dr["GoalYear"].ToString();
                 Opponent = dr["Opponent"].ToString();
 
-                // Fix the video width & height equal 0
-                VideoWidth = VideoWidth > 0 ? VideoWidth : 480;
-                VideoHeight = VideoHeight > 0 ? VideoHeight : 270;
+
 
                 // Generate Video File Path
                 if (!string.IsNullOrEmpty(FileName))
@@ -67,6 +65,10 @@ namespace Arsenal.Entity
                 {
                     VideoFilePath = string.Format("{0}{1}.{2}", ConfigGlobal.ArsenalVideoUrl, VideoGuid.ToString(), VideoType.ToString()).ToLower();
                 }
+
+                // TEMP: Fix the video width & height equal 0
+                VideoWidth = VideoWidth > 0 ? VideoWidth : 480;
+                VideoHeight = VideoHeight > 0 ? VideoHeight : 270;
             }
             else
                 throw new Exception("Unable to init Video.");

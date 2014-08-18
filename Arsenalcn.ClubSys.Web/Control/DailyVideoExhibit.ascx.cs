@@ -15,17 +15,15 @@ namespace Arsenalcn.ClubSys.Web.Control
                 {
                     if (VideoGuid != null && !VideoGuid.Equals(Guid.Empty))
                     {
-                        Video v = new Video();
-                        v.VideoGuid = VideoGuid;
-                        v.Select();
+                        Video v = Video.Cache.Load(VideoGuid);
 
-                        if (v.FileName.ToUpper().Contains(".mp4".ToUpper()))
+                        if (v.VideoType.Equals(VideoFileType.mp4))
                         {
                             string _strHtml = "<div class=\"SwfViewBtnLeft\" onclick=\"GenVideoFrame('{0}', '{1}', '{2}', true)\"></div>";
 
                             ltrlViewBtnLeft.Text = string.Format(_strHtml, v.VideoFilePath, v.VideoWidth.ToString(), v.VideoHeight.ToString());
                         }
-                        else if (v.FileName.ToUpper().Contains(".flv".ToUpper()))
+                        else if (v.VideoType.Equals(VideoFileType.flv))
                         {
                             string _strHtml = "<div class=\"SwfViewBtnLeft\" onclick=\"GenFlashFrame('{0}', '{1}', '{2}', true)\"></div>";
                             string _swfUrl = string.Format("swf/ShowVideoRoom.swf?XMLURL=ServerXml.aspx%3FVideoGuid={0}", VideoGuid.ToString());

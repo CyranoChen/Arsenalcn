@@ -148,13 +148,13 @@ namespace Arsenal.Web {
         protected global::System.Web.UI.WebControls.DropDownList ddlVideoType;
         
         /// <summary>
-        /// rfvExt control.
+        /// rfvVideoType control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvExt;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvVideoType;
         
         /// <summary>
         /// tbVideoLength control.

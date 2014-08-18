@@ -2,6 +2,7 @@
 using System.Data;
 using System.Web.UI.WebControls;
 
+using Arsenal.Entity;
 using Arsenalcn.ClubSys.DataAccess;
 
 using ArsenalVideo = Arsenal.Entity.Video;
@@ -86,9 +87,7 @@ namespace Arsenalcn.ClubSys.Web.Control
                 Label lblPlayerVideoID = e.Item.FindControl("lblPlayerVideoID") as Label;
                 Label lblPlayerVideoPath = e.Item.FindControl("lblPlayerVideoPath") as Label;
 
-                ArsenalVideo v = new ArsenalVideo();
-                v.VideoGuid = new Guid(dr["VideoGuid"].ToString());
-                v.Select();
+                ArsenalVideo v = Video.Cache.Load(new Guid(dr["VideoGuid"].ToString()));
 
                 lblPlayerVideoID.Text = dr["ID"].ToString();
                 lblPlayerVideoPath.Text = string.Format("swf/PlayerVideoActive.swf?XMLURL=ServerXml.aspx%3FUserVideoID={0}", dr["ID"].ToString());
@@ -96,11 +95,11 @@ namespace Arsenalcn.ClubSys.Web.Control
                 LinkButton btnSwfView = e.Item.FindControl("btnSwfView") as LinkButton;
                 //btnSwfView.OnClientClick = "GenFlashFrame('swf/ShowVideoRoom.swf?XMLURL=ServerXml.aspx%3FUserVideoID=" + dr["ID"].ToString() + "', '480', '300', true); return false";
 
-                if (v.FileName.ToUpper().Contains(".mp4".ToUpper()))
+                if (v.VideoType.Equals(VideoFileType.mp4))
                 {
                     btnSwfView.OnClientClick = string.Format("GenVideoFrame('{0}', '{1}', '{2}', true); return false", v.VideoFilePath, v.VideoWidth.ToString(), v.VideoHeight.ToString());
                 }
-                else if (v.FileName.ToUpper().Contains(".flv".ToUpper()))
+                else if (v.VideoType.Equals(VideoFileType.flv))
                 {
                     string _swfUrl = string.Format("swf/ShowVideoRoom.swf?XMLURL=ServerXml.aspx%3FUserVideoID={0}", dr["ID"].ToString());
 
@@ -110,7 +109,7 @@ namespace Arsenalcn.ClubSys.Web.Control
                 LinkButton btnSetCurrent = e.Item.FindControl("btnSetCurrent") as LinkButton;
                 Label lblCurrent = e.Item.FindControl("lblSetCurrent") as Label;
 
-                if (this.ProfileUserID != this.CurrentUserID)
+                if (!this.ProfileUserID.Equals(this.CurrentUserID))
                 {
                     btnSetCurrent.Visible = false;
                 }

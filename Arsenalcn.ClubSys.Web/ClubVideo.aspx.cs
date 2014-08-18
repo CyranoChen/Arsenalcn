@@ -2,6 +2,7 @@
 using System.Data;
 using System.Web.UI.WebControls;
 
+using Arsenal.Entity;
 using Arsenalcn.ClubSys.DataAccess;
 using Arsenalcn.ClubSys.Entity;
 
@@ -100,17 +101,15 @@ namespace Arsenalcn.ClubSys.Web
                 StrSwfContent += "</div>";
                 ltrlVideo.Text = StrSwfContent;
 
-                ArsenalVideo v = new ArsenalVideo();
-                v.VideoGuid = new Guid(drv["VideoGuid"].ToString());
-                v.Select();
+                ArsenalVideo v = Video.Cache.Load(new Guid(drv["VideoGuid"].ToString()));
 
                 //btnSwfView.OnClientClick = "GenFlashFrame('swf/ShowVideoRoom.swf?XMLURL=ServerXml.aspx%3FUserVideoID=" + drv["ID"].ToString() + "', '480', '300', true); return false";
 
-                if (v.FileName.ToUpper().Contains(".mp4".ToUpper()))
+                if (v.VideoType.Equals(VideoFileType.mp4))
                 {
                     btnSwfView.OnClientClick = string.Format("GenVideoFrame('{0}', '{1}', '{2}', true); return false", v.VideoFilePath, v.VideoWidth.ToString(), v.VideoHeight.ToString());
                 }
-                else if (v.FileName.ToUpper().Contains(".flv".ToUpper()))
+                else if (v.VideoType.Equals(VideoFileType.flv))
                 {
                     string _swfUrl = string.Format("swf/ShowVideoRoom.swf?XMLURL=ServerXml.aspx%3FUserVideoID={0}", drv["ID"].ToString());
 

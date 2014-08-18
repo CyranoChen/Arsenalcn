@@ -1,5 +1,5 @@
 ﻿/* Javascript Version ClubSys */
-/* Version: 1.6.4 || Date: 2014-08-13 || Author:cao262,Cyrano */
+/* Version: 1.6.5 || Date: 2014-08-18 || Author:cao262,Cyrano */
 /* type="text/javascript" */
 
 $(function () {
@@ -204,6 +204,7 @@ function GenConllectInfoItem(obj) {
 
     $dataItem.append(obj.find("span.CurrentStrip").clone(true));
     $dataItem.append(obj.find("a.BtnSetCurrent").clone(true));
+    $dataItem.append(obj.find("a.BtnCancelCurrent").clone(true));
 
     // Active Video
 

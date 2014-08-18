@@ -20,52 +20,54 @@ namespace Arsenal.DataAccess
                 return ds.Tables[0].Rows[0];
         }
 
-        public static void UpdateVideo(Guid videoGuid, string fileName, Guid? arsenalMatchGuid, Guid? goalPlayerGuid, string goalPlayerName, Guid? assistPlayerGuid, string assistPlayerName, string goalRank, string teamworkRank, int videoLength, int videoWidth, int videoHeight, string goalYear, string opponent)
+        public static void UpdateVideo(Guid videoGuid, string fileName, Guid? arsenalMatchGuid, Guid? goalPlayerGuid, string goalPlayerName, Guid? assistPlayerGuid, string assistPlayerName, string goalRank, string teamworkRank, string videoType, int videoLength, int videoWidth, int videoHeight, string goalYear, string opponent)
         {
             string sql = @"UPDATE dbo.Arsenal_Video SET FileName = @fileName, ArsenalMatchGuid = @arsenalMatchGuid, GoalPlayerGuid = @goalPlayerGuid, GoalPlayerName = @goalPlayerName, AssistPlayerGuid = @assistPlayerGuid, AssistPlayerName = @assistPlayerName, 
-                               GoalRank = @goalRank, TeamworkRank = @teamworkRank, VideoLength = @videoLength, VideoWidth = @videoWidth, VideoHeight = @videoHeight, GoalYear = @goalYear, Opponent = @opponent WHERE VideoGuid = @videoGuid";
+                               GoalRank = @goalRank, TeamworkRank = @teamworkRank, VideoType = @videoType, VideoLength = @videoLength, VideoWidth = @videoWidth, VideoHeight = @videoHeight, GoalYear = @goalYear, Opponent = @opponent WHERE VideoGuid = @videoGuid";
 
-            SqlParameter[] para = new SqlParameter[14];
-
-            para[0] = new SqlParameter("@videoGuid", videoGuid);
-            para[1] = new SqlParameter("@fileName", fileName);
-            para[2] = new SqlParameter("@arsenalMatchGuid", !arsenalMatchGuid.HasValue ? (object)DBNull.Value : (object)arsenalMatchGuid.Value);
-            para[3] = new SqlParameter("@goalPlayerGuid", !goalPlayerGuid.HasValue ?  (object)DBNull.Value : (object)goalPlayerGuid.Value);
-            para[4] = new SqlParameter("@goalPlayerName", string.IsNullOrEmpty(goalPlayerName) ? (object)DBNull.Value : (object)goalPlayerName);
-            para[5] = new SqlParameter("@assistPlayerGuid", !assistPlayerGuid.HasValue ? (object)DBNull.Value : (object)assistPlayerGuid.Value);
-            para[6] = new SqlParameter("@assistPlayerName", string.IsNullOrEmpty(assistPlayerName) ? (object)DBNull.Value : (object)assistPlayerName);
-            para[7] = new SqlParameter("@goalRank", goalRank);
-            para[8] = new SqlParameter("@teamworkRank", teamworkRank);
-            para[9] = new SqlParameter("@videoLength", videoLength);
-            para[10] = new SqlParameter("@videoWidth", videoWidth);
-            para[11] = new SqlParameter("@videoHeight", videoHeight);
-            para[12] = new SqlParameter("@goalYear", goalYear);
-            para[13] = new SqlParameter("@opponent", opponent);
+            SqlParameter[] para = { 
+                                      new SqlParameter("@videoGuid", videoGuid),
+                                      new SqlParameter("@fileName", fileName),
+                                      new SqlParameter("@arsenalMatchGuid", !arsenalMatchGuid.HasValue ? (object)DBNull.Value : (object)arsenalMatchGuid.Value),
+                                      new SqlParameter("@goalPlayerGuid", !goalPlayerGuid.HasValue ? (object)DBNull.Value : (object)goalPlayerGuid.Value),
+                                      new SqlParameter("@goalPlayerName", string.IsNullOrEmpty(goalPlayerName) ? (object)DBNull.Value : (object)goalPlayerName),
+                                      new SqlParameter("@assistPlayerGuid", !assistPlayerGuid.HasValue ? (object)DBNull.Value : (object)assistPlayerGuid.Value),
+                                      new SqlParameter("@assistPlayerName", string.IsNullOrEmpty(assistPlayerName) ? (object)DBNull.Value : (object)assistPlayerName),
+                                      new SqlParameter("@goalRank", goalRank),
+                                      new SqlParameter("@teamworkRank", teamworkRank),
+                                      new SqlParameter("@videoType", videoType),
+                                      new SqlParameter("@videoLength", videoLength),
+                                      new SqlParameter("@videoWidth", videoWidth),
+                                      new SqlParameter("@videoHeight", videoHeight),
+                                      new SqlParameter("@goalYear", goalYear),
+                                      new SqlParameter("@opponent", opponent)
+                                  };
 
             SqlHelper.ExecuteNonQuery(SQLConn.GetConnection(), CommandType.Text, sql, para);
         }
 
-        public static void InsertVideo(Guid videoGuid, string fileName, Guid? arsenalMatchGuid, Guid? goalPlayerGuid, string goalPlayerName, Guid? assistPlayerGuid, string assistPlayerName, string goalRank, string teamworkRank, int videoLength, int videoWidth, int videoHeight, string goalYear, string opponent)
+        public static void InsertVideo(Guid videoGuid, string fileName, Guid? arsenalMatchGuid, Guid? goalPlayerGuid, string goalPlayerName, Guid? assistPlayerGuid, string assistPlayerName, string goalRank, string teamworkRank, string videoType, int videoLength, int videoWidth, int videoHeight, string goalYear, string opponent)
         {
-            string sql = @"INSERT INTO dbo.Arsenal_Video (VideoGuid, FileName, ArsenalMatchGuid, GoalPlayerGuid, GoalPlayerName, AssistPlayerGuid, AssistPlayerName, GoalRank, TeamworkRank, VideoLength, VideoWidth, VideoHeight, GoalYear, Opponent) 
-                               VALUES (@videoGuid, @fileName, @arsenalMatchGuid, @goalPlayerGuid, @goalPlayerName, @assistPlayerGuid, @assistPlayerName, @goalRank, @teamworkRank, @videoLength, @videoWidth, @videoHeight, @goalYear, @opponent)";
+            string sql = @"INSERT INTO dbo.Arsenal_Video (VideoGuid, FileName, ArsenalMatchGuid, GoalPlayerGuid, GoalPlayerName, AssistPlayerGuid, AssistPlayerName, GoalRank, TeamworkRank, VideoType, VideoLength, VideoWidth, VideoHeight, GoalYear, Opponent) 
+                               VALUES (@videoGuid, @fileName, @arsenalMatchGuid, @goalPlayerGuid, @goalPlayerName, @assistPlayerGuid, @assistPlayerName, @goalRank, @teamworkRank, @videoType, @videoLength, @videoWidth, @videoHeight, @goalYear, @opponent)";
 
-            SqlParameter[] para = new SqlParameter[14];
-
-            para[0] = new SqlParameter("@videoGuid", videoGuid);
-            para[1] = new SqlParameter("@fileName", fileName);
-            para[2] = new SqlParameter("@arsenalMatchGuid", !arsenalMatchGuid.HasValue ? (object)DBNull.Value : (object)arsenalMatchGuid.Value);
-            para[3] = new SqlParameter("@goalPlayerGuid", !goalPlayerGuid.HasValue ? (object)DBNull.Value : (object)goalPlayerGuid.Value);
-            para[4] = new SqlParameter("@goalPlayerName", string.IsNullOrEmpty(goalPlayerName) ? (object)DBNull.Value : (object)goalPlayerName);
-            para[5] = new SqlParameter("@assistPlayerGuid", !assistPlayerGuid.HasValue ? (object)DBNull.Value : (object)assistPlayerGuid.Value);
-            para[6] = new SqlParameter("@assistPlayerName", string.IsNullOrEmpty(assistPlayerName) ? (object)DBNull.Value : (object)assistPlayerName);
-            para[7] = new SqlParameter("@goalRank", goalRank);
-            para[8] = new SqlParameter("@teamworkRank", teamworkRank);
-            para[9] = new SqlParameter("@videoLength", videoLength);
-            para[10] = new SqlParameter("@videoWidth", videoWidth);
-            para[11] = new SqlParameter("@videoHeight", videoHeight);
-            para[12] = new SqlParameter("@goalYear", goalYear);
-            para[13] = new SqlParameter("@opponent", opponent);
+            SqlParameter[] para = { 
+                                      new SqlParameter("@videoGuid", videoGuid),
+                                      new SqlParameter("@fileName", fileName),
+                                      new SqlParameter("@arsenalMatchGuid", !arsenalMatchGuid.HasValue ? (object)DBNull.Value : (object)arsenalMatchGuid.Value),
+                                      new SqlParameter("@goalPlayerGuid", !goalPlayerGuid.HasValue ? (object)DBNull.Value : (object)goalPlayerGuid.Value),
+                                      new SqlParameter("@goalPlayerName", string.IsNullOrEmpty(goalPlayerName) ? (object)DBNull.Value : (object)goalPlayerName),
+                                      new SqlParameter("@assistPlayerGuid", !assistPlayerGuid.HasValue ? (object)DBNull.Value : (object)assistPlayerGuid.Value),
+                                      new SqlParameter("@assistPlayerName", string.IsNullOrEmpty(assistPlayerName) ? (object)DBNull.Value : (object)assistPlayerName),
+                                      new SqlParameter("@goalRank", goalRank),
+                                      new SqlParameter("@teamworkRank", teamworkRank),
+                                      new SqlParameter("@videoType", videoType),
+                                      new SqlParameter("@videoLength", videoLength),
+                                      new SqlParameter("@videoWidth", videoWidth),
+                                      new SqlParameter("@videoHeight", videoHeight),
+                                      new SqlParameter("@goalYear", goalYear),
+                                      new SqlParameter("@opponent", opponent)
+                                  };
 
             SqlHelper.ExecuteNonQuery(SQLConn.GetConnection(), CommandType.Text, sql, para);
         }
@@ -81,7 +83,8 @@ namespace Arsenal.DataAccess
 
         public static DataTable GetVideos()
         {
-            string sql = @"SELECT VideoGuid, FileName, ArsenalMatchGuid, GoalPlayerGuid, GoalPlayerName, AssistPlayerGuid, AssistPlayerName, GoalRank, TeamworkRank, VideoLength, VideoWidth, VideoHeight, GoalYear, Opponent 
+            string sql = @"SELECT VideoGuid, FileName, ArsenalMatchGuid, GoalPlayerGuid, GoalPlayerName, AssistPlayerGuid, AssistPlayerName,
+                                              GoalRank, TeamworkRank, VideoType, VideoLength, VideoWidth, VideoHeight, GoalYear, Opponent 
                                 FROM dbo.Arsenal_Video ORDER BY GoalYear DESC, GoalRank DESC, TeamworkRank DESC";
 
             DataSet ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql);

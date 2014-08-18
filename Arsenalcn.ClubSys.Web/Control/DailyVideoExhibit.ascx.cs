@@ -23,7 +23,7 @@ namespace Arsenalcn.ClubSys.Web.Control
                         {
                             string _strHtml = "<div class=\"SwfViewBtnLeft\" onclick=\"GenVideoFrame('{0}', '{1}', '{2}', true)\"></div>";
 
-                            ltrlViewBtnLeft.Text = string.Format(_strHtml, Arsenal.Entity.ConfigGlobal.ArsenalVideoUrl + v.FileName, v.VideoWidth.ToString(), v.VideoHeight.ToString());
+                            ltrlViewBtnLeft.Text = string.Format(_strHtml, v.VideoFilePath, v.VideoWidth.ToString(), v.VideoHeight.ToString());
                         }
                         else if (v.FileName.ToUpper().Contains(".flv".ToUpper()))
                         {

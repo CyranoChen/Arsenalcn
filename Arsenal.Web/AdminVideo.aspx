@@ -53,8 +53,7 @@
                         <asp:Literal ID="ltrlMatchOpponentInfo" runat="server"></asp:Literal>
                     </ItemTemplate>
                 </asp:TemplateField>
-                <asp:BoundField DataField="FileName" HeaderText="文件路径" ReadOnly="true" HtmlEncodeFormatString="false"
-                    DataFormatString="<a href='http://ftp.arsenalcn.com/playervideo/{0}' target='_blank'>点击浏览视频</a>" />
+                <asp:HyperLinkField DataTextField="点击浏览视频" HeaderText="文件路径" DataNavigateUrlFields="VideoFilePath" Target="_blank" />
                 <asp:BoundField DataField="GoalRank" DataFormatString="<em>{0}</em>" HtmlEncodeFormatString="false"
                     HeaderText="G" ControlStyle-CssClass="TextBox" ControlStyle-Width="10px" />
                 <asp:BoundField DataField="TeamworkRank" DataFormatString="<em>{0}</em>" HtmlEncodeFormatString="false"

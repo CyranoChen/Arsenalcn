@@ -98,7 +98,7 @@ namespace Arsenalcn.ClubSys.Web.Control
 
                 if (v.FileName.ToUpper().Contains(".mp4".ToUpper()))
                 {
-                    btnSwfView.OnClientClick = string.Format("GenVideoFrame('{0}', '{1}', '{2}', true); return false", Arsenal.Entity.ConfigGlobal.ArsenalVideoUrl + v.FileName, v.VideoWidth.ToString(), v.VideoHeight.ToString());
+                    btnSwfView.OnClientClick = string.Format("GenVideoFrame('{0}', '{1}', '{2}', true); return false", v.VideoFilePath, v.VideoWidth.ToString(), v.VideoHeight.ToString());
                 }
                 else if (v.FileName.ToUpper().Contains(".flv".ToUpper()))
                 {

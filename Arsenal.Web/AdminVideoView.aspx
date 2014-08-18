@@ -25,6 +25,13 @@
                             <asp:TextBox ID="tbVideoGuid" runat="server" CssClass="TextBoxRead" Width="300px"></asp:TextBox>
                         </td>
                     </tr>
+                    <tr class="Row">
+                        <td class="FieldHeader">路径(留空为默认):
+                        </td>
+                        <td style="text-align: left;" colspan="3">
+                            <asp:TextBox ID="tbFileName" runat="server" CssClass="TextBox" Width="300px"></asp:TextBox>
+                        </td>
+                    </tr>
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">分类:
                         </td>
@@ -87,9 +94,9 @@
                         <td class="FieldHeader">格式:
                         </td>
                         <td style="text-align: left;">
-                            <asp:DropDownList ID="ddlExt" runat="server">
-                                <asp:ListItem Value=".mp4" Text="video/mp4" Selected="True"></asp:ListItem>
-                                <asp:ListItem Value=".flv" Text="video/flv"></asp:ListItem>
+                            <asp:DropDownList ID="ddlVideoType" runat="server">
+                                <asp:ListItem Value="mp4" Text="video/mp4" Selected="True"></asp:ListItem>
+                                <asp:ListItem Value="flv" Text="video/flv"></asp:ListItem>
                             </asp:DropDownList>
                             <asp:RequiredFieldValidator runat="server" ID="rfvExt" ControlToValidate="ddlExt"
                                 ErrorMessage="*" CssClass="ValiSpan" Display="Dynamic" />

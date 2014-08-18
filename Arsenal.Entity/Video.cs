@@ -47,6 +47,7 @@ namespace Arsenal.Entity
 
                 GoalRank = dr["GoalRank"].ToString();
                 TeamworkRank = dr["TeamworkRank"].ToString();
+                VideoType = (VideoFileType)Enum.Parse(typeof(VideoFileType), dr["VideoType"].ToString());
                 VideoLength = Convert.ToInt16(dr["VideoLength"]);
                 VideoWidth = Convert.ToInt16(dr["VideoWidth"]);
                 VideoHeight = Convert.ToInt16(dr["VideoHeight"]);
@@ -56,6 +57,16 @@ namespace Arsenal.Entity
                 // Fix the video width & height equal 0
                 VideoWidth = VideoWidth > 0 ? VideoWidth : 480;
                 VideoHeight = VideoHeight > 0 ? VideoHeight : 270;
+
+                // Generate Video File Path
+                if (!string.IsNullOrEmpty(FileName))
+                {
+                    VideoFilePath = FileName.ToLower();
+                }
+                else
+                {
+                    VideoFilePath = string.Format("{0}{1}.{2}", ConfigGlobal.ArsenalVideoUrl, VideoGuid.ToString(), VideoType.ToString()).ToLower();
+                }
             }
             else
                 throw new Exception("Unable to init Video.");
@@ -71,12 +82,12 @@ namespace Arsenal.Entity
 
         public void Update()
         {
-            DataAccess.Video.UpdateVideo(VideoGuid, FileName, ArsenalMatchGuid, GoalPlayerGuid, GoalPlayerName, AssistPlayerGuid, AssistPlayerName, GoalRank, TeamworkRank, VideoLength, VideoWidth, VideoHeight, GoalYear, Opponent);
+            DataAccess.Video.UpdateVideo(VideoGuid, FileName, ArsenalMatchGuid, GoalPlayerGuid, GoalPlayerName, AssistPlayerGuid, AssistPlayerName, GoalRank, TeamworkRank, VideoType.ToString(), VideoLength, VideoWidth, VideoHeight, GoalYear, Opponent);
         }
 
         public void Insert()
         {
-            DataAccess.Video.InsertVideo(VideoGuid, FileName, ArsenalMatchGuid, GoalPlayerGuid, GoalPlayerName, AssistPlayerGuid, AssistPlayerName, GoalRank, TeamworkRank, VideoLength, VideoWidth, VideoHeight, GoalYear, Opponent);
+            DataAccess.Video.InsertVideo(VideoGuid, FileName, ArsenalMatchGuid, GoalPlayerGuid, GoalPlayerName, AssistPlayerGuid, AssistPlayerName, GoalRank, TeamworkRank, VideoType.ToString(), VideoLength, VideoWidth, VideoHeight, GoalYear, Opponent);
         }
 
         public void Delete()
@@ -195,6 +206,9 @@ namespace Arsenal.Entity
         public string TeamworkRank
         { get; set; }
 
+        public VideoFileType VideoType
+        { get; set; }
+
         public int VideoLength
         { get; set; }
 
@@ -210,6 +224,15 @@ namespace Arsenal.Entity
         public string Opponent
         { get; set; }
 
+        public string VideoFilePath
+        { get; set; }
+
         #endregion
+    }
+
+    public enum VideoFileType
+    {
+        flv,
+        mp4
     }
 }

@@ -503,6 +503,8 @@ namespace iArsenal.Entity.Arsenal {
         
         private string teamworkRankField;
         
+        private VideoFileType videoTypeField;
+        
         private int videoLengthField;
         
         private int videoWidthField;
@@ -512,6 +514,8 @@ namespace iArsenal.Entity.Arsenal {
         private string goalYearField;
         
         private string opponentField;
+        
+        private string videoFilePathField;
         
         /// <remarks/>
         public System.Guid VideoGuid {
@@ -607,6 +611,16 @@ namespace iArsenal.Entity.Arsenal {
         }
         
         /// <remarks/>
+        public VideoFileType VideoType {
+            get {
+                return this.videoTypeField;
+            }
+            set {
+                this.videoTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
         public int VideoLength {
             get {
                 return this.videoLengthField;
@@ -655,6 +669,29 @@ namespace iArsenal.Entity.Arsenal {
                 this.opponentField = value;
             }
         }
+        
+        /// <remarks/>
+        public string VideoFilePath {
+            get {
+                return this.videoFilePathField;
+            }
+            set {
+                this.videoFilePathField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.0.30319.18408")]
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://service.arsenal.cn/")]
+    public enum VideoFileType {
+        
+        /// <remarks/>
+        flv,
+        
+        /// <remarks/>
+        mp4,
     }
     
     /// <remarks/>

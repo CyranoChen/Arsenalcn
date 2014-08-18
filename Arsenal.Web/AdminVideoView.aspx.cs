@@ -73,6 +73,7 @@ namespace Arsenal.Web
                 v.Select();
 
                 tbVideoGuid.Text = VideoGuid.ToString();
+                tbFileName.Text = v.FileName.ToString();
 
                 #region Set Video ArsenalMatchGuid
                 if (v.ArsenalMatchGuid.HasValue)
@@ -110,10 +111,7 @@ namespace Arsenal.Web
                 tbTeamworkRank.Text = v.TeamworkRank;
                 tbGoalYear.Text = v.GoalYear;
                 tbOpponent.Text = v.Opponent;
-
-                ddlExt.SelectedValue = v.FileName.Substring(
-                    v.FileName.LastIndexOf("."), v.FileName.Length - v.FileName.LastIndexOf("."));
-
+                ddlVideoType.SelectedValue = v.VideoType.ToString();
                 tbVideoLength.Text = v.VideoLength.ToString();
                 tbVideoWidth.Text = v.VideoWidth.ToString();
                 tbVideoHeight.Text = v.VideoHeight.ToString();
@@ -129,6 +127,8 @@ namespace Arsenal.Web
             try
             {
                 Video v = new Video();
+
+                v.FileName = tbFileName.Text.Trim();
 
                 if (!string.IsNullOrEmpty(ddlLeague.SelectedValue) && !string.IsNullOrEmpty(ddlMatch.SelectedValue))
                 {
@@ -164,6 +164,8 @@ namespace Arsenal.Web
                 v.TeamworkRank = tbTeamworkRank.Text.Trim();
                 v.GoalYear = tbGoalYear.Text.Trim();
                 v.Opponent = tbOpponent.Text.Trim();
+
+                v.VideoType = (VideoFileType)Enum.Parse(typeof(VideoFileType), ddlVideoType.SelectedValue);
                 v.VideoLength = Convert.ToInt16(tbVideoLength.Text.Trim());
                 v.VideoWidth = Convert.ToInt16(tbVideoWidth.Text.Trim());
                 v.VideoHeight = Convert.ToInt16(tbVideoHeight.Text.Trim());
@@ -171,15 +173,17 @@ namespace Arsenal.Web
                 if (VideoGuid != Guid.Empty)
                 {
                     v.VideoGuid = VideoGuid;
-                    v.FileName = string.Format("{0}/{1}{2}", v.GoalPlayerName.Replace(" ", "_"), v.VideoGuid.ToString().ToUpper(), ddlExt.SelectedValue.ToUpper());
+                    //v.FileName = string.Format("{0}/{1}{2}", v.GoalPlayerName.Replace(" ", "_"), v.VideoGuid.ToString().ToUpper(), ddlVideoType.SelectedValue.ToUpper());
                     v.Update();
+
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('更新成功');window.location.href = window.location.href", true);
                 }
                 else
                 {
                     v.VideoGuid = new Guid(tbVideoGuid.Text.Trim());
-                    v.FileName = string.Format("{0}/{1}{2}", v.GoalPlayerName.Replace(" ", "_"), v.VideoGuid.ToString().ToUpper(), ddlExt.SelectedValue.ToUpper());
+                    //v.FileName = string.Format("{0}/{1}{2}", v.GoalPlayerName.Replace(" ", "_"), v.VideoGuid.ToString().ToUpper(), ddlVideoType.SelectedValue.ToUpper());
                     v.Insert();
+
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('添加成功');window.location.href = 'AdminVideo.aspx'", true);
                 }
             }

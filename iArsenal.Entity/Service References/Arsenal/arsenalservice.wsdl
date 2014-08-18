@@ -180,13 +180,21 @@
           <s:element minOccurs="0" maxOccurs="1" name="AssistPlayerName" type="s:string" />
           <s:element minOccurs="0" maxOccurs="1" name="GoalRank" type="s:string" />
           <s:element minOccurs="0" maxOccurs="1" name="TeamworkRank" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="VideoType" type="tns:VideoFileType" />
           <s:element minOccurs="1" maxOccurs="1" name="VideoLength" type="s:int" />
           <s:element minOccurs="1" maxOccurs="1" name="VideoWidth" type="s:int" />
           <s:element minOccurs="1" maxOccurs="1" name="VideoHeight" type="s:int" />
           <s:element minOccurs="0" maxOccurs="1" name="GoalYear" type="s:string" />
           <s:element minOccurs="0" maxOccurs="1" name="Opponent" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="VideoFilePath" type="s:string" />
         </s:sequence>
       </s:complexType>
+      <s:simpleType name="VideoFileType">
+        <s:restriction base="s:string">
+          <s:enumeration value="flv" />
+          <s:enumeration value="mp4" />
+        </s:restriction>
+      </s:simpleType>
       <s:element name="ArrayOfMatch" nillable="true" type="tns:ArrayOfMatch" />
       <s:element name="ArrayOfPlayer" nillable="true" type="tns:ArrayOfPlayer" />
       <s:element name="ArrayOfTeam" nillable="true" type="tns:ArrayOfTeam" />

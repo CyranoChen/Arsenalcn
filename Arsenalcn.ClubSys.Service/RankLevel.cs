@@ -6,7 +6,7 @@ using Microsoft.ApplicationBlocks.Data;
 using Arsenalcn.ClubSys.Entity;
 using Arsenalcn.Common;
 
-namespace Arsenalcn.ClubSys.DataAccess
+namespace Arsenalcn.ClubSys.Service
 {
     public class RankLevel
     {

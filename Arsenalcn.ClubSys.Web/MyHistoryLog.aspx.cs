@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Web.UI.WebControls;
 
-using Arsenalcn.ClubSys.DataAccess;
+using Arsenalcn.ClubSys.Service;
 using Arsenalcn.ClubSys.Entity;
 
 using ArsenalPlayer = Arsenal.Entity.Player;

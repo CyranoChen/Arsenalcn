@@ -7,10 +7,10 @@ using Discuz.Entity;
 using Discuz.Forum;
 
 using Arsenalcn.ClubSys.Entity;
-using Arsenalcn.ClubSys.DataAccess;
+using Arsenalcn.ClubSys.Service;
 using Arsenalcn.Common;
 
-namespace Arsenalcn.ClubSys.DataAccess
+namespace Arsenalcn.ClubSys.Service
 {
     public class PlayerLog
     {

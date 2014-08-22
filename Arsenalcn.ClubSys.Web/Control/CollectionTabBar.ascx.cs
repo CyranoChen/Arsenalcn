@@ -11,7 +11,7 @@ using System.Web.UI.WebControls.WebParts;
 using System.Collections.Generic;
 
 using Arsenalcn.ClubSys.Entity;
-using Arsenalcn.ClubSys.DataAccess;
+using Arsenalcn.ClubSys.Service;
 
 namespace Arsenalcn.ClubSys.Web.Control
 {

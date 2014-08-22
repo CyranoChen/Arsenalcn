@@ -7,7 +7,7 @@ using Arsenalcn.ClubSys.Entity;
 using ArsenalPlayer = Arsenal.Entity.Team;
 using ArsenalVideo = Arsenal.Entity.Video;
 
-namespace Arsenalcn.ClubSys.DataAccess
+namespace Arsenalcn.ClubSys.Service
 {
     public class RankAlgorithm
     {

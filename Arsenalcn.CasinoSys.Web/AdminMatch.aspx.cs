@@ -204,41 +204,34 @@ namespace Arsenalcn.CasinoSys.Web
 
         protected void gvMatch_RowCommand(object sender, GridViewCommandEventArgs e)
         {
-            if (e.CommandName == "ReturnBet")
+            try
             {
-                Guid guid = new Guid(e.CommandArgument.ToString());
-
-                try
+                if (e.CommandName == "ReturnBet")
                 {
+                    Guid guid = new Guid(e.CommandArgument.ToString());
+
                     Match m = new Match(guid);
                     m.ReturnBet();
 
                     this.ClientScript.RegisterClientScriptBlock(typeof(string), "success", "alert('投注退还成功');", true);
+
                 }
-                catch (Exception ex)
+                else if (e.CommandName == "CalcBonus")
                 {
-                    this.ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}');", ex.Message.ToString()), true);
-                }
+                    Guid guid = new Guid(e.CommandArgument.ToString());
 
-                BindData();
-            }
-
-            if (e.CommandName == "CalcBonus")
-            {
-                Guid guid = new Guid(e.CommandArgument.ToString());
-
-                try
-                {
                     Match m = new Match(guid);
                     m.CalcBonus();
 
                     this.ClientScript.RegisterClientScriptBlock(typeof(string), "success", "alert('奖金发放成功');", true);
                 }
-                catch (Exception ex)
-                {
-                    this.ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}');", ex.Message.ToString()), true);
-                }
-
+            }
+            catch (Exception ex)
+            {
+                this.ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}');", ex.Message.ToString()), true);
+            }
+            finally
+            {
                 BindData();
             }
         }

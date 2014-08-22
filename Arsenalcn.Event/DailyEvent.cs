@@ -18,7 +18,7 @@ namespace Arsenalcn.Event
             #region Calculator Club Fortune
             try
             {
-                Arsenalcn.ClubSys.DataAccess.UserClubLogic.CalcClubFortuneIncrement();
+                Arsenalcn.ClubSys.Service.UserClubLogic.CalcClubFortuneIncrement();
             }
             catch (Exception ex)
             {
@@ -30,7 +30,7 @@ namespace Arsenalcn.Event
             #region Generate LuckyPlayer
             try
             {
-                Arsenalcn.ClubSys.DataAccess.LuckyPlayer.GenerateLuckyPlayer();
+                Arsenalcn.ClubSys.Service.LuckyPlayer.GenerateLuckyPlayer();
             }
             catch (Exception ex)
             {
@@ -41,7 +41,7 @@ namespace Arsenalcn.Event
             #region Generate Video on LeftPanel
             try
             {
-                Guid? guid = Arsenalcn.ClubSys.DataAccess.UserVideo.SetDailyVideo();
+                Guid? guid = Arsenalcn.ClubSys.Service.UserVideo.SetDailyVideo();
 
                 if (guid.HasValue)
                 {

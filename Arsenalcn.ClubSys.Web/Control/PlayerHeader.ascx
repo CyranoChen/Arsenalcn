@@ -1,6 +1,6 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="PlayerHeader.ascx.cs"
     Inherits="Arsenalcn.ClubSys.Web.Control.PlayerHeader" %>
-<%@ Import Namespace="Arsenalcn.ClubSys.DataAccess" %>
+<%@ Import Namespace="Arsenalcn.ClubSys.Service" %>
 <div class="ClubSys_Header">
     <div class="Clear">
     </div>

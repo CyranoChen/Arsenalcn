@@ -1,7 +1,7 @@
 ﻿using System;
 
 using Arsenalcn.ClubSys.Entity;
-using Arsenalcn.ClubSys.DataAccess;
+using Arsenalcn.ClubSys.Service;
 
 namespace Arsenalcn.ClubSys.Web.Control
 {

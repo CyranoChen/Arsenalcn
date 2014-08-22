@@ -85,8 +85,10 @@ namespace Arsenalcn.CasinoSys.Entity
             //1、赛季中必须投注博采币次数达到10个单场及以上（反复多次投注同一场比赛只能算是1次）；
             //2、赛季中参与累计投注量达到5,000菠菜币及以上；
             //3、赛季中并且获得RP+3及以上，即猜对本赛季3场以上的比赛比分。
-            return list.FindAll(delegate(CasinoGambler cg)
-            { return cg.MatchBet >= 10 && cg.TotalBet >= 5000f && cg.RPBonus >= 3; });
+            //return list.FindAll(delegate(CasinoGambler cg)
+            //{ return cg.MatchBet >= 10 && cg.TotalBet >= 5000f && cg.RPBonus >= 3; });
+
+            return list;
         }
 
         public static List<CasinoGambler> SortCasinoGambler(List<CasinoGambler> list, string orderKeyword)

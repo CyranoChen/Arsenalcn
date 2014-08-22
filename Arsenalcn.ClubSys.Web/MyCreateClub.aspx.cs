@@ -1,6 +1,6 @@
 ﻿using System;
 
-using Arsenalcn.ClubSys.DataAccess;
+using Arsenalcn.ClubSys.Service;
 using Arsenalcn.ClubSys.Entity;
 
 using Discuz.Forum;

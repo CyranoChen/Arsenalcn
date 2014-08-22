@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using Arsenalcn.ClubSys.DataAccess;
+using Arsenalcn.ClubSys.Service;
 using Arsenalcn.ClubSys.Entity;
 
 namespace Arsenalcn.ClubSys.Web
@@ -46,13 +46,14 @@ namespace Arsenalcn.ClubSys.Web
                     Response.Write(strPlayer);
                 }
 
-                if (player != null && UserVideo.GetUserPublicVideo(ProfileUserID).Count > 0)
-                {
-                    string strVideo = string.Format("GenSwfObject('UserVideo', 'plugin/acnclub/swf/UserVideo.swf?XMLURL=plugin/acnclub/ServerXml.aspx%3FUserID={0}', '180', '200');", ProfileUserID.ToString());
-                    //Response.Write(string.Format("document.write('<div style=\"text-align: center;\">');{0};document.write('</div>');", strVideo.ToString()));
-                    Response.Write(strVideo);
-                }
+                //if (player != null && UserVideo.GetUserPublicVideo(ProfileUserID).Count > 0)
+                //{
+                //    string strVideo = string.Format("GenSwfObject('UserVideo', 'plugin/acnclub/swf/UserVideo.swf?XMLURL=plugin/acnclub/ServerXml.aspx%3FUserID={0}', '180', '200');", ProfileUserID.ToString());
+                //    //Response.Write(string.Format("document.write('<div style=\"text-align: center;\">');{0};document.write('</div>');", strVideo.ToString()));
+                //    Response.Write(strVideo);
+                //}
             }
+
             Response.End();
         }
 

@@ -2,10 +2,8 @@
 using System.Data;
 using System.Web.UI.WebControls;
 
-using Arsenal.Entity;
-using Arsenalcn.ClubSys.DataAccess;
 using Arsenalcn.ClubSys.Entity;
-
+using Arsenalcn.ClubSys.Service;
 using ArsenalVideo = Arsenal.Entity.Video;
 
 namespace Arsenalcn.ClubSys.Web
@@ -97,24 +95,12 @@ namespace Arsenalcn.ClubSys.Web
                 LinkButton btnSwfView = e.Row.FindControl("btnSwfView") as LinkButton;
 
                 String StrSwfContent = "<div class=\"ClubSys_ItemPH\">";
-                StrSwfContent += string.Format("<script type=\"text/javascript\"> GenSwfObject('PlayerVideoActive{0}', 'swf/PlayerVideoActive.swf?XMLURL=ServerXml.aspx%3FUserVideoID={0}', '80', '100');</script>", drv["ID"].ToString());
+                StrSwfContent += string.Format("<script type=\"text/javascript\">GenSwfObject('PlayerVideoActive{0}', 'swf/PlayerVideoActive.swf?XMLURL=ServerXml.aspx%3FUserVideoID={0}', '80', '100');</script>", drv["ID"].ToString());
                 StrSwfContent += "</div>";
+
                 ltrlVideo.Text = StrSwfContent;
 
-                ArsenalVideo v = Video.Cache.Load(new Guid(drv["VideoGuid"].ToString()));
-
-                //btnSwfView.OnClientClick = "GenFlashFrame('swf/ShowVideoRoom.swf?XMLURL=ServerXml.aspx%3FUserVideoID=" + drv["ID"].ToString() + "', '480', '300', true); return false";
-
-                if (v.VideoType.Equals(VideoFileType.mp4))
-                {
-                    btnSwfView.OnClientClick = string.Format("GenVideoFrame('{0}', '{1}', '{2}', true); return false", v.VideoFilePath, v.VideoWidth.ToString(), v.VideoHeight.ToString());
-                }
-                else if (v.VideoType.Equals(VideoFileType.flv))
-                {
-                    string _swfUrl = string.Format("swf/ShowVideoRoom.swf?XMLURL=ServerXml.aspx%3FUserVideoID={0}", drv["ID"].ToString());
-
-                    btnSwfView.OnClientClick = string.Format("GenFlashFrame('{0}', '{1}', '{2}', true); return false", _swfUrl, v.VideoWidth.ToString(), v.VideoHeight.ToString());
-                }
+                btnSwfView.OnClientClick = string.Format("ShowVideoPreview('{0}'); return false", drv["VideoGuid"].ToString());
             }
         }
     }

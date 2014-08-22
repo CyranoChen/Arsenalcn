@@ -74,9 +74,9 @@
       <Project>{cd9a6bd8-88b6-45f4-b41d-7dc11e173b78}</Project>
       <Name>Arsenalcn.CasinoSys.Entity</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Arsenalcn.ClubSys.DataAccess\Arsenalcn.ClubSys.DataAccess.csproj">
+    <ProjectReference Include="..\Arsenalcn.ClubSys.Service\Arsenalcn.ClubSys.Service.csproj">
       <Project>{75829613-19be-4d73-967e-19d3b5f7cb84}</Project>
-      <Name>Arsenalcn.ClubSys.DataAccess</Name>
+      <Name>Arsenalcn.ClubSys.Service</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arsenalcn.Common\Arsenalcn.Common.csproj">
       <Project>{8258a2e1-6821-4bae-9111-3fbb65703fe0}</Project>

@@ -4,7 +4,7 @@ using System.Data;
 using System.Text;
 using System.Web;
 
-using Arsenalcn.ClubSys.DataAccess;
+using Arsenalcn.ClubSys.Service;
 using Arsenalcn.ClubSys.Entity;
 
 using ArsenalPlayer = Arsenal.Entity.Player;

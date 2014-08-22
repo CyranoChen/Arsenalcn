@@ -18,7 +18,7 @@ namespace Arsenalcn.Event
             #region User Club Statistics
             try
             {
-                Arsenalcn.ClubSys.DataAccess.UserClubLogic.UserClubStatistics();
+                Arsenalcn.ClubSys.Service.UserClubLogic.UserClubStatistics();
             }
             catch (Exception ex)
             {

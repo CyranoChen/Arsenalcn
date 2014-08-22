@@ -2,7 +2,7 @@
 using System.Data;
 using System.Web.UI.WebControls;
 
-using Arsenalcn.ClubSys.DataAccess;
+using Arsenalcn.ClubSys.Service;
 using ArsenalVideo = Arsenal.Entity.Video;
 
 namespace Arsenalcn.ClubSys.Web.Control

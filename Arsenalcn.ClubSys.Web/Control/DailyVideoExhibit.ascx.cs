@@ -1,7 +1,6 @@
 ﻿using System;
 
 using Arsenalcn.ClubSys.Entity;
-using Arsenal.Entity;
 
 namespace Arsenalcn.ClubSys.Web.Control
 {
@@ -11,29 +10,15 @@ namespace Arsenalcn.ClubSys.Web.Control
         {
             try
             {
-                if (ClubSys.Entity.ConfigGlobal.DailyVideoActive)
+                if (ConfigGlobal.DailyVideoActive)
                 {
-                    if (VideoGuid != null && !VideoGuid.Equals(Guid.Empty))
+                    Guid guid = ConfigGlobal.DailyVideoGuid;
+
+                    if (!guid.Equals(Guid.Empty))
                     {
-                        Video v = Video.Cache.Load(VideoGuid);
+                        ltrlVideo.Text = string.Format("<script type=\"text/javascript\">GenSwfObject('PlayerVideoActive', 'swf/PlayerVideoActive.swf?XMLURL=ServerXml.aspx%3FVideoGuid={0}&ShowEffect=true', '160', '200');</script>", guid.ToString());
 
-                        if (v.VideoType.Equals(VideoFileType.mp4))
-                        {
-                            string _strHtml = "<div class=\"SwfViewBtnLeft\" onclick=\"GenVideoFrame('{0}', '{1}', '{2}', true)\"></div>";
-
-                            ltrlViewBtnLeft.Text = string.Format(_strHtml, v.VideoFilePath, v.VideoWidth.ToString(), v.VideoHeight.ToString());
-                        }
-                        else if (v.VideoType.Equals(VideoFileType.flv))
-                        {
-                            string _strHtml = "<div class=\"SwfViewBtnLeft\" onclick=\"GenFlashFrame('{0}', '{1}', '{2}', true)\"></div>";
-                            string _swfUrl = string.Format("swf/ShowVideoRoom.swf?XMLURL=ServerXml.aspx%3FVideoGuid={0}", VideoGuid.ToString());
-
-                            ltrlViewBtnLeft.Text = string.Format(_strHtml, _swfUrl, v.VideoWidth.ToString(), v.VideoHeight.ToString());
-                        }
-                        else
-                        {
-                            throw new Exception();
-                        }
+                        btnSwfView.OnClientClick = string.Format("ShowVideoPreview('{0}'); return false", guid.ToString());
 
                         pnlVideoExhibit.Visible = true;
                     }
@@ -51,14 +36,6 @@ namespace Arsenalcn.ClubSys.Web.Control
             catch
             {
                 pnlVideoExhibit.Visible = false;
-            }
-        }
-
-        protected Guid VideoGuid
-        {
-            get
-            {
-                return ClubSys.Entity.ConfigGlobal.DailyVideoGuid;
             }
         }
     }

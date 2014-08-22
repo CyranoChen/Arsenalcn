@@ -46,7 +46,6 @@ namespace Arsenalcn.ClubSys.Entity
 
         #endregion
 
-
         public Administrator()
         {
         }

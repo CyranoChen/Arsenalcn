@@ -1,5 +1,5 @@
 ﻿/* Javascript Version ClubSys */
-/* Version: 1.6.5 || Date: 2014-08-18 || Author:cao262,Cyrano */
+/* Version: 1.7.0 || Date: 2014-08-21 || Author:cao262,Cyrano */
 /* type="text/javascript" */
 
 $(function () {
@@ -213,8 +213,33 @@ function GenConllectInfoItem(obj) {
     return $dataItem;
 }
 
-function GenVideoFrame(videoSrc, videoWidth, videoHeight, showClose) {
-    //alert(videoSrc);
+//VideoPreview API
+function ShowVideoPreview(guid) {
+    var $pnlVideo = $("#PageCoverLayoutAjax");
+
+    if ($pnlVideo.length == 0) {
+        $.getJSON("ServerVideoPreview.ashx", { VideoGuid: guid }, function (data, status, xhr) {
+            if (status == "success" && data != null) {
+                if (data.result != "error") {
+                    if (data.Video.VideoType.toLowerCase() == "flv") {
+                        var _url = "swf/ShowVideoRoom.swf?XMLURL=ServerXml.aspx%3FVideoGuid=" + data.Video.VideoGuid;
+
+                        GenFlashFrame(_url, data.Video.VideoWidth, data.Video.VideoHeight, true);
+
+                    } else {
+                        GenVideoFrame(data);
+                    }
+                } else {
+                    alert(data.error_msg);
+                }
+            } else {
+                alert("调用数据接口失败(VideoPreview)");
+            }
+        });
+    }
+}
+
+function GenVideoFrame(jsonObject) {
     if (document.getElementById("PageCoverLayout") == null) {
         divMask = document.createElement("div");
         divMask.setAttribute("id", "PageCoverLayout");
@@ -232,25 +257,135 @@ function GenVideoFrame(videoSrc, videoWidth, videoHeight, showClose) {
         document.body.appendChild(divVideo);
     }
 
-    var video = '<video width="' + videoWidth + '" height="' + videoHeight + '" controls="controls" style="background: #000" preload="auto">';
-    video = video + '<source src="' + videoSrc + '" type="video/mp4">';
-    video = video + 'Your browser does not support the video tag.';
-    video = video + '</video>';
+    var _videoHtml = ' ' +
+        '<div class="ClubSys_Video">' +
+            '<div class="VideoToolbar">' +
+                '<span></span>' +
+                '<div class="BtnClose"></div>' +
+                '<div class="BtnMin"></div>' +
+                '<div class="Clear"></div>' +
+            '</div>' +
+            '<div class="VideoPoster">' +
+                '<div class="GoalFrame">' +
+                    '<div class="Star"><span></span></div>' +
+                    '<div class="PlayerPhoto"><img /></div>' +
+                    '<div class="PlayerName"><span></span></div>' +
+                '</div>' +
+                '<div class="MatchFrame">' +
+                    '<div class="HomeTeamLogo"><img /></div>' +
+                    '<div class="HomeTeamName"><span></span></div>' +
+                    '<div class="MatchResult"><span>/span></div>' +
+                    '<div class="MatchInfo"><span></span></div>' +
+                    '<div class="AwayTeamName"><span></span></div>' +
+                    '<div class="AwayTeamLogo"><img /></div>' +
+                '</div>' +
+                '<div class="TeamworkFrame">' +
+                    '<div class="Star"><span></span></div>' +
+                    '<div class="PlayerPhoto"><img  /></div>' +
+                    '<div class="PlayerName"><span></span></div>' +
+                '</div>' +
+                '<div class="Clear"></div>' +
+            '</div>' +
+            '<div class="VideoFrame">' +
+                '<video controls="controls" preload="auto">' +
+                    '<source type="video/mp4">' +
+                    'Your browser does not support the video tag.' +
+                '</video>' +
+            '</div>' +
+        '</div>';
 
-    divVideo.innerHTML = video;
+    var $pnlVideo = $(_videoHtml);
+    var $pnlVideoToolbar = $pnlVideo.find(".VideoToolbar");
+    var $pnlVideoPoster = $pnlVideo.find(".VideoPoster");
+    var $pnlVideoFrame = $pnlVideo.find(".VideoFrame");
 
-    if (showClose != null && showClose == true) {
-        btnClose = document.createElement("a");
-        btnClose.setAttribute("id", "btnClose");
-        btnClose.innerHTML = "关闭";
-        btnClose.href = "javascript:HideFrame();";
+    $pnlVideo.mouseover(function () { $pnlVideoToolbar.show(); })
+        .mouseout(function () { $pnlVideoToolbar.hide(); });
 
-        divBtn = document.createElement("div");
-        divBtn.setAttribute("style", "text-align:center;margin-top:10px;");
+    // DIV VideoToolbar DataBind
 
-        divBtn.appendChild(btnClose);
-        divVideo.appendChild(divBtn);
+    $pnlVideoToolbar.find("span").text(jsonObject.Video.VideoGuid);
+
+    $pnlVideoToolbar.find(".BtnClose").click(function () {
+        HideFrame();
+    });
+
+    $pnlVideoToolbar.find(".BtnMin").click(function () {
+        $pnlVideoFrame.fadeOut(1000);
+    });
+
+    // DIV VideoPoster DataBind
+
+    $pnlVideoPoster.click(function () {
+        $pnlVideoFrame.fadeIn(1000);
+    });
+
+    if (jsonObject.GoalPlayer != "") {
+        var $pnlGoalFrame = $pnlVideoPoster.find(".GoalFrame");
+
+        $pnlGoalFrame.find(".Star > span")
+            .css("width", (30 * jsonObject.Video.GoalRank).toString() + "px")
+            .attr("title", "GoalRank " + jsonObject.Video.GoalRank.toString());
+
+        $pnlGoalFrame.find(".PlayerPhoto > img")
+            .attr("src", jsonObject.GoalPlayer.PhotoURL)
+            .attr("alt", jsonObject.GoalPlayer.DisplayName);
+
+        $pnlGoalFrame.find(".PlayerName > span").text(jsonObject.GoalPlayer.DisplayName);
+    } else {
+        $pnlVideo.find(".GoalFrame").remove();
     }
+
+    if (jsonObject.AssistPlayer != "") {
+        var $pnlTeamworkFrame = $pnlVideoPoster.find(".TeamworkFrame");
+
+        $pnlTeamworkFrame.find(".Star > span")
+            .css("width", (30 * jsonObject.Video.TeamworkRank).toString() + "px")
+            .attr("title", "GoalRank " + jsonObject.Video.TeamworkRank.toString());
+
+        $pnlTeamworkFrame.find(".PlayerPhoto > img")
+            .attr("src", jsonObject.AssistPlayer.PhotoURL)
+            .attr("alt", jsonObject.AssistPlayer.DisplayName);
+
+        $pnlTeamworkFrame.find(".PlayerName > span").text(jsonObject.AssistPlayer.DisplayName);
+    } else {
+        $pnlVideo.find(".GoalFrame").remove();
+    }
+
+    if (jsonObject.Match != "") {
+        var $pnlMatchFrame = $pnlVideoPoster.find(".MatchFrame");
+
+        $pnlMatchFrame.find(".HomeTeamLogo > img")
+            .attr("src", jsonObject.Match.HomeTeamLogo)
+            .attr("title", jsonObject.Match.HomeTeam);
+
+        $pnlMatchFrame.find(".HomeTeamName > span").text(jsonObject.Match.HomeTeam);
+
+        $pnlMatchFrame.find(".MatchResult > span")
+            .text(jsonObject.Match.ResultHome + " : " + jsonObject.Match.ResultAway);
+
+        $pnlMatchFrame.find(".MatchInfo > span").text(jsonObject.Match.PlayTime);
+
+        $pnlMatchFrame.find(".AwayTeamName > span").text(jsonObject.Match.AwayTeam);
+
+        $pnlMatchFrame.find(".AwayTeamLogo > img")
+            .attr("src", jsonObject.Match.AwayTeamLogo)
+            .attr("title", jsonObject.Match.AwayTeam);
+
+    } else {
+        $pnlVideo.find(".MatchFrame").remove();
+    }
+
+    // DIV VideoFrame DataBind
+
+    var $video = $pnlVideoFrame.find("video")
+        .bind("contextmenu", function () { return false; })
+        .attr("class", "DPI" + jsonObject.Video.VideoHeight.toString())
+        .find("source")
+            .attr("src", jsonObject.Video.VideoFilePath)
+            .attr("type", "video/" + jsonObject.Video.VideoType);
+
+    $(divVideo).append($pnlVideo).hide();
 
     ShowFrame();
 }
@@ -301,27 +436,27 @@ function GenFlashFrame(swfSrc, swfWidth, swfHeight, showClose) {
 }
 
 function HideFrame() {
-    divMask = document.getElementById("PageCoverLayout");
-    divFrame = document.getElementById("PageCoverLayoutAjax");
-
-    if (divMask != null)
-        divMask.style.display = "none";
-
-    if (divFrame != null)
-        document.body.removeChild(divFrame);
-    //divSwf.style.display = "none";
+    var $pnlMask = $("#PageCoverLayout").fadeOut(500);
+    var $pnlFrame = $("#PageCoverLayoutAjax").remove();
 }
 
 function ShowFrame() {
-    divMask = document.getElementById("PageCoverLayout");
-    divFrame = document.getElementById("PageCoverLayoutAjax");
-    divFrame.style.top = document.documentElement.scrollTop + "px";
+    var $pnlMask = $("#PageCoverLayout").fadeIn(500);
+    var $pnlFrame = $("#PageCoverLayoutAjax");
 
-    if (divMask != null)
-        divMask.style.display = "";
+    var _offsetTop = 0;
 
-    if (divFrame != null)
-        divFrame.style.display = "";
+    if ($(window).height() > $pnlFrame.height()) {
+        _offsetTop = ($(window).height() - $pnlFrame.height()) / 2 + $(window).scrollTop();
+    } else {
+        _offsetTop = $(window).scrollTop();
+    }
+
+    $pnlFrame.css("top", _offsetTop + "px").fadeIn(1000);
+
+    $(window).scroll(function () {
+        $pnlFrame.css("top", ($(this).scrollTop() + 20) + "px");
+    });
 }
 
 // Rank Panel Switch 

@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{C84E7700-0E7C-4C98-AE70-70EFB99B8D8E}</ProjectGuid>
+    <ProjectGuid>{75829613-19BE-4D73-967E-19D3B5F7CB84}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Arsenalcn.ClubSys.Entity</RootNamespace>
-    <AssemblyName>Arsenalcn.ClubSys.Entity</AssemblyName>
+    <RootNamespace>Arsenalcn.ClubSys.Service</RootNamespace>
+    <AssemblyName>Arsenalcn.ClubSys.Service</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -31,27 +31,51 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Discuz.Entity">
+      <HintPath>..\workspace\backup\3.6.Custom\Discuz.Entity.dll</HintPath>
+    </Reference>
+    <Reference Include="Discuz.Forum">
+      <HintPath>..\workspace\backup\3.6.Custom\Discuz.Forum.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Administrator.cs" />
-    <Compile Include="AdvHistory.cs" />
-    <Compile Include="ApplyHistory.cs" />
-    <Compile Include="BingoHistory.cs" />
-    <Compile Include="Club.cs" />
-    <Compile Include="ClubHistory.cs" />
-    <Compile Include="ClubSysObject.cs" />
-    <Compile Include="Config.cs" />
-    <Compile Include="Player.cs" />
-    <Compile Include="PlayerHistory.cs" />
+    <Compile Include="AdvLog.cs" />
+    <Compile Include="ClubLogic.cs" />
+    <Compile Include="Entity\Administrator.cs" />
+    <Compile Include="Entity\AdvHistory.cs" />
+    <Compile Include="Entity\ApplyHistory.cs" />
+    <Compile Include="Entity\BingoHistory.cs" />
+    <Compile Include="Entity\Club.cs" />
+    <Compile Include="Entity\ClubHistory.cs" />
+    <Compile Include="Entity\ClubSysObject.cs" />
+    <Compile Include="Entity\Config.cs" />
+    <Compile Include="Entity\Player.cs" />
+    <Compile Include="Entity\PlayerHistory.cs" />
+    <Compile Include="Entity\Rank.cs" />
+    <Compile Include="Entity\UserClub.cs" />
+    <Compile Include="Entity\UserNumber.cs" />
+    <Compile Include="Enum.cs" />
+    <Compile Include="FortuneContributeAlgorithm.cs" />
+    <Compile Include="LuckyPlayer.cs" />
+    <Compile Include="PlayerLog.cs" />
+    <Compile Include="PlayerStrip.cs" />
+    <Compile Include="PrivateMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Rank.cs" />
-    <Compile Include="UserClub.cs" />
-    <Compile Include="UserNumber.cs" />
+    <Compile Include="RankAlgorithm.cs" />
+    <Compile Include="RankLevel.cs" />
+    <Compile Include="UserClubLogic.cs" />
+    <Compile Include="UserVideo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Arsenal.Entity\Arsenal.Entity.csproj">
+      <Project>{18f784e1-6ac9-488c-9f00-b1cf2d5a8893}</Project>
+      <Name>Arsenal.Entity</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Arsenalcn.Common\Arsenalcn.Common.csproj">
       <Project>{8258a2e1-6821-4bae-9111-3fbb65703fe0}</Project>
       <Name>Arsenalcn.Common</Name>

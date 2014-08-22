@@ -7,7 +7,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="cphHead" runat="server">
 
     <script type="text/javascript">
-        var maxExecutorCount = <%=Arsenalcn.ClubSys.DataAccess.ClubLogic.GetClubExecutorQuota(ClubID).ToString() %>;
+        var maxExecutorCount = <%=Arsenalcn.ClubSys.Service.ClubLogic.GetClubExecutorQuota(ClubID).ToString() %>;
         function CheckExecutorCount()
         {
             var tb = document.getElementById("<%=tbExecutor.ClientID %>");
@@ -81,7 +81,7 @@
                             </td>
                             <td align="left">
                                 <asp:TextBox ID="tbExecutor" runat="server" CssClass="TextBox" ToolTip="如有多个，请用|分割。"></asp:TextBox>
-                                <span>*最多可以设置<em><%=Arsenalcn.ClubSys.DataAccess.ClubLogic.GetClubExecutorQuota(ClubID).ToString() %></em>个干事</span>
+                                <span>*最多可以设置<em><%=Arsenalcn.ClubSys.Service.ClubLogic.GetClubExecutorQuota(ClubID).ToString() %></em>个干事</span>
                             </td>
                         </tr>
                     </asp:PlaceHolder>

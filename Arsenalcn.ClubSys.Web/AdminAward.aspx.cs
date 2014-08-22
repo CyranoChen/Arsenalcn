@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using Discuz.Forum;
 using Discuz.Entity;
 
-using Arsenalcn.ClubSys.DataAccess;
+using Arsenalcn.ClubSys.Service;
 
 namespace Arsenalcn.ClubSys.Web
 {

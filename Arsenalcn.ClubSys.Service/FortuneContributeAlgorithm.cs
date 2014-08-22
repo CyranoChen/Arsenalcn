@@ -5,7 +5,7 @@ using System.Text;
 using Arsenalcn.ClubSys.Entity;
 using Discuz.Entity;
 
-namespace Arsenalcn.ClubSys.DataAccess
+namespace Arsenalcn.ClubSys.Service
 {
     public class FortuneContributeAlgorithm
     {

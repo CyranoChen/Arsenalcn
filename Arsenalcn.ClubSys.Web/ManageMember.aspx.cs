@@ -4,7 +4,7 @@ using System.Data;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-using Arsenalcn.ClubSys.DataAccess;
+using Arsenalcn.ClubSys.Service;
 using Arsenalcn.ClubSys.Entity;
 
 using Discuz.Entity;
@@ -12,24 +12,8 @@ using Discuz.Forum;
 
 namespace Arsenalcn.ClubSys.Web
 {
-    public partial class ManageMember : Common.BasePage, ICallbackEventHandler
+    public partial class ManageMember : Common.BasePage
     {
-        private int ClubID
-        {
-            get
-            {
-                int tmp;
-                if (int.TryParse(Request.QueryString["ClubID"], out tmp))
-                    return tmp;
-                else
-                {
-                    Response.Redirect("ClubPortal.aspx");
-
-                    return -1;
-                }
-            }
-        }
-
         protected void Page_Load(object sender, EventArgs e)
         {
             Club club = ClubLogic.GetClubInfo(ClubID);
@@ -51,90 +35,106 @@ namespace Arsenalcn.ClubSys.Web
 
             #endregion
 
-            #region Callback Reference
-            string callbackReference = Page.ClientScript.GetCallbackEventReference(this, "userID", "GetResult", "context");
-
-            string callbackScript = string.Format("function KickMember(userID, context){{ {0} }};", callbackReference);
-
-            Page.ClientScript.RegisterClientScriptBlock(typeof(string), "action", callbackScript, true);
-
-            #endregion
-
             if (!IsPostBack)
             {
-                LoadPageData();
-            }
-        }
-
-        protected void LoadPageData()
-        {
-            #region Bind ddlGroup
-            List<Club> list = ClubLogic.GetActiveClubs();
-            if (list != null && list.Count > 0)
-            {
-                ddlClub.DataSource = list;
-                ddlClub.DataTextField = "FullName";
-                ddlClub.DataValueField = "ID";
-                ddlClub.DataBind();
-
-                ListItem item = new ListItem("--请选择球会--", string.Empty);
-                ddlClub.Items.Insert(0, item);
-            }
-            else
-                ddlClub.Visible = false;
-            #endregion
-
-            // Administrators could enter this page
-            if (ConfigAdmin.IsPluginAdmin(this.userid))
-            {
-                pnlInaccessible.Visible = false;
-                phContent.Visible = true;
-
-                //init gridview
-                BindMemberList();
-            }
-            else
-            {
-                UserClub userClub = ClubLogic.GetActiveUserClub(this.userid, ClubID);
-
-                if (userClub != null && userClub.Responsibility.HasValue)
+                #region Bind ddlGroup
+                List<Club> list = ClubLogic.GetActiveClubs();
+                if (list != null && list.Count > 0)
                 {
-                    if (userClub.Responsibility.Value.Equals((int)Responsibility.Executor) || userClub.Responsibility.Value.Equals((int)Responsibility.Manager))
-                    {
-                        pnlInaccessible.Visible = false;
-                        phContent.Visible = true;
+                    ddlClub.DataSource = list;
+                    ddlClub.DataTextField = "FullName";
+                    ddlClub.DataValueField = "ID";
+                    ddlClub.DataBind();
 
-                        //init gridview
-                        BindMemberList();
+                    ListItem item = new ListItem("--请选择球会--", string.Empty);
+                    ddlClub.Items.Insert(0, item);
+                }
+                else
+                    ddlClub.Visible = false;
+                #endregion
+
+                // Administrators could enter this page
+                if (ConfigAdmin.IsPluginAdmin(this.userid))
+                {
+                    pnlInaccessible.Visible = false;
+                    phContent.Visible = true;
+
+                    //init gridview
+                    BindData();
+                }
+                else
+                {
+                    UserClub userClub = ClubLogic.GetActiveUserClub(this.userid, ClubID);
+
+                    if (userClub != null && userClub.Responsibility.HasValue)
+                    {
+                        if (userClub.Responsibility.Value.Equals((int)Responsibility.Executor) || userClub.Responsibility.Value.Equals((int)Responsibility.Manager))
+                        {
+                            pnlInaccessible.Visible = false;
+                            phContent.Visible = true;
+
+                            //init gridview
+                            BindData();
+                        }
+                        else
+                        {
+                            pnlInaccessible.Visible = true;
+                            phContent.Visible = false;
+                        }
                     }
                     else
                     {
                         pnlInaccessible.Visible = true;
                         phContent.Visible = false;
-
                     }
+                }
+
+            }
+        }
+        private int ClubID
+        {
+            get
+            {
+                int tmp;
+                if (!string.IsNullOrEmpty(ddlClub.SelectedValue))
+                {
+                    return Convert.ToInt16(ddlClub.SelectedValue);
+                }
+                else if (int.TryParse(Request.QueryString["ClubID"], out tmp))
+                {
+                    return tmp;
                 }
                 else
                 {
-                    pnlInaccessible.Visible = true;
-                    phContent.Visible = false;
+                    Response.Redirect("ClubPortal.aspx");
+
+                    return -1;
                 }
             }
         }
 
-        private void BindMemberList()
+        private List<Club> CurrUserManagedClubs
         {
-            List<UserClub> clubMemberList;
-            int currClubID = int.MinValue;
+            get
+            {
+                List<Club> list = ClubLogic.GetUserManagedClubs(this.userid);
 
-            if (!string.IsNullOrEmpty(ddlClub.SelectedValue) && int.TryParse(ddlClub.SelectedValue, out currClubID))
-            {
-                clubMemberList = ClubLogic.GetClubMembers(currClubID);
+                if (list != null && list.Count > 0)
+                {
+                    return list;
+                }
+                else
+                {
+                    Response.Redirect("ClubPortal.aspx");
+
+                    return null;
+                }
             }
-            else
-            {
-                clubMemberList = ClubLogic.GetClubMembers(ClubID);
-            }
+        }
+
+        private void BindData()
+        {
+            List<UserClub> clubMemberList = ClubLogic.GetClubMembers(ClubID);
 
             gvClubMemberList.DataSource = clubMemberList;
             gvClubMemberList.DataBind();
@@ -181,15 +181,23 @@ namespace Arsenalcn.ClubSys.Web
 
                         #endregion
 
-                        #region set responsibility
+                        #region set User Info & Responsibility
 
-                        Literal ltrlResponsibility = e.Row.FindControl("ltrlResponsibility") as Literal;
-                        if (ltrlResponsibility != null)
+                        Literal ltrlUserInfoResponsibility = e.Row.FindControl("ltrlUserInfoResponsibility") as Literal;
+                        string _strUserInfo = string.Format("<a href=\"MyPlayerProfile.aspx?userID={0}\" target=\"_blank\">{1}</a>",
+                            uc.Userid.ToString(), uc.UserName.Trim());
+
+                        if (ltrlUserInfoResponsibility != null)
                         {
-                            if (uc.Responsibility.Value == (int)Responsibility.Member)
-                                ltrlResponsibility.Text = string.Empty;
+                            if (uc.Responsibility.HasValue && !uc.Responsibility.Value.Equals((int)Responsibility.Member))
+                            {
+                                ltrlUserInfoResponsibility.Text = string.Format("{0}<em>{1}</em>",
+                                    _strUserInfo, ClubLogic.TranslateResponsibility(uc.Responsibility.Value));
+                            }
                             else
-                                ltrlResponsibility.Text = ClubLogic.TranslateResponsibility(uc.Responsibility.Value);
+                            {
+                                ltrlUserInfoResponsibility.Text = _strUserInfo;
+                            }
                         }
 
                         #endregion
@@ -230,9 +238,12 @@ namespace Arsenalcn.ClubSys.Web
                         #region set user days
 
                         Literal ltrlDays = e.Row.FindControl("ltrlDays") as Literal;
+                        int _days = (int)((DateTime.Now - uc.JoinClubDate.Value).TotalDays);
+
                         if (ltrlDays != null)
                         {
-                            ltrlDays.Text = ((int)((DateTime.Now - uc.JoinClubDate.Value).TotalDays)).ToString();
+                            ltrlDays.Text = string.Format("<em title=\"自{0}入会以来\">{1}天</em>",
+                                uc.FromDate.ToString("yyyy-MM-dd"), _days.ToString());
                         }
 
                         #endregion
@@ -243,7 +254,8 @@ namespace Arsenalcn.ClubSys.Web
 
                         try
                         {
-                            ltrlContributeValue.Text = string.Format("<em>{0}</em>", FortuneContributeAlgorithm.CalcContributeFortune(userInfo, true).ToString());
+                            ltrlContributeValue.Text = string.Format("<em>{0}</em>",
+                                FortuneContributeAlgorithm.CalcContributeFortune(userInfo, true).ToString("N2"));
                         }
                         catch { }
 
@@ -257,17 +269,18 @@ namespace Arsenalcn.ClubSys.Web
                         //}
 
                         LinkButton btnKick = e.Row.FindControl("btnKick") as LinkButton;
-                        int currClubID = int.MinValue;
 
-                        if (btnKick != null && int.TryParse(ddlClub.SelectedValue, out currClubID))
+                        if (btnKick != null && ClubID > 0)
                         {
-                            if (uc.Responsibility.Value != (int)Responsibility.Manager && ClubID.Equals(currClubID))
-                                btnKick.OnClientClick = string.Format("KickButtonClicked({0});return false;", uc.Userid.Value.ToString());
+                            if (uc.Responsibility.Value != (int)Responsibility.Manager
+                                && CurrUserManagedClubs.Exists(delegate(Club c) { return c.ID.Equals(ClubID); }))
+                            { btnKick.CommandArgument = uc.Userid.ToString(); }
                             else
-                                btnKick.Visible = false;
+                            { btnKick.Visible = false; }
                         }
 
                         HyperLink hlTransfer = e.Row.FindControl("hlTransfer") as HyperLink;
+
                         if (hlTransfer != null)
                         {
                             if (uc.Userid.Value != this.userid)
@@ -280,68 +293,66 @@ namespace Arsenalcn.ClubSys.Web
             }
         }
 
+        protected void gvClubMemberList_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            try
+            {
+                if (e.CommandName == "KickUser")
+                {
+                    int _kickUserID = Convert.ToInt32(e.CommandArgument.ToString());
+
+                    Club club = ClubLogic.GetClubInfo(ClubID);
+                    UserClub userClub = ClubLogic.GetActiveUserClub(this.userid, ClubID);
+
+                    if (userClub != null && club != null)
+                    {
+                        if (userClub.Responsibility.HasValue &&
+                            (userClub.Responsibility.Equals((int)Responsibility.Manager)
+                            || userClub.Responsibility.Equals((int)Responsibility.Executor)))
+                        {
+                            if (club.ManagerUid == _kickUserID)
+                            {
+                                throw new Exception("您没有权限解约此会员");
+                            }
+
+                            //kick user logic
+                            UserClubLogic.LeaveClub(_kickUserID, ClubID, true, this.username);
+
+                            this.ClientScript.RegisterClientScriptBlock(typeof(string), "success", "alert('球会已与此会员成功解约');", true);
+                        }
+                        else
+                        {
+                            throw new Exception("您没有权限解约此会员");
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception("该用户已不是该球会会员");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                this.ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}');", ex.Message.ToString()), true);
+            }
+            finally
+            {
+                BindData();
+            }
+        }
+
         protected void gvClubMemberList_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
             gvClubMemberList.PageIndex = e.NewPageIndex;
 
-            BindMemberList();
+            BindData();
         }
-
-        #region ICallbackEventHandler Members
-
-        public string GetCallbackResult()
-        {
-            UserClub userClub = ClubLogic.GetActiveUserClub(this.userid, ClubID);
-
-            if (userClub != null)
-            {
-                if (userClub.Responsibility == (int)Responsibility.Manager || userClub.Responsibility == (int)Responsibility.Executor)
-                {
-                    Club club = ClubLogic.GetClubInfo(ClubID);
-                    if (club == null || club.ManagerUid == kickedUserID)
-                    {
-                        //return error
-                        return string.Empty;
-                    }
-                    else
-                    {
-                        //kick user logic
-
-                        UserClubLogic.LeaveClub(kickedUserID, ClubID, true, this.username);
-
-                        return userClub.UserName;
-                    }
-                }
-                else
-                {
-                    //return error
-                    return string.Empty;
-                }
-            }
-            else
-            {
-                //return error
-                return string.Empty;
-            }
-        }
-
-        int kickedUserID = -1;
-        public void RaiseCallbackEvent(string eventArgument)
-        {
-            int userID = -1;
-
-            int.TryParse(eventArgument, out userID);
-
-            kickedUserID = userID;
-        }
-
-        #endregion
 
         protected void ddlClub_SelectedIndexChanged(object sender, EventArgs e)
         {
             gvClubMemberList.PageIndex = 0;
 
-            BindMemberList();
+            BindData();
         }
     }
 }

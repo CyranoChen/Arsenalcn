@@ -10,7 +10,7 @@ using Arsenalcn.Common;
 using Discuz.Entity;
 using Discuz.Forum;
 
-namespace Arsenalcn.ClubSys.DataAccess
+namespace Arsenalcn.ClubSys.Service
 {
     public class PlayerStrip
     {

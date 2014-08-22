@@ -1,8 +1,9 @@
-﻿using Arsenalcn.Common;
-using System;
+﻿using System;
 using System.Data.SqlClient;
 
-namespace Arsenalcn.ClubSys.DataAccess
+using Arsenalcn.Common;
+
+namespace Arsenalcn.ClubSys.Service
 {
     public class AdvLog
     {

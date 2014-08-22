@@ -57,14 +57,16 @@ namespace Arsenal.Entity
 
 
                 // Generate Video File Path
-                if (!string.IsNullOrEmpty(FileName))
-                {
-                    VideoFilePath = FileName.ToLower();
-                }
-                else
-                {
-                    VideoFilePath = string.Format("{0}{1}.{2}", ConfigGlobal.ArsenalVideoUrl, VideoGuid.ToString(), VideoType.ToString()).ToLower();
-                }
+                //if (!string.IsNullOrEmpty(FileName))
+                //{
+                //    VideoFilePath = FileName.ToLower();
+                //}
+                //else
+                //{
+                //    VideoFilePath = string.Format("{0}{1}.{2}", ConfigGlobal.ArsenalVideoUrl, VideoGuid.ToString(), VideoType.ToString()).ToLower();
+                //}
+
+                VideoFilePath = string.Format("{0}{1}.{2}", ConfigGlobal.ArsenalVideoUrl, VideoGuid.ToString(), VideoType.ToString()).ToLower();
 
                 // TEMP: Fix the video width & height equal 0
                 VideoWidth = VideoWidth > 0 ? VideoWidth : 480;

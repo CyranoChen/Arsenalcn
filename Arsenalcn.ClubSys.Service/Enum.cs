@@ -3,7 +3,7 @@ using System.Data;
 using System.Configuration;
 using System.Web;
 
-namespace Arsenalcn.ClubSys.DataAccess
+namespace Arsenalcn.ClubSys.Service
 {
     public enum Responsibility
     {

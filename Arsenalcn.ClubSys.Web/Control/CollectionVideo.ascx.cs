@@ -2,9 +2,7 @@
 using System.Data;
 using System.Web.UI.WebControls;
 
-using Arsenal.Entity;
-using Arsenalcn.ClubSys.DataAccess;
-
+using Arsenalcn.ClubSys.Service;
 using ArsenalVideo = Arsenal.Entity.Video;
 
 namespace Arsenalcn.ClubSys.Web.Control
@@ -87,24 +85,12 @@ namespace Arsenalcn.ClubSys.Web.Control
                 Label lblPlayerVideoID = e.Item.FindControl("lblPlayerVideoID") as Label;
                 Label lblPlayerVideoPath = e.Item.FindControl("lblPlayerVideoPath") as Label;
 
-                ArsenalVideo v = Video.Cache.Load(new Guid(dr["VideoGuid"].ToString()));
-
                 lblPlayerVideoID.Text = dr["ID"].ToString();
                 lblPlayerVideoPath.Text = string.Format("swf/PlayerVideoActive.swf?XMLURL=ServerXml.aspx%3FUserVideoID={0}", dr["ID"].ToString());
 
                 LinkButton btnSwfView = e.Item.FindControl("btnSwfView") as LinkButton;
-                //btnSwfView.OnClientClick = "GenFlashFrame('swf/ShowVideoRoom.swf?XMLURL=ServerXml.aspx%3FUserVideoID=" + dr["ID"].ToString() + "', '480', '300', true); return false";
 
-                if (v.VideoType.Equals(VideoFileType.mp4))
-                {
-                    btnSwfView.OnClientClick = string.Format("GenVideoFrame('{0}', '{1}', '{2}', true); return false", v.VideoFilePath, v.VideoWidth.ToString(), v.VideoHeight.ToString());
-                }
-                else if (v.VideoType.Equals(VideoFileType.flv))
-                {
-                    string _swfUrl = string.Format("swf/ShowVideoRoom.swf?XMLURL=ServerXml.aspx%3FUserVideoID={0}", dr["ID"].ToString());
-
-                    btnSwfView.OnClientClick = string.Format("GenFlashFrame('{0}', '{1}', '{2}', true); return false", _swfUrl, v.VideoWidth.ToString(), v.VideoHeight.ToString());
-                }
+                btnSwfView.OnClientClick = string.Format("ShowVideoPreview('{0}'); return false", dr["VideoGuid"].ToString());
 
                 LinkButton btnSetCurrent = e.Item.FindControl("btnSetCurrent") as LinkButton;
                 Label lblCurrent = e.Item.FindControl("lblSetCurrent") as Label;

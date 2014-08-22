@@ -54,11 +54,15 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="AdminConfig.aspx" />
     <Content Include="AdminEvent.aspx" />
+    <Content Include="App_Themes\Arsenalcn\images\clubsys\btn-close.png" />
+    <Content Include="App_Themes\Arsenalcn\images\clubsys\btn-min.png" />
+    <Content Include="App_Themes\Arsenalcn\images\clubsys\btn-resize.png" />
     <Content Include="App_Themes\Arsenalcn\images\clubsys\ClubCrown.gif" />
     <Content Include="App_Themes\Arsenalcn\images\clubsys\crown.gif" />
     <Content Include="App_Themes\Arsenalcn\images\collapsed_no.gif" />
@@ -72,9 +76,11 @@
     <Content Include="MyAdvertisementContainer.aspx" />
     <Content Include="Scripts\jquery-1.7.1.min.js" />
     <Content Include="Scripts\jquery.pagination.js" />
-    <Content Include="TestShowVideo.html" />
+    <Content Include="swf\ShowVideoRoom.swf" />
+    <Content Include="App_Themes\Arsenalcn\images\clubsys\ArsenalVideoLayout.png" />
     <Content Include="UploadFiles\ClubLogo.gif" />
     <Content Include="UploadFiles\PlayerLogo.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\clubsys\star.png" />
     <Content Include="UploadFiles\StripFace\%2425.jpg" />
     <Content Include="UploadFiles\StripFace\%2454.jpg" />
     <Content Include="UploadFiles\StripFace\00.jpg" />
@@ -549,6 +555,9 @@
     <Compile Include="ServerGoogleAdv.aspx.designer.cs">
       <DependentUpon>ServerGoogleAdv.aspx</DependentUpon>
     </Compile>
+    <Compile Include="ServerVideoPreview.ashx.cs">
+      <DependentUpon>ServerVideoPreview.ashx</DependentUpon>
+    </Compile>
     <Compile Include="ServerXml.aspx.cs">
       <DependentUpon>ServerXml.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -773,7 +782,6 @@
     <Content Include="swf\ShowCardActive.swf" />
     <Content Include="swf\ShowCardFusion.swf" />
     <Content Include="swf\ShowGetStrip.swf" />
-    <Content Include="swf\ShowVideoRoom.swf" />
     <Content Include="swf\UserStrip.swf" />
     <Content Include="swf\UserVideo.swf" />
     <Content Include="ClubVideoView.aspx" />
@@ -785,13 +793,9 @@
       <Project>{18F784E1-6AC9-488C-9F00-B1CF2D5A8893}</Project>
       <Name>Arsenal.Entity</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Arsenalcn.ClubSys.DataAccess\Arsenalcn.ClubSys.DataAccess.csproj">
+    <ProjectReference Include="..\Arsenalcn.ClubSys.Service\Arsenalcn.ClubSys.Service.csproj">
       <Project>{75829613-19be-4d73-967e-19d3b5f7cb84}</Project>
-      <Name>Arsenalcn.ClubSys.DataAccess</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Arsenalcn.ClubSys.Entity\Arsenalcn.ClubSys.Entity.csproj">
-      <Project>{c84e7700-0e7c-4c98-ae70-70efb99b8d8e}</Project>
-      <Name>Arsenalcn.ClubSys.Entity</Name>
+      <Name>Arsenalcn.ClubSys.Service</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arsenalcn.Common\Arsenalcn.Common.csproj">
       <Project>{8258a2e1-6821-4bae-9111-3fbb65703fe0}</Project>
@@ -806,6 +810,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\PublishProfiles\Arsenalcn.ClubSys.Deployment.pubxml" />
+    <Content Include="ServerVideoPreview.ashx" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

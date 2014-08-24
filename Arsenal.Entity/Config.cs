@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 
 using Arsenalcn.Common.Entity;
 
@@ -13,11 +14,59 @@ namespace Arsenal.Entity
 
         #region Members and Properties
 
+        public static SqlConnection SQLConnectionStrings
+        {
+            get
+            {
+                return DataAccess.SQLConn.GetConnection();
+            }
+        }
+
         public static Dictionary<string, string> ConfigDictionary
         {
             get
             {
                 return Config.GetDictionaryByConfigSystem(currSystem);
+            }
+        }
+
+        public static string APIAppKey
+        {
+            get
+            {
+                return ConfigDictionary["APIAppKey"];
+            }
+        }
+
+        public static string APICryptographicKey
+        {
+            get
+            {
+                return ConfigDictionary["APICryptographicKey"];
+            }
+        }
+
+        public static string APILoginURL
+        {
+            get
+            {
+                return ConfigDictionary["APILoginURL"];
+            }
+        }
+
+        public static string APILogoutURL
+        {
+            get
+            {
+                return ConfigDictionary["APILogoutURL"];
+            }
+        }
+
+        public static string APIServiceURL
+        {
+            get
+            {
+                return ConfigDictionary["APIServiceURL"];
             }
         }
 

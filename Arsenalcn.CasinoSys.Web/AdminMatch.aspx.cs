@@ -215,6 +215,7 @@ namespace Arsenalcn.CasinoSys.Web
 
                     this.ClientScript.RegisterClientScriptBlock(typeof(string), "success", "alert('投注退还成功');", true);
 
+                    BindData();
                 }
                 else if (e.CommandName == "CalcBonus")
                 {
@@ -224,15 +225,13 @@ namespace Arsenalcn.CasinoSys.Web
                     m.CalcBonus();
 
                     this.ClientScript.RegisterClientScriptBlock(typeof(string), "success", "alert('奖金发放成功');", true);
+
+                    BindData();
                 }
             }
             catch (Exception ex)
             {
                 this.ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}');", ex.Message.ToString()), true);
-            }
-            finally
-            {
-                BindData();
             }
         }
 

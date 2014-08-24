@@ -319,6 +319,8 @@ namespace Arsenalcn.ClubSys.Web
                             UserClubLogic.LeaveClub(_kickUserID, ClubID, true, this.username);
 
                             this.ClientScript.RegisterClientScriptBlock(typeof(string), "success", "alert('球会已与此会员成功解约');", true);
+
+                            BindData();
                         }
                         else
                         {
@@ -334,10 +336,6 @@ namespace Arsenalcn.ClubSys.Web
             catch (Exception ex)
             {
                 this.ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}');", ex.Message.ToString()), true);
-            }
-            finally
-            {
-                BindData();
             }
         }
 

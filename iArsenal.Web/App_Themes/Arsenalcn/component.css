@@ -1,10 +1,9 @@
 ﻿/* CSS Version Component */
-/* Version: 1.2.5 || Date: 2014-02-04 || Author: Cyrano */
+/* Version: 1.2.6 || Date: 2014-08-22 || Author: Cyrano */
 /* Cascading Style Sheets Level 2 Revision 1 */
 
 /** ASP.NET Component **/
-.InputBtn
-{
+.InputBtn {
     padding: 8px 12px;
     font-size: 12px;
     font-weight: bold;
@@ -16,16 +15,14 @@
     white-space: nowrap;
 }
 
-    .InputBtn:hover
-    {
+    .InputBtn:hover {
         color: #aa0000;
         border: 1px solid #333333;
         background: #fff48d;
         white-space: nowrap;
     }
 
-a.LinkBtn
-{
+a.LinkBtn {
     display: inline-block;
     padding: 5px;
     font-size: 12px;
@@ -39,131 +36,110 @@ a.LinkBtn
     white-space: nowrap;
 }
 
-    a.LinkBtn:hover
-    {
+    a.LinkBtn:hover {
         text-decoration: none;
         color: #aa0000;
         border: 1px solid #333333;
         white-space: nowrap;
     }
 
-a.NewBtn
-{
+a.NewBtn {
     background: #eeeeee url(images/add.gif) no-repeat 5px 5px;
     padding-left: 25px;
 }
 
-a.SelectBtn
-{
+a.SelectBtn {
     background: #eeeeee url(images/select.gif) no-repeat 5px 5px;
     padding-left: 25px;
 }
 
-a.EditBtn
-{
+a.EditBtn {
     background: #eeeeee url(images/edit.gif) no-repeat 5px 5px;
     padding-left: 25px;
 }
 
-a.DelBtn
-{
+a.DelBtn {
     background: #eeeeee url(images/del.gif) no-repeat 5px 5px;
     padding-left: 25px;
 }
 
-a.SaveBtn, a.SubmitBtn
-{
+a.SaveBtn, a.SubmitBtn {
     background: #eeeeee url(images/submit.gif) no-repeat 5px 5px;
     padding-left: 25px;
 }
 
-a.CancelBtn
-{
+a.CancelBtn {
     background: #eeeeee url(images/cancel.gif) no-repeat 6px 6px;
     padding-left: 25px;
 }
 
-a.ResetBtn
-{
+a.ResetBtn {
     background: #eeeeee url(images/reset.gif) no-repeat 5px 5px;
     padding-left: 25px;
 }
 
-a.SetBtn
-{
+a.SetBtn {
     background: #eeeeee url(images/set.gif) no-repeat 5px 6px;
     padding-left: 25px;
 }
 
-a.BackBtn
-{
+a.BackBtn {
     background: #eeeeee url(images/arrow_undo.gif) no-repeat 5px 6px;
     padding-left: 25px;
 }
 
-a.ConfigBtn
-{
+a.ConfigBtn {
     background: #eeeeee url(images/addremoveprograms.gif) no-repeat 5px 5px;
     padding-left: 25px;
 }
 
-a.ServiceBtn
-{
+a.ServiceBtn {
     background: #eeeeee url(images/mydocuments.gif) no-repeat 5px 5px;
     padding-left: 25px;
 }
 
-a.PrivilegeBtn
-{
+a.PrivilegeBtn {
     background: #eeeeee url(images/mydocs.gif) no-repeat 5px 5px;
     padding-left: 25px;
 }
 
-a.JoinBtn
-{
+a.JoinBtn {
     background: #eeeeee url(images/Join.gif) no-repeat 5px 5px;
     padding-left: 25px;
 }
 
-a.ViewClubBtn
-{
+a.ViewClubBtn {
     background: #eeeeee url(images/ViewClub.gif) no-repeat 5px 5px;
     padding-left: 25px;
 }
 
-a.ManageBtn
-{
+a.ManageBtn {
     background: #eeeeee url(images/Manage.gif) no-repeat 5px 5px;
     padding-left: 25px;
 }
 
-a.MemberBtn
-{
+a.MemberBtn {
     background: #eeeeee url(images/Member.gif) no-repeat 5px 5px;
     padding-left: 25px;
 }
 
-a.GetBtn
-{
+a.GetBtn {
     background: #eeeeee url(images/magic.gif) no-repeat 5px 5px;
     padding-left: 25px;
 }
 
-a.ActiveBtn
-{
+a.ActiveBtn {
     background: #eeeeee url(images/cardactive.gif) no-repeat 5px 5px;
     padding-left: 25px;
 }
 
-a.CashBtn
-{
+a.CashBtn {
     background: #eeeeee url(images/cash.gif) no-repeat 5px 5px;
     padding-left: 25px;
 }
 
 /** Form Component **/
-select
-{
+select {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 12px;
     color: #666666;
@@ -172,34 +148,28 @@ select
     margin: 1px;
 }
 
-.CheckBox label, .RadioButtonList label
-{
+.CheckBox label, .RadioButtonList label {
     margin-left: 2px;
     margin-right: 10px;
 }
 
-input::-webkit-input-placeholder
-{
+input::-webkit-input-placeholder {
     color: #ccc;
 }
 
-input:-moz-placeholder
-{
+input:-moz-placeholder {
     color: #ccc;
 }
 
-input:-ms-input-placeholder
-{
+input:-ms-input-placeholder {
     color: #ccc;
 }
 
-textarea
-{
+textarea {
     font-size: 12px;
 }
 
-.TextBox
-{
+.TextBox {
     font-family: Arial, Helvetica, sans-serif;
     border: 1px solid #ccc;
     background: #FFFFFF;
@@ -208,8 +178,7 @@ textarea
     font-size: 12px;
 }
 
-.TextBoxRead
-{
+.TextBoxRead {
     font-family: Arial, Helvetica, sans-serif;
     border: 1px solid #ccc;
     background: #eee;
@@ -218,8 +187,7 @@ textarea
     font-size: 12px;
 }
 
-.TextBox:hover
-{
+.TextBox:hover {
     font-family: Arial, Helvetica, sans-serif;
     background-color: #c0ddfc;
     padding: 4px;
@@ -227,56 +195,12 @@ textarea
     color: #000;
 }
 
-.ValiSpan
-{
+.ValiSpan {
     color: #aa0000;
     font-weight: bold;
     font-family: Verdana;
 }
 
-.BtnDefault
-{
+.BtnDefault {
     display: none;
 }
-
-/* PageCoverPanel */
-/** Ajax Toolkit Style **/
-#PageCoverLayout
-{
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    z-index: 200;
-    width: 100%;
-    height: 100%;
-    background-color: #000;
-    filter: alpha(opacity=70); /* IE */
-    -moz-opacity: 0.7; /* Moz + FF */
-    opacity: 0.7; /* 支持CSS3的浏览器（FF 1.5也支持）*/
-}
-
-#PageCoverLayoutAjax
-{
-    text-align: center;
-    margin-top: 100px;
-    position: absolute;
-    z-index: 999;
-    width: 100%;
-}
-
-    #PageCoverLayoutAjax #btnClose
-    {
-        background: #f2f2f2;
-        border: 1px solid #ccc;
-        color: #333;
-        font-weight: bold;
-        padding: 3px;
-        width: 30px;
-        text-decoration: none;
-    }
-
-        #PageCoverLayoutAjax #btnClose:hover
-        {
-            color: #aa0000;
-            text-decoration: none;
-        }

@@ -162,10 +162,13 @@
     <Compile Include="ArsenalMatchContainer.aspx.designer.cs">
       <DependentUpon>ArsenalMatchContainer.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Common\AdminBasePage.cs">
+    <Compile Include="PageBase\AcnPageBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Common\BasePage.cs">
+    <Compile Include="PageBase\AdminBasePage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PageBase\BasePage.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Control\AdminFieldToolBar.ascx.cs">
@@ -239,6 +242,9 @@
       <DependentUpon>DefaultMaster.master</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServerACNCallback.ashx.cs">
+      <DependentUpon>ServerACNCallback.ashx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Themes\Arsenalcn\images\" />
@@ -258,6 +264,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\PublishProfiles\Arsenal.Deployment.pubxml" />
+    <Content Include="ServerACNCallback.ashx" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

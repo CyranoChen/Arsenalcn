@@ -1,32 +1,31 @@
 ﻿/* CSS Version Base */
-/* Version: 1.1 || Date: 2009-4-27 || Author: Cyrano */
+/* Version: 1.1.1 || Date: 2014-08-23 || Author: Cyrano */
 /* Cascading Style Sheets Level 2 Revision 1 */
 
-body
-{
+body {
     margin: 0px;
     padding: 0px;
     font-size: 12px;
     font-family: Tahoma, Verdana;
 }
-form
-{
+
+form {
     margin: 0px;
     padding: 0px;
 }
-a
-{
+
+a {
     font-size: 12px;
     font-family: Tahoma, Verdana;
     text-decoration: none;
 }
-a:hover
-{
-    font-size: 12px;
-    font-family: Tahoma, Verdana;
-    text-decoration: underline;
-}
-a:link
+
+    a:hover {
+        font-size: 12px;
+        font-family: Tahoma, Verdana;
+        text-decoration: underline;
+    }
+/*a:link
 {
     text-decoration: none;
     font-size: 12px;
@@ -37,53 +36,51 @@ a:visited
     text-decoration: none;
     font-size: 12px;
     font-family: Tahoma, Verdana;
-}
-img
-{
+}*/
+img {
     border: none;
 }
+
 /*** Web 2.0 ***/
 /*** Table ***/
-table
-{
+table {
     font-size: 12px;
     font-family: Tahoma, Verdana;
     empty-cells: show;
-	border-collapse: separate;
+    border-collapse: separate;
 }
-td
-{
+
+td {
     font-size: 12px;
     font-family: Tahoma, Verdana;
 }
-th
-{
+
+th {
     font-size: 12px;
     font-family: Tahoma, Verdana;
 }
 /*** Div ***/
-div
-{
+div {
     margin: 0px;
     padding: 0px;
 }
-ul
-{
+
+ul {
     margin: auto;
     padding: 0px;
 }
-li
-{
+
+li {
     margin: auto;
     padding: 0px;
-    list-style-position:outside;
+    list-style-position: outside;
 }
-#Frame
-{
+
+#Frame {
     position: relative;
     margin: auto;
 }
-.Clear
-{
-    clear:both;
+
+.Clear {
+    clear: both;
 }

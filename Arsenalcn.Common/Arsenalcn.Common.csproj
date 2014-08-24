@@ -34,21 +34,20 @@
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="SQLHelper\SQLConn.cs" />
+    <Compile Include="MsSql\SQLConn.cs" />
     <Compile Include="DataAccess\Config.cs" />
     <Compile Include="DataAccess\DictionaryItem.cs" />
     <Compile Include="DataAccess\Dictionary.cs" />
     <Compile Include="DataAccess\LogEvent.cs" />
-    <Compile Include="SQLHelper\SQLHelper.cs" />
+    <Compile Include="MsSql\SQLHelper.cs" />
     <Compile Include="Entity\Config.cs" />
     <Compile Include="Entity\DictionaryItem.cs" />
-    <Compile Include="Entity\Excel.cs" />
-    <Compile Include="Entity\IP.cs">
+    <Compile Include="Interface\Excel.cs" />
+    <Compile Include="Interface\IP.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Entity\LogEvent.cs" />

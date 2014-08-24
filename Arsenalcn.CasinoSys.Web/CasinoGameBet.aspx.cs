@@ -99,7 +99,7 @@ namespace Arsenalcn.CasinoSys.Web
                                 liDraw.Value = Entity.MatchChoiceOption.DrawValue;
 
                                 ListItem liLose = rblSingleChoice.Items[2];
-                                liLose.Text = string.Format("<em>客队胜({0})<em>", Convert.ToSingle(loseOption.OptionRate).ToString("f2"));
+                                liLose.Text = string.Format("<em>客队胜({0})</em>", Convert.ToSingle(loseOption.OptionRate).ToString("f2"));
                                 liLose.Value = Entity.MatchChoiceOption.AwayWinValue;
                             }
                         }

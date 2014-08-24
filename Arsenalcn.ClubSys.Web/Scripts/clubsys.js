@@ -349,7 +349,7 @@ function GenVideoFrame(jsonObject) {
 
         $pnlTeamworkFrame.find(".PlayerName > span").text(jsonObject.AssistPlayer.DisplayName);
     } else {
-        $pnlVideo.find(".GoalFrame").remove();
+        $pnlVideo.find(".TeamworkFrame").remove();
     }
 
     if (jsonObject.Match != "") {

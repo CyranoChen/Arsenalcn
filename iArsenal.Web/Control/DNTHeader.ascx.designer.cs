@@ -22,6 +22,15 @@ namespace iArsenal.Web.Control {
         protected global::System.Web.UI.WebControls.PlaceHolder phAnonymous;
         
         /// <summary>
+        /// hlLogin control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink hlLogin;
+        
+        /// <summary>
         /// phAthenticated control.
         /// </summary>
         /// <remarks>
@@ -40,13 +49,13 @@ namespace iArsenal.Web.Control {
         protected global::System.Web.UI.WebControls.Literal ltrlUserName;
         
         /// <summary>
-        /// linkLogout control.
+        /// btnLogout control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink linkLogout;
+        protected global::System.Web.UI.WebControls.LinkButton btnLogout;
         
         /// <summary>
         /// ltrlTitle control.

@@ -3,7 +3,7 @@
 <div id="footer">
     <div id="footlinks">
         <p>
-            <a href="http://www.arsenalcn.com" target="_blank">阿森纳中国官方球迷会</a> - 沪ICP备05028113号
+            <a href="http://www.arsenalcn.com" target="_blank">阿森纳中国官方球迷会</a> - 沪ICP备12045527号
             - <span class="scrolltop" onclick="window.scrollTo(0,0);">TOP</span>
         </p>
         <p>
@@ -14,12 +14,12 @@
     </div>
     <img alt="ACN Logo" title="Powered by <%= pluginName %>" src="/App_Themes/arsenalcn/images/ACN_Logo.gif" />
     <p id="copyright">
-        Powered by <a href="default.aspx" title="<%= pluginName %> <%=pluginVersion %> (.NET Framework 2.0)">
+        Powered by <a href="default.aspx" title="<%= pluginName %> <%=pluginVersion %> (.NET Framework 4.0)">
             <%= pluginName %></a> <em>
-                <%=pluginVersion %></em> &copy; 2011-2012 <a href="http://www.Arsenal.cn" target="_blank">
+                <%=pluginVersion %></em> &copy; 2014 <a href="http://www.Arsenal.cn" target="_blank">
                     Arsenal.cn</a>
     </p>
     <p id="debuginfo">
-        Discuz!NT v3.6.711 (Licensed) &copy; 2001-2012 Comsenz Inc.
+        Arsenal China Official Supporters Club &copy; 2012 - 2014 Willing co., ltd.
     </p>
 </div>

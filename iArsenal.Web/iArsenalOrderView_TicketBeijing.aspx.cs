@@ -4,7 +4,7 @@ using iArsenal.Entity;
 
 namespace iArsenal.Web
 {
-    public partial class iArsenalOrderView_TicketBeijing : PageBase.MemberPageBase
+    public partial class iArsenalOrderView_TicketBeijing : MemberPageBase
     {
         protected void Page_Load(object sender, EventArgs e)
         {

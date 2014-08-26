@@ -8,7 +8,7 @@ using ArsenalPlayer = iArsenal.Entity.Arsenal.Player;
 
 namespace iArsenal.Web
 {
-    public partial class iArsenalOrder_ReplicaKit : PageBase.MemberPageBase
+    public partial class iArsenalOrder_ReplicaKit : MemberPageBase
     {
         protected void Page_Load(object sender, EventArgs e)
         {

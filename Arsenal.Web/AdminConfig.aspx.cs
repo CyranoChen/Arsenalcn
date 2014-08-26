@@ -8,11 +8,11 @@ using Arsenalcn.Common.Entity;
 
 namespace Arsenal.Web
 {
-    public partial class AdminConfig : Common.AdminBasePage
+    public partial class AdminConfig : AdminPageBase
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            ctrlAdminFieldToolBar.AdminUserName = this.username;
+            ctrlAdminFieldToolBar.AdminUserName = this.Username;
 
             if (!IsPostBack)
             {

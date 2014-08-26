@@ -4,12 +4,12 @@ using iArsenal.Entity;
 
 namespace iArsenal.Web
 {
-    public partial class _Default : PageBase.AcnPageBase
+    public partial class _Default : AcnPageBase
     {
         protected void Page_Load(object sender, EventArgs e)
         {
             if (ConfigGlobal.PluginActive)
-            {   
+            {
                 //Response.Redirect("index.aspx");
             }
             else

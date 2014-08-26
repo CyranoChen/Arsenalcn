@@ -6,7 +6,7 @@ using iArsenal.Entity;
 
 namespace iArsenal.Web
 {
-    public partial class iArsenalMemberRegister : PageBase.AcnPageBase
+    public partial class iArsenalMemberRegister : AcnPageBase
     {
         protected override void OnInit(EventArgs e)
         {

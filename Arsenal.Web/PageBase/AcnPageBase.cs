@@ -3,7 +3,7 @@ using System.Web;
 
 using Arsenal.Entity;
 
-namespace Arsenal.Web.PageBase
+namespace Arsenal.Web
 {
     public class AcnPageBase : System.Web.UI.Page
     {

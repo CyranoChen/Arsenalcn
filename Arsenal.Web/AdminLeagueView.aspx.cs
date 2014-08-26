@@ -4,11 +4,11 @@ using Arsenal.Entity;
 
 namespace Arsenal.Web
 {
-    public partial class AdminLeagueView : Common.AdminBasePage
+    public partial class AdminLeagueView : AdminPageBase
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            ctrlAdminFieldToolBar.AdminUserName = this.username;
+            ctrlAdminFieldToolBar.AdminUserName = this.Username;
 
             if (!IsPostBack)
             {

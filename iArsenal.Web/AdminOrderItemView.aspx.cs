@@ -4,7 +4,7 @@ using iArsenal.Entity;
 
 namespace iArsenal.Web
 {
-    public partial class AdminOrderItemView : PageBase.AdminPageBase
+    public partial class AdminOrderItemView : AdminPageBase
     {
         protected void Page_Load(object sender, EventArgs e)
         {

@@ -6,7 +6,7 @@ using iArsenal.Entity;
 
 namespace iArsenal.Web
 {
-    public partial class iArsenalOrderView_ReplicaKit : PageBase.MemberPageBase
+    public partial class iArsenalOrderView_ReplicaKit : MemberPageBase
     {
         protected void Page_Load(object sender, EventArgs e)
         {

@@ -6,7 +6,7 @@ using iArsenal.Entity;
 
 namespace iArsenal.Web
 {
-    public partial class AdminOrderItem : PageBase.AdminPageBase
+    public partial class AdminOrderItem : AdminPageBase
     {
         protected void Page_Load(object sender, EventArgs e)
         {

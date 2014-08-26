@@ -8,11 +8,11 @@ using Discuz.Forum;
 
 namespace Arsenal.Web
 {
-    public partial class AdminDNTMessage : Common.AdminBasePage
+    public partial class AdminDNTMessage : AdminPageBase
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            ctrlAdminFieldToolBar.AdminUserName = this.username;
+            ctrlAdminFieldToolBar.AdminUserName = this.Username;
             ctrlCustomPagerInfo.PageChanged += new Control.CustomPagerInfo.PageChangedEventHandler(ctrlCustomPagerInfo_PageChanged);
 
             if (!IsPostBack)
@@ -27,7 +27,7 @@ namespace Arsenal.Web
             if (ViewState["Folder"] != null)
                 _folder = Convert.ToInt16(ViewState["Folder"]);
 
-            List<PrivateMessageInfo> list = PrivateMessages.GetPrivateMessageCollection(this.userid, _folder, int.MaxValue, 1, 2).FindAll(delegate(PrivateMessageInfo pm)
+            List<PrivateMessageInfo> list = PrivateMessages.GetPrivateMessageCollection(this.UID, _folder, int.MaxValue, 1, 2).FindAll(delegate(PrivateMessageInfo pm)
             {
                 Boolean returnValue = true;
                 string tmpString = string.Empty;

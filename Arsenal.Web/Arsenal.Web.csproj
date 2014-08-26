@@ -13,7 +13,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Arsenal.Web</RootNamespace>
     <AssemblyName>Arsenal.Web</AssemblyName>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <UseIISExpress>false</UseIISExpress>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -24,6 +24,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -43,25 +44,21 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Discuz.Common">
-      <HintPath>..\workspace\backup\3.6.Custom\Discuz.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="Discuz.Entity">
-      <HintPath>..\workspace\backup\3.6.Custom\Discuz.Entity.dll</HintPath>
-    </Reference>
-    <Reference Include="Discuz.Forum">
-      <HintPath>..\workspace\backup\3.6.Custom\Discuz.Forum.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="AdminConfig.aspx" />
-    <Content Include="AdminDNTMessage.aspx" />
     <Content Include="AdminLeague.aspx" />
     <Content Include="AdminLeagueView.aspx" />
     <Content Include="AdminMatch.aspx" />
@@ -70,7 +67,54 @@
     <Content Include="AdminTeamView.aspx" />
     <Content Include="AdminVideoView.aspx" />
     <Content Include="AdminVideo.aspx" />
+    <Content Include="App_Themes\Arsenalcn\acn.css" />
+    <Content Include="App_Themes\Arsenalcn\images\ACN_Logo.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\arrow_undo.gif" />
     <Content Include="App_Themes\Arsenalcn\arsenal.css" />
+    <Content Include="App_Themes\Arsenalcn\images\avataronline.gif" />
+    <Content Include="App_Themes\Arsenalcn\base.css" />
+    <Content Include="App_Themes\Arsenalcn\images\bbs_title_bg.jpg" />
+    <Content Include="App_Themes\Arsenalcn\images\BodyBG.png" />
+    <Content Include="App_Themes\Arsenalcn\images\cancel.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\cardactive.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\cash.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\collapsed_no.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\collapsed_yes.gif" />
+    <Content Include="App_Themes\Arsenalcn\component.css" />
+    <Content Include="App_Themes\Arsenalcn\dataView.css" />
+    <Content Include="App_Themes\Arsenalcn\images\forumfooterBg.png" />
+    <Content Include="App_Themes\Arsenalcn\images\headbg.jpg" />
+    <Content Include="App_Themes\Arsenalcn\images\IconTop1.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\IconTop2.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\IconTop3.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\IconTop4.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\IconTop5.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\IconTop6.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\IconTop7.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\IconTop8.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\IconTop9.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\join.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\LiIcon.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\Listbg.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\Listbg.jpg" />
+    <Content Include="App_Themes\Arsenalcn\images\LiTitle.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\logo.png" />
+    <Content Include="App_Themes\Arsenalcn\images\magic.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\manage.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\member.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\menulia.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\menuliaover.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\menu_bg.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\menu_itemline.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\navbg.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\reset.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\Select.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\sitepath.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\submit.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\title_bg.jpg" />
+    <Content Include="App_Themes\Arsenalcn\images\topItem_col.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\topItem_exp.gif" />
+    <Content Include="App_Themes\Arsenalcn\images\ViewClub.gif" />
     <Content Include="ArsenalMatchContainer.aspx" />
     <Content Include="Control\AdminFieldToolBar.ascx" />
     <Content Include="Control\AdminPanel.ascx" />
@@ -91,13 +135,6 @@
     </Compile>
     <Compile Include="AdminConfig.aspx.designer.cs">
       <DependentUpon>AdminConfig.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="AdminDNTMessage.aspx.cs">
-      <DependentUpon>AdminDNTMessage.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="AdminDNTMessage.aspx.designer.cs">
-      <DependentUpon>AdminDNTMessage.aspx</DependentUpon>
     </Compile>
     <Compile Include="AdminLeague.aspx.cs">
       <DependentUpon>AdminLeague.aspx</DependentUpon>
@@ -166,9 +203,6 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="PageBase\AdminBasePage.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="PageBase\BasePage.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Control\AdminFieldToolBar.ascx.cs">
@@ -246,9 +280,7 @@
       <DependentUpon>ServerACNCallback.ashx</DependentUpon>
     </Compile>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Themes\Arsenalcn\images\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Arsenal.Entity\Arsenal.Entity.csproj">
       <Project>{18f784e1-6ac9-488c-9f00-b1cf2d5a8893}</Project>
@@ -263,8 +295,19 @@
     <Content Include="DefaultMaster.master" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Themes\Arsenalcn\acn.skin" />
+    <Content Include="App_Data\ipdata.config" />
     <None Include="Properties\PublishProfiles\Arsenal.Deployment.pubxml" />
     <Content Include="ServerACNCallback.ashx" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

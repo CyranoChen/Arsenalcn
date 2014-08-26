@@ -8,7 +8,7 @@ using iArsenal.Entity;
 
 namespace iArsenal.Web
 {
-    public partial class iArsenalOrderView_MatchTicket : PageBase.MemberPageBase
+    public partial class iArsenalOrderView_MatchTicket : MemberPageBase
     {
         protected void Page_Load(object sender, EventArgs e)
         {

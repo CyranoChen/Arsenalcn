@@ -2,7 +2,7 @@
 
 using iArsenal.Entity;
 
-namespace iArsenal.Web.PageBase
+namespace iArsenal.Web
 {
     public class AdminPageBase : AcnPageBase
     {
@@ -15,7 +15,7 @@ namespace iArsenal.Web.PageBase
 
             if (!ConfigAdmin.IsPluginAdmin(this.UID))
             {
-                Response.Redirect("default.aspx");
+                Response.Redirect("Default.aspx");
             }
         }
     }

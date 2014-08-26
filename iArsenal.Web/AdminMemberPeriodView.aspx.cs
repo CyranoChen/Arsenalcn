@@ -5,7 +5,7 @@ using iArsenal.Entity;
 
 namespace iArsenal.Web
 {
-    public partial class AdminMemberPeriodView : PageBase.AdminPageBase
+    public partial class AdminMemberPeriodView : AdminPageBase
     {
         protected void Page_Load(object sender, EventArgs e)
         {

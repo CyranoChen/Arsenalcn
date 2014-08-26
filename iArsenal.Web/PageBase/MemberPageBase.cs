@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Arsenalcn.Common.Entity;
 using iArsenal.Entity;
 
-namespace iArsenal.Web.PageBase
+namespace iArsenal.Web
 {
     public class MemberPageBase : AcnPageBase
     {

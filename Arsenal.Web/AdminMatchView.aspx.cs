@@ -6,11 +6,11 @@ using Arsenal.Entity;
 
 namespace Arsenal.Web
 {
-    public partial class AdminMatchView : Common.AdminBasePage
+    public partial class AdminMatchView : AdminPageBase
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            ctrlAdminFieldToolBar.AdminUserName = this.username;
+            ctrlAdminFieldToolBar.AdminUserName = this.Username;
 
             if (!IsPostBack)
             {

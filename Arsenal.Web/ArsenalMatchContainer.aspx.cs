@@ -5,7 +5,7 @@ using Arsenal.Entity;
 
 namespace Arsenal.Web
 {
-    public partial class ArsenalMatchContainer : Discuz.Forum.PageBase
+    public partial class ArsenalMatchContainer : AcnPageBase
     {
         protected void Page_PreRender(object sender, EventArgs e)
         {

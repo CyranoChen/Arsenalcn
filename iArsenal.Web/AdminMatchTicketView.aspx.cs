@@ -7,7 +7,7 @@ using iArsenal.Entity;
 
 namespace iArsenal.Web
 {
-    public partial class AdminMatchTicketView : PageBase.AdminPageBase
+    public partial class AdminMatchTicketView : AdminPageBase
     {
         protected void Page_Load(object sender, EventArgs e)
         {

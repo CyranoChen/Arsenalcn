@@ -1,28 +1,9 @@
 ﻿/* CSS Version Arsenal */
-/* Version: 1.1 || Date: 2013-2-17 || Author: Cyrano */
+/* Version: 1.1.1 || Date: 2014-08-24 || Author: Cyrano */
 /* Cascading Style Sheets Level 2 Revision 1 */
 
 /** Arsenal Common **/
-.Arsenal_Tip
-{
-    background: #fff48d;
-    text-align: left;
-    margin: 0px 1px;
-    padding: 3px;
-}
-
-    .Arsenal_Tip label, .Arsenal_Tip span
-    {
-        font-weight: bold;
-        color: #444;
-        background: url(images/Arsenal/Tip.gif) no-repeat 5px 1px;
-        padding-left: 20px;
-        font-size: 12px;
-        line-height: 1.6;
-    }
-
-.Arsenal_Notice
-{
+.Arsenal_Notice {
     font-size: 9pt;
     line-height: 1.6;
     color: #333;
@@ -33,35 +14,30 @@
 }
 
 /** Arsenal Header **/
-.Arsenal_Header
-{
+.Arsenal_Header {
     background: none;
     border: none;
     margin: 0px;
 }
 
-    .Arsenal_Header .GameItemList
-    {
+    .Arsenal_Header .GameItemList {
         float: left;
         margin: 5px;
         display: inline;
     }
 
-        .Arsenal_Header .GameItemList a.StrongLink
-        {
+        .Arsenal_Header .GameItemList a.StrongLink {
             font-weight: bold;
             font-size: 14px;
             color: #da7b00;
             text-decoration: underline;
         }
 
-    .Arsenal_Header .Arsenal_GameName
-    {
+    .Arsenal_Header .Arsenal_GameName {
         position: relative;
     }
 
-        .Arsenal_Header .Arsenal_GameName span
-        {
+        .Arsenal_Header .Arsenal_GameName span {
             font-family: Arial;
             font-weight: bold;
             font-size: 20px;
@@ -72,8 +48,7 @@
             color: #aa0000;
         }
 
-        .Arsenal_Header .Arsenal_GameName em
-        {
+        .Arsenal_Header .Arsenal_GameName em {
             font-family: Verdana;
             font-size: 14px;
             color: #da7b00;
@@ -81,8 +56,7 @@
             padding: 0px 5px;
         }
 
-        .Arsenal_Header .Arsenal_GameName img
-        {
+        .Arsenal_Header .Arsenal_GameName img {
             width: 36px;
             height: 36px;
             border: 1px solid #ccc;
@@ -90,8 +64,7 @@
             padding: 2px;
         }
 
-    .Arsenal_Header .Arsenal_CategoryName
-    {
+    .Arsenal_Header .Arsenal_CategoryName {
         text-align: center;
         font-weight: bold;
         color: #333;
@@ -99,8 +72,7 @@
         font-size: 10.5pt;
     }
 
-    .Arsenal_Header .Arsenal_GameTime
-    {
+    .Arsenal_Header .Arsenal_GameTime {
         text-align: center;
         font-weight: bold;
         color: #9c824a;
@@ -109,8 +81,7 @@
         font-size: 10.5pt;
     }
 
-        .Arsenal_Header .Arsenal_GameTime a
-        {
+        .Arsenal_Header .Arsenal_GameTime a {
             font-size: 10px;
             font-style: italic;
             font-weight: bold;
@@ -118,19 +89,16 @@
             margin: 0px 5px;
         }
 
-    .Arsenal_Header .Clear
-    {
+    .Arsenal_Header .Clear {
         clear: both;
     }
 
 /* Arsenal MainInfo */
-.Arsenal_MainInfo
-{
+.Arsenal_MainInfo {
     background: #f7f7f7 url(images/listbg.jpg) no-repeat top left;
 }
 
-    .Arsenal_MainInfo em
-    {
+    .Arsenal_MainInfo em {
         font-weight: bold;
         font-family: Georgia, Tahoma, Verdana;
         font-size: 13px;

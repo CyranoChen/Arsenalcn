@@ -4,13 +4,18 @@
         <a href="http://www.arsenalcn.com/" title="阿森纳中国官方球迷会">
             <img src="App_Themes/arsenalcn/images/logo.png" alt="阿森纳中国官方球迷会" /></a>
     </h2>
-    <asp:PlaceHolder ID="phAnonymous" runat="server"><span class="avataonline"><a href="/login.aspx">
-        登录</a> | <a href="http://bbs.arsenalcn.com/register.aspx">注册</a></span> </asp:PlaceHolder>
-    <asp:PlaceHolder ID="phAthenticated" runat="server"><span class="avataonline">欢迎: <cite>
-        <asp:Literal ID="ltrlUserName" runat="server"></asp:Literal></cite> |
-        <asp:HyperLink ID="linkLogout" runat="server" NavigateUrl="/logout.aspx?userkey="
-            Text="退出"></asp:HyperLink>
-    </span></asp:PlaceHolder>
+    <asp:PlaceHolder ID="phAnonymous" runat="server">
+        <span class="avataonline">
+            <asp:HyperLink ID="hlLogin" runat="server">登录</asp:HyperLink> | 
+            <a href="http://bbs.arsenalcn.com/register.aspx">注册</a>
+        </span>
+    </asp:PlaceHolder>
+    <asp:PlaceHolder ID="phAthenticated" runat="server">
+        <span class="avataonline">欢迎: <cite>
+            <asp:Literal ID="ltrlUserName" runat="server"></asp:Literal></cite> | 
+            <asp:LinkButton ID="btnLogout" runat="server" OnClick="btnLogout_Click">退出</asp:LinkButton>
+        </span>
+    </asp:PlaceHolder>
     <div class="Clear">
     </div>
 </div>

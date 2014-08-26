@@ -60,19 +60,7 @@
   <ItemGroup>
     <Content Include="AdminConfig.aspx" />
     <Content Include="AdminEvent.aspx" />
-    <Content Include="App_Themes\Arsenalcn\acn.css" />
-    <Content Include="App_Themes\Arsenalcn\base.css" />
     <Content Include="App_Themes\Arsenalcn\clubsys.css" />
-    <Content Include="App_Themes\Arsenalcn\component.css" />
-    <Content Include="App_Themes\Arsenalcn\dataView.css" />
-    <Content Include="App_Themes\Arsenalcn\images\ACN_Logo.gif" />
-    <Content Include="App_Themes\Arsenalcn\images\arrow_undo.gif" />
-    <Content Include="App_Themes\Arsenalcn\images\avataronline.gif" />
-    <Content Include="App_Themes\Arsenalcn\images\bbs_title_bg.jpg" />
-    <Content Include="App_Themes\Arsenalcn\images\BodyBG.png" />
-    <Content Include="App_Themes\Arsenalcn\images\cancel.gif" />
-    <Content Include="App_Themes\Arsenalcn\images\cardactive.gif" />
-    <Content Include="App_Themes\Arsenalcn\images\cash.gif" />
     <Content Include="App_Themes\Arsenalcn\images\clubsys\AdvLoading.gif" />
     <Content Include="App_Themes\Arsenalcn\images\clubsys\agree.gif" />
     <Content Include="App_Themes\Arsenalcn\images\clubsys\ArsenalVideoLayout.png" />
@@ -112,41 +100,6 @@
     <Content Include="App_Themes\Arsenalcn\images\clubsys\VideoCardCountBg.gif" />
     <Content Include="App_Themes\Arsenalcn\images\clubsys\worker.gif" />
     <Content Include="App_Themes\Arsenalcn\images\clubsys\zoomin.gif" />
-    <Content Include="App_Themes\Arsenalcn\images\collapsed_no.gif" />
-    <Content Include="App_Themes\Arsenalcn\images\collapsed_yes.gif" />
-    <Content Include="App_Themes\Arsenalcn\images\forumfooterBg.png" />
-    <Content Include="App_Themes\Arsenalcn\images\headbg.jpg" />
-    <Content Include="App_Themes\Arsenalcn\images\IconTop1.gif" />
-    <Content Include="App_Themes\Arsenalcn\images\IconTop2.gif" />
-    <Content Include="App_Themes\Arsenalcn\images\IconTop3.gif" />
-    <Content Include="App_Themes\Arsenalcn\images\IconTop4.gif" />
-    <Content Include="App_Themes\Arsenalcn\images\IconTop5.gif" />
-    <Content Include="App_Themes\Arsenalcn\images\IconTop6.gif" />
-    <Content Include="App_Themes\Arsenalcn\images\IconTop7.gif" />
-    <Content Include="App_Themes\Arsenalcn\images\IconTop8.gif" />
-    <Content Include="App_Themes\Arsenalcn\images\IconTop9.gif" />
-    <Content Include="App_Themes\Arsenalcn\images\join.gif" />
-    <Content Include="App_Themes\Arsenalcn\images\LiIcon.gif" />
-    <Content Include="App_Themes\Arsenalcn\images\Listbg.gif" />
-    <Content Include="App_Themes\Arsenalcn\images\Listbg.jpg" />
-    <Content Include="App_Themes\Arsenalcn\images\LiTitle.gif" />
-    <Content Include="App_Themes\Arsenalcn\images\logo.png" />
-    <Content Include="App_Themes\Arsenalcn\images\magic.gif" />
-    <Content Include="App_Themes\Arsenalcn\images\manage.gif" />
-    <Content Include="App_Themes\Arsenalcn\images\member.gif" />
-    <Content Include="App_Themes\Arsenalcn\images\menulia.gif" />
-    <Content Include="App_Themes\Arsenalcn\images\menuliaover.gif" />
-    <Content Include="App_Themes\Arsenalcn\images\menu_bg.gif" />
-    <Content Include="App_Themes\Arsenalcn\images\menu_itemline.gif" />
-    <Content Include="App_Themes\Arsenalcn\images\navbg.gif" />
-    <Content Include="App_Themes\Arsenalcn\images\reset.gif" />
-    <Content Include="App_Themes\Arsenalcn\images\Select.gif" />
-    <Content Include="App_Themes\Arsenalcn\images\sitepath.gif" />
-    <Content Include="App_Themes\Arsenalcn\images\submit.gif" />
-    <Content Include="App_Themes\Arsenalcn\images\title_bg.jpg" />
-    <Content Include="App_Themes\Arsenalcn\images\topItem_col.gif" />
-    <Content Include="App_Themes\Arsenalcn\images\topItem_exp.gif" />
-    <Content Include="App_Themes\Arsenalcn\images\ViewClub.gif" />
     <Content Include="Default.aspx" />
     <Content Include="MyAdvertisementContainer.aspx" />
     <Content Include="Scripts\jquery-1.7.1.min.js" />
@@ -792,7 +745,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Arsenal.Entity\Arsenal.Entity.csproj">
-      <Project>{18F784E1-6AC9-488C-9F00-B1CF2D5A8893}</Project>
+      <Project>{18f784e1-6ac9-488c-9f00-b1cf2d5a8893}</Project>
       <Name>Arsenal.Entity</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arsenalcn.ClubSys.Service\Arsenalcn.ClubSys.Service.csproj">
@@ -808,7 +761,6 @@
     <Content Include="ServerGoogleAdv.aspx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Themes\Arsenalcn\acn.skin" />
     <None Include="Properties\PublishProfiles\Arsenalcn.ClubSys.Deployment.pubxml" />
     <Content Include="ServerVideoPreview.ashx" />
   </ItemGroup>

@@ -2,9 +2,9 @@
 
 using Arsenal.Entity;
 
-namespace Arsenal.Web.Common
+namespace Arsenal.Web
 {
-    public class AdminBasePage : BasePage
+    public class AdminPageBase : AcnPageBase
     {
         protected override void OnInitComplete(EventArgs e)
         {
@@ -13,9 +13,9 @@ namespace Arsenal.Web.Common
 
             base.OnInitComplete(e);
 
-            if (!ConfigAdmin.IsPluginAdmin(this.userid))
+            if (!ConfigAdmin.IsPluginAdmin(this.UID))
             {
-                Response.Redirect("ArsenalPortal.aspx");
+                Response.Redirect("Default.aspx");
             }
         }
     }

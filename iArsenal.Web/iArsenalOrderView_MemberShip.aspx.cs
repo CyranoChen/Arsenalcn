@@ -7,7 +7,7 @@ using System.Data.SqlClient;
 
 namespace iArsenal.Web
 {
-    public partial class iArsenalOrderView_MemberShip : PageBase.MemberPageBase
+    public partial class iArsenalOrderView_MemberShip : MemberPageBase
     {
         protected void Page_Load(object sender, EventArgs e)
         {

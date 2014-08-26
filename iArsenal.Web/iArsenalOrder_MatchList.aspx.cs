@@ -8,7 +8,7 @@ using ArsenalTeam = iArsenal.Entity.Arsenal.Team;
 
 namespace iArsenal.Web
 {
-    public partial class iArsenalOrder_MatchList : PageBase.AcnPageBase
+    public partial class iArsenalOrder_MatchList : AcnPageBase
     {
         protected void Page_Load(object sender, EventArgs e)
         {

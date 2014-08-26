@@ -7,11 +7,11 @@ using Arsenal.Entity;
 
 namespace Arsenal.Web
 {
-    public partial class AdminPlayer : Common.AdminBasePage
+    public partial class AdminPlayer : AdminPageBase
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            ctrlAdminFieldToolBar.AdminUserName = this.username;
+            ctrlAdminFieldToolBar.AdminUserName = this.Username;
             ctrlCustomPagerInfo.PageChanged += new Control.CustomPagerInfo.PageChangedEventHandler(ctrlCustomPagerInfo_PageChanged);
 
             if (!IsPostBack)

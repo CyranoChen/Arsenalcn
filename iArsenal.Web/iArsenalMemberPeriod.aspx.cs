@@ -6,7 +6,7 @@ using iArsenal.Entity;
 
 namespace iArsenal.Web
 {
-    public partial class iArsenalMemberPeriod : PageBase.MemberPageBase
+    public partial class iArsenalMemberPeriod : MemberPageBase
     {
         protected void Page_Load(object sender, EventArgs e)
         {

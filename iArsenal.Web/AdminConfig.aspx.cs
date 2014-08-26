@@ -7,7 +7,7 @@ using iArsenal.Entity;
 
 namespace iArsenal.Web
 {
-    public partial class AdminConfig : PageBase.AdminPageBase
+    public partial class AdminConfig : AdminPageBase
     {
         protected void Page_Load(object sender, EventArgs e)
         {

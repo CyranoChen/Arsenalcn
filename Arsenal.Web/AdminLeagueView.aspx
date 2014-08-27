@@ -1,11 +1,11 @@
 ﻿<%@ Page Language="C#" MasterPageFile="DefaultMaster.master" AutoEventWireup="true"
-    CodeBehind="AdminLeagueView.aspx.cs" Inherits="Arsenal.Web.AdminLeagueView" Title="后台管理 添加/更新分类" %>
+    CodeBehind="AdminLeagueView.aspx.cs" Inherits="Arsenal.Web.AdminLeagueView" Title="后台管理 添加/更新分类" Theme="Arsenalcn" %>
 
 <%@ Register Src="Control/AdminPanel.ascx" TagName="AdminPanel" TagPrefix="uc1" %>
 <%@ Register Src="Control/AdminFieldToolBar.ascx" TagName="AdminFieldToolBar" TagPrefix="uc2" %>
-<asp:Content ID="Content1" ContentPlaceHolderID="cphHead" runat="server">
+<asp:Content ID="cphHead" ContentPlaceHolderID="cphHead" runat="server">
 </asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="cphMain" runat="server">
+<asp:Content ID="cphMain" ContentPlaceHolderID="cphMain" runat="server">
     <uc1:AdminPanel ID="pnlAdmin" runat="server" />
     <div id="MainPanel">
         <uc2:AdminFieldToolBar ID="ctrlAdminFieldToolBar" runat="server" />
@@ -13,55 +13,48 @@
             <table class="DataView" cellspacing="0" cellpadding="5">
                 <thead>
                     <tr class="Header">
-                        <th colspan="2">
-                            添加比赛分类，标志请事先上传，并复制URL。
+                        <th colspan="2">添加比赛分类，标志请事先上传，并复制URL。
                         </th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr class="Row">
-                        <td class="FieldHeader" style="width: 30%">
-                            分类GUID:
+                        <td class="FieldHeader" style="width: 30%">分类GUID:
                         </td>
                         <td align="left">
                             <asp:TextBox ID="tbLeagueGuid" runat="server" CssClass="TextBoxRead" Width="300px"></asp:TextBox>
                         </td>
                     </tr>
                     <tr class="AlternatingRow">
-                        <td class="FieldHeader">
-                            分类名称：
+                        <td class="FieldHeader">分类名称：
                         </td>
                         <td align="left">
                             <asp:TextBox ID="tbLeagueName" runat="server" CssClass="TextBox" Width="300px"></asp:TextBox>
                         </td>
                     </tr>
                     <tr class="Row">
-                        <td class="FieldHeader">
-                            分类英文名：
+                        <td class="FieldHeader">分类英文名：
                         </td>
                         <td align="left">
                             <asp:TextBox ID="tbLeagueOrgName" runat="server" CssClass="TextBox" Width="300px"></asp:TextBox>
                         </td>
                     </tr>
                     <tr class="AlternatingRow">
-                        <td class="FieldHeader">
-                            赛季：
+                        <td class="FieldHeader">赛季：
                         </td>
                         <td align="left">
                             <asp:TextBox ID="tbLeagueSeason" runat="server" CssClass="TextBox" Width="300px"></asp:TextBox>
                         </td>
                     </tr>
                     <tr class="Row">
-                        <td class="FieldHeader">
-                            开始时间：
+                        <td class="FieldHeader">开始时间：
                         </td>
                         <td align="left">
                             <asp:TextBox ID="tbLeagueTime" runat="server" CssClass="TextBox" Width="300px"></asp:TextBox>
                         </td>
                     </tr>
                     <tr class="AlternatingRow">
-                        <td class="FieldHeader">
-                            标志：
+                        <td class="FieldHeader">标志：
                         </td>
                         <td align="left">
                             <asp:TextBox ID="tbLeagueLogo" runat="server" CssClass="TextBox" Text="UploadFiles/League/"
@@ -69,16 +62,14 @@
                         </td>
                     </tr>
                     <tr class="Row">
-                        <td class="FieldHeader">
-                            排序：
+                        <td class="FieldHeader">排序：
                         </td>
                         <td align="left">
                             <asp:TextBox ID="tbLeagueOrder" runat="server" CssClass="TextBox" Width="50px" Text="0"></asp:TextBox>
                         </td>
                     </tr>
                     <tr class="AlternatingRow">
-                        <td class="FieldHeader">
-                            状态：
+                        <td class="FieldHeader">状态：
                         </td>
                         <td align="left">
                             <asp:CheckBox ID="cbIsActive" runat="server" Checked="true" Text="是否有效" />

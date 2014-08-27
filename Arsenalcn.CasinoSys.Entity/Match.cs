@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 
+using Arsenalcn.Common;
+
 using Discuz.Forum;
 
 namespace Arsenalcn.CasinoSys.Entity
@@ -67,7 +69,7 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public void Insert(int userID, string username, float winRate, float drawRate, float loseRate)
         {
-            using (SqlConnection conn = DataAccess.SQLConn.GetConnection())
+            using (SqlConnection conn = SQLConn.GetConnection())
             {
                 conn.Open();
                 SqlTransaction trans = conn.BeginTransaction();
@@ -148,7 +150,7 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public void ReturnBet()
         {
-            using (SqlConnection conn = DataAccess.SQLConn.GetConnection())
+            using (SqlConnection conn = SQLConn.GetConnection())
             {
                 conn.Open();
                 SqlTransaction trans = conn.BeginTransaction();
@@ -202,7 +204,7 @@ namespace Arsenalcn.CasinoSys.Entity
                 throw new Exception("You can not calc bonus without a match result");
             }
 
-            using (SqlConnection conn = DataAccess.SQLConn.GetConnection())
+            using (SqlConnection conn = SQLConn.GetConnection())
             {
                 conn.Open();
                 SqlTransaction trans = conn.BeginTransaction();

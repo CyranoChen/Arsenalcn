@@ -83,7 +83,7 @@ namespace Arsenalcn.ClubSys.Web
             Response.Write("ServerMessage=" + responseResult);
         }
 
-        private bool ValidateAuthKey(string card1, string card2, string userid, string authKey)
+        private static bool ValidateAuthKey(string card1, string card2, string userid, string authKey)
         {
             string authPrivateKey = ConfigGlobal.AuthPrivateKey;
 

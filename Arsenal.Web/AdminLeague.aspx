@@ -1,10 +1,10 @@
-﻿<%@ Page Language="C#" MasterPageFile="DefaultMaster.master" CodeBehind="AdminLeague.aspx.cs"
-    Inherits="Arsenal.Web.AdminLeague" Title="后台管理 分类管理" EnableViewState="true" AutoEventWireup="true" %>
+﻿<%@ Page Language="C#" MasterPageFile="DefaultMaster.master" AutoEventWireup="true" CodeBehind="AdminLeague.aspx.cs"
+    Inherits="Arsenal.Web.AdminLeague" Title="后台管理 分类管理" EnableViewState="true" Theme="Arsenalcn" %>
 
 <%@ Register Src="Control/AdminPanel.ascx" TagName="AdminPanel" TagPrefix="uc1" %>
 <%@ Register Src="Control/AdminFieldToolBar.ascx" TagName="AdminFieldToolBar" TagPrefix="uc2" %>
 <%@ Register Src="Control/CustomPagerInfo.ascx" TagName="CustomPagerInfo" TagPrefix="uc3" %>
-<asp:Content ID="Content1" ContentPlaceHolderID="cphHead" runat="server">
+<asp:Content ID="cphHead" ContentPlaceHolderID="cphHead" runat="server">
     <script type="text/javascript">
         $(document).ready(function () {
             var $tbInfo = $(".DivFloatLeft > .TextBox");
@@ -16,7 +16,7 @@
         });
     </script>
 </asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="cphMain" runat="server">
+<asp:Content ID="cphMain" ContentPlaceHolderID="cphMain" runat="server">
     <uc1:AdminPanel ID="pnlAdmin" runat="server" />
     <div id="MainPanel">
         <uc2:AdminFieldToolBar ID="ctrlAdminFieldToolBar" runat="server" />

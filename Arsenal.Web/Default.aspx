@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" MasterPageFile="DefaultMaster.master" CodeBehind="Default.aspx.cs"
-    Inherits="Arsenal.Web._Default" Title="阿森纳中国官方球迷会" %>
+    Inherits="Arsenal.Web._Default" Title="阿森纳中国官方球迷会" Theme="Arsenalcn" %>
 
 <asp:Content ID="cphHead" ContentPlaceHolderID="cphHead" runat="server">
 </asp:Content>

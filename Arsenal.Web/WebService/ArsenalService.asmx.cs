@@ -4,9 +4,9 @@ using System.Web.Services;
 
 using Arsenal.Entity;
 
-namespace Arsenal.Service
+namespace Arsenal.WebService
 {
-    [WebService(Namespace = "http://service.arsenal.cn/")]
+    [WebService(Namespace = "http://www.arsenal.cn/")]
     [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
     [System.ComponentModel.ToolboxItem(false)]
 
@@ -28,6 +28,12 @@ namespace Arsenal.Service
         public List<Team> GetTeams()
         {
             return Arsenal.Entity.Team.Cache.TeamList;
+        }
+
+        [WebMethod(Description = "Arsenal.Entity.Team.Cache.GetTeamsByLeagueGuid(Guid guid)")]
+        public List<Team> GetTeamsByLeagueGuid(Guid guid)
+        {
+            return Arsenal.Entity.Team.Cache.GetTeamsByLeagueGuid(guid);
         }
 
         [WebMethod(Description = "Arsenal.Entity.League.Cache.LeagueList")]

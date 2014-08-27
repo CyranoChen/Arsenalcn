@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 
+using Arsenalcn.Common;
 using Arsenalcn.Common.Entity;
 
 namespace iArsenal.Entity
@@ -18,7 +19,7 @@ namespace iArsenal.Entity
         {
             get
             {
-                return DataAccess.SQLConn.GetConnection();
+                return SQLConn.GetConnection();
             }
         }
 

@@ -4,6 +4,7 @@ using System.Data;
 using System.Web.UI.WebControls;
 
 using Arsenalcn.CasinoSys.Entity;
+using ArsenalLeauge = Arsenalcn.CasinoSys.Entity.Arsenal.League;
 
 namespace Arsenalcn.CasinoSys.Web
 {
@@ -29,8 +30,9 @@ namespace Arsenalcn.CasinoSys.Web
             {
                 if (CurrentLeague != Guid.Empty)
                 {
-                    DataTable dt = Entity.League.GetLeagueAllSeason(CurrentLeague);
-                    ddlSeason.DataSource = dt;
+                    List<ArsenalLeauge> list = Entity.League.Cache.GetSeasonsByLeagueGuid(CurrentLeague);
+
+                    ddlSeason.DataSource = list;
                     ddlSeason.DataTextField = "LeagueSeason";
                     ddlSeason.DataValueField = "LeagueGuid";
                     ddlSeason.DataBind();

@@ -6,10 +6,8 @@ using iArsenal.Entity.ServiceProvider;
 
 namespace iArsenal.Entity
 {
-    public class Player
+    public static class Player
     {
-        public Player() { }
-
         public static class Cache
         {
             static Cache()

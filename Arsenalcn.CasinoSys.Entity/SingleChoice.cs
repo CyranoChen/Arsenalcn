@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 
+using Arsenalcn.Common;
+
 namespace Arsenalcn.CasinoSys.Entity
 {
     public sealed class SingleChoice : CasinoItem
@@ -91,7 +93,7 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public static void CleanNoCasinoItemChoiceOption()
         {
-            using (SqlConnection conn = DataAccess.SQLConn.GetConnection())
+            using (SqlConnection conn = SQLConn.GetConnection())
             {
                 conn.Open();
                 SqlTransaction trans = conn.BeginTransaction();

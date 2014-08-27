@@ -26,7 +26,7 @@ namespace iArsenal.Entity.Arsenal {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.18408")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Web.Services.WebServiceBindingAttribute(Name="ServiceArsenalSoap", Namespace="http://service.arsenal.cn/")]
+    [System.Web.Services.WebServiceBindingAttribute(Name="ServiceArsenalSoap", Namespace="http://www.arsenal.cn/")]
     public partial class ServiceArsenal : System.Web.Services.Protocols.SoapHttpClientProtocol {
         
         private System.Threading.SendOrPostCallback GetMatchsOperationCompleted;
@@ -34,6 +34,8 @@ namespace iArsenal.Entity.Arsenal {
         private System.Threading.SendOrPostCallback GetPlayersOperationCompleted;
         
         private System.Threading.SendOrPostCallback GetTeamsOperationCompleted;
+        
+        private System.Threading.SendOrPostCallback GetTeamsByLeagueGuidOperationCompleted;
         
         private System.Threading.SendOrPostCallback GetLeaguesOperationCompleted;
         
@@ -87,13 +89,16 @@ namespace iArsenal.Entity.Arsenal {
         public event GetTeamsCompletedEventHandler GetTeamsCompleted;
         
         /// <remarks/>
+        public event GetTeamsByLeagueGuidCompletedEventHandler GetTeamsByLeagueGuidCompleted;
+        
+        /// <remarks/>
         public event GetLeaguesCompletedEventHandler GetLeaguesCompleted;
         
         /// <remarks/>
         public event GetVideosCompletedEventHandler GetVideosCompleted;
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://service.arsenal.cn/GetMatchs", RequestNamespace="http://service.arsenal.cn/", ResponseNamespace="http://service.arsenal.cn/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://www.arsenal.cn/GetMatchs", RequestNamespace="http://www.arsenal.cn/", ResponseNamespace="http://www.arsenal.cn/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public Match[] GetMatchs() {
             object[] results = this.Invoke("GetMatchs", new object[0]);
             return ((Match[])(results[0]));
@@ -120,7 +125,7 @@ namespace iArsenal.Entity.Arsenal {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://service.arsenal.cn/GetPlayers", RequestNamespace="http://service.arsenal.cn/", ResponseNamespace="http://service.arsenal.cn/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://www.arsenal.cn/GetPlayers", RequestNamespace="http://www.arsenal.cn/", ResponseNamespace="http://www.arsenal.cn/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public Player[] GetPlayers() {
             object[] results = this.Invoke("GetPlayers", new object[0]);
             return ((Player[])(results[0]));
@@ -147,7 +152,7 @@ namespace iArsenal.Entity.Arsenal {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://service.arsenal.cn/GetTeams", RequestNamespace="http://service.arsenal.cn/", ResponseNamespace="http://service.arsenal.cn/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://www.arsenal.cn/GetTeams", RequestNamespace="http://www.arsenal.cn/", ResponseNamespace="http://www.arsenal.cn/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public Team[] GetTeams() {
             object[] results = this.Invoke("GetTeams", new object[0]);
             return ((Team[])(results[0]));
@@ -174,7 +179,36 @@ namespace iArsenal.Entity.Arsenal {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://service.arsenal.cn/GetLeagues", RequestNamespace="http://service.arsenal.cn/", ResponseNamespace="http://service.arsenal.cn/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://www.arsenal.cn/GetTeamsByLeagueGuid", RequestNamespace="http://www.arsenal.cn/", ResponseNamespace="http://www.arsenal.cn/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        public Team[] GetTeamsByLeagueGuid(System.Guid guid) {
+            object[] results = this.Invoke("GetTeamsByLeagueGuid", new object[] {
+                        guid});
+            return ((Team[])(results[0]));
+        }
+        
+        /// <remarks/>
+        public void GetTeamsByLeagueGuidAsync(System.Guid guid) {
+            this.GetTeamsByLeagueGuidAsync(guid, null);
+        }
+        
+        /// <remarks/>
+        public void GetTeamsByLeagueGuidAsync(System.Guid guid, object userState) {
+            if ((this.GetTeamsByLeagueGuidOperationCompleted == null)) {
+                this.GetTeamsByLeagueGuidOperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetTeamsByLeagueGuidOperationCompleted);
+            }
+            this.InvokeAsync("GetTeamsByLeagueGuid", new object[] {
+                        guid}, this.GetTeamsByLeagueGuidOperationCompleted, userState);
+        }
+        
+        private void OnGetTeamsByLeagueGuidOperationCompleted(object arg) {
+            if ((this.GetTeamsByLeagueGuidCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.GetTeamsByLeagueGuidCompleted(this, new GetTeamsByLeagueGuidCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://www.arsenal.cn/GetLeagues", RequestNamespace="http://www.arsenal.cn/", ResponseNamespace="http://www.arsenal.cn/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public League[] GetLeagues() {
             object[] results = this.Invoke("GetLeagues", new object[0]);
             return ((League[])(results[0]));
@@ -201,7 +235,7 @@ namespace iArsenal.Entity.Arsenal {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://service.arsenal.cn/GetVideos", RequestNamespace="http://service.arsenal.cn/", ResponseNamespace="http://service.arsenal.cn/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://www.arsenal.cn/GetVideos", RequestNamespace="http://www.arsenal.cn/", ResponseNamespace="http://www.arsenal.cn/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public Video[] GetVideos() {
             object[] results = this.Invoke("GetVideos", new object[0]);
             return ((Video[])(results[0]));
@@ -251,7 +285,7 @@ namespace iArsenal.Entity.Arsenal {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://service.arsenal.cn/")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.arsenal.cn/")]
     public partial class Match {
         
         private System.Guid matchGuidField;
@@ -482,7 +516,7 @@ namespace iArsenal.Entity.Arsenal {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://service.arsenal.cn/")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.arsenal.cn/")]
     public partial class Video {
         
         private System.Guid videoGuidField;
@@ -684,7 +718,7 @@ namespace iArsenal.Entity.Arsenal {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.0.30319.18408")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://service.arsenal.cn/")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.arsenal.cn/")]
     public enum VideoFileType {
         
         /// <remarks/>
@@ -699,7 +733,7 @@ namespace iArsenal.Entity.Arsenal {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://service.arsenal.cn/")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.arsenal.cn/")]
     public partial class League {
         
         private System.Guid leagueGuidField;
@@ -828,7 +862,7 @@ namespace iArsenal.Entity.Arsenal {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://service.arsenal.cn/")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.arsenal.cn/")]
     public partial class Team {
         
         private System.Guid teamGuidField;
@@ -982,7 +1016,7 @@ namespace iArsenal.Entity.Arsenal {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://service.arsenal.cn/")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.arsenal.cn/")]
     public partial class Player {
         
         private System.Guid playerGuidField;
@@ -1291,7 +1325,7 @@ namespace iArsenal.Entity.Arsenal {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.0.30319.18408")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://service.arsenal.cn/")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.arsenal.cn/")]
     public enum PlayerPostionType {
         
         /// <remarks/>
@@ -1378,6 +1412,32 @@ namespace iArsenal.Entity.Arsenal {
         private object[] results;
         
         internal GetTeamsCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public Team[] Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((Team[])(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.18408")]
+    public delegate void GetTeamsByLeagueGuidCompletedEventHandler(object sender, GetTeamsByLeagueGuidCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.18408")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class GetTeamsByLeagueGuidCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal GetTeamsByLeagueGuidCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
                 base(exception, cancelled, userState) {
             this.results = results;
         }

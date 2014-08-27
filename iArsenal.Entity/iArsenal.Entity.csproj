@@ -117,10 +117,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <WebReferenceUrl Include="http://vm-win2008r2/services/arsenalservice.asmx">
+    <WebReferenceUrl Include="http://localhost:6421/Webservice/ArsenalService.asmx">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Service References\Arsenal\</RelPath>
-      <UpdateFromURL>http://vm-win2008r2/services/arsenalservice.asmx</UpdateFromURL>
+      <UpdateFromURL>http://localhost:6421/Webservice/ArsenalService.asmx</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>

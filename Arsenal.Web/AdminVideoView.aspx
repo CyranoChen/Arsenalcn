@@ -1,11 +1,11 @@
 ﻿<%@ Page Language="C#" MasterPageFile="DefaultMaster.master" AutoEventWireup="true"
-    CodeBehind="AdminVideoView.aspx.cs" Inherits="Arsenal.Web.AdminVideoView" Title="后台管理 添加/更新视频" %>
+    CodeBehind="AdminVideoView.aspx.cs" Inherits="Arsenal.Web.AdminVideoView" Title="后台管理 添加/更新视频" Theme="Arsenalcn" %>
 
 <%@ Register Src="Control/AdminPanel.ascx" TagName="AdminPanel" TagPrefix="uc1" %>
 <%@ Register Src="Control/AdminFieldToolBar.ascx" TagName="AdminFieldToolBar" TagPrefix="uc2" %>
-<asp:Content ID="Content1" ContentPlaceHolderID="cphhead" runat="server">
+<asp:Content ID="cphhead" ContentPlaceHolderID="cphhead" runat="server">
 </asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="cphMain" runat="server">
+<asp:Content ID="cphMain" ContentPlaceHolderID="cphMain" runat="server">
     <uc1:AdminPanel ID="pnlAdmin" runat="server" />
     <div id="MainPanel">
         <uc2:AdminFieldToolBar ID="ctrlAdminFieldToolBar" runat="server" />

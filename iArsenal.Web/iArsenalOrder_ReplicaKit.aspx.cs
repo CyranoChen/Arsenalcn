@@ -243,7 +243,7 @@ namespace iArsenal.Web
 
                     Product p = Product.Cache.Load(oiReplicaKit.ProductGuid);
 
-                    ddlReplicaKit.Items.Insert(0, new ListItem(string.Format("({0}) {1} - 售价{3}元", p.Code, p.DisplayName, p.Name, oiReplicaKit.UnitPrice.ToString("f2")), oiReplicaKit.ProductGuid.ToString()));
+                    ddlReplicaKit.Items.Insert(0, new ListItem(string.Format("({0}) {1} - 售价{2}元", p.Code, p.DisplayName, oiReplicaKit.UnitPrice.ToString("f2")), oiReplicaKit.ProductGuid.ToString()));
                     tbOrderItemSize.Text = oiReplicaKit.Size;
                     hlReplicaKitPage.Visible = false;
 
@@ -568,7 +568,7 @@ namespace iArsenal.Web
             {
                 Product p = Product.Cache.Load(new Guid(li.Value));
 
-                li.Text = string.Format("({0}) {1} - 售价 ￥{3}", p.Code, p.DisplayName, p.Name, p.PriceCNY.ToString("f2"));
+                li.Text = string.Format("({0}) {1} - 售价 ￥{2}", p.Code, p.DisplayName, p.PriceCNY.ToString("f2"));
             }
         }
 

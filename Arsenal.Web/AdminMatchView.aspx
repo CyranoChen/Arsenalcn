@@ -1,9 +1,9 @@
 ﻿<%@ Page Language="C#" MasterPageFile="DefaultMaster.master" AutoEventWireup="true"
-    CodeBehind="AdminMatchView.aspx.cs" Inherits="Arsenal.Web.AdminMatchView" Title="后台管理 添加/更新阿森纳比赛" %>
+    CodeBehind="AdminMatchView.aspx.cs" Inherits="Arsenal.Web.AdminMatchView" Title="后台管理 添加/更新阿森纳比赛" Theme="Arsenalcn" %>
 
 <%@ Register Src="Control/AdminPanel.ascx" TagName="AdminPanel" TagPrefix="uc1" %>
 <%@ Register Src="Control/AdminFieldToolBar.ascx" TagName="AdminFieldToolBar" TagPrefix="uc2" %>
-<asp:Content ID="Content1" ContentPlaceHolderID="cphhead" runat="server">
+<asp:Content ID="cphhead" ContentPlaceHolderID="cphhead" runat="server">
     <style type="text/css">
         #tdMatchResult input.TextBox
         {
@@ -11,7 +11,7 @@
         }
     </style>
 </asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="cphMain" runat="server">
+<asp:Content ID="cphMain" ContentPlaceHolderID="cphMain" runat="server">
     <uc1:AdminPanel ID="pnlAdmin" runat="server" />
     <div id="MainPanel">
         <uc2:AdminFieldToolBar ID="ctrlAdminFieldToolBar" runat="server" />

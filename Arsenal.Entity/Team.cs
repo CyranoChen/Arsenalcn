@@ -106,6 +106,11 @@ namespace Arsenal.Entity
                 return TeamList.Find(delegate(Team t) { return t.TeamGuid.Equals(guid); });
             }
 
+            public static List<Team> GetTeamsByLeagueGuid(Guid guid)
+            {
+                return TeamList.FindAll(delegate(Team t) { return RelationLeagueTeam.Exist(t.TeamGuid, guid); });
+            }
+
             public static List<Team> TeamList;
         }
 

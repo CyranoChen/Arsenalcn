@@ -26,7 +26,7 @@ namespace iArsenal.Entity.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://vm-win2008r2/services/arsenalservice.asmx")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://localhost:6421/Webservice/ArsenalService.asmx")]
         public string iArsenal_Entity_Arsenal_ServiceArsenal {
             get {
                 return ((string)(this["iArsenal_Entity_Arsenal_ServiceArsenal"]));

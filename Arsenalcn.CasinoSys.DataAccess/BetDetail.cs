@@ -1,6 +1,7 @@
 ﻿using System.Data;
 using System.Data.SqlClient;
 
+using Arsenalcn.Common;
 using Microsoft.ApplicationBlocks.Data;
 
 namespace Arsenalcn.CasinoSys.DataAccess

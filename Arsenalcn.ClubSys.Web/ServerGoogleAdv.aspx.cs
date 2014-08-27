@@ -70,7 +70,7 @@ namespace Arsenalcn.ClubSys.Web
             }
         }
 
-        public string CrawlPageContent(string url)
+        public static string CrawlPageContent(string url)
         {
             HttpWebRequest request = HttpWebRequest.Create(url) as HttpWebRequest;
 
@@ -84,7 +84,7 @@ namespace Arsenalcn.ClubSys.Web
                 return string.Empty;
         }
 
-        public string CrawlPageContent(string url, string begin, string end, bool includeBegin, bool includeEnd)
+        public static string CrawlPageContent(string url, string begin, string end, bool includeBegin, bool includeEnd)
         {
             HttpWebRequest request = HttpWebRequest.Create(url) as HttpWebRequest;
 
@@ -108,7 +108,7 @@ namespace Arsenalcn.ClubSys.Web
             }
         }
 
-        private string GetStringBetweenBeginAndEnd(string input, string begin, string end)
+        private static string GetStringBetweenBeginAndEnd(string input, string begin, string end)
         {
             string pattern = string.Format("(?<={0})[\\W\\w]*?(?={1})", begin, end);
             if (Regex.IsMatch(input, pattern))

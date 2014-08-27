@@ -4,6 +4,7 @@ using System.Data;
 using System.Web.UI.WebControls;
 
 using Arsenalcn.CasinoSys.Entity;
+using ArsenalTeam = Arsenalcn.CasinoSys.Entity.Arsenal.Team;
 
 namespace Arsenalcn.CasinoSys.Web
 {
@@ -56,8 +57,8 @@ namespace Arsenalcn.CasinoSys.Web
                 Match m = new Match(item.MatchGuid.Value);
                 if (m != null)
                 {
-                    Team homeT = new Team(m.Home);
-                    Team awayT = new Team(m.Away);
+                    ArsenalTeam homeT = Team.Cache.Load(m.Home);
+                    ArsenalTeam awayT = Team.Cache.Load(m.Away);
 
                     ltrlHome.Text = homeT.TeamDisplayName;
                     ltrlAway.Text = awayT.TeamDisplayName;

@@ -1,84 +1,56 @@
 ﻿using System;
-using System.Data;
+using System.Collections.Generic;
+using System.Text;
+
+using Arsenal.Entity.ServiceProvider;
 
 namespace Arsenalcn.CasinoSys.Entity
 {
-    public class League
+    public static class League
     {
-        public League() { }
-
-        public League(Guid leagueGuid)
+        public static class Cache
         {
-            DataRow dr = DataAccess.League.GetLeagueByID(leagueGuid);
-
-            if (dr != null)
-                InitLeague(dr);
-        }
-
-        private void InitLeague(DataRow dr)
-        {
-            if (dr != null)
+            static Cache()
             {
-                LeagueGuid = (Guid)dr["LeagueGuid"];
-                LeagueName = dr["LeagueName"].ToString();
-                LeagueOrgName = dr["LeagueOrgName"].ToString();
-                LeagueSeason = dr["LeagueSeason"].ToString();
-                LeagueTime = (DateTime)dr["LeagueTime"];
-                LeagueLogo = dr["LeagueLogo"].ToString();
-                LeagueOrder = Convert.ToInt16(dr["LeagueOrder"]);
-                IsActive = Convert.ToBoolean(dr["IsActive"]);
+                InitCache();
             }
-            else
-                throw new Exception("Unable to init League.");
+
+            public static void RefreshCache()
+            {
+                InitCache();
+            }
+
+            private static void InitCache()
+            {
+                LeagueList.Clear();
+
+                var svc = RemoteServiceProvider.GetWebService();
+                var arrayLeagues = svc.GetLeagues();
+
+                if (arrayLeagues != null && arrayLeagues.Length > 0)
+                {
+                    foreach (Arsenal.League l in arrayLeagues)
+                    {
+                        LeagueList.Add(l);
+                    }
+                }
+
+                LeagueList_Active = LeagueList.FindAll(delegate(Arsenal.League l) { return l.IsActive; });
+            }
+
+            public static Arsenal.League Load(Guid guid)
+            {
+                return LeagueList.Find(delegate(Arsenal.League l) { return l.LeagueGuid.Equals(guid); });
+                //return LeagueList.Find(l => l.LeagueGuid.Equals(guid));
+            }
+
+            public static List<Arsenal.League> GetSeasonsByLeagueGuid(Guid guid)
+            {
+                return LeagueList.FindAll(delegate(Arsenal.League l) { return l.LeagueName.Equals(Load(guid).LeagueName); });
+            }
+
+            public static List<Arsenal.League> LeagueList;
+            public static List<Arsenal.League> LeagueList_Active;
         }
-
-        public void Insert()
-        {
-            DataAccess.League.InsertLeague(LeagueName, LeagueOrgName, LeagueSeason, LeagueTime, LeagueLogo, LeagueOrder, IsActive);
-        }
-
-        public void Update()
-        {
-            DataAccess.League.UpdateLeague(LeagueGuid, LeagueName, LeagueOrgName, LeagueSeason, LeagueTime, LeagueLogo, LeagueOrder, IsActive);
-        }
-
-        public static DataTable GetLeague()
-        {
-            return DataAccess.League.GetAllLeagues();
-        }
-
-        public static DataTable GetLeague(bool isActive)
-        {
-            return DataAccess.League.GetAllLeagues(isActive);
-        }
-
-        public static DataTable GetLeagueAllSeason(Guid leagueGuid)
-        {
-            return DataAccess.League.GetLeagueAllSeason(leagueGuid);
-        }
-
-        public Guid LeagueGuid
-        { get; set; }
-
-        public string LeagueName
-        { get; set; }
-
-        public string LeagueOrgName
-        { get; set; }
-
-        public string LeagueSeason
-        { get; set; }
-
-        public DateTime LeagueTime
-        { get; set; }
-
-        public string LeagueLogo
-        { get; set; }
-
-        public int LeagueOrder
-        { get; set; }
-
-        public bool IsActive
-        { get; set; }
     }
 }

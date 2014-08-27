@@ -2,6 +2,7 @@
 using System.Data;
 
 using Arsenalcn.CasinoSys.Entity;
+using ArsenalTeam = Arsenalcn.CasinoSys.Entity.Arsenal.Team;
 
 namespace Arsenalcn.CasinoSys.Web.Control
 {
@@ -9,7 +10,8 @@ namespace Arsenalcn.CasinoSys.Web.Control
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            Team t = new Team(TeamGuid);
+            ArsenalTeam t = Team.Cache.Load(TeamGuid);
+
             if (t != null)
             {
                 DataTable dt = CasinoItem.GetEndViewByTeam(t.TeamGuid);

@@ -4,6 +4,7 @@ using System.Data;
 using System.Web.UI.WebControls;
 
 using Arsenalcn.CasinoSys.Entity;
+using ArsenalTeam = Arsenalcn.CasinoSys.Entity.Arsenal.Team;
 
 namespace Arsenalcn.CasinoSys.Web
 {
@@ -62,8 +63,8 @@ namespace Arsenalcn.CasinoSys.Web
 
                 Match m = new Match(CurrentMatch);
 
-                Team homeT = new Team(m.Home);
-                Team awayT = new Team(m.Away);
+                ArsenalTeam homeT = Team.Cache.Load(m.Home);
+                ArsenalTeam awayT = Team.Cache.Load(m.Away);
                 home = homeT.TeamDisplayName;
                 away = awayT.TeamDisplayName;
 
@@ -143,14 +144,13 @@ namespace Arsenalcn.CasinoSys.Web
                 {
                     Match m = new Match(item.MatchGuid.Value);
 
-                    Team homeT = new Team(m.Home);
-                    Team awayT = new Team(m.Away);
+                    ArsenalTeam homeT = Team.Cache.Load(m.Home);
+                    ArsenalTeam awayT = Team.Cache.Load(m.Away);
 
                     ltrlHome.Text = string.Format("<a class=\"StrongLink\" href=\"CasinoTeam.aspx?Team={0}\">{1}</a>", homeT.TeamGuid.ToString(), homeT.TeamDisplayName);
                     ltrlAway.Text = string.Format("<a class=\"StrongLink\" href=\"CasinoTeam.aspx?Team={0}\">{1}</a>", awayT.TeamGuid.ToString(), awayT.TeamDisplayName);
 
                     ltrlVS.Text = string.Format("<a href=\"CasinoTeam.aspx?Match={0}\"><em title=\"{1}({2})\">vs</em></a>", m.MatchGuid.ToString(), homeT.Ground, homeT.Capacity.ToString());
-
                 }
 
                 Literal ltrlResult = e.Row.FindControl("ltrlResult") as Literal;

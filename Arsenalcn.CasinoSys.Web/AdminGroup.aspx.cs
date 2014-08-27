@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Web.UI.WebControls;
 
 using Arsenalcn.CasinoSys.Entity;
+using ArsenalLeauge = Arsenalcn.CasinoSys.Entity.Arsenal.League;
+using ArsenalTeam = Arsenalcn.CasinoSys.Entity.Arsenal.Team;
 
 namespace Arsenalcn.CasinoSys.Web
 {
@@ -14,30 +17,18 @@ namespace Arsenalcn.CasinoSys.Web
 
             if (!IsPostBack)
             {
-                DataTable dtLeague = Entity.League.GetLeague(true);
-
-                if (dtLeague != null)
-                {
-                    dtLeague.Columns.Add("LeagueDisplay", typeof(string));
-                    foreach (DataRow dr in dtLeague.Rows)
-                    {
-                        if (!Convert.IsDBNull(dr["LeagueSeason"]) && !string.IsNullOrEmpty(dr["LeagueSeason"].ToString()))
-                        {
-                            dr["LeagueDisplay"] = string.Format("{0}{1}", dr["LeagueName"], dr["LeagueSeason"]);
-                        }
-                    }
-                }
+                List<ArsenalLeauge> list = Entity.League.Cache.LeagueList_Active;
 
                 ListItem item = new ListItem("--请选择分类--", Guid.Empty.ToString());
 
-                ddlLeague.DataSource = dtLeague;
-                ddlLeague.DataTextField = "LeagueDisplay";
+                ddlLeague.DataSource = list;
+                ddlLeague.DataTextField = "LeagueNameInfo";
                 ddlLeague.DataValueField = "LeagueGuid";
                 ddlLeague.DataBind();
                 ddlLeague.Items.Insert(0, item);
 
-                ddlGroupLeague.DataSource = dtLeague;
-                ddlGroupLeague.DataTextField = "LeagueDisplay";
+                ddlGroupLeague.DataSource = list;
+                ddlGroupLeague.DataTextField = "LeagueNameInfo";
                 ddlGroupLeague.DataValueField = "LeagueGuid";
                 ddlGroupLeague.DataBind();
                 ddlGroupLeague.Items.Insert(0, item);
@@ -72,7 +63,7 @@ namespace Arsenalcn.CasinoSys.Web
                     {
                         foreach (DataRow drTeam in dtGroupTeam.Rows)
                         {
-                            dr["GroupTeamList"] += string.Format("{0},", new Team((Guid)drTeam["TeamGuid"]).TeamDisplayName.ToString());
+                            dr["GroupTeamList"] += string.Format("{0},", Team.Cache.Load((Guid)drTeam["TeamGuid"]).TeamDisplayName.ToString());
                             groupTeamCount++;
                         }
                         dr["GroupTeamCount"] = groupTeamCount;
@@ -110,23 +101,10 @@ namespace Arsenalcn.CasinoSys.Web
 
         private void BindGroupTeam()
         {
-            DataTable dtTeam = Entity.Team.GetTeamByLeague(new Guid(ddlGroupLeague.SelectedValue));
+            List<ArsenalTeam> list = Entity.Team.Cache.GetTeamsByLeagueGuid(new Guid(ddlGroupLeague.SelectedValue));
 
-            if (dtTeam != null)
-            {
-                dtTeam.Columns.Add("TeamDisplay", typeof(string));
-
-                foreach (DataRow dr in dtTeam.Rows)
-                {
-                    if (!Convert.IsDBNull(dr["TeamDisplayName"]) && !Convert.IsDBNull(dr["TeamEnglishName"]))
-                        dr["TeamDisplay"] = string.Format("{0} ({1})", dr["TeamDisplayName"].ToString(), dr["TeamEnglishName"].ToString());
-                    else
-                        dr["TeamDisplay"] = dr["TeamDisplayName"].ToString();
-                }
-            }
-
-            lbLeagueTeam.DataSource = dtTeam;
-            lbLeagueTeam.DataTextField = "TeamDisplay";
+            lbLeagueTeam.DataSource = list;
+            lbLeagueTeam.DataTextField = "TeamDisplayName";
             lbLeagueTeam.DataValueField = "TeamGuid";
             lbLeagueTeam.DataBind();
 
@@ -373,6 +351,5 @@ namespace Arsenalcn.CasinoSys.Web
 
             BindGroupData();
         }
-
     }
 }

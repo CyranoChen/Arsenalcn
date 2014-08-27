@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Data;
-
-using Arsenalcn.CasinoSys.Entity;
 using System.Collections.Generic;
 using System.Web.UI.WebControls;
+
+using Arsenalcn.CasinoSys.Entity;
+using ArsenalLeauge = Arsenalcn.CasinoSys.Entity.Arsenal.League;
 
 namespace Arsenalcn.CasinoSys.Web.Control
 {
@@ -13,7 +14,7 @@ namespace Arsenalcn.CasinoSys.Web.Control
         {
             if (!ConfigGlobal.DefaultLeagueID.Equals(Guid.Empty))
             {
-                League l = new League(ConfigGlobal.DefaultLeagueID);
+                ArsenalLeauge l = League.Cache.Load(ConfigGlobal.DefaultLeagueID);
                 ltrlContestTitle.Text = string.Format("<a title=\"{0}{1}\">ACN博彩竞赛排行榜</a>", l.LeagueName, l.LeagueSeason);
 
                 float _tbs = ConfigGlobal.TotalBetStandard;

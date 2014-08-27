@@ -119,7 +119,7 @@ namespace Arsenalcn.ClubSys.Web.Control
 
                 Literal ltrlActionText = e.Row.FindControl("ltrlActionText") as Literal;
                 Literal ltrlStatus = e.Row.FindControl("ltrlStatus") as Literal;
-                Literal ltrlButtonDisplay = e.Row.FindControl("ltrlButtonDisplay") as Literal;
+                //Literal ltrlButtonDisplay = e.Row.FindControl("ltrlButtonDisplay") as Literal;
                 Literal ltrlIsAppliable = e.Row.FindControl("ltrlIsAppliable") as Literal;
 
                 Literal ltrlEquipmentCount = e.Row.FindControl("ltrlEquipmentCount") as Literal;

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 
+using Arsenalcn.Common;
 using Arsenalcn.Common.Entity;
 
 namespace Arsenal.Entity
@@ -18,7 +19,7 @@ namespace Arsenal.Entity
         {
             get
             {
-                return DataAccess.SQLConn.GetConnection();
+                return SQLConn.GetConnection();
             }
         }
 
@@ -140,10 +141,11 @@ namespace Arsenal.Entity
                 try
                 {
                     string tmpID = ConfigDictionary["ArsenalTeamGuid"];
+
                     if (!string.IsNullOrEmpty(tmpID))
-                        return new Guid(tmpID);
+                    { return new Guid(tmpID); }
                     else
-                        throw new Exception();
+                    { return Guid.Empty; }
                 }
                 catch
                 {

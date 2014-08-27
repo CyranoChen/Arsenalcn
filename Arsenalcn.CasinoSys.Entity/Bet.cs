@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 
+using Arsenalcn.Common;
+
 using Discuz.Forum;
 
 namespace Arsenalcn.CasinoSys.Entity
@@ -72,7 +74,7 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public void Insert(MatchResultBetDetail matchResult)
         {
-            using (SqlConnection conn = DataAccess.SQLConn.GetConnection())
+            using (SqlConnection conn = SQLConn.GetConnection())
             {
                 conn.Open();
                 SqlTransaction trans = conn.BeginTransaction();
@@ -111,7 +113,7 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public void Insert(string optionValue)
         {
-            using (SqlConnection conn = DataAccess.SQLConn.GetConnection())
+            using (SqlConnection conn = SQLConn.GetConnection())
             {
                 conn.Open();
                 SqlTransaction trans = conn.BeginTransaction();
@@ -150,7 +152,7 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public static void CleanNoCasinoItemBet()
         {
-            using (SqlConnection conn = DataAccess.SQLConn.GetConnection())
+            using (SqlConnection conn = SQLConn.GetConnection())
             {
                 conn.Open();
                 SqlTransaction trans = conn.BeginTransaction();
@@ -171,7 +173,7 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public static void ReturnBet(int betID)
         {
-            using (SqlConnection conn = DataAccess.SQLConn.GetConnection())
+            using (SqlConnection conn = SQLConn.GetConnection())
             {
                 conn.Open();
                 SqlTransaction trans = conn.BeginTransaction();

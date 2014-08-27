@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Web.UI.WebControls;
 
 using Arsenalcn.CasinoSys.Entity;
+using ArsenalLeauge = Arsenalcn.CasinoSys.Entity.Arsenal.League;
+using ArsenalTeam = Arsenalcn.CasinoSys.Entity.Arsenal.Team;
 
 namespace Arsenalcn.CasinoSys.Web
 {
@@ -14,18 +17,10 @@ namespace Arsenalcn.CasinoSys.Web
 
             if (!IsPostBack)
             {
-                DataTable dtLeague = Entity.League.GetLeague(true);
-                if (dtLeague != null)
-                {
-                    dtLeague.Columns.Add("LeagueDisplay", typeof(string));
-                    foreach (DataRow dr in dtLeague.Rows)
-                    {
-                        dr["LeagueDisplay"] = string.Format("{0} {1}", dr["LeagueName"], dr["LeagueSeason"]);
-                    }
-                }
+                List<ArsenalLeauge> list = Entity.League.Cache.LeagueList_Active;
 
-                ddlLeague.DataSource = dtLeague;
-                ddlLeague.DataTextField = "LeagueDisplay";
+                ddlLeague.DataSource = list;
+                ddlLeague.DataTextField = "LeagueNameInfo";
                 ddlLeague.DataValueField = "LeagueGuid";
                 ddlLeague.DataBind();
 
@@ -39,16 +34,16 @@ namespace Arsenalcn.CasinoSys.Web
 
         protected void ddlLeague_SelectedIndexChanged(object sender, EventArgs e)
         {
-            DataTable dtTeams = Entity.Team.GetTeamByLeague(new Guid(ddlLeague.SelectedValue));
+            List<ArsenalTeam> list = Entity.Team.Cache.GetTeamsByLeagueGuid(new Guid(ddlLeague.SelectedValue));
 
-            if (dtTeams != null)
+            if (list != null && list.Count > 0)
             {
-                ddlHomeTeam.DataSource = dtTeams;
+                ddlHomeTeam.DataSource = list;
                 ddlHomeTeam.DataTextField = "TeamDisplayName";
                 ddlHomeTeam.DataValueField = "TeamGuid";
                 ddlHomeTeam.DataBind();
 
-                ddlAwayTeam.DataSource = dtTeams;
+                ddlAwayTeam.DataSource = list;
                 ddlAwayTeam.DataTextField = "TeamDisplayName";
                 ddlAwayTeam.DataValueField = "TeamGuid";
                 ddlAwayTeam.DataBind();
@@ -88,8 +83,8 @@ namespace Arsenalcn.CasinoSys.Web
                 m.PlayTime = Convert.ToDateTime(tbPlayTime.Text);
                 m.LeagueGuid = new Guid(ddlLeague.SelectedValue);
 
-                League l = new League(m.LeagueGuid);
-                m.LeagueName = l.LeagueName + l.LeagueSeason;
+                ArsenalLeauge l = League.Cache.Load(m.LeagueGuid);
+                m.LeagueName = l.LeagueNameInfo;
 
                 if (!string.IsNullOrEmpty(tbRound.Text))
                     m.Round = Convert.ToInt16(tbRound.Text);

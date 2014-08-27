@@ -4,8 +4,7 @@ using System.Web.UI.WebControls;
 
 using Arsenalcn.ClubSys.Service;
 using Arsenalcn.ClubSys.Entity;
-
-using ArsenalPlayer = Arsenal.Entity.Player;
+using ArsenalPlayer = Arsenalcn.ClubSys.Service.Arsenal.Player;
 
 namespace Arsenalcn.ClubSys.Web
 {
@@ -62,7 +61,7 @@ namespace Arsenalcn.ClubSys.Web
                         if (br.ResultDetail == "legend")
                             finalResult = "<span class=\"ClubSys_Strip VIDEO\">视频</span>";
                         else
-                            finalResult = string.Format("<span class=\"ClubSys_Strip CARD\">{0}</span>", ArsenalPlayer.Cache.Load(new Guid(br.ResultDetail)).DisplayName);
+                            finalResult = string.Format("<span class=\"ClubSys_Strip CARD\">{0}</span>", Arsenal_Player.Cache.Load(new Guid(br.ResultDetail)).DisplayName);
                         break;
                     case BingoResultType.Cash:
                         finalResult = "<span class=\"ClubSys_Strip CASH\">枪手币: " + br.ResultDetail.ToString() + "</span>";

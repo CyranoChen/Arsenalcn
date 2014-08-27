@@ -103,8 +103,8 @@ namespace Arsenalcn.ClubSys.Web.Control
         {
             get
             {
-                List<UserNumber> items = PlayerStrip.GetMyNumbers(ProfileUserID);
-                items.RemoveAll(delegate(UserNumber un) { return !un.IsActive; });
+                List<Card> items = PlayerStrip.GetMyNumbers(ProfileUserID);
+                items.RemoveAll(delegate(Card un) { return !un.IsActive; });
 
                 return items.Count.ToString();
             }
@@ -114,8 +114,8 @@ namespace Arsenalcn.ClubSys.Web.Control
         {
             get
             {
-                List<UserNumber> items = PlayerStrip.GetMyNumbers(ProfileUserID);
-                items.RemoveAll(delegate(UserNumber un) { return un.IsActive || !un.ArsenalPlayerGuid.HasValue; });
+                List<Card> items = PlayerStrip.GetMyNumbers(ProfileUserID);
+                items.RemoveAll(delegate(Card un) { return un.IsActive || !un.ArsenalPlayerGuid.HasValue; });
 
                 return items.Count.ToString();
             }
@@ -135,8 +135,8 @@ namespace Arsenalcn.ClubSys.Web.Control
         {
             get
             {
-                List<UserNumber> items = PlayerStrip.GetMyNumbers(ProfileUserID);
-                items.RemoveAll(delegate(UserNumber un) { return un.ArsenalPlayerGuid.HasValue; });
+                List<Card> items = PlayerStrip.GetMyNumbers(ProfileUserID);
+                items.RemoveAll(delegate(Card un) { return un.ArsenalPlayerGuid.HasValue; });
 
                 return items.Count.ToString();
             }

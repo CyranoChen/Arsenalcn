@@ -4,8 +4,7 @@ using System.Web.UI.WebControls;
 
 using Arsenalcn.ClubSys.Service;
 using Arsenalcn.ClubSys.Entity;
-
-using ArsenalPlayer = Arsenal.Entity.Player;
+using ArsenalPlayer = Arsenalcn.ClubSys.Service.Arsenal.Player;
 
 namespace Arsenalcn.ClubSys.Web
 {

@@ -4,8 +4,7 @@ using System.Web.UI.WebControls;
 
 using Arsenalcn.ClubSys.Service;
 using Arsenalcn.ClubSys.Entity;
-
-using ArsenalPlayer = Arsenal.Entity.Player;
+using ArsenalPlayer = Arsenalcn.ClubSys.Service.Arsenal.Player;
 
 namespace Arsenalcn.ClubSys.Web.Control
 {
@@ -19,7 +18,7 @@ namespace Arsenalcn.ClubSys.Web.Control
             {
                 _playerInfo = PlayerStrip.GetPlayerInfo(ProfileUserID);
 
-                List<UserNumber> list = PlayerStrip.GetMyCards(ProfileUserID).FindAll(delegate(UserNumber un)
+                List<Card> list = PlayerStrip.GetMyCards(ProfileUserID).FindAll(delegate(Card un)
                 { return un.IsActive && un.ArsenalPlayerGuid.HasValue && un.ActiveDate.HasValue; });
 
                 list = SortUserNumberListByOrderClause(list, OrderClause);
@@ -40,16 +39,16 @@ namespace Arsenalcn.ClubSys.Web.Control
             }
         }
 
-        private List<UserNumber> SortUserNumberListByOrderClause(List<UserNumber> list, string orderClause)
+        private List<Card> SortUserNumberListByOrderClause(List<Card> list, string orderClause)
         {
             if (list.Count > 0 && !string.IsNullOrEmpty(orderClause))
             {
                 if (orderClause.Equals("SquadNumber"))
                 {
-                    list.Sort(delegate(UserNumber un1, UserNumber un2)
+                    list.Sort(delegate(Card un1, Card un2)
                     {
-                        ArsenalPlayer p1 = ArsenalPlayer.Cache.Load(un1.ArsenalPlayerGuid.Value);
-                        ArsenalPlayer p2 = ArsenalPlayer.Cache.Load(un2.ArsenalPlayerGuid.Value);
+                        ArsenalPlayer p1 = Arsenal_Player.Cache.Load(un1.ArsenalPlayerGuid.Value);
+                        ArsenalPlayer p2 = Arsenal_Player.Cache.Load(un2.ArsenalPlayerGuid.Value);
 
                         if (p1.SquadNumber.Equals(p2.SquadNumber))
                             return Comparer<string>.Default.Compare(p1.DisplayName, p2.DisplayName);
@@ -59,14 +58,14 @@ namespace Arsenalcn.ClubSys.Web.Control
                 }
                 else if (orderClause.Equals("ActiveDate DESC"))
                 {
-                    list.Sort(delegate(UserNumber un1, UserNumber un2) { return Comparer<DateTime>.Default.Compare(un2.ActiveDate.Value, un1.ActiveDate.Value); });
+                    list.Sort(delegate(Card un1, Card un2) { return Comparer<DateTime>.Default.Compare(un2.ActiveDate.Value, un1.ActiveDate.Value); });
                 }
                 else if (orderClause.Equals("Legend, SquadNumber"))
                 {
-                    list.Sort(delegate(UserNumber un1, UserNumber un2)
+                    list.Sort(delegate(Card un1, Card un2)
                     {
-                        ArsenalPlayer p1 = ArsenalPlayer.Cache.Load(un1.ArsenalPlayerGuid.Value);
-                        ArsenalPlayer p2 = ArsenalPlayer.Cache.Load(un2.ArsenalPlayerGuid.Value);
+                        ArsenalPlayer p1 = Arsenal_Player.Cache.Load(un1.ArsenalPlayerGuid.Value);
+                        ArsenalPlayer p2 = Arsenal_Player.Cache.Load(un2.ArsenalPlayerGuid.Value);
 
                         if (p1.IsLegend.Equals(p2.IsLegend))
                         {
@@ -83,7 +82,7 @@ namespace Arsenalcn.ClubSys.Web.Control
                 }
                 else
                 {
-                    list.Sort(delegate(UserNumber un1, UserNumber un2) { return Comparer<DateTime>.Default.Compare(un2.GainDate, un1.GainDate); });
+                    list.Sort(delegate(Card un1, Card un2) { return Comparer<DateTime>.Default.Compare(un2.GainDate, un1.GainDate); });
                 }
             }
 
@@ -94,7 +93,7 @@ namespace Arsenalcn.ClubSys.Web.Control
         {
             if ((e.Item.ItemType == ListItemType.Item) || (e.Item.ItemType == ListItemType.AlternatingItem))
             {
-                UserNumber un = e.Item.DataItem as UserNumber;
+                Card un = e.Item.DataItem as Card;
 
                 Label lblPlayerCardID = e.Item.FindControl("lblPlayerCardID") as Label;
                 Label lblPlayerCardPath = e.Item.FindControl("lblPlayerCardPath") as Label;
@@ -163,7 +162,7 @@ namespace Arsenalcn.ClubSys.Web.Control
             {
                 int userNumID = int.Parse(e.CommandArgument.ToString());
 
-                UserNumber un = PlayerStrip.GetUserNumber(userNumID);
+                Card un = PlayerStrip.GetUserNumber(userNumID);
 
                 if (un.UserID == CurrentUserID && un.IsActive && !un.IsInUse)
                 {
@@ -182,7 +181,7 @@ namespace Arsenalcn.ClubSys.Web.Control
             {
                 int userNumID = int.Parse(e.CommandArgument.ToString());
 
-                UserNumber un = PlayerStrip.GetUserNumber(userNumID);
+                Card un = PlayerStrip.GetUserNumber(userNumID);
 
                 if (un.UserID == CurrentUserID && un.IsActive && un.IsInUse)
                 {

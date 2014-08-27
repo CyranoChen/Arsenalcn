@@ -16,7 +16,7 @@ namespace Arsenalcn.ClubSys.Service
     {
         public static bool CheckUserNumActiveCondition(int userid, int userNumID)
         {
-            UserNumber un = PlayerStrip.GetUserNumber(userNumID);
+            Card un = PlayerStrip.GetUserNumber(userNumID);
 
             if (un == null)
                 return false;
@@ -49,14 +49,14 @@ namespace Arsenalcn.ClubSys.Service
             foreach (UserClub uc in ucs)
             {
                 Player player = PlayerStrip.GetPlayerInfo(uc.Userid.Value);
-                List<UserNumber> numbers = PlayerStrip.GetMyNumbers(uc.Userid.Value);
+                List<Card> numbers = PlayerStrip.GetMyNumbers(uc.Userid.Value);
 
                 if (player != null)
                     totalCount += (player.Shirt + player.Shorts + player.Sock);
 
                 totalCount += numbers.Count;
 
-                foreach (UserNumber number in numbers)
+                foreach (Card number in numbers)
                 {
                     if (number.IsActive)
                         totalCount += 15;
@@ -76,7 +76,7 @@ namespace Arsenalcn.ClubSys.Service
             foreach (UserClub uc in ucs)
             {
                 Player player = PlayerStrip.GetPlayerInfo(uc.Userid.Value);
-                List<UserNumber> numbers = PlayerStrip.GetMyNumbers(uc.Userid.Value);
+                List<Card> numbers = PlayerStrip.GetMyNumbers(uc.Userid.Value);
 
                 if (player != null)
                     totalCount += numbers.Count;
@@ -167,9 +167,9 @@ namespace Arsenalcn.ClubSys.Service
             return count;
         }
 
-        public static List<UserNumber> GetMyNumbers(int userId)
+        public static List<Card> GetMyNumbers(int userId)
         {
-            List<UserNumber> list = new List<UserNumber>();
+            List<Card> list = new List<Card>();
 
             string sql = "SELECT * FROM dbo.AcnClub_Card WHERE UserID = @userID ORDER BY GainDate DESC";
 
@@ -189,18 +189,18 @@ namespace Arsenalcn.ClubSys.Service
 
                 foreach (DataRow dr in dt.Rows)
                 {
-                    UserNumber un = new UserNumber(dr);
+                    Card c = new Card(dr);
 
-                    list.Add(un);
+                    list.Add(c);
                 }
             }
 
             return list;
         }
 
-        public static List<UserNumber> GetMyCards(int userId)
+        public static List<Card> GetMyCards(int userId)
         {
-            List<UserNumber> list = new List<UserNumber>();
+            List<Card> list = new List<Card>();
 
             string sql = "SELECT * FROM dbo.AcnClub_Card AS c INNER JOIN dbo.Arsenal_Player AS p ON c.ArsenalPlayerGuid = p.PlayerGuid WHERE c.UserID = @userID ORDER BY c.GainDate DESC";
 
@@ -220,7 +220,7 @@ namespace Arsenalcn.ClubSys.Service
 
                 foreach (DataRow dr in dt.Rows)
                 {
-                    UserNumber un = new UserNumber(dr);
+                    Card un = new Card(dr);
 
                     list.Add(un);
                 }
@@ -400,7 +400,7 @@ namespace Arsenalcn.ClubSys.Service
 
                         UpdateBingoResultLog(userID, result);
 
-                        return ("a card of " + Arsenal.Entity.Player.Cache.Load(new Guid(guid)).DisplayName);
+                        return ("a card of " + Arsenal_Player.Cache.Load(new Guid(guid)).DisplayName);
                     }
                     catch
                     {
@@ -915,9 +915,9 @@ namespace Arsenalcn.ClubSys.Service
             }
         }
 
-        public static UserNumber GetUserNumber(int id)
+        public static Card GetUserNumber(int id)
         {
-            UserNumber userNumber = null;
+            Card userNumber = null;
 
             string sql = "SELECT * FROM dbo.AcnClub_Card WHERE [ID] = @id";
 
@@ -937,7 +937,7 @@ namespace Arsenalcn.ClubSys.Service
 
                 if (dt.Rows.Count != 0)
                 {
-                    userNumber = new UserNumber(dt.Rows[0]);
+                    userNumber = new Card(dt.Rows[0]);
                 }
 
             }
@@ -947,7 +947,7 @@ namespace Arsenalcn.ClubSys.Service
 
         public static void UpdatePlayerCurrentNum(int userID, int userNumID)
         {
-            UserNumber un = GetUserNumber(userNumID);
+            Card un = GetUserNumber(userNumID);
 
             if (un.ArsenalPlayerGuid.HasValue)
             {
@@ -972,7 +972,7 @@ namespace Arsenalcn.ClubSys.Service
 
         public static void RemovePlayerCurrentNum(int userID, int userNumID)
         {
-            UserNumber un = GetUserNumber(userNumID);
+            Card un = GetUserNumber(userNumID);
 
             if (un.ArsenalPlayerGuid.HasValue)
             {
@@ -1223,8 +1223,8 @@ namespace Arsenalcn.ClubSys.Service
                         DataTable dtVideo = UserVideo.GetUserVideo(userID);
                         int videoActiveCount = dtVideo.Rows.Count;
 
-                        List<UserNumber> items = PlayerStrip.GetMyNumbers(userID);
-                        items.RemoveAll(delegate(UserNumber un) { return !un.IsActive; });
+                        List<Card> items = PlayerStrip.GetMyNumbers(userID);
+                        items.RemoveAll(delegate(Card un) { return !un.IsActive; });
                         int cardActiveCount = items.Count;
 
                         // Video & Card Cash Bonus

@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 using Arsenalcn.ClubSys.Entity;
-
-using ArsenalPlayer = Arsenal.Entity.Team;
-using ArsenalVideo = Arsenal.Entity.Video;
+using ArsenalVideo = Arsenalcn.ClubSys.Service.Arsenal.Video;
 
 namespace Arsenalcn.ClubSys.Service
 {
@@ -117,7 +115,7 @@ namespace Arsenalcn.ClubSys.Service
         {
             get
             {
-                List<ArsenalVideo> list = ArsenalVideo.Cache.VideoList_Legend.FindAll(delegate(ArsenalVideo v)
+                List<ArsenalVideo> list = Arsenal_Video.Cache.VideoList_Legend.FindAll(delegate(ArsenalVideo v)
                 {
                     int _gRank = int.MinValue;
                     if (int.TryParse(v.GoalRank, out _gRank))
@@ -125,7 +123,7 @@ namespace Arsenalcn.ClubSys.Service
                     else
                         return false;
                 });
-                
+
                 int videoClubHaveGetCount = UserVideo.GetUserVideoByClubID(currentClub.ID.Value).Rows.Count;
                 int videoCanGetCount = list.Count;
 

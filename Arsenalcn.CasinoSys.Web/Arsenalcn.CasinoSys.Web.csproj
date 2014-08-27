@@ -341,6 +341,7 @@
     <Content Include="UploadFiles\League\Italy.gif" />
     <Content Include="UploadFiles\League\Spain.gif" />
     <Content Include="UploadFiles\League\WorldCup2010.gif" />
+    <Content Include="UploadFiles\League\WorldCup2014.gif" />
     <Content Include="UploadFiles\Team\England\Aldershot.gif" />
     <Content Include="UploadFiles\Team\England\Arsenal.gif" />
     <Content Include="UploadFiles\Team\England\AstonVilla.gif" />
@@ -534,7 +535,9 @@
     <Content Include="UploadFiles\Team\Spain\Betis.gif" />
     <Content Include="UploadFiles\Team\Spain\Bilbao.gif" />
     <Content Include="UploadFiles\Team\Spain\CeltaVigo.gif" />
+    <Content Include="UploadFiles\Team\Spain\Cordoba.gif" />
     <Content Include="UploadFiles\Team\Spain\DeportivoLaCoruna.gif" />
+    <Content Include="UploadFiles\Team\Spain\Elche.gif" />
     <Content Include="UploadFiles\Team\Spain\Espanyol.gif" />
     <Content Include="UploadFiles\Team\Spain\Getafe.gif" />
     <Content Include="UploadFiles\Team\Spain\Gijon.gif" />

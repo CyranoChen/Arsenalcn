@@ -28,7 +28,7 @@ namespace Arsenalcn.ClubSys.Web
                             {
                                 if (PlayerStrip.CheckUserNumActiveCondition(this.userid, unID))
                                 {
-                                    UserNumber un = PlayerStrip.GetUserNumber(unID);
+                                    Card un = PlayerStrip.GetUserNumber(unID);
 
                                     if (un.ArsenalPlayerGuid.HasValue)
                                     {

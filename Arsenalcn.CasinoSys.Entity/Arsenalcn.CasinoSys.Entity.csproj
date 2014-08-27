@@ -75,8 +75,8 @@
     <Compile Include="Custom\CasinoGambler.cs" />
     <Compile Include="Group.cs" />
     <Compile Include="GroupTeam.cs" />
-    <Compile Include="Team.cs" />
-    <Compile Include="League.cs" />
+    <Compile Include="ArsenalTeam.cs" />
+    <Compile Include="ArsenalLeague.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>

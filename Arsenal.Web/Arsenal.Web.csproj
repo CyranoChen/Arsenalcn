@@ -124,6 +124,7 @@
     <Content Include="Control\FieldTooBar.ascx" />
     <Content Include="AdminPlayer.aspx" />
     <Content Include="AdminPlayerView.aspx" />
+    <Content Include="ArsenalPortal.aspx" />
     <Content Include="Default.aspx" />
     <Content Include="Scripts\arsenal.js" />
     <Content Include="Scripts\jquery-1.7.1.min.js" />
@@ -199,6 +200,13 @@
     </Compile>
     <Compile Include="ArsenalMatchContainer.aspx.designer.cs">
       <DependentUpon>ArsenalMatchContainer.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ArsenalPortal.aspx.cs">
+      <DependentUpon>ArsenalPortal.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ArsenalPortal.aspx.designer.cs">
+      <DependentUpon>ArsenalPortal.aspx</DependentUpon>
     </Compile>
     <Compile Include="PageBase\AcnPageBase.cs">
       <SubType>ASPXCodeBehind</SubType>

@@ -10,7 +10,7 @@ namespace Arsenal.Web
         {
             if (ConfigGlobal.PluginActive)
             {
-                //Response.Redirect("ArsenalPortal.aspx");
+                Response.Redirect("http://www.arsenalcn.com");
                 //Response.Redirect("http://bbs.arsenalcn.com/plugin/acncasino/");
             }
             else

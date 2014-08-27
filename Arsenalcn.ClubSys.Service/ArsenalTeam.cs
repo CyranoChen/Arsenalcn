@@ -4,9 +4,9 @@ using System.Text;
 
 using Arsenal.Entity.ServiceProvider;
 
-namespace Arsenalcn.CasinoSys.Entity
+namespace Arsenalcn.ClubSys.Service
 {
-    public static class Team
+    public static class Arsenal_Team
     {
         public static class Cache
         {
@@ -22,10 +22,13 @@ namespace Arsenalcn.CasinoSys.Entity
 
             private static void InitCache()
             {
-                TeamList.Clear();
-
                 var svc = RemoteServiceProvider.GetWebService();
                 var arrayTeams = svc.GetTeams();
+
+                if (TeamList != null)
+                { TeamList.Clear(); }
+                else
+                { TeamList = new List<Arsenal.Team>(); }
 
                 if (arrayTeams != null && arrayTeams.Length > 0)
                 {

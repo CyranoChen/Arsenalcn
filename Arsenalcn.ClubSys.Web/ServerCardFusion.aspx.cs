@@ -36,8 +36,8 @@ namespace Arsenalcn.ClubSys.Web
                             {
                                 if (ValidateAuthKey(card1.ToString(), card2.ToString(), this.userid.ToString(), authKey))
                                 {
-                                    UserNumber un1 = PlayerStrip.GetUserNumber(card1);
-                                    UserNumber un2 = PlayerStrip.GetUserNumber(card2);
+                                    Card un1 = PlayerStrip.GetUserNumber(card1);
+                                    Card un2 = PlayerStrip.GetUserNumber(card2);
 
                                     if (un1 != null && un2 != null && un1.UserID == this.userid && un2.UserID == this.userid)
                                     {

@@ -1,24 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
 
-using Arsenalcn.ClubSys.Service;
-using Arsenalcn.ClubSys.Entity;
+using Arsenal.Entity;
 
-namespace Arsenalcn.ClubSys.Web
+namespace Arsenal.Web
 {
-    public partial class _Default : Common.BasePage
+    public partial class ArsenalPortal : AcnPageBase
     {
         protected void Page_Load(object sender, EventArgs e)
         {
             if (ConfigGlobal.PluginActive)
             {
-                Response.Redirect("ClubPortal.aspx");
+                //Response.Redirect("ArsenalPortal.aspx");
+                //Response.Redirect("http://bbs.arsenalcn.com/plugin/acncasino/");
             }
             else
             {
                 ltrlPluginName.Text = string.Format("<strong>欢迎进入{0}</strong>", ConfigGlobal.PluginDisplayName);
 
-                if (ConfigAdmin.IsPluginAdmin(this.userid))
+                if (ConfigAdmin.IsPluginAdmin(this.UID))
                     pnlAdmin.Visible = true;
                 else
                     pnlAdmin.Visible = false;

@@ -3,7 +3,7 @@ using System.Data;
 using System.Web.UI.WebControls;
 
 using Arsenalcn.ClubSys.Service;
-using ArsenalVideo = Arsenal.Entity.Video;
+using ArsenalVideo = Arsenalcn.ClubSys.Service.Arsenal.Video;
 
 namespace Arsenalcn.ClubSys.Web.Control
 {
@@ -20,7 +20,7 @@ namespace Arsenalcn.ClubSys.Web.Control
             if (ProfileUserID > 0)
             {
                 int haveVideoCount = 0;
-                int totalVideoCount = ArsenalVideo.Cache.GetAvailableVideosByRank(GRank, TRank).Count;
+                int totalVideoCount = Arsenal_Video.Cache.GetAvailableVideosByRank(GRank, TRank).Count;
 
                 //load data
                 DataTable dt = UserVideo.GetUserVideo(ProfileUserID);

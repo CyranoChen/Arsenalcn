@@ -84,6 +84,26 @@ namespace Arsenalcn.ClubSys.Entity
             }
         }
 
+        public static Guid ArsenalTeamGuid
+        {
+            get
+            {
+                try
+                {
+                    string tmpID = ConfigDictionary["ArsenalTeamGuid"];
+
+                    if (!string.IsNullOrEmpty(tmpID))
+                    { return new Guid(tmpID); }
+                    else
+                    { return Guid.Empty; }
+                }
+                catch
+                {
+                    return new Guid("036478f0-9062-4533-be33-43197a0b1568");
+                }
+            }
+        }
+
         public static string SysNotice
         {
             get

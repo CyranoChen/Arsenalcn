@@ -17,9 +17,9 @@ namespace Arsenalcn.ClubSys.Web.Control
             {
                 _playerInfo = PlayerStrip.GetPlayerInfo(ProfileUserID);
 
-                List<UserNumber> items = PlayerStrip.GetMyNumbers(ProfileUserID);
-                items.RemoveAll(delegate(UserNumber un) { return un.IsActive; });
-                items.RemoveAll(delegate(UserNumber un) { return !un.ArsenalPlayerGuid.HasValue; });
+                List<Card> items = PlayerStrip.GetMyNumbers(ProfileUserID);
+                items.RemoveAll(delegate(Card un) { return un.IsActive; });
+                items.RemoveAll(delegate(Card un) { return !un.ArsenalPlayerGuid.HasValue; });
 
                 rptCard.DataSource = items;
                 rptCard.DataBind();
@@ -29,7 +29,7 @@ namespace Arsenalcn.ClubSys.Web.Control
         {
             if ((e.Item.ItemType == ListItemType.Item) || (e.Item.ItemType == ListItemType.AlternatingItem))
             {
-                UserNumber un = e.Item.DataItem as UserNumber;
+                Card un = e.Item.DataItem as Card;
 
                 Label lblPlayerInactiveCardID = e.Item.FindControl("lblPlayerInactiveCardID") as Label;
                 Label lblPlayerInactiveCardPath = e.Item.FindControl("lblPlayerInactiveCardPath") as Label;

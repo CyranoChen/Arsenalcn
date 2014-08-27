@@ -67,7 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Arsenal.Entity\Arsenal.Entity.csproj">
-      <Project>{18F784E1-6AC9-488C-9F00-B1CF2D5A8893}</Project>
+      <Project>{18f784e1-6ac9-488c-9f00-b1cf2d5a8893}</Project>
       <Name>Arsenal.Entity</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arsenalcn.CasinoSys.Entity\Arsenalcn.CasinoSys.Entity.csproj">

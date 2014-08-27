@@ -7,7 +7,7 @@
         <div class="Block">
             <ul>
                 <li><a href="AdminConfig.aspx">全局配置</a></li>
-                <li><a href="AdminDNTMessage.aspx">短信管理</a></li>
+                <li style="display:none"><a href="AdminDNTMessage.aspx">短信管理</a></li>
             </ul>
         </div>
     </div>

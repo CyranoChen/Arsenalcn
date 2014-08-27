@@ -6,7 +6,7 @@ using System.Data;
 
 namespace Arsenalcn.ClubSys.Entity
 {
-    public class UserNumber : ClubSysObject
+    public class Card : ClubSysObject
     {
         #region Members and Properties
 
@@ -165,11 +165,11 @@ namespace Arsenalcn.ClubSys.Entity
 
         #endregion
 
-        public UserNumber()
+        public Card()
         {
         }
 
-        public UserNumber(DataRow dr)
+        public Card(DataRow dr)
             : base(dr)
         {
         }

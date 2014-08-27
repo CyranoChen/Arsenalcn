@@ -92,16 +92,16 @@ namespace Arsenalcn.ClubSys.Web
             DataTable dtVideo = UserVideo.GetUserVideo(ProfileUserID);
             lblVideoActiveCount.Text = dtVideo.Rows.Count.ToString();
 
-            List<UserNumber> items = PlayerStrip.GetMyNumbers(ProfileUserID);
-            items.RemoveAll(delegate(UserNumber un) { return un.ArsenalPlayerGuid.HasValue; });
+            List<Card> items = PlayerStrip.GetMyNumbers(ProfileUserID);
+            items.RemoveAll(delegate(Card un) { return un.ArsenalPlayerGuid.HasValue; });
             lblVideoCount.Text = items.Count.ToString();
 
             items = PlayerStrip.GetMyNumbers(ProfileUserID);
-            items.RemoveAll(delegate(UserNumber un) { return !un.IsActive; });
+            items.RemoveAll(delegate(Card un) { return !un.IsActive; });
             lblCardActiveCount.Text = items.Count.ToString();
 
             items = PlayerStrip.GetMyNumbers(ProfileUserID);
-            items.RemoveAll(delegate(UserNumber un) { return un.IsActive || !un.ArsenalPlayerGuid.HasValue; });
+            items.RemoveAll(delegate(Card un) { return un.IsActive || !un.ArsenalPlayerGuid.HasValue; });
             lblCardCount.Text = items.Count.ToString();
         }
     }

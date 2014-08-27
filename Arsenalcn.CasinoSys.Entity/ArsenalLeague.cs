@@ -22,10 +22,13 @@ namespace Arsenalcn.CasinoSys.Entity
 
             private static void InitCache()
             {
-                LeagueList.Clear();
-
                 var svc = RemoteServiceProvider.GetWebService();
                 var arrayLeagues = svc.GetLeagues();
+
+                if (LeagueList != null)
+                { LeagueList.Clear(); }
+                else
+                { LeagueList = new List<Arsenal.League>(); }
 
                 if (arrayLeagues != null && arrayLeagues.Length > 0)
                 {

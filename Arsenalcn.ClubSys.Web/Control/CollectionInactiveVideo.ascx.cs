@@ -16,9 +16,9 @@ namespace Arsenalcn.ClubSys.Web.Control
             {
                 //load data
                 _playerInfo = PlayerStrip.GetPlayerInfo(ProfileUserID);
-                List<UserNumber> items = PlayerStrip.GetMyNumbers(ProfileUserID);
+                List<Card> items = PlayerStrip.GetMyNumbers(ProfileUserID);
 
-                items.RemoveAll(delegate(UserNumber un) { return un.ArsenalPlayerGuid.HasValue; });
+                items.RemoveAll(delegate(Card un) { return un.ArsenalPlayerGuid.HasValue; });
 
                 rptVideo.DataSource = items;
                 rptVideo.DataBind();
@@ -29,7 +29,7 @@ namespace Arsenalcn.ClubSys.Web.Control
         {
             if ((e.Item.ItemType == ListItemType.Item) || (e.Item.ItemType == ListItemType.AlternatingItem))
             {
-                UserNumber un = e.Item.DataItem as UserNumber;
+                Card un = e.Item.DataItem as Card;
 
                 Label lblPlayerInactiveVideoID = e.Item.FindControl("lblPlayerInactiveVideoID") as Label;
                 LinkButton btnActive = e.Item.FindControl("btnActive") as LinkButton;

@@ -6,9 +6,9 @@ using System.Data.SqlClient;
 using Discuz.Entity;
 using Discuz.Forum;
 
+using Arsenalcn.Common;
 using Arsenalcn.ClubSys.Entity;
 using Arsenalcn.ClubSys.Service;
-using Arsenalcn.Common;
 
 namespace Arsenalcn.ClubSys.Service
 {
@@ -81,8 +81,8 @@ namespace Arsenalcn.ClubSys.Service
 
     public class ActivateCardDesc : PlayerHistoryDescGenerator
     {
-        private UserNumber _un = null;
-        public ActivateCardDesc(UserNumber un)
+        private Card _un = null;
+        public ActivateCardDesc(Card un)
         {
             _un = un;
         }
@@ -91,7 +91,7 @@ namespace Arsenalcn.ClubSys.Service
 
         public string Generate()
         {
-            string _pName = Arsenal.Entity.Player.Cache.Load(_un.ArsenalPlayerGuid.Value).DisplayName;
+            string _pName = Arsenal_Player.Cache.Load(_un.ArsenalPlayerGuid.Value).DisplayName;
 
             return string.Format("激活卡片{0}({1})", _pName, _un.ID.ToString());
         }
@@ -101,8 +101,8 @@ namespace Arsenalcn.ClubSys.Service
 
     public class ActivateVideoDesc : PlayerHistoryDescGenerator
     {
-        private UserNumber _un = null;
-        public ActivateVideoDesc(UserNumber un)
+        private Card _un = null;
+        public ActivateVideoDesc(Card un)
         {
             _un = un;
         }
@@ -119,10 +119,10 @@ namespace Arsenalcn.ClubSys.Service
 
     public class ConsolidateCardsDesc : PlayerHistoryDescGenerator
     {
-        private UserNumber _un1 = null;
-        private UserNumber _un2 = null;
+        private Card _un1 = null;
+        private Card _un2 = null;
 
-        public ConsolidateCardsDesc(UserNumber un1, UserNumber un2)
+        public ConsolidateCardsDesc(Card un1, Card un2)
         {
             _un1 = un1;
             _un2 = un2;
@@ -131,8 +131,8 @@ namespace Arsenalcn.ClubSys.Service
         #region PlayerHistoryDescGenerator Members
         public string Generate()
         {
-            string _pName1 = Arsenal.Entity.Player.Cache.Load(_un1.ArsenalPlayerGuid.Value).DisplayName;
-            string _pName2 = Arsenal.Entity.Player.Cache.Load(_un2.ArsenalPlayerGuid.Value).DisplayName;
+            string _pName1 = Arsenal_Player.Cache.Load(_un1.ArsenalPlayerGuid.Value).DisplayName;
+            string _pName2 = Arsenal_Player.Cache.Load(_un2.ArsenalPlayerGuid.Value).DisplayName;
 
             return string.Format("融合卡片{0}({1})和卡片{2}({3})", _pName1, _un1.ID.ToString(), _pName2, _un2.ID.ToString());
         }

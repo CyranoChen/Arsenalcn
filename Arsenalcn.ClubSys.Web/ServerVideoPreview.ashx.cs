@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Web;
 
-using Arsenal.Entity;
-using ArsenalVideo = Arsenal.Entity.Video;
-using ArsenalPlayer = Arsenal.Entity.Player;
-using ArsenalMatch = Arsenal.Entity.Match;
+using Arsenalcn.ClubSys.Service;
+using ArsenalVideo = Arsenalcn.ClubSys.Service.Arsenal.Video;
+using ArsenalPlayer = Arsenalcn.ClubSys.Service.Arsenal.Player;
+using ArsenalMatch = Arsenalcn.ClubSys.Service.Arsenal.Match;
+using ArsenalTeam = Arsenalcn.ClubSys.Service.Arsenal.Team;
 
 namespace Arsenalcn.ClubSys.Web
 {
@@ -26,7 +27,7 @@ namespace Arsenalcn.ClubSys.Web
                     string _jsonAssistPlayer = string.Empty;
                     string _jsonMatch = string.Empty;
 
-                    ArsenalVideo v = ArsenalVideo.Cache.Load(guid);
+                    ArsenalVideo v = Arsenal_Video.Cache.Load(guid);
 
                     if (v != null)
                     {
@@ -35,23 +36,23 @@ namespace Arsenalcn.ClubSys.Web
 
                         if (v.GoalPlayerGuid.HasValue)
                         {
-                            ArsenalPlayer pg = ArsenalPlayer.Cache.Load(v.GoalPlayerGuid.Value);
+                            ArsenalPlayer pg = Arsenal_Player.Cache.Load(v.GoalPlayerGuid.Value);
                             _jsonGoalPlayer = string.Format("{{ \"PlayerGuid\": \"{0}\", \"DisplayName\": \"{1}\", \"PhotoURL\": \"{2}\" }}",
                                 pg.PlayerGuid.ToString(), pg.DisplayName, pg.PhotoURL);
                         }
 
                         if (v.AssistPlayerGuid.HasValue)
                         {
-                            ArsenalPlayer pa = ArsenalPlayer.Cache.Load(v.AssistPlayerGuid.Value);
+                            ArsenalPlayer pa = Arsenal_Player.Cache.Load(v.AssistPlayerGuid.Value);
                             _jsonAssistPlayer = string.Format("{{ \"PlayerGuid\": \"{0}\", \"DisplayName\": \"{1}\", \"PhotoURL\": \"{2}\" }}",
                                 pa.PlayerGuid.ToString(), pa.DisplayName, pa.PhotoURL);
                         }
 
                         if (v.ArsenalMatchGuid.HasValue)
                         {
-                            ArsenalMatch m = ArsenalMatch.Cache.Load(v.ArsenalMatchGuid.Value);
-                            Team to = Team.Cache.Load(m.TeamGuid);
-                            Team ta = Team.Cache.Load(Arsenal.Entity.ConfigGlobal.ArsenalTeamGuid);
+                            ArsenalMatch m = Arsenal_Match.Cache.Load(v.ArsenalMatchGuid.Value);
+                            ArsenalTeam to = Arsenal_Team.Cache.Load(m.TeamGuid);
+                            ArsenalTeam ta = Arsenal_Team.Cache.Load(Arsenalcn.ClubSys.Entity.ConfigGlobal.ArsenalTeamGuid);
 
                             string _strMatchInfo = "{{ \"MatchGuid\": \"{0}\", \"HomeTeam\": \"{1}\", \"HomeTeamLogo\": \"{2}\", \"ResultHome\": \"{3}\", \"ResultAway\": \"{4}\", \"PlayTime\": \"{5}\", \"AwayTeam\": \"{6}\", \"AwayTeamLogo\": \"{7}\" }}";
                             string _strAcnCasinoPath = "/plugin/AcnCasino/";

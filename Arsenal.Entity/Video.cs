@@ -147,34 +147,6 @@ namespace Arsenal.Entity
                 return VideoList.Find(delegate(Video v) { return v.VideoGuid.Equals(guid); });
             }
 
-            public static List<Video> GetAvailableVideosByRank(int GRank, int TRank)
-            {
-                // User can only get the Arsenal Player Video GoalRank <= 3 by usual way
-                List<Video> list = VideoList_Legend.FindAll(delegate(Video v) { return Convert.ToInt16(v.GoalRank) <= 3; });
-
-                list = list.FindAll(delegate(Video v)
-                {
-                    if (GRank > 0 && TRank > 0)
-                    {
-                        return v.GoalRank.Equals(GRank.ToString()) && v.TeamworkRank.Equals(TRank.ToString());
-                    }
-                    else if (GRank <= 0 && TRank > 0)
-                    {
-                        return v.TeamworkRank.Equals(TRank.ToString());
-                    }
-                    else if (GRank > 0 && TRank <= 0)
-                    {
-                        return v.GoalRank.Equals(GRank.ToString());
-                    }
-                    else
-                    {
-                        return true;
-                    }
-                });
-
-                return list;
-            }
-
             public static List<Video> VideoList;
             public static List<Video> VideoList_Legend;
 

@@ -5,7 +5,7 @@ using System.Web.UI.WebControls;
 using Arsenalcn.ClubSys.Service;
 using Arsenalcn.ClubSys.Entity;
 
-using ArsenalPlayer = Arsenal.Entity.Player;
+using ArsenalPlayer = Arsenalcn.ClubSys.Service.Arsenal.Player;
 
 namespace Arsenalcn.ClubSys.Web
 {
@@ -112,7 +112,7 @@ namespace Arsenalcn.ClubSys.Web
                             if (br.ResultDetail == "legend")
                                 current.ActionDescription = "获得一张视频卡";
                             else
-                                current.ActionDescription = string.Format("获得球员卡: {0}", ArsenalPlayer.Cache.Load(new Guid(br.ResultDetail)).DisplayName);
+                                current.ActionDescription = string.Format("获得球员卡: {0}", Arsenal_Player.Cache.Load(new Guid(br.ResultDetail)).DisplayName);
                             break;
                         case BingoResultType.Cash:
                             current.AdditionalData = "ClubSys_Agree";

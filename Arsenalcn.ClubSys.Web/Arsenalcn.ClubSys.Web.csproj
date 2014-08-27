@@ -744,10 +744,6 @@
     <Content Include="ClubVideo.aspx" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Arsenal.Entity\Arsenal.Entity.csproj">
-      <Project>{18f784e1-6ac9-488c-9f00-b1cf2d5a8893}</Project>
-      <Name>Arsenal.Entity</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Arsenalcn.ClubSys.Service\Arsenalcn.ClubSys.Service.csproj">
       <Project>{75829613-19be-4d73-967e-19d3b5f7cb84}</Project>
       <Name>Arsenalcn.ClubSys.Service</Name>

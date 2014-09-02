@@ -60,9 +60,14 @@ namespace Arsenalcn.CasinoSys.Web
                     if (dtMatch != null)
                     {
                         dtMatch.Columns.Add("MatchTeamDisplay", typeof(string));
+
                         foreach (DataRow dr_m in dtMatch.Rows)
                         {
-                            dr_m["MatchTeamDisplay"] = string.Format("{0} vs {1}", dr_m["HomeDisplay"], dr_m["AwayDisplay"]);
+                            Match m = new Match((Guid)dr_m["MatchGuid"]);
+
+                            dr_m["MatchTeamDisplay"] = string.Format("{0} vs {1}",
+                                Team.Cache.Load((Guid)m.Home).TeamDisplayName,
+                                Team.Cache.Load((Guid)m.Away).TeamDisplayName);
                         }
                     }
 

@@ -143,10 +143,10 @@ namespace Arsenalcn.CasinoSys.Entity
             return list;
         }
 
-        public static Guid GetRandomOpenMatch()
-        {
-            return DataAccess.Match.GetRandomOpenMatch();
-        }
+        //public static Guid GetRandomOpenMatch()
+        //{
+        //    return DataAccess.Match.GetRandomOpenMatch();
+        //}
 
         public void ReturnBet()
         {

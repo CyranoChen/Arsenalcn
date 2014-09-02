@@ -21,14 +21,14 @@ namespace Arsenalcn.CasinoSys.DataAccess
                 return ds.Tables[0].Rows[0];
         }
 
-        public static Guid GetRandomOpenMatch()
-        {
-            string sql = "SELECT TOP 1 MatchGuid FROM dbo.AcnCasino_Match WHERE PlayTime > getdate() ORDER BY NEWID()";
+        //public static Guid GetRandomOpenMatch()
+        //{
+        //    string sql = "SELECT TOP 1 MatchGuid FROM dbo.AcnCasino_Match WHERE PlayTime > getdate() ORDER BY NEWID()";
 
-            Guid? matchGuid = SqlHelper.ExecuteScalar(SQLConn.GetConnection(), CommandType.Text, sql) as Guid?;
+        //    Guid? matchGuid = SqlHelper.ExecuteScalar(SQLConn.GetConnection(), CommandType.Text, sql) as Guid?;
 
-            return matchGuid.GetValueOrDefault(Guid.Empty);
-        }
+        //    return matchGuid.GetValueOrDefault(Guid.Empty);
+        //}
 
         public static void UpdateMatch(Guid matchGuid, Guid home, Guid away, short? resultHome, short? resultAway, DateTime playTime, Guid leagueGuid, string leagueName, int? round, Guid? groupGuid)
         {

@@ -107,13 +107,6 @@
     <Compile Include="CasinoBetClubLog.aspx.designer.cs">
       <DependentUpon>CasinoBetClubLog.aspx</DependentUpon>
     </Compile>
-    <Compile Include="CasinoItemContainer.aspx.cs">
-      <DependentUpon>CasinoItemContainer.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CasinoItemContainer.aspx.designer.cs">
-      <DependentUpon>CasinoItemContainer.aspx</DependentUpon>
-    </Compile>
     <Compile Include="CasinoBetLog.aspx.cs">
       <DependentUpon>CasinoBetLog.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -643,7 +636,6 @@
     <Content Include="App_Themes\Arsenalcn\images\casinosys\ClubStar3.gif" />
     <Content Include="App_Themes\Arsenalcn\images\casinosys\disagree.gif" />
     <Content Include="App_Themes\Arsenalcn\images\casinosys\Tip.gif" />
-    <Content Include="CasinoItemContainer.aspx" />
     <Content Include="CasinoGambler.aspx" />
     <Content Include="CasinoTeam.aspx" />
     <Content Include="Control\LeagueHeader.ascx" />

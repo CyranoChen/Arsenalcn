@@ -76,5 +76,24 @@ namespace Arsenalcn.ClubSys.Web
 
             BindData();
         }
+
+        protected void btnRefreshCache_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Config.Cache.RefreshCache();
+
+                Service.Arsenal_Match.Cache.RefreshCache();
+                Service.Arsenal_Player.Cache.RefreshCache();
+                Service.Arsenal_Team.Cache.RefreshCache();
+                Service.Arsenal_Video.Cache.RefreshCache();
+
+                ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('更新全部缓存成功');window.location.href=window.location.href", true);
+            }
+            catch (Exception ex)
+            {
+                this.ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}');", ex.Message.ToString()), true);
+            }
+        }
     }
 }

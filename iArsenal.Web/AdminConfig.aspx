@@ -10,12 +10,11 @@
     <div id="MainPanel">
         <uc2:AdminFieldToolBar ID="ctrlAdminFieldToolBar" runat="server" />
         <div class="FunctionBar">
-
             <div class="DivFloatRight">
                 <asp:LinkButton ID="btnRefreshCache" runat="server" Text="更新全部缓存" CssClass="LinkBtn"
                     OnClick="btnRefreshCache_Click" />
             </div>
-            <div class="clear">&nbsp;</div>
+            <div class="Clear"></div>
         </div>
         <asp:GridView ID="gvSysConfig" runat="server" OnRowUpdating="gvSysConfig_RowUpdating"
             DataKeyNames="ConfigKey" OnPageIndexChanging="gvSysConfig_PageIndexChanging"

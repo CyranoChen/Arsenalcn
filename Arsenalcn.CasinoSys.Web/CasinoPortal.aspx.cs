@@ -38,12 +38,13 @@ namespace Arsenalcn.CasinoSys.Web
             if (dtMatch != null)
             {
                 dtMatch.Columns.Add("League", typeof(string));
+
                 foreach (DataRow dr in dtMatch.Rows)
                 {
                     string league = dr["LeagueName"].ToString();
 
-                    if (!string.IsNullOrEmpty(dr["LeagueSeason"].ToString()))
-                        league += dr["LeagueSeason"].ToString();
+                    //if (!string.IsNullOrEmpty(dr["LeagueSeason"].ToString()))
+                    //    league += dr["LeagueSeason"].ToString();
 
                     if (!Convert.IsDBNull(dr["Round"]))
                         league += string.Format("赛季 第{0}轮", dr["Round"]);

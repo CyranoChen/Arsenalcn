@@ -6,8 +6,10 @@
     </div>
     <asp:Panel ID="pnlFuncLink" runat="server" CssClass="HeaderBtnBar">
         <a href="ClubLuckyPlayerLog.aspx">幸运球员日志</a>
-        <asp:PlaceHolder ID="phAdministrator" runat="server"><a href="AdminConfig.aspx">后台管理</a>
-            <a href="MyCreateClub.aspx" style="display: none">创建新球会</a></asp:PlaceHolder>
+        <asp:PlaceHolder ID="phAdministrator" runat="server">
+            <a href="AdminConfig.aspx">后台管理</a>
+            <a href="MyCreateClub.aspx" style="display: none">创建新球会</a>
+        </asp:PlaceHolder>
     </asp:Panel>
 </div>
 <asp:PlaceHolder ID="phLuckPlayer" runat="server">

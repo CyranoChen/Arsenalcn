@@ -22,9 +22,19 @@ namespace Arsenalcn.CasinoSys.Web
         private void BindData()
         {
             DataTable dt = Entity.CasinoItem.GetMatchCasinoItemView(false);
-            DataView dv = dt.DefaultView;
 
-            gvMatch.DataSource = dv;
+            dt.Columns.Add("HomeDisplay", typeof(string));
+            dt.Columns.Add("AwayDisplay", typeof(string));
+
+            foreach (DataRow dr in dt.Rows)
+            {
+                Match m = new Match((Guid)dr["MatchGuid"]);
+
+                dr["HomeDisplay"] = Team.Cache.Load((Guid)m.Home).TeamDisplayName;
+                dr["AwayDisplay"] = Team.Cache.Load((Guid)m.Away).TeamDisplayName;
+            }
+
+            gvMatch.DataSource = dt;
             gvMatch.DataBind();
         }
 

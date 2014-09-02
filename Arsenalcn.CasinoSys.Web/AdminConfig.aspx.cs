@@ -76,5 +76,22 @@ namespace Arsenalcn.CasinoSys.Web
 
             BindData();
         }
+
+        protected void btnRefreshCache_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Config.Cache.RefreshCache();
+
+                Entity.League.Cache.RefreshCache();
+                Entity.Team.Cache.RefreshCache();
+
+                ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('更新全部缓存成功');window.location.href=window.location.href", true);
+            }
+            catch (Exception ex)
+            {
+                this.ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}');", ex.Message.ToString()), true);
+            }
+        }
     }
 }

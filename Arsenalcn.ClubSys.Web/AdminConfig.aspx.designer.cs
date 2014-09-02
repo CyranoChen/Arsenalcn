@@ -31,6 +31,15 @@ namespace Arsenalcn.ClubSys.Web {
         protected global::Arsenalcn.ClubSys.Web.Control.AdminFieldToolBar ctrlAdminFieldToolBar;
         
         /// <summary>
+        /// btnRefreshCache control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton btnRefreshCache;
+        
+        /// <summary>
         /// gvSysConfig control.
         /// </summary>
         /// <remarks>

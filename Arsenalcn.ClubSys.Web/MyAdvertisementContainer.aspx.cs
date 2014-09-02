@@ -22,13 +22,13 @@ namespace Arsenalcn.ClubSys.Web
             }
             else
             {
-                // 泛亚娱乐 广告过期 2014/07/12
+                 //尊龙国际 广告 2014/08/28
 
-                //string adv_text = "<a href=\"http://www.fy88.com/f/50\" target=\"_blank\"><img src=\"/images/adv/fy88.gif\" alt=\"泛亚娱乐\" /></a>";
+                string adv_text = "<a href=\"http://zl500.com/33.html\" target=\"_blank\"><img src=\"/images/adv/zl500.gif\" alt=\"尊龙国际\" /></a>";
 
-                //string str = string.Format("<div class=\"acn_adv\" style=\"width: 960px; height: 60px; overflow:hidden; margin: 5px auto\">{0}</div>", adv_text);
+                string str = string.Format("<div class=\"acn_adv\" style=\"width: 960px; height: 90px; overflow:hidden; margin: 5px auto\">{0}</div>", adv_text);
 
-                //Response.Write(string.Format("document.write('{0}');", str));
+                Response.Write(string.Format("document.write('{0}');", str));
             }
 
         }

@@ -3,6 +3,7 @@ using System.Data;
 using System.Data.SqlClient;
 
 using Arsenalcn.CasinoSys.DataAccess;
+using System.Collections.Generic;
 
 namespace Arsenalcn.CasinoSys.Entity
 {
@@ -135,6 +136,7 @@ namespace Arsenalcn.CasinoSys.Entity
         public static DataTable GetMatchCasinoItemView(bool isOpen)
         {
             DataTable dt = null;
+
             if (isOpen)
             {     
                 //OpenMatchView

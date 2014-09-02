@@ -4,6 +4,7 @@
         <asp:Literal ID="ltrlToolBarTip" runat="server"></asp:Literal>
     </div>
     <asp:Panel ID="pnlFuncLink" runat="server" CssClass="HeaderBtnBar">
-        <a href="AdminConfig.aspx">后台管理</a> <a href="/plugin/Arsenal/AdminConfig.aspx">基础数据管理</a>
+        <a href="AdminConfig.aspx">后台管理</a>
+        <a href="http://www.arsenal.cn/AdminConfig.aspx" target="_blank">基础数据管理</a>
     </asp:Panel>
 </div>

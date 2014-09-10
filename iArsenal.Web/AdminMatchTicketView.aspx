@@ -94,7 +94,7 @@
                         </td>
                         <td style="text-align: left;">
                             <asp:DropDownList ID="ddlAllowMemberClass" runat="server">
-                                <asp:ListItem Text="--全部--" Selected="True"></asp:ListItem>
+                                <asp:ListItem Text="--全部--" Value="" Selected="True"></asp:ListItem>
                                 <asp:ListItem Text="普通会员" Value="1"></asp:ListItem>
                                 <asp:ListItem Text="高级会员" Value="2"></asp:ListItem>
                             </asp:DropDownList>

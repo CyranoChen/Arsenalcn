@@ -3,6 +3,7 @@ using System.Data;
 using System.Web.UI.WebControls;
 
 using Arsenalcn.CasinoSys.Entity;
+using ArsenalTeam = Arsenalcn.CasinoSys.Entity.Arsenal.Team;
 
 using Discuz.Entity;
 using Discuz.Forum;
@@ -47,12 +48,34 @@ namespace Arsenalcn.CasinoSys.Web
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
+                DataRowView drv = e.Row.DataItem as DataRowView;
+
+                Match m = new Match((Guid)drv["MatchGuid"]);
+
+                HyperLink hlHome = e.Row.FindControl("hlHome") as HyperLink;
+                HyperLink hlAway = e.Row.FindControl("hlAway") as HyperLink;
+                HyperLink hlVersus = e.Row.FindControl("hlVersus") as HyperLink;
+
+                if (hlHome != null && hlAway != null && hlVersus != null)
+                {
+                    ArsenalTeam tHome = Team.Cache.Load(m.Home);
+                    ArsenalTeam tAway = Team.Cache.Load(m.Away);
+
+                    hlHome.Text = tHome.TeamDisplayName;
+                    hlHome.NavigateUrl = string.Format("CasinoTeam.aspx?Team={0}", m.Home);
+
+                    hlAway.Text = tAway.TeamDisplayName;
+                    hlAway.NavigateUrl = string.Format("CasinoTeam.aspx?Team={0}", m.Away);
+
+                    hlVersus.NavigateUrl = string.Format("CasinoTeam.aspx?Match={0}", m.MatchGuid.ToString());
+                    hlVersus.Text = string.Format("<em title=\"{0}{1}\">vs</em>", tHome.Ground,
+                        tHome.Capacity.HasValue ? ("(" + tHome.Capacity.Value.ToString() + ")") : string.Empty);
+                }
+
                 Literal ltrlResult = e.Row.FindControl("ltrlResult") as Literal;
                 Literal ltrlBetResult = e.Row.FindControl("ltrlBetResult") as Literal;
                 Literal ltrlBetRate = e.Row.FindControl("ltrlBetRate") as Literal;
                 LinkButton btnReturnBet = e.Row.FindControl("btnReturnBet") as LinkButton;
-
-                DataRowView drv = e.Row.DataItem as DataRowView;
 
                 Guid itemGuid = (Guid)drv["CasinoItemGuid"];
 

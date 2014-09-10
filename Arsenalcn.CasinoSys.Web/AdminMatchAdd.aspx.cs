@@ -77,6 +77,7 @@ namespace Arsenalcn.CasinoSys.Web
             try
             {
                 Match m = new Match();
+
                 m.MatchGuid = Guid.NewGuid();
                 m.Home = new Guid(ddlHomeTeam.SelectedValue);
                 m.Away = new Guid(ddlAwayTeam.SelectedValue);

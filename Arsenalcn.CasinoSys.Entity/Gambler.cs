@@ -184,7 +184,13 @@ namespace Arsenalcn.CasinoSys.Entity
         {
             List<Gambler> listGambler = Gambler.GetGamblers();
             List<CasinoGambler> listCasinoGambler = CasinoGambler.GetCasinoGamblers();
+
             List<CasinoGambler> listCasinoCamblerContest = CasinoGambler.GetCasinoGamblers(ConfigGlobal.DefaultLeagueID);
+
+            if (listCasinoCamblerContest != null && listCasinoCamblerContest.Count > 0)
+            {
+                listCasinoCamblerContest = CasinoGambler.SortCasinoGambler(listCasinoCamblerContest);
+            }
 
             if (listGambler != null && listGambler.Count > 0 && listCasinoGambler != null && listCasinoGambler.Count > 0)
             {
@@ -214,8 +220,16 @@ namespace Arsenalcn.CasinoSys.Entity
             Gambler g = new Gambler(userID);
             CasinoGambler cg = CasinoGambler.GetCasinoGamblers().Find(
                 delegate(CasinoGambler casinoGambler) { return casinoGambler.UserID.Equals(userID); });
-            CasinoGambler cgc = CasinoGambler.GetCasinoGamblers(ConfigGlobal.DefaultLeagueID).Find(
-                delegate(CasinoGambler casinoGambler) { return casinoGambler.UserID.Equals(userID); });
+            CasinoGambler cgc = null;
+
+            List<CasinoGambler> listCasinoCamblerContest = CasinoGambler.GetCasinoGamblers(ConfigGlobal.DefaultLeagueID);
+
+            if (listCasinoCamblerContest != null && listCasinoCamblerContest.Count > 0 &&
+                listCasinoCamblerContest.Exists(delegate(CasinoGambler casinoGambler) { return casinoGambler.UserID.Equals(userID); }))
+            {
+                listCasinoCamblerContest = CasinoGambler.SortCasinoGambler(listCasinoCamblerContest);
+                cgc = listCasinoCamblerContest.Find(delegate(CasinoGambler casinoGambler) { return casinoGambler.UserID.Equals(userID); });
+            }
 
             if (g != null && cg != null)
             {

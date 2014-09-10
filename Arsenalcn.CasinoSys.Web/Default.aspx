@@ -1,9 +1,9 @@
 ﻿<%@ Page Language="C#" MasterPageFile="DefaultMaster.master" CodeBehind="Default.aspx.cs"
     Inherits="Arsenalcn.CasinoSys.Web._Default" Title="ACN博彩系统"  %>
 
-<asp:Content ID="Content1" ContentPlaceHolderID="cphHead" runat="server">
+<asp:Content ID="cphHead" ContentPlaceHolderID="cphHead" runat="server">
 </asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="cphMain" runat="server">
+<asp:Content ID="cphMain" ContentPlaceHolderID="cphMain" runat="server">
     <div id="MainPanel" style="width: 100%">
         <div class="FieldToolBar">
             <asp:Literal ID="ltrlPluginName" runat="server"></asp:Literal>

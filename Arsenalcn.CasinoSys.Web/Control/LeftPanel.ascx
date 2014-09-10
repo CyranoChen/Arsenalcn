@@ -1,6 +1,7 @@
 ﻿<%@ Control Language="C#" CodeBehind="LeftPanel.ascx.cs" Inherits="Arsenalcn.CasinoSys.Web.Control.LeftPanel" %>
 <%@ Register Src="TopContestList.ascx" TagName="TopContestList" TagPrefix="uc1" %>
 <%@ Register Src="TopGamblerList.ascx" TagName="TopGamblerList" TagPrefix="uc2" %>
+<%@ Register Src="TopMatchList.ascx" TagName="TopMatchList" TagPrefix="uc3" %>
 <div id="LeftPanel">
     <asp:Panel ID="pnlNotice" runat="server" CssClass="InfoPanel">
         <h3 class="Col" onclick="$(this).toggleClass('Col'); $(this).toggleClass('Exp'); $(this).next('div').toggle('normal');">
@@ -28,6 +29,7 @@
     </asp:Panel>
     <uc1:TopContestList ID="ctrlTopContestList" runat="server" />
     <uc2:TopGamblerList ID="ctrlTopGamblerList" runat="server" />
+    <uc3:TopMatchList ID="ctrlTopMatchList" runat="server" Visible="false" />
     <asp:Panel ID="pnlDev" runat="server" CssClass="InfoPanel" Visible="false">
         <h3 class="Col" onclick="$(this).toggleClass('Col'); $(this).toggleClass('Exp'); $(this).next('div').toggle('normal');">
             <a>程序开发与支持</a>

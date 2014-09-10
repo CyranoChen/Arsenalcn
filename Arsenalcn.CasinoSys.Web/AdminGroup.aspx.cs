@@ -49,6 +49,9 @@ namespace Arsenalcn.CasinoSys.Web
 
             if (dtGroup != null)
             {
+                dtGroup.Columns.Add("LeagueName", typeof(string));
+                dtGroup.Columns.Add("LeagueSeason", typeof(string));
+
                 dtGroup.Columns.Add("GroupTeamCount", typeof(int));
                 dtGroup.Columns.Add("GroupTeamList", typeof(string));
                 dtGroup.Columns.Add("GroupMatchCount", typeof(string));
@@ -56,6 +59,11 @@ namespace Arsenalcn.CasinoSys.Web
 
                 foreach (DataRow dr in dtGroup.Rows)
                 {
+                    ArsenalLeauge l = League.Cache.Load((Guid)dr["LeagueGuid"]);
+
+                    dr["LeagueName"] = l.LeagueName;
+                    dr["LeagueSeason"] = l.LeagueSeason;
+
                     int groupTeamCount = 0;
                     dtGroupTeam = Entity.Group.GetRelationGroupTeam((Guid)dr["GroupGuid"]);
 

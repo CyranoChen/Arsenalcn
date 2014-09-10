@@ -58,6 +58,15 @@ namespace Arsenalcn.CasinoSys.Web.Control {
         protected global::Arsenalcn.CasinoSys.Web.Control.TopGamblerList ctrlTopGamblerList;
         
         /// <summary>
+        /// ctrlTopMatchList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Arsenalcn.CasinoSys.Web.Control.TopMatchList ctrlTopMatchList;
+        
+        /// <summary>
         /// pnlDev control.
         /// </summary>
         /// <remarks>

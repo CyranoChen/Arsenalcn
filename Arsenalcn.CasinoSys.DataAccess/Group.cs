@@ -64,11 +64,9 @@ namespace Arsenalcn.CasinoSys.DataAccess
             SqlHelper.ExecuteNonQuery(SQLConn.GetConnection(), CommandType.Text, sql, para);
         }
 
-        public static DataTable GetAllActiveLeagueGroup()
+        public static DataTable GetGroups()
         {
-            string sql = @"SELECT * FROM dbo.Arsenal_Group INNER JOIN dbo.Arsenal_League 
-                           ON dbo.Arsenal_Group.LeagueGuid = dbo.Arsenal_League.LeagueGuid 
-                           WHERE dbo.Arsenal_League.IsActive = 1";
+            string sql = @"SELECT * FROM dbo.Arsenal_Group Order By LeagueGuid, GroupOrder";
 
             DataSet ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql);
 
@@ -80,9 +78,7 @@ namespace Arsenalcn.CasinoSys.DataAccess
 
         public static DataTable GetLeagueGroup(Guid leagueGuid)
         {
-            string sql = @"SELECT * FROM dbo.Arsenal_Group INNER JOIN dbo.Arsenal_League 
-                           ON dbo.Arsenal_Group.LeagueGuid = dbo.Arsenal_League.LeagueGuid 
-                           WHERE dbo.Arsenal_Group.LeagueGuid = @guid ORDER BY dbo.Arsenal_Group.GroupOrder";
+            string sql = @"SELECT * FROM dbo.Arsenal_Group WHERE dbo.Arsenal_Group.LeagueGuid = @guid ORDER BY dbo.Arsenal_Group.GroupOrder";
 
             DataSet ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@guid", leagueGuid));
 
@@ -94,8 +90,7 @@ namespace Arsenalcn.CasinoSys.DataAccess
 
         public static DataTable GetLeagueGroup(Guid leagueGuid, bool isTable)
         {
-            string sql = @"SELECT * FROM dbo.Arsenal_Group INNER JOIN dbo.Arsenal_League 
-                           ON dbo.Arsenal_Group.LeagueGuid = dbo.Arsenal_League.LeagueGuid 
+            string sql = @"SELECT * FROM dbo.Arsenal_Group 
                            WHERE dbo.Arsenal_Group.LeagueGuid = @guid AND dbo.Arsenal_Group.IsTable = @isTable
                            ORDER BY dbo.Arsenal_Group.GroupOrder";
 
@@ -133,16 +128,15 @@ namespace Arsenalcn.CasinoSys.DataAccess
             string sql = @"SELECT GroupTeam.GroupGuid, GroupTeam.TeamGuid, GroupTeam.PositionNo, GroupTeam.TotalPlayed, GroupTeam.HomeWon, 
                       GroupTeam.HomeDraw, GroupTeam.HomeLost, GroupTeam.HomeGoalFor, GroupTeam.HomeGoalAgainst, GroupTeam.HomeGoalDiff, 
                       GroupTeam.HomePoints, GroupTeam.AwayWon, GroupTeam.AwayDraw, GroupTeam.AwayLost, GroupTeam.AwayGoalFor, 
-                      GroupTeam.AwayGoalAgainst, GroupTeam.AwayGoalDiff, GroupTeam.AwayPoints, GroupTeam.TotalPoints, Team.TeamEnglishName, 
-                      Team.TeamDisplayName, Team.TeamLogo, ISNULL(GroupTeam.HomeWon, 0) + ISNULL(GroupTeam.AwayWon, 0) AS TotalWon, 
+                      GroupTeam.AwayGoalAgainst, GroupTeam.AwayGoalDiff, GroupTeam.AwayPoints, GroupTeam.TotalPoints,
+                      ISNULL(GroupTeam.HomeWon, 0) + ISNULL(GroupTeam.AwayWon, 0) AS TotalWon, 
                       ISNULL(GroupTeam.HomeDraw, 0) + ISNULL(GroupTeam.AwayDraw, 0) AS TotalDraw, 
                       ISNULL(GroupTeam.HomeLost, 0) + ISNULL(GroupTeam.AwayLost, 0) AS TotalLost, 
                       ISNULL(GroupTeam.HomeGoalFor, 0) + ISNULL(GroupTeam.AwayGoalFor, 0) AS TotalGoalFor, 
                       ISNULL(GroupTeam.HomeGoalAgainst, 0) + ISNULL(GroupTeam.AwayGoalAgainst, 0) AS TotalGoalAgainst, 
                       ISNULL(GroupTeam.HomeGoalDiff, 0) + ISNULL(GroupTeam.AwayGoalDiff, 0) AS TotalGoalDiff 
-                      FROM dbo.Arsenal_RelationGroupTeam AS GroupTeam INNER JOIN
-                      dbo.Arsenal_Team AS Team ON GroupTeam.TeamGuid = Team.TeamGuid
-                      WHERE GroupTeam.GroupGuid = @groupGuid ORDER BY GroupTeam.PositionNo, Team.TeamEnglishName";
+                      FROM dbo.Arsenal_RelationGroupTeam AS GroupTeam
+                      WHERE GroupTeam.GroupGuid = @groupGuid ORDER BY GroupTeam.PositionNo";
 
             DataSet ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@groupGuid", groupGuid));
 

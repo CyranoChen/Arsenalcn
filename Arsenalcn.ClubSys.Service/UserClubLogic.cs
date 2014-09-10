@@ -271,31 +271,42 @@ namespace Arsenalcn.ClubSys.Service
 
         public static void TransferMemberExtcredit(int clubID, int fromUserID, int toUserID, float extCredit, int extCreditType)
         {
-            UserClub ucFrom = ClubLogic.GetActiveUserClub(fromUserID, clubID);
+            //UserClub ucFrom = ClubLogic.GetActiveUserClub(fromUserID, clubID);
             //UserClub ucTo = ClubLogic.GetActiveUserClub(toUserID, clubID);
+
             UserInfo userFrom = AdminUsers.GetUserInfo(fromUserID);
             UserInfo userTo = AdminUsers.GetUserInfo(toUserID);
 
-            if (ucFrom != null && fromUserID != toUserID)
+            if (fromUserID != toUserID)
             {
                 if (extCredit > AdminUsers.GetUserExtCredits(fromUserID, extCreditType))
-                    throw new Exception("Insufficient Founds");
-                else
-                {
-                    AdminUsers.UpdateUserExtCredits(fromUserID, extCreditType, -extCredit);
-                    AdminUsers.UpdateUserExtCredits(toUserID, extCreditType, extCredit);
+                { throw new Exception("Insufficient Founds"); }
 
-                    ClubHistory ch = new ClubHistory();
-                    ch.ClubID = clubID;
-                    ch.ActionUserName = userTo.Username.Trim();
-                    ch.ActionType = ClubHistoryActionType.TransferExtcredit.ToString();
-                    ch.ActionDescription = ClubLogic.BuildClubHistoryActionDesc(ClubHistoryActionType.TransferExtcredit, userTo.Username.Trim(), extCredit.ToString(), "枪手币");
-                    ch.OperatorUserName = userFrom.Username.Trim();
+                List<Club> list = ClubLogic.GetUserManagedClubs(fromUserID);
+                if (list == null || list.Count <= 0)
+                { throw new Exception("No privilege of tranfer"); }
 
-                    ClubLogic.SaveClubHistory(ch);
+                // Transfer Logic
 
-                    ClubSysPrivateMessage.SendMessage(clubID, userTo.Username.Trim(), ClubSysMessageType.TransferExtcredit, userFrom.Username.Trim(), extCredit.ToString("N0"), "枪手币");
-                }
+                AdminUsers.UpdateUserExtCredits(fromUserID, extCreditType, -extCredit);
+                AdminUsers.UpdateUserExtCredits(toUserID, extCreditType, extCredit);
+
+                // Club History Log & SMS
+
+                ClubHistory ch = new ClubHistory();
+                ch.ClubID = clubID;
+                ch.ActionUserName = userTo.Username.Trim();
+                ch.ActionType = ClubHistoryActionType.TransferExtcredit.ToString();
+                ch.ActionDescription = ClubLogic.BuildClubHistoryActionDesc(ClubHistoryActionType.TransferExtcredit, userTo.Username.Trim(), extCredit.ToString(), "枪手币");
+                ch.OperatorUserName = userFrom.Username.Trim();
+
+                ClubLogic.SaveClubHistory(ch);
+
+                ClubSysPrivateMessage.SendMessage(clubID, userTo.Username.Trim(), ClubSysMessageType.TransferExtcredit, userFrom.Username.Trim(), extCredit.ToString("N0"), "枪手币");
+            }
+            else
+            {
+                throw new Exception("Can't transfer to yourself");
             }
         }
 

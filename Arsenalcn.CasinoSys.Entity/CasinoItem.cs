@@ -170,17 +170,17 @@ namespace Arsenalcn.CasinoSys.Entity
         {
             DataTable dt = DataAccess.CasinoItem.GetEndMatchViewByTeamGuid(teamGuid);
 
-            if (dt != null)
-            {
-                dt.Columns.Add("LeagueDisplayName", typeof(string));
-                foreach (DataRow dr in dt.Rows)
-                {
-                    if (!Convert.IsDBNull(dr["Round"]))
-                        dr["LeagueDisplayName"] = string.Format("{0}{1}(第{2}轮)", dr["LeagueName"].ToString(), dr["LeagueSeason"].ToString(), dr["Round"].ToString());
-                    else
-                        dr["LeagueDisplayName"] = string.Format("{0}{1}", dr["LeagueName"].ToString(), dr["LeagueSeason"].ToString());
-                }
-            }
+            //if (dt != null)
+            //{
+            //    dt.Columns.Add("LeagueDisplayName", typeof(string));
+            //    foreach (DataRow dr in dt.Rows)
+            //    {
+            //        if (!Convert.IsDBNull(dr["Round"]))
+            //            dr["LeagueDisplayName"] = string.Format("{0}{1}(第{2}轮)", dr["LeagueName"].ToString(), dr["LeagueSeason"].ToString(), dr["Round"].ToString());
+            //        else
+            //            dr["LeagueDisplayName"] = string.Format("{0}{1}", dr["LeagueName"].ToString(), dr["LeagueSeason"].ToString());
+            //    }
+            //}
 
             return dt;
         }
@@ -191,17 +191,17 @@ namespace Arsenalcn.CasinoSys.Entity
 
             DataTable dt = DataAccess.CasinoItem.GetEndMatchViewByTeams(match.Home, match.Away);
 
-            if (dt != null)
-            {
-                dt.Columns.Add("LeagueDisplayName", typeof(string));
-                foreach (DataRow dr in dt.Rows)
-                {
-                    if (!Convert.IsDBNull(dr["Round"]))
-                        dr["LeagueDisplayName"] = string.Format("{0}{1}(第{2}轮)", dr["LeagueName"].ToString(), dr["LeagueSeason"].ToString(), dr["Round"].ToString());
-                    else
-                        dr["LeagueDisplayName"] = string.Format("{0}{1}", dr["LeagueName"].ToString(), dr["LeagueSeason"].ToString());
-                }
-            }
+            //if (dt != null)
+            //{
+            //    dt.Columns.Add("LeagueDisplayName", typeof(string));
+            //    foreach (DataRow dr in dt.Rows)
+            //    {
+            //        if (!Convert.IsDBNull(dr["Round"]))
+            //            dr["LeagueDisplayName"] = string.Format("{0}{1}(第{2}轮)", dr["LeagueName"].ToString(), dr["LeagueSeason"].ToString(), dr["Round"].ToString());
+            //        else
+            //            dr["LeagueDisplayName"] = string.Format("{0}{1}", dr["LeagueName"].ToString(), dr["LeagueSeason"].ToString());
+            //    }
+            //}
 
             return dt;
         }

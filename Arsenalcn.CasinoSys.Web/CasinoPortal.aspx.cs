@@ -4,8 +4,7 @@ using System.Data;
 using System.Web.UI.WebControls;
 
 using Arsenalcn.CasinoSys.Entity;
-
-using Discuz.Forum;
+using ArsenalTeam = Arsenalcn.CasinoSys.Entity.Arsenal.Team;
 
 namespace Arsenalcn.CasinoSys.Web
 {
@@ -35,24 +34,6 @@ namespace Arsenalcn.CasinoSys.Web
 
             DataTable dtMatch = Entity.CasinoItem.GetMatchCasinoItemView(true);
 
-            if (dtMatch != null)
-            {
-                dtMatch.Columns.Add("League", typeof(string));
-
-                foreach (DataRow dr in dtMatch.Rows)
-                {
-                    string league = dr["LeagueName"].ToString();
-
-                    //if (!string.IsNullOrEmpty(dr["LeagueSeason"].ToString()))
-                    //    league += dr["LeagueSeason"].ToString();
-
-                    if (!Convert.IsDBNull(dr["Round"]))
-                        league += string.Format("赛季 第{0}轮", dr["Round"]);
-
-                    dr["League"] = league;
-                }
-            }
-
             gvMatch.DataSource = dtMatch;
             gvMatch.DataBind();
         }
@@ -63,9 +44,44 @@ namespace Arsenalcn.CasinoSys.Web
             {
                 DataRowView drv = e.Row.DataItem as DataRowView;
 
-                Guid matchGuid = (Guid)drv["MatchGuid"];
+                Match m = new Match((Guid)drv["MatchGuid"]);
 
-                Guid? guid = Entity.CasinoItem.GetCasinoItemGuidByMatch(matchGuid, CasinoItem.CasinoType.SingleChoice);
+                Literal ltrlLeagueInfo = e.Row.FindControl("ltrlLeagueInfo") as Literal;
+
+                if (ltrlLeagueInfo != null)
+                {
+                    string _strLeague = "<a href=\"CasinoGame.aspx?League={0}\" title=\"{1}\"><img src=\"{2}\" alt=\"{1}\" class=\"CasinoSys_CategoryImg\" /></a>";
+
+                    string _strLeagueName = string.Format("{0}{1}", m.LeagueName, m.Round.HasValue ?
+                        string.Format(" 第{0}轮", m.Round.ToString()) : string.Empty);
+
+                    ltrlLeagueInfo.Text = string.Format(_strLeague, m.LeagueGuid.ToString(), _strLeagueName,
+                        League.Cache.Load(m.LeagueGuid).LeagueLogo);
+                }
+
+                Label lblHome = e.Row.FindControl("lblHome") as Label;
+                Label lblAway = e.Row.FindControl("lblAway") as Label;
+                HyperLink hlVersus = e.Row.FindControl("hlVersus") as HyperLink;
+
+                if (lblHome != null && lblAway != null && hlVersus != null)
+                {
+                    ArsenalTeam tHome = Team.Cache.Load(m.Home);
+                    ArsenalTeam tAway = Team.Cache.Load(m.Away);
+
+                    string _strTeamName = "<a class=\"StrongLink\" href=\"CasinoTeam.aspx?Team={0}\"  title=\"{1}\">{2}</a> ";
+                    string _strTeamLogo = "<img src=\"{3}\" alt=\"{1}\" /> ";
+
+                    lblHome.Text = string.Format(_strTeamName + _strTeamLogo,
+                        tHome.TeamGuid.ToString(), tHome.TeamEnglishName, tHome.TeamDisplayName, tHome.TeamLogo);
+                    lblAway.Text = string.Format(_strTeamLogo + _strTeamName,
+                        tAway.TeamGuid.ToString(), tAway.TeamEnglishName, tAway.TeamDisplayName, tAway.TeamLogo);
+
+                    hlVersus.NavigateUrl = string.Format("CasinoTeam.aspx?Match={0}", m.MatchGuid.ToString());
+                    hlVersus.Text = string.Format("<em title=\"{0}{1}\">vs</em>", tHome.Ground,
+                        tHome.Capacity.HasValue ? ("(" + tHome.Capacity.Value.ToString() + ")") : string.Empty);
+                }
+
+                Guid? guid = Entity.CasinoItem.GetCasinoItemGuidByMatch(m.MatchGuid, CasinoItem.CasinoType.SingleChoice);
 
                 if (guid.HasValue)
                 {
@@ -79,9 +95,7 @@ namespace Arsenalcn.CasinoSys.Web
                         ChoiceOption drawOption = options.Find(delegate(ChoiceOption option) { return option.OptionValue == MatchChoiceOption.DrawValue; });
                         ChoiceOption loseOption = options.Find(delegate(ChoiceOption option) { return option.OptionValue == MatchChoiceOption.AwayWinValue; });
 
-                        if (string.IsNullOrEmpty(winOption.OptionValue) || string.IsNullOrEmpty(drawOption.OptionValue) || string.IsNullOrEmpty(loseOption.OptionValue))
-                            throw new Exception();
-                        else
+                        if (!string.IsNullOrEmpty(winOption.OptionValue) && !string.IsNullOrEmpty(drawOption.OptionValue) && !string.IsNullOrEmpty(loseOption.OptionValue))
                         {
                             Literal ltrlWinRate = e.Row.FindControl("ltrlWinRate") as Literal;
                             Literal ltrlDrawRate = e.Row.FindControl("ltrlDrawRate") as Literal;
@@ -119,7 +133,7 @@ namespace Arsenalcn.CasinoSys.Web
 
                             if (btnBet != null)
                             {
-                                List<Bet> betList = Entity.Bet.GetUserMatchAllBet(this.userid, matchGuid);
+                                List<Bet> betList = Entity.Bet.GetUserMatchAllBet(this.userid, m.MatchGuid);
                                 int betCount = int.MinValue;
 
                                 if (betList != null && betList.Count > 0)
@@ -127,8 +141,9 @@ namespace Arsenalcn.CasinoSys.Web
                                 else
                                     betCount = 0;
 
-                                btnBet.Text = string.Format("投注 <span class=\"CasinoSys_BetInfo\">{0} | {1}</span>", betCount.ToString(), Bet.GetUserMatchTotalBet(this.userid, matchGuid).ToString("N0"));
-                                btnBet.NavigateUrl = string.Format("CasinoGameBet.aspx?Match={0}", matchGuid.ToString());
+                                btnBet.Text = string.Format("投注 <span class=\"CasinoSys_BetInfo\">{0} | {1}</span>",
+                                    betCount.ToString(), Bet.GetUserMatchTotalBet(this.userid, m.MatchGuid).ToString("N0"));
+                                btnBet.NavigateUrl = string.Format("CasinoGameBet.aspx?Match={0}", m.MatchGuid.ToString());
                             }
                             else
                             {
@@ -136,22 +151,21 @@ namespace Arsenalcn.CasinoSys.Web
                             }
 
                             // Adv Bodog Bet Button
+                        }
 
-                            HyperLink btnBetBodog = e.Row.FindControl("btnBet_Bodog") as HyperLink;
+                        HyperLink btnBetBodog = e.Row.FindControl("btnBet_Bodog") as HyperLink;
 
-                            //管理人员或100积分以上会员看不到广告
-                            if (btnBetBodog == null || this.useradminid > 0 || this.usergroupid > 12)
-                            {
-                                btnBetBodog.Visible = false;
-                            }
+                        //管理人员或100积分以上会员看不到广告
+                        if (btnBetBodog == null || this.useradminid > 0 || this.usergroupid > 12)
+                        {
+                            btnBetBodog.Visible = false;
+                        }
 
-                            if (btnBetBodog != null && this.CurrentGambler != null)
-                            {
-                                btnBetBodog.Text = "博狗投注 <span class=\"CasinoSys_BetInfo\">Bodog</span>";
-                                btnBetBodog.NavigateUrl = "http://record.slk61.com/_S9AEnQlJCqtPt_LV3gWenWNd7ZgqdRLk/68/?tc=olm36230";
-                                btnBetBodog.Target = "_blank";
-                            }
-
+                        if (btnBetBodog != null && this.CurrentGambler != null)
+                        {
+                            btnBetBodog.Text = "博狗投注 <span class=\"CasinoSys_BetInfo\">Bodog</span>";
+                            btnBetBodog.NavigateUrl = "http://record.slk61.com/_S9AEnQlJCqtPt_LV3gWenWNd7ZgqdRLk/68/?tc=olm36230";
+                            btnBetBodog.Target = "_blank";
                         }
                     }
                 }

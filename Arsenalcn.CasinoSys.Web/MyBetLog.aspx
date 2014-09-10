@@ -5,9 +5,9 @@
 <%@ Register Src="Control/FieldTooBar.ascx" TagName="FieldTooBar" TagPrefix="uc2" %>
 <%@ Register Src="Control/MenuTabBar.ascx" TagName="MenuTabBar" TagPrefix="uc3" %>
 <%@ Register Src="Control/GamblerHeader.ascx" TagName="GamblerHeader" TagPrefix="uc4" %>
-<asp:Content ID="Content1" ContentPlaceHolderID="cphHead" runat="server">
+<asp:Content ID="cphHead" ContentPlaceHolderID="cphHead" runat="server">
 </asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="cphMain" runat="server">
+<asp:Content ID="cphMain" ContentPlaceHolderID="cphMain" runat="server">
     <uc1:LeftPanel ID="ctrlLeftPanel" runat="server" />
     <div id="MainPanel">
         <uc2:FieldTooBar ID="ctrlFieldTooBar" runat="server" />
@@ -26,20 +26,18 @@
                 </asp:TemplateField>
                 <asp:TemplateField HeaderText="主队" ItemStyle-HorizontalAlign="Right">
                     <ItemTemplate>
-                        <a class="StrongLink" href="CasinoTeam.aspx?Team=<%# DataBinder.Eval(Container.DataItem, "Home") %>">
-                            <%#DataBinder.Eval(Container.DataItem, "HomeDisplay") %></a></ItemTemplate>
+                        <asp:HyperLink ID="hlHome" runat="server" class="StrongLink"></asp:HyperLink>
+                    </ItemTemplate>
                 </asp:TemplateField>
                 <asp:TemplateField ItemStyle-Width="20">
                     <ItemTemplate>
-                        <a href="CasinoTeam.aspx?Match=<%# DataBinder.Eval(Container.DataItem, "MatchGuid") %>">
-                            <em title="<%# DataBinder.Eval(Container.DataItem, "Ground") %>(<%# DataBinder.Eval(Container.DataItem, "Capacity") %>)">
-                                vs</em></a>
+                        <asp:HyperLink ID="hlVersus" runat="server"></asp:HyperLink>
                     </ItemTemplate>
                 </asp:TemplateField>
                 <asp:TemplateField HeaderText="客队" ItemStyle-HorizontalAlign="Left">
                     <ItemTemplate>
-                        <a class="StrongLink" href="CasinoTeam.aspx?Team=<%# DataBinder.Eval(Container.DataItem, "Away") %>">
-                            <%#DataBinder.Eval(Container.DataItem, "AwayDisplay") %></a></ItemTemplate>
+                        <asp:HyperLink ID="hlAway" runat="server" class="StrongLink"></asp:HyperLink>
+                    </ItemTemplate>
                 </asp:TemplateField>
                 <asp:BoundField DataField="BetTime" DataFormatString="{0:yyyy-MM-dd HH:mm:ss}" HeaderText="投注时间" />
                 <asp:TemplateField HeaderText="预测结果">

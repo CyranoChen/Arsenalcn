@@ -7,39 +7,34 @@
     </h3>
     <div class="Block">
         <ul>
-            <li class="LiTitle"><a onclick="$(this).parent().parent().siblings('ul').hide();$('ul#MatchEarning').show();">
-                <asp:Literal ID="ltrlEarning" runat="server"></asp:Literal></a> | <a onclick="$(this).parent().parent().siblings('ul').hide();$('ul#MatchLoss').show();"><asp:Literal
-                    ID="ltrlLoss" runat="server"></asp:Literal></a></li>
+            <li class="LiTitle">
+                <a onclick="$(this).parent().parent().siblings('ul').hide();$('ul#MatchEarning').show();">
+                    <asp:Literal ID="ltrlEarning" runat="server"></asp:Literal></a> | 
+                <a onclick="$(this).parent().parent().siblings('ul').hide();$('ul#MatchLoss').show();">
+                    <asp:Literal ID="ltrlLoss" runat="server"></asp:Literal></a>
+            </li>
         </ul>
-        <asp:Repeater ID="rptMatchEarning" runat="server">
+        <asp:Repeater ID="rptMatchEarning" runat="server" OnItemDataBound="rptMatchEarning_ItemDataBound">
             <HeaderTemplate>
                 <ul id="MatchEarning">
             </HeaderTemplate>
             <ItemTemplate>
-                <li class="IconTop<%#DataBinder.Eval(Container.DataItem, "Rank") %>"><a href="CasinoBetLog.aspx?Match=<%#DataBinder.Eval(Container.DataItem, "MatchGuid")%>"
-                    title="<%#DataBinder.Eval(Container.DataItem, "LeagueName")%> <%#DataBinder.Eval(Container.DataItem, "PlayTime")%>">
-                    <%#DataBinder.Eval(Container.DataItem, "HomeDisplay") %>
-                    <em>vs</em><%#DataBinder.Eval(Container.DataItem, "AwayDisplay")%></a><em title="比赛盈余"
-                        class="CasinoSys_TopRankEM">
-                        <%# Convert.ToSingle(DataBinder.Eval(Container.DataItem, "Earning")).ToString("N2")%></em></li>
+                <asp:Literal ID="ltrlMatchInfo" runat="server"></asp:Literal>
             </ItemTemplate>
             <FooterTemplate>
-                </ul></FooterTemplate>
+                </ul>
+            </FooterTemplate>
         </asp:Repeater>
-        <asp:Repeater ID="rptMatchLoss" runat="server">
+        <asp:Repeater ID="rptMatchLoss" runat="server" OnItemDataBound="rptMatchLoss_ItemDataBound">
             <HeaderTemplate>
                 <ul id="MatchLoss" style="display: none">
             </HeaderTemplate>
             <ItemTemplate>
-                <li class="IconTop<%#DataBinder.Eval(Container.DataItem, "Rank") %>"><a href="CasinoBetLog.aspx?Match=<%#DataBinder.Eval(Container.DataItem, "MatchGuid")%>"
-                    title="<%#DataBinder.Eval(Container.DataItem, "LeagueName")%> <%#DataBinder.Eval(Container.DataItem, "PlayTime")%>">
-                    <%#DataBinder.Eval(Container.DataItem, "HomeDisplay") %>
-                    <em>vs</em><%#DataBinder.Eval(Container.DataItem, "AwayDisplay")%></a><em title="比赛亏损"
-                        class="CasinoSys_TopRankEM">
-                        <%# Convert.ToSingle(DataBinder.Eval(Container.DataItem, "Earning")).ToString("N2")%></em></li>
+                <asp:Literal ID="ltrlMatchInfo" runat="server"></asp:Literal>
             </ItemTemplate>
             <FooterTemplate>
-                </ul></FooterTemplate>
+                </ul>
+            </FooterTemplate>
         </asp:Repeater>
     </div>
 </asp:Panel>

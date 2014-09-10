@@ -26,7 +26,6 @@ namespace Arsenalcn.Event
             }
             #endregion
 
-
             #region Generate LuckyPlayer
             try
             {
@@ -99,7 +98,7 @@ namespace Arsenalcn.Event
             #region Clean Object
             try
             {
-                Arsenal.Entity.RelationLeagueTeam.CleanRelationLeagueTeam();
+                //Arsenal.Entity.RelationLeagueTeam.CleanRelationLeagueTeam();
             }
             catch (Exception ex)
             {
@@ -110,7 +109,7 @@ namespace Arsenalcn.Event
             #region Update Arsenal Match Result
             try
             {
-                CustomAPI.UpdateArsenalMatchResult();
+                //CustomAPI.UpdateArsenalMatchResult();
             }
             catch (Exception ex)
             {

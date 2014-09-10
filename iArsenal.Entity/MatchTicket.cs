@@ -58,7 +58,10 @@ namespace iArsenal.Entity
                 if (dr != null)
                 {
                     ProductCode = dr["ProductCode"].ToString();
-                    ProductInfo = Product.Cache.Load(ProductCode).Name;
+
+                    ProductInfo = Product.Cache.Load(ProductCode) != null
+                        ? Product.Cache.Load(ProductCode).Name : string.Empty;
+
                     Deadline = (DateTime)dr["Deadline"];
 
                     if (!Convert.IsDBNull(dr["AllowMemberClass"]))
@@ -75,7 +78,7 @@ namespace iArsenal.Entity
                     ProductInfo = string.Empty;
                     Deadline = m.PlayTime.AddMonths(-2).AddDays(-7);
                     AllowMemberClass = null;
-                    IsActive = m.IsActive;
+                    IsActive = false;
                     Remark = string.Empty;
                 }
             }
@@ -137,6 +140,13 @@ namespace iArsenal.Entity
             }
 
             return list;
+        }
+
+        public bool Exist()
+        {
+            DataRow dr = DataAccess.MatchTicket.GetMatchTicketByID(MatchGuid);
+
+            return !dr.Equals(null);
         }
 
         private static DateTime ConvertToDST(DateTime date)

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Data;
 using System.Web.UI.WebControls;
 
+using Arsenalcn.CasinoSys.Entity;
+using ArsenalTeam = Arsenalcn.CasinoSys.Entity.Arsenal.Team;
+
 using Discuz.Entity;
 using Discuz.Forum;
 
@@ -55,9 +58,29 @@ namespace Arsenalcn.CasinoSys.Web
             {
                 DataRowView drv = e.Row.DataItem as DataRowView;
 
-                Guid matchGuid = (Guid)drv["MatchGuid"];
+                Match m = new Match((Guid)drv["MatchGuid"]);
 
-                List<Entity.Bet> betList = Entity.Bet.GetUserMatchAllBet(CurrentUserID, matchGuid);
+                HyperLink hlHome = e.Row.FindControl("hlHome") as HyperLink;
+                HyperLink hlAway = e.Row.FindControl("hlAway") as HyperLink;
+                HyperLink hlVersus = e.Row.FindControl("hlVersus") as HyperLink;
+
+                if (hlHome != null && hlAway != null && hlVersus != null)
+                {
+                    ArsenalTeam tHome = Team.Cache.Load(m.Home);
+                    ArsenalTeam tAway = Team.Cache.Load(m.Away);
+
+                    hlHome.Text = tHome.TeamDisplayName;
+                    hlHome.NavigateUrl = string.Format("CasinoTeam.aspx?Team={0}", m.Home);
+
+                    hlAway.Text = tAway.TeamDisplayName;
+                    hlAway.NavigateUrl = string.Format("CasinoTeam.aspx?Team={0}", m.Away);
+
+                    hlVersus.NavigateUrl = string.Format("CasinoTeam.aspx?Match={0}", m.MatchGuid.ToString());
+                    hlVersus.Text = string.Format("<em title=\"{0}{1}\">vs</em>", tHome.Ground,
+                        tHome.Capacity.HasValue ? ("(" + tHome.Capacity.Value.ToString() + ")") : string.Empty);
+                }
+
+                List<Entity.Bet> betList = Entity.Bet.GetUserMatchAllBet(CurrentUserID, m.MatchGuid);
                 betList.RemoveAll(delegate(Entity.Bet bet) { return !bet.IsWin.HasValue; });
 
                 float totalBetCount = 0, totalWin = 0;

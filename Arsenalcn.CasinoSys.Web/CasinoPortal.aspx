@@ -46,34 +46,22 @@
             <Columns>
                 <asp:TemplateField HeaderText="分类">
                     <ItemTemplate>
-                        <a href="CasinoGame.aspx?League=<%#DataBinder.Eval(Container.DataItem, "LeagueGuid") %>"
-                            title="<%#DataBinder.Eval(Container.DataItem, "League") %>">
-                            <img src="<%#DataBinder.Eval(Container.DataItem, "LeagueLogo") %>" alt="<%#DataBinder.Eval(Container.DataItem, "League") %>"
-                                class="CasinoSys_CategoryImg" /></a>
+                        <asp:Literal ID="ltrlLeagueInfo" runat="server"></asp:Literal>
                     </ItemTemplate>
                 </asp:TemplateField>
                 <asp:TemplateField HeaderText="主队" ItemStyle-HorizontalAlign="Right">
                     <ItemTemplate>
-                        <span class="CasinoSys_GameName"><a class="StrongLink" href="CasinoTeam.aspx?Team=<%# DataBinder.Eval(Container.DataItem, "Home") %>"
-                            title="<%# DataBinder.Eval(Container.DataItem, "HomeEng") %>">
-                            <%# DataBinder.Eval(Container.DataItem, "HomeDisplay") %></a>
-                            <img src="<%# DataBinder.Eval(Container.DataItem, "HomeLogo") %>" alt="<%# DataBinder.Eval(Container.DataItem, "HomeEng") %>" />
-                        </span>
+                        <asp:Label ID="lblHome" runat="server" CssClass="CasinoSys_GameName"></asp:Label>
                     </ItemTemplate>
                 </asp:TemplateField>
                 <asp:TemplateField HeaderText="vs" ItemStyle-Width="20">
                     <ItemTemplate>
-                        <a href="CasinoTeam.aspx?Match=<%# DataBinder.Eval(Container.DataItem, "MatchGuid") %>">
-                            <em title="<%# DataBinder.Eval(Container.DataItem, "Ground") %>(<%# DataBinder.Eval(Container.DataItem, "Capacity") %>)">vs</em></a>
+                        <asp:HyperLink ID="hlVersus" runat="server"></asp:HyperLink>
                     </ItemTemplate>
                 </asp:TemplateField>
                 <asp:TemplateField HeaderText="客队" ItemStyle-HorizontalAlign="Left">
                     <ItemTemplate>
-                        <span class="CasinoSys_GameName">
-                            <img src="<%# DataBinder.Eval(Container.DataItem, "AwayLogo") %>" alt="<%# DataBinder.Eval(Container.DataItem, "AwayEng") %>" />
-                            <a class="StrongLink" href="CasinoTeam.aspx?Team=<%# DataBinder.Eval(Container.DataItem, "Away") %>"
-                                title="<%# DataBinder.Eval(Container.DataItem, "AwayEng") %>">
-                                <%# DataBinder.Eval(Container.DataItem, "AwayDisplay") %></a></span>
+                        <asp:Label ID="lblAway" runat="server" CssClass="CasinoSys_GameName"></asp:Label>
                     </ItemTemplate>
                 </asp:TemplateField>
                 <asp:BoundField DataField="PlayTime" HeaderText="比赛时间" DataFormatString="{0:yyyy-MM-dd HH:mm}" />

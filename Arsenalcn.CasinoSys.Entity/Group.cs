@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 
 namespace Arsenalcn.CasinoSys.Entity
@@ -6,6 +7,11 @@ namespace Arsenalcn.CasinoSys.Entity
     public class Group
     {
         public Group() { }
+
+        private Group(DataRow dr)
+        {
+            InitGroup(dr);
+        }
 
         public Group(Guid groupGuid)
         {
@@ -40,6 +46,22 @@ namespace Arsenalcn.CasinoSys.Entity
             DataAccess.Group.UpdateGroup(GroupGuid, GroupName, GroupOrder, LeagueGuid, IsTable);
         }
 
+        public static List<Group> GetGroups()
+        {
+            DataTable dt = DataAccess.Group.GetGroups();
+            List<Group> list = new List<Group>();
+
+            if (dt != null)
+            {
+                foreach (DataRow dr in dt.Rows)
+                {
+                    list.Add(new Group(dr));
+                }
+            }
+
+            return list;
+        }
+
         public static void RemoveGroup(Guid groupGuid)
         {
             DataAccess.Group.RemoveRelationGroupAllTeam(groupGuid);
@@ -54,7 +76,7 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public static DataTable GetGroupByLeague(Guid leagueGuid)
         {
-            return DataAccess.Group.GetLeagueGroup(leagueGuid);         
+            return DataAccess.Group.GetLeagueGroup(leagueGuid);
         }
 
         public static DataTable GetGroupByLeague(Guid leagueGuid, bool isTable)
@@ -110,13 +132,14 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public static void ActiveGroupTableStatistics()
         {
-            DataTable dt = DataAccess.Group.GetAllActiveLeagueGroup();
+            List<Group> list = Group.GetGroups().FindAll(delegate(Group g)
+            { return League.Cache.Load(g.LeagueGuid).IsActive; });
 
-            if (dt != null)
+            if (list != null && list.Count > 0)
             {
-                foreach (DataRow dr in dt.Rows)
+                foreach (Group g in list)
                 {
-                    Entity.Group.GroupTableStatistics((Guid)dr["GroupGuid"]);
+                    Entity.Group.GroupTableStatistics(g.GroupGuid);
                 }
             }
         }

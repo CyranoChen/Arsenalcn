@@ -5,6 +5,7 @@ using System.Web.UI.WebControls;
 
 using Arsenalcn.CasinoSys.Entity;
 using ArsenalLeauge = Arsenalcn.CasinoSys.Entity.Arsenal.League;
+using ArsenalTeam = Arsenalcn.CasinoSys.Entity.Arsenal.Team;
 
 namespace Arsenalcn.CasinoSys.Web
 {
@@ -41,6 +42,7 @@ namespace Arsenalcn.CasinoSys.Web
 
                     // Bind ddlGroup
                     DataTable dtGroup = Entity.Group.GetGroupByLeague(CurrentLeague);
+
                     if (dtGroup != null)
                     {
                         ddlGroup.DataSource = dtGroup;
@@ -108,18 +110,6 @@ namespace Arsenalcn.CasinoSys.Web
         private void BindGroupData(GridView gv, Guid groupGuid)
         {
             DataTable dt = Entity.Group.GetTableGroupTeam(groupGuid);
-
-            if (dt != null)
-            {
-                dt.Columns.Add("GoalDiff", typeof(string));
-                foreach (DataRow dr in dt.Rows)
-                {
-                    if ((short)dr["TotalGoalDiff"] > 0)
-                        dr["GoalDiff"] = string.Format("+{0}", dr["TotalGoalDiff"].ToString());
-                    else
-                        dr["GoalDiff"] = dr["TotalGoalDiff"].ToString();
-                }
-            }
 
             gv.Columns[1].HeaderText = string.Format("<a href=\"CasinoGroup.aspx?Group={0}\">&lt;{1}&gt;</a>", groupGuid.ToString(), new Group(groupGuid).GroupName);
 
@@ -205,6 +195,60 @@ namespace Arsenalcn.CasinoSys.Web
         protected void btnGroupMatch_Click(object sender, EventArgs e)
         {
             Response.Redirect("CasinoGame.aspx?Group=" + CurrentGroup.ToString());
+        }
+
+        protected void gvGroupTable_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                DataRowView drv = e.Row.DataItem as DataRowView;
+
+                Literal ltrlTeamLogo = e.Row.FindControl("ltrlTeamLogo") as Literal;
+                HyperLink hlTeamInfo = e.Row.FindControl("hlTeamInfo") as HyperLink;
+                Literal ltrlGoalDiff = e.Row.FindControl("ltrlGoalDiff") as Literal;
+
+                if (ltrlTeamLogo != null && hlTeamInfo != null)
+                {
+                    ArsenalTeam t = Team.Cache.Load((Guid)drv["TeamGuid"]);
+
+                    ltrlTeamLogo.Text = string.Format("<span class=\"CasinoSys_GameName\" title=\"{0}\"><img src=\"{1}\" alt=\"{0}\" /></span>",
+                        t.TeamEnglishName, t.TeamLogo);
+
+                    hlTeamInfo.Text = string.Format("<em>{0}</em>", t.TeamDisplayName);
+                    hlTeamInfo.NavigateUrl = string.Format("CasinoTeam.aspx?Team={0}", t.TeamGuid.ToString());
+                }
+
+                if (ltrlGoalDiff != null)
+                {
+                    short _goalDiff = (short)drv["TotalGoalDiff"];
+
+                    ltrlGoalDiff.Text = string.Format("<em>{0}</em>",
+                        _goalDiff > 0 ? ("+" + _goalDiff.ToString()) : _goalDiff.ToString());
+                }
+            }
+        }
+
+        protected void gvGroupTeam_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                DataRowView drv = e.Row.DataItem as DataRowView;
+
+                Literal ltrlTeamLogo = e.Row.FindControl("ltrlTeamLogo") as Literal;
+                HyperLink hlTeamInfo = e.Row.FindControl("hlTeamInfo") as HyperLink;
+                Literal ltrlGoalDiff = e.Row.FindControl("ltrlGoalDiff") as Literal;
+
+                if (ltrlTeamLogo != null && hlTeamInfo != null)
+                {
+                    ArsenalTeam t = Team.Cache.Load((Guid)drv["TeamGuid"]);
+
+                    ltrlTeamLogo.Text = string.Format("<span class=\"CasinoSys_GameName\" title=\"{0}\"><img src=\"{1}\" alt=\"{0}\" /></span>",
+                        t.TeamEnglishName, t.TeamLogo);
+
+                    hlTeamInfo.Text = string.Format("<em>{0}</em>", t.TeamDisplayName);
+                    hlTeamInfo.NavigateUrl = string.Format("CasinoTeam.aspx?Team={0}", t.TeamGuid.ToString());
+                }
+            }
         }
     }
 }

@@ -5,6 +5,6 @@
         <asp:Literal ID="ltrlAdminInfo" runat="server"></asp:Literal>
     </div>
     <div class="HeaderBtnBar">
-        <a href="/plugin/Arsenal/AdminConfig.aspx">基础数据管理</a>
+        <a href="http://www.arsenal.cn/arsenalportal.aspx">基础数据管理</a>
     </div>
 </div>

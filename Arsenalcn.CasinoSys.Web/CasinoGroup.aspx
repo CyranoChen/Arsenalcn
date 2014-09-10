@@ -5,9 +5,9 @@
 <%@ Register Src="Control/FieldTooBar.ascx" TagName="FieldTooBar" TagPrefix="uc2" %>
 <%@ Register Src="Control/MenuTabBar.ascx" TagName="MenuTabBar" TagPrefix="uc3" %>
 <%@ Register Src="Control/LeagueHeader.ascx" TagName="LeagueHeader" TagPrefix="uc4" %>
-<asp:Content ID="Content1" ContentPlaceHolderID="cphHead" runat="server">
+<asp:Content ID="cphHead" ContentPlaceHolderID="cphHead" runat="server">
 </asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="cphMain" runat="server">
+<asp:Content ID="cphMain" ContentPlaceHolderID="cphMain" runat="server">
     <uc1:LeftPanel ID="ctrlLeftPanel" runat="server" />
     <div id="MainPanel">
         <uc2:FieldTooBar ID="ctrlFieldTooBar" runat="server" />
@@ -30,22 +30,19 @@
         <asp:Panel ID="pnlGroupList" CssClass="CasinoSys_GroupList" runat="server">
             <asp:Repeater ID="rptGroup" runat="server" OnItemDataBound="rptGroup_ItemDataBound">
                 <ItemTemplate>
-                    <asp:GridView ID="gvGroupTeam" runat="server" PageSize="100">
+                    <asp:GridView ID="gvGroupTeam" runat="server" PageSize="100"
+                        OnRowDataBound="gvGroupTeam_RowDataBound">
                         <Columns>
                             <asp:BoundField DataField="PositionNo" HeaderText="排行" NullDisplayText="/" DataFormatString="<em>{0}</em>"
                                 HtmlEncode="false" />
                             <asp:TemplateField>
                                 <ItemTemplate>
-                                    <span class="CasinoSys_GameName" title="<%# DataBinder.Eval(Container.DataItem, "TeamEnglishName") %>">
-                                        <img src="<%# DataBinder.Eval(Container.DataItem, "TeamLogo") %>" alt="<%# DataBinder.Eval(Container.DataItem, "TeamEnglishName") %>" />
-                                    </span>
+                                    <asp:Literal ID="ltrlTeamLogo" runat="server"></asp:Literal>
                                 </ItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="球队" ItemStyle-Wrap="false">
                                 <ItemTemplate>
-                                    <a href="CasinoTeam.aspx?Team=<%# DataBinder.Eval(Container.DataItem, "TeamGuid") %>">
-                                        <em>
-                                            <%# DataBinder.Eval(Container.DataItem, "TeamDisplayName") %></em></a>
+                                    <asp:HyperLink ID="hlTeamInfo" runat="server" CssClass="StrongLink"></asp:HyperLink>
                                 </ItemTemplate>
                             </asp:TemplateField>
                             <asp:BoundField DataField="TotalPlayed" HeaderText="场次" NullDisplayText="0" />
@@ -61,22 +58,18 @@
             <div class="Clear">
             </div>
         </asp:Panel>
-        <asp:GridView ID="gvGroupTable" runat="server" PageSize="100">
+        <asp:GridView ID="gvGroupTable" runat="server" PageSize="100" OnRowDataBound="gvGroupTable_RowDataBound">
             <Columns>
                 <asp:BoundField DataField="PositionNo" HeaderText="排行" NullDisplayText="/" DataFormatString="<em>{0}</em>"
                     HtmlEncode="false" />
                 <asp:TemplateField>
                     <ItemTemplate>
-                        <span class="CasinoSys_GameName" title="<%# DataBinder.Eval(Container.DataItem, "TeamEnglishName") %>">
-                            <img src="<%# DataBinder.Eval(Container.DataItem, "TeamLogo") %>" alt="<%# DataBinder.Eval(Container.DataItem, "TeamEnglishName") %>" />
-                        </span>
+                        <asp:Literal ID="ltrlTeamLogo" runat="server"></asp:Literal>
                     </ItemTemplate>
                 </asp:TemplateField>
                 <asp:TemplateField HeaderText="球队">
                     <ItemTemplate>
-                        <a class="StrongLink" href="CasinoTeam.aspx?Team=<%# DataBinder.Eval(Container.DataItem, "TeamGuid") %>">
-                            <em>
-                                <%# DataBinder.Eval(Container.DataItem, "TeamDisplayName") %></em></a>
+                        <asp:HyperLink ID="hlTeamInfo" runat="server" CssClass="StrongLink"></asp:HyperLink>
                     </ItemTemplate>
                 </asp:TemplateField>
                 <asp:BoundField DataField="TotalPlayed" HeaderText="场次" NullDisplayText="0" />
@@ -85,8 +78,11 @@
                 <asp:BoundField DataField="TotalLost" HeaderText="负" NullDisplayText="0" />
                 <asp:BoundField DataField="TotalGoalFor" HeaderText="进球" NullDisplayText="0" />
                 <asp:BoundField DataField="TotalGoalAgainst" HeaderText="失球" NullDisplayText="0" />
-                <asp:BoundField DataField="GoalDiff" HeaderText="净胜球" NullDisplayText="0" DataFormatString="<em>{0}</em>"
-                    HtmlEncode="false" />
+                <asp:TemplateField HeaderText="净胜球">
+                    <ItemTemplate>
+                        <asp:Literal ID="ltrlGoalDiff" runat="server"></asp:Literal>
+                    </ItemTemplate>
+                </asp:TemplateField>
                 <asp:BoundField DataField="TotalPoints" HeaderText="积分" NullDisplayText="0" DataFormatString="<em>{0}</em>"
                     HtmlEncode="false" />
             </Columns>

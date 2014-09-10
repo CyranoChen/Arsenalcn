@@ -5,6 +5,7 @@ using Arsenalcn.ClubSys.Entity;
 
 using Discuz.Entity;
 using Discuz.Forum;
+using System.Collections.Generic;
 
 namespace Arsenalcn.ClubSys.Web
 {
@@ -74,31 +75,35 @@ namespace Arsenalcn.ClubSys.Web
 
         protected void LoadPageData()
         {
-            UserClub ucFrom = ClubLogic.GetActiveUserClub(this.userid, ClubID);
+            //UserClub ucFrom = ClubLogic.GetActiveUserClubs(this.userid);
             //UserClub ucTo = ClubLogic.GetActiveUserClub(ToUserID, ClubID);
+
             UserInfo userFrom = AdminUsers.GetUserInfo(this.userid);
             UserInfo userTo = AdminUsers.GetUserInfo(ToUserID);
 
-            if (ucFrom != null && this.userid != ToUserID)
+            if (this.userid != ToUserID)
             {
-                if (ucFrom.Responsibility != (int)Responsibility.Executor && ucFrom.Responsibility != (int)Responsibility.Manager)
-                {
-                    pnlInaccessible.Visible = true;
-                    phContent.Visible = false;
-                }
-                else
+                List<Club> list = ClubLogic.GetUserManagedClubs(this.userid);
+
+                if (list != null && list.Count > 0)
                 {
                     pnlInaccessible.Visible = false;
                     phContent.Visible = true;
 
                     Club club = ClubLogic.GetClubInfo(ClubID);
-                    lblTransferInfo.Text = string.Format("<em>{0} {1}({2})</em>转账给会员<em>{3}</em>，您现拥有枪手币<em>{4}</em>", club.FullName, ucFrom.UserName.Trim(), ClubLogic.TranslateResponsibility(ucFrom.Responsibility.Value), userTo.Username.Trim(), userFrom.Extcredits2.ToString("N2"));
+                    lblTransferInfo.Text = string.Format("<em>{1}</em>转账给会员<em>{0} {2}</em>，您现拥有枪手币<em>{3}</em>", club.FullName, userFrom.Username.Trim(), userTo.Username.Trim(), userFrom.Extcredits2.ToString("N2"));
 
                     ltrlFromUserInfo.Text = string.Format("<em>{0}</em>(金钱:{1} | RP:{2})", userFrom.Username.Trim(), userFrom.Extcredits2.ToString("N2"), userFrom.Extcredits4.ToString());
                     ltrlToUserInfo.Text = string.Format("<em>{0}</em>(金钱:{1} | RP:{2})", userTo.Username.Trim(), userTo.Extcredits2.ToString("N2"), userTo.Extcredits4.ToString());
 
                     lblMaxTransfer.Text = string.Format(" *最多为可转账<em>{0}</em>枪手币 ", (userFrom.Extcredits2 * 0.5f).ToString("N0"));
                     rvMaxCash.MaximumValue = Convert.ToInt32(userFrom.Extcredits2 * 0.5f).ToString();
+                }
+                else
+                {
+                    pnlInaccessible.Visible = true;
+                    lblTips.Text = "您没有转帐权限。";
+                    phContent.Visible = false;
                 }
             }
             else

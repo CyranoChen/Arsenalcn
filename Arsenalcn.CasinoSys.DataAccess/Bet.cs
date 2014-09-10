@@ -240,17 +240,26 @@ namespace Arsenalcn.CasinoSys.DataAccess
 
         public static DataTable GetUserBetHistoryView(int userid)
         {
-            string sql = @"SELECT Bet.*, teamH.TeamDisplayName as HomeDisplay, teamA.TeamDisplayName as AwayDisplay,
-                        teamH.Ground, teamH.Capacity, match.*
+            //            string sql = @"SELECT Bet.*, teamH.TeamDisplayName as HomeDisplay, teamA.TeamDisplayName as AwayDisplay,
+            //                        teamH.Ground, teamH.Capacity, match.*
+            //                        FROM dbo.AcnCasino_Bet bet
+            //                        INNER JOIN dbo.AcnCasino_CasinoItem item
+            //                        ON bet.CasinoItemGuid = item.CasinoItemGuid
+            //                        INNER JOIN dbo.AcnCasino_Match match
+            //                        ON match.MatchGuid = item.MatchGuid
+            //                        INNER JOIN arsenal_team teamH
+            //                        ON match.home = teamH.TeamGuid
+            //                        INNER JOIN arsenal_team teamA
+            //                        ON match.away = teamA.TeamGuid
+            //                        WHERE UserID = @userid AND item.MatchGuid IS NOT NULL
+            //                        ORDER BY BetTime desc";
+
+            string sql = @"SELECT Bet.*, match.*
                         FROM dbo.AcnCasino_Bet bet
                         INNER JOIN dbo.AcnCasino_CasinoItem item
                         ON bet.CasinoItemGuid = item.CasinoItemGuid
                         INNER JOIN dbo.AcnCasino_Match match
                         ON match.MatchGuid = item.MatchGuid
-                        INNER JOIN arsenal_team teamH
-                        ON match.home = teamH.TeamGuid
-                        INNER JOIN arsenal_team teamA
-                        ON match.away = teamA.TeamGuid
                         WHERE UserID = @userid AND item.MatchGuid IS NOT NULL
                         ORDER BY BetTime desc";
 
@@ -264,8 +273,22 @@ namespace Arsenalcn.CasinoSys.DataAccess
 
         public static DataTable GetUserBetMatch(int userid)
         {
-            string sql = @"SELECT match.*, teamH.TeamDisplayName as HomeDisplay, teamA.TeamDisplayName as AwayDisplay,
-                        teamH.Ground, teamH.Capacity
+//            string sql = @"SELECT match.*, teamH.TeamDisplayName as HomeDisplay, teamA.TeamDisplayName as AwayDisplay,
+//                        teamH.Ground, teamH.Capacity
+//                        FROM (SELECT DISTINCT item.MatchGuid
+//                        FROM dbo.AcnCasino_Bet bet
+//                        INNER JOIN dbo.AcnCasino_CasinoItem item
+//                        ON bet.CasinoItemGuid = item.CasinoItemGuid AND item.Earning IS NOT NULL
+//                        WHERE UserID = @userid AND MatchGuid IS NOT NULL) betMatch
+//                        INNER JOIN dbo.AcnCasino_Match match
+//                        ON match.MatchGuid = betMatch.MatchGuid AND match.ResultHome IS NOT NULL AND match.ResultAway IS NOT NULL
+//                        INNER JOIN arsenal_team teamH
+//                        ON match.home = teamH.TeamGuid
+//                        INNER JOIN arsenal_team teamA
+//                        ON match.away = teamA.TeamGuid
+//                        ORDER BY match.PlayTime desc";
+
+            string sql = @"SELECT match.*,
                         FROM (SELECT DISTINCT item.MatchGuid
                         FROM dbo.AcnCasino_Bet bet
                         INNER JOIN dbo.AcnCasino_CasinoItem item
@@ -273,10 +296,6 @@ namespace Arsenalcn.CasinoSys.DataAccess
                         WHERE UserID = @userid AND MatchGuid IS NOT NULL) betMatch
                         INNER JOIN dbo.AcnCasino_Match match
                         ON match.MatchGuid = betMatch.MatchGuid AND match.ResultHome IS NOT NULL AND match.ResultAway IS NOT NULL
-                        INNER JOIN arsenal_team teamH
-                        ON match.home = teamH.TeamGuid
-                        INNER JOIN arsenal_team teamA
-                        ON match.away = teamA.TeamGuid
                         ORDER BY match.PlayTime desc";
 
             DataSet ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@userid", userid));

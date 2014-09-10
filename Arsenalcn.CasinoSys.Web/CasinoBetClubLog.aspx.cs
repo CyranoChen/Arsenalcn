@@ -78,23 +78,26 @@ namespace Arsenalcn.CasinoSys.Web
 
                 betList = Entity.Bet.GetMatchAllBet(CurrentMatch);
 
-                ltrlSingleChoiceCount.Text = betList.FindAll(delegate(Entity.Bet bet) { return bet.BetAmount.HasValue; }).Count.ToString();
-                ltrlMatchResultCount.Text = betList.FindAll(delegate(Entity.Bet bet) { return !bet.BetAmount.HasValue; }).Count.ToString();
+                if (betList != null && betList.Count > 0)
+                {
+                    ltrlSingleChoiceCount.Text = betList.FindAll(delegate(Entity.Bet bet) { return bet.BetAmount.HasValue; }).Count.ToString();
+                    ltrlMatchResultCount.Text = betList.FindAll(delegate(Entity.Bet bet) { return !bet.BetAmount.HasValue; }).Count.ToString();
 
-                float totalBetCount = 0;
-                betList.ForEach(delegate(Entity.Bet bet) { totalBetCount += bet.BetAmount.GetValueOrDefault(0f); });
-                ltrlTotalBetCount.Text = totalBetCount.ToString("N0");
+                    float totalBetCount = 0;
+                    betList.ForEach(delegate(Entity.Bet bet) { totalBetCount += bet.BetAmount.GetValueOrDefault(0f); });
+                    ltrlTotalBetCount.Text = totalBetCount.ToString("N0");
 
-                Guid? itemGuid = Entity.CasinoItem.GetCasinoItemGuidByMatch(CurrentMatch, CasinoItem.CasinoType.MatchResult);
+                    Guid? itemGuid = Entity.CasinoItem.GetCasinoItemGuidByMatch(CurrentMatch, CasinoItem.CasinoType.MatchResult);
 
-                if (itemGuid.HasValue)
-                    betList = Entity.Bet.GetBetByCasinoItemGuid(itemGuid.Value, null);
-                else
-                    betList = null;
+                    if (itemGuid.HasValue)
+                        betList = Entity.Bet.GetBetByCasinoItemGuid(itemGuid.Value, null);
+                    else
+                        betList = null;
 
-                gvBet.PageSize = betList.Count;
-                gvBet.DataSource = betList;
-                gvBet.DataBind();
+                    gvBet.PageSize = betList.Count;
+                    gvBet.DataSource = betList;
+                    gvBet.DataBind();
+                }
             }
         }
 

@@ -100,8 +100,7 @@ namespace Arsenalcn.CasinoSys.DataAccess
             //                      Arsenal_Team AS teamA ON match.Away = teamA.TeamGuid INNER JOIN
             //                      Arsenal_League AS league ON match.LeagueGuid = league.LeagueGuid ORDER BY match.PlayTime, HomeEng";
 
-            string sql = @"SELECT match.MatchGuid, match.Home, match.Away, match.ResultHome, match.ResultAway, match.PlayTime, match.LeagueGuid, match.LeagueName, match.Round
-                      FROM (SELECT DISTINCT MatchGuid FROM AcnCasino_CasinoItem WHERE (MatchGuid IS NOT NULL) AND (CloseTime > GETDATE()) AND (CloseTime < DATEADD(d, @casinoValidDays, GETDATE())) AND (Earning IS NULL)) AS item 
+            string sql = @"SELECT match.* FROM (SELECT DISTINCT MatchGuid FROM AcnCasino_CasinoItem WHERE (MatchGuid IS NOT NULL) AND (CloseTime > GETDATE()) AND (CloseTime < DATEADD(d, @casinoValidDays, GETDATE())) AND (Earning IS NULL)) AS item 
                       INNER JOIN AcnCasino_Match AS match ON match.MatchGuid = item.MatchGuid AND match.ResultHome IS NULL AND match.ResultAway IS NULL ORDER BY match.PlayTime";
 
             DataSet ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@casinoValidDays", casinoValidDays));
@@ -127,17 +126,23 @@ namespace Arsenalcn.CasinoSys.DataAccess
 
         public static DataTable GetEndMatchView()
         {
-            string sql = @"SELECT match.*, teamH.TeamDisplayName as HomeDisplay, teamH.TeamEnglishName as HomeEng, teamH.TeamLogo as HomeLogo, 
-                        teamH.Capacity as Capacity, teamH.Ground as Ground,  teamA.TeamLogo as AwayLogo, teamA.TeamDisplayName as AwayDisplay, teamA.TeamEnglishName as AwayEng 
-                        FROM (SELECT DISTINCT MatchGuid FROM dbo.AcnCasino_CasinoItem WHERE MatchGuid IS NOT NULL) item
-                        INNER JOIN acncasino_match match
-                        ON match.MatchGuid = item.MatchGuid
-                        INNER JOIN arsenal_team teamH
-                        ON match.home = teamH.TeamGuid
-                        INNER JOIN arsenal_team teamA
-                        ON match.away = teamA.TeamGuid
-                        INNER JOIN arsenal_league league
-                        ON match.LeagueGuid = league.LeagueGuid
+            //            string sql = @"SELECT match.*, teamH.TeamDisplayName as HomeDisplay, teamH.TeamEnglishName as HomeEng, teamH.TeamLogo as HomeLogo, 
+            //                        teamH.Capacity as Capacity, teamH.Ground as Ground,  teamA.TeamLogo as AwayLogo, teamA.TeamDisplayName as AwayDisplay, teamA.TeamEnglishName as AwayEng 
+            //                        FROM (SELECT DISTINCT MatchGuid FROM dbo.AcnCasino_CasinoItem WHERE MatchGuid IS NOT NULL) item
+            //                        INNER JOIN acncasino_match match
+            //                        ON match.MatchGuid = item.MatchGuid
+            //                        INNER JOIN arsenal_team teamH
+            //                        ON match.home = teamH.TeamGuid
+            //                        INNER JOIN arsenal_team teamA
+            //                        ON match.away = teamA.TeamGuid
+            //                        INNER JOIN arsenal_league league
+            //                        ON match.LeagueGuid = league.LeagueGuid
+            //                        WHERE match.ResultHome IS NOT NULL AND match.ResultAway IS NOT NULL
+            //                        ORDER BY match.PlayTime DESC";
+
+            string sql = @"SELECT match.* FROM 
+                        (SELECT DISTINCT MatchGuid FROM dbo.AcnCasino_CasinoItem WHERE MatchGuid IS NOT NULL) item
+                        INNER JOIN acncasino_match match ON match.MatchGuid = item.MatchGuid
                         WHERE match.ResultHome IS NOT NULL AND match.ResultAway IS NOT NULL
                         ORDER BY match.PlayTime DESC";
 
@@ -151,17 +156,23 @@ namespace Arsenalcn.CasinoSys.DataAccess
 
         public static DataTable GetEndMatchView(Guid leagueGuid)
         {
-            string sql = @"SELECT match.*, teamH.TeamDisplayName as HomeDisplay, teamH.TeamEnglishName as HomeEng, teamH.TeamLogo as HomeLogo, teamA.TeamLogo as AwayLogo,
-                        teamH.Ground as Ground, teamH.Capacity as Capacity, teamA.TeamDisplayName as AwayDisplay, teamA.TeamEnglishName as AwayEng from
-                        (select distinct MatchGuid from dbo.AcnCasino_CasinoItem where MatchGuid IS NOT NULL) item
-                        INNER JOIN acncasino_match match
-                        ON match.MatchGuid = item.MatchGuid
-                        INNER JOIN arsenal_team teamH
-                        ON match.home = teamH.TeamGuid
-                        INNER JOIN arsenal_team teamA
-                        ON match.away = teamA.TeamGuid
-                        INNER JOIN arsenal_league league
-                        ON match.LeagueGuid = league.LeagueGuid
+            //            string sql = @"SELECT match.*, teamH.TeamDisplayName as HomeDisplay, teamH.TeamEnglishName as HomeEng, teamH.TeamLogo as HomeLogo, teamA.TeamLogo as AwayLogo,
+            //                        teamH.Ground as Ground, teamH.Capacity as Capacity, teamA.TeamDisplayName as AwayDisplay, teamA.TeamEnglishName as AwayEng from
+            //                        (select distinct MatchGuid from dbo.AcnCasino_CasinoItem where MatchGuid IS NOT NULL) item
+            //                        INNER JOIN acncasino_match match
+            //                        ON match.MatchGuid = item.MatchGuid
+            //                        INNER JOIN arsenal_team teamH
+            //                        ON match.home = teamH.TeamGuid
+            //                        INNER JOIN arsenal_team teamA
+            //                        ON match.away = teamA.TeamGuid
+            //                        INNER JOIN arsenal_league league
+            //                        ON match.LeagueGuid = league.LeagueGuid
+            //                        WHERE match.LeagueGuid = @leagueGuid AND match.ResultHome IS NOT NULL AND match.ResultAway IS NOT NULL
+            //                        ORDER BY match.PlayTime DESC";
+
+            string sql = @"SELECT match.* FROM
+                        (SELECT DISTINCT MatchGuid FROM dbo.AcnCasino_CasinoItem WHERE MatchGuid IS NOT NULL) item
+                        INNER JOIN acncasino_match match ON match.MatchGuid = item.MatchGuid
                         WHERE match.LeagueGuid = @leagueGuid AND match.ResultHome IS NOT NULL AND match.ResultAway IS NOT NULL
                         ORDER BY match.PlayTime DESC";
 
@@ -176,32 +187,17 @@ namespace Arsenalcn.CasinoSys.DataAccess
         public static DataTable GetEndMatchView(Guid leagueGuid, Guid groupGuid, bool isTable)
         {
             string sql = string.Empty;
+
             if (!isTable)
-                sql = @"SELECT match.*, teamH.TeamDisplayName as HomeDisplay, teamH.TeamEnglishName as HomeEng, teamH.TeamLogo as HomeLogo, teamA.TeamLogo as AwayLogo,
-                        teamH.Ground as Ground, teamH.Capacity as Capacity, teamA.TeamDisplayName as AwayDisplay, teamA.TeamEnglishName as AwayEng from
-                        (select distinct MatchGuid from dbo.AcnCasino_CasinoItem where MatchGuid IS NOT NULL) item
-                        INNER JOIN acncasino_match match
-                        ON match.MatchGuid = item.MatchGuid
-                        INNER JOIN arsenal_team teamH
-                        ON match.home = teamH.TeamGuid
-                        INNER JOIN arsenal_team teamA
-                        ON match.away = teamA.TeamGuid
-                        INNER JOIN arsenal_league league
-                        ON match.LeagueGuid = league.LeagueGuid
+                sql = @"SELECT match.* FROM
+                        (SELECT DISTINCT MatchGuid FROM dbo.AcnCasino_CasinoItem WHERE MatchGuid IS NOT NULL) item
+                        INNER JOIN acncasino_match match ON match.MatchGuid = item.MatchGuid
                         WHERE match.LeagueGuid = @leagueGuid AND match.GroupGuid = @groupGuid AND match.ResultHome IS NOT NULL AND match.ResultAway IS NOT NULL
                         ORDER BY match.PlayTime DESC";
             else
-                sql = @"SELECT match.*, teamH.TeamDisplayName as HomeDisplay, teamH.TeamEnglishName as HomeEng, teamH.TeamLogo as HomeLogo, teamA.TeamLogo as AwayLogo,
-                        teamH.Ground as Ground, teamH.Capacity as Capacity, teamA.TeamDisplayName as AwayDisplay, teamA.TeamEnglishName as AwayEng from
-                        (select distinct MatchGuid from dbo.AcnCasino_CasinoItem where MatchGuid IS NOT NULL) item
-                        INNER JOIN acncasino_match match
-                        ON match.MatchGuid = item.MatchGuid
-                        INNER JOIN arsenal_team teamH
-                        ON match.home = teamH.TeamGuid
-                        INNER JOIN arsenal_team teamA
-                        ON match.away = teamA.TeamGuid
-                        INNER JOIN arsenal_league league
-                        ON match.LeagueGuid = league.LeagueGuid
+                sql = @"SELECT match.* FROM
+                        (SELECT DISTINCT MatchGuid FROM dbo.AcnCasino_CasinoItem WHERE MatchGuid IS NOT NULL) item
+                        INNER JOIN acncasino_match match ON match.MatchGuid = item.MatchGuid
                         WHERE match.LeagueGuid = @leagueGuid AND match.ResultHome IS NOT NULL AND match.ResultAway IS NOT NULL AND
                         (match.home IN (SELECT TeamGuid FROM dbo.Arsenal_RelationGroupTeam AS GroupTeam1 WHERE GroupGuid = @groupGuid)) AND
                         (match.away IN (SELECT TeamGuid FROM dbo.Arsenal_RelationGroupTeam AS GroupTeam2 WHERE GroupGuid = @groupGuid))
@@ -217,18 +213,25 @@ namespace Arsenalcn.CasinoSys.DataAccess
 
         public static DataTable GetEndMatchViewByTeamGuid(Guid teamGuid)
         {
-            string sql = @"SELECT match.*, teamH.TeamDisplayName as HomeDisplay, teamH.TeamEnglishName as HomeEng, teamH.TeamLogo as HomeLogo, teamA.TeamLogo as AwayLogo,
-                        teamH.Ground as Ground, teamH.Capacity as Capacity, teamA.TeamDisplayName as AwayDisplay, teamA.TeamEnglishName as AwayEng,
-                        league.LeagueLogo AS LeagueLogo, league.LeagueName AS LeagueName, league.LeagueSeason AS LeagueSeason FROM
-                        (select distinct MatchGuid from dbo.AcnCasino_CasinoItem where MatchGuid IS NOT NULL) item
-                        INNER JOIN acncasino_match match
-                        ON match.MatchGuid = item.MatchGuid
-                        INNER JOIN arsenal_team teamH
-                        ON match.home = teamH.TeamGuid
-                        INNER JOIN arsenal_team teamA
-                        ON match.away = teamA.TeamGuid
-                        INNER JOIN arsenal_league league
-                        ON match.LeagueGuid = league.LeagueGuid
+            //            string sql = @"SELECT match.*, teamH.TeamDisplayName as HomeDisplay, teamH.TeamEnglishName as HomeEng, teamH.TeamLogo as HomeLogo, teamA.TeamLogo as AwayLogo,
+            //                        teamH.Ground as Ground, teamH.Capacity as Capacity, teamA.TeamDisplayName as AwayDisplay, teamA.TeamEnglishName as AwayEng,
+            //                        league.LeagueLogo AS LeagueLogo, league.LeagueName AS LeagueName, league.LeagueSeason AS LeagueSeason FROM
+            //                        (select distinct MatchGuid from dbo.AcnCasino_CasinoItem where MatchGuid IS NOT NULL) item
+            //                        INNER JOIN acncasino_match match
+            //                        ON match.MatchGuid = item.MatchGuid
+            //                        INNER JOIN arsenal_team teamH
+            //                        ON match.home = teamH.TeamGuid
+            //                        INNER JOIN arsenal_team teamA
+            //                        ON match.away = teamA.TeamGuid
+            //                        INNER JOIN arsenal_league league
+            //                        ON match.LeagueGuid = league.LeagueGuid
+            //                        WHERE (match.Home = @teamGuid OR match.Away = @teamGuid) AND 
+            //                        match.ResultHome IS NOT NULL AND match.ResultAway IS NOT NULL
+            //                        ORDER BY match.PlayTime DESC";
+
+            string sql = @"SELECT match.* FROM
+                        (SELECT DISTINCT MatchGuid FROM dbo.AcnCasino_CasinoItem WHERE MatchGuid IS NOT NULL) item
+                        INNER JOIN acncasino_match match ON match.MatchGuid = item.MatchGuid
                         WHERE (match.Home = @teamGuid OR match.Away = @teamGuid) AND 
                         match.ResultHome IS NOT NULL AND match.ResultAway IS NOT NULL
                         ORDER BY match.PlayTime DESC";
@@ -243,18 +246,26 @@ namespace Arsenalcn.CasinoSys.DataAccess
 
         public static DataTable GetEndMatchViewByTeams(Guid teamGuidA, Guid teamGuidB)
         {
-            string sql = @"SELECT match.*, teamH.TeamDisplayName as HomeDisplay, teamH.TeamEnglishName as HomeEng, teamH.TeamLogo as HomeLogo, teamA.TeamLogo as AwayLogo,
-                        teamH.Ground as Ground, teamH.Capacity as Capacity, teamA.TeamDisplayName as AwayDisplay, teamA.TeamEnglishName as AwayEng,
-                        league.LeagueLogo AS LeagueLogo, league.LeagueName AS LeagueName, league.LeagueSeason AS LeagueSeason FROM
-                        (select distinct MatchGuid from dbo.AcnCasino_CasinoItem where MatchGuid IS NOT NULL) item
-                        INNER JOIN acncasino_match match
-                        ON match.MatchGuid = item.MatchGuid
-                        INNER JOIN Arsenal_Team teamH
-                        ON match.home = teamH.TeamGuid
-                        INNER JOIN Arsenal_Team teamA
-                        ON match.away = teamA.TeamGuid
-                        INNER JOIN Arsenal_League league
-                        ON match.LeagueGuid = league.LeagueGuid
+            //            string sql = @"SELECT match.*, teamH.TeamDisplayName as HomeDisplay, teamH.TeamEnglishName as HomeEng, teamH.TeamLogo as HomeLogo, teamA.TeamLogo as AwayLogo,
+            //                        teamH.Ground as Ground, teamH.Capacity as Capacity, teamA.TeamDisplayName as AwayDisplay, teamA.TeamEnglishName as AwayEng,
+            //                        league.LeagueLogo AS LeagueLogo, league.LeagueName AS LeagueName, league.LeagueSeason AS LeagueSeason FROM
+            //                        (select distinct MatchGuid from dbo.AcnCasino_CasinoItem where MatchGuid IS NOT NULL) item
+            //                        INNER JOIN acncasino_match match
+            //                        ON match.MatchGuid = item.MatchGuid
+            //                        INNER JOIN Arsenal_Team teamH
+            //                        ON match.home = teamH.TeamGuid
+            //                        INNER JOIN Arsenal_Team teamA
+            //                        ON match.away = teamA.TeamGuid
+            //                        INNER JOIN Arsenal_League league
+            //                        ON match.LeagueGuid = league.LeagueGuid
+            //                        WHERE ((match.Home = @teamGuidA AND match.Away = @teamGuidB) OR 
+            //                        (match.Home = @teamGuidB AND match.Away = @teamGuidA)) AND 
+            //                        match.ResultHome IS NOT NULL AND match.ResultAway IS NOT NULL
+            //                        ORDER BY match.PlayTime DESC";
+
+            string sql = @"SELECT match.* FROM
+                        (SELECT DISTINCT MatchGuid FROM dbo.AcnCasino_CasinoItem WHERE MatchGuid IS NOT NULL) item
+                        INNER JOIN acncasino_match match ON match.MatchGuid = item.MatchGuid
                         WHERE ((match.Home = @teamGuidA AND match.Away = @teamGuidB) OR 
                         (match.Home = @teamGuidB AND match.Away = @teamGuidA)) AND 
                         match.ResultHome IS NOT NULL AND match.ResultAway IS NOT NULL
@@ -278,16 +289,22 @@ namespace Arsenalcn.CasinoSys.DataAccess
                 DateTime monthStart = iDay.AddDays(1 - iDay.Day);
                 DateTime nextStart = iDay.AddMonths(1);
 
-                string sql = string.Format(@"SELECT TOP 5 dbo.AcnCasino_CasinoItem.MatchGuid, TeamH.TeamDisplayName AS HomeDisplay, TeamA.TeamDisplayName AS AwayDisplay, 
-                      TeamH.TeamEnglishName AS HomeEng, TeamA.TeamEnglishName AS AwayEng, dbo.AcnCasino_Match.PlayTime, 
-                      dbo.AcnCasino_CasinoItem.Earning, dbo.AcnCasino_Match.Round, dbo.Arsenal_League.LeagueName
-                      FROM dbo.AcnCasino_CasinoItem INNER JOIN
-                      dbo.AcnCasino_Match ON dbo.AcnCasino_CasinoItem.MatchGuid = dbo.AcnCasino_Match.MatchGuid INNER JOIN
-                      dbo.Arsenal_League ON dbo.AcnCasino_Match.LeagueGuid = dbo.Arsenal_League.LeagueGuid INNER JOIN
-                      dbo.Arsenal_Team AS TeamH ON dbo.AcnCasino_Match.Home = TeamH.TeamGuid INNER JOIN
-                      dbo.Arsenal_Team AS TeamA ON dbo.AcnCasino_Match.Away = TeamA.TeamGuid
-                      WHERE (dbo.AcnCasino_CasinoItem.Earning IS NOT NULL) AND (dbo.AcnCasino_CasinoItem.ItemType = 'SingleChoice') AND (dbo.AcnCasino_Match.PlayTime >= '{0}') AND (dbo.AcnCasino_Match.PlayTime < '{1}')
-                      ORDER BY dbo.AcnCasino_CasinoItem.Earning DESC", monthStart, nextStart);
+                //                string sql = string.Format(@"SELECT TOP 5 dbo.AcnCasino_CasinoItem.MatchGuid, TeamH.TeamDisplayName AS HomeDisplay, TeamA.TeamDisplayName AS AwayDisplay, 
+                //                      TeamH.TeamEnglishName AS HomeEng, TeamA.TeamEnglishName AS AwayEng, dbo.AcnCasino_Match.PlayTime, 
+                //                      dbo.AcnCasino_CasinoItem.Earning, dbo.AcnCasino_Match.Round, dbo.Arsenal_League.LeagueName
+                //                      FROM dbo.AcnCasino_CasinoItem INNER JOIN
+                //                      dbo.AcnCasino_Match ON dbo.AcnCasino_CasinoItem.MatchGuid = dbo.AcnCasino_Match.MatchGuid INNER JOIN
+                //                      dbo.Arsenal_League ON dbo.AcnCasino_Match.LeagueGuid = dbo.Arsenal_League.LeagueGuid INNER JOIN
+                //                      dbo.Arsenal_Team AS TeamH ON dbo.AcnCasino_Match.Home = TeamH.TeamGuid INNER JOIN
+                //                      dbo.Arsenal_Team AS TeamA ON dbo.AcnCasino_Match.Away = TeamA.TeamGuid
+                //                      WHERE (dbo.AcnCasino_CasinoItem.Earning IS NOT NULL) AND (dbo.AcnCasino_CasinoItem.ItemType = 'SingleChoice') AND (dbo.AcnCasino_Match.PlayTime >= '{0}') AND (dbo.AcnCasino_Match.PlayTime < '{1}')
+                //                      ORDER BY dbo.AcnCasino_CasinoItem.Earning DESC", monthStart, nextStart);
+
+                string sql = string.Format(@"SELECT TOP 5 dbo.AcnCasino_CasinoItem.MatchGuid, dbo.AcnCasino_Match.PlayTime, 
+                                      dbo.AcnCasino_CasinoItem.Earning, dbo.AcnCasino_Match.Round 
+                                      FROM dbo.AcnCasino_CasinoItem INNER JOIN dbo.AcnCasino_Match ON dbo.AcnCasino_CasinoItem.MatchGuid = dbo.AcnCasino_Match.MatchGuid
+                                      WHERE (dbo.AcnCasino_CasinoItem.Earning IS NOT NULL) AND (dbo.AcnCasino_CasinoItem.ItemType = 'SingleChoice') AND (dbo.AcnCasino_Match.PlayTime >= '{0}') AND (dbo.AcnCasino_Match.PlayTime < '{1}')
+                                      ORDER BY dbo.AcnCasino_CasinoItem.Earning DESC", monthStart, nextStart);
 
                 DataSet ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql);
 
@@ -312,14 +329,20 @@ namespace Arsenalcn.CasinoSys.DataAccess
                 DateTime monthStart = iDay.AddDays(1 - iDay.Day);
                 DateTime nextStart = iDay.AddMonths(1);
 
-                string sql = string.Format(@"SELECT TOP 5 dbo.AcnCasino_CasinoItem.MatchGuid, TeamH.TeamDisplayName AS HomeDisplay, TeamA.TeamDisplayName AS AwayDisplay, 
-                      TeamH.TeamEnglishName AS HomeEng, TeamA.TeamEnglishName AS AwayEng, dbo.AcnCasino_Match.PlayTime, 
-                      dbo.AcnCasino_CasinoItem.Earning, dbo.AcnCasino_Match.Round, dbo.Arsenal_League.LeagueName
-                      FROM dbo.AcnCasino_CasinoItem INNER JOIN
-                      dbo.AcnCasino_Match ON dbo.AcnCasino_CasinoItem.MatchGuid = dbo.AcnCasino_Match.MatchGuid INNER JOIN
-                      dbo.Arsenal_League ON dbo.AcnCasino_Match.LeagueGuid = dbo.Arsenal_League.LeagueGuid INNER JOIN
-                      dbo.Arsenal_Team AS TeamH ON dbo.AcnCasino_Match.Home = TeamH.TeamGuid INNER JOIN
-                      dbo.Arsenal_Team AS TeamA ON dbo.AcnCasino_Match.Away = TeamA.TeamGuid
+                //                string sql = string.Format(@"SELECT TOP 5 dbo.AcnCasino_CasinoItem.MatchGuid, TeamH.TeamDisplayName AS HomeDisplay, TeamA.TeamDisplayName AS AwayDisplay, 
+                //                      TeamH.TeamEnglishName AS HomeEng, TeamA.TeamEnglishName AS AwayEng, dbo.AcnCasino_Match.PlayTime, 
+                //                      dbo.AcnCasino_CasinoItem.Earning, dbo.AcnCasino_Match.Round, dbo.Arsenal_League.LeagueName
+                //                      FROM dbo.AcnCasino_CasinoItem INNER JOIN
+                //                      dbo.AcnCasino_Match ON dbo.AcnCasino_CasinoItem.MatchGuid = dbo.AcnCasino_Match.MatchGuid INNER JOIN
+                //                      dbo.Arsenal_League ON dbo.AcnCasino_Match.LeagueGuid = dbo.Arsenal_League.LeagueGuid INNER JOIN
+                //                      dbo.Arsenal_Team AS TeamH ON dbo.AcnCasino_Match.Home = TeamH.TeamGuid INNER JOIN
+                //                      dbo.Arsenal_Team AS TeamA ON dbo.AcnCasino_Match.Away = TeamA.TeamGuid
+                //                      WHERE (dbo.AcnCasino_CasinoItem.Earning IS NOT NULL) AND (dbo.AcnCasino_CasinoItem.ItemType = 'SingleChoice') AND (dbo.AcnCasino_Match.PlayTime >= '{0}') AND (dbo.AcnCasino_Match.PlayTime < '{1}')
+                //                      ORDER BY dbo.AcnCasino_CasinoItem.Earning", monthStart, nextStart);
+
+                string sql = string.Format(@"SELECT TOP 5 dbo.AcnCasino_CasinoItem.MatchGuid, dbo.AcnCasino_Match.PlayTime, 
+                      dbo.AcnCasino_CasinoItem.Earning, dbo.AcnCasino_Match.Round
+                      FROM dbo.AcnCasino_CasinoItem INNER JOIN dbo.AcnCasino_Match ON dbo.AcnCasino_CasinoItem.MatchGuid = dbo.AcnCasino_Match.MatchGuid
                       WHERE (dbo.AcnCasino_CasinoItem.Earning IS NOT NULL) AND (dbo.AcnCasino_CasinoItem.ItemType = 'SingleChoice') AND (dbo.AcnCasino_Match.PlayTime >= '{0}') AND (dbo.AcnCasino_Match.PlayTime < '{1}')
                       ORDER BY dbo.AcnCasino_CasinoItem.Earning", monthStart, nextStart);
 
@@ -355,9 +378,8 @@ namespace Arsenalcn.CasinoSys.DataAccess
         public static DataTable GetActiveCasinoItem()
         {
             string sql = @"SELECT CasinoItemGuid FROM dbo.AcnCasino_CasinoItem INNER JOIN
-                          dbo.AcnCasino_Match ON dbo.AcnCasino_CasinoItem.MatchGuid = dbo.AcnCasino_Match.MatchGuid INNER JOIN
-                          dbo.Arsenal_League ON dbo.AcnCasino_Match.LeagueGuid = dbo.Arsenal_League.LeagueGuid
-                          WHERE (dbo.AcnCasino_Match.ResultHome IS NOT NULL) AND (dbo.AcnCasino_Match.ResultAway IS NOT NULL) AND (dbo.Arsenal_League.IsActive = 1) AND 
+                          dbo.AcnCasino_Match ON dbo.AcnCasino_CasinoItem.MatchGuid = dbo.AcnCasino_Match.MatchGuid
+                          WHERE (dbo.AcnCasino_Match.ResultHome IS NOT NULL) AND (dbo.AcnCasino_Match.ResultAway IS NOT NULL) AND 
                           (AcnCasino_CasinoItem.ItemType = 'SingleChoice') AND (dbo.AcnCasino_CasinoItem.Earning IS NOT NULL)";
 
             DataSet ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql);

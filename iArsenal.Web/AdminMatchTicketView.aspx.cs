@@ -168,21 +168,18 @@ namespace iArsenal.Web
                 mt.IsActive = cbIsActive.Checked;
                 mt.Remark = tbRemark.Text.Trim();
 
-                if (!string.IsNullOrEmpty(mt.ProductCode) && !string.IsNullOrEmpty(mt.ProductInfo))
+                mt.ProductCode = ddlProductCode.SelectedValue;
+
+                // Check whether MatchTicket Instance in DB
+                if (mt.Exist())
                 {
-                    mt.ProductCode = ddlProductCode.SelectedValue;
-
                     mt.Update();
-
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('更新成功');window.location.href=window.location.href", true);
                 }
                 else
                 {
-                    mt.ProductCode = ddlProductCode.SelectedValue;
-
                     mt.Insert();
-
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('添加成功');window.location.href=window.location.href", true);
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('添加成功');window.location.href = 'AdminMemberPeriod.aspx'", true);
                 }
             }
             catch (Exception ex)

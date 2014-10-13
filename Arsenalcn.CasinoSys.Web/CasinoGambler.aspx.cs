@@ -85,7 +85,7 @@ namespace Arsenalcn.CasinoSys.Web
 
         private void BindData()
         {
-            ArsenalLeauge l = League.Cache.Load(ContestLeague);
+            ArsenalLeauge l = Arsenal_League.Cache.Load(ContestLeague);
 
             if (l != null)
             {

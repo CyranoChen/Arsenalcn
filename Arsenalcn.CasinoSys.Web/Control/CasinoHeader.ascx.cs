@@ -30,8 +30,8 @@ namespace Arsenalcn.CasinoSys.Web.Control
                 Guid homeGuid = m.Home;
                 Guid awayGuid = m.Away;
 
-                HomeTeam = Team.Cache.Load(homeGuid);
-                AwayTeam = Team.Cache.Load(awayGuid);
+                HomeTeam = Arsenal_Team.Cache.Load(homeGuid);
+                AwayTeam = Arsenal_Team.Cache.Load(awayGuid);
 
                 ltrlPlayTime.Text = m.PlayTime.ToString("yyyy-MM-dd HH:mm");
 

@@ -37,7 +37,17 @@
                 $rbChampionPatch.eq(0).prop("checked", true);
             });
 
+            $rbPremierPatch.eq(1).click(function () {
+                if ($rbChampionPatch.last().prop("checked") == true) {
+                    $rbChampionPatch.eq(1).prop("checked", true);
+                }
+            });
+
             $rbChampionPatch.last().click(function () {
+                $rbPremierPatch.eq(0).prop("checked", true);
+            });
+
+            $rbChampionPatch.eq(1).click(function () {
                 if ($rbPremierPatch.last().prop("checked") == true) {
                     $rbPremierPatch.eq(1).prop("checked", true);
                 }
@@ -180,11 +190,11 @@
                             <asp:TextBox ID="tbPlayerName" runat="server" CssClass="TextBox" Width="150px" MaxLength="20"></asp:TextBox>
                         </td>
                     </tr>
-                    <tr class="AlternatingRow" style="display: none">
+                    <tr class="AlternatingRow">
                         <td class="FieldHeader">特殊字体：
                         </td>
                         <td style="text-align: left" colspan="3" id="tdArsenalFont">
-                            <asp:CheckBox ID="cbArsenalFont" runat="server" Text="阿森纳字体" ToolTip="只限当前现役球员" />
+                            <asp:CheckBox ID="cbArsenalFont" runat="server" Text="阿森纳杯赛字体" ToolTip="只限部分现役球员" />
                             <a href="http://arsenaldirect.arsenal.com/icat/kitbuilder/" target="_blank">【效果体验】</a>
                             <asp:Label ID="lblPriceArsenalFont" runat="server" CssClass="PriceArsenalFont"></asp:Label>
                         </td>
@@ -210,6 +220,7 @@
                                 RepeatLayout="Flow" CssClass="RadioButtonList">
                                 <asp:ListItem Text="无需" Value="0" Selected="True"></asp:ListItem>
                                 <asp:ListItem Text="1个" Value="1"></asp:ListItem>
+                                <asp:ListItem Text="2个（R章）" Value="2"></asp:ListItem>
                             </asp:RadioButtonList>
                             <asp:Label ID="lblPriceChampionPatch" runat="server"></asp:Label>
                         </td>

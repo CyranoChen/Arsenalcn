@@ -118,7 +118,8 @@ namespace iArsenal.Web
                     {
                         if (oiFont != null && oiFont.IsActive)
                         {
-                            lblOrderItem_PlayerDetail.Text = string.Format("{0} ({1}) <em>【阿森纳字体】</em>", oiName.Size, oiNumber.Size);
+                            lblOrderItem_PlayerDetail.Text = string.Format("{0} ({1}) <em>【{2}】</em>",
+                                oiName.Size, oiNumber.Size, Product.Cache.Load(oiFont.ProductGuid).DisplayName);
 
                             price += oiFont.TotalPrice;
                             priceInfo += string.Format(" + 印字号(特殊)：{0}", oiFont.TotalPrice.ToString("f2"));

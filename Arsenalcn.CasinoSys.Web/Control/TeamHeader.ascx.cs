@@ -10,7 +10,7 @@ namespace Arsenalcn.CasinoSys.Web.Control
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            ArsenalTeam t = Team.Cache.Load(TeamGuid);
+            ArsenalTeam t = Arsenal_Team.Cache.Load(TeamGuid);
 
             if (t != null)
             {

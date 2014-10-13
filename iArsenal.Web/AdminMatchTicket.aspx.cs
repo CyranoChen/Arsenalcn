@@ -19,13 +19,18 @@ namespace iArsenal.Web
                 #region Bind ddlLeague
 
                 List<MatchTicket> mtList = MatchTicket.Cache.MatchTicketList;
-                var query = from mt in mtList
-                            group mt by new { mt.LeagueGuid, mt.LeagueName } into l
-                            select new
-                            {
-                                LeagueGuid = l.Key.LeagueGuid,
-                                LeagueName = l.Key.LeagueName
-                            };
+
+                //var query = from mt in mtList
+                //            group mt by new { mt.LeagueGuid, mt.LeagueName } into l
+                //            select new
+                //            {
+                //                LeagueGuid = l.Key.LeagueGuid,
+                //                LeagueName = l.Key.LeagueName
+                //            };
+
+                var query = mtList.GroupBy(mt => new { mt.LeagueGuid, mt.LeagueName })
+                    .Select(l => new { l.Key.LeagueGuid, l.Key.LeagueName })
+                    .OrderByDescending(l => l.LeagueName);
 
                 ddlLeague.DataSource = query;
                 ddlLeague.DataTextField = "LeagueName";
@@ -193,8 +198,8 @@ namespace iArsenal.Web
         protected void btnRefreshCache_Click(object sender, EventArgs e)
         {
             MatchTicket.Cache.RefreshCache();
-            Player.Cache.RefreshCache();
-            Team.Cache.RefreshCache();
+            Arsenal_Player.Cache.RefreshCache();
+            Arsenal_Team.Cache.RefreshCache();
 
             ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('更新缓存成功');window.location.href=window.location.href", true);
         }

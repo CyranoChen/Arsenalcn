@@ -6,7 +6,7 @@ using iArsenal.Entity.ServiceProvider;
 
 namespace iArsenal.Entity
 {
-    public static class Player
+    public static class Arsenal_Player
     {
         public static class Cache
         {

@@ -56,7 +56,7 @@ namespace iArsenal.Web
         {
             try
             {
-                List<MatchTicket> list = MatchTicket.GetMatchTickets().FindAll(delegate(MatchTicket mt)
+                List<MatchTicket> list = MatchTicket.Cache.MatchTicketList.FindAll(delegate(MatchTicket mt)
                 {
                     Boolean returnValue = true;
                     string tmpString = string.Empty;
@@ -134,7 +134,7 @@ namespace iArsenal.Web
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
                 MatchTicket mt = e.Row.DataItem as MatchTicket;
-                ArsenalTeam at = Team.Cache.Load(mt.TeamGuid);
+                ArsenalTeam at = Arsenal_Team.Cache.Load(mt.TeamGuid);
 
                 string _strRank = mt.ProductInfo.Trim();
 

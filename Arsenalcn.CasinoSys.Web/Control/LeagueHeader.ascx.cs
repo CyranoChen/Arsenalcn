@@ -12,7 +12,7 @@ namespace Arsenalcn.CasinoSys.Web.Control
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            List<ArsenalLeauge> list = Entity.League.Cache.LeagueList_Active;
+            List<ArsenalLeauge> list = Entity.Arsenal_League.Cache.LeagueList_Active;
 
             rptLeague.DataSource = list;
             rptLeague.DataBind();

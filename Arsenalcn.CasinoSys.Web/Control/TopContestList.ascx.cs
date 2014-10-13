@@ -14,7 +14,7 @@ namespace Arsenalcn.CasinoSys.Web.Control
         {
             if (!ConfigGlobal.DefaultLeagueID.Equals(Guid.Empty))
             {
-                ArsenalLeauge l = League.Cache.Load(ConfigGlobal.DefaultLeagueID);
+                ArsenalLeauge l = Arsenal_League.Cache.Load(ConfigGlobal.DefaultLeagueID);
                 ltrlContestTitle.Text = string.Format("<a title=\"{0}{1}\">ACN博彩竞赛排行榜</a>", l.LeagueName, l.LeagueSeason);
 
                 float _tbs = ConfigGlobal.TotalBetStandard;

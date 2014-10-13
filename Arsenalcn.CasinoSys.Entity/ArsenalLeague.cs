@@ -6,7 +6,7 @@ using Arsenal.Entity.ServiceProvider;
 
 namespace Arsenalcn.CasinoSys.Entity
 {
-    public static class League
+    public static class Arsenal_League
     {
         public static class Cache
         {

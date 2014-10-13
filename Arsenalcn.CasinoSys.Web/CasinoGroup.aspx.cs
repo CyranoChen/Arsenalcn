@@ -32,7 +32,7 @@ namespace Arsenalcn.CasinoSys.Web
                 if (CurrentLeague != Guid.Empty)
                 {
                     //Bind ddlSeason
-                    List<ArsenalLeauge> list = Entity.League.Cache.GetSeasonsByLeagueGuid(CurrentLeague);
+                    List<ArsenalLeauge> list = Entity.Arsenal_League.Cache.GetSeasonsByLeagueGuid(CurrentLeague);
 
                     ddlSeason.DataSource = list;
                     ddlSeason.DataTextField = "LeagueSeason";
@@ -209,7 +209,7 @@ namespace Arsenalcn.CasinoSys.Web
 
                 if (ltrlTeamLogo != null && hlTeamInfo != null)
                 {
-                    ArsenalTeam t = Team.Cache.Load((Guid)drv["TeamGuid"]);
+                    ArsenalTeam t = Arsenal_Team.Cache.Load((Guid)drv["TeamGuid"]);
 
                     ltrlTeamLogo.Text = string.Format("<span class=\"CasinoSys_GameName\" title=\"{0}\"><img src=\"{1}\" alt=\"{0}\" /></span>",
                         t.TeamEnglishName, t.TeamLogo);
@@ -240,7 +240,7 @@ namespace Arsenalcn.CasinoSys.Web
 
                 if (ltrlTeamLogo != null && hlTeamInfo != null)
                 {
-                    ArsenalTeam t = Team.Cache.Load((Guid)drv["TeamGuid"]);
+                    ArsenalTeam t = Arsenal_Team.Cache.Load((Guid)drv["TeamGuid"]);
 
                     ltrlTeamLogo.Text = string.Format("<span class=\"CasinoSys_GameName\" title=\"{0}\"><img src=\"{1}\" alt=\"{0}\" /></span>",
                         t.TeamEnglishName, t.TeamLogo);

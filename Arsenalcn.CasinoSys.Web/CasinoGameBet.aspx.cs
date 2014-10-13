@@ -68,8 +68,8 @@ namespace Arsenalcn.CasinoSys.Web
                             Match m = new Match((Guid)dr_m["MatchGuid"]);
 
                             dr_m["MatchTeamDisplay"] = string.Format("{0} vs {1}",
-                                Team.Cache.Load((Guid)m.Home).TeamDisplayName,
-                                Team.Cache.Load((Guid)m.Away).TeamDisplayName);
+                                Arsenal_Team.Cache.Load((Guid)m.Home).TeamDisplayName,
+                                Arsenal_Team.Cache.Load((Guid)m.Away).TeamDisplayName);
                         }
                     }
 
@@ -334,7 +334,7 @@ namespace Arsenalcn.CasinoSys.Web
                         string.Format(" 第{0}轮", m.Round.ToString()) : string.Empty);
 
                     ltrlLeagueInfo.Text = string.Format(_strLeague, m.LeagueGuid.ToString(), _strLeagueName,
-                        League.Cache.Load(m.LeagueGuid).LeagueLogo);
+                        Arsenal_League.Cache.Load(m.LeagueGuid).LeagueLogo);
                 }
 
                 Label lblHome = e.Row.FindControl("lblHome") as Label;
@@ -344,8 +344,8 @@ namespace Arsenalcn.CasinoSys.Web
 
                 if (lblHome != null && lblAway != null && hlVersus != null)
                 {
-                    ArsenalTeam tHome = Team.Cache.Load(m.Home);
-                    ArsenalTeam tAway = Team.Cache.Load(m.Away);
+                    ArsenalTeam tHome = Arsenal_Team.Cache.Load(m.Home);
+                    ArsenalTeam tAway = Arsenal_Team.Cache.Load(m.Away);
 
                     string _strTeamName = "<a class=\"StrongLink\" href=\"CasinoTeam.aspx?Team={0}\"  title=\"{1}\">{2}</a> ";
                     string _strTeamLogo = "<img src=\"{3}\" alt=\"{1}\" /> ";

@@ -17,7 +17,7 @@ namespace Arsenalcn.CasinoSys.Web
 
             if (!IsPostBack)
             {
-                List<ArsenalLeauge> list = Entity.League.Cache.LeagueList_Active;
+                List<ArsenalLeauge> list = Entity.Arsenal_League.Cache.LeagueList_Active;
 
                 ddlLeague.DataSource = list;
                 ddlLeague.DataTextField = "LeagueNameInfo";
@@ -34,7 +34,7 @@ namespace Arsenalcn.CasinoSys.Web
 
         protected void ddlLeague_SelectedIndexChanged(object sender, EventArgs e)
         {
-            List<ArsenalTeam> list = Entity.Team.Cache.GetTeamsByLeagueGuid(new Guid(ddlLeague.SelectedValue));
+            List<ArsenalTeam> list = Entity.Arsenal_Team.Cache.GetTeamsByLeagueGuid(new Guid(ddlLeague.SelectedValue));
 
             if (list != null && list.Count > 0)
             {
@@ -84,7 +84,7 @@ namespace Arsenalcn.CasinoSys.Web
                 m.PlayTime = Convert.ToDateTime(tbPlayTime.Text);
                 m.LeagueGuid = new Guid(ddlLeague.SelectedValue);
 
-                ArsenalLeauge l = League.Cache.Load(m.LeagueGuid);
+                ArsenalLeauge l = Arsenal_League.Cache.Load(m.LeagueGuid);
                 m.LeagueName = l.LeagueNameInfo;
 
                 if (!string.IsNullOrEmpty(tbRound.Text))

@@ -12,8 +12,8 @@ namespace iArsenal.Web.Control
             if (MatchGuid != Guid.Empty)
             {
                 MatchTicket mt = MatchTicket.Cache.Load(MatchGuid);
-                ArsenalTeam tHome = Team.Cache.Load(ConfigGlobal.ArsenalTeamGuid);
-                ArsenalTeam tAway = Team.Cache.Load(mt.TeamGuid);
+                ArsenalTeam tHome = Arsenal_Team.Cache.Load(ConfigGlobal.ArsenalTeamGuid);
+                ArsenalTeam tAway = Arsenal_Team.Cache.Load(mt.TeamGuid);
 
                 if (mt != null)
                 {

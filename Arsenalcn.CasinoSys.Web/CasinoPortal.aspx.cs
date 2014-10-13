@@ -56,7 +56,7 @@ namespace Arsenalcn.CasinoSys.Web
                         string.Format(" 第{0}轮", m.Round.ToString()) : string.Empty);
 
                     ltrlLeagueInfo.Text = string.Format(_strLeague, m.LeagueGuid.ToString(), _strLeagueName,
-                        League.Cache.Load(m.LeagueGuid).LeagueLogo);
+                        Arsenal_League.Cache.Load(m.LeagueGuid).LeagueLogo);
                 }
 
                 Label lblHome = e.Row.FindControl("lblHome") as Label;
@@ -65,8 +65,8 @@ namespace Arsenalcn.CasinoSys.Web
 
                 if (lblHome != null && lblAway != null && hlVersus != null)
                 {
-                    ArsenalTeam tHome = Team.Cache.Load(m.Home);
-                    ArsenalTeam tAway = Team.Cache.Load(m.Away);
+                    ArsenalTeam tHome = Arsenal_Team.Cache.Load(m.Home);
+                    ArsenalTeam tAway = Arsenal_Team.Cache.Load(m.Away);
 
                     string _strTeamName = "<a class=\"StrongLink\" href=\"CasinoTeam.aspx?Team={0}\"  title=\"{1}\">{2}</a> ";
                     string _strTeamLogo = "<img src=\"{3}\" alt=\"{1}\" /> ";
@@ -149,24 +149,24 @@ namespace Arsenalcn.CasinoSys.Web
                             {
                                 btnBet.Visible = false;
                             }
-
-                            // Adv Bodog Bet Button
                         }
 
-                        HyperLink btnBetBodog = e.Row.FindControl("btnBet_Bodog") as HyperLink;
+                        // Adv Bodog Bet Button
 
-                        //管理人员或100积分以上会员看不到广告
-                        if (btnBetBodog == null || this.useradminid > 0 || this.usergroupid > 12)
-                        {
-                            btnBetBodog.Visible = false;
-                        }
+                        //HyperLink btnBetBodog = e.Row.FindControl("btnBet_Bodog") as HyperLink;
 
-                        if (btnBetBodog != null && this.CurrentGambler != null)
-                        {
-                            btnBetBodog.Text = "博狗投注 <span class=\"CasinoSys_BetInfo\">Bodog</span>";
-                            btnBetBodog.NavigateUrl = "http://record.slk61.com/_S9AEnQlJCqtPt_LV3gWenWNd7ZgqdRLk/68/?tc=olm36230";
-                            btnBetBodog.Target = "_blank";
-                        }
+                        ////管理人员或100积分以上会员看不到广告
+                        //if (btnBetBodog == null || this.useradminid > 0 || this.usergroupid > 12)
+                        //{
+                        //    btnBetBodog.Visible = false;
+                        //}
+
+                        //if (btnBetBodog != null && this.CurrentGambler != null)
+                        //{
+                        //    btnBetBodog.Text = "博狗投注 <span class=\"CasinoSys_BetInfo\">Bodog</span>";
+                        //    btnBetBodog.NavigateUrl = "http://record.slk61.com/_S9AEnQlJCqtPt_LV3gWenWNd7ZgqdRLk/68/?tc=olm36230";
+                        //    btnBetBodog.Target = "_blank";
+                        //}
                     }
                 }
             }

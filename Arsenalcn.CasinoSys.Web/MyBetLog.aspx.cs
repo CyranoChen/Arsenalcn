@@ -58,8 +58,8 @@ namespace Arsenalcn.CasinoSys.Web
 
                 if (hlHome != null && hlAway != null && hlVersus != null)
                 {
-                    ArsenalTeam tHome = Team.Cache.Load(m.Home);
-                    ArsenalTeam tAway = Team.Cache.Load(m.Away);
+                    ArsenalTeam tHome = Arsenal_Team.Cache.Load(m.Home);
+                    ArsenalTeam tAway = Arsenal_Team.Cache.Load(m.Away);
 
                     hlHome.Text = tHome.TeamDisplayName;
                     hlHome.NavigateUrl = string.Format("CasinoTeam.aspx?Team={0}", m.Home);

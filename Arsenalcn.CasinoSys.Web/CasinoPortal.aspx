@@ -6,26 +6,6 @@
 <%@ Register Src="Control/FieldTooBar.ascx" TagName="FieldTooBar" TagPrefix="uc2" %>
 <%@ Register Src="Control/MenuTabBar.ascx" TagName="MenuTabBar" TagPrefix="uc3" %>
 <asp:Content ID="cphHead" ContentPlaceHolderID="cphHead" runat="server">
-    <script type="text/javascript">
-        var p = "http", d = "static";
-        if (document.location.protocol == "https:")
-        { p += "s"; d = "engine"; }
-        var z = document.createElement("script");
-        z.type = "text/javascript";
-        z.async = true;
-        z.src = p + "://" + d + ".adzerk.net/ados.js";
-        var s = document.getElementsByTagName("script")[0];
-        s.parentNode.insertBefore(z, s);
-    </script>
-    <script type="text/javascript">
-        var ados = ados || {};
-        ados.run = ados.run || [];
-        ados.run.push(function () {
-            /* load placement for account: Bodog, site: Arsenalcntaobao, size: 180x30 - 180 x 30*/
-            ados_add_placement(6641, 63640, "azk22313", 243);
-            ados_load();
-        });
-    </script>
 </asp:Content>
 <asp:Content ID="cphMain" ContentPlaceHolderID="cphMain" runat="server">
     <uc1:LeftPanel ID="ctrlLeftPanel" runat="server" />
@@ -35,9 +15,6 @@
         <div class="FunctionBar">
             <div class="DivFloatLeft CasinoSys_Tip">
                 <span>只使用博彩币；单场可多次投注；赔率固定不变化；博彩按120分钟(如加时)计；</span>
-            </div>
-            <div class="DivFloatRight">
-                <div id="azk22313"></div>
             </div>
             <div class="Clear">
             </div>
@@ -86,7 +63,6 @@
                 <asp:TemplateField HeaderText="投注">
                     <ItemTemplate>
                         <asp:HyperLink ID="BtnBet" runat="server" CssClass="LinkBtn" ToolTip="您的投注记录"></asp:HyperLink>
-                        <asp:HyperLink ID="BtnBet_Bodog" runat="server" CssClass="LinkBtn" ToolTip="博狗投注"></asp:HyperLink>
                     </ItemTemplate>
                 </asp:TemplateField>
             </Columns>

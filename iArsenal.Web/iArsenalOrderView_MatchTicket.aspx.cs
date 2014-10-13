@@ -156,7 +156,7 @@ namespace iArsenal.Web
                                 }
                                 else
                                 {
-                                    lblMatchTicketInfo.Text = string.Format("<em>【{0}】{1}({2})</em>", mt.LeagueName, mt.TeamName, Team.Cache.Load(mt.TeamGuid).TeamEnglishName);
+                                    lblMatchTicketInfo.Text = string.Format("<em>【{0}】{1}({2})</em>", mt.LeagueName, mt.TeamName, Arsenal_Team.Cache.Load(mt.TeamGuid).TeamEnglishName);
                                     lblMatchTicketPlayTime.Text = string.Format("<em>【伦敦】{0}</em>", mt.PlayTimeLocal.ToString("yyyy-MM-dd HH:mm"));
 
                                     string _strRank = mt.ProductInfo.Trim();

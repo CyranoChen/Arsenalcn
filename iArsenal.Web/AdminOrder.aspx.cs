@@ -281,32 +281,8 @@ namespace iArsenal.Web
                     {
                         tmpString = ViewState["ProductType"].ToString();
                         if (!string.IsNullOrEmpty(tmpString))
-                        {
-                            List<OrderItemBase> oiList = OrderItemBase.GetOrderItems(o.OrderID).FindAll(oi => oi.IsActive && Product.Cache.Load(oi.ProductGuid) != null);
-
-                            switch (tmpString)
-                            {
-                                case "ReplicaKit":
-                                    returnValue = returnValue && oiList.Exists(oi =>
-                                        Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.ReplicaKitHome)
-                                        || Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.ReplicaKitAway));
-                                    break;
-                                case "Wish":
-                                    returnValue = returnValue && oiList.Exists(oi => Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.Other));
-                                    break;
-                                case "Ticket":
-                                    returnValue = returnValue && oiList.Exists(oi =>
-                                        Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.MatchTicket)
-                                        || Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.TicketBeijing));
-                                    break;
-                                case "Travel":
-                                    returnValue = returnValue && oiList.Exists(oi => Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.TravelPlan));
-                                    break;
-                                default:
-                                    returnValue = returnValue && true;
-                                    break;
-                            }
-                        }
+                            returnValue = returnValue &&
+                                o.OrderType.HasValue ? o.OrderType.Value.ToString().Equals(tmpString) : false;
                     }
 
                     if (ViewState["Status"] != null)
@@ -375,7 +351,7 @@ namespace iArsenal.Web
 
                                 Order_ReplicaKit oReplicaKit = new Order_ReplicaKit(o.OrderID);
 
-                                // Whether Home or Away ReplicaKit
+                                // Whether Home or Away or Cup ReplicaKit
                                 OrderItemBase oiReplicaKit = null;
 
                                 if (oReplicaKit.OIReplicaKitHome != null && oReplicaKit.OIReplicaKitHome.IsActive)
@@ -385,6 +361,10 @@ namespace iArsenal.Web
                                 else if (oReplicaKit.OIReplicaKitAway != null && oReplicaKit.OIReplicaKitAway.IsActive)
                                 {
                                     oiReplicaKit = (OrderItem_ReplicaKitAway)oReplicaKit.OIReplicaKitAway;
+                                }
+                                else if (oReplicaKit.OIReplicaKitCup != null && oReplicaKit.OIReplicaKitCup.IsActive)
+                                {
+                                    oiReplicaKit = (OrderItem_ReplicaKitCup)oReplicaKit.OIReplicaKitCup;
                                 }
                                 else
                                 {

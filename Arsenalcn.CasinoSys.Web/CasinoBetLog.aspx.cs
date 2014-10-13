@@ -63,8 +63,8 @@ namespace Arsenalcn.CasinoSys.Web
 
                 Match m = new Match(CurrentMatch);
 
-                ArsenalTeam homeT = Team.Cache.Load(m.Home);
-                ArsenalTeam awayT = Team.Cache.Load(m.Away);
+                ArsenalTeam homeT = Arsenal_Team.Cache.Load(m.Home);
+                ArsenalTeam awayT = Arsenal_Team.Cache.Load(m.Away);
                 home = homeT.TeamDisplayName;
                 away = awayT.TeamDisplayName;
 
@@ -144,8 +144,8 @@ namespace Arsenalcn.CasinoSys.Web
                 {
                     Match m = new Match(item.MatchGuid.Value);
 
-                    ArsenalTeam homeT = Team.Cache.Load(m.Home);
-                    ArsenalTeam awayT = Team.Cache.Load(m.Away);
+                    ArsenalTeam homeT = Arsenal_Team.Cache.Load(m.Home);
+                    ArsenalTeam awayT = Arsenal_Team.Cache.Load(m.Away);
 
                     ltrlHome.Text = string.Format("<a class=\"StrongLink\" href=\"CasinoTeam.aspx?Team={0}\">{1}</a>", homeT.TeamGuid.ToString(), homeT.TeamDisplayName);
                     ltrlAway.Text = string.Format("<a class=\"StrongLink\" href=\"CasinoTeam.aspx?Team={0}\">{1}</a>", awayT.TeamGuid.ToString(), awayT.TeamDisplayName);

@@ -83,8 +83,8 @@ namespace Arsenalcn.CasinoSys.Web
             {
                 Config.Cache.RefreshCache();
 
-                Entity.League.Cache.RefreshCache();
-                Entity.Team.Cache.RefreshCache();
+                Entity.Arsenal_League.Cache.RefreshCache();
+                Entity.Arsenal_Team.Cache.RefreshCache();
 
                 ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('更新全部缓存成功');window.location.href=window.location.href", true);
             }

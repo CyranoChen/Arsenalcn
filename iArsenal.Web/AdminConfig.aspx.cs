@@ -83,9 +83,11 @@ namespace iArsenal.Web
             {
                 Config.Cache.RefreshCache();
 
+                Arsenal_Match.Cache.RefreshCache();
+                Arsenal_Player.Cache.RefreshCache();
+                Arsenal_Team.Cache.RefreshCache();
+
                 MatchTicket.Cache.RefreshCache();
-                Player.Cache.RefreshCache();
-                Team.Cache.RefreshCache();
 
                 Product.Cache.RefreshCache();
 

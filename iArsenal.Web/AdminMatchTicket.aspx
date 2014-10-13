@@ -32,7 +32,7 @@
                 <asp:DropDownList ID="ddlProductCode" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlProductCode_SelectedIndexChanged">
                 </asp:DropDownList>
                 <asp:DropDownList ID="ddlAllowMemberClass" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlAllowMemberClass_SelectedIndexChanged">
-                    <asp:ListItem Text="--全部--" Selected="True"></asp:ListItem>
+                    <asp:ListItem value="" Selected="True">--全部--</asp:ListItem>
                     <asp:ListItem Text="普通会员" Value="1"></asp:ListItem>
                     <asp:ListItem Text="高级会员" Value="2"></asp:ListItem>
                 </asp:DropDownList>

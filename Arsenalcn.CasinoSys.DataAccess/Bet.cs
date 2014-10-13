@@ -288,7 +288,7 @@ namespace Arsenalcn.CasinoSys.DataAccess
 //                        ON match.away = teamA.TeamGuid
 //                        ORDER BY match.PlayTime desc";
 
-            string sql = @"SELECT match.*,
+            string sql = @"SELECT match.*
                         FROM (SELECT DISTINCT item.MatchGuid
                         FROM dbo.AcnCasino_Bet bet
                         INNER JOIN dbo.AcnCasino_CasinoItem item

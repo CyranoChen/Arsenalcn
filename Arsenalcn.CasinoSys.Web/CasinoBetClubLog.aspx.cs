@@ -71,8 +71,8 @@ namespace Arsenalcn.CasinoSys.Web
             {
                 Match m = new Match(CurrentMatch);
 
-                ArsenalTeam homeT = Team.Cache.Load(m.Home);
-                ArsenalTeam awayT = Team.Cache.Load(m.Away);
+                ArsenalTeam homeT = Arsenal_Team.Cache.Load(m.Home);
+                ArsenalTeam awayT = Arsenal_Team.Cache.Load(m.Away);
                 home = homeT.TeamDisplayName;
                 away = awayT.TeamDisplayName;
 

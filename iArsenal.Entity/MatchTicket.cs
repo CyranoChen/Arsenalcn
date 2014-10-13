@@ -12,95 +12,81 @@ namespace iArsenal.Entity
     {
         public MatchTicket() { }
 
-        private MatchTicket(Match m)
+        private MatchTicket(DataRow dr)
         {
-            InitMatchTicket(m);
+            InitMatchTicket(dr);
         }
 
-        private void InitMatchTicket(Match m)
+        private void InitMatchTicket(DataRow dr)
         {
-            if (m != null)
+
+            // Match Info Initializer
+
+            Match m = Arsenal_Match.Cache.Load(MatchGuid);
+
+            MatchGuid = m.MatchGuid;
+            TeamGuid = m.TeamGuid;
+            TeamName = m.TeamName;
+            IsHome = m.IsHome;
+            ResultHome = m.ResultHome;
+            ResultAway = m.ResultAway;
+            PlayTime = m.PlayTime;
+
+            PlayTimeLocal = ConvertToDST(PlayTime);
+
+            LeagueGuid = m.LeagueGuid;
+            LeagueName = m.LeagueName;
+            Round = m.Round;
+
+            #region Generate Match ResultInfo
+
+            if (ResultHome.HasValue && ResultAway.HasValue)
             {
-                // Match Info Initializer
-
-                MatchGuid = m.MatchGuid;
-                TeamGuid = m.TeamGuid;
-                TeamName = m.TeamName;
-                IsHome = m.IsHome;
-                ResultHome = m.ResultHome;
-                ResultAway = m.ResultAway;
-                PlayTime = m.PlayTime;
-
-                PlayTimeLocal = ConvertToDST(PlayTime);
-
-                LeagueGuid = m.LeagueGuid;
-                LeagueName = m.LeagueName;
-                Round = m.Round;
-
-                #region Generate Match ResultInfo
-
-                if (ResultHome.HasValue && ResultAway.HasValue)
-                {
-                    if (IsHome)
-                        ResultInfo = ResultHome.Value.ToString() + "：" + ResultAway.Value.ToString();
-                    else
-                        ResultInfo = ResultAway.Value.ToString() + "：" + ResultHome.Value.ToString();
-                }
+                if (IsHome)
+                    ResultInfo = ResultHome.Value.ToString() + "：" + ResultAway.Value.ToString();
                 else
-                    ResultInfo = string.Empty;
-
-                #endregion
-
-                // Ticket Info Initializer
-
-                DataRow dr = DataAccess.MatchTicket.GetMatchTicketByID(MatchGuid);
-
-                if (dr != null)
-                {
-                    ProductCode = dr["ProductCode"].ToString();
-
-                    ProductInfo = Product.Cache.Load(ProductCode) != null
-                        ? Product.Cache.Load(ProductCode).Name : string.Empty;
-
-                    Deadline = (DateTime)dr["Deadline"];
-
-                    if (!Convert.IsDBNull(dr["AllowMemberClass"]))
-                        AllowMemberClass = Convert.ToInt16(dr["AllowMemberClass"]);
-                    else
-                        AllowMemberClass = null;
-
-                    IsActive = Convert.ToBoolean(dr["IsActive"]);
-                    Remark = dr["Remark"].ToString();
-                }
-                else
-                {
-                    ProductCode = string.Empty;
-                    ProductInfo = string.Empty;
-                    Deadline = m.PlayTime.AddMonths(-2).AddDays(-7);
-                    AllowMemberClass = null;
-                    IsActive = false;
-                    Remark = string.Empty;
-                }
+                    ResultInfo = ResultAway.Value.ToString() + "：" + ResultHome.Value.ToString();
             }
             else
-                throw new Exception("Unable to init MatchTicket.");
+                ResultInfo = string.Empty;
+
+            #endregion
+
+            // Ticket Info Initializer
+
+            if (dr != null)
+            {
+                ProductCode = dr["ProductCode"].ToString();
+
+                ProductInfo = Product.Cache.Load(ProductCode) != null
+                    ? Product.Cache.Load(ProductCode).Name : string.Empty;
+
+                Deadline = (DateTime)dr["Deadline"];
+
+                if (!Convert.IsDBNull(dr["AllowMemberClass"]))
+                    AllowMemberClass = Convert.ToInt16(dr["AllowMemberClass"]);
+                else
+                    AllowMemberClass = null;
+
+                IsActive = Convert.ToBoolean(dr["IsActive"]);
+                Remark = dr["Remark"].ToString();
+            }
+            else
+            {
+                ProductCode = string.Empty;
+                ProductInfo = string.Empty;
+                Deadline = m.PlayTime.AddMonths(-2).AddDays(-7);
+                AllowMemberClass = null;
+                IsActive = false;
+                Remark = string.Empty;
+            }
         }
 
         public void Select()
         {
-            var svc = RemoteServiceProvider.GetWebService();
+            DataRow dr = DataAccess.MatchTicket.GetMatchTicketByID(MatchGuid);
 
-            Match m = new Match();
-
-            if (svc != null)
-            {
-                m = svc.GetMatchs().ToList<Match>().Find(match => match.MatchGuid.Equals(MatchGuid));
-
-                if (m != null)
-                    InitMatchTicket(m);
-            }
-            else
-                throw new Exception("Unable to init MatchTicket. (Webservice Error)");
+            InitMatchTicket(dr);
         }
 
         public void Update()
@@ -120,26 +106,27 @@ namespace iArsenal.Entity
 
         public static List<MatchTicket> GetMatchTickets()
         {
-            var svc = RemoteServiceProvider.GetWebService();
+            List<Match> mlist = Arsenal_Match.Cache.MatchList;
 
-            List<Match> mlist = new List<Match>();
-            List<MatchTicket> list = new List<MatchTicket>();
-
-            if (svc != null)
+            if (mlist != null && mlist.Count > 0)
             {
-                mlist = svc.GetMatchs().ToList<Match>();
+                List<MatchTicket> list = new List<MatchTicket>();
 
                 foreach (Match m in mlist)
                 {
-                    list.Add(new MatchTicket(m));
+                    MatchTicket mt = new MatchTicket();
+                    mt.MatchGuid = m.MatchGuid;
+                    mt.Select();
+
+                    list.Add(mt);
                 }
+
+                return list;
             }
             else
             {
-                list = null;
+                return null;
             }
-
-            return list;
         }
 
         public bool Exist()

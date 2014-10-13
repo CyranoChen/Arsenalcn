@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ArsenalMatch.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="MemberPeriod.cs" />
     <Compile Include="MatchTicket.cs" />
@@ -59,7 +60,7 @@
     <Compile Include="ModelOrder\OrderItemReplicaKit.cs" />
     <Compile Include="ModelOrder\OrderReplicaKit.cs" />
     <Compile Include="Partner.cs" />
-    <Compile Include="Player.cs" />
+    <Compile Include="ArsenalPlayer.cs" />
     <Compile Include="Product.cs" />
     <Compile Include="Member.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -74,7 +75,7 @@
       <DependentUpon>Reference.map</DependentUpon>
     </Compile>
     <Compile Include="ServiceProvider\RemoteServiceProvider.cs" />
-    <Compile Include="Team.cs" />
+    <Compile Include="ArsenalTeam.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Arsenalcn.Common\Arsenalcn.Common.csproj">

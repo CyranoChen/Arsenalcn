@@ -18,7 +18,7 @@ namespace iArsenal.Web
 
                 try
                 {
-                    List<ArsenalPlayer> list = Player.Cache.PlayerList.FindAll(p => !p.IsLegend && !p.IsLoan && p.SquadNumber > 0);
+                    List<ArsenalPlayer> list = Arsenal_Player.Cache.PlayerList.FindAll(p => !p.IsLegend && !p.IsLoan && p.SquadNumber > 0);
 
                     if (list != null && list.Count > 0)
                     {
@@ -252,6 +252,8 @@ namespace iArsenal.Web
                         if (oiFont != null && oiFont.IsActive)
                         {
                             cbArsenalFont.Checked = true;
+
+                            cbArsenalFont.Text = Product.Cache.Load(oiFont.ProductGuid).DisplayName;
                         }
                         else
                         {
@@ -272,7 +274,7 @@ namespace iArsenal.Web
                             _playerGuid = Guid.Empty;
                         }
 
-                        ArsenalPlayer player = Player.Cache.Load(_playerGuid);
+                        ArsenalPlayer player = Arsenal_Player.Cache.Load(_playerGuid);
 
                         if (player != null)
                         {
@@ -291,7 +293,7 @@ namespace iArsenal.Web
                         {
                             try
                             {
-                                player = Player.Cache.PlayerList.Find(ap =>
+                                player = Arsenal_Player.Cache.PlayerList.Find(ap =>
                                     (ap.PrintingName.Equals(oiName.Size, StringComparison.OrdinalIgnoreCase)
                                     || ap.LastName.Equals(oiName.Size, StringComparison.OrdinalIgnoreCase)
                                     || ap.FirstName.Equals(oiName.Size, StringComparison.OrdinalIgnoreCase))
@@ -493,7 +495,7 @@ namespace iArsenal.Web
                             else
                             {
                                 // Arsenal Player Printing
-                                ArsenalPlayer player = Player.Cache.Load(new Guid(ddlPlayerDetail.SelectedValue));
+                                ArsenalPlayer player = Arsenal_Player.Cache.Load(new Guid(ddlPlayerDetail.SelectedValue));
 
                                 if (player == null)
                                     throw new Exception("无球员信息，请联系管理员");
@@ -576,7 +578,7 @@ namespace iArsenal.Web
         {
             foreach (ListItem li in (sender as DropDownList).Items)
             {
-                ArsenalPlayer p = Player.Cache.Load(new Guid(li.Value));
+                ArsenalPlayer p = Arsenal_Player.Cache.Load(new Guid(li.Value));
 
                 if (p != null)
                 {

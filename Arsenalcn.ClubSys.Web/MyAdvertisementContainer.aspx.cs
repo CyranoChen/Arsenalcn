@@ -24,7 +24,7 @@ namespace Arsenalcn.ClubSys.Web
             {
                  //尊龙国际 广告 2014/08/28
 
-                string adv_text = "<a href=\"http://zl500.com/33.html\" target=\"_blank\"><img src=\"/images/adv/zl500.gif\" alt=\"尊龙国际\" /></a>";
+                string adv_text = "<a href=\"http://zl699.com/33.html\" target=\"_blank\"><img src=\"/images/adv/zl500.gif\" alt=\"尊龙国际\" /></a>";
 
                 string str = string.Format("<div class=\"acn_adv\" style=\"width: 960px; height: 90px; overflow:hidden; margin: 5px auto\">{0}</div>", adv_text);
 

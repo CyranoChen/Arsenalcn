@@ -125,9 +125,9 @@ namespace Arsenalcn.ClubSys.Web.Control
         {
             get
             {
-                DataTable dtVideo = UserVideo.GetUserVideo(ProfileUserID);
+                //DataTable dtVideo = Service.UserVideo.GetUserVideo(ProfileUserID);
 
-                return dtVideo.Rows.Count.ToString(); ;
+                return Entity.UserVideo.GetUserVideosByUserID(ProfileUserID).Count.ToString(); ;
             }
         }
 

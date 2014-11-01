@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Data.SqlClient;
 
-using Arsenalcn.ClubSys.Service;
 using Arsenalcn.ClubSys.Entity;
+using Arsenalcn.ClubSys.Service;
+
 
 namespace Arsenalcn.ClubSys.Web
 {
@@ -13,55 +15,89 @@ namespace Arsenalcn.ClubSys.Web
             string returnURL = string.Empty;
             string responseText = string.Empty;
 
-            try
+            using (SqlConnection conn = ConfigGlobal.SQLConnectionStrings)
             {
-                if (userid != -1)
+                conn.Open();
+                SqlTransaction trans = conn.BeginTransaction();
+
+                try
                 {
-                    if (Request.Form["CardID"] != null)
+                    if (userid != -1)
                     {
-                        int unID = -1;
-                        string authKey = Request.Form["AuthKey"];
-
-                        if (int.TryParse(Request.Form["CardID"], out unID))
+                        if (Request.Form["CardID"] != null)
                         {
-                            if (PlayerStrip.ValidateAuthKey(unID.ToString(), string.Empty, authKey))
+                            int unID = -1;
+                            string authKey = Request.Form["AuthKey"];
+
+                            if (int.TryParse(Request.Form["CardID"], out unID))
                             {
-                                if (PlayerStrip.CheckUserNumActiveCondition(this.userid, unID))
+                                if (PlayerStrip.ValidateAuthKey(unID.ToString(), string.Empty, authKey))
                                 {
-                                    Card un = PlayerStrip.GetUserNumber(unID);
-
-                                    if (un.ArsenalPlayerGuid.HasValue)
+                                    if (PlayerStrip.CheckUserNumActiveCondition(this.userid, unID))
                                     {
-                                        //normal player card
-                                        PlayerStrip.SetCardAcitve(this.userid, unID);
+                                        Card un = PlayerStrip.GetUserNumber(unID);
 
-                                        PlayerLog.LogHistory(this.userid, this.username, PlayerHistoryType.ActivateCard, new ActivateCardDesc(un).Generate());
-
-                                        result = "true";
-                                    }
-                                    else
-                                    {
-                                        //video card
-                                        returnURL = UserVideo.ActiveVideo(this.userid, this.username, unID);
-
-                                        PlayerLog.LogHistory(this.userid, this.username, PlayerHistoryType.ActivateVideo, new ActivateVideoDesc(un).Generate());
-
-                                        if (String.IsNullOrEmpty(returnURL))
+                                        if (un.ArsenalPlayerGuid.HasValue)
                                         {
-                                            result = "full";
+                                            //normal player card
+                                            PlayerStrip.SetCardAcitve(this.userid, unID);
+
+                                            PlayerLog.LogHistory(this.userid, this.username, PlayerHistoryType.ActivateCard, new ActivateCardDesc(un).Generate());
+
+                                            result = "true";
                                         }
                                         else
                                         {
-                                            result = "video";
+                                            //video card
+                                            Guid? guid = Service.UserVideo.GetRandomVideo(this.userid, 1, 3, true);
+
+                                            if (!guid.HasValue)
+                                                throw new Exception("No Video Available.");
+
+                                            Entity.UserVideo uv = new Entity.UserVideo();
+
+                                            uv.UserID = this.userid;
+                                            uv.UserName = this.username;
+                                            uv.VideoGuid = guid.Value;
+                                            uv.ActiveDate = DateTime.Now;
+                                            uv.UserDesc = string.Empty;
+                                            uv.IsPublic = false;
+
+                                            uv.Update(trans);
+
+                                            trans.Commit();
+
+                                            PlayerStrip.ActiveVideoCost(this.userid, unID);
+
+                                            returnURL = Arsenal_Player.Cache.Load(
+                                                Arsenal_Video.Cache.Load(guid.Value).GoalPlayerGuid.Value).PhotoURL;
+
+                                            PlayerLog.LogHistory(this.userid, this.username, PlayerHistoryType.ActivateVideo, new ActivateVideoDesc(un).Generate());
+
+                                            if (String.IsNullOrEmpty(returnURL))
+                                            {
+                                                result = "full";
+                                            }
+                                            else
+                                            {
+                                                result = "video";
+                                            }
                                         }
                                     }
-                                } 
+                                }
                             }
                         }
                     }
                 }
+                catch
+                {
+                    trans.Rollback();
+
+                    result = "error";
+                }
+
+                conn.Close();
             }
-            catch { result = "error"; }
 
             if (!String.IsNullOrEmpty(returnURL))
             {

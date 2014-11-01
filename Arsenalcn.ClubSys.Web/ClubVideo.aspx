@@ -39,21 +39,14 @@
                         <asp:Literal ID="ltrlVideo" runat="server"></asp:Literal>
                     </ItemTemplate>
                 </asp:TemplateField>
-                <asp:TemplateField HeaderText="最先获得">
-                    <ItemTemplate>
-                        <a href="MyCollection.aspx?type=Video&userid=<%#DataBinder.Eval(Container.DataItem, "UserID") %>"
-                            target="_blank" class="StrongLink">
-                            <%#DataBinder.Eval(Container.DataItem, "UserName")%></a>
-                    </ItemTemplate>
-                </asp:TemplateField>
+                <asp:HyperLinkField HeaderText="最先获得" DataTextField="UserName" Target="_blank" DataNavigateUrlFields="UserID"
+                    DataNavigateUrlFormatString="MyCollection.aspx?type=Video&userid={0}" ControlStyle-CssClass="StrongLink" />
                 <asp:BoundField HeaderText="获得时间" DataField="ActiveDate" DataFormatString="<em>{0:yyyy-MM-dd HH:mm:ss}</em>"
                     HtmlEncode="false" />
                 <asp:BoundField HeaderText="球员名" DataField="GoalPlayerName" />
                 <asp:TemplateField HeaderText="视频等级">
                     <ItemTemplate>
-                        <div class="ClubSys_PlayerLV" style="width: <%#DataBinder.Eval(Container.DataItem, "AdditionalData") %>px;"
-                            title="视频等级">
-                        </div>
+                        <asp:Literal ID="ltrlGoalRankInfo" runat="server"></asp:Literal>
                     </ItemTemplate>
                 </asp:TemplateField>
                 <asp:TemplateField HeaderText="查看视频">

@@ -1,17 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 
+using Arsenalcn.Common;
 using Arsenalcn.Common.Entity;
 
 namespace Arsenalcn.ClubSys.Entity
 {
-    public class ConfigGlobal: Config
+    public class ConfigGlobal : Config
     {
         ConfigGlobal() { }
 
         const ConfigSystem currSystem = ConfigSystem.AcnClub;
 
         #region Members and Properties
+
+        public static SqlConnection SQLConnectionStrings
+        {
+            get
+            {
+                return SQLConn.GetConnection();
+            }
+        }
 
         public static Dictionary<string, string> ConfigDictionary
         {

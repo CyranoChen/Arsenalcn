@@ -140,7 +140,17 @@ namespace Arsenalcn.ClubSys.Web
                     if (cbVideoActive.Checked)
                     {
                         //active
-                        UserVideo.InsertActiveVideo(awardUserID, awardUserName, videoGuid.Value);
+                        //UserVideo.InsertActiveVideo(awardUserID, awardUserName, videoGuid.Value);
+
+                        Entity.UserVideo uv = new Entity.UserVideo();
+                        uv.UserID = awardUserID;
+                        uv.UserName = awardUserName;
+                        uv.VideoGuid = videoGuid.Value;
+                        uv.ActiveDate = DateTime.Now;
+                        uv.UserDesc = string.Empty;
+                        uv.IsPublic = false;
+
+                        uv.Insert();
                     }
                     else
                     {

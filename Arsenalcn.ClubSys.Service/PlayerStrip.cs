@@ -61,7 +61,7 @@ namespace Arsenalcn.ClubSys.Service
                     if (number.IsActive)
                         totalCount += 15;
                 }
-                totalCount += (UserVideo.GetUserVideo(uc.Userid.Value).Rows.Count * 16);
+                totalCount += (Entity.UserVideo.GetUserVideosByUserID(uc.Userid.Value).Count * 16);
             }
 
             return totalCount;
@@ -94,10 +94,10 @@ namespace Arsenalcn.ClubSys.Service
             foreach (UserClub uc in ucs)
             {
                 Player player = PlayerStrip.GetPlayerInfo(uc.Userid.Value);
-                DataTable dt = UserVideo.GetUserVideo(uc.Userid.Value);
+                //DataTable dt = UserVideo.GetUserVideo(uc.Userid.Value);
 
                 if (player != null)
-                    totalCount += dt.Rows.Count;
+                    totalCount += Entity.UserVideo.GetUserVideosByUserID(uc.Userid.Value).Count;
             }
 
             return totalCount;
@@ -202,7 +202,7 @@ namespace Arsenalcn.ClubSys.Service
         {
             List<Card> list = new List<Card>();
 
-            string sql = "SELECT * FROM dbo.AcnClub_Card AS c INNER JOIN dbo.Arsenal_Player AS p ON c.ArsenalPlayerGuid = p.PlayerGuid WHERE c.UserID = @userID ORDER BY c.GainDate DESC";
+            string sql = "SELECT * FROM dbo.AcnClub_Card WHERE UserID = @userID ORDER BY GainDate DESC";
 
             using (SqlConnection con = SQLConn.GetConnection())
             {
@@ -995,9 +995,29 @@ namespace Arsenalcn.ClubSys.Service
             }
         }
 
+        public static void ActiveVideoCost(int userID, int userNumID)
+        {
+            string sql = @"DELETE FROM AcnClub_Card WHERE [ID] = @userNumID; 
+                                 UPDATE dbo.AcnClub_Player SET Shirt = Shirt - 5, Shorts = Shorts - 5, Sock = Sock - 5 WHERE UserID = @userID";
+
+            using (SqlConnection con = SQLConn.GetConnection())
+            {
+                SqlCommand com = new SqlCommand(sql, con);
+
+                com.Parameters.Add(new SqlParameter("@userID", userID));
+                com.Parameters.Add(new SqlParameter("@userNumID", userNumID));
+
+                con.Open();
+
+                com.ExecuteNonQuery();
+
+                con.Close();
+            }
+        }
+
         public static void SetCardAcitve(int userID, int userNumID)
         {
-            string sql = "UPDATE dbo.AcnClub_Card SET IsActive = 1, ActiveDate = getdate() WHERE [ID] = @userNumID; UPDATE dbo.AcnClub_Player SET Shirt = Shirt - 5, Shorts = Shorts - 5, Sock = Sock - 5 WHERE UserID = @userID";
+            string sql = "UPDATE dbo.AcnClub_Card SET IsActive = 1, ActiveDate = GETDATE() WHERE [ID] = @userNumID; UPDATE dbo.AcnClub_Player SET Shirt = Shirt - 5, Shorts = Shorts - 5, Sock = Sock - 5 WHERE UserID = @userID";
 
             using (SqlConnection con = SQLConn.GetConnection())
             {
@@ -1220,8 +1240,7 @@ namespace Arsenalcn.ClubSys.Service
 
                     if (result == "cash")
                     {
-                        DataTable dtVideo = UserVideo.GetUserVideo(userID);
-                        int videoActiveCount = dtVideo.Rows.Count;
+                        int videoActiveCount = Entity.UserVideo.GetUserVideosByUserID(userID).Count;
 
                         List<Card> items = PlayerStrip.GetMyNumbers(userID);
                         items.RemoveAll(delegate(Card un) { return !un.IsActive; });

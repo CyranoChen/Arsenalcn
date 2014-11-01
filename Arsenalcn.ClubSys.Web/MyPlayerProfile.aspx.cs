@@ -89,8 +89,8 @@ namespace Arsenalcn.ClubSys.Web
             btnVideoActive.PostBackUrl = string.Format("MyCollection.aspx?type=Video{0}",queryStrUserID);
             btnCardActive.PostBackUrl = string.Format("MyCollection.aspx?type=Card{0}", queryStrUserID);
 
-            DataTable dtVideo = UserVideo.GetUserVideo(ProfileUserID);
-            lblVideoActiveCount.Text = dtVideo.Rows.Count.ToString();
+            //DataTable dtVideo = Service.UserVideo.GetUserVideo(ProfileUserID);
+            lblVideoActiveCount.Text = Entity.UserVideo.GetUserVideosByUserID(ProfileUserID).Count.ToString();
 
             List<Card> items = PlayerStrip.GetMyNumbers(ProfileUserID);
             items.RemoveAll(delegate(Card un) { return un.ArsenalPlayerGuid.HasValue; });

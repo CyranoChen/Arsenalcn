@@ -60,15 +60,21 @@ namespace Arsenalcn.ClubSys.Web
 
         private void BindVideo()
         {
-            DataTable dt = UserVideo.GetUserVideoByClubID(ClubID);
+            DataTable dt = Service.UserVideo.GetUserVideoByClubID(ClubID);
 
             if (dt != null)
             {
-                dt.Columns.Add("AdditionalData", typeof(int));
+                dt.Columns.Add("GoalPlayerName", typeof(string));
+                dt.Columns.Add("GoalRank", typeof(int));
 
                 foreach (DataRow dr in dt.Rows)
                 {
-                    dr["AdditionalData"] = (int)(Convert.ToInt16(dr["GoalRank"]) * 20);
+                    ArsenalVideo v = Arsenal_Video.Cache.Load((Guid)dr["VideoGuid"]);
+
+                    dr["GoalPlayerName"] = v.GoalPlayerName;
+                    dr["GoalRank"] = Convert.ToInt16(v.GoalRank);
+
+                    //dr["AdditionalData"] = (int)(Convert.ToInt16(dr["GoalRank"]) * 20);
                 }
             }
 
@@ -92,15 +98,28 @@ namespace Arsenalcn.ClubSys.Web
                 DataRowView drv = e.Row.DataItem as DataRowView;
 
                 Literal ltrlVideo = e.Row.FindControl("ltrlVideo") as Literal;
+                Literal ltrlGoalRankInfo = e.Row.FindControl("ltrlGoalRankInfo") as Literal;
                 LinkButton btnSwfView = e.Row.FindControl("btnSwfView") as LinkButton;
 
-                String StrSwfContent = "<div class=\"ClubSys_ItemPH\">";
-                StrSwfContent += string.Format("<script type=\"text/javascript\">GenSwfObject('PlayerVideoActive{0}', 'swf/PlayerVideoActive.swf?XMLURL=ServerXml.aspx%3FUserVideoID={0}', '80', '100');</script>", drv["ID"].ToString());
-                StrSwfContent += "</div>";
+                if (ltrlVideo != null)
+                {
+                    String StrSwfContent = "<div class=\"ClubSys_ItemPH\">";
+                    StrSwfContent += string.Format("<script type=\"text/javascript\">GenSwfObject('PlayerVideoActive{0}', 'swf/PlayerVideoActive.swf?XMLURL=ServerXml.aspx%3FUserVideoID={0}', '80', '100');</script>", drv["ID"].ToString());
+                    StrSwfContent += "</div>";
 
-                ltrlVideo.Text = StrSwfContent;
+                    ltrlVideo.Text = StrSwfContent;
+                }
 
-                btnSwfView.OnClientClick = string.Format("ShowVideoPreview('{0}'); return false", drv["VideoGuid"].ToString());
+                if (ltrlGoalRankInfo != null)
+                {
+                    ltrlGoalRankInfo.Text = string.Format("<div class=\"ClubSys_PlayerLV\" style=\"width: {0}px;\" title=\"视频等级\"></div>",
+                        ((int)(Convert.ToInt16(drv["GoalRank"]) * 20)).ToString());
+                }
+
+                if (btnSwfView != null)
+                {
+                    btnSwfView.OnClientClick = string.Format("ShowVideoPreview('{0}'); return false", drv["VideoGuid"].ToString());
+                }
             }
         }
     }

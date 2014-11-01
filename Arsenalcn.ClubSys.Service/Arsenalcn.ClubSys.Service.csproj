@@ -63,6 +63,7 @@
     <Compile Include="Entity\Rank.cs" />
     <Compile Include="Entity\UserClub.cs" />
     <Compile Include="Entity\Card.cs" />
+    <Compile Include="Entity\UserVideo.cs" />
     <Compile Include="Enum.cs" />
     <Compile Include="FortuneContributeAlgorithm.cs" />
     <Compile Include="ArsenalPlayer.cs" />

@@ -49,7 +49,7 @@ namespace Arsenalcn.ClubSys.Web
                                             {
                                                 //remove two cards and insert 1 video
 
-                                                UserVideo.ConsolidateCards(this.userid, this.username, card1, card2);
+                                                Service.UserVideo.ConsolidateCards(this.userid, this.username, card1, card2);
                                                 PlayerLog.LogHistory(this.userid, this.username, PlayerHistoryType.ConsolidateCards, new ConsolidateCardsDesc(un1, un2).Generate());
 
                                                 responseResult = "1";
@@ -63,7 +63,7 @@ namespace Arsenalcn.ClubSys.Web
                                             {
                                                 //remove two cards and insert 1 video
 
-                                                UserVideo.ConsolidateCards(this.userid, this.username, card1, card2);
+                                                Service.UserVideo.ConsolidateCards(this.userid, this.username, card1, card2);
                                                 PlayerLog.LogHistory(this.userid, this.username, PlayerHistoryType.ConsolidateCards, new ConsolidateCardsDesc(un1, un2).Generate());
 
                                                 responseResult = "1";

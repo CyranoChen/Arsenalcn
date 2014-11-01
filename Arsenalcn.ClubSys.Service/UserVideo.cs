@@ -82,7 +82,7 @@ namespace Arsenalcn.ClubSys.Service
         public static DataTable GetUserVideos()
         {
             string sql = @"SELECT  ID, UserID, UserName, VideoGuid, ActiveDate, UserDesc, IsPublic  
-                                  FROM AcnCasino_Gambler ORDER BY ActiveDate DESC";
+                                  FROM AcnClub_RelationUserVideo ORDER BY ActiveDate DESC";
 
             DataSet ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql);
 

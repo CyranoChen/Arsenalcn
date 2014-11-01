@@ -131,6 +131,7 @@
     <Content Include="UploadFiles\StripFace\20.jpg" />
     <Content Include="UploadFiles\StripFace\21.jpg" />
     <Content Include="UploadFiles\StripFace\22.jpg" />
+    <Content Include="UploadFiles\StripFace\23.jpg" />
     <Content Include="UploadFiles\StripFace\24.jpg" />
     <Content Include="UploadFiles\StripFace\27.jpg" />
     <Content Include="UploadFiles\StripFace\28.jpg" />
@@ -249,6 +250,7 @@
     <Content Include="UploadFiles\StripPhoto\20.jpg" />
     <Content Include="UploadFiles\StripPhoto\21.jpg" />
     <Content Include="UploadFiles\StripPhoto\22.jpg" />
+    <Content Include="UploadFiles\StripPhoto\23.jpg" />
     <Content Include="UploadFiles\StripPhoto\24.jpg" />
     <Content Include="UploadFiles\StripPhoto\27.jpg" />
     <Content Include="UploadFiles\StripPhoto\28.jpg" />

@@ -48,7 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Arsenal.DataAccess\Arsenal.DataAccess.csproj">
-      <Project>{37CC8A18-346F-4FDF-AF3D-C12C36D047EB}</Project>
+      <Project>{37cc8a18-346f-4fdf-af3d-c12c36d047eb}</Project>
       <Name>Arsenal.DataAccess</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arsenalcn.Common\Arsenalcn.Common.csproj">

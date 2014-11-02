@@ -63,7 +63,7 @@ namespace Arsenalcn.ClubSys.Web
                                             uv.UserDesc = string.Empty;
                                             uv.IsPublic = false;
 
-                                            uv.Update(trans);
+                                            uv.Insert(trans);
 
                                             trans.Commit();
 

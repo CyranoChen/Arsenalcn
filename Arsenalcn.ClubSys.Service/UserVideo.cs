@@ -127,7 +127,7 @@ namespace Arsenalcn.ClubSys.Service
 
         public static DataTable GetUserVideoByClubID(int clubID)
         {
-            string sql = @"SELECT ID, UserID, UserName, VideoGuid, ActiveDate INTO #TmpUserClubVideo FROM AcnClub_RelationUserVideo
+            string sql = @"SELECT * INTO #TmpUserClubVideo FROM AcnClub_RelationUserVideo
                                   WHERE (UserID IN (SELECT UserID FROM AcnClub_RelationUserClub 
                                   WHERE (ClubUid = @clubID) AND (IsActive = 1)))
 
@@ -248,7 +248,7 @@ namespace Arsenalcn.ClubSys.Service
 
             List<ArsenalVideo> list = new List<ArsenalVideo>();
 
-            if (isLegend.HasValue)
+            if (!isLegend.HasValue)
             {
                 list = Arsenal_Video.Cache.VideoList;
             }
@@ -273,11 +273,12 @@ namespace Arsenalcn.ClubSys.Service
                 List<Entity.UserVideo> userList = Entity.UserVideo.GetUserVideosByUserID(userID);
 
                 if (userList != null && userList.Count > 0)
-
+                {
                     list.RemoveAll(delegate(ArsenalVideo v)
                     {
                         return userList.Exists((delegate(Entity.UserVideo uv) { return uv.VideoGuid.Equals(v.VideoGuid); }));
                     });
+                }
             }
 
             if (list != null && list.Count > 0)

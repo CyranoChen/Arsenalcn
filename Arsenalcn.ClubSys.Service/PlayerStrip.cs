@@ -781,6 +781,37 @@ namespace Arsenalcn.ClubSys.Service
                 return 0;
         }
 
+        public static List<Player> GetPlayers()
+        {
+            List<Player> list = new List<Player>();
+
+            string sql = "SELECT * FROM AcnClub_Player ORDER BY ID DESC";
+
+            using (SqlConnection con = SQLConn.GetConnection())
+            {
+                SqlCommand com = new SqlCommand(sql, con);
+                //com.Parameters.Add(new SqlParameter("@clubID", clubID));
+
+                SqlDataAdapter sda = new SqlDataAdapter(com);
+                con.Open();
+
+                DataTable dt = new DataTable();
+
+                sda.Fill(dt);
+
+                con.Close();
+
+                foreach (DataRow dr in dt.Rows)
+                {
+                    Player bh = new Player(dr);
+
+                    list.Add(bh);
+                }
+            }
+
+            return list;
+        }
+
         public static List<Player> GetClubPlayers(int clubID)
         {
             List<Player> list = new List<Player>();
@@ -803,9 +834,9 @@ namespace Arsenalcn.ClubSys.Service
 
                 foreach (DataRow dr in dt.Rows)
                 {
-                    Player bh = new Player(dr);
+                    Player p = new Player(dr);
 
-                    list.Add(bh);
+                    list.Add(p);
                 }
             }
 

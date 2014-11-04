@@ -10,21 +10,52 @@
     <uc1:AdminPanel ID="pnlAdmin" runat="server" />
     <div id="MainPanel">
         <uc2:AdminFieldToolBar ID="ctrlAdminFieldToolBar" runat="server" />
-        <asp:GridView ID="gvPlayer" runat="server" DataKeyNames="ID"
-            OnPageIndexChanging="gvPlayer_PageIndexChanging" PageSize="20">
+        <asp:GridView ID="gvPlayer" runat="server" OnRowDataBound="gvPlayer_RowDataBound" DataKeyNames="ID"
+            OnRowCancelingEdit="gvPlayer_RowCancelingEdit" OnRowEditing="gvPlayer_RowEditing"
+            OnRowUpdating="gvPlayer_RowUpdating" OnPageIndexChanging="gvPlayer_PageIndexChanging"
+            PageSize="20">
             <Columns>
                 <asp:BoundField DataField="ID" HeaderText="编号" ReadOnly="true" />
                 <asp:BoundField DataField="UserID" HeaderText="ACN会员号" ReadOnly="true" />
                 <asp:BoundField DataField="UserName" HeaderText="用户名" ReadOnly="true" />
-                <asp:BoundField DataField="Shirt" HeaderText="球衣等级" ControlStyle-CssClass="TextBox"
-                    DataFormatString="<em>{0}</em>" HtmlEncodeFormatString="false" />
-                <asp:BoundField DataField="Shorts" HeaderText="球裤等级" ControlStyle-CssClass="TextBox"
-                    DataFormatString="<em>{0}</em>" HtmlEncodeFormatString="false" />
-                <asp:BoundField DataField="Sock" HeaderText="球袜等级" ControlStyle-CssClass="TextBox"
-                    DataFormatString="<em>{0}</em>" HtmlEncodeFormatString="false" />
-                <asp:BoundField DataField="IsActive" HeaderText="打工开关" ControlStyle-CssClass="TextBox" />
-                <asp:CommandField ShowEditButton="true" HeaderText="修改" EditText="修改" UpdateText="保存"
-                    CancelText="取消" ControlStyle-CssClass="LinkBtn" />
+                <asp:TemplateField HeaderText="球衣">
+                    <ItemTemplate>
+                        <%# DataBinder.Eval(Container.DataItem, "Shirt","<em>{0}</em>") %>
+                    </ItemTemplate>
+                    <EditItemTemplate>
+                        <asp:TextBox ID="tbShirt" runat="server" CssClass="TextBox" Width="40px"></asp:TextBox>
+                    </EditItemTemplate>
+                </asp:TemplateField>
+                <asp:TemplateField HeaderText="球裤">
+                    <ItemTemplate>
+                        <%# DataBinder.Eval(Container.DataItem, "Shorts","<em>{0}</em>") %>
+                    </ItemTemplate>
+                    <EditItemTemplate>
+                        <asp:TextBox ID="tbShorts" runat="server" CssClass="TextBox" Width="40px"></asp:TextBox>
+                    </EditItemTemplate>
+                </asp:TemplateField>
+                <asp:TemplateField HeaderText="球袜">
+                    <ItemTemplate>
+                        <%# DataBinder.Eval(Container.DataItem, "Sock","<em>{0}</em>") %>
+                    </ItemTemplate>
+                    <EditItemTemplate>
+                        <asp:TextBox ID="tbSock" runat="server" CssClass="TextBox" Width="40px"></asp:TextBox>
+                    </EditItemTemplate>
+                </asp:TemplateField>
+                <asp:TemplateField HeaderText="球袜">
+                    <ItemTemplate>
+                        <%# DataBinder.Eval(Container.DataItem, "IsActive") %>
+                    </ItemTemplate>
+                    <EditItemTemplate>
+                        <asp:DropDownList ID="ddlIsActive" runat="server">
+                            <asp:ListItem Value="true" Text="true"></asp:ListItem>
+                            <asp:ListItem Value="false" Text="false"></asp:ListItem>
+                        </asp:DropDownList>
+                    </EditItemTemplate>
+                </asp:TemplateField>
+                <asp:CommandField HeaderText="编辑" ShowEditButton="true" ShowDeleteButton="false" EditText="编辑"
+                    UpdateText="保存" CancelText="取消" DeleteText="删除" ButtonType="Link" ControlStyle-CssClass="LinkBtn"
+                    ItemStyle-CssClass="BtnColumn" />
             </Columns>
         </asp:GridView>
     </div>

@@ -922,6 +922,29 @@ namespace Arsenalcn.ClubSys.Service
             return player;
         }
 
+        public static void UpdatePlayerInfo(int id, int shirt, int shorts, int sock, bool isActive)
+        {
+            string sql = @"UPDATE dbo.AcnClub_Player SET Shirt = @shirt, Shorts = @shorts, Sock = @sock,
+                                  IsActive = @isActive WHERE ID = @id";
+
+            using (SqlConnection con = SQLConn.GetConnection())
+            {
+                SqlCommand com = new SqlCommand(sql, con);
+
+                com.Parameters.Add(new SqlParameter("@id", id));
+                com.Parameters.Add(new SqlParameter("@shirt", shirt));
+                com.Parameters.Add(new SqlParameter("@shorts", shorts));
+                com.Parameters.Add(new SqlParameter("@sock", sock));
+                com.Parameters.Add(new SqlParameter("@isActive", isActive));
+
+                con.Open();
+
+                com.ExecuteNonQuery();
+
+                con.Close();
+            }
+        }
+
         public static void UpdatePlayerGoogleAdvActive(int userID, bool isActive)
         {
             Player player = GetPlayerInfo(userID);

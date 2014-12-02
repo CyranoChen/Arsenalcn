@@ -1035,6 +1035,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\PublishProfiles\iArsenal.Deployment.pubxml" />
+    <Content Include="UploadFiles\Banner\banner20141114.png" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

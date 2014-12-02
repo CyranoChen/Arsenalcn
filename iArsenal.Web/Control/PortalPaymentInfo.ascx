@@ -4,7 +4,7 @@
         <a>付款方式信息</a></h3>
     <div class="Block" style="background: #fff48d">
         <p>
-            (1). 支付宝转账账户：<em>vicky@arsenal.cn</em>，户名：凌薇。
+            (1). 支付宝转账账户：<br /><em>vicky@arsenalcn.com</em>，户名：凌薇。
         </p>
         <p>
             (2). 银行转账账户：<br />

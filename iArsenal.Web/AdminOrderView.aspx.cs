@@ -173,7 +173,7 @@ namespace iArsenal.Web
                 {
                     o.OrderID = OrderID;
                     o.Update();
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('更新成功');window.location.href=window.location.href", true);
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('更新成功');window.location.href = window.location.href", true);
                 }
                 else
                 {
@@ -232,7 +232,7 @@ namespace iArsenal.Web
                     int countOrderItem = OrderItemBase.RemoveOrderItemByOrderID(OrderID);
 
                     OrderBase o = new OrderBase();
-                    o.OrderID = OrderID;             
+                    o.OrderID = OrderID;
                     o.Delete();
 
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", string.Format("alert('删除成功(包括{0}个许愿)');window.location.href='AdminOrder.aspx'", countOrderItem.ToString()), true);

@@ -133,7 +133,10 @@ namespace iArsenal.Entity
         {
             DataRow dr = DataAccess.MatchTicket.GetMatchTicketByID(MatchGuid);
 
-            return !dr.Equals(null);
+            if (dr != null)
+            { return true; }
+            else
+            { return false; }
         }
 
         private static DateTime ConvertToDST(DateTime date)

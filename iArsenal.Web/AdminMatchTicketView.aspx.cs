@@ -179,7 +179,7 @@ namespace iArsenal.Web
                 else
                 {
                     mt.Insert();
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('添加成功');window.location.href = 'AdminMemberPeriod.aspx'", true);
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('添加成功');window.location.href = 'AdminMatchTicket.aspx'", true);
                 }
             }
             catch (Exception ex)

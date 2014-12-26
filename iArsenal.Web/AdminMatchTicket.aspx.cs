@@ -270,5 +270,38 @@ namespace iArsenal.Web
 
             BindData();
         }
+
+        protected void gvMatchTicket_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                MatchTicket mt = e.Row.DataItem as MatchTicket;
+
+                Label lblHomeAway = e.Row.FindControl("lblHomeAway") as Label;
+                Label lblOrderTicketCount = e.Row.FindControl("lblOrderTicketCount") as Label;
+
+                if (lblHomeAway != null)
+                {
+                    lblHomeAway.Text = mt.IsHome ? "主场" : "客场";
+                }
+                else
+                {
+                    lblHomeAway.Visible = false;
+                }
+
+                if (lblOrderTicketCount != null)
+                {
+                    if (mt.OrderTicketList != null && mt.OrderTicketList.Count > 0)
+                        lblOrderTicketCount.Text = string.Format("<em>{0}</em>",
+                            mt.OrderTicketList.Count.ToString());
+                    else
+                        lblOrderTicketCount.Text = "/";
+                }
+                else
+                {
+                    lblOrderTicketCount.Visible = false;
+                }
+            }
+        }
     }
 }

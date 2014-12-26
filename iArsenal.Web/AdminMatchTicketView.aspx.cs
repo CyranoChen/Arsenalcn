@@ -95,8 +95,11 @@ namespace iArsenal.Web
                 cbIsActive.Checked = mt.IsActive;
                 tbRemark.Text = mt.Remark;
 
-                // Bind MatchOrder data of this MatchTicket
+                //Bind MatchOrder data of this MatchTicket
                 BindItemData();
+
+                //gvMatchOrder.DataSource = mt.OrderTicketList;
+                //gvMatchOrder.DataBind();
             }
             else
             {

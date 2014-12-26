@@ -52,6 +52,8 @@ namespace iArsenal.Entity
 
             #endregion
 
+            OrderTicketList = null;
+
             // Ticket Info Initializer
 
             if (dr != null)
@@ -128,6 +130,40 @@ namespace iArsenal.Entity
                 return null;
             }
         }
+
+        //public static List<MatchTicket> GetMatchTickets_IncludeOrder()
+        //{
+        //    List<Match> mlist = Arsenal_Match.Cache.MatchList;
+
+        //    if (mlist != null && mlist.Count > 0)
+        //    {
+        //        List<MatchTicket> list = new List<MatchTicket>();
+
+        //        List<OrderBase> oList = OrderBase.GetOrders().FindAll(o => o.IsActive);
+        //        List<OrderItemBase> oiList = OrderItemBase.GetOrderItems().FindAll(oi =>
+        //            oi.IsActive & !string.IsNullOrEmpty(oi.Remark));
+
+        //        foreach (Match m in mlist)
+        //        {
+        //            MatchTicket mt = new MatchTicket();
+        //            mt.MatchGuid = m.MatchGuid;
+        //            mt.Select();
+
+        //            // Find out Order Ticket List
+        //            mt.OrderTicketList = oList.FindAll(o =>
+        //                oiList.FindAll(oi => oi.Remark.Equals(mt.MatchGuid.ToString()))
+        //                .Any(oi => oi.OrderID.Equals(o.OrderID)));
+
+        //            list.Add(mt);
+        //        }
+
+        //        return list;
+        //    }
+        //    else
+        //    {
+        //        return null;
+        //    }
+        //}
 
         public bool Exist()
         {
@@ -264,6 +300,9 @@ namespace iArsenal.Entity
         { get; set; }
 
         public string Remark
+        { get; set; }
+
+        public List<OrderBase> OrderTicketList
         { get; set; }
 
         #endregion

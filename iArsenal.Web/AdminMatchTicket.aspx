@@ -32,7 +32,7 @@
                 <asp:DropDownList ID="ddlProductCode" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlProductCode_SelectedIndexChanged">
                 </asp:DropDownList>
                 <asp:DropDownList ID="ddlAllowMemberClass" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlAllowMemberClass_SelectedIndexChanged">
-                    <asp:ListItem value="" Selected="True">--全部--</asp:ListItem>
+                    <asp:ListItem Value="" Selected="True">--全部--</asp:ListItem>
                     <asp:ListItem Text="普通会员" Value="1"></asp:ListItem>
                     <asp:ListItem Text="高级会员" Value="2"></asp:ListItem>
                 </asp:DropDownList>
@@ -48,14 +48,14 @@
             </div>
         </div>
         <asp:GridView ID="gvMatchTicket" runat="server" DataKeyNames="MatchGuid" OnPageIndexChanging="gvMatchTicket_PageIndexChanging"
-            PageSize="20" OnSelectedIndexChanged="gvMatchTicket_SelectedIndexChanged">
+            PageSize="20" OnSelectedIndexChanged="gvMatchTicket_SelectedIndexChanged" OnRowDataBound="gvMatchTicket_RowDataBound">
             <Columns>
                 <asp:BoundField DataField="MatchGuid" Visible="false" />
                 <asp:BoundField DataField="LeagueName" HeaderText="分类" />
                 <asp:BoundField DataField="Round" HeaderText="轮次" />
                 <asp:TemplateField HeaderText="主客场">
                     <ItemTemplate>
-                        <%# (bool)Eval("IsHome").Equals(true) ? "主场" : "客场"%>
+                        <asp:Label runat="server" ID="lblHomeAway"></asp:Label>
                     </ItemTemplate>
                 </asp:TemplateField>
                 <asp:BoundField DataField="TeamName" HeaderText="对阵" DataFormatString="<em>{0}</em>" HtmlEncode="false" />
@@ -63,6 +63,11 @@
                 <asp:BoundField DataField="ResultInfo" HeaderText="结果" DataFormatString="<em>{0}</em>" HtmlEncode="false" />
                 <asp:BoundField DataField="ProductInfo" HeaderText="比赛等级" />
                 <asp:BoundField DataField="Deadline" HeaderText="截止时间" DataFormatString="<em>{0:yyyy-MM-dd}</em>" HtmlEncode="false" />
+                <asp:TemplateField HeaderText="预订数量">
+                    <ItemTemplate>
+                        <asp:Label runat="server" ID="lblOrderTicketCount"></asp:Label>
+                    </ItemTemplate>
+                </asp:TemplateField>
                 <asp:BoundField DataField="IsActive" HeaderText="状态" />
                 <asp:CommandField ShowSelectButton="true" HeaderText="操作" EditText="修改" SelectText="详细"
                     UpdateText="保存" CancelText="取消" DeleteText="删除" ControlStyle-CssClass="LinkBtn" />

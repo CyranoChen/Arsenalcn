@@ -1,7 +1,7 @@
 ﻿using System;
 
 using Arsenal.Entity;
-using Arsenalcn.Common.Entity;
+using Arsenalcn.Common.Utility;
 
 namespace Arsenal.Web.Control
 {

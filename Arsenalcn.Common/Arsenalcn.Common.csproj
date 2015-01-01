@@ -46,8 +46,8 @@
     <Compile Include="MsSql\SQLHelper.cs" />
     <Compile Include="Entity\Config.cs" />
     <Compile Include="Entity\DictionaryItem.cs" />
-    <Compile Include="Interface\Excel.cs" />
-    <Compile Include="Interface\IP.cs">
+    <Compile Include="Utility\Excel.cs" />
+    <Compile Include="Utility\IP.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Entity\LogEvent.cs" />

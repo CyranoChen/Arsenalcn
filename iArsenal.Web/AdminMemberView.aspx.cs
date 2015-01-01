@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Web.UI.WebControls;
 
-using Arsenalcn.Common.Entity;
+using Arsenalcn.Common.Utility;
 using iArsenal.Entity;
 
 namespace iArsenal.Web
@@ -47,6 +47,7 @@ namespace iArsenal.Web
 
                 tbName.Text = m.Name;
                 cbIsActive.Checked = m.IsActive;
+                ddlEvalution.SelectedValue = ((int)m.Evalution).ToString();
                 ddlMemberType.SelectedValue = ((int)m.MemberType).ToString();
                 tbMemberCardNo.Text = m.MemberCardNo;
                 tbAcnID.Text = m.AcnID.ToString();
@@ -148,6 +149,7 @@ namespace iArsenal.Web
 
                 m.Name = tbName.Text.Trim();
                 m.IsActive = cbIsActive.Checked;
+                m.Evalution = (MemberEvalution)Enum.Parse(typeof(MemberEvalution), ddlEvalution.SelectedValue);
                 m.MemberType = (MemberType)Enum.Parse(typeof(MemberType), ddlMemberType.SelectedValue);
                 m.MemberCardNo = tbMemberCardNo.Text.Trim();
                 m.AcnID = Convert.ToInt32(tbAcnID.Text.Trim());
@@ -244,6 +246,8 @@ namespace iArsenal.Web
                 {
                     m.MemberID = MemberID;
                     m.Update();
+                    Member.Cache.RefreshCache();
+
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('更新成功');window.location.href=window.location.href", true);
                 }
                 else
@@ -258,6 +262,8 @@ namespace iArsenal.Web
                     else
                     {
                         m.Insert();
+                        Member.Cache.RefreshCache();
+
                         ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('添加成功');window.location.href = 'AdminMember.aspx'", true);
                     }
                 }

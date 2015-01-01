@@ -149,6 +149,13 @@ namespace iArsenal.Web
             }
         }
 
+        protected void btnRefreshCache_Click(object sender, EventArgs e)
+        {
+            Member.Cache.RefreshCache();
+
+            ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('更新缓存成功');window.location.href=window.location.href", true);
+        }
+
         protected void btnFilter_Click(object sender, EventArgs e)
         {
             if (!string.IsNullOrEmpty(tbName.Text.Trim()))
@@ -180,6 +187,37 @@ namespace iArsenal.Web
             gvMember.PageIndex = 0;
 
             BindData();
+        }
+
+        protected void gvMember_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                Member m = e.Row.DataItem as Member;
+
+                HyperLink hlName = e.Row.FindControl("hlName") as HyperLink;
+
+                if (hlName != null)
+                {
+                    switch (m.Evalution)
+                    {
+                        case MemberEvalution.BlackList:
+                            hlName.Text = string.Format("<em class=\"{1}\">{0}</em>",
+                                m.Name, "asc_memberName_blackList");
+                            break;
+                        case MemberEvalution.WhiteList:
+                            hlName.Text = string.Format("<em class=\"{1}\">{0}</em>",
+                                m.Name, "asc_memberName_whiteList");
+                            break;
+                        default:
+                            hlName.Text = string.Format("<em>{0}</em>", m.Name);
+                            break;
+                    }
+
+                    hlName.NavigateUrl = string.Format("AdminOrder.aspx?MemberID={0}", m.MemberID);
+                }
+
+            }
         }
     }
 }

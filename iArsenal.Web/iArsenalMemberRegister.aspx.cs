@@ -1,6 +1,6 @@
 ﻿using System;
 
-using Arsenalcn.Common.Entity;
+using Arsenalcn.Common.Utility;
 using iArsenal.Entity;
 
 
@@ -74,6 +74,7 @@ namespace iArsenal.Web
                 else
                 {
                     m.IsActive = true;
+                    m.Evalution = MemberEvalution.Null;
                     m.MemberType = MemberType.Buyer;
                     m.MemberCardNo = string.Empty;
                     m.AcnID = this.UID;
@@ -120,11 +121,15 @@ namespace iArsenal.Web
                 {
                     m.MemberID = MemberID;
                     m.Update();
+                    Member.Cache.RefreshCache();
+
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('您的实名会员信息更新成功');window.location.href=window.location.href+'#anchorBack'", true);
                 }
                 else
                 {
                     m.Insert();
+                    Member.Cache.RefreshCache();
+
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('您的实名会员信息已注册成功');window.location.href= 'Default.aspx'", true);
                 }
             }

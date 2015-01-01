@@ -37,17 +37,22 @@
             </div>
             <div class="DivFloatRight">
                 <a href="AdminMemberView.aspx" class="LinkBtn">添加新会员</a>
+                <asp:LinkButton ID="btnRefreshCache" runat="server" Text="更新缓存" CssClass="LinkBtn"
+                    OnClick="btnRefreshCache_Click" />
             </div>
             <div class="Clear">
                 <uc3:CustomPagerInfo ID="ctrlCustomPagerInfo" runat="server" />
             </div>
         </div>
         <asp:GridView ID="gvMember" runat="server" DataKeyNames="MemberID" OnPageIndexChanging="gvMember_PageIndexChanging"
-            PageSize="10" OnSelectedIndexChanged="gvMember_SelectedIndexChanged">
+            PageSize="10" OnSelectedIndexChanged="gvMember_SelectedIndexChanged" OnRowDataBound="gvMember_RowDataBound">
             <Columns>
                 <asp:BoundField HeaderText="标识" DataField="MemberID" />
-                <asp:HyperLinkField HeaderText="会员姓名" DataTextField="Name" DataTextFormatString="<em>{0}</em>"
-                    DataNavigateUrlFields="MemberID" DataNavigateUrlFormatString="AdminOrder.aspx?MemberID={0}" />
+                <asp:TemplateField HeaderText="会员姓名">
+                    <ItemTemplate>
+                        <asp:HyperLink ID="hlName" runat="server"></asp:HyperLink>
+                    </ItemTemplate>
+                </asp:TemplateField>
                 <asp:BoundField HeaderText="会员类型" DataField="MemberTypeInfo" DataFormatString="<em>{0}</em>"
                     HtmlEncode="false" />
                 <asp:BoundField HeaderText="ACN会员" DataField="AcnName" />

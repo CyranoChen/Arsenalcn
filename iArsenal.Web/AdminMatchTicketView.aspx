@@ -127,8 +127,11 @@
                 <Columns>
                     <asp:HyperLinkField HeaderText="编号" DataTextField="OrderID" DataNavigateUrlFields="OrderID"
                         DataNavigateUrlFormatString="ServerOrderView.ashx?OrderID={0}" Target="_blank" />
-                    <asp:HyperLinkField HeaderText="会员姓名" DataTextField="MemberName" DataTextFormatString="<em>{0}</em>"
-                        DataNavigateUrlFields="MemberID" DataNavigateUrlFormatString="AdminOrder.aspx?MemberID={0}" />
+                    <asp:TemplateField HeaderText="会员姓名">
+                        <ItemTemplate>
+                            <asp:HyperLink ID="hlName" runat="server"></asp:HyperLink>
+                        </ItemTemplate>
+                    </asp:TemplateField>
                     <asp:BoundField HeaderText="手机" DataField="Mobile" />
                     <asp:BoundField HeaderText="创建时间" DataField="CreateTime" DataFormatString="{0:yyyy-MM-dd HH:mm:ss}" />
                     <asp:BoundField HeaderText="价格" DataField="Price" DataFormatString="<em>{0:f2}</em>"

@@ -143,6 +143,9 @@
     <Content Include="iArsenalOrderView_TicketBeijing.aspx" />
     <Content Include="iArsenalOrder.aspx" />
     <Content Include="iArsenalOrderView_ReplicaKit.aspx" />
+    <Content Include="Scripts\iarsenal.min.js">
+      <DependentUpon>iarsenal.js</DependentUpon>
+    </Content>
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-ui-1.10.4.min.js" />
     <Content Include="Scripts\jquery.slides.min.js" />
@@ -520,6 +523,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServerAcnCheck.ashx.cs">
       <DependentUpon>ServerAcnCheck.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="ServerBulkOrder.ashx.cs">
+      <DependentUpon>ServerBulkOrder.ashx</DependentUpon>
     </Compile>
     <Compile Include="ServerMemberCheck.ashx.cs">
       <DependentUpon>ServerMemberCheck.ashx</DependentUpon>
@@ -1036,6 +1042,10 @@
   <ItemGroup>
     <None Include="Properties\PublishProfiles\iArsenal.Deployment.pubxml" />
     <Content Include="UploadFiles\Banner\banner20141114.png" />
+    <Content Include="Scripts\iarsenal.min.js.map">
+      <DependentUpon>iarsenal.min.js</DependentUpon>
+    </Content>
+    <Content Include="ServerBulkOrder.ashx" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

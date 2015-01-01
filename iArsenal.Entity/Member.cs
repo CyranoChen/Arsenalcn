@@ -45,6 +45,7 @@ namespace iArsenal.Entity
                 AcnName = dr["AcnName"].ToString();
                 IP = dr["IP"].ToString();
                 TaobaoName = dr["TaobaoName"].ToString();
+                Evalution = (MemberEvalution)Enum.Parse(typeof(MemberEvalution), dr["Evalution"].ToString());
                 MemberType = (MemberType)Enum.Parse(typeof(MemberType), dr["MemberType"].ToString());
                 MemberCardNo = dr["MemberCardNo"].ToString();
                 JoinDate = (DateTime)dr["JoinDate"];
@@ -120,12 +121,12 @@ namespace iArsenal.Entity
 
         public void Update()
         {
-            DataAccess.Member.UpdateMember(MemberID, Name, Gender, Birthday, Career, Nation, Region, Mobile, Telephone, Address, Email, Zipcode, MSN, QQ, IDCardNo, PassportNo, PassportName, AcnID, AcnName, IP, TaobaoName, (int)MemberType, MemberCardNo, JoinDate, LastLoginTime, IsActive, Description, Remark);
+            DataAccess.Member.UpdateMember(MemberID, Name, Gender, Birthday, Career, Nation, Region, Mobile, Telephone, Address, Email, Zipcode, MSN, QQ, IDCardNo, PassportNo, PassportName, AcnID, AcnName, IP, TaobaoName, (int)Evalution, (int)MemberType, MemberCardNo, JoinDate, LastLoginTime, IsActive, Description, Remark);
         }
 
         public void Insert()
         {
-            DataAccess.Member.InsertMember(MemberID, Name, Gender, Birthday, Career, Nation, Region, Mobile, Telephone, Address, Email, Zipcode, MSN, QQ, IDCardNo, PassportNo, PassportName, AcnID, AcnName, IP, TaobaoName, (int)MemberType, MemberCardNo, JoinDate, LastLoginTime, IsActive, Description, Remark);
+            DataAccess.Member.InsertMember(MemberID, Name, Gender, Birthday, Career, Nation, Region, Mobile, Telephone, Address, Email, Zipcode, MSN, QQ, IDCardNo, PassportNo, PassportName, AcnID, AcnName, IP, TaobaoName, (int)Evalution, (int)MemberType, MemberCardNo, JoinDate, LastLoginTime, IsActive, Description, Remark);
         }
 
         public void Delete()
@@ -147,6 +148,31 @@ namespace iArsenal.Entity
             }
 
             return list;
+        }
+
+        public static class Cache
+        {
+            static Cache()
+            {
+                InitCache();
+            }
+
+            public static void RefreshCache()
+            {
+                InitCache();
+            }
+
+            private static void InitCache()
+            {
+                MemberList = GetMembers();
+            }
+
+            public static Member Load(int id)
+            {
+                return MemberList.Find(m => m.MemberID.Equals(id));
+            }
+
+            public static List<Member> MemberList;
         }
 
         #region Members and Properties
@@ -214,6 +240,9 @@ namespace iArsenal.Entity
         public string TaobaoName
         { get; set; }
 
+        public MemberEvalution Evalution
+        { get; set; }
+
         public MemberType MemberType
         { get; set; }
 
@@ -251,5 +280,12 @@ namespace iArsenal.Entity
         VIP = 2,
         Secretary = 3,
         Buyer = 4
+    }
+
+    public enum MemberEvalution
+    {
+        Null = 0,
+        BlackList = 1,
+        WhiteList = 2
     }
 }

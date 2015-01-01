@@ -169,5 +169,38 @@ namespace iArsenal.Web
 
             BindData();
         }
+
+        protected void gvMemberPeriod_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                MemberPeriod mp = e.Row.DataItem as MemberPeriod;
+
+                HyperLink hlName = e.Row.FindControl("hlName") as HyperLink;
+
+                if (hlName != null)
+                {
+                    Member m = Member.Cache.Load(mp.MemberID);
+
+                    switch (m.Evalution)
+                    {
+                        case MemberEvalution.BlackList:
+                            hlName.Text = string.Format("<em class=\"{1}\">{0}</em>",
+                                m.Name, "asc_memberName_blackList");
+                            break;
+                        case MemberEvalution.WhiteList:
+                            hlName.Text = string.Format("<em class=\"{1}\">{0}</em>",
+                                m.Name, "asc_memberName_whiteList");
+                            break;
+                        default:
+                            hlName.Text = string.Format("<em>{0}</em>", m.Name);
+                            break;
+                    }
+
+                    hlName.NavigateUrl = string.Format("AdminMemberView.aspx?MemberID={0}", m.MemberID);
+                }
+
+            }
+        }
     }
 }

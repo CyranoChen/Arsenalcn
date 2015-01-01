@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Web.UI.WebControls;
 
-using Arsenalcn.Common.Entity;
+using Arsenalcn.Common.Utility;
 using iArsenal.Entity;
 
 namespace iArsenal.Web
@@ -664,7 +664,7 @@ namespace iArsenal.Web
                     gvw.DataSource = dt;
                     gvw.DataBind();
 
-                    Excel.ExportToExcel(gvw, fileName);
+                    ExportUtl.ExportToExcel(gvw, fileName);
                 }
                 else
                 {
@@ -681,11 +681,43 @@ namespace iArsenal.Web
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                string _strStatus = string.Empty;
                 OrderBase o = e.Row.DataItem as OrderBase;
 
+                CheckBox cbOrderID = e.Row.FindControl("cbOrderID") as CheckBox;
+                HyperLink hlOrderID = e.Row.FindControl("hlOrderID") as HyperLink;
+                HyperLink hlName = e.Row.FindControl("hlName") as HyperLink;
                 Label lblProductType = e.Row.FindControl("lblProductType") as Label;
                 Label lblOrderStatus = e.Row.FindControl("lblOrderStatus") as Label;
+
+                if (cbOrderID != null)
+                {
+                    cbOrderID.Text = o.OrderID.ToString();
+
+                    hlOrderID.Text = o.OrderID.ToString();
+                    hlOrderID.NavigateUrl = string.Format("ServerOrderView.ashx?OrderID={0}", o.OrderID.ToString());
+                }
+
+                if (hlName != null)
+                {
+                    Member m = Member.Cache.Load(o.MemberID);
+
+                    switch (m.Evalution)
+                    {
+                        case MemberEvalution.BlackList:
+                            hlName.Text = string.Format("<em class=\"{1}\">{0}</em>",
+                                o.MemberName, "asc_memberName_blackList");
+                            break;
+                        case MemberEvalution.WhiteList:
+                            hlName.Text = string.Format("<em class=\"{1}\">{0}</em>",
+                                o.MemberName, "asc_memberName_whiteList");
+                            break;
+                        default:
+                            hlName.Text = string.Format("<em>{0}</em>", o.MemberName);
+                            break;
+                    }
+
+                    hlName.NavigateUrl = string.Format("AdminOrder.aspx?MemberID={0}", o.MemberID);
+                }
 
                 if (lblProductType != null && o.OrderType.HasValue)
                 {
@@ -698,6 +730,8 @@ namespace iArsenal.Web
 
                 if (lblOrderStatus != null)
                 {
+                    string _strStatus = string.Empty;
+
                     if (o.Status.Equals(OrderStatusType.Confirmed))
                         _strStatus = string.Format("<em>{0}</em>", o.StatusInfo);
                     else

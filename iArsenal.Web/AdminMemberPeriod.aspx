@@ -40,13 +40,16 @@
             </div>
         </div>
         <asp:GridView ID="gvMemberPeriod" runat="server" DataKeyNames="MemberPeriodID" OnPageIndexChanging="gvMemberPeriod_PageIndexChanging"
-            PageSize="10" OnSelectedIndexChanged="gvMemberPeriod_SelectedIndexChanged">
+            PageSize="10" OnSelectedIndexChanged="gvMemberPeriod_SelectedIndexChanged" OnRowDataBound="gvMemberPeriod_RowDataBound">
             <Columns>
                 <asp:BoundField HeaderText="标识" DataField="MemberPeriodID" />
                 <asp:BoundField HeaderText="会员编号" DataField="MemberID" DataFormatString="<em>{0}</em>"
                     HtmlEncode="false" />
-                <asp:HyperLinkField HeaderText="会员姓名" DataTextField="MemberName" DataTextFormatString="<em>{0}</em>"
-                    DataNavigateUrlFields="MemberID" DataNavigateUrlFormatString="AdminMemberView.aspx?MemberID={0}" />
+                <asp:TemplateField HeaderText="会员姓名">
+                    <ItemTemplate>
+                        <asp:HyperLink ID="hlName" runat="server"></asp:HyperLink>
+                    </ItemTemplate>
+                </asp:TemplateField>
                 <asp:BoundField HeaderText="卡号" DataField="MemberCardNo" />
                 <asp:BoundField HeaderText="等级" DataField="MemberClass" />
                 <asp:BoundField HeaderText="开始时间" DataField="StartDate" DataFormatString="{0:yyyy-MM-dd}" />

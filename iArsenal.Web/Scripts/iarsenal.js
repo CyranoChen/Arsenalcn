@@ -1,5 +1,5 @@
 ﻿/* Javascript Version iArsenal */
-/* Version: 1.7.7 || Date: 2014-09-16 || Author: Cyrano */
+/* Version: 1.7.8 || Date: 2015-01-01 || Author: Cyrano */
 /* type="text/javascript" */
 
 $(document).ready(function () {
@@ -30,6 +30,38 @@ $(document).ready(function () {
 //        alert(data);
 //    });
 //}
+
+// AdminOrder.aspx
+
+function BulkOrderClickImpl(obj) {
+    var $cblOrderID = obj.find("input:checked");
+
+    if ($cblOrderID.length > 0) {
+        var arraySelectedItems = new Array();
+
+        $cblOrderID.each(function (i, entry) {
+            arraySelectedItems.push($(entry).next("label").text());
+        });
+
+        $.getJSON("ServerBulkOrder.ashx",
+            { SelectedOrderIDs: arraySelectedItems.join('|') }, function (data, status, xhr) {
+                if (status == "success" && data != null) {
+                    if (data.result != "error" && JSON.stringify(data) != "[]") {
+                        alert($.format("选择订单共{0}个，其中下单成功{1}个，下单失败{2}个",
+                            data.countTotal, data.countSucceed, data.countFailed));
+
+                        window.location.href = window.location.href;
+                    }
+                } else {
+                    alert("调用服务接口失败(BulkOrder)");
+                }
+            });
+    }
+    else {
+        alert("请选择需要下单的订单");
+    }
+}
+
 
 // AdminMemberView.aspx
 

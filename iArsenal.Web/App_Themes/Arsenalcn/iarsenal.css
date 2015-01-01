@@ -1,61 +1,25 @@
 ﻿/* CSS Version iArsenal */
-/* Version: 1.1.0 || Date: 2012-2-19 || Author: Cyrano */
+/* Version: 1.1.1 || Date: 2015-1-1 || Author: Cyrano */
 /* Cascading Style Sheets Level 2 Revision 1 */
 
 /** ASC Common **/
-.ASC_Tip
-{
-    background: #fff48d;
-    text-align: left;
-    margin: 0px 1px;
-    padding: 3px;
+.asc_memberName_blackList {
+    color: #555 !important;
+    text-decoration: none;
 }
-.ASC_Tip label, .ASC_Tip span
-{
-    font-weight: bold;
-    color: #444;
-    background: url(images/CasinoSys/Tip.gif) no-repeat 5px 1px;
-    padding-left: 20px;
-    font-size: 12px;
-    line-height: 1.6;
-}
-.ASC_Notice
-{
-    font-size: 9pt;
-    line-height: 1.6;
-    color: #333;
-    padding: 10px;
-    background: #fff48d;
-    font-weight: bold;
-    text-align: justify;
+
+.asc_memberName_whiteList {
+    color: #377e55 !important;
+    text-decoration: none;
 }
 
 /* ASC MainInfo */
-.ASC_MainInfo
-{
+.ASC_MainInfo {
     background: #f7f7f7 url(images/listbg.jpg) no-repeat top left;
 }
-.ASC_MainInfo em
-{
-    font-weight: bold;
-    font-family: Georgia, Tahoma, Verdana;
-    font-size: 13px;
-}
 
-/* ASC PM New */
-.ASC_New
-{
-    background: url(images/pm_1.gif) no-repeat top left;
-    display: block;
-    width: 16px;
-    height: 12px;
-    margin: auto;
-}
-.ASC_Old
-{
-    background: url(images/pm_0.gif) no-repeat top left;
-    display: block;
-    width: 16px;
-    height: 15px;
-    margin: auto;
-}
+    .ASC_MainInfo em {
+        font-weight: bold;
+        font-family: Georgia, Tahoma, Verdana;
+        font-size: 13px;
+    }

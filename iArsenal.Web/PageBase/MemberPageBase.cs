@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using Arsenalcn.Common.Entity;
+using Arsenalcn.Common.Utility;
 using iArsenal.Entity;
 
 namespace iArsenal.Web

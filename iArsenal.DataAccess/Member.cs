@@ -33,10 +33,10 @@ namespace iArsenal.DataAccess
                 return ds.Tables[0].Rows[0];
         }
 
-        public static void UpdateMember(int mID, string name, Boolean gender, DateTime? birthday, string career, string nation, string region, string mobile, string telephone, string address, string email, string zipcode, string msn, string qq, string IDCardNo, string passportNo, string passportName, int acnID, string acnName, string ip, string taobaoName, int memberType, string memberCardNo, DateTime joinDate, DateTime lastLoginTime, Boolean isActive, string description, string remark)
+        public static void UpdateMember(int mID, string name, Boolean gender, DateTime? birthday, string career, string nation, string region, string mobile, string telephone, string address, string email, string zipcode, string msn, string qq, string IDCardNo, string passportNo, string passportName, int acnID, string acnName, string ip, string taobaoName, int evalution, int memberType, string memberCardNo, DateTime joinDate, DateTime lastLoginTime, Boolean isActive, string description, string remark)
         {
-            string sql = @"UPDATE dbo.iArsenal_Member SET [Name] = @name, Gender = @gender, Birthday = @birthday, Career = @career, Nation = @nation, Region = @region, Mobile = @mobile, Telephone = @telephone, [Address] = @address, Email = @email, Zipcode = @zipcode, MSN = @msn, QQ = @qq, IDCardNo = @IDCardNo,  
-                               PassportNo = @passportNo, PassportName = @passportName, AcnID = @acnID, AcnName = @acnName, IP = @ip, TaobaoName = @taobaoName, MemberType = @memberType, MemberCardNo = @memberCardNo, JoinDate = @joinDate, LastLoginTime = @lastLoginTime, IsActive = @isActive, [Description] = @description, Remark = @remark WHERE ID = @mID";
+            string sql = @"UPDATE dbo.iArsenal_Member SET [Name] = @name, Gender = @gender, Birthday = @birthday, Career = @career, Nation = @nation, Region = @region, Mobile = @mobile, Telephone = @telephone, [Address] = @address, Email = @email, Zipcode = @zipcode, MSN = @msn, QQ = @qq, IDCardNo = @IDCardNo, PassportNo = @passportNo, PassportName = @passportName, 
+                                AcnID = @acnID, AcnName = @acnName, IP = @ip, TaobaoName = @taobaoName, Evalution = @evalution, MemberType = @memberType, MemberCardNo = @memberCardNo, JoinDate = @joinDate, LastLoginTime = @lastLoginTime, IsActive = @isActive, [Description] = @description, Remark = @remark WHERE ID = @mID";
 
             SqlParameter[] para = { 
                                       new SqlParameter("@mID", mID),
@@ -60,6 +60,7 @@ namespace iArsenal.DataAccess
                                       new SqlParameter("@acnName", acnName),
                                       new SqlParameter("@ip", ip),
                                       new SqlParameter("@taobaoName", taobaoName),
+                                      new SqlParameter("@evalution", evalution),
                                       new SqlParameter("@memberType", memberType),
                                       new SqlParameter("@memberCardNo", memberCardNo),
                                       new SqlParameter("@joinDate", joinDate),
@@ -72,10 +73,10 @@ namespace iArsenal.DataAccess
             SqlHelper.ExecuteNonQuery(SQLConn.GetConnection(), CommandType.Text, sql, para);
         }
 
-        public static void InsertMember(int mID, string name, Boolean gender, DateTime? birthday, string career, string nation, string region, string mobile, string telephone, string address, string email, string zipcode, string msn, string qq, string IDCardNo, string passportNo, string passportName, int acnID, string acnName, string ip, string taobaoName, int memberType, string memberCardNo, DateTime joinDate, DateTime lastLoginTime, Boolean isActive, string description, string remark)
+        public static void InsertMember(int mID, string name, Boolean gender, DateTime? birthday, string career, string nation, string region, string mobile, string telephone, string address, string email, string zipcode, string msn, string qq, string IDCardNo, string passportNo, string passportName, int acnID, string acnName, string ip, string taobaoName, int evalution, int memberType, string memberCardNo, DateTime joinDate, DateTime lastLoginTime, Boolean isActive, string description, string remark)
         {
-            string sql = @"INSERT INTO dbo.iArsenal_Member ([Name], Gender, Birthday, Career, Nation, Region, Mobile, Telephone, [Address], Email, Zipcode, MSN, QQ, IDCardNo, PassportNo, PassportName, AcnID, AcnName, IP, TaobaoName, MemberType, MemberCardNo, JoinDate, LastLoginTime, IsActive, [Description], Remark) 
-                               VALUES (@name, @gender, @birthday, @career, @nation, @region, @mobile, @telephone, @address, @email, @zipcode, @msn, @qq, @IDCardNo, @passportNo, @passportName, @acnID, @acnName, @ip, @taobaoName, @memberType, @memberCardNo, @joinDate, @lastLoginTime, @isActive, @description, @remark)";
+            string sql = @"INSERT INTO dbo.iArsenal_Member ([Name], Gender, Birthday, Career, Nation, Region, Mobile, Telephone, [Address], Email, Zipcode, MSN, QQ, IDCardNo, PassportNo, PassportName, AcnID, AcnName, IP, TaobaoName, Evalution, MemberType, MemberCardNo, JoinDate, LastLoginTime, IsActive, [Description], Remark) 
+                               VALUES (@name, @gender, @birthday, @career, @nation, @region, @mobile, @telephone, @address, @email, @zipcode, @msn, @qq, @IDCardNo, @passportNo, @passportName, @acnID, @acnName, @ip, @taobaoName, @evalution, @memberType, @memberCardNo, @joinDate, @lastLoginTime, @isActive, @description, @remark)";
 
             SqlParameter[] para = { 
                                       new SqlParameter(),
@@ -99,6 +100,7 @@ namespace iArsenal.DataAccess
                                       new SqlParameter("@acnName", acnName),
                                       new SqlParameter("@ip", ip),
                                       new SqlParameter("@taobaoName", taobaoName),
+                                      new SqlParameter("@evalution", evalution),
                                       new SqlParameter("@memberType", memberType),
                                       new SqlParameter("@memberCardNo", memberCardNo),
                                       new SqlParameter("@joinDate", joinDate),
@@ -123,7 +125,7 @@ namespace iArsenal.DataAccess
         public static DataTable GetMembers()
         {
             string sql = @"SELECT ID, Name, Gender, Birthday, Career, Nation, Region, Mobile, Telephone, Address, Email, Zipcode, MSN, QQ, IDCardNo, PassportNo, PassportName, AcnID, AcnName,  
-                               IP, TaobaoName, MemberType, MemberCardNo, JoinDate, LastLoginTime, IsActive, Description, Remark FROM iArsenal_Member ORDER BY ID DESC";
+                               IP, TaobaoName, Evalution, MemberType, MemberCardNo, JoinDate, LastLoginTime, IsActive, Description, Remark FROM iArsenal_Member ORDER BY ID DESC";
 
             DataSet ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql);
 

@@ -192,6 +192,8 @@ namespace iArsenal.Web
                 {
                     p.ProductGuid = ProductGuid;
                     p.Update();
+                    Product.Cache.RefreshCache();
+
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('更新成功');window.location.href=window.location.href", true);
                 }
                 else
@@ -202,6 +204,8 @@ namespace iArsenal.Web
                         throw new Exception("Product Code is already in use");
 
                     p.Insert();
+                    Product.Cache.RefreshCache();
+
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('添加成功');window.location.href = 'AdminProduct.aspx'", true);
                 }
             }

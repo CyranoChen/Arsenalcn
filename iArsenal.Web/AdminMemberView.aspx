@@ -7,8 +7,7 @@
     <link href="Scripts/jquery.ui/jquery-ui.min.css" type="text/css" rel="stylesheet" />
     <script type="text/javascript" src="Scripts/jquery-ui-1.10.4.min.js"></script>
     <style type="text/css">
-        input.AcnSessionKey, input.Region1, input.Region2
-        {
+        input.AcnSessionKey, input.Region1, input.Region2 {
             display: none;
         }
     </style>
@@ -57,11 +56,16 @@
                         </td>
                         <td style="text-align: left">
                             <asp:DropDownList ID="ddlMemberType" runat="server">
-                                <asp:ListItem Text="--请选择会员类型--" Value="0" Selected="True"></asp:ListItem>
+                                <asp:ListItem Text="--请选择类型--" Value="0" Selected="True"></asp:ListItem>
                                 <asp:ListItem Text="观赛" Value="1"></asp:ListItem>
                                 <asp:ListItem Text="VIP" Value="2"></asp:ListItem>
                                 <asp:ListItem Text="干事" Value="3"></asp:ListItem>
                                 <asp:ListItem Text="团购" Value="4"></asp:ListItem>
+                            </asp:DropDownList>
+                            <asp:DropDownList ID="ddlEvalution" runat="server">
+                                <asp:ListItem Text="--请选择评价--" Value="0" Selected="True"></asp:ListItem>
+                                <asp:ListItem Text="黑名单" Value="1"></asp:ListItem>
+                                <asp:ListItem Text="白名单" Value="2"></asp:ListItem>
                             </asp:DropDownList>
                         </td>
                         <td class="FieldHeader">ACN信息:

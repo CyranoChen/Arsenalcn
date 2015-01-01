@@ -128,13 +128,37 @@ namespace iArsenal.Web
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                string _strStatus = string.Empty;
                 OrderBase o = e.Row.DataItem as OrderBase;
 
+                HyperLink hlName = e.Row.FindControl("hlName") as HyperLink;
                 Label lblOrderStatus = e.Row.FindControl("lblOrderStatus") as Label;
+
+                if (hlName != null)
+                {
+                    Member m = Member.Cache.Load(o.MemberID);
+
+                    switch (m.Evalution)
+                    {
+                        case MemberEvalution.BlackList:
+                            hlName.Text = string.Format("<em class=\"{1}\">{0}</em>",
+                                o.MemberName, "asc_memberName_blackList");
+                            break;
+                        case MemberEvalution.WhiteList:
+                            hlName.Text = string.Format("<em class=\"{1}\">{0}</em>",
+                                o.MemberName, "asc_memberName_whiteList");
+                            break;
+                        default:
+                            hlName.Text = string.Format("<em>{0}</em>", o.MemberName);
+                            break;
+                    }
+
+                    hlName.NavigateUrl = string.Format("AdminOrder.aspx?MemberID={0}", o.MemberID);
+                }
 
                 if (lblOrderStatus != null)
                 {
+                    string _strStatus = string.Empty;
+
                     if (o.Status.Equals(OrderStatusType.Confirmed))
                         _strStatus = string.Format("<em>{0}</em>", o.StatusInfo);
                     else
@@ -177,11 +201,15 @@ namespace iArsenal.Web
                 if (mt.Exist())
                 {
                     mt.Update();
+                    MatchTicket.Cache.RefreshCache();
+
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('更新成功');window.location.href=window.location.href", true);
                 }
                 else
                 {
                     mt.Insert();
+                    MatchTicket.Cache.RefreshCache();
+
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('添加成功');window.location.href = 'AdminMatchTicket.aspx'", true);
                 }
             }

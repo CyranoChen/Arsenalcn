@@ -89,6 +89,8 @@ namespace iArsenal.Web
 
                 MatchTicket.Cache.RefreshCache();
 
+                Member.Cache.RefreshCache();
+
                 Product.Cache.RefreshCache();
 
                 OrderBase.RefreshOrderBaseType();

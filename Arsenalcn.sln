@@ -43,14 +43,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arsenalcn.Framework.Web", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arsenalcn.Event", "Arsenalcn.Event\Arsenalcn.Event.csproj", "{2FD842D7-9D05-4EDB-A5BB-1D60E48E5BC5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arsenalcn.ClubSys.Service", "Arsenalcn.ClubSys.Service\Arsenalcn.ClubSys.Service.csproj", "{75829613-19BE-4D73-967E-19D3B5F7CB84}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Arsenal", "Arsenal", "{EE6F6FBA-A4CE-4D74-9734-CC6D1FFEB58D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A7778B83-AB25-42E8-B643-CBE5698BE929}"
 	ProjectSection(SolutionItems) = preProject
 		WebEssentials-Settings.json = WebEssentials-Settings.json
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arsenalcn.ClubSys.Service", "Arsenalcn.ClubSys.Service\Arsenalcn.ClubSys.Service.csproj", "{75829613-19BE-4D73-967E-19D3B5F7CB84}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

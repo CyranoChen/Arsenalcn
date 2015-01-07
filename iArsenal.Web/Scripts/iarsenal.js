@@ -1,5 +1,5 @@
 ﻿/* Javascript Version iArsenal */
-/* Version: 1.7.8 || Date: 2015-01-01 || Author: Cyrano */
+/* Version: 1.7.9 || Date: 2015-01-05 || Author: Cyrano */
 /* type="text/javascript" */
 
 $(document).ready(function () {
@@ -32,6 +32,16 @@ $(document).ready(function () {
 //}
 
 // AdminOrder.aspx
+
+function GridViewCheckBoxBindImpl(obj) {
+    obj.find("input:checkbox").next("label").hide();
+    obj.find("a.checkAll").click(function () {
+        obj.find("input:checkbox:not(:checked)")
+            .each(function () {
+                $(this).prop("checked", true);
+            });
+    });
+}
 
 function BulkOrderClickImpl(obj) {
     var $cblOrderID = obj.find("input:checked");

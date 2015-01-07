@@ -19,7 +19,8 @@
                 });
             });
 
-            $(".DataView").find("input:checkbox").next("label").hide();
+            GridViewCheckBoxBindImpl($(".DataView"));
+            //$(".DataView").find("input:checkbox").next("label").hide();
         });
     </script>
 </asp:Content>
@@ -73,7 +74,7 @@
             <Columns>
                 <asp:TemplateField HeaderText="编号">
                     <HeaderTemplate>
-                        <a title="单击全选" href="javascript:$('.DataView input:checkbox').each(function(){$(this).attr('checked', true);})">编号</a>
+                        <a class="checkAll" title="单击全选">编号</a>
                     </HeaderTemplate>
                     <ItemTemplate>
                         <asp:CheckBox ID="cbOrderID" runat="server" />

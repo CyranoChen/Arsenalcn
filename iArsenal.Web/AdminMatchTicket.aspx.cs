@@ -201,6 +201,8 @@ namespace iArsenal.Web
             Arsenal_Player.Cache.RefreshCache();
             Arsenal_Team.Cache.RefreshCache();
 
+            MatchTicket.MatchTicketCountStatistics();
+
             ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('更新缓存成功');window.location.href=window.location.href", true);
         }
 
@@ -278,7 +280,6 @@ namespace iArsenal.Web
                 MatchTicket mt = e.Row.DataItem as MatchTicket;
 
                 Label lblHomeAway = e.Row.FindControl("lblHomeAway") as Label;
-                Label lblOrderTicketCount = e.Row.FindControl("lblOrderTicketCount") as Label;
 
                 if (lblHomeAway != null)
                 {
@@ -287,19 +288,6 @@ namespace iArsenal.Web
                 else
                 {
                     lblHomeAway.Visible = false;
-                }
-
-                if (lblOrderTicketCount != null)
-                {
-                    if (mt.OrderTicketList != null && mt.OrderTicketList.Count > 0)
-                        lblOrderTicketCount.Text = string.Format("<em>{0}</em>",
-                            mt.OrderTicketList.Count.ToString());
-                    else
-                        lblOrderTicketCount.Text = "/";
-                }
-                else
-                {
-                    lblOrderTicketCount.Visible = false;
                 }
             }
         }

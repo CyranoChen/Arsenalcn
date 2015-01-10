@@ -52,8 +52,6 @@ namespace iArsenal.Entity
 
             #endregion
 
-            OrderTicketList = null;
-
             // Ticket Info Initializer
 
             if (dr != null)
@@ -70,6 +68,11 @@ namespace iArsenal.Entity
                 else
                     AllowMemberClass = null;
 
+                if (!Convert.IsDBNull(dr["TicketCount"]))
+                    TicketCount = Convert.ToInt16(dr["TicketCount"]);
+                else
+                    TicketCount = null;
+
                 IsActive = Convert.ToBoolean(dr["IsActive"]);
                 Remark = dr["Remark"].ToString();
             }
@@ -79,6 +82,7 @@ namespace iArsenal.Entity
                 ProductInfo = string.Empty;
                 Deadline = m.PlayTime.AddMonths(-2).AddDays(-7);
                 AllowMemberClass = null;
+                TicketCount = null;
                 IsActive = false;
                 Remark = string.Empty;
             }
@@ -93,12 +97,12 @@ namespace iArsenal.Entity
 
         public void Update()
         {
-            DataAccess.MatchTicket.UpdateMatchTicket(MatchGuid, ProductCode, Deadline, AllowMemberClass, IsActive, Remark);
+            DataAccess.MatchTicket.UpdateMatchTicket(MatchGuid, ProductCode, Deadline, AllowMemberClass, TicketCount, IsActive, Remark);
         }
 
         public void Insert()
         {
-            DataAccess.MatchTicket.InsertMatchTicket(MatchGuid, ProductCode, Deadline, AllowMemberClass, IsActive, Remark);
+            DataAccess.MatchTicket.InsertMatchTicket(MatchGuid, ProductCode, Deadline, AllowMemberClass, TicketCount, IsActive, Remark);
         }
 
         public void Delete()
@@ -129,6 +133,48 @@ namespace iArsenal.Entity
             {
                 return null;
             }
+        }
+
+        public static void MatchTicketCountStatistics()
+        {
+            try
+            {
+                List<MatchTicket> list = MatchTicket.Cache.MatchTicketList.FindAll(mt => mt.IsActive);
+
+                if (list != null && list.Count > 0)
+                {
+                    List<OrderBase> oList = OrderBase.GetOrders().FindAll(o =>
+                        o.IsActive && o.OrderType.Equals(OrderBaseType.Ticket) && !o.Status.Equals(OrderStatusType.Error));
+                    List<OrderItemBase> oiList = OrderItemBase.GetOrderItems().FindAll(oi =>
+                        oi.IsActive & !string.IsNullOrEmpty(oi.Remark));
+
+                    foreach (MatchTicket mt in list)
+                    {
+                        List<OrderBase> tList = oList.FindAll(o =>
+                            oiList.FindAll(oi => oi.Remark.Equals(mt.MatchGuid.ToString()))
+                            .Any(oi => oi.OrderID.Equals(o.OrderID)));
+
+                        if (tList.Count > 0 && !mt.TicketCount.Equals(tList.Count))
+                        {
+                            mt.TicketCount = tList.Count;
+                        }
+                        else if (tList.Count == 0 && !mt.TicketCount.HasValue)
+                        {
+                            mt.TicketCount = null;
+                        }
+                        else
+                        {
+                            continue;
+                        }
+
+                        mt.Update();
+                    }
+
+                    MatchTicket.Cache.RefreshCache();
+                }
+            }
+            catch
+            { throw new Exception(); }
         }
 
         //public static List<MatchTicket> GetMatchTickets_IncludeOrder()
@@ -296,14 +342,17 @@ namespace iArsenal.Entity
         public int? AllowMemberClass
         { get; set; }
 
+        public int? TicketCount
+        { get; set; }
+
         public Boolean IsActive
         { get; set; }
 
         public string Remark
         { get; set; }
 
-        public List<OrderBase> OrderTicketList
-        { get; set; }
+        //public List<OrderBase> OrderTicketList
+        //{ get; set; }
 
         #endregion
     }

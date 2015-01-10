@@ -63,11 +63,7 @@
                 <asp:BoundField DataField="ResultInfo" HeaderText="结果" DataFormatString="<em>{0}</em>" HtmlEncode="false" />
                 <asp:BoundField DataField="ProductInfo" HeaderText="比赛等级" />
                 <asp:BoundField DataField="Deadline" HeaderText="截止时间" DataFormatString="<em>{0:yyyy-MM-dd}</em>" HtmlEncode="false" />
-                <asp:TemplateField HeaderText="预订数量">
-                    <ItemTemplate>
-                        <asp:Label runat="server" ID="lblOrderTicketCount"></asp:Label>
-                    </ItemTemplate>
-                </asp:TemplateField>
+                <asp:BoundField DataField="TicketCount" HeaderText="预订数量" NullDisplayText="/" />
                 <asp:BoundField DataField="IsActive" HeaderText="状态" />
                 <asp:CommandField ShowSelectButton="true" HeaderText="操作" EditText="修改" SelectText="详细"
                     UpdateText="保存" CancelText="取消" DeleteText="删除" ControlStyle-CssClass="LinkBtn" />

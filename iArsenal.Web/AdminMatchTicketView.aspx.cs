@@ -116,6 +116,14 @@ namespace iArsenal.Web
             gvMatchOrder.DataBind();
         }
 
+        protected void gvMatchOrder_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            gvMatchOrder.PageIndex = e.NewPageIndex;
+            //MatchGuid = Guid.Empty;
+
+            BindItemData();
+        }
+
         protected void gvMatchOrder_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (gvMatchOrder.SelectedIndex != -1)

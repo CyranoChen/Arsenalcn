@@ -158,7 +158,7 @@ namespace iArsenal.Entity
                         {
                             mt.TicketCount = tList.Count;
                         }
-                        else if (tList.Count == 0 && !mt.TicketCount.HasValue)
+                        else if (tList.Count == 0 && mt.TicketCount.HasValue)
                         {
                             mt.TicketCount = null;
                         }

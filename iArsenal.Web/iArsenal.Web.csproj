@@ -136,6 +136,7 @@
     <Content Include="iArsenalOrder_ArsenalDirect.aspx" />
     <Content Include="iArsenalMemberPeriod.aspx" />
     <Content Include="iArsenalOrderView_MatchTicket.aspx" />
+    <Content Include="iArsenalOrder_LondonTravel.aspx" />
     <Content Include="iArsenalOrder_MemberShip.aspx" />
     <Content Include="iArsenalOrder_MatchTicket.aspx" />
     <Content Include="iArsenalOrder_MatchList.aspx" />
@@ -304,6 +305,12 @@
     </Compile>
     <Compile Include="iArsenalMemberPeriod.aspx.designer.cs">
       <DependentUpon>iArsenalMemberPeriod.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="iArsenalOrder_LondonTravel.aspx.cs">
+      <DependentUpon>iArsenalOrder_LondonTravel.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="iArsenalOrder_LondonTravel.aspx.designer.cs">
+      <DependentUpon>iArsenalOrder_LondonTravel.aspx</DependentUpon>
     </Compile>
     <Compile Include="iArsenalOrder_MemberShip.aspx.cs">
       <DependentUpon>iArsenalOrder_MemberShip.aspx</DependentUpon>

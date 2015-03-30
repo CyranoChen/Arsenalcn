@@ -108,12 +108,14 @@
     <Content Include="UploadFiles\ClubLogo.gif" />
     <Content Include="UploadFiles\PlayerLogo.gif" />
     <Content Include="UploadFiles\StripFace\%2425.jpg" />
+    <Content Include="UploadFiles\StripFace\%2428.jpg" />
     <Content Include="UploadFiles\StripFace\%2431.jpg" />
     <Content Include="UploadFiles\StripFace\00.jpg" />
     <Content Include="UploadFiles\StripFace\01.jpg" />
     <Content Include="UploadFiles\StripFace\02.jpg" />
     <Content Include="UploadFiles\StripFace\03.jpg" />
     <Content Include="UploadFiles\StripFace\04.jpg" />
+    <Content Include="UploadFiles\StripFace\05.jpg" />
     <Content Include="UploadFiles\StripFace\06.jpg" />
     <Content Include="UploadFiles\StripFace\07.jpg" />
     <Content Include="UploadFiles\StripFace\08.jpg" />
@@ -135,7 +137,6 @@
     <Content Include="UploadFiles\StripFace\24.jpg" />
     <Content Include="UploadFiles\StripFace\26.jpg" />
     <Content Include="UploadFiles\StripFace\27.jpg" />
-    <Content Include="UploadFiles\StripFace\28.jpg" />
     <Content Include="UploadFiles\StripFace\34.jpg" />
     <Content Include="UploadFiles\StripFace\35.jpg" />
     <Content Include="UploadFiles\StripFace\39.jpg" />
@@ -229,12 +230,14 @@
     <Content Include="UploadFiles\StripLV\sock4.gif" />
     <Content Include="UploadFiles\StripLV\sock5.gif" />
     <Content Include="UploadFiles\StripPhoto\%2425.jpg" />
+    <Content Include="UploadFiles\StripPhoto\%2428.jpg" />
     <Content Include="UploadFiles\StripPhoto\%2431.jpg" />
     <Content Include="UploadFiles\StripPhoto\00.jpg" />
     <Content Include="UploadFiles\StripPhoto\01.jpg" />
     <Content Include="UploadFiles\StripPhoto\02.jpg" />
     <Content Include="UploadFiles\StripPhoto\03.jpg" />
     <Content Include="UploadFiles\StripPhoto\04.jpg" />
+    <Content Include="UploadFiles\StripPhoto\05.jpg" />
     <Content Include="UploadFiles\StripPhoto\06.jpg" />
     <Content Include="UploadFiles\StripPhoto\07.jpg" />
     <Content Include="UploadFiles\StripPhoto\08.jpg" />
@@ -256,7 +259,6 @@
     <Content Include="UploadFiles\StripPhoto\24.jpg" />
     <Content Include="UploadFiles\StripPhoto\26.jpg" />
     <Content Include="UploadFiles\StripPhoto\27.jpg" />
-    <Content Include="UploadFiles\StripPhoto\28.jpg" />
     <Content Include="UploadFiles\StripPhoto\34.jpg" />
     <Content Include="UploadFiles\StripPhoto\35.jpg" />
     <Content Include="UploadFiles\StripPhoto\39.jpg" />

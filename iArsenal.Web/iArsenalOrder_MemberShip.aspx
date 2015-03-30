@@ -136,8 +136,9 @@
                             <asp:TextBox ID="tbMemberCardNo" runat="server" CssClass="TextBox" Width="50px" MaxLength="3"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="rfvMemberCardNo" runat="server" ControlToValidate="tbMemberCardNo"
                                 Display="Dynamic" ErrorMessage="*" CssClass="ValiSpan"></asp:RequiredFieldValidator>
+                            <span class="ValiSpan">自选：100~999</span>
                             <asp:RangeValidator ID="rvMemberCardNo" runat="server" MinimumValue="100" MaximumValue="999"
-                                ControlToValidate="tbMemberCardNo" Display="Static" ErrorMessage="提示：100~999" CssClass="ValiSpan"></asp:RangeValidator>
+                                ControlToValidate="tbMemberCardNo" Display="Static" ErrorMessage="" CssClass="ValiSpan"></asp:RangeValidator>
                         </td>
                         <td class="FieldHeader">会籍有效期：
                         </td>

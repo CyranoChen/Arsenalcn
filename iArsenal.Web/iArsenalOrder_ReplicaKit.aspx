@@ -138,7 +138,7 @@
                         <td style="text-align: left" colspan="3">
                             <asp:RadioButtonList ID="rblOrderPostage" runat="server" RepeatDirection="Horizontal"
                                 RepeatLayout="Flow" CssClass="RadioButtonList">
-                                <asp:ListItem Text="10元（江浙沪 - 顺丰速运）" Value="10"></asp:ListItem>
+                                <asp:ListItem Text="12元（江浙沪 - 顺丰速运）" Value="12"></asp:ListItem>
                                 <asp:ListItem Text="18元（全国其他地区 - 顺丰速运）" Value="18" Selected="True"></asp:ListItem>
                             </asp:RadioButtonList>
                         </td>
@@ -165,7 +165,7 @@
                             <asp:DropDownList ID="ddlOrderItemSize" runat="server" Visible="false">
                                 <asp:ListItem Value="0" Text="--请选择球衣尺寸--"></asp:ListItem>
                             </asp:DropDownList>
-                            <asp:TextBox ID="tbOrderItemSize" runat="server" CssClass="TextBox" Width="50px" MaxLength="5"></asp:TextBox>
+                            <asp:TextBox ID="tbOrderItemSize" runat="server" CssClass="TextBox" Width="40px" MaxLength="10"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="rfvOrderItemSize" runat="server" ControlToValidate="tbOrderItemSize"
                                 Display="Dynamic" ErrorMessage="*" CssClass="ValiSpan"></asp:RequiredFieldValidator>
                             <a href="http://bbs.arsenalcn.com/showtopic.aspx?topicid=107237&postid=1794623#1794623" target="_blank">【欧版尺码表】</a>
@@ -173,7 +173,7 @@
                         <td class="FieldHeader">印字印号：
                         </td>
                         <td style="text-align: left" id="tdPrinting">
-                            <asp:DropDownList ID="ddlPlayerDetail" runat="server" OnDataBound="ddlPlayerDetail_DataBound" Width="150px">
+                            <asp:DropDownList ID="ddlPlayerDetail" runat="server" OnDataBound="ddlPlayerDetail_DataBound" Width="140px">
                             </asp:DropDownList>
                             <asp:Label ID="lblPricePlayerDetail" runat="server" CssClass="PricePlayerDetail"></asp:Label>
                         </td>

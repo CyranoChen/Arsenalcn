@@ -95,33 +95,31 @@ namespace iArsenal.Web
                 {
                     throw new Exception("无相关商品信息，请联系管理员");
                 }
+
+                lblMatchTicketInfo.Text = string.Format("<em>【{0}】{1}({2})</em>", mt.LeagueName, mt.TeamName, Arsenal_Team.Cache.Load(mt.TeamGuid).TeamEnglishName);
+                lblMatchTicketPlayTime.Text = string.Format("<em>【伦敦】{0}</em>", mt.PlayTimeLocal.ToString("yyyy-MM-dd HH:mm"));
+
+                string _strRank = mt.ProductInfo.Trim();
+                if (lblMatchTicketRank != null && !string.IsNullOrEmpty(_strRank))
+                {
+                    lblMatchTicketRank.Text = string.Format("<em>{0} - {1}</em>", _strRank.Substring(_strRank.Length - 7, 7), p.PriceInfo);
+                }
                 else
                 {
-                    lblMatchTicketInfo.Text = string.Format("<em>【{0}】{1}({2})</em>", mt.LeagueName, mt.TeamName, Arsenal_Team.Cache.Load(mt.TeamGuid).TeamEnglishName);
-                    lblMatchTicketPlayTime.Text = string.Format("<em>【伦敦】{0}</em>", mt.PlayTimeLocal.ToString("yyyy-MM-dd HH:mm"));
+                    lblMatchTicketRank.Text = string.Empty;
+                }
 
-                    string _strRank = mt.ProductInfo.Trim();
-                    if (lblMatchTicketRank != null && !string.IsNullOrEmpty(_strRank))
-                    {
-                        lblMatchTicketRank.Text = string.Format("<em>{0} - {1}</em>", _strRank.Substring(_strRank.Length - 7, 7), p.PriceInfo);
-                    }
-                    else
-                    {
-                        lblMatchTicketRank.Text = string.Empty;
-                    }
-
-                    if (mt.AllowMemberClass.HasValue && mt.AllowMemberClass.Value == 2)
-                    {
-                        lblAllowMemberClass.Text = "<em>只限高级会员(Premier)</em>";
-                    }
-                    else if (mt.AllowMemberClass.HasValue && mt.AllowMemberClass == 1)
-                    {
-                        lblAllowMemberClass.Text = "<em>普通会员(Core)以上</em>";
-                    }
-                    else
-                    {
-                        lblAllowMemberClass.Text = "无";
-                    }
+                if (mt.AllowMemberClass.HasValue && mt.AllowMemberClass.Value == 2)
+                {
+                    lblAllowMemberClass.Text = "<em>只限高级会员(Premier)</em>";
+                }
+                else if (mt.AllowMemberClass.HasValue && mt.AllowMemberClass == 1)
+                {
+                    lblAllowMemberClass.Text = "<em>普通会员(Core)以上</em>";
+                }
+                else
+                {
+                    lblAllowMemberClass.Text = "无";
                 }
 
                 if (OrderID > 0)

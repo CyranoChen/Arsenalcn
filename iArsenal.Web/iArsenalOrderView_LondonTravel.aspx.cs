@@ -127,7 +127,8 @@ namespace iArsenal.Web
                     string priceInfo = string.Empty;
 
                     OrderItemBase oiETPL = o.OITravelPlan;
-                    OrderItemBase oiETPA = o.OITravelPartner;
+                    List<OrderItemBase> listPartner = o.OITravelPartnerList.FindAll(oi =>
+                        oi.IsActive && !string.IsNullOrEmpty(oi.Remark));
 
                     if (oiETPL != null && oiETPL.IsActive)
                     {
@@ -170,10 +171,12 @@ namespace iArsenal.Web
 
                     // Set Travel Partner
 
-                    if (oiETPA != null && oiETPA.IsActive && !string.IsNullOrEmpty(oiETPA.Remark))
+                    if (listPartner != null && listPartner.Count > 0)
                     {
+                        var oiPartner = (OrderItemBase)listPartner[0];
+
                         JavaScriptSerializer jsonSerializer = new JavaScriptSerializer();
-                        Partner pa = jsonSerializer.Deserialize<Partner>(oiETPA.Remark);
+                        Partner pa = jsonSerializer.Deserialize<Partner>(oiPartner.Remark);
 
                         if (pa != null)
                         {
@@ -203,10 +206,12 @@ namespace iArsenal.Web
 
                     // Set Travel Price
 
-                    if (oiETPA != null && oiETPA.IsActive)
+                    if (listPartner != null && listPartner.Count > 0)
                     {
-                        price = oiETPA.TotalPrice + oiETPL.TotalPrice;
-                        priceInfo = string.Format("观赛团预订定金：{0}+ 同伴定金：{1} = <em>{2}</em>元 (CNY)", oiETPL.TotalPrice.ToString("f0"), oiETPA.TotalPrice.ToString("f0"), price.ToString("f2"));
+                        var oiPartner = (OrderItemBase)listPartner[0];
+
+                        price = oiPartner.TotalPrice + oiETPL.TotalPrice;
+                        priceInfo = string.Format("观赛团预订定金：{0}+ 同伴定金：{1} = <em>{2}</em>元 (CNY)", oiETPL.TotalPrice.ToString("f0"), oiPartner.TotalPrice.ToString("f0"), price.ToString("f2"));
 
                         phOrderPrice.Visible = true;
                     }

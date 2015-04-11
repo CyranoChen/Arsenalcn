@@ -7,7 +7,7 @@ using iArsenal.Entity;
 
 namespace iArsenal.Web
 {
-    public partial class iArsenalOrder_LondonTravel : MemberPageBase
+    public partial class iArsenalOrder_AsiaTrophy2015 : MemberPageBase
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -38,10 +38,10 @@ namespace iArsenal.Web
                 lblMemberName.Text = string.Format("<b>{0}</b> (<em>NO.{1}</em>)", this.MemberName, this.MID.ToString());
                 lblMemberACNInfo.Text = string.Format("<b>{0}</b> (<em>ID.{1}</em>)", this.Username, this.UID.ToString());
 
-                Product pETPL = Product.Cache.Load(ProductType.TravelPlan).Find(p => p.IsActive && p.Code.Equals("iETPL", StringComparison.OrdinalIgnoreCase));
-                Product pETPA = Product.Cache.Load(ProductType.TravelPartner).Find(p => p.IsActive && p.Code.Equals("iETPA", StringComparison.OrdinalIgnoreCase));
+                Product pTravelPlan = Product.Cache.Load(ProductType.TravelPlan).Find(p => p.IsActive && p.Code.Equals("2015ATPL", StringComparison.OrdinalIgnoreCase));
+                Product pTravelPartner = Product.Cache.Load(ProductType.TravelPartner).Find(p => p.IsActive && p.Code.Equals("2015ATPA", StringComparison.OrdinalIgnoreCase));
 
-                if (pETPL == null || pETPA == null)
+                if (pTravelPlan == null || pTravelPartner == null)
                 {
                     throw new Exception("无相关商品信息，请联系管理员");
                 }
@@ -127,16 +127,16 @@ namespace iArsenal.Web
                     {
                         // Set Order Travel Date
 
-                        if (!string.IsNullOrEmpty(oiETPL.Size))
-                        {
-                            tbFromDate.Text = DateTime.Parse(oiETPL.Size.Split('|')[0]).ToString("yyyy-MM-dd");
-                            tbToDate.Text = DateTime.Parse(oiETPL.Size.Split('|')[1]).ToString("yyyy-MM-dd");
-                        }
-                        else
-                        {
-                            tbFromDate.Text = "2013-10-21";
-                            tbToDate.Text = "2013-11-15";
-                        }
+                        //if (!string.IsNullOrEmpty(oiETPL.Size))
+                        //{
+                        //    tbFromDate.Text = DateTime.Parse(oiETPL.Size.Split('|')[0]).ToString("yyyy-MM-dd");
+                        //    tbToDate.Text = DateTime.Parse(oiETPL.Size.Split('|')[1]).ToString("yyyy-MM-dd");
+                        //}
+                        //else
+                        //{
+                        //    tbFromDate.Text = "2013-10-21";
+                        //    tbToDate.Text = "2013-11-15";
+                        //}
 
                         // Set Order Travel Option
 
@@ -159,6 +159,7 @@ namespace iArsenal.Web
                     {
                         throw new Exception("此订单未填写观赛信息");
                     }
+
 
                     if (listPartner != null && listPartner.Count > 0)
                     {
@@ -185,7 +186,6 @@ namespace iArsenal.Web
                         {
                             cbPartner.Checked = false;
                         }
-
                     }
                     else
                     {
@@ -386,8 +386,8 @@ namespace iArsenal.Web
                         }
 
                         //New Order Items
-                        Product pETPL = Product.Cache.Load("iETPL");
-                        Product pETPA = Product.Cache.Load("iETPA");
+                        Product pETPL = Product.Cache.Load(ProductType.TravelPlan).Find(p => p.IsActive);
+                        Product pETPA = Product.Cache.Load(ProductType.TravelPartner).Find(p => p.IsActive);
 
                         if (pETPL == null || pETPA == null)
                             throw new Exception("无观赛信息，请联系管理员");
@@ -439,17 +439,17 @@ namespace iArsenal.Web
                         // Genernate Travel Date
                         string _strTravelDate = string.Empty;
 
-                        if (!string.IsNullOrEmpty(tbFromDate.Text.Trim()) && !string.IsNullOrEmpty(tbToDate.Text.Trim()))
-                        {
-                            DateTime _fDate = DateTime.Parse(tbFromDate.Text.Trim());
-                            DateTime _tDate = DateTime.Parse(tbToDate.Text.Trim());
+                        //if (!string.IsNullOrEmpty(tbFromDate.Text.Trim()) && !string.IsNullOrEmpty(tbToDate.Text.Trim()))
+                        //{
+                        //    DateTime _fDate = DateTime.Parse(tbFromDate.Text.Trim());
+                        //    DateTime _tDate = DateTime.Parse(tbToDate.Text.Trim());
 
-                            _strTravelDate = string.Format("{0}|{1}", _fDate.ToString("yyyy-MM-dd"), _tDate.ToString("yyyy-MM-dd"));
-                        }
-                        else
-                        {
-                            throw new Exception("请填写推荐出行时间");
-                        }
+                        //    _strTravelDate = string.Format("{0}|{1}", _fDate.ToString("yyyy-MM-dd"), _tDate.ToString("yyyy-MM-dd"));
+                        //}
+                        //else
+                        //{
+                        //    throw new Exception("请填写推荐出行时间");
+                        //}
 
                         // Generate Travel Option
                         string _strTravelOption = string.Empty;

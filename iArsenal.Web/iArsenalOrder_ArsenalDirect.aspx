@@ -41,9 +41,9 @@
     </script>
 </asp:Content>
 <asp:Content ID="cphMain" ContentPlaceHolderID="cphMain" runat="server">
-    <div id="banner" style="height: 330px">
-        <a href="http://bbs.arsenalcn.com/showtopic-107237.aspx" target="_blank">
-            <img src="uploadfiles/banner/banner20141114.png" alt="阿森纳官方纪念品团购服务" /></a>
+    <div id="banner" style="height: 400px">
+        <a href="http://arsenalcn.taobao.com" target="_blank">
+            <img src="uploadfiles/banner/banner20150410.png" alt="阿森纳官方纪念品团购服务" /></a>
     </div>
     <div id="ACN_Main">
         <uc1:PortalSitePath ID="ucPortalSitePath" runat="server" />

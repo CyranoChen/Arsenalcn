@@ -59,7 +59,6 @@
     <Compile Include="ModelOrder\OrderItemTicket.cs" />
     <Compile Include="ModelOrder\OrderItemReplicaKit.cs" />
     <Compile Include="ModelOrder\OrderReplicaKit.cs" />
-    <Compile Include="Partner.cs" />
     <Compile Include="ArsenalPlayer.cs" />
     <Compile Include="Product.cs" />
     <Compile Include="Member.cs" />
@@ -76,6 +75,7 @@
     </Compile>
     <Compile Include="ServiceProvider\RemoteServiceProvider.cs" />
     <Compile Include="ArsenalTeam.cs" />
+    <Compile Include="Travel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Arsenalcn.Common\Arsenalcn.Common.csproj">

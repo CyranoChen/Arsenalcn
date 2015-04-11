@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Web.Script.Serialization;
 
@@ -19,7 +20,10 @@ namespace iArsenal.Entity
             if (!p.ProductType.Equals(ProductType.TravelPlan))
                 throw new Exception("The OrderItem is not the type of TravelPlan.");
         }
+    }
 
+    public class OrderItem_TravelPlan_London : OrderItem_TravelPlan
+    {
         public override void Update(SqlTransaction trans = null)
         {
             base.Size = string.Format("{0}|{1}", this.TravelFromDate.ToString("yyyy-MM-dd"), this.TravelToDate.ToString("yyyy-MM-dd"));
@@ -92,6 +96,31 @@ namespace iArsenal.Entity
         #endregion
     }
 
+    public class OrderItem_TravelPlan_2015AsiaTrophy : OrderItem_TravelPlan
+    {
+        public List<MatchOption> MatchOptionList { get; set; }
+        public TravelOption TravelOption { get; set; }
+        public bool IsTicketOnly
+        {
+            get
+            {
+                Boolean _value;
+                if (!string.IsNullOrEmpty(base.Size) && Boolean.TryParse(base.Size, out _value))
+                {
+                    return _value;
+                }
+                else
+                {
+                    throw new Exception("Can't get IsTicketOnly of OrderItem_TravelPlan.Size");
+                }
+            }
+            set
+            {
+                IsTicketOnly = value;
+            }
+        }
+    }
+
     public class OrderItem_TravelPartner : OrderItemBase
     {
         public OrderItem_TravelPartner() { }
@@ -146,3 +175,5 @@ namespace iArsenal.Entity
         #endregion
     }
 }
+
+

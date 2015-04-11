@@ -1,41 +1,18 @@
 ﻿<%@ Page Language="C#" MasterPageFile="iArsenalMaster.Master" AutoEventWireup="true"
-    CodeBehind="iArsenalOrder_LondonTravel.aspx.cs" Inherits="iArsenal.Web.iArsenalOrder_LondonTravel"
-    Title="阿森纳新赛季伦敦行观战团预订" Theme="iArsenal" %>
+    CodeBehind="iArsenalOrder_AsiaTrophy2015.aspx.cs" Inherits="iArsenal.Web.iArsenalOrder_AsiaTrophy2015"
+    Title="2015英超亚洲杯阿森纳观战团报名" Theme="iArsenal" %>
 
 <%@ Register Src="Control/PortalSitePath.ascx" TagName="PortalSitePath" TagPrefix="uc1" %>
 <asp:Content ID="cphHead" ContentPlaceHolderID="cphHead" runat="server">
     <link href="Scripts/jquery.ui/jquery-ui.min.css" type="text/css" rel="stylesheet" />
     <script type="text/javascript" src="Scripts/jquery-ui-1.10.4.min.js"></script>
     <style type="text/css">
-        input.Region1, input.Region2
-        {
+        input.Region1, input.Region2 {
             display: none;
         }
     </style>
     <script type="text/javascript">
         $(function () {
-            $.datepicker.setDefaults({ dateFormat: 'yy-mm-dd', changeMonth: true, changeYear: true });
-            $tbTravelFromDate = $("#tdTravelDate .FromDate");
-            $tbTravelToDate = $("#tdTravelDate .ToDate");
-
-            $tbTravelFromDate.datepicker({
-                defaultDate: $(this).val(),
-                changeMonth: true,
-                numberOfMonths: 2,
-                onClose: function (selectedDate) {
-                    $tbTravelToDate.datepicker("option", "minDate", selectedDate);
-                }
-            });
-
-            $tbTravelToDate.datepicker({
-                defaultDate: $(this).val(),
-                changeMonth: true,
-                numberOfMonths: 2,
-                onClose: function (selectedDate) {
-                    $tbTravelFromDate.datepicker("option", "maxDate", selectedDate);
-                }
-            });
-
             NationDataBindImpl($("#tdRegion"));
 
             var $cbPartner = $("#tdPartner input:checkbox");
@@ -54,8 +31,8 @@
 </asp:Content>
 <asp:Content ID="cphMain" ContentPlaceHolderID="cphMain" runat="server">
     <div id="banner" style="height: 400px">
-        <a href="http://bbs.arsenalcn.com/showtopic-104630.aspx" target="_blank">
-            <img src="uploadfiles/banner/banner20130418.png" alt="阿森纳新赛季伦敦行观战团预订" /></a>
+        <a href="#" target="_blank">
+            <img src="uploadfiles/banner/banner20150406.png" alt="2015英超亚洲杯阿森纳观战团报名" /></a>
     </div>
     <div id="ACN_Main">
         <uc1:PortalSitePath ID="ucPortalSitePath" runat="server" />
@@ -64,7 +41,7 @@
                 <thead>
                     <tr class="Header">
                         <th colspan="4" style="text-align: left">
-                            <a name="anchorBack" id="anchorBack">欢迎进入新赛季伦敦行预订系统，请仔细确认并填写以下信息：</a>
+                            <a name="anchorBack" id="anchorBack">欢迎进入2015英超亚洲杯观赛团报名系统，请仔细确认并填写以下信息：</a>
                         </th>
                     </tr>
                 </thead>
@@ -136,7 +113,7 @@
                             <asp:RequiredFieldValidator ID="rfvMobile" runat="server" ControlToValidate="tbMobile"
                                 Display="Dynamic" ErrorMessage="*" CssClass="ValiSpan"></asp:RequiredFieldValidator>
                         </td>
-                        <td class="FieldHeader">QQ：
+                        <td class="FieldHeader">微信/QQ：
                         </td>
                         <td style="text-align: left">
                             <asp:TextBox ID="tbQQ" runat="server" CssClass="TextBox" Width="150px" MaxLength="20"></asp:TextBox>
@@ -158,23 +135,15 @@
                         </td>
                     </tr>
                     <tr class="Row">
-                        <td class="FieldHeader">推荐出行时间：
+                        <td class="FieldHeader">观看场次：
                         </td>
-                        <td style="text-align: left; white-space: nowrap;" colspan="3" id="tdTravelDate">
-                            <asp:TextBox ID="tbFromDate" runat="server" CssClass="TextBoxRead FromDate" Width="150px" Text="2013-10-21" MaxLength="10"></asp:TextBox>
-                            <asp:RequiredFieldValidator ID="rfvFromDate" runat="server" ControlToValidate="tbFromDate"
-                                Display="Dynamic" ErrorMessage="*" CssClass="ValiSpan"></asp:RequiredFieldValidator>
-                            <span>至</span>
-                            <asp:TextBox ID="tbToDate" runat="server" CssClass="TextBoxRead ToDate" Width="150px" Text="2013-11-15" MaxLength="10"></asp:TextBox>
-                            <asp:RequiredFieldValidator ID="rfvToDate" runat="server" ControlToValidate="tbToDate"
-                                Display="Dynamic" ErrorMessage="*" CssClass="ValiSpan"></asp:RequiredFieldValidator>
-                        </td>
+                        <td style="text-align: left" colspan="3"></td>
                     </tr>
                     <tr class="AlternatingRow">
-                        <td class="FieldHeader">是否同行：
+                        <td class="FieldHeader">同伴信息：
                         </td>
                         <td style="text-align: left; font-weight: bold;" id="tdPartner">
-                            <asp:CheckBox ID="cbPartner" runat="server" Text="有同行者" ToolTip="本活动出行同伴只限1人" />
+                            <asp:CheckBox ID="cbPartner" runat="server" Text="限定登记1名出行同伴" ToolTip="如需更多人数出行，请重新注册登记。" />
                         </td>
                         <td class="FieldHeader">
                             <span class="Partner">同伴姓名：</span>
@@ -223,16 +192,26 @@
                             <asp:TextBox ID="tbPartnerPassportName" runat="server" CssClass="TextBox" Width="150px" MaxLength="20"></asp:TextBox>
                         </td>
                     </tr>
+                    <tr class="Row">
+                        <td class="FieldHeader">报名方式：</td>
+                        <td style="text-align: left;" colspan="3">
+                            <asp:RadioButtonList ID="rblIsTicketOnly" runat="server" RepeatDirection="Horizontal"
+                                RepeatLayout="Flow" CssClass="RadioButtonList">
+                                <asp:ListItem Text="观赛团报名" Value="Tour" Selected="True"></asp:ListItem>
+                                <asp:ListItem Text="仅预定比赛门票（未开通）" Value="Ticket" Enabled="false"></asp:ListItem>
+                            </asp:RadioButtonList>
+                        </td>
+                    </tr>
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">出行选项：
                         </td>
                         <td style="text-align: left; line-height: 2;" colspan="3">
                             <asp:CheckBoxList ID="cblTravelOption" runat="server" RepeatDirection="Vertical" RepeatLayout="Flow">
-                                <asp:ListItem Text="统一购买机票前往伦敦" Value="FLIGHT"></asp:ListItem>
-                                <asp:ListItem Text="统一预订宾馆并入住" Value="HOTEL"></asp:ListItem>
-                                <asp:ListItem Text="参加观赛日当天活动" Value="MATCHDAY" Selected="True"></asp:ListItem>
-                                <asp:ListItem Text="参加非观赛日伦敦一日游" Value="LONDON"></asp:ListItem>
-                                <asp:ListItem Text="参加非观赛日酋长球场、博物馆游览" Value="MUSEUM"></asp:ListItem>
+                                <asp:ListItem Text="统一购买机票前往新加坡" Value="FLIGHT" Selected="True"></asp:ListItem>
+                                <asp:ListItem Text="统一预订宾馆并安排入住" Value="HOTEL" Selected="True"></asp:ListItem>
+                                <asp:ListItem Text="参观赛季训练课" Value="TRAINING" Selected="True"></asp:ListItem>
+                                <asp:ListItem Text="参加球员见面会（暂未确定）" Value="PARTY"></asp:ListItem>
+                                <asp:ListItem Text="参加新加坡当地团一日游" Value="SINGAPORE"></asp:ListItem>
                             </asp:CheckBoxList>
                         </td>
                     </tr>

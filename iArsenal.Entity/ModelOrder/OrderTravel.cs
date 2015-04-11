@@ -21,8 +21,7 @@ namespace iArsenal.Entity
 
                 if (OITravelPlan != null)
                 {
-                    oiBase = oiList.Find(oi => Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.TravelPartner));
-                    if (oiBase != null) { OITravelPartner = new OrderItem_TravelPartner(oiBase.OrderItemID); }
+                    OITravelPartnerList = oiList.FindAll(oi => Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.TravelPartner));
 
                     base.URLOrderView = "iArsenalOrderView_LondonTravel.aspx";
                 }
@@ -52,7 +51,7 @@ namespace iArsenal.Entity
 
         public OrderItem_TravelPlan OITravelPlan { get; set; }
 
-        public OrderItem_TravelPartner OITravelPartner { get; set; }
+        public List<OrderItemBase> OITravelPartnerList { get; set; }
 
         #endregion
 

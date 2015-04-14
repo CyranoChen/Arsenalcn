@@ -4,6 +4,7 @@ namespace iArsenal.Entity
 {
     public class TravelOption
     {
+        public MatchOption MatchOption { get; set; }
         public bool IsFlight { get; set; }
         public bool IsHotel { get; set; }
         public bool IsTraining { get; set; }
@@ -11,13 +12,11 @@ namespace iArsenal.Entity
         public bool IsSingapore { get; set; }
     }
 
-    public class MatchOption
+    public enum MatchOption
     {
-        public DateTime KickOffDate { get; set; }
-
-        public string HomeTeam { get; set; }
-
-        public string AwayTeam { get; set; }
+        First = 1,
+        Second = 2,
+        All = 0
     }
 
     public class Partner

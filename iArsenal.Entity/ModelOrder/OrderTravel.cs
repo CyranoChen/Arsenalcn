@@ -3,18 +3,20 @@ using System.Collections.Generic;
 
 namespace iArsenal.Entity
 {
-    public class Order_Travel : OrderBase
+    public class OrdrTravel : Order
     {
-        public Order_Travel() { }
+        public OrdrTravel() { }
 
-        public Order_Travel(int id)
-            : base(id)
+        public OrdrTravel(int id) : base(id) { this.Init(); }
+
+        private void Init()
         {
-            List<OrderItemBase> oiList = OrderItemBase.GetOrderItems(id).FindAll(oi => oi.IsActive && Product.Cache.Load(oi.ProductGuid) != null);
+            List<OrderItem> oiList = OrderItem.GetOrderItems(OrderID).FindAll(oi =>
+                oi.IsActive && Product.Cache.Load(oi.ProductGuid) != null);
 
             if (oiList != null && oiList.Count > 0)
             {
-                OrderItemBase oiBase = null;
+                OrderItem oiBase = null;
 
                 oiBase = oiList.Find(oi => Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.TravelPlan));
                 if (oiBase != null) { OITravelPlan = new OrderItem_TravelPlan(oiBase.OrderItemID); }
@@ -23,7 +25,7 @@ namespace iArsenal.Entity
                 {
                     OITravelPartnerList = oiList.FindAll(oi => Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.TravelPartner));
 
-                    base.URLOrderView = "iArsenalOrderView_LondonTravel.aspx";
+                    base.URLOrderView = "iArsenalOrderView_Travel.aspx";
                 }
                 else
                 {
@@ -45,13 +47,14 @@ namespace iArsenal.Entity
             base.StatusWorkflowInfo = _workflowInfo;
 
             #endregion
+
         }
 
         #region Members and Properties
 
         public OrderItem_TravelPlan OITravelPlan { get; set; }
 
-        public List<OrderItemBase> OITravelPartnerList { get; set; }
+        public List<OrderItem> OITravelPartnerList { get; set; }
 
         #endregion
 

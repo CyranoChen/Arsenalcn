@@ -109,8 +109,8 @@ namespace iArsenal.Web
 
         private void BindItemData()
         {
-            List<OrderItemBase> list = OrderItemBase.GetOrderItems().FindAll(oi => oi.Remark.Equals(MatchGuid.ToString()));
-            List<OrderBase> oList = OrderBase.GetOrders().FindAll(o => list.Any(oi => oi.OrderID.Equals(o.OrderID)));
+            List<OrderItem> list = OrderItem.GetOrderItems().FindAll(oi => oi.Remark.Equals(MatchGuid.ToString()));
+            List<Order> oList = Order.GetOrders().FindAll(o => list.Any(oi => oi.OrderID.Equals(o.OrderID)));
 
             gvMatchOrder.DataSource = oList;
             gvMatchOrder.DataBind();
@@ -136,7 +136,7 @@ namespace iArsenal.Web
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                OrderBase o = e.Row.DataItem as OrderBase;
+                Order o = e.Row.DataItem as Order;
 
                 HyperLink hlName = e.Row.FindControl("hlName") as HyperLink;
                 Label lblOrderStatus = e.Row.FindControl("lblOrderStatus") as Label;

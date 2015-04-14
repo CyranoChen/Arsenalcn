@@ -5,17 +5,17 @@ using System.Data.SqlClient;
 
 namespace iArsenal.Entity
 {
-    public class OrderItemBase
+    public class OrderItem
     {
-        public OrderItemBase() { }
+        public OrderItem() { }
 
-        protected OrderItemBase(int id)
+        protected OrderItem(int id)
         {
             this.OrderItemID = id;
             this.Select();
         }
 
-        private OrderItemBase(DataRow dr)
+        private OrderItem(DataRow dr)
         {
             InitOrderItem(dr);
         }
@@ -58,6 +58,19 @@ namespace iArsenal.Entity
                 throw new Exception("Unable to init OrderItemBase.");
         }
 
+        public virtual void Mapper(Object obj)
+        {
+            foreach (var properInfo in this.GetType()
+                .GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance))
+            {
+                var properInfoOrgin = obj.GetType().GetProperty(properInfo.Name);
+                if (properInfoOrgin != null)
+                {
+                    properInfo.SetValue(this, properInfoOrgin.GetValue(obj, null), null);
+                }
+            }
+        }
+
         public void Select()
         {
             DataRow dr = DataAccess.OrderItem.GetOrderItemByID(OrderItemID);
@@ -71,7 +84,7 @@ namespace iArsenal.Entity
             DataAccess.OrderItem.UpdateOrderItem(OrderItemID, MemberID, MemberName, OrderID, ProductGuid, Code, ProductName, Size, UnitPrice, Quantity, Sale, CreateTime, IsActive, Remark, trans);
         }
 
-        public void Insert(SqlTransaction trans = null)
+        public virtual void Insert(SqlTransaction trans = null)
         {
             DataAccess.OrderItem.InsertOrderItem(OrderItemID, MemberID, MemberName, OrderID, ProductGuid, Code, ProductName, Size, UnitPrice, Quantity, Sale, CreateTime, IsActive, Remark, trans);
         }
@@ -81,32 +94,32 @@ namespace iArsenal.Entity
             DataAccess.OrderItem.DeleteOrderItem(OrderItemID, trans);
         }
 
-        public static List<OrderItemBase> GetOrderItems()
+        public static List<OrderItem> GetOrderItems()
         {
             DataTable dt = DataAccess.OrderItem.GetOrderItems();
-            List<OrderItemBase> list = new List<OrderItemBase>();
+            List<OrderItem> list = new List<OrderItem>();
 
             if (dt != null)
             {
                 foreach (DataRow dr in dt.Rows)
                 {
-                    list.Add(new OrderItemBase(dr));
+                    list.Add(new OrderItem(dr));
                 }
             }
 
             return list;
         }
 
-        public static List<OrderItemBase> GetOrderItems(int orderID)
+        public static List<OrderItem> GetOrderItems(int orderID)
         {
             DataTable dt = DataAccess.OrderItem.GetOrderItems(orderID);
-            List<OrderItemBase> list = new List<OrderItemBase>();
+            List<OrderItem> list = new List<OrderItem>();
 
             if (dt != null)
             {
                 foreach (DataRow dr in dt.Rows)
                 {
-                    list.Add(new OrderItemBase(dr));
+                    list.Add(new OrderItem(dr));
                 }
             }
 
@@ -117,7 +130,7 @@ namespace iArsenal.Entity
         {
             int count = 0;
 
-            List<OrderItemBase> list = OrderItemBase.GetOrderItems(orderID);
+            List<OrderItem> list = OrderItem.GetOrderItems(orderID);
 
             if (list != null && list.Count > 0)
             {
@@ -129,9 +142,9 @@ namespace iArsenal.Entity
             return count;
         }
 
-        public static void WishOrderItem(Member m, Product p, OrderBase o, string size, int quantity, float? sale, string remark, SqlTransaction trans = null)
+        public virtual void Insert(Member m, Product p, Order o, string size, int quantity, float? sale, string remark, SqlTransaction trans = null)
         {
-            OrderItemBase oi = new OrderItemBase();
+            OrderItem oi = new OrderItem();
             oi.MemberID = m.MemberID;
             oi.MemberName = m.Name;
             oi.OrderID = o.OrderID;

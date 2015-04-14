@@ -2,61 +2,60 @@
 
 namespace iArsenal.Entity
 {
-    public class OrderItem_MemberShip : OrderItemBase
+    public class OrdrItmMemberShip : OrderItem
     {
-        public OrderItem_MemberShip() { }
+        public OrdrItmMemberShip() { }
 
-        public OrderItem_MemberShip(int id)
-            : base(id)
+        public OrdrItmMemberShip(int id) : base(id) { this.Init(); }
+
+        private void Init()
         {
-            if (ProductGuid == null)
-                throw new Exception("Loading OrderItem failed.");
+            MemberCardNo = Remark;
 
-            Product p = Product.Cache.Load(ProductGuid);
+            DateTime _date;
+            if (!string.IsNullOrEmpty(Size) && DateTime.TryParse(Size, out _date))
+            {
+                EndDate = _date;
+            }
+            else
+            {
+                throw new Exception("Can't get EndDate of OrdrItmMemShip.Size");
+            }
 
-            if (!p.ProductType.Equals(ProductType.MemberShipCore) && !p.ProductType.Equals(ProductType.MemberShipPremier))
-                throw new Exception("The OrderItem is not the type of MemberShip.");
+            Season = string.Format("{0}/{1}", EndDate.AddYears(-1).Year.ToString(), EndDate.ToString("yy"));
+
+            //if (ProductGuid == null)
+            //    throw new Exception("Loading OrderItem failed.");
+
+            //Product p = Product.Cache.Load(ProductGuid);
+
+            //if (!p.ProductType.Equals(ProductType.MemberShipCore) && !p.ProductType.Equals(ProductType.MemberShipPremier))
+            //    throw new Exception("The OrderItem is not the type of MemberShip.");
+        }
+
+        public override void Mapper(object obj)
+        {
+            base.Mapper(obj);
         }
 
         #region Members and Properties
 
-        public string MemberCardNo
-        {
-            get { return Remark; }
-            set { Remark = value; }
-        }
+        public string MemberCardNo { get; set; }
 
-        public DateTime EndDate
-        {
-            get
-            {
-                DateTime _tmpDate;
-                if (!string.IsNullOrEmpty(Size) && DateTime.TryParse(Size, out _tmpDate))
-                {
-                    return _tmpDate;
-                }
-                else
-                {
-                    throw new Exception("Can't get EndDate of OrderItem_Core.Size");
-                }
-            }
-            set { Size = value.ToString("yyyy-MM-dd"); }
-        }
+        public DateTime EndDate { get; set; }
 
-        public string Season
-        {
-            get { return string.Format("{0}/{1}", EndDate.AddYears(-1).Year.ToString(), EndDate.ToString("yy")); }
-        }
+        public string Season { get; private set; }
 
         #endregion
     }
 
-    public class OrderItem_Core : OrderItem_MemberShip
+    public class OrdrItmMemShipCore : OrdrItmMemberShip
     {
-        public OrderItem_Core() { }
+        public OrdrItmMemShipCore() { }
 
-        public OrderItem_Core(int id)
-            : base(id)
+        public OrdrItmMemShipCore(int id) : base(id) { this.Init(); }
+
+        private void Init()
         {
             if (ProductGuid == null)
                 throw new Exception("Loading OrderItem failed.");
@@ -66,14 +65,21 @@ namespace iArsenal.Entity
             if (!p.ProductType.Equals(ProductType.MemberShipCore))
                 throw new Exception("The OrderItem is not the type of MemberShipCore.");
         }
+
+        public override void Mapper(object obj)
+        {
+            base.Mapper(obj);
+            this.Init();
+        }
     }
 
-    public class OrderItem_Premier : OrderItem_MemberShip
+    public class OrdrItmMemShipPremier : OrdrItmMemberShip
     {
-        public OrderItem_Premier() { }
+        public OrdrItmMemShipPremier() { }
 
-        public OrderItem_Premier(int id)
-            : base(id)
+        public OrdrItmMemShipPremier(int id) : base(id) { this.Init(); }
+
+        private void Init()
         {
             if (ProductGuid == null)
                 throw new Exception("Loading OrderItem failed.");
@@ -82,6 +88,12 @@ namespace iArsenal.Entity
 
             if (!p.ProductType.Equals(ProductType.MemberShipPremier))
                 throw new Exception("The OrderItem is not the type of MemberShipPremier.");
+        }
+
+        public override void Mapper(object obj)
+        {
+            base.Mapper(obj);
+            this.Init();
         }
     }
 }

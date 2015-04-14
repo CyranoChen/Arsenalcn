@@ -38,8 +38,8 @@ namespace iArsenal.Web
                 lblMemberName.Text = string.Format("<b>{0}</b> (<em>NO.{1}</em>)", this.MemberName, this.MID.ToString());
                 lblMemberACNInfo.Text = string.Format("<b>{0}</b> (<em>ID.{1}</em>)", this.Username, this.UID.ToString());
 
-                Product pTravelPlan = Product.Cache.Load(ProductType.TravelPlan).Find(p => p.IsActive && p.Code.Equals("2015ATPL", StringComparison.OrdinalIgnoreCase));
-                Product pTravelPartner = Product.Cache.Load(ProductType.TravelPartner).Find(p => p.IsActive && p.Code.Equals("2015ATPA", StringComparison.OrdinalIgnoreCase));
+                Product pTravelPlan = Product.Cache.Load("2015ATPL");
+                Product pTravelPartner = Product.Cache.Load("2015ATPA");
 
                 if (pTravelPlan == null || pTravelPartner == null)
                 {
@@ -48,10 +48,7 @@ namespace iArsenal.Web
 
                 if (OrderID > 0)
                 {
-                    //OrderBase o = new OrderBase();
-                    //o.OrderID = OrderID;
-                    //o.Select();
-                    Order_Travel o = new Order_Travel(OrderID);
+                    OrdrTravel o = new OrdrTravel(OrderID);
 
                     if (ConfigAdmin.IsPluginAdmin(UID) && o != null)
                     {
@@ -119,40 +116,30 @@ namespace iArsenal.Web
                             throw new Exception("此订单无效或非当前用户订单");
                     }
 
-                    OrderItemBase oiETPL = o.OITravelPlan;
-                    List<OrderItemBase> listPartner = o.OITravelPartnerList.FindAll(oi =>
+                    OrderItem oiTP = o.OITravelPlan;
+                    List<OrderItem> listPartner = o.OITravelPartnerList.FindAll(oi =>
                         oi.IsActive && !string.IsNullOrEmpty(oi.Remark));
 
-                    if (oiETPL != null && oiETPL.IsActive)
+                    if (oiTP != null && oiTP.IsActive)
                     {
-                        // Set Order Travel Date
+                        // Set IsTicket
 
-                        //if (!string.IsNullOrEmpty(oiETPL.Size))
-                        //{
-                        //    tbFromDate.Text = DateTime.Parse(oiETPL.Size.Split('|')[0]).ToString("yyyy-MM-dd");
-                        //    tbToDate.Text = DateTime.Parse(oiETPL.Size.Split('|')[1]).ToString("yyyy-MM-dd");
-                        //}
-                        //else
-                        //{
-                        //    tbFromDate.Text = "2013-10-21";
-                        //    tbToDate.Text = "2013-11-15";
-                        //}
+                        cblTravelOption.SelectedValue = Convert.ToBoolean(oiTP.Size) ? "Ticket" : "Tour";
 
                         // Set Order Travel Option
 
-                        if (!string.IsNullOrEmpty(oiETPL.Remark))
+                        if (!string.IsNullOrEmpty(oiTP.Remark))
                         {
-                            string[] _strTravelOption = oiETPL.Remark.ToUpper().Split('|');
+                            TravelOption to = new JavaScriptSerializer().Deserialize<TravelOption>(oiTP.Remark);
 
-                            for (int j = 0; j < cblTravelOption.Items.Count; j++)
-                            {
-                                cblTravelOption.Items[j].Selected = false;
-                            }
+                            cbMatch1.Checked = to.MatchOption.Equals(MatchOption.All) || to.MatchOption.Equals(MatchOption.First);
+                            cbMatch2.Checked = to.MatchOption.Equals(MatchOption.All) || to.MatchOption.Equals(MatchOption.Second);
 
-                            for (int i = 0; i < _strTravelOption.Length; i++)
-                            {
-                                cblTravelOption.Items.FindByValue(_strTravelOption[i]).Selected = true;
-                            }
+                            cblTravelOption.Items.FindByValue("FLIGHT").Selected = to.IsFlight;
+                            cblTravelOption.Items.FindByValue("HOTEL").Selected = to.IsHotel;
+                            cblTravelOption.Items.FindByValue("TRAINING").Selected = to.IsTraining;
+                            cblTravelOption.Items.FindByValue("PARTY").Selected = to.IsParty;
+                            cblTravelOption.Items.FindByValue("SINGAPORE").Selected = to.IsSingapore;
                         }
                     }
                     else
@@ -160,16 +147,14 @@ namespace iArsenal.Web
                         throw new Exception("此订单未填写观赛信息");
                     }
 
-
                     if (listPartner != null && listPartner.Count > 0)
                     {
                         cbPartner.Checked = true;
-                        var oiPartner = (OrderItemBase)listPartner[0];
+                        var oiPartner = (OrderItem)listPartner[0];
 
                         // Partner JSON Schema: {  "Name": "Cyrano",  "Relation": "1", "Gender": "0", "IDCardNo": "310101XXXX", "PassportNo": "", "PassportName","" }
                         // jsonSerializer.Deserialize String Partner
-                        JavaScriptSerializer jsonSerializer = new JavaScriptSerializer();
-                        Partner pa = jsonSerializer.Deserialize<Partner>(oiPartner.Remark);
+                        Partner pa = new JavaScriptSerializer().Deserialize<Partner>(oiPartner.Remark);
 
                         if (pa != null)
                         {
@@ -338,7 +323,7 @@ namespace iArsenal.Web
                     m.Update();
 
                     // New Order
-                    OrderBase o = new OrderBase();
+                    Order o = new Order();
 
                     if (OrderID > 0)
                     {
@@ -382,19 +367,17 @@ namespace iArsenal.Web
                         //Remove Order Item of this Order
                         if (o.OrderID.Equals(OrderID))
                         {
-                            int countOrderItem = OrderItemBase.RemoveOrderItemByOrderID(o.OrderID);
+                            int countOrderItem = OrderItem.RemoveOrderItemByOrderID(o.OrderID);
                         }
 
                         //New Order Items
-                        Product pETPL = Product.Cache.Load(ProductType.TravelPlan).Find(p => p.IsActive);
-                        Product pETPA = Product.Cache.Load(ProductType.TravelPartner).Find(p => p.IsActive);
+                        Product pTravelPlan = Product.Cache.Load("2015ATPL");
+                        Product pTravelPartner = Product.Cache.Load("2015ATPA");
 
-                        if (pETPL == null || pETPA == null)
+                        if (pTravelPlan == null || pTravelPartner == null)
                             throw new Exception("无观赛信息，请联系管理员");
 
-                        // Partner JSON Schema: {  "Name": "Cyrano",  "Relation": "1", "Gender": "0", "IDCardNo": "310101XXXX", "PassportNo": "", "PassportName","" }
-                        // jsonSerializer.Serialize Object Partner
-                        string _strPartner = string.Empty;
+                        // Get Partner Information to Serialize Json
 
                         if (cbPartner.Checked)
                         {
@@ -430,44 +413,57 @@ namespace iArsenal.Web
                             else
                                 throw new Exception("请填写同伴护照姓名");
 
-                            JavaScriptSerializer jsonSerializer = new JavaScriptSerializer();
-                            _strPartner = jsonSerializer.Serialize(p);
-
-                            OrderItemBase.WishOrderItem(m, pETPA, o, string.Empty, 1, null, _strPartner, trans);
+                            OrderItem_TravelPartner oiPartner = new OrderItem_TravelPartner();
+                            oiPartner.Insert(m, pTravelPartner, o, string.Empty, 1, null,
+                                new JavaScriptSerializer().Serialize(p), trans);
                         }
 
-                        // Genernate Travel Date
-                        string _strTravelDate = string.Empty;
+                        // Get the value of IsTicket
 
-                        //if (!string.IsNullOrEmpty(tbFromDate.Text.Trim()) && !string.IsNullOrEmpty(tbToDate.Text.Trim()))
-                        //{
-                        //    DateTime _fDate = DateTime.Parse(tbFromDate.Text.Trim());
-                        //    DateTime _tDate = DateTime.Parse(tbToDate.Text.Trim());
+                        bool _isTicket;
 
-                        //    _strTravelDate = string.Format("{0}|{1}", _fDate.ToString("yyyy-MM-dd"), _tDate.ToString("yyyy-MM-dd"));
-                        //}
-                        //else
-                        //{
-                        //    throw new Exception("请填写推荐出行时间");
-                        //}
+                        if (!string.IsNullOrEmpty(rblIsTicketOnly.SelectedValue))
+                        {
+                            _isTicket = rblIsTicketOnly.SelectedValue.Equals("Tour", StringComparison.OrdinalIgnoreCase) ? false : true;
+                        }
+                        else
+                        {
+                            throw new Exception("请填写报名方式");
+                        }
 
                         // Generate Travel Option
-                        string _strTravelOption = string.Empty;
 
-                        for (int i = 0; i < cblTravelOption.Items.Count; i++)
+                        TravelOption to = new TravelOption();
+
+                        if (cbMatch1.Checked && cbMatch2.Checked)
                         {
-                            if (cblTravelOption.Items[i].Selected)
-                            {
-                                _strTravelOption += string.Format("{0}|", cblTravelOption.Items[i].Value);
-                            }
+                            to.MatchOption = MatchOption.All;
+                        }
+                        else if (cbMatch1.Checked && !cbMatch2.Checked)
+                        {
+                            to.MatchOption = MatchOption.First;
+                        }
+                        else if (!cbMatch1.Checked && cbMatch2.Checked)
+                        {
+                            to.MatchOption = MatchOption.Second;
+                        }
+                        else
+                        {
+                            throw new Exception("请选择观赛的场次");
                         }
 
-                        if (!string.IsNullOrEmpty(_strTravelOption))
+                        if (!_isTicket)
                         {
-                            _strTravelOption = _strTravelOption.Substring(0, _strTravelOption.Length - 1);
+                            to.IsFlight = cblTravelOption.Items.FindByValue("FLIGHT").Selected;
+                            to.IsHotel = cblTravelOption.Items.FindByValue("HOTEL").Selected;
+                            to.IsTraining = cblTravelOption.Items.FindByValue("TRAINING").Selected;
+                            to.IsParty = cblTravelOption.Items.FindByValue("PARTY").Selected;
+                            to.IsSingapore = cblTravelOption.Items.FindByValue("SINGAPORE").Selected;
                         }
 
-                        OrderItemBase.WishOrderItem(m, pETPL, o, _strTravelDate, 1, null, _strTravelOption, trans);
+                        OrderItem_TravelPlan_2015AsiaTrophy oiPlan = new OrderItem_TravelPlan_2015AsiaTrophy();
+                        oiPlan.Insert(m, pTravelPlan, o, _isTicket.ToString(), 1, null,
+                            new JavaScriptSerializer().Serialize(to), trans);
                     }
 
                     trans.Commit();

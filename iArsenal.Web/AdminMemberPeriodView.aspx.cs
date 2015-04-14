@@ -51,7 +51,7 @@ namespace iArsenal.Web
 
                 if (mp.OrderID.HasValue)
                 {
-                    OrderBase o = new OrderBase();
+                    Order o = new Order();
                     o.OrderID = mp.OrderID.Value;
                     o.Select();
 

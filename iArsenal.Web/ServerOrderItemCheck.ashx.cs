@@ -16,7 +16,7 @@ namespace iArsenal.Web
             {
                 try
                 {
-                    OrderItemBase oi = new OrderItemBase();
+                    OrderItem oi = new OrderItem();
 
                     JavaScriptSerializer jsonSerializer = new JavaScriptSerializer();
                     responseText = jsonSerializer.Serialize(oi);

@@ -3,14 +3,15 @@ using System.Collections.Generic;
 
 namespace iArsenal.Entity
 {
-    public class Order_Wish : OrderBase
+    public class OrdrWish : Order
     {
-        public Order_Wish() { }
+        public OrdrWish() { }
 
-        public Order_Wish(int id)
-            : base(id)
+        public OrdrWish(int id) : base(id) { this.Init(); }
+
+        private void Init()
         {
-            List<OrderItemBase> oiList = OrderItemBase.GetOrderItems(id).FindAll(oi => oi.IsActive);
+            List<OrderItem> oiList = OrderItem.GetOrderItems(OrderID).FindAll(oi => oi.IsActive);
 
             if (oiList != null && oiList.Count > 0)
             {
@@ -49,9 +50,9 @@ namespace iArsenal.Entity
 
         #region Members and Properties
 
-        public List<OrderItemBase> WishList_Existent { get; set; }
+        public List<OrderItem> WishList_Existent { get; set; }
 
-        public List<OrderItemBase> WishList_Nonexistent { get; set; }
+        public List<OrderItem> WishList_Nonexistent { get; set; }
 
         #endregion
 

@@ -5,7 +5,7 @@ using System.Web.Script.Serialization;
 
 namespace iArsenal.Entity
 {
-    public class OrderItem_TravelPlan : OrderItemBase
+    public class OrderItem_TravelPlan : OrderItem
     {
         public OrderItem_TravelPlan() { }
 
@@ -24,11 +24,11 @@ namespace iArsenal.Entity
 
     public class OrderItem_TravelPlan_London : OrderItem_TravelPlan
     {
-        public override void Update(SqlTransaction trans = null)
-        {
-            base.Size = string.Format("{0}|{1}", this.TravelFromDate.ToString("yyyy-MM-dd"), this.TravelToDate.ToString("yyyy-MM-dd"));
-            base.Update(trans);
-        }
+        //public override void Update(SqlTransaction trans = null)
+        //{
+        //    base.Size = string.Format("{0}|{1}", this.TravelFromDate.ToString("yyyy-MM-dd"), this.TravelToDate.ToString("yyyy-MM-dd"));
+        //    base.Update(trans);
+        //}
 
         #region Members and Properties
 
@@ -98,7 +98,6 @@ namespace iArsenal.Entity
 
     public class OrderItem_TravelPlan_2015AsiaTrophy : OrderItem_TravelPlan
     {
-        public List<MatchOption> MatchOptionList { get; set; }
         public TravelOption TravelOption { get; set; }
         public bool IsTicketOnly
         {
@@ -121,7 +120,7 @@ namespace iArsenal.Entity
         }
     }
 
-    public class OrderItem_TravelPartner : OrderItemBase
+    public class OrderItem_TravelPartner : OrderItem
     {
         public OrderItem_TravelPartner() { }
 

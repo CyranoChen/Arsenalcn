@@ -37,7 +37,7 @@ namespace iArsenal.Web
         {
             if (OrderID > 0)
             {
-                OrderBase o = new OrderBase();
+                Order o = new Order();
                 o.OrderID = OrderID;
                 o.Select();
 
@@ -83,7 +83,7 @@ namespace iArsenal.Web
 
         private void BindItemData()
         {
-            List<OrderItemBase> list = OrderItemBase.GetOrderItems(OrderID);
+            List<OrderItem> list = OrderItem.GetOrderItems(OrderID);
 
             gvOrderItem.DataSource = list;
             gvOrderItem.DataBind();
@@ -136,7 +136,7 @@ namespace iArsenal.Web
         {
             try
             {
-                OrderBase o = new OrderBase();
+                Order o = new Order();
 
                 if (!string.IsNullOrEmpty(tbMemberID.Text.Trim()))
                     o.MemberID = Convert.ToInt32(tbMemberID.Text.Trim());
@@ -193,7 +193,7 @@ namespace iArsenal.Web
             {
                 if (OrderID > 0)
                 {
-                    OrderBase o = new OrderBase();
+                    Order o = new Order();
                     o.OrderID = OrderID;
                     o.Select();
                     o.CalcOrderPrice();
@@ -229,9 +229,9 @@ namespace iArsenal.Web
             {
                 if (OrderID > 0)
                 {
-                    int countOrderItem = OrderItemBase.RemoveOrderItemByOrderID(OrderID);
+                    int countOrderItem = OrderItem.RemoveOrderItemByOrderID(OrderID);
 
-                    OrderBase o = new OrderBase();
+                    Order o = new Order();
                     o.OrderID = OrderID;
                     o.Delete();
 

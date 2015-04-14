@@ -38,7 +38,7 @@ namespace iArsenal.Web
 
                 if (OrderID > 0)
                 {
-                    Order_Wish o = new Order_Wish(OrderID);
+                    OrdrWish o = new OrdrWish(OrderID);
 
                     if (ConfigAdmin.IsPluginAdmin(UID) && o != null)
                     {
@@ -138,19 +138,19 @@ namespace iArsenal.Web
 
         private void BindItemData()
         {
-            Order_Wish o = new Order_Wish(OrderID);
+            OrdrWish o = new OrdrWish(OrderID);
 
             // Should be Calculator in this Page
             float price = 0f;
             string priceInfo = string.Empty;
             List<string> _lstPriceInfo = new List<string>();
 
-            List<OrderItemBase> oiList = OrderItemBase.GetOrderItems(o.OrderID).FindAll(oi => oi.IsActive);
-            oiList.Sort(delegate(OrderItemBase oi1, OrderItemBase oi2) { return oi1.OrderItemID - oi2.OrderItemID; });
+            List<OrderItem> oiList = OrderItem.GetOrderItems(o.OrderID).FindAll(oi => oi.IsActive);
+            oiList.Sort(delegate(OrderItem oi1, OrderItem oi2) { return oi1.OrderItemID - oi2.OrderItemID; });
 
             if (oiList != null && oiList.Count > 0)
             {
-                foreach (OrderItemBase oi in oiList)
+                foreach (OrderItem oi in oiList)
                 {
                     if (!oi.ProductGuid.Equals(Guid.Empty) && oi.TotalPrice > 0)
                     {
@@ -196,7 +196,7 @@ namespace iArsenal.Web
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                OrderItemBase oi = e.Row.DataItem as OrderItemBase;
+                OrderItem oi = e.Row.DataItem as OrderItem;
 
                 Label lblWishPriceInfo = e.Row.FindControl("lblWishPriceInfo") as Label;
                 Label lblWishTotalPriceInfo = e.Row.FindControl("lblWishTotalPriceInfo") as Label;
@@ -232,7 +232,7 @@ namespace iArsenal.Web
             {
                 if (OrderID > 0)
                 {
-                    OrderBase o = new OrderBase();
+                    Order o = new Order();
                     o.OrderID = OrderID;
                     o.Select();
 
@@ -263,7 +263,7 @@ namespace iArsenal.Web
             {
                 if (OrderID > 0)
                 {
-                    OrderBase o = new OrderBase();
+                    Order o = new Order();
                     o.OrderID = OrderID;
                     o.Select();
 
@@ -290,7 +290,7 @@ namespace iArsenal.Web
             {
                 if (OrderID > 0)
                 {
-                    OrderBase o = new OrderBase();
+                    Order o = new Order();
                     o.OrderID = OrderID;
                     o.Select();
 
@@ -321,7 +321,7 @@ namespace iArsenal.Web
             {
                 if (OrderID > 0)
                 {
-                    OrderBase o = new OrderBase();
+                    Order o = new Order();
                     o.OrderID = OrderID;
                     o.Select();
 

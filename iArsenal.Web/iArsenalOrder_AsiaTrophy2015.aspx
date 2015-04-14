@@ -137,7 +137,10 @@
                     <tr class="Row">
                         <td class="FieldHeader">观看场次：
                         </td>
-                        <td style="text-align: left" colspan="3"></td>
+                        <td style="text-align: left" colspan="3">
+                            <asp:CheckBox ID="cbMatch1" runat="server" Text="7月15日 阿森纳 vs ?待定" Checked="true" />
+                            <asp:CheckBox ID="cbMatch2" runat="server" Text="7月18日 阿森纳 vs ?待定" Checked="true" />
+                        </td>
                     </tr>
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">同伴信息：

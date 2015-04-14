@@ -40,7 +40,7 @@ namespace iArsenal.Web
         {
             try
             {
-                List<OrderBase> list = OrderBase.GetOrders(this.MID).FindAll(delegate(OrderBase o)
+                List<Order> list = Order.GetOrders(this.MID).FindAll(delegate(Order o)
                 {
                     Boolean returnValue = true;
                     string tmpString = string.Empty;
@@ -70,7 +70,7 @@ namespace iArsenal.Web
                 #region set GridView Selected PageIndex
                 if (OrderID > 0)
                 {
-                    int i = list.FindIndex(delegate(OrderBase o) { return o.OrderID == OrderID; });
+                    int i = list.FindIndex(delegate(Order o) { return o.OrderID == OrderID; });
                     if (i >= 0)
                     {
                         gvOrder.PageIndex = i / gvOrder.PageSize;
@@ -137,7 +137,7 @@ namespace iArsenal.Web
         {
             if (gvOrder.SelectedIndex != -1)
             {
-                OrderBase o = new OrderBase();
+                Order o = new Order();
                 o.OrderID = (int)gvOrder.DataKeys[gvOrder.SelectedIndex].Value;
                 o.Select();
 
@@ -171,7 +171,7 @@ namespace iArsenal.Web
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
                 string _strStatus = string.Empty;
-                OrderBase o = e.Row.DataItem as OrderBase;
+                Order o = e.Row.DataItem as Order;
 
                 Label lblProductType = e.Row.FindControl("lblProductType") as Label;
                 Label lblOrderStatus = e.Row.FindControl("lblOrderStatus") as Label;

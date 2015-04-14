@@ -30,7 +30,7 @@ namespace iArsenal.Web
                             {
                                 try
                                 {
-                                    OrderBase o = new OrderBase();
+                                    Order o = new Order();
                                     o.OrderID = _id;
                                     o.Select();
 

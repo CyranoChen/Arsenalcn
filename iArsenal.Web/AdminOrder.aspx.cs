@@ -69,7 +69,7 @@ namespace iArsenal.Web
                 }
             }
 
-            List<OrderBase> list = OrderBase.GetOrders().FindAll(delegate(OrderBase o)
+            List<Order> list = Order.GetOrders().FindAll(delegate(Order o)
             {
                 Boolean returnValue = true;
                 string tmpString = string.Empty;
@@ -130,7 +130,7 @@ namespace iArsenal.Web
             #region set GridView Selected PageIndex
             if (OrderID > 0)
             {
-                int i = list.FindIndex(delegate(OrderBase o) { return o.OrderID == OrderID; });
+                int i = list.FindIndex(delegate(Order o) { return o.OrderID == OrderID; });
                 if (i >= 0)
                 {
                     gvOrder.PageIndex = i / gvOrder.PageSize;
@@ -244,7 +244,7 @@ namespace iArsenal.Web
             try
             {
                 #region Get the Order List
-                List<OrderBase> list = OrderBase.GetOrders().FindAll(delegate(OrderBase o)
+                List<Order> list = Order.GetOrders().FindAll(delegate(Order o)
                 {
                     Boolean returnValue = o.IsActive; // Export the active order
                     string tmpString = string.Empty;
@@ -337,7 +337,7 @@ namespace iArsenal.Web
                 if (list != null && list.Count > 0)
                 {
                     // Tackle with Every Order and OrderItem
-                    foreach (OrderBase o in list)
+                    foreach (Order o in list)
                     {
                         Member m = new Member();
                         Product p = new Product();
@@ -349,10 +349,10 @@ namespace iArsenal.Web
 
                                 #region Convert ReplicaKit Order to DataRow
 
-                                Order_ReplicaKit oReplicaKit = new Order_ReplicaKit(o.OrderID);
+                                OrdrReplicaKit oReplicaKit = new OrdrReplicaKit(o.OrderID);
 
                                 // Whether Home or Away or Cup ReplicaKit
-                                OrderItemBase oiReplicaKit = null;
+                                OrderItem oiReplicaKit = null;
 
                                 if (oReplicaKit.OIReplicaKitHome != null && oReplicaKit.OIReplicaKitHome.IsActive)
                                 {
@@ -567,20 +567,20 @@ namespace iArsenal.Web
 
                                 #region Convert Wish Order to DataRow
 
-                                Order_Wish oWish = new Order_Wish(o.OrderID);
+                                OrdrWish oWish = new OrdrWish(o.OrderID);
 
                                 // get Member Info By Order
                                 m.MemberID = o.MemberID;
                                 m.Select();
 
-                                List<OrderItemBase> oiList = OrderItemBase.GetOrderItems(o.OrderID).FindAll(oi => oi.IsActive);
-                                oiList.Sort(delegate(OrderItemBase oi1, OrderItemBase oi2) { return oi1.OrderItemID - oi2.OrderItemID; });
+                                List<OrderItem> oiList = OrderItem.GetOrderItems(o.OrderID).FindAll(oi => oi.IsActive);
+                                oiList.Sort(delegate(OrderItem oi1, OrderItem oi2) { return oi1.OrderItemID - oi2.OrderItemID; });
 
                                 if (oiList != null && oiList.Count > 0)
                                 {
                                     int _listCount = 0;
 
-                                    foreach (OrderItemBase oi in oiList)
+                                    foreach (OrderItem oi in oiList)
                                     {
                                         dr = dt.NewRow();
 
@@ -681,7 +681,7 @@ namespace iArsenal.Web
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                OrderBase o = e.Row.DataItem as OrderBase;
+                Order o = e.Row.DataItem as Order;
 
                 CheckBox cbOrderID = e.Row.FindControl("cbOrderID") as CheckBox;
                 HyperLink hlOrderID = e.Row.FindControl("hlOrderID") as HyperLink;

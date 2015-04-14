@@ -143,14 +143,14 @@ namespace iArsenal.Entity
 
                 if (list != null && list.Count > 0)
                 {
-                    List<OrderBase> oList = OrderBase.GetOrders().FindAll(o =>
+                    List<Order> oList = Order.GetOrders().FindAll(o =>
                         o.IsActive && o.OrderType.Equals(OrderBaseType.Ticket) && !o.Status.Equals(OrderStatusType.Error));
-                    List<OrderItemBase> oiList = OrderItemBase.GetOrderItems().FindAll(oi =>
+                    List<OrderItem> oiList = OrderItem.GetOrderItems().FindAll(oi =>
                         oi.IsActive & !string.IsNullOrEmpty(oi.Remark));
 
                     foreach (MatchTicket mt in list)
                     {
-                        List<OrderBase> tList = oList.FindAll(o =>
+                        List<Order> tList = oList.FindAll(o =>
                             oiList.FindAll(oi => oi.Remark.Equals(mt.MatchGuid.ToString()))
                             .Any(oi => oi.OrderID.Equals(o.OrderID)));
 

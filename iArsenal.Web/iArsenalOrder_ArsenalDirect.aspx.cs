@@ -39,7 +39,7 @@ namespace iArsenal.Web
 
                 if (OrderID > 0)
                 {
-                    Order_Wish o = new Order_Wish(OrderID);
+                    OrdrWish o = new OrdrWish(OrderID);
 
                     if (ConfigAdmin.IsPluginAdmin(UID) && o != null)
                     {
@@ -69,8 +69,8 @@ namespace iArsenal.Web
                     tbOrderAddress.Text = o.Address;
                     tbOrderDescription.Text = o.Description;
 
-                    List<OrderItemBase> oiList = OrderItemBase.GetOrderItems(o.OrderID).FindAll(oi => oi.IsActive);
-                    oiList.Sort(delegate(OrderItemBase oi1, OrderItemBase oi2) { return oi1.OrderItemID - oi2.OrderItemID; });
+                    List<OrderItem> oiList = OrderItem.GetOrderItems(o.OrderID).FindAll(oi => oi.IsActive);
+                    oiList.Sort(delegate(OrderItem oi1, OrderItem oi2) { return oi1.OrderItemID - oi2.OrderItemID; });
 
                     if (oiList != null && oiList.Count > 0)
                     {
@@ -117,7 +117,7 @@ namespace iArsenal.Web
 
                     JavaScriptSerializer jsonSerializer = new JavaScriptSerializer();
 
-                    List<OrderItemBase> oiList = jsonSerializer.Deserialize<List<OrderItemBase>>(_strWishOrderItemListInfo);
+                    List<OrderItem> oiList = jsonSerializer.Deserialize<List<OrderItem>>(_strWishOrderItemListInfo);
 
                     // Validate the OrderItemBase Code & Quantity in oiList
                     if (oiList.Count > 0)
@@ -151,7 +151,7 @@ namespace iArsenal.Web
                     }
 
                     //New Order
-                    OrderBase o = new OrderBase();
+                    Order o = new Order();
 
                     if (OrderID > 0)
                     {
@@ -203,11 +203,11 @@ namespace iArsenal.Web
                         //Remove Order Item of this Order
                         if (o.OrderID.Equals(OrderID))
                         {
-                            int countOrderItem = OrderItemBase.RemoveOrderItemByOrderID(o.OrderID, trans);
+                            int countOrderItem = OrderItem.RemoveOrderItemByOrderID(o.OrderID, trans);
                         }
 
                         //New Order Item for each WishOrderItem
-                        foreach (OrderItemBase oi in oiList)
+                        foreach (OrderItem oi in oiList)
                         {
                             if (!oi.ProductGuid.Equals(Guid.Empty))
                             {
@@ -216,7 +216,7 @@ namespace iArsenal.Web
 
                                 if (p != null && p.IsActive && p.ProductType.Equals(ProductType.Other))
                                 {
-                                    OrderItemBase.WishOrderItem(m, p, o, oi.Size != null ? oi.Size : string.Empty, oi.Quantity, oi.Sale, oi.Remark != null ? oi.Remark : string.Empty, trans);
+                                    oi.Insert(m, p, o, oi.Size != null ? oi.Size : string.Empty, oi.Quantity, oi.Sale, oi.Remark != null ? oi.Remark : string.Empty, trans);
                                 }
                                 else
                                 {

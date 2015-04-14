@@ -34,7 +34,7 @@ namespace iArsenal.Web
         {
             if (OrderItemID > 0)
             {
-                OrderItemBase oi = new OrderItemBase();
+                OrderItem oi = new OrderItem();
                 oi.OrderItemID = OrderItemID;
                 oi.Select();
 
@@ -81,7 +81,7 @@ namespace iArsenal.Web
         {
             try
             {
-                OrderItemBase oi = new OrderItemBase();
+                OrderItem oi = new OrderItem();
 
                 if (!string.IsNullOrEmpty(tbMemberID.Text.Trim()))
                     oi.MemberID = Convert.ToInt32(tbMemberID.Text.Trim());
@@ -143,7 +143,7 @@ namespace iArsenal.Web
 
         protected void btnBackOrder_Click(object sender, EventArgs e)
         {
-            OrderItemBase oi = new OrderItemBase();
+            OrderItem oi = new OrderItem();
             oi.OrderItemID = OrderItemID;
             oi.Select();
 
@@ -157,7 +157,7 @@ namespace iArsenal.Web
             {
                 if (OrderItemID > 0)
                 {
-                    OrderItemBase oi = new OrderItemBase();
+                    OrderItem oi = new OrderItem();
                     oi.OrderItemID = OrderItemID;
                     oi.Delete();
 

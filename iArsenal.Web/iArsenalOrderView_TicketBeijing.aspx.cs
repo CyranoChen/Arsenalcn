@@ -39,7 +39,7 @@ namespace iArsenal.Web
                     //OrderBase o = new OrderBase();
                     //o.OrderID = OrderID;
                     //o.Select();
-                    Order_Ticket o = new Order_Ticket(OrderID);
+                    OrdrTicket o = new OrdrTicket(OrderID);
 
                     if (ConfigAdmin.IsPluginAdmin(UID) && o != null)
                     {
@@ -160,7 +160,7 @@ namespace iArsenal.Web
             {
                 if (OrderID > 0)
                 {
-                    OrderBase o = new OrderBase();
+                    Order o = new Order();
                     o.OrderID = OrderID;
                     o.Select();
 
@@ -187,7 +187,7 @@ namespace iArsenal.Web
             {
                 if (OrderID > 0)
                 {
-                    OrderBase o = new OrderBase();
+                    Order o = new Order();
                     o.OrderID = OrderID;
                     o.Select();
 
@@ -209,7 +209,7 @@ namespace iArsenal.Web
             {
                 if (OrderID > 0)
                 {
-                    OrderBase o = new OrderBase();
+                    Order o = new Order();
                     o.OrderID = OrderID;
                     o.Select();
 

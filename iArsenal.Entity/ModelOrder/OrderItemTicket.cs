@@ -2,7 +2,7 @@
 
 namespace iArsenal.Entity
 {
-    public class OrderItem_MatchTicket : OrderItemBase
+    public class OrderItem_MatchTicket : OrderItem
     {
         public OrderItem_MatchTicket() { }
 
@@ -70,7 +70,7 @@ namespace iArsenal.Entity
         #endregion
     }
 
-    public class OrderItem_TicketBeijing : OrderItemBase
+    public class OrderItem_TicketBeijing : OrderItem
     {
         public OrderItem_TicketBeijing() { }
 

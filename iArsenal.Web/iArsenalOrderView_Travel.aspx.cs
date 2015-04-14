@@ -8,7 +8,7 @@ using iArsenal.Entity;
 
 namespace iArsenal.Web
 {
-    public partial class iArsenalOrderView_MatchTicket : MemberPageBase
+    public partial class iArsenalOrderView_Travel : MemberPageBase
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -38,17 +38,14 @@ namespace iArsenal.Web
             {
                 lblMemberName.Text = string.Format("<b>{0}</b> (<em>NO.{1}</em>)", this.MemberName, this.MID.ToString());
 
-                bool _isMemberCouldPurchase = true;
-
                 if (OrderID > 0)
                 {
                     //OrderBase o = new OrderBase();
                     //o.OrderID = OrderID;
                     //o.Select();
-                    OrdrTicket o = new OrdrTicket(OrderID);
+                    OrdrTravel o = new OrdrTravel(OrderID);
 
-                    // For Vincent Song to View the MatchTickets Confirmation Page
-                    if (ConfigAdmin.IsPluginAdmin(UID) || (UID.Equals(33067) && (int)o.Status >= 3) && o != null)
+                    if (ConfigAdmin.IsPluginAdmin(UID) && o != null)
                     {
                         lblMemberName.Text = string.Format("<b>{0}</b> (<em>NO.{1}</em>)", o.MemberName, o.MemberID.ToString());
                     }
@@ -129,95 +126,105 @@ namespace iArsenal.Web
                     float price = 0f;
                     string priceInfo = string.Empty;
 
-                    OrderItem_MatchTicket oiMatchTicket = o.OIMatchTicket;
+                    OrderItem oiETPL = o.OITravelPlan;
+                    List<OrderItem> listPartner = o.OITravelPartnerList.FindAll(oi =>
+                        oi.IsActive && !string.IsNullOrEmpty(oi.Remark));
 
-                    // Get Order MatchTicket Info
-
-                    if (oiMatchTicket != null && oiMatchTicket.IsActive)
+                    if (oiETPL != null && oiETPL.IsActive)
                     {
-                        if (!string.IsNullOrEmpty(oiMatchTicket.Remark))
-                        {
-                            try
-                            {
-                                MatchTicket mt = MatchTicket.Cache.Load(new Guid(oiMatchTicket.Remark));
-
-                                if (mt == null)
-                                {
-                                    throw new Exception("无相关比赛信息，请联系管理员");
-                                }
-
-                                _isMemberCouldPurchase = mt.CheckMemberCanPurchase(this.CurrentMemberPeriod);
-
-                                Product p = Product.Cache.Load(mt.ProductCode);
-
-                                if (p == null)
-                                {
-                                    throw new Exception("无相关商品信息，请联系管理员");
-                                }
-                                else
-                                {
-                                    lblMatchTicketInfo.Text = string.Format("<em>【{0}】{1}({2})</em>", mt.LeagueName, mt.TeamName, Arsenal_Team.Cache.Load(mt.TeamGuid).TeamEnglishName);
-                                    lblMatchTicketPlayTime.Text = string.Format("<em>【伦敦】{0}</em>", mt.PlayTimeLocal.ToString("yyyy-MM-dd HH:mm"));
-
-                                    string _strRank = mt.ProductInfo.Trim();
-                                    if (lblMatchTicketRank != null && !string.IsNullOrEmpty(_strRank))
-                                    {
-                                        lblMatchTicketRank.Text = string.Format("<em>{0}</em>", _strRank.Substring(_strRank.Length - 7, 7));
-                                    }
-                                    else
-                                    {
-                                        lblMatchTicketRank.Text = string.Empty;
-                                    }
-
-                                    if (mt.AllowMemberClass.HasValue && mt.AllowMemberClass.Value == 2)
-                                    {
-                                        lblMatchTicketAllowMemberClass.Text = "<em>只限高级会员(Premier)</em>";
-                                    }
-                                    else if (mt.AllowMemberClass.HasValue && mt.AllowMemberClass == 1)
-                                    {
-                                        lblMatchTicketAllowMemberClass.Text = "<em>普通会员(Core)以上</em>";
-                                    }
-                                    else
-                                    {
-                                        lblMatchTicketAllowMemberClass.Text = "无";
-                                    }
-
-                                    ctrlPortalMatchInfo.MatchGuid = mt.MatchGuid;
-                                }
-                            }
-                            catch
-                            {
-                                throw new Exception("无相关比赛信息，请联系管理员");
-                            }
-                        }
-                        else
-                        {
-                            throw new Exception("无相关比赛信息，请联系管理员");
-                        }
-
                         // Set Order Travel Date
 
-                        if (!string.IsNullOrEmpty(oiMatchTicket.Size))
+                        if (!string.IsNullOrEmpty(oiETPL.Size))
                         {
-                            lblOrderItem_TravelDate.Text = DateTime.Parse(oiMatchTicket.Size).ToString("yyyy年MM月dd日");
+                            string _strFromDate = DateTime.Parse(oiETPL.Size.Split('|')[0]).ToString("yyyy年MM月dd日");
+                            string _strToDate = DateTime.Parse(oiETPL.Size.Split('|')[1]).ToString("yyyy年MM月dd日");
+
+                            lblOrderItem_TravelDate.Text = string.Format("希望在 <em>{0}</em> 至 <em>{1}</em> 出行", _strFromDate, _strToDate);
                         }
                         else
                         {
-                            lblOrderItem_TravelDate.Text = string.Empty;
+                            throw new Exception("此订单未填写推荐出行时间");
+                        }
+
+                        // Set Order Travel Option
+
+                        if (!string.IsNullOrEmpty(oiETPL.Remark))
+                        {
+                            string _strTravelOption = oiETPL.Remark.Replace("|", "，");
+                            _strTravelOption = _strTravelOption.Replace("PLANE", "统一预订航班");
+                            _strTravelOption = _strTravelOption.Replace("HOTEL", "统一预订住宿");
+                            _strTravelOption = _strTravelOption.Replace("MATCHDAY", "参加比赛日活动");
+                            _strTravelOption = _strTravelOption.Replace("LONDON", "参加伦敦游");
+                            _strTravelOption = _strTravelOption.Replace("MUSEUM", "参观球场和博物馆");
+
+                            lblOrderItem_TravelOption.Text = _strTravelOption;
+                        }
+                        else
+                        {
+                            lblOrderItem_TravelOption.Text = "无";
                         }
                     }
                     else
                     {
-                        throw new Exception("此订单未填写订票信息");
+                        throw new Exception("此订单未填写观赛信息");
                     }
 
-                    // Set Order Price
+                    // Set Travel Partner
 
-                    price = oiMatchTicket.TotalPrice;
-                    priceInfo = string.Format("<合计> {2}：{0} × {1}", oiMatchTicket.UnitPrice.ToString("f2"), oiMatchTicket.Quantity.ToString(), Product.Cache.Load(oiMatchTicket.ProductGuid).DisplayName);
+                    if (listPartner != null && listPartner.Count > 0)
+                    {
+                        var oiPartner = (OrderItem)listPartner[0];
+
+                        JavaScriptSerializer jsonSerializer = new JavaScriptSerializer();
+                        Partner pa = jsonSerializer.Deserialize<Partner>(oiPartner.Remark);
+
+                        if (pa != null)
+                        {
+                            string _strParterRelation = "（{0}）";
+                            if (pa.Relation.Equals(1))
+                            {
+                                _strParterRelation = string.Format(_strParterRelation, "亲属");
+                            }
+                            else if (pa.Relation.Equals(2))
+                            {
+                                _strParterRelation = string.Format(_strParterRelation, "朋友");
+                            }
+                            else
+                            {
+                                _strParterRelation = string.Empty;
+                            }
+
+                            lblOrderItem_TravelPartner.Text = string.Format("<em>{0}</em>{5}，{1}，{2}；护照：（{3}）{4}", pa.Name, pa.Gender ? "男" : "女", pa.IDCardNo, pa.PassportNo, pa.PassportName, _strParterRelation);
+                        }
+
+                        phOrderPartner.Visible = true;
+                    }
+                    else
+                    {
+                        phOrderPartner.Visible = false;
+                    }
+
+                    // Set Travel Price
+
+                    if (listPartner != null && listPartner.Count > 0)
+                    {
+                        var oiPartner = (OrderItem)listPartner[0];
+
+                        price = oiPartner.TotalPrice + oiETPL.TotalPrice;
+                        priceInfo = string.Format("观赛团预订定金：{0}+ 同伴定金：{1} = <em>{2}</em>元 (CNY)", oiETPL.TotalPrice.ToString("f0"), oiPartner.TotalPrice.ToString("f0"), price.ToString("f2"));
+
+                        phOrderPrice.Visible = true;
+                    }
+                    else
+                    {
+                        price = oiETPL.TotalPrice;
+                        priceInfo = string.Format("观赛团预订定金：<em>{0}</em>元 (CNY)", price.ToString("f2"));
+
+                        phOrderPrice.Visible = true;
+                    }
 
                     tbOrderPrice.Text = price.ToString();
-                    lblOrderPrice.Text = string.Format("{0} = <em>{1}</em>元", priceInfo, price.ToString("f2"));
+                    lblOrderPrice.Text = priceInfo;
 
                     if (o.Status.Equals(OrderStatusType.Draft))
                     {
@@ -225,20 +232,15 @@ namespace iArsenal.Web
                         btnModify.Visible = true;
                         btnCancel.Visible = true;
 
-                        if (!_isMemberCouldPurchase)
-                        {
-                            lblOrderRemark.Text = @"<em style='line-height: 1.8'>由于球票供应有限，所有主场球票预订均只向(Core/Premier)会员开放。<br />
-                                                                   <a href='iArsenalMemberPeriod.aspx' target='_blank' style='background: #fff48d'>【点击这里】请在续费或升级会员资格后，才能提交订单。</a></em>";
-                            phOrderRemark.Visible = true;
-
-                            btnSubmit.Visible = false;
-                        }
+                        phOrderPrice.Visible = false;
                     }
                     else if (o.Status.Equals(OrderStatusType.Submitted))
                     {
                         btnSubmit.Visible = false;
                         btnModify.Visible = false;
                         btnCancel.Visible = true;
+
+                        phOrderPrice.Visible = false;
                     }
                     else
                     {
@@ -276,7 +278,7 @@ namespace iArsenal.Web
                     o.Price = Convert.ToSingle(tbOrderPrice.Text.Trim());
                     o.Update();
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", string.Format("alert('谢谢您的订购，您的订单已经提交成功。\\r\\n请尽快付款以完成订单确认，订单号为：{0}'); window.location.href = window.location.href", o.OrderID.ToString()), true);
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", string.Format("alert('谢谢您的预订报名，您的订单已经提交成功。\\r\\n请耐心等待审核，并由观赛组织人会与您联系。\\r\\n订单号为：{0}'); window.location.href = window.location.href", o.OrderID.ToString()), true);
                 }
                 else
                 {
@@ -302,7 +304,7 @@ namespace iArsenal.Web
                     if (o == null || !o.MemberID.Equals(MID) || !o.IsActive)
                         throw new Exception("此订单无效或非当前用户订单");
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", string.Format("window.location.href = 'iArsenalOrder_MatchTicket.aspx?OrderID={0}'", o.OrderID.ToString()), true);
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", string.Format("window.location.href = 'iArsenalOrder_LondonTravel.aspx?OrderID={0}'", o.OrderID.ToString()), true);
                 }
                 else
                 {

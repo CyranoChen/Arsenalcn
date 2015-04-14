@@ -3,24 +3,25 @@ using System.Collections.Generic;
 
 namespace iArsenal.Entity
 {
-    public class Order_MemberShip : OrderBase
+    public class Order_MemberShip : Order
     {
         public Order_MemberShip() { }
 
-        public Order_MemberShip(int id)
-            : base(id)
+        public Order_MemberShip(int id) : base(id) { this.Init(); }
+
+        private void Init()
         {
-            List<OrderItemBase> oiList = OrderItemBase.GetOrderItems(id).FindAll(oi => oi.IsActive && Product.Cache.Load(oi.ProductGuid) != null);
+            List<OrderItem> oiList = OrderItem.GetOrderItems(OrderID).FindAll(oi => oi.IsActive && Product.Cache.Load(oi.ProductGuid) != null);
 
             if (oiList != null && oiList.Count > 0)
             {
-                OrderItemBase oiBase = null;
+                OrderItem oiBase = null;
 
                 oiBase = oiList.Find(oi => Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.MemberShipCore));
-                if (oiBase != null) { OIMemberShipCore = new OrderItem_Core(oiBase.OrderItemID); }
+                if (oiBase != null) { OIMemberShipCore = new OrdrItmMemShipCore(oiBase.OrderItemID); }
 
                 oiBase = oiList.Find(oi => Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.MemberShipPremier));
-                if (oiBase != null) { OIMemberShipPremier = new OrderItem_Premier(oiBase.OrderItemID); }
+                if (oiBase != null) { OIMemberShipPremier = new OrdrItmMemShipPremier(oiBase.OrderItemID); }
 
                 if (OIMemberShipCore != null || OIMemberShipPremier != null)
                 {
@@ -50,9 +51,9 @@ namespace iArsenal.Entity
 
         #region Members and Properties
 
-        public OrderItem_Core OIMemberShipCore { get; set; }
+        public OrdrItmMemShipCore OIMemberShipCore { get; set; }
 
-        public OrderItem_Premier OIMemberShipPremier { get; set; }
+        public OrdrItmMemShipPremier OIMemberShipPremier { get; set; }
 
         #endregion
 

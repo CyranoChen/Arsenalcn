@@ -39,15 +39,15 @@ namespace iArsenal.Web
                 if (OrderID > 0)
                 {
                     Order_MemberShip o = new Order_MemberShip(OrderID);
-                    OrderItem_MemberShip oiMemberShip = null;
+                    OrdrItmMemberShip oiMemberShip = null;
 
                     if (o.OIMemberShipCore != null && o.OIMemberShipCore.IsActive)
                     {
-                        oiMemberShip = (OrderItem_Core)o.OIMemberShipCore;
+                        oiMemberShip = (OrdrItmMemShipCore)o.OIMemberShipCore;
                     }
                     else if (o.OIMemberShipPremier != null && o.OIMemberShipPremier.IsActive)
                     {
-                        oiMemberShip = (OrderItem_Premier)o.OIMemberShipPremier;
+                        oiMemberShip = (OrdrItmMemShipPremier)o.OIMemberShipPremier;
                     }
                     else
                     {
@@ -185,15 +185,15 @@ namespace iArsenal.Web
                     }
 
                     // Whether Core or Premier MemberShip
-                    OrderItem_MemberShip oiMemberShip = null;
+                    OrdrItmMemberShip oiMemberShip = null;
 
                     if (CurrProductType.Equals(ProductType.MemberShipCore))
                     {
-                        oiMemberShip = (OrderItem_Core)o.OIMemberShipCore;
+                        oiMemberShip = (OrdrItmMemShipCore)o.OIMemberShipCore;
                     }
                     else if (CurrProductType.Equals(ProductType.MemberShipPremier))
                     {
-                        oiMemberShip = (OrderItem_Premier)o.OIMemberShipPremier;
+                        oiMemberShip = (OrdrItmMemShipPremier)o.OIMemberShipPremier;
                     }
                     else
                     {
@@ -379,7 +379,7 @@ namespace iArsenal.Web
                     m.Update();
 
                     // New Order
-                    OrderBase o = new OrderBase();
+                    Order o = new Order();
 
                     if (OrderID > 0)
                     {
@@ -423,7 +423,7 @@ namespace iArsenal.Web
                         //Remove Order Item of this Order
                         if (o.OrderID.Equals(OrderID))
                         {
-                            int countOrderItem = OrderItemBase.RemoveOrderItemByOrderID(o.OrderID);
+                            int countOrderItem = OrderItem.RemoveOrderItemByOrderID(o.OrderID);
                         }
 
                         //New Order Items
@@ -446,7 +446,8 @@ namespace iArsenal.Web
                                 throw new Exception("请正确填写会员卡号");
                             }
 
-                            OrderItemBase.WishOrderItem(m, pMembership, o, CurrSeasonDeadline.ToString("yyyy-MM-dd"), 1, null, _cardNo.ToString(), trans);
+                            OrdrItmMemberShip oi = new OrdrItmMemberShip();
+                            oi.Insert(m, pMembership, o, CurrSeasonDeadline.ToString("yyyy-MM-dd"), 1, null, _cardNo.ToString(), trans);
 
                         }
                         else

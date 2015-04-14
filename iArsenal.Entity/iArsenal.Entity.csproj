@@ -54,8 +54,8 @@
     <Compile Include="ModelOrder\OrderTravel.cs" />
     <Compile Include="ModelOrder\OrderTicket.cs" />
     <Compile Include="ModelOrder\OrderItemTravel.cs" />
-    <Compile Include="ModelOrder\OrderItemBase.cs" />
-    <Compile Include="ModelOrder\OrderBase.cs" />
+    <Compile Include="ModelOrder\OrderItem.cs" />
+    <Compile Include="ModelOrder\Order.cs" />
     <Compile Include="ModelOrder\OrderItemTicket.cs" />
     <Compile Include="ModelOrder\OrderItemReplicaKit.cs" />
     <Compile Include="ModelOrder\OrderReplicaKit.cs" />

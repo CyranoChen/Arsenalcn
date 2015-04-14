@@ -5,22 +5,22 @@ using System.Data.SqlClient;
 
 namespace iArsenal.Entity
 {
-    public class OrderBase
+    public class Order
     {
-        public OrderBase() { }
+        public Order() { }
 
-        protected OrderBase(int id)
+        protected Order(int id)
         {
             this.OrderID = id;
             this.Select();
         }
 
-        private OrderBase(DataRow dr)
+        private Order(DataRow dr)
         {
-            InitOrder(dr);
+            Init(dr);
         }
 
-        private void InitOrder(DataRow dr)
+        private void Init(DataRow dr)
         {
             if (dr != null)
             {
@@ -142,42 +142,7 @@ namespace iArsenal.Entity
             DataRow dr = DataAccess.Order.GetOrderByID(OrderID);
 
             if (dr != null)
-                InitOrder(dr);
-        }
-
-        public static OrderBase Select(int id)
-        {
-            DataRow dr = DataAccess.Order.GetOrderByID(id);
-
-            if (dr != null)
-            {
-                if (string.IsNullOrEmpty(dr["OrderType"].ToString()))
-                {
-                    return new OrderBase(id);
-                }
-
-                OrderBaseType oType = (OrderBaseType)Enum.Parse(typeof(OrderBaseType), dr["OrderType"].ToString());
-
-                switch (oType)
-                {
-                    case OrderBaseType.ReplicaKit:
-                        return new Order_ReplicaKit(id);
-                    case OrderBaseType.Ticket:
-                        return new Order_Ticket(id);
-                    case OrderBaseType.Travel:
-                        return new Order_Travel(id);
-                    case OrderBaseType.Wish:
-                        return new Order_Wish(id);
-                    case OrderBaseType.MemberShip:
-                        return new Order_MemberShip(id);
-                    default:
-                        return new OrderBase(id);
-                }
-            }
-            else
-            {
-                return null;
-            }
+                Init(dr);
         }
 
         public void Update(SqlTransaction trans = null)
@@ -209,11 +174,11 @@ namespace iArsenal.Entity
         {
             float price = 0f;
 
-            List<OrderItemBase> list = OrderItemBase.GetOrderItems(this.OrderID).FindAll(oi => oi.IsActive);
+            List<OrderItem> list = OrderItem.GetOrderItems(this.OrderID).FindAll(oi => oi.IsActive);
 
             if (list != null && list.Count > 0)
             {
-                foreach (OrderItemBase oi in list)
+                foreach (OrderItem oi in list)
                 {
                     price += oi.TotalPrice;
                 }
@@ -224,33 +189,67 @@ namespace iArsenal.Entity
             this.Update(trans);
         }
 
+        public static Order Select(int id)
+        {
+            DataRow dr = DataAccess.Order.GetOrderByID(id);
 
-        public static List<OrderBase> GetOrders()
+            if (dr != null)
+            {
+                if (string.IsNullOrEmpty(dr["OrderType"].ToString()))
+                {
+                    return new Order(id);
+                }
+
+                OrderBaseType oType = (OrderBaseType)Enum.Parse(typeof(OrderBaseType), dr["OrderType"].ToString());
+
+                switch (oType)
+                {
+                    case OrderBaseType.ReplicaKit:
+                        return new OrdrReplicaKit(id);
+                    case OrderBaseType.Ticket:
+                        return new OrdrTicket(id);
+                    case OrderBaseType.Travel:
+                        return new OrdrTravel(id);
+                    case OrderBaseType.Wish:
+                        return new OrdrWish(id);
+                    case OrderBaseType.MemberShip:
+                        return new Order_MemberShip(id);
+                    default:
+                        return new Order(id);
+                }
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public static List<Order> GetOrders()
         {
             DataTable dt = DataAccess.Order.GetOrders();
-            List<OrderBase> list = new List<OrderBase>();
+            List<Order> list = new List<Order>();
 
             if (dt != null)
             {
                 foreach (DataRow dr in dt.Rows)
                 {
-                    list.Add(new OrderBase(dr));
+                    list.Add(new Order(dr));
                 }
             }
 
             return list;
         }
 
-        public static List<OrderBase> GetOrders(int memberID)
+        public static List<Order> GetOrders(int memberID)
         {
             DataTable dt = DataAccess.Order.GetOrders(memberID);
-            List<OrderBase> list = new List<OrderBase>();
+            List<Order> list = new List<Order>();
 
             if (dt != null)
             {
                 foreach (DataRow dr in dt.Rows)
                 {
-                    list.Add(new OrderBase(dr));
+                    list.Add(new Order(dr));
                 }
             }
 
@@ -259,7 +258,7 @@ namespace iArsenal.Entity
 
         public void GetOrderBaseType()
         {
-            List<OrderItemBase> oiList = OrderItemBase.GetOrderItems(OrderID).FindAll(oi => Product.Cache.Load(oi.ProductGuid) != null);
+            List<OrderItem> oiList = OrderItem.GetOrderItems(OrderID).FindAll(oi => Product.Cache.Load(oi.ProductGuid) != null);
 
             if (oiList != null && oiList.Count > 0)
             {
@@ -301,11 +300,11 @@ namespace iArsenal.Entity
 
         public static void RefreshOrderBaseType()
         {
-            List<OrderBase> list = OrderBase.GetOrders();
+            List<Order> list = Order.GetOrders();
 
             if (list != null && list.Count > 0)
             {
-                foreach (OrderBase o in list)
+                foreach (Order o in list)
                 {
                     o.GetOrderBaseType();
                     o.Update();

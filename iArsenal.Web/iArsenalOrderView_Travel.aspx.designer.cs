@@ -10,7 +10,7 @@
 namespace iArsenal.Web {
     
     
-    public partial class iArsenalOrder_AsiaTrophy2015 {
+    public partial class iArsenalOrderView_Travel {
         
         /// <summary>
         /// ucPortalSitePath control.
@@ -22,6 +22,15 @@ namespace iArsenal.Web {
         protected global::iArsenal.Web.Control.PortalSitePath ucPortalSitePath;
         
         /// <summary>
+        /// ucPortalWorkflowInfo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::iArsenal.Web.Control.PortalWorkflowInfo ucPortalWorkflowInfo;
+        
+        /// <summary>
         /// lblMemberName control.
         /// </summary>
         /// <remarks>
@@ -31,265 +40,175 @@ namespace iArsenal.Web {
         protected global::System.Web.UI.WebControls.Label lblMemberName;
         
         /// <summary>
-        /// lblMemberACNInfo control.
+        /// lblOrderMobile control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblMemberACNInfo;
+        protected global::System.Web.UI.WebControls.Label lblOrderMobile;
         
         /// <summary>
-        /// ddlNation control.
+        /// lblMemberRegion control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlNation;
+        protected global::System.Web.UI.WebControls.Label lblMemberRegion;
         
         /// <summary>
-        /// tbNation control.
+        /// lblMemberIDCardNo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbNation;
+        protected global::System.Web.UI.WebControls.Label lblMemberIDCardNo;
         
         /// <summary>
-        /// tbRegion1 control.
+        /// lblMemberPassportNo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbRegion1;
+        protected global::System.Web.UI.WebControls.Label lblMemberPassportNo;
         
         /// <summary>
-        /// tbRegion2 control.
+        /// lblMemberPassportName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbRegion2;
+        protected global::System.Web.UI.WebControls.Label lblMemberPassportName;
         
         /// <summary>
-        /// tbIDCardNo control.
+        /// lblMemberQQ control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbIDCardNo;
+        protected global::System.Web.UI.WebControls.Label lblMemberQQ;
         
         /// <summary>
-        /// rfvIDCardNo control.
+        /// lblMemberEmail control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvIDCardNo;
+        protected global::System.Web.UI.WebControls.Label lblMemberEmail;
         
         /// <summary>
-        /// tbPassportNo control.
+        /// lblOrderID control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbPassportNo;
+        protected global::System.Web.UI.WebControls.Label lblOrderID;
         
         /// <summary>
-        /// rfvPassportNo control.
+        /// lblOrderCreateTime control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvPassportNo;
+        protected global::System.Web.UI.WebControls.Label lblOrderCreateTime;
         
         /// <summary>
-        /// tbPassportName control.
+        /// lblOrderItem_TravelDate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbPassportName;
+        protected global::System.Web.UI.WebControls.Label lblOrderItem_TravelDate;
         
         /// <summary>
-        /// rfvPassportName control.
+        /// phOrderPartner control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvPassportName;
+        protected global::System.Web.UI.WebControls.PlaceHolder phOrderPartner;
         
         /// <summary>
-        /// tbMobile control.
+        /// lblOrderItem_TravelPartner control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbMobile;
+        protected global::System.Web.UI.WebControls.Label lblOrderItem_TravelPartner;
         
         /// <summary>
-        /// rfvMobile control.
+        /// lblOrderItem_TravelOption control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvMobile;
+        protected global::System.Web.UI.WebControls.Label lblOrderItem_TravelOption;
         
         /// <summary>
-        /// tbQQ control.
+        /// lblOrderDescription control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbQQ;
+        protected global::System.Web.UI.WebControls.Label lblOrderDescription;
         
         /// <summary>
-        /// rfvQQ control.
+        /// phOrderRemark control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvQQ;
+        protected global::System.Web.UI.WebControls.PlaceHolder phOrderRemark;
         
         /// <summary>
-        /// tbEmail control.
+        /// lblOrderRemark control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbEmail;
+        protected global::System.Web.UI.WebControls.Label lblOrderRemark;
         
         /// <summary>
-        /// rfvEmail control.
+        /// phOrderPrice control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvEmail;
+        protected global::System.Web.UI.WebControls.PlaceHolder phOrderPrice;
         
         /// <summary>
-        /// cbMatch1 control.
+        /// lblOrderPrice control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox cbMatch1;
+        protected global::System.Web.UI.WebControls.Label lblOrderPrice;
         
         /// <summary>
-        /// cbMatch2 control.
+        /// tbOrderPrice control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox cbMatch2;
-        
-        /// <summary>
-        /// cbPartner control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox cbPartner;
-        
-        /// <summary>
-        /// tbPartnerName control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbPartnerName;
-        
-        /// <summary>
-        /// ddlPartnerRelation control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlPartnerRelation;
-        
-        /// <summary>
-        /// rblPartnerGender control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButtonList rblPartnerGender;
-        
-        /// <summary>
-        /// tbPartnerIDCardNo control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbPartnerIDCardNo;
-        
-        /// <summary>
-        /// tbPartnerPassportNo control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbPartnerPassportNo;
-        
-        /// <summary>
-        /// tbPartnerPassportName control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbPartnerPassportName;
-        
-        /// <summary>
-        /// rblIsTicketOnly control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButtonList rblIsTicketOnly;
-        
-        /// <summary>
-        /// cblTravelOption control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBoxList cblTravelOption;
-        
-        /// <summary>
-        /// tbOrderDescription control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbOrderDescription;
+        protected global::System.Web.UI.WebControls.TextBox tbOrderPrice;
         
         /// <summary>
         /// btnSubmit control.
@@ -299,5 +218,23 @@ namespace iArsenal.Web {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnSubmit;
+        
+        /// <summary>
+        /// btnModify control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnModify;
+        
+        /// <summary>
+        /// btnCancel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnCancel;
     }
 }

@@ -37,7 +37,7 @@ namespace iArsenal.Web
 
         private void BindData()
         {
-            List<OrderItemBase> list = OrderItemBase.GetOrderItems().FindAll(delegate(OrderItemBase oi)
+            List<OrderItem> list = OrderItem.GetOrderItems().FindAll(delegate(OrderItem oi)
             {
                 Boolean returnValue = true;
                 string tmpString = string.Empty;
@@ -69,7 +69,7 @@ namespace iArsenal.Web
             #region set GridView Selected PageIndex
             if (OrderItemID > 0)
             {
-                int i = list.FindIndex(delegate(OrderItemBase oi) { return oi.OrderItemID == OrderItemID; });
+                int i = list.FindIndex(delegate(OrderItem oi) { return oi.OrderItemID == OrderItemID; });
                 if (i >= 0)
                 {
                     gvOrderItem.PageIndex = i / gvOrderItem.PageSize;

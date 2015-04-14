@@ -41,7 +41,7 @@ namespace iArsenal.Web
             {
                 if (OrderID > 0)
                 {
-                    Order_Ticket o = new Order_Ticket(OrderID);
+                    OrdrTicket o = new OrdrTicket(OrderID);
 
                     if (o.OIMatchTicket != null)
                     { return Guid.Empty; }
@@ -124,7 +124,7 @@ namespace iArsenal.Web
 
                 if (OrderID > 0)
                 {
-                    OrderBase o = new OrderBase();
+                    Order o = new Order();
                     o.OrderID = OrderID;
                     o.Select();
 
@@ -195,7 +195,7 @@ namespace iArsenal.Web
                     }
 
                     // Get OrderItem by Order ID
-                    OrderItemBase oi = OrderItemBase.GetOrderItems(OrderID).Find(oiMatchTicket => oiMatchTicket.IsActive && oiMatchTicket.ProductGuid.Equals(p.ProductGuid));
+                    OrderItem oi = OrderItem.GetOrderItems(OrderID).Find(oiMatchTicket => oiMatchTicket.IsActive && oiMatchTicket.ProductGuid.Equals(p.ProductGuid));
 
                     if (oi != null)
                     {
@@ -368,7 +368,7 @@ namespace iArsenal.Web
                     m.Update();
 
                     // New Order
-                    OrderBase o = new OrderBase();
+                    Order o = new Order();
 
                     if (OrderID > 0)
                     {
@@ -412,7 +412,7 @@ namespace iArsenal.Web
                         //Remove Order Item of this Order
                         if (o.OrderID.Equals(OrderID))
                         {
-                            int countOrderItem = OrderItemBase.RemoveOrderItemByOrderID(o.OrderID, trans);
+                            int countOrderItem = OrderItem.RemoveOrderItemByOrderID(o.OrderID, trans);
                         }
 
                         //New Order Items
@@ -427,7 +427,8 @@ namespace iArsenal.Web
                             throw new Exception("请正确填写计划出行时间");
 
                         // Every Member can only purchase ONE ticket of each match
-                        OrderItemBase.WishOrderItem(m, p, o, tbTravelDate.Text.Trim(), 1, null, mt.MatchGuid.ToString(), trans);
+                        OrderItem_MatchTicket oi = new OrderItem_MatchTicket();
+                        oi.Insert(m, p, o, tbTravelDate.Text.Trim(), 1, null, mt.MatchGuid.ToString(), trans);
                     }
 
                     trans.Commit();

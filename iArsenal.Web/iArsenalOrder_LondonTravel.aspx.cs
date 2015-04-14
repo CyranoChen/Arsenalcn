@@ -51,7 +51,7 @@ namespace iArsenal.Web
                     //OrderBase o = new OrderBase();
                     //o.OrderID = OrderID;
                     //o.Select();
-                    Order_Travel o = new Order_Travel(OrderID);
+                    OrdrTravel o = new OrdrTravel(OrderID);
 
                     if (ConfigAdmin.IsPluginAdmin(UID) && o != null)
                     {
@@ -119,8 +119,8 @@ namespace iArsenal.Web
                             throw new Exception("此订单无效或非当前用户订单");
                     }
 
-                    OrderItemBase oiETPL = o.OITravelPlan;
-                    List<OrderItemBase> listPartner = o.OITravelPartnerList.FindAll(oi =>
+                    OrderItem oiETPL = o.OITravelPlan;
+                    List<OrderItem> listPartner = o.OITravelPartnerList.FindAll(oi =>
                         oi.IsActive && !string.IsNullOrEmpty(oi.Remark));
 
                     if (oiETPL != null && oiETPL.IsActive)
@@ -163,7 +163,7 @@ namespace iArsenal.Web
                     if (listPartner != null && listPartner.Count > 0)
                     {
                         cbPartner.Checked = true;
-                        var oiPartner = (OrderItemBase)listPartner[0];
+                        var oiPartner = (OrderItem)listPartner[0];
 
                         // Partner JSON Schema: {  "Name": "Cyrano",  "Relation": "1", "Gender": "0", "IDCardNo": "310101XXXX", "PassportNo": "", "PassportName","" }
                         // jsonSerializer.Deserialize String Partner
@@ -338,7 +338,7 @@ namespace iArsenal.Web
                     m.Update();
 
                     // New Order
-                    OrderBase o = new OrderBase();
+                    Order o = new Order();
 
                     if (OrderID > 0)
                     {
@@ -382,7 +382,7 @@ namespace iArsenal.Web
                         //Remove Order Item of this Order
                         if (o.OrderID.Equals(OrderID))
                         {
-                            int countOrderItem = OrderItemBase.RemoveOrderItemByOrderID(o.OrderID);
+                            int countOrderItem = OrderItem.RemoveOrderItemByOrderID(o.OrderID);
                         }
 
                         //New Order Items
@@ -433,7 +433,8 @@ namespace iArsenal.Web
                             JavaScriptSerializer jsonSerializer = new JavaScriptSerializer();
                             _strPartner = jsonSerializer.Serialize(p);
 
-                            OrderItemBase.WishOrderItem(m, pETPA, o, string.Empty, 1, null, _strPartner, trans);
+                            OrderItem_TravelPartner oi = new OrderItem_TravelPartner();
+                            oi.Insert(m, pETPA, o, string.Empty, 1, null, _strPartner, trans);
                         }
 
                         // Genernate Travel Date
@@ -467,7 +468,8 @@ namespace iArsenal.Web
                             _strTravelOption = _strTravelOption.Substring(0, _strTravelOption.Length - 1);
                         }
 
-                        OrderItemBase.WishOrderItem(m, pETPL, o, _strTravelDate, 1, null, _strTravelOption, trans);
+                        OrderItem_TravelPlan_London oiPlan = new OrderItem_TravelPlan_London();
+                        oiPlan.Insert(m, pETPL, o, _strTravelDate, 1, null, _strTravelOption, trans);
                     }
 
                     trans.Commit();

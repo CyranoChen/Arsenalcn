@@ -11,11 +11,12 @@ namespace iArsenal.Web
         {
             try
             {
-                if (!string.IsNullOrEmpty(context.Request.QueryString["OrderID"]))
-                {
-                    int orderID = Convert.ToInt32(context.Request.QueryString["OrderID"]);
+                string _strOrderID = context.Request.QueryString["OrderID"];
+                int _orderID = int.MinValue;
 
-                    OrderBase o = OrderBase.Select(orderID);
+                if (!string.IsNullOrEmpty(_strOrderID) && int.TryParse(_strOrderID, out _orderID))
+                {
+                    Order o = Order.Select(_orderID);
 
                     if (o != null)
                     {

@@ -3,18 +3,19 @@ using System.Collections.Generic;
 
 namespace iArsenal.Entity
 {
-    public class Order_ReplicaKit : OrderBase
+    public class OrdrReplicaKit : Order
     {
-        public Order_ReplicaKit() { }
+        public OrdrReplicaKit() { }
 
-        public Order_ReplicaKit(int id)
-            : base(id)
+        public OrdrReplicaKit(int id) : base(id) { this.Init(); }
+
+        private void Init()
         {
-            List<OrderItemBase> oiList = OrderItemBase.GetOrderItems(id).FindAll(oi => oi.IsActive && Product.Cache.Load(oi.ProductGuid) != null);
+            List<OrderItem> oiList = OrderItem.GetOrderItems(OrderID).FindAll(oi => oi.IsActive && Product.Cache.Load(oi.ProductGuid) != null);
 
             if (oiList != null && oiList.Count > 0)
             {
-                OrderItemBase oiBase = null;
+                OrderItem oiBase = null;
 
                 oiBase = oiList.Find(oi => Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.ReplicaKitHome));
                 if (oiBase != null) { OIReplicaKitHome = new OrderItem_ReplicaKitHome(oiBase.OrderItemID); }

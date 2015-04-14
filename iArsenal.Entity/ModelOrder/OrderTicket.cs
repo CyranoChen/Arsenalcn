@@ -3,18 +3,19 @@ using System.Collections.Generic;
 
 namespace iArsenal.Entity
 {
-    public class Order_Ticket : OrderBase
+    public class OrdrTicket : Order
     {
-        public Order_Ticket() { }
+        public OrdrTicket() { }
 
-        public Order_Ticket(int id)
-            : base(id)
+        public OrdrTicket(int id) : base(id) { this.Init(); }
+
+        private void Init()
         {
-            List<OrderItemBase> oiList = OrderItemBase.GetOrderItems(id).FindAll(oi => oi.IsActive && Product.Cache.Load(oi.ProductGuid) != null);
+            List<OrderItem> oiList = OrderItem.GetOrderItems(OrderID).FindAll(oi => oi.IsActive && Product.Cache.Load(oi.ProductGuid) != null);
 
             if (oiList != null && oiList.Count > 0)
             {
-                OrderItemBase oiBase = null;
+                OrderItem oiBase = null;
 
                 oiBase = oiList.Find(oi => Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.MatchTicket));
                 if (oiBase != null) { OIMatchTicket = new OrderItem_MatchTicket(oiBase.OrderItemID); }

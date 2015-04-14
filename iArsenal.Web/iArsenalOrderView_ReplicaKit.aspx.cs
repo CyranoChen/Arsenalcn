@@ -38,10 +38,10 @@ namespace iArsenal.Web
 
                 if (OrderID > 0)
                 {
-                    Order_ReplicaKit o = new Order_ReplicaKit(OrderID);
+                    OrdrReplicaKit o = new OrdrReplicaKit(OrderID);
 
                     // Whether Home or Away ReplicaKit
-                    OrderItemBase oiReplicaKit = null;
+                    OrderItem oiReplicaKit = null;
 
                     if (o.OIReplicaKitHome != null && o.OIReplicaKitHome.IsActive)
                     {
@@ -215,7 +215,7 @@ namespace iArsenal.Web
             {
                 if (OrderID > 0)
                 {
-                    OrderBase o = new OrderBase();
+                    Order o = new Order();
                     o.OrderID = OrderID;
                     o.Select();
 
@@ -246,7 +246,7 @@ namespace iArsenal.Web
             {
                 if (OrderID > 0)
                 {
-                    OrderBase o = new OrderBase();
+                    Order o = new Order();
                     o.OrderID = OrderID;
                     o.Select();
 
@@ -272,7 +272,7 @@ namespace iArsenal.Web
             {
                 if (OrderID > 0)
                 {
-                    OrderBase o = new OrderBase();
+                    Order o = new Order();
                     o.OrderID = OrderID;
                     o.Select();
 

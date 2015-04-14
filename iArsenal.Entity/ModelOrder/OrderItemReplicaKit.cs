@@ -2,7 +2,19 @@
 
 namespace iArsenal.Entity
 {
-    public class OrderItem_ReplicaKitHome : OrderItemBase
+    public class OrderItem_ReplicaKit : OrderItem
+    {
+        public OrderItem_ReplicaKit() { }
+
+        public OrderItem_ReplicaKit(int id) : base(id) { }
+
+        public override void Mapper(object obj)
+        {
+            base.Mapper(obj);
+        }
+    }
+
+    public class OrderItem_ReplicaKitHome : OrderItem_ReplicaKit
     {
         public OrderItem_ReplicaKitHome() { }
 
@@ -19,7 +31,7 @@ namespace iArsenal.Entity
         }
     }
 
-    public class OrderItem_ReplicaKitAway : OrderItemBase
+    public class OrderItem_ReplicaKitAway : OrderItem_ReplicaKit
     {
         public OrderItem_ReplicaKitAway() { }
 
@@ -36,7 +48,7 @@ namespace iArsenal.Entity
         }
     }
 
-    public class OrderItem_ReplicaKitCup : OrderItemBase
+    public class OrderItem_ReplicaKitCup : OrderItem_ReplicaKit
     {
         public OrderItem_ReplicaKitCup() { }
 
@@ -53,7 +65,7 @@ namespace iArsenal.Entity
         }
     }
 
-    public class OrderItem_PlayerNumber : OrderItemBase
+    public class OrderItem_PlayerNumber : OrderItem
     {
         public OrderItem_PlayerNumber() { }
 
@@ -96,7 +108,7 @@ namespace iArsenal.Entity
         #endregion
     }
 
-    public class OrderItem_PlayerName : OrderItemBase
+    public class OrderItem_PlayerName : OrderItem
     {
         public OrderItem_PlayerName() { }
 
@@ -139,7 +151,7 @@ namespace iArsenal.Entity
         #endregion
     }
 
-    public class OrderItem_ArsenalFont : OrderItemBase
+    public class OrderItem_ArsenalFont : OrderItem
     {
         public OrderItem_ArsenalFont() { }
 
@@ -156,7 +168,7 @@ namespace iArsenal.Entity
         }
     }
 
-    public class OrderItem_PremiershipPatch : OrderItemBase
+    public class OrderItem_PremiershipPatch : OrderItem
     {
         public OrderItem_PremiershipPatch() { }
 
@@ -173,7 +185,7 @@ namespace iArsenal.Entity
         }
     }
 
-    public class OrderItem_ChampionshipPatch : OrderItemBase
+    public class OrderItem_ChampionshipPatch : OrderItem
     {
         public OrderItem_ChampionshipPatch() { }
 

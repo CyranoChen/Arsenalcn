@@ -132,6 +132,7 @@
     <Content Include="AdminMemberPeriodView.aspx" />
     <Content Include="Control\PortalWorkflowInfo.ascx" />
     <Content Include="iArsenalOrderView_ArsenalDirect.aspx" />
+    <Content Include="iArsenalOrderView_Travel.aspx" />
     <Content Include="iArsenalOrderView_MemberShip.aspx" />
     <Content Include="iArsenalOrder_ArsenalDirect.aspx" />
     <Content Include="iArsenalMemberPeriod.aspx" />
@@ -141,7 +142,6 @@
     <Content Include="iArsenalOrder_MemberShip.aspx" />
     <Content Include="iArsenalOrder_MatchTicket.aspx" />
     <Content Include="iArsenalOrder_MatchList.aspx" />
-    <Content Include="iArsenalOrderView_LondonTravel.aspx" />
     <Content Include="iArsenalOrderView_TicketBeijing.aspx" />
     <Content Include="iArsenalOrder.aspx" />
     <Content Include="iArsenalOrderView_ReplicaKit.aspx" />
@@ -288,6 +288,13 @@
     <Compile Include="iArsenalOrderView_ArsenalDirect.aspx.designer.cs">
       <DependentUpon>iArsenalOrderView_ArsenalDirect.aspx</DependentUpon>
     </Compile>
+    <Compile Include="iArsenalOrderView_Travel.aspx.cs">
+      <DependentUpon>iArsenalOrderView_Travel.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="iArsenalOrderView_Travel.aspx.designer.cs">
+      <DependentUpon>iArsenalOrderView_Travel.aspx</DependentUpon>
+    </Compile>
     <Compile Include="iArsenalOrderView_MemberShip.aspx.cs">
       <DependentUpon>iArsenalOrderView_MemberShip.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -409,13 +416,6 @@
     </Compile>
     <Compile Include="iArsenalOrder_MatchList.aspx.designer.cs">
       <DependentUpon>iArsenalOrder_MatchList.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="iArsenalOrderView_LondonTravel.aspx.cs">
-      <DependentUpon>iArsenalOrderView_LondonTravel.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="iArsenalOrderView_LondonTravel.aspx.designer.cs">
-      <DependentUpon>iArsenalOrderView_LondonTravel.aspx</DependentUpon>
     </Compile>
     <Compile Include="iArsenalOrderView_TicketBeijing.aspx.cs">
       <DependentUpon>iArsenalOrderView_TicketBeijing.aspx</DependentUpon>

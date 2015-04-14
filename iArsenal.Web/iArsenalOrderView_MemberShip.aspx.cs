@@ -130,15 +130,15 @@ namespace iArsenal.Web
                     string priceInfo = string.Empty;
 
                     // Whether Core or Premier MemberShip
-                    OrderItem_MemberShip oiMemberShip = null;
+                    OrdrItmMemberShip oiMemberShip = null;
 
                     if (o.OIMemberShipCore != null && o.OIMemberShipCore.IsActive)
                     {
-                        oiMemberShip = (OrderItem_Core)o.OIMemberShipCore;
+                        oiMemberShip = (OrdrItmMemShipCore)o.OIMemberShipCore;
                     }
                     else if (o.OIMemberShipPremier != null && o.OIMemberShipPremier.IsActive)
                     {
-                        oiMemberShip = (OrderItem_Premier)o.OIMemberShipPremier;
+                        oiMemberShip = (OrdrItmMemShipPremier)o.OIMemberShipPremier;
                     }
                     else
                     {
@@ -204,7 +204,7 @@ namespace iArsenal.Web
             {
                 if (OrderID > 0)
                 {
-                    OrderBase o = new OrderBase();
+                    Order o = new Order();
                     o.OrderID = OrderID;
                     o.Select();
 
@@ -235,7 +235,7 @@ namespace iArsenal.Web
             {
                 if (OrderID > 0)
                 {
-                    OrderBase o = new OrderBase();
+                    Order o = new Order();
                     o.OrderID = OrderID;
                     o.Select();
 
@@ -261,7 +261,7 @@ namespace iArsenal.Web
             {
                 if (OrderID > 0)
                 {
-                    OrderBase o = new OrderBase();
+                    Order o = new Order();
                     o.OrderID = OrderID;
                     o.Select();
 
@@ -302,15 +302,15 @@ namespace iArsenal.Web
                         if (ConfigAdmin.IsPluginAdmin(UID) && o != null && o.Status.Equals(OrderStatusType.Confirmed))
                         {
                             // Whether Core or Premier MemberShip
-                            OrderItem_MemberShip oiMemberShip = null;
+                            OrdrItmMemberShip oiMemberShip = null;
 
                             if (o.OIMemberShipCore != null && o.OIMemberShipCore.IsActive)
                             {
-                                oiMemberShip = (OrderItem_Core)o.OIMemberShipCore;
+                                oiMemberShip = (OrdrItmMemShipCore)o.OIMemberShipCore;
                             }
                             else if (o.OIMemberShipPremier != null && o.OIMemberShipPremier.IsActive)
                             {
-                                oiMemberShip = (OrderItem_Premier)o.OIMemberShipPremier;
+                                oiMemberShip = (OrdrItmMemShipPremier)o.OIMemberShipPremier;
                             }
                             else
                             {

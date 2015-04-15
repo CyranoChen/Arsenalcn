@@ -392,60 +392,62 @@ namespace iArsenal.Web
                         if (pETPL == null || pETPA == null)
                             throw new Exception("无观赛信息，请联系管理员");
 
-                        // Partner JSON Schema: {  "Name": "Cyrano",  "Relation": "1", "Gender": "0", "IDCardNo": "310101XXXX", "PassportNo": "", "PassportName","" }
-                        // jsonSerializer.Serialize Object Partner
-                        string _strPartner = string.Empty;
+                        // Get Partner Information to Serialize Json
 
                         if (cbPartner.Checked)
                         {
-                            Partner p = new Partner();
+                            OrdrItmTravelPartner oiPartner = new OrdrItmTravelPartner();
+
+                            Partner pa = new Partner();
 
                             if (!string.IsNullOrEmpty(tbPartnerName.Text.Trim()))
-                                p.Name = tbPartnerName.Text.Trim();
+                                pa.Name = tbPartnerName.Text.Trim();
                             else
                                 throw new Exception("请填写同伴姓名");
 
                             if (!string.IsNullOrEmpty(ddlPartnerRelation.SelectedValue))
-                                p.Relation = int.Parse(ddlPartnerRelation.SelectedValue);
+                                pa.Relation = int.Parse(ddlPartnerRelation.SelectedValue);
                             else
                                 throw new Exception("请选择同伴关系");
 
                             if (!string.IsNullOrEmpty(rblPartnerGender.SelectedValue))
-                                p.Gender = bool.Parse(rblPartnerGender.SelectedValue);
+                                pa.Gender = bool.Parse(rblPartnerGender.SelectedValue);
                             else
-                                p.Gender = true;
+                                pa.Gender = true;
 
                             if (!string.IsNullOrEmpty(tbPartnerIDCardNo.Text.Trim()))
-                                p.IDCardNo = tbPartnerIDCardNo.Text.Trim();
+                                pa.IDCardNo = tbPartnerIDCardNo.Text.Trim();
                             else
                                 throw new Exception("请填写同伴身份证");
 
                             if (!string.IsNullOrEmpty(tbPartnerPassportNo.Text.Trim()))
-                                p.PassportNo = tbPartnerPassportNo.Text.Trim();
+                                pa.PassportNo = tbPartnerPassportNo.Text.Trim();
                             else
                                 throw new Exception("请填写同伴护照号码");
 
                             if (!string.IsNullOrEmpty(tbPartnerPassportName.Text.Trim()))
-                                p.PassportName = tbPartnerPassportName.Text.Trim();
+                                pa.PassportName = tbPartnerPassportName.Text.Trim();
                             else
                                 throw new Exception("请填写同伴护照姓名");
 
-                            JavaScriptSerializer jsonSerializer = new JavaScriptSerializer();
-                            _strPartner = jsonSerializer.Serialize(p);
+                            oiPartner.Partner = pa;
 
-                            OrderItem_TravelPartner oi = new OrderItem_TravelPartner();
-                            oi.Insert(m, pETPA, o, string.Empty, 1, null, _strPartner, trans);
+                            oiPartner.OrderID = o.OrderID;
+                            oiPartner.Size = string.Empty;
+                            oiPartner.Quantity = 1;
+                            oiPartner.Sale = null;
+
+                            oiPartner.Place(m, trans);
                         }
 
-                        // Genernate Travel Date
-                        string _strTravelDate = string.Empty;
+                        // Generate OrderItemTravelPlan
+                        OrdrItmTravelPlanLondon oiPlan = new OrdrItmTravelPlanLondon();
 
+                        // Genernate Travel Date
                         if (!string.IsNullOrEmpty(tbFromDate.Text.Trim()) && !string.IsNullOrEmpty(tbToDate.Text.Trim()))
                         {
-                            DateTime _fDate = DateTime.Parse(tbFromDate.Text.Trim());
-                            DateTime _tDate = DateTime.Parse(tbToDate.Text.Trim());
-
-                            _strTravelDate = string.Format("{0}|{1}", _fDate.ToString("yyyy-MM-dd"), _tDate.ToString("yyyy-MM-dd"));
+                            oiPlan.TravelFromDate = DateTime.Parse(tbFromDate.Text.Trim());
+                            oiPlan.TravelToDate = DateTime.Parse(tbToDate.Text.Trim());
                         }
                         else
                         {
@@ -453,23 +455,27 @@ namespace iArsenal.Web
                         }
 
                         // Generate Travel Option
-                        string _strTravelOption = string.Empty;
+                        //string _strTravelOption = string.Empty;
 
                         for (int i = 0; i < cblTravelOption.Items.Count; i++)
                         {
                             if (cblTravelOption.Items[i].Selected)
                             {
-                                _strTravelOption += string.Format("{0}|", cblTravelOption.Items[i].Value);
+                                oiPlan.TravelOption[i] = cblTravelOption.Items[i].Value;
+                                //_strTravelOption += string.Format("{0}|", cblTravelOption.Items[i].Value);
                             }
                         }
 
-                        if (!string.IsNullOrEmpty(_strTravelOption))
-                        {
-                            _strTravelOption = _strTravelOption.Substring(0, _strTravelOption.Length - 1);
-                        }
+                        //if (!string.IsNullOrEmpty(_strTravelOption))
+                        //{
+                        //    _strTravelOption = _strTravelOption.Substring(0, _strTravelOption.Length - 1);
+                        //}
 
-                        OrderItem_TravelPlan_London oiPlan = new OrderItem_TravelPlan_London();
-                        oiPlan.Insert(m, pETPL, o, _strTravelDate, 1, null, _strTravelOption, trans);
+                        oiPlan.OrderID = o.OrderID;
+                        oiPlan.Quantity = 1;
+                        oiPlan.Sale = null;
+
+                        oiPlan.Place(m, trans);
                     }
 
                     trans.Commit();

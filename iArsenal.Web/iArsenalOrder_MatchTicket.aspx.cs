@@ -421,14 +421,28 @@ namespace iArsenal.Web
                         if (p == null)
                             throw new Exception("无相关商品信息，请联系管理员");
 
+                        OrdrItmMatchTicket oi = new OrdrItmMatchTicket();
+
                         // Genernate Travel Date
                         DateTime _date;
-                        if (!string.IsNullOrEmpty(tbTravelDate.Text.Trim()) && !DateTime.TryParse(tbTravelDate.Text.Trim(), out _date))
+                        if (!string.IsNullOrEmpty(tbTravelDate.Text.Trim()) && DateTime.TryParse(tbTravelDate.Text.Trim(), out _date))
+                        {
+                            oi.TravelDate = _date;
+                        }
+                        else
+                        {
                             throw new Exception("请正确填写计划出行时间");
+                        }
 
                         // Every Member can only purchase ONE ticket of each match
-                        OrderItem_MatchTicket oi = new OrderItem_MatchTicket();
-                        oi.Insert(m, p, o, tbTravelDate.Text.Trim(), 1, null, mt.MatchGuid.ToString(), trans);
+
+                        oi.MatchGuid = mt.MatchGuid;
+
+                        oi.OrderID = o.OrderID;
+                        oi.Quantity = 1;
+                        oi.Sale = null;
+
+                        oi.Place(m, trans);
                     }
 
                     trans.Commit();

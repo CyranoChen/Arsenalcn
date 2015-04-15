@@ -19,7 +19,7 @@ namespace iArsenal.Entity
                 OrderItem oiBase = null;
 
                 oiBase = oiList.Find(oi => Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.TravelPlan));
-                if (oiBase != null) { OITravelPlan = new OrderItem_TravelPlan(oiBase.OrderItemID); }
+                if (oiBase != null) { OITravelPlan = new OrdrItmTravelPlan(oiBase.OrderItemID); }
 
                 if (OITravelPlan != null)
                 {
@@ -52,7 +52,7 @@ namespace iArsenal.Entity
 
         #region Members and Properties
 
-        public OrderItem_TravelPlan OITravelPlan { get; set; }
+        public OrdrItmTravelPlan OITravelPlan { get; set; }
 
         public List<OrderItem> OITravelPartnerList { get; set; }
 

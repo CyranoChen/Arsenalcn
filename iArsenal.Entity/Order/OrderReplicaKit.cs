@@ -18,32 +18,32 @@ namespace iArsenal.Entity
                 OrderItem oiBase = null;
 
                 oiBase = oiList.Find(oi => Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.ReplicaKitHome));
-                if (oiBase != null) { OIReplicaKitHome = new OrderItem_ReplicaKitHome(oiBase.OrderItemID); }
+                if (oiBase != null) { OIReplicaKitHome = new OrdrItmReplicaKitHome(oiBase.OrderItemID); }
 
                 oiBase = oiList.Find(oi => Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.ReplicaKitAway));
-                if (oiBase != null) { OIReplicaKitAway = new OrderItem_ReplicaKitAway(oiBase.OrderItemID); }
+                if (oiBase != null) { OIReplicaKitAway = new OrdrItemReplicaKitAway(oiBase.OrderItemID); }
 
                 oiBase = oiList.Find(oi => Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.ReplicaKitCup));
-                if (oiBase != null) { OIReplicaKitCup = new OrderItem_ReplicaKitCup(oiBase.OrderItemID); }
+                if (oiBase != null) { OIReplicaKitCup = new OrdrItmReplicaKitCup(oiBase.OrderItemID); }
 
                 if (OIReplicaKitHome != null || OIReplicaKitAway != null || OIReplicaKitCup != null)
                 {
                     base.URLOrderView = "iArsenalOrderView_ReplicaKit.aspx";
 
                     oiBase = oiList.Find(oi => Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.PlayerNumber));
-                    if (oiBase != null) { OIPlayerNumber = new OrderItem_PlayerNumber(oiBase.OrderItemID); }
+                    if (oiBase != null) { OIPlayerNumber = new OrdrItmPlayerNumber(oiBase.OrderItemID); }
 
                     oiBase = oiList.Find(oi => Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.PlayerName));
-                    if (oiBase != null) { OIPlayerName = new OrderItem_PlayerName(oiBase.OrderItemID); }
+                    if (oiBase != null) { OIPlayerName = new OrdrItmPlayerName(oiBase.OrderItemID); }
 
                     oiBase = oiList.Find(oi => Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.ArsenalFont));
-                    if (oiBase != null) { OIArsenalFont = new OrderItem_ArsenalFont(oiBase.OrderItemID); }
+                    if (oiBase != null) { OIArsenalFont = new OrdrItmArsenalFont(oiBase.OrderItemID); }
 
                     oiBase = oiList.Find(oi => Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.PremiershipPatch));
-                    if (oiBase != null) { OIPremiershipPatch = new OrderItem_PremiershipPatch(oiBase.OrderItemID); }
+                    if (oiBase != null) { OIPremiershipPatch = new OrdrItmPremiershipPatch(oiBase.OrderItemID); }
 
                     oiBase = oiList.Find(oi => Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.ChampionshipPatch));
-                    if (oiBase != null) { OIChampionshipPatch = new OrderItem_ChampionshipPatch(oiBase.OrderItemID); }
+                    if (oiBase != null) { OIChampionshipPatch = new OrdrItmChampionshipPatch(oiBase.OrderItemID); }
                 }
                 else
                 {
@@ -71,21 +71,21 @@ namespace iArsenal.Entity
 
         #region Members and Properties
 
-        public OrderItem_ReplicaKitHome OIReplicaKitHome { get; set; }
+        public OrdrItmReplicaKitHome OIReplicaKitHome { get; set; }
 
-        public OrderItem_ReplicaKitAway OIReplicaKitAway { get; set; }
+        public OrdrItemReplicaKitAway OIReplicaKitAway { get; set; }
 
-        public OrderItem_ReplicaKitCup OIReplicaKitCup { get; set; }
+        public OrdrItmReplicaKitCup OIReplicaKitCup { get; set; }
 
-        public OrderItem_PlayerNumber OIPlayerNumber { get; set; }
+        public OrdrItmPlayerNumber OIPlayerNumber { get; set; }
 
-        public OrderItem_PlayerName OIPlayerName { get; set; }
+        public OrdrItmPlayerName OIPlayerName { get; set; }
 
-        public OrderItem_ArsenalFont OIArsenalFont { get; set; }
+        public OrdrItmArsenalFont OIArsenalFont { get; set; }
 
-        public OrderItem_PremiershipPatch OIPremiershipPatch { get; set; }
+        public OrdrItmPremiershipPatch OIPremiershipPatch { get; set; }
 
-        public OrderItem_ChampionshipPatch OIChampionshipPatch { get; set; }
+        public OrdrItmChampionshipPatch OIChampionshipPatch { get; set; }
 
         #endregion
 

@@ -45,15 +45,15 @@ namespace iArsenal.Web
 
                     if (o.OIReplicaKitHome != null && o.OIReplicaKitHome.IsActive)
                     {
-                        oiReplicaKit = (OrderItem_ReplicaKitHome)o.OIReplicaKitHome;
+                        oiReplicaKit = (OrdrItmReplicaKitHome)o.OIReplicaKitHome;
                     }
                     else if (o.OIReplicaKitCup != null && o.OIReplicaKitCup.IsActive)
                     {
-                        oiReplicaKit = (OrderItem_ReplicaKitCup)o.OIReplicaKitCup;
+                        oiReplicaKit = (OrdrItmReplicaKitCup)o.OIReplicaKitCup;
                     }
                     else if (o.OIReplicaKitAway != null && o.OIReplicaKitAway.IsActive)
                     {
-                        oiReplicaKit = (OrderItem_ReplicaKitAway)o.OIReplicaKitAway;
+                        oiReplicaKit = (OrdrItemReplicaKitAway)o.OIReplicaKitAway;
                     }
                     else
                     {
@@ -101,11 +101,11 @@ namespace iArsenal.Web
                     float price = 0f;
                     string priceInfo = string.Empty;
 
-                    OrderItem_PlayerNumber oiNumber = o.OIPlayerNumber;
-                    OrderItem_PlayerName oiName = o.OIPlayerName;
-                    OrderItem_ArsenalFont oiFont = o.OIArsenalFont; ;
-                    OrderItem_PremiershipPatch oiPremierPatch = o.OIPremiershipPatch;
-                    OrderItem_ChampionshipPatch oiChampionPatch = o.OIChampionshipPatch;
+                    OrdrItmPlayerNumber oiNumber = o.OIPlayerNumber;
+                    OrdrItmPlayerName oiName = o.OIPlayerName;
+                    OrdrItmArsenalFont oiFont = o.OIArsenalFont; ;
+                    OrdrItmPremiershipPatch oiPremierPatch = o.OIPremiershipPatch;
+                    OrdrItmChampionshipPatch oiChampionPatch = o.OIChampionshipPatch;
 
                     lblOrderItem_ReplicaKit.Text = string.Format("<em>{0}</em>", oiReplicaKit.ProductName);
                     tbOrderItem_ReplicaKit.Text = oiReplicaKit.ProductGuid.ToString();

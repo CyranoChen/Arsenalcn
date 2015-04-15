@@ -381,45 +381,54 @@ namespace iArsenal.Web
 
                         if (cbPartner.Checked)
                         {
-                            Partner p = new Partner();
+                            OrdrItmTravelPartner oiPartner = new OrdrItmTravelPartner();
+
+                            Partner pa = new Partner();
 
                             if (!string.IsNullOrEmpty(tbPartnerName.Text.Trim()))
-                                p.Name = tbPartnerName.Text.Trim();
+                                pa.Name = tbPartnerName.Text.Trim();
                             else
                                 throw new Exception("请填写同伴姓名");
 
                             if (!string.IsNullOrEmpty(ddlPartnerRelation.SelectedValue))
-                                p.Relation = int.Parse(ddlPartnerRelation.SelectedValue);
+                                pa.Relation = int.Parse(ddlPartnerRelation.SelectedValue);
                             else
                                 throw new Exception("请选择同伴关系");
 
                             if (!string.IsNullOrEmpty(rblPartnerGender.SelectedValue))
-                                p.Gender = bool.Parse(rblPartnerGender.SelectedValue);
+                                pa.Gender = bool.Parse(rblPartnerGender.SelectedValue);
                             else
-                                p.Gender = true;
+                                pa.Gender = true;
 
                             if (!string.IsNullOrEmpty(tbPartnerIDCardNo.Text.Trim()))
-                                p.IDCardNo = tbPartnerIDCardNo.Text.Trim();
+                                pa.IDCardNo = tbPartnerIDCardNo.Text.Trim();
                             else
                                 throw new Exception("请填写同伴身份证");
 
                             if (!string.IsNullOrEmpty(tbPartnerPassportNo.Text.Trim()))
-                                p.PassportNo = tbPartnerPassportNo.Text.Trim();
+                                pa.PassportNo = tbPartnerPassportNo.Text.Trim();
                             else
                                 throw new Exception("请填写同伴护照号码");
 
                             if (!string.IsNullOrEmpty(tbPartnerPassportName.Text.Trim()))
-                                p.PassportName = tbPartnerPassportName.Text.Trim();
+                                pa.PassportName = tbPartnerPassportName.Text.Trim();
                             else
                                 throw new Exception("请填写同伴护照姓名");
 
-                            OrderItem_TravelPartner oiPartner = new OrderItem_TravelPartner();
-                            oiPartner.Insert(m, pTravelPartner, o, string.Empty, 1, null,
-                                new JavaScriptSerializer().Serialize(p), trans);
+                            oiPartner.Partner = pa;
+
+                            oiPartner.OrderID = o.OrderID;
+                            oiPartner.Size = string.Empty;
+                            oiPartner.Quantity = 1;
+                            oiPartner.Sale = null;
+
+                            oiPartner.Place(m, trans);
                         }
 
-                        // Get the value of IsTicket
+                        // Generate OrderItemTravelPlan
+                        OrdrItemTravelPlan2015AsiaTrophy oiPlan = new OrdrItemTravelPlan2015AsiaTrophy();
 
+                        // Get the value of IsTicket
                         bool _isTicket;
 
                         if (!string.IsNullOrEmpty(rblIsTicketOnly.SelectedValue))
@@ -461,9 +470,14 @@ namespace iArsenal.Web
                             to.IsSingapore = cblTravelOption.Items.FindByValue("SINGAPORE").Selected;
                         }
 
-                        OrderItem_TravelPlan_2015AsiaTrophy oiPlan = new OrderItem_TravelPlan_2015AsiaTrophy();
-                        oiPlan.Insert(m, pTravelPlan, o, _isTicket.ToString(), 1, null,
-                            new JavaScriptSerializer().Serialize(to), trans);
+                        oiPlan.IsTicketOnly = _isTicket;
+                        oiPlan.TravelOption = to;
+
+                        oiPlan.OrderID = o.OrderID;
+                        oiPlan.Quantity = 1;
+                        oiPlan.Sale = null;
+
+                        oiPlan.Place(m, trans);
                     }
 
                     trans.Commit();

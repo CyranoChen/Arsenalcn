@@ -427,6 +427,8 @@ namespace iArsenal.Web
                         }
 
                         //New Order Items
+                        OrdrItmMemberShip oi = new OrdrItmMemberShip();
+
                         if (!string.IsNullOrEmpty(tbMemberClass.Text.Trim()))
                         {
                             ProductType _currProductType = (ProductType)Enum.Parse(typeof(ProductType), tbMemberClass.Text.Trim());
@@ -439,16 +441,20 @@ namespace iArsenal.Web
                             int _cardNo = 0;
                             if (!string.IsNullOrEmpty(tbMemberCardNo.Text.Trim()) && int.TryParse(tbMemberCardNo.Text.Trim(), out _cardNo))
                             {
-
+                                oi.MemberCardNo = _cardNo.ToString();
                             }
                             else
                             {
                                 throw new Exception("请正确填写会员卡号");
                             }
 
-                            OrdrItmMemberShip oi = new OrdrItmMemberShip();
-                            oi.Insert(m, pMembership, o, CurrSeasonDeadline.ToString("yyyy-MM-dd"), 1, null, _cardNo.ToString(), trans);
+                            oi.EndDate = CurrSeasonDeadline;
 
+                            oi.OrderID = o.OrderID;
+                            oi.Quantity = 1;
+                            oi.Sale = null;
+
+                            oi.Place(m, pMembership, trans);
                         }
                         else
                         {

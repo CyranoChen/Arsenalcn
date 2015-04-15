@@ -38,6 +38,14 @@ namespace iArsenal.Entity
             base.Mapper(obj);
         }
 
+        public override void Place(Member m, Product p, System.Data.SqlClient.SqlTransaction trans = null)
+        {
+            this.Remark = MemberCardNo;
+            this.Size = EndDate.ToString("yyyy-MM-dd");
+
+            base.Place(m, p, trans);
+        }
+
         #region Members and Properties
 
         public string MemberCardNo { get; set; }
@@ -71,6 +79,14 @@ namespace iArsenal.Entity
             base.Mapper(obj);
             this.Init();
         }
+
+        public void Place(Member m, System.Data.SqlClient.SqlTransaction trans = null)
+        {
+            Product product = Product.Cache.ProductList.Find(p =>
+                p.ProductType.Equals(ProductType.MemberShipCore));
+
+            base.Place(m, product, trans);
+        }
     }
 
     public class OrdrItmMemShipPremier : OrdrItmMemberShip
@@ -94,6 +110,14 @@ namespace iArsenal.Entity
         {
             base.Mapper(obj);
             this.Init();
+        }
+
+        public void Place(Member m, System.Data.SqlClient.SqlTransaction trans = null)
+        {
+            Product product = Product.Cache.ProductList.Find(p =>
+                p.ProductType.Equals(ProductType.MemberShipPremier));
+
+            base.Place(m, product, trans);
         }
     }
 }

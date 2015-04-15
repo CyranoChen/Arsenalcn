@@ -216,7 +216,11 @@ namespace iArsenal.Web
 
                                 if (p != null && p.IsActive && p.ProductType.Equals(ProductType.Other))
                                 {
-                                    oi.Insert(m, p, o, oi.Size != null ? oi.Size : string.Empty, oi.Quantity, oi.Sale, oi.Remark != null ? oi.Remark : string.Empty, trans);
+                                    oi.Size = (oi.Size != null) ? oi.Size : string.Empty;
+                                    oi.Remark = (oi.Remark != null) ? oi.Remark : string.Empty;
+                                    oi.OrderID = o.OrderID;
+
+                                    oi.Place(m, p, trans);
                                 }
                                 else
                                 {
@@ -233,8 +237,8 @@ namespace iArsenal.Web
                                 oi.IsActive = true;
                                 //oi.Code = oi.Code;
                                 oi.ProductGuid = Guid.Empty;
-                                oi.ProductName = oi.ProductName != null ? oi.ProductName : string.Empty;
-                                oi.Size = oi.Size != null ? oi.Size : string.Empty;
+                                oi.ProductName = (oi.ProductName != null) ? oi.ProductName : string.Empty;
+                                oi.Size = (oi.Size != null) ? oi.Size : string.Empty;
                                 //oi.Quantity = oi.Quantity;
                                 oi.Sale = null;
                                 oi.Remark = new JavaScriptSerializer().Serialize(oi);

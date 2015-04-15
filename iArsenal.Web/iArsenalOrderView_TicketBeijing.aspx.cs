@@ -91,7 +91,7 @@ namespace iArsenal.Web
                     float price = 0f;
                     string priceInfo = string.Empty;
 
-                    OrderItem_TicketBeijing oiTicket = o.OITicketBeijing;
+                    OrdrItm2012TicketBeijing oiTicket = o.OITicketBeijing;
                     if (oiTicket != null && oiTicket.IsActive)
                     {
                         lblOrderItem_TicketBeijing.Text = string.Format("<em>{0}</em>", oiTicket.ProductName);

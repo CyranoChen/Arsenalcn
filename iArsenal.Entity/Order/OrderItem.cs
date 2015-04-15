@@ -142,24 +142,25 @@ namespace iArsenal.Entity
             return count;
         }
 
-        public virtual void Insert(Member m, Product p, Order o, string size, int quantity, float? sale, string remark, SqlTransaction trans = null)
+        public virtual void Place(Member m, Product p, SqlTransaction trans = null)
         {
-            OrderItem oi = new OrderItem();
-            oi.MemberID = m.MemberID;
-            oi.MemberName = m.Name;
-            oi.OrderID = o.OrderID;
-            oi.ProductGuid = p.ProductGuid;
-            oi.Code = p.Code;
-            oi.ProductName = string.Format("{0} ({1})", p.DisplayName, p.Name);
-            oi.Size = size;
-            oi.UnitPrice = p.PriceCNY;
-            oi.Quantity = quantity;
-            oi.Sale = sale;
-            oi.CreateTime = DateTime.Now;
-            oi.IsActive = true;
-            oi.Remark = remark;
+            MemberID = m.MemberID;
+            MemberName = m.Name;
+            //oi.OrderID = o.OrderID;
 
-            oi.Insert(trans);
+            ProductGuid = p.ProductGuid;
+            Code = p.Code;
+            ProductName = string.Format("{0} ({1})", p.DisplayName, p.Name);
+            //oi.Size = size;
+            UnitPrice = p.PriceCNY;
+
+            //oi.Quantity = quantity;
+            //oi.Sale = sale;
+            CreateTime = DateTime.Now;
+            IsActive = true;
+            //oi.Remark = remark;
+
+            this.Insert(trans);
         }
 
         #region Members and Properties

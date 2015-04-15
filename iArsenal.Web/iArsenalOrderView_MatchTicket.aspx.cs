@@ -129,7 +129,7 @@ namespace iArsenal.Web
                     float price = 0f;
                     string priceInfo = string.Empty;
 
-                    OrderItem_MatchTicket oiMatchTicket = o.OIMatchTicket;
+                    OrdrItmMatchTicket oiMatchTicket = o.OIMatchTicket;
 
                     // Get Order MatchTicket Info
 

@@ -356,26 +356,26 @@ namespace iArsenal.Web
 
                                 if (oReplicaKit.OIReplicaKitHome != null && oReplicaKit.OIReplicaKitHome.IsActive)
                                 {
-                                    oiReplicaKit = (OrderItem_ReplicaKitHome)oReplicaKit.OIReplicaKitHome;
+                                    oiReplicaKit = (OrdrItmReplicaKitHome)oReplicaKit.OIReplicaKitHome;
                                 }
                                 else if (oReplicaKit.OIReplicaKitAway != null && oReplicaKit.OIReplicaKitAway.IsActive)
                                 {
-                                    oiReplicaKit = (OrderItem_ReplicaKitAway)oReplicaKit.OIReplicaKitAway;
+                                    oiReplicaKit = (OrdrItemReplicaKitAway)oReplicaKit.OIReplicaKitAway;
                                 }
                                 else if (oReplicaKit.OIReplicaKitCup != null && oReplicaKit.OIReplicaKitCup.IsActive)
                                 {
-                                    oiReplicaKit = (OrderItem_ReplicaKitCup)oReplicaKit.OIReplicaKitCup;
+                                    oiReplicaKit = (OrdrItmReplicaKitCup)oReplicaKit.OIReplicaKitCup;
                                 }
                                 else
                                 {
                                     throw new Exception(string.Format("此订单未购买球衣商品(OrderID:{0})", oReplicaKit.OrderID.ToString()));
                                 }
 
-                                OrderItem_PlayerNumber oiNumber = oReplicaKit.OIPlayerNumber;
-                                OrderItem_PlayerName oiName = oReplicaKit.OIPlayerName;
-                                OrderItem_ArsenalFont oiFont = oReplicaKit.OIArsenalFont; ;
-                                OrderItem_PremiershipPatch oiPremierPatch = oReplicaKit.OIPremiershipPatch;
-                                OrderItem_ChampionshipPatch oiChampionPatch = oReplicaKit.OIChampionshipPatch;
+                                OrdrItmPlayerNumber oiNumber = oReplicaKit.OIPlayerNumber;
+                                OrdrItmPlayerName oiName = oReplicaKit.OIPlayerName;
+                                OrdrItmArsenalFont oiFont = oReplicaKit.OIArsenalFont; ;
+                                OrdrItmPremiershipPatch oiPremierPatch = oReplicaKit.OIPremiershipPatch;
+                                OrdrItmChampionshipPatch oiChampionPatch = oReplicaKit.OIChampionshipPatch;
 
                                 // get Member Info By Order
                                 m.MemberID = o.MemberID;

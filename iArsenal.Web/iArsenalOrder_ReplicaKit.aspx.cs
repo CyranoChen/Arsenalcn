@@ -73,11 +73,11 @@ namespace iArsenal.Web
 
                     if (o.OIReplicaKitAway != null && o.OIReplicaKitAway.IsActive)
                     {
-                        oi_ReplicaKit = (OrderItem_ReplicaKitAway)o.OIReplicaKitAway;
+                        oi_ReplicaKit = (OrdrItemReplicaKitAway)o.OIReplicaKitAway;
                     }
                     else if (o.OIReplicaKitHome != null && o.OIReplicaKitHome.IsActive)
                     {
-                        oi_ReplicaKit = (OrderItem_ReplicaKitHome)o.OIReplicaKitHome;
+                        oi_ReplicaKit = (OrdrItmReplicaKitHome)o.OIReplicaKitHome;
                     }
                     else
                     {
@@ -165,15 +165,15 @@ namespace iArsenal.Web
 
                     if (CurrProductType.Equals(ProductType.ReplicaKitAway))
                     {
-                        oiReplicaKit = (OrderItem_ReplicaKitAway)o.OIReplicaKitAway;
+                        oiReplicaKit = (OrdrItemReplicaKitAway)o.OIReplicaKitAway;
                     }
                     else if (o.OIReplicaKitCup != null && o.OIReplicaKitCup.IsActive)
                     {
-                        oiReplicaKit = (OrderItem_ReplicaKitCup)o.OIReplicaKitCup;
+                        oiReplicaKit = (OrdrItmReplicaKitCup)o.OIReplicaKitCup;
                     }
                     else if (CurrProductType.Equals(ProductType.ReplicaKitHome))
                     {
-                        oiReplicaKit = (OrderItem_ReplicaKitHome)o.OIReplicaKitHome;
+                        oiReplicaKit = (OrdrItmReplicaKitHome)o.OIReplicaKitHome;
                     }
                     else
                     {
@@ -235,11 +235,11 @@ namespace iArsenal.Web
                         trAlipay.Style.Add("display", "none");
                     }
 
-                    OrderItem_PlayerNumber oiNumber = o.OIPlayerNumber;
-                    OrderItem_PlayerName oiName = o.OIPlayerName;
-                    OrderItem_ArsenalFont oiFont = o.OIArsenalFont; ;
-                    OrderItem_PremiershipPatch oiPremierPatch = o.OIPremiershipPatch;
-                    OrderItem_ChampionshipPatch oiChampionPatch = o.OIChampionshipPatch;
+                    OrdrItmPlayerNumber oiNumber = o.OIPlayerNumber;
+                    OrdrItmPlayerName oiName = o.OIPlayerName;
+                    OrdrItmArsenalFont oiFont = o.OIArsenalFont; ;
+                    OrdrItmPremiershipPatch oiPremierPatch = o.OIPremiershipPatch;
+                    OrdrItmChampionshipPatch oiChampionPatch = o.OIChampionshipPatch;
 
                     Product p = Product.Cache.Load(oiReplicaKit.ProductGuid);
 
@@ -452,11 +452,18 @@ namespace iArsenal.Web
                         //New Order Item for ReplicaKit
                         Product pReplicaKit = Product.Cache.Load(new Guid(ddlReplicaKit.SelectedValue));
 
+                        OrdrItmReplicaKit oi = new OrdrItmReplicaKit();
+
                         if (pReplicaKit == null)
                             throw new Exception("无相关纪念品或缺货，请联系管理员");
 
-                        OrderItem_ReplicaKit oi = new OrderItem_ReplicaKit();
-                        oi.Insert(m, pReplicaKit, o, tbOrderItemSize.Text.Trim().ToUpper(), 1, null, string.Empty, trans);
+                        oi.OrderID = o.OrderID;
+                        oi.Size = tbOrderItemSize.Text.Trim().ToUpper();
+                        oi.Quantity = 1;
+                        oi.Sale = null;
+                        oi.Remark = string.Empty;
+
+                        oi.Place(m, pReplicaKit, trans);
 
                         // New Order Item for Home Player Number & Name
                         if (!string.IsNullOrEmpty(ddlPlayerDetail.SelectedValue))
@@ -466,6 +473,22 @@ namespace iArsenal.Web
 
                             if (pNumber == null || pName == null)
                                 throw new Exception("无印号信息，请联系管理员");
+
+                            OrdrItmArsenalFont oiFont = new OrdrItmArsenalFont();
+                            OrdrItmPlayerNumber oiNumber = new OrdrItmPlayerNumber();
+                            OrdrItmPlayerName oiName = new OrdrItmPlayerName();
+
+                            oiFont.OrderID = o.OrderID;
+                            oiFont.Size = string.Empty;
+                            oiFont.Quantity = 1;
+                            oiFont.Sale = null;
+                            oiFont.Remark = string.Empty;
+
+                            oiNumber.OrderID = o.OrderID;
+                            oiNumber.Quantity = 1;
+
+                            oiName.OrderID = o.OrderID;
+                            oiName.Quantity = 1;
 
                             if (ddlPlayerDetail.SelectedValue.Equals("custom"))
                             {
@@ -482,22 +505,29 @@ namespace iArsenal.Web
                                     if (pFont == null)
                                         throw new Exception("无特殊字体信息，请联系管理员");
 
-                                    OrderItem_ArsenalFont oiFont = new OrderItem_ArsenalFont();
-                                    oiFont.Insert(m, pFont, o, string.Empty, 1, null, string.Empty, trans);
+                                    oiFont.Place(m, trans);
 
-                                    OrderItem_PlayerNumber oiNumber = new OrderItem_PlayerNumber();
-                                    oiNumber.Insert(m, pNumber, o, tbPlayerNumber.Text.Trim(), 1, 0f, "CUSTOM", trans);
+                                    oiNumber.Size = tbPlayerNumber.Text.Trim();
+                                    oiNumber.Sale = 0f;
+                                    oiNumber.Remark = "CUSTOM";
+                                    oiNumber.Place(m, trans);
 
-                                    OrderItem_PlayerName oiName = new OrderItem_PlayerName();
-                                    oiName.Insert(m, pName, o, tbPlayerName.Text.Trim(), 1, 0f, "CUSTOM", trans);
+                                    oiName.Size = tbPlayerName.Text.Trim();
+                                    oiName.Sale = 0f;
+                                    oiName.Remark = "CUSTOM";
+                                    oiName.Place(m, trans);
                                 }
                                 else
                                 {
-                                    OrderItem_PlayerNumber oiNumber = new OrderItem_PlayerNumber();
-                                    oiNumber.Insert(m, pNumber, o, tbPlayerNumber.Text.Trim(), 1, null, "CUSTOM", trans);
+                                    oiNumber.Size = tbPlayerNumber.Text.Trim();
+                                    oiNumber.Sale = null;
+                                    oiNumber.Remark = "CUSTOM";
+                                    oiNumber.Place(m, trans);
 
-                                    OrderItem_PlayerName oiName = new OrderItem_PlayerName();
-                                    oiName.Insert(m, pName, o, tbPlayerName.Text.Trim(), 1, null, "CUSTOM", trans);
+                                    oiName.Size = tbPlayerName.Text.Trim();
+                                    oiName.Sale = null;
+                                    oiName.Remark = "CUSTOM";
+                                    oiName.Place(m, trans);
                                 }
                             }
                             else
@@ -518,22 +548,29 @@ namespace iArsenal.Web
                                     if (pFont == null)
                                         throw new Exception("无特殊字体信息，请联系管理员");
 
-                                    OrderItem_ArsenalFont oiFont = new OrderItem_ArsenalFont();
-                                    oiFont.Insert(m, pFont, o, string.Empty, 1, null, string.Empty, trans);
+                                    oiFont.Place(m, trans);
 
-                                    OrderItem_PlayerNumber oiNumber = new OrderItem_PlayerNumber();
-                                    oiNumber.Insert(m, pNumber, o, player.SquadNumber.ToString(), 1, 0f, player.PlayerGuid.ToString(), trans);
+                                    oiNumber.Size = player.SquadNumber.ToString();
+                                    oiNumber.Sale = 0f;
+                                    oiNumber.Remark = player.PlayerGuid.ToString();
+                                    oiNumber.Place(m, trans);
 
-                                    OrderItem_PlayerName oiName = new OrderItem_PlayerName();
-                                    oiName.Insert(m, pName, o, _printingName, 1, 0f, player.PlayerGuid.ToString(), trans);
+                                    oiName.Size = _printingName;
+                                    oiName.Sale = 0f;
+                                    oiName.Remark = player.PlayerGuid.ToString();
+                                    oiName.Place(m, trans);
                                 }
                                 else
                                 {
-                                    OrderItem_PlayerNumber oiNumber = new OrderItem_PlayerNumber();
-                                    oiNumber.Insert(m, pNumber, o, player.SquadNumber.ToString(), 1, null, player.PlayerGuid.ToString(), trans);
+                                    oiNumber.Size = player.SquadNumber.ToString();
+                                    oiNumber.Sale = null;
+                                    oiNumber.Remark = player.PlayerGuid.ToString();
+                                    oiNumber.Place(m, trans);
 
-                                    OrderItem_PlayerName oiName = new OrderItem_PlayerName();
-                                    oiName.Insert(m, pName, o, _printingName, 1, null, player.PlayerGuid.ToString(), trans);
+                                    oiName.Size = _printingName;
+                                    oiName.Sale = null;
+                                    oiName.Remark = player.PlayerGuid.ToString();
+                                    oiName.Place(m, trans);
                                 }
                             }
                         }
@@ -546,8 +583,15 @@ namespace iArsenal.Web
                             if (pPremierPatch == null)
                                 throw new Exception("无英超袖标信息，请联系管理员");
 
-                            OrderItem_PremiershipPatch oiPremierPatch = new OrderItem_PremiershipPatch();
-                            oiPremierPatch.Insert(m, pPremierPatch, o, string.Empty, Convert.ToInt32(rblPremierPatch.SelectedValue), null, string.Empty, trans);
+                            OrdrItmPremiershipPatch oiPremierPatch = new OrdrItmPremiershipPatch();
+
+                            oiPremierPatch.OrderID = o.OrderID;
+                            oiPremierPatch.Size = string.Empty;
+                            oiPremierPatch.Quantity = Convert.ToInt32(rblPremierPatch.SelectedValue);
+                            oiPremierPatch.Sale = null;
+                            oiPremierPatch.Remark = string.Empty;
+
+                            oiPremierPatch.Place(m, trans);
                         }
 
                         // New Order Item for Championship Patch
@@ -558,8 +602,15 @@ namespace iArsenal.Web
                             if (pChampionPatch == null)
                                 throw new Exception("无欧冠袖标信息，请联系管理员");
 
-                            OrderItem_ChampionshipPatch oiChampionShipPatch = new OrderItem_ChampionshipPatch();
-                            oiChampionShipPatch.Insert(m, pChampionPatch, o, string.Empty, Convert.ToInt32(rblChampionPatch.SelectedValue), null, string.Empty, trans);
+                            OrdrItmChampionshipPatch oiChampionShipPatch = new OrdrItmChampionshipPatch();
+
+                            oiChampionShipPatch.OrderID = o.OrderID;
+                            oiChampionShipPatch.Size = string.Empty;
+                            oiChampionShipPatch.Quantity = Convert.ToInt32(rblPremierPatch.SelectedValue);
+                            oiChampionShipPatch.Sale = null;
+                            oiChampionShipPatch.Remark = string.Empty;
+
+                            oiChampionShipPatch.Place(m, trans);
                         }
                     }
 

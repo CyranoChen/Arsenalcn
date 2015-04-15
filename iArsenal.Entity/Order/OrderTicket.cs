@@ -18,10 +18,10 @@ namespace iArsenal.Entity
                 OrderItem oiBase = null;
 
                 oiBase = oiList.Find(oi => Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.MatchTicket));
-                if (oiBase != null) { OIMatchTicket = new OrderItem_MatchTicket(oiBase.OrderItemID); }
+                if (oiBase != null) { OIMatchTicket = new OrdrItmMatchTicket(oiBase.OrderItemID); }
 
                 oiBase = oiList.Find(oi => Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.TicketBeijing));
-                if (oiBase != null) { OITicketBeijing = new OrderItem_TicketBeijing(oiBase.OrderItemID); }
+                if (oiBase != null) { OITicketBeijing = new OrdrItm2012TicketBeijing(oiBase.OrderItemID); }
 
                 if (OIMatchTicket != null)
                 {
@@ -57,9 +57,9 @@ namespace iArsenal.Entity
 
         #region Members and Properties
 
-        public OrderItem_MatchTicket OIMatchTicket { get; set; }
+        public OrdrItmMatchTicket OIMatchTicket { get; set; }
 
-        public OrderItem_TicketBeijing OITicketBeijing { get; set; }
+        public OrdrItm2012TicketBeijing OITicketBeijing { get; set; }
 
         #endregion
 

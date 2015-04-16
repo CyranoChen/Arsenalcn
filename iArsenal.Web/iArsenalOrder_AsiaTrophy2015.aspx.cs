@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Web.Script.Serialization;
 
 using iArsenal.Entity;
 
@@ -116,22 +115,24 @@ namespace iArsenal.Web
                             throw new Exception("此订单无效或非当前用户订单");
                     }
 
-                    OrderItem oiTP = o.OITravelPlan;
-                    List<OrderItem> listPartner = o.OITravelPartnerList.FindAll(oi =>
+                    OrdrItmTravelPlan2015AsiaTrophy oiTP = new OrdrItmTravelPlan2015AsiaTrophy();
+                    oiTP.Mapper(o.OITravelPlan);
+
+                    List<OrdrItmTravelPartner> listPartner = o.OITravelPartnerList.FindAll(oi =>
                         oi.IsActive && !string.IsNullOrEmpty(oi.Remark));
 
                     if (oiTP != null && oiTP.IsActive)
                     {
                         // Set IsTicket
 
-                        cblTravelOption.SelectedValue = Convert.ToBoolean(oiTP.Size) ? "Ticket" : "Tour";
+                        cblTravelOption.SelectedValue = oiTP.IsTicketOnly ? "Ticket" : "Tour";
 
                         // Set Order Travel Option
 
-                        if (!string.IsNullOrEmpty(oiTP.Remark))
-                        {
-                            TravelOption to = new JavaScriptSerializer().Deserialize<TravelOption>(oiTP.Remark);
+                        TravelOption to = oiTP.TravelOption;
 
+                        if (to != null)
+                        {
                             cbMatch1.Checked = to.MatchOption.Equals(MatchOption.All) || to.MatchOption.Equals(MatchOption.First);
                             cbMatch2.Checked = to.MatchOption.Equals(MatchOption.All) || to.MatchOption.Equals(MatchOption.Second);
 
@@ -150,11 +151,8 @@ namespace iArsenal.Web
                     if (listPartner != null && listPartner.Count > 0)
                     {
                         cbPartner.Checked = true;
-                        var oiPartner = (OrderItem)listPartner[0];
 
-                        // Partner JSON Schema: {  "Name": "Cyrano",  "Relation": "1", "Gender": "0", "IDCardNo": "310101XXXX", "PassportNo": "", "PassportName","" }
-                        // jsonSerializer.Deserialize String Partner
-                        Partner pa = new JavaScriptSerializer().Deserialize<Partner>(oiPartner.Remark);
+                        Partner pa = listPartner[0].Partner;
 
                         if (pa != null)
                         {
@@ -371,11 +369,11 @@ namespace iArsenal.Web
                         }
 
                         //New Order Items
-                        Product pTravelPlan = Product.Cache.Load("2015ATPL");
-                        Product pTravelPartner = Product.Cache.Load("2015ATPA");
+                        //Product pTravelPlan = Product.Cache.Load("2015ATPL");
+                        //Product pTravelPartner = Product.Cache.Load("2015ATPA");
 
-                        if (pTravelPlan == null || pTravelPartner == null)
-                            throw new Exception("无观赛信息，请联系管理员");
+                        //if (pTravelPlan == null || pTravelPartner == null)
+                        //    throw new Exception("无观赛信息，请联系管理员");
 
                         // Get Partner Information to Serialize Json
 
@@ -426,7 +424,7 @@ namespace iArsenal.Web
                         }
 
                         // Generate OrderItemTravelPlan
-                        OrdrItemTravelPlan2015AsiaTrophy oiPlan = new OrdrItemTravelPlan2015AsiaTrophy();
+                        OrdrItmTravelPlan2015AsiaTrophy oiPlan = new OrdrItmTravelPlan2015AsiaTrophy();
 
                         // Get the value of IsTicket
                         bool _isTicket;

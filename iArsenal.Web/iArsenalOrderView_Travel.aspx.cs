@@ -127,7 +127,7 @@ namespace iArsenal.Web
                     string priceInfo = string.Empty;
 
                     OrderItem oiETPL = o.OITravelPlan;
-                    List<OrderItem> listPartner = o.OITravelPartnerList.FindAll(oi =>
+                    List<OrdrItmTravelPartner> listPartner = o.OITravelPartnerList.FindAll(oi =>
                         oi.IsActive && !string.IsNullOrEmpty(oi.Remark));
 
                     if (oiETPL != null && oiETPL.IsActive)

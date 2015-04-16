@@ -53,7 +53,7 @@ namespace iArsenal.Web
                     }
                     else if (o.OIReplicaKitAway != null && o.OIReplicaKitAway.IsActive)
                     {
-                        oiReplicaKit = (OrdrItemReplicaKitAway)o.OIReplicaKitAway;
+                        oiReplicaKit = (OrdrItmReplicaKitAway)o.OIReplicaKitAway;
                     }
                     else
                     {

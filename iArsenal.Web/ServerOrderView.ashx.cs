@@ -20,9 +20,9 @@ namespace iArsenal.Web
 
                     if (o != null)
                     {
-                        if (!string.IsNullOrEmpty(o.URLOrderView))
+                        if (!string.IsNullOrEmpty(o.UrlOrderView))
                         {
-                            context.Response.Redirect(string.Format("{0}?OrderID={1}", o.URLOrderView, o.OrderID.ToString()), false);
+                            context.Response.Redirect(string.Format("{0}?OrderID={1}", o.UrlOrderView, o.OrderID.ToString()), false);
                             context.ApplicationInstance.CompleteRequest();
                         }
                         else

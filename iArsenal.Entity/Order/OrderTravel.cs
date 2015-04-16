@@ -19,13 +19,26 @@ namespace iArsenal.Entity
                 OrderItem oiBase = null;
 
                 oiBase = oiList.Find(oi => Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.TravelPlan));
-                if (oiBase != null) { OITravelPlan = new OrdrItmTravelPlan(oiBase.OrderItemID); }
+                if (oiBase != null)
+                {
+                    OITravelPlan = new OrdrItmTravelPlan();
+                    OITravelPlan.Mapper(oiBase);
+                }
 
                 if (OITravelPlan != null)
                 {
-                    OITravelPartnerList = oiList.FindAll(oi => Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.TravelPartner));
+                    List<OrderItem> oiPartnerList = oiList.FindAll(oi => Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.TravelPartner));
+                    OITravelPartnerList = new List<OrdrItmTravelPartner>();
 
-                    base.URLOrderView = "iArsenalOrderView_Travel.aspx";
+                    foreach(OrderItem oi in oiPartnerList)
+                    {
+                        var oiPartner = new OrdrItmTravelPartner();
+                        oiPartner.Mapper(oi);
+
+                        OITravelPartnerList.Add(oiPartner);
+                    }
+
+                    base.UrlOrderView = "iArsenalOrderView_Travel.aspx";
                 }
                 else
                 {
@@ -54,7 +67,7 @@ namespace iArsenal.Entity
 
         public OrdrItmTravelPlan OITravelPlan { get; set; }
 
-        public List<OrderItem> OITravelPartnerList { get; set; }
+        public List<OrdrItmTravelPartner> OITravelPartnerList { get; set; }
 
         #endregion
 

@@ -23,6 +23,7 @@ namespace iArsenal.Entity
         public override void Mapper(object obj)
         {
             base.Mapper(obj);
+            this.Init();
         }
 
         public override void Place(Member m, Product p, System.Data.SqlClient.SqlTransaction trans = null)
@@ -79,7 +80,15 @@ namespace iArsenal.Entity
         public void Place(Member m, System.Data.SqlClient.SqlTransaction trans = null)
         {
             this.Size = string.Format("{0}|{1}", TravelFromDate.ToString("yyyy-MM-dd"), TravelToDate.ToString("yyyy-MM-dd"));
-            this.Remark = string.Join("|", TravelOption);
+
+            if (TravelOption != null)
+            {
+                this.Remark = string.Join("|", TravelOption);
+            }
+            else
+            {
+                this.Remark = string.Empty;
+            }
 
             Product product = Product.Cache.ProductList.Find(p =>
                 p.ProductType.Equals(ProductType.TravelPlan));
@@ -98,11 +107,11 @@ namespace iArsenal.Entity
         #endregion
     }
 
-    public class OrdrItemTravelPlan2015AsiaTrophy : OrdrItmTravelPlan
+    public class OrdrItmTravelPlan2015AsiaTrophy : OrdrItmTravelPlan
     {
-        public OrdrItemTravelPlan2015AsiaTrophy() { }
+        public OrdrItmTravelPlan2015AsiaTrophy() { }
 
-        public OrdrItemTravelPlan2015AsiaTrophy(int id) : base(id) { this.Init(); }
+        public OrdrItmTravelPlan2015AsiaTrophy(int id) : base(id) { this.Init(); }
 
         private void Init()
         {

@@ -18,14 +18,22 @@ namespace iArsenal.Entity
                 OrderItem oiBase = null;
 
                 oiBase = oiList.Find(oi => Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.MemberShipCore));
-                if (oiBase != null) { OIMemberShipCore = new OrdrItmMemShipCore(oiBase.OrderItemID); }
+                if (oiBase != null)
+                {
+                    OIMemberShipCore = new OrdrItmMemShipCore();
+                    OIMemberShipCore.Mapper(oiBase);
+                }
 
                 oiBase = oiList.Find(oi => Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.MemberShipPremier));
-                if (oiBase != null) { OIMemberShipPremier = new OrdrItmMemShipPremier(oiBase.OrderItemID); }
+                if (oiBase != null)
+                {
+                    OIMemberShipPremier = new OrdrItmMemShipPremier();
+                    OIMemberShipPremier.Mapper(oiBase);
+                }
 
                 if (OIMemberShipCore != null || OIMemberShipPremier != null)
                 {
-                    base.URLOrderView = "iArsenalOrderView_MemberShip.aspx";
+                    base.UrlOrderView = "iArsenalOrderView_MemberShip.aspx";
                 }
                 else
                 {

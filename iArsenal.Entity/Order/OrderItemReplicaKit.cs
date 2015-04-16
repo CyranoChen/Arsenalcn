@@ -51,11 +51,11 @@ namespace iArsenal.Entity
         }
     }
 
-    public class OrdrItemReplicaKitAway : OrdrItmReplicaKit
+    public class OrdrItmReplicaKitAway : OrdrItmReplicaKit
     {
-        public OrdrItemReplicaKitAway() { }
+        public OrdrItmReplicaKitAway() { }
 
-        public OrdrItemReplicaKitAway(int id) : base(id) { this.Init(); }
+        public OrdrItmReplicaKitAway(int id) : base(id) { this.Init(); }
 
         private void Init()
         {

@@ -73,7 +73,7 @@ namespace iArsenal.Web
 
                     if (o.OIReplicaKitAway != null && o.OIReplicaKitAway.IsActive)
                     {
-                        oi_ReplicaKit = (OrdrItemReplicaKitAway)o.OIReplicaKitAway;
+                        oi_ReplicaKit = (OrdrItmReplicaKitAway)o.OIReplicaKitAway;
                     }
                     else if (o.OIReplicaKitHome != null && o.OIReplicaKitHome.IsActive)
                     {
@@ -165,7 +165,7 @@ namespace iArsenal.Web
 
                     if (CurrProductType.Equals(ProductType.ReplicaKitAway))
                     {
-                        oiReplicaKit = (OrdrItemReplicaKitAway)o.OIReplicaKitAway;
+                        oiReplicaKit = (OrdrItmReplicaKitAway)o.OIReplicaKitAway;
                     }
                     else if (o.OIReplicaKitCup != null && o.OIReplicaKitCup.IsActive)
                     {

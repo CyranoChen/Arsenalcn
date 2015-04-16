@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Web.Script.Serialization;
 
 using iArsenal.Entity;
 
@@ -38,8 +37,8 @@ namespace iArsenal.Web
                 lblMemberName.Text = string.Format("<b>{0}</b> (<em>NO.{1}</em>)", this.MemberName, this.MID.ToString());
                 lblMemberACNInfo.Text = string.Format("<b>{0}</b> (<em>ID.{1}</em>)", this.Username, this.UID.ToString());
 
-                Product pETPL = Product.Cache.Load(ProductType.TravelPlan).Find(p => p.IsActive && p.Code.Equals("iETPL", StringComparison.OrdinalIgnoreCase));
-                Product pETPA = Product.Cache.Load(ProductType.TravelPartner).Find(p => p.IsActive && p.Code.Equals("iETPA", StringComparison.OrdinalIgnoreCase));
+                Product pETPL = Product.Cache.Load("iETPL");
+                Product pETPA = Product.Cache.Load("iETPA");
 
                 if (pETPL == null || pETPA == null)
                 {
@@ -48,9 +47,6 @@ namespace iArsenal.Web
 
                 if (OrderID > 0)
                 {
-                    //OrderBase o = new OrderBase();
-                    //o.OrderID = OrderID;
-                    //o.Select();
                     OrdrTravel o = new OrdrTravel(OrderID);
 
                     if (ConfigAdmin.IsPluginAdmin(UID) && o != null)
@@ -119,39 +115,29 @@ namespace iArsenal.Web
                             throw new Exception("此订单无效或非当前用户订单");
                     }
 
-                    OrderItem oiETPL = o.OITravelPlan;
-                    List<OrderItem> listPartner = o.OITravelPartnerList.FindAll(oi =>
+                    OrdrItmTravelPlanLondon oiTP = new OrdrItmTravelPlanLondon();
+                    oiTP.Mapper(o.OITravelPlan);
+
+                    List<OrdrItmTravelPartner> listPartner = o.OITravelPartnerList.FindAll(oi =>
                         oi.IsActive && !string.IsNullOrEmpty(oi.Remark));
 
-                    if (oiETPL != null && oiETPL.IsActive)
+                    if (oiTP != null && oiTP.IsActive)
                     {
                         // Set Order Travel Date
-
-                        if (!string.IsNullOrEmpty(oiETPL.Size))
-                        {
-                            tbFromDate.Text = DateTime.Parse(oiETPL.Size.Split('|')[0]).ToString("yyyy-MM-dd");
-                            tbToDate.Text = DateTime.Parse(oiETPL.Size.Split('|')[1]).ToString("yyyy-MM-dd");
-                        }
-                        else
-                        {
-                            tbFromDate.Text = "2013-10-21";
-                            tbToDate.Text = "2013-11-15";
-                        }
+                        tbFromDate.Text = oiTP.TravelFromDate.ToString("yyyy-MM-dd");
+                        tbToDate.Text = oiTP.TravelToDate.ToString("yyyy-MM-dd");
 
                         // Set Order Travel Option
-
-                        if (!string.IsNullOrEmpty(oiETPL.Remark))
+                        for (int j = 0; j < cblTravelOption.Items.Count; j++)
                         {
-                            string[] _strTravelOption = oiETPL.Remark.ToUpper().Split('|');
+                            cblTravelOption.Items[j].Selected = false;
+                        }
 
-                            for (int j = 0; j < cblTravelOption.Items.Count; j++)
+                        if (oiTP.TravelOption != null && oiTP.TravelOption.Length > 0)
+                        {
+                            for (int i = 0; i < oiTP.TravelOption.Length; i++)
                             {
-                                cblTravelOption.Items[j].Selected = false;
-                            }
-
-                            for (int i = 0; i < _strTravelOption.Length; i++)
-                            {
-                                cblTravelOption.Items.FindByValue(_strTravelOption[i]).Selected = true;
+                                cblTravelOption.Items.FindByValue(oiTP.TravelOption[i]).Selected = true;
                             }
                         }
                     }
@@ -163,12 +149,8 @@ namespace iArsenal.Web
                     if (listPartner != null && listPartner.Count > 0)
                     {
                         cbPartner.Checked = true;
-                        var oiPartner = (OrderItem)listPartner[0];
 
-                        // Partner JSON Schema: {  "Name": "Cyrano",  "Relation": "1", "Gender": "0", "IDCardNo": "310101XXXX", "PassportNo": "", "PassportName","" }
-                        // jsonSerializer.Deserialize String Partner
-                        JavaScriptSerializer jsonSerializer = new JavaScriptSerializer();
-                        Partner pa = jsonSerializer.Deserialize<Partner>(oiPartner.Remark);
+                        Partner pa = listPartner[0].Partner;
 
                         if (pa != null)
                         {
@@ -185,7 +167,6 @@ namespace iArsenal.Web
                         {
                             cbPartner.Checked = false;
                         }
-
                     }
                     else
                     {
@@ -386,11 +367,11 @@ namespace iArsenal.Web
                         }
 
                         //New Order Items
-                        Product pETPL = Product.Cache.Load("iETPL");
-                        Product pETPA = Product.Cache.Load("iETPA");
+                        //Product pETPL = Product.Cache.Load("iETPL");
+                        //Product pETPA = Product.Cache.Load("iETPA");
 
-                        if (pETPL == null || pETPA == null)
-                            throw new Exception("无观赛信息，请联系管理员");
+                        //if (pETPL == null || pETPA == null)
+                        //    throw new Exception("无观赛信息，请联系管理员");
 
                         // Get Partner Information to Serialize Json
 
@@ -457,19 +438,17 @@ namespace iArsenal.Web
                         // Generate Travel Option
                         //string _strTravelOption = string.Empty;
 
+                        List<string> listTravelOption = new List<string>();
+
                         for (int i = 0; i < cblTravelOption.Items.Count; i++)
                         {
                             if (cblTravelOption.Items[i].Selected)
                             {
-                                oiPlan.TravelOption[i] = cblTravelOption.Items[i].Value;
-                                //_strTravelOption += string.Format("{0}|", cblTravelOption.Items[i].Value);
+                                listTravelOption.Add(cblTravelOption.Items[i].Value);
                             }
                         }
 
-                        //if (!string.IsNullOrEmpty(_strTravelOption))
-                        //{
-                        //    _strTravelOption = _strTravelOption.Substring(0, _strTravelOption.Length - 1);
-                        //}
+                        oiPlan.TravelOption = listTravelOption.Count > 0 ? listTravelOption.ToArray() : null;
 
                         oiPlan.OrderID = o.OrderID;
                         oiPlan.Quantity = 1;

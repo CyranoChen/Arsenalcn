@@ -59,7 +59,7 @@ namespace iArsenal.Entity
 
                 #region Generate Order URLOrderView
 
-                URLOrderView = string.Empty;
+                UrlOrderView = string.Empty;
 
                 #endregion
 
@@ -380,7 +380,7 @@ namespace iArsenal.Entity
         public OrderBaseType? OrderType
         { get; set; }
 
-        public string URLOrderView
+        public string UrlOrderView
         { get; set; }
 
         #endregion

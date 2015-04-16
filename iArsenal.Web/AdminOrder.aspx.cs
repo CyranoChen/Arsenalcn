@@ -360,7 +360,7 @@ namespace iArsenal.Web
                                 }
                                 else if (oReplicaKit.OIReplicaKitAway != null && oReplicaKit.OIReplicaKitAway.IsActive)
                                 {
-                                    oiReplicaKit = (OrdrItemReplicaKitAway)oReplicaKit.OIReplicaKitAway;
+                                    oiReplicaKit = (OrdrItmReplicaKitAway)oReplicaKit.OIReplicaKitAway;
                                 }
                                 else if (oReplicaKit.OIReplicaKitCup != null && oReplicaKit.OIReplicaKitCup.IsActive)
                                 {

@@ -124,9 +124,11 @@ namespace iArsenal.Web
 
                 if (OrderID > 0)
                 {
-                    Order o = new Order();
-                    o.OrderID = OrderID;
-                    o.Select();
+                    //Order o = new Order();
+                    //o.OrderID = OrderID;
+                    //o.Select();
+
+                    OrdrTicket o = new OrdrTicket(OrderID);
 
                     if (ConfigAdmin.IsPluginAdmin(UID) && o != null)
                     {
@@ -194,13 +196,12 @@ namespace iArsenal.Web
                             throw new Exception("此订单无效或非当前用户订单");
                     }
 
-                    // Get OrderItem by Order ID
-                    OrderItem oi = OrderItem.GetOrderItems(OrderID).Find(oiMatchTicket => oiMatchTicket.IsActive && oiMatchTicket.ProductGuid.Equals(p.ProductGuid));
+                    OrdrItmMatchTicket oi = o.OIMatchTicket;
 
                     if (oi != null)
                     {
                         //tbQuantity.Text = oi.Quantity.ToString();
-                        tbTravelDate.Text = oi.Size.ToString();
+                        tbTravelDate.Text = oi.TravelDate.ToString("yyyy-MM-dd");
                     }
                     else
                     {
@@ -416,10 +417,10 @@ namespace iArsenal.Web
                         }
 
                         //New Order Items
-                        Product p = Product.Cache.Load(mt.ProductCode);
+                        //Product p = Product.Cache.Load(mt.ProductCode);
 
-                        if (p == null)
-                            throw new Exception("无相关商品信息，请联系管理员");
+                        //if (p == null)
+                        //    throw new Exception("无相关商品信息，请联系管理员");
 
                         OrdrItmMatchTicket oi = new OrdrItmMatchTicket();
 

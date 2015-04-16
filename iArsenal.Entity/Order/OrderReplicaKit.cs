@@ -18,32 +18,64 @@ namespace iArsenal.Entity
                 OrderItem oiBase = null;
 
                 oiBase = oiList.Find(oi => Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.ReplicaKitHome));
-                if (oiBase != null) { OIReplicaKitHome = new OrdrItmReplicaKitHome(oiBase.OrderItemID); }
+                if (oiBase != null)
+                {
+                    OIReplicaKitHome = new OrdrItmReplicaKitHome();
+                    OIReplicaKitHome.Mapper(oiBase);
+                }
 
                 oiBase = oiList.Find(oi => Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.ReplicaKitAway));
-                if (oiBase != null) { OIReplicaKitAway = new OrdrItemReplicaKitAway(oiBase.OrderItemID); }
+                if (oiBase != null)
+                {
+                    OIReplicaKitAway = new OrdrItmReplicaKitAway();
+                    OIReplicaKitAway.Mapper(oiBase);
+                }
 
                 oiBase = oiList.Find(oi => Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.ReplicaKitCup));
-                if (oiBase != null) { OIReplicaKitCup = new OrdrItmReplicaKitCup(oiBase.OrderItemID); }
+                if (oiBase != null)
+                {
+                    OIReplicaKitCup = new OrdrItmReplicaKitCup();
+                    OIReplicaKitCup.Mapper(oiBase);
+                }
 
                 if (OIReplicaKitHome != null || OIReplicaKitAway != null || OIReplicaKitCup != null)
                 {
-                    base.URLOrderView = "iArsenalOrderView_ReplicaKit.aspx";
+                    base.UrlOrderView = "iArsenalOrderView_ReplicaKit.aspx";
 
                     oiBase = oiList.Find(oi => Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.PlayerNumber));
-                    if (oiBase != null) { OIPlayerNumber = new OrdrItmPlayerNumber(oiBase.OrderItemID); }
+                    if (oiBase != null)
+                    {
+                        OIPlayerNumber = new OrdrItmPlayerNumber();
+                        OIPlayerNumber.Mapper(oiBase);
+                    }
 
                     oiBase = oiList.Find(oi => Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.PlayerName));
-                    if (oiBase != null) { OIPlayerName = new OrdrItmPlayerName(oiBase.OrderItemID); }
+                    if (oiBase != null)
+                    {
+                        OIPlayerName = new OrdrItmPlayerName();
+                        OIPlayerName.Mapper(oiBase);
+                    }
 
                     oiBase = oiList.Find(oi => Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.ArsenalFont));
-                    if (oiBase != null) { OIArsenalFont = new OrdrItmArsenalFont(oiBase.OrderItemID); }
+                    if (oiBase != null)
+                    {
+                        OIArsenalFont = new OrdrItmArsenalFont();
+                        OIArsenalFont.Mapper(oiBase);
+                    }
 
                     oiBase = oiList.Find(oi => Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.PremiershipPatch));
-                    if (oiBase != null) { OIPremiershipPatch = new OrdrItmPremiershipPatch(oiBase.OrderItemID); }
+                    if (oiBase != null)
+                    {
+                        OIPremiershipPatch = new OrdrItmPremiershipPatch();
+                        OIPremiershipPatch.Mapper(oiBase);
+                    }
 
                     oiBase = oiList.Find(oi => Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.ChampionshipPatch));
-                    if (oiBase != null) { OIChampionshipPatch = new OrdrItmChampionshipPatch(oiBase.OrderItemID); }
+                    if (oiBase != null)
+                    {
+                        OIChampionshipPatch = new OrdrItmChampionshipPatch();
+                        OIChampionshipPatch.Mapper(oiBase);
+                    }
                 }
                 else
                 {
@@ -73,7 +105,7 @@ namespace iArsenal.Entity
 
         public OrdrItmReplicaKitHome OIReplicaKitHome { get; set; }
 
-        public OrdrItemReplicaKitAway OIReplicaKitAway { get; set; }
+        public OrdrItmReplicaKitAway OIReplicaKitAway { get; set; }
 
         public OrdrItmReplicaKitCup OIReplicaKitCup { get; set; }
 

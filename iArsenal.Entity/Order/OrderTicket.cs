@@ -18,18 +18,28 @@ namespace iArsenal.Entity
                 OrderItem oiBase = null;
 
                 oiBase = oiList.Find(oi => Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.MatchTicket));
-                if (oiBase != null) { OIMatchTicket = new OrdrItmMatchTicket(oiBase.OrderItemID); }
+                if (oiBase != null)
+                {
+                    OIMatchTicket = new OrdrItmMatchTicket();
+                    OIMatchTicket.Mapper(oiBase);
+                }
 
                 oiBase = oiList.Find(oi => Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.TicketBeijing));
-                if (oiBase != null) { OITicketBeijing = new OrdrItm2012TicketBeijing(oiBase.OrderItemID); }
+                if (oiBase != null)
+                {
+                    OITicketBeijing = new OrdrItm2012TicketBeijing();
+                    OITicketBeijing.Mapper(oiBase);
+                }
+
+                // Set the value of URLOrderView;
 
                 if (OIMatchTicket != null)
                 {
-                    base.URLOrderView = "iArsenalOrderView_MatchTicket.aspx";
+                    base.UrlOrderView = "iArsenalOrderView_MatchTicket.aspx";
                 }
                 else if (OITicketBeijing != null)
                 {
-                    base.URLOrderView = "iArsenalOrderView_TicketBeijing.aspx";
+                    base.UrlOrderView = "iArsenalOrderView_TicketBeijing.aspx";
                 }
                 else
                 {

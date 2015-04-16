@@ -15,13 +15,14 @@ namespace iArsenal.Entity
 
             if (oiList != null && oiList.Count > 0)
             {
-                WishList_Existent = oiList.FindAll(oi => !oi.ProductGuid.Equals(Guid.Empty) && Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.Other));
+                WishList_Existent = oiList.FindAll(oi => !oi.ProductGuid.Equals(Guid.Empty) &&
+                    Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.Other));
 
                 WishList_Nonexistent = oiList.FindAll(oi => oi.ProductGuid.Equals(Guid.Empty));
 
                 if (WishList_Existent.Count > 0 || WishList_Nonexistent.Count > 0)
                 {
-                    base.URLOrderView = "iArsenalOrderView_ArsenalDirect.aspx";
+                    base.UrlOrderView = "iArsenalOrderView_ArsenalDirect.aspx";
                 }
                 else
                 {

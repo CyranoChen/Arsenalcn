@@ -212,7 +212,7 @@
                             <asp:CheckBoxList ID="cblTravelOption" runat="server" RepeatDirection="Vertical" RepeatLayout="Flow">
                                 <asp:ListItem Text="统一购买机票前往新加坡" Value="FLIGHT" Selected="True"></asp:ListItem>
                                 <asp:ListItem Text="统一预订宾馆并安排入住" Value="HOTEL" Selected="True"></asp:ListItem>
-                                <asp:ListItem Text="参观赛季训练课" Value="TRAINING" Selected="True"></asp:ListItem>
+                                <asp:ListItem Text="参观赛前训练课" Value="TRAINING" Selected="True"></asp:ListItem>
                                 <asp:ListItem Text="参加球员见面会（暂未确定）" Value="PARTY"></asp:ListItem>
                                 <asp:ListItem Text="参加新加坡当地团一日游" Value="SINGAPORE"></asp:ListItem>
                             </asp:CheckBoxList>

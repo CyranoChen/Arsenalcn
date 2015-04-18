@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Script.Serialization;
 
 using Arsenalcn.Common.Entity;
 using iArsenal.Entity;
@@ -42,9 +39,6 @@ namespace iArsenal.Web
 
                 if (OrderID > 0)
                 {
-                    //OrderBase o = new OrderBase();
-                    //o.OrderID = OrderID;
-                    //o.Select();
                     OrdrTicket o = new OrdrTicket(OrderID);
 
                     // For Vincent Song to View the MatchTickets Confirmation Page
@@ -135,59 +129,52 @@ namespace iArsenal.Web
 
                     if (oiMatchTicket != null && oiMatchTicket.IsActive)
                     {
-                        if (!string.IsNullOrEmpty(oiMatchTicket.Remark))
+                        if (oiMatchTicket.MatchGuid != null)
                         {
-                            try
+                            MatchTicket mt = MatchTicket.Cache.Load(oiMatchTicket.MatchGuid);
+
+                            if (mt == null)
                             {
-                                MatchTicket mt = MatchTicket.Cache.Load(new Guid(oiMatchTicket.Remark));
+                                throw new Exception("无相关比赛信息，请联系管理员");
+                            }
 
-                                if (mt == null)
+                            _isMemberCouldPurchase = mt.CheckMemberCanPurchase(this.CurrentMemberPeriod);
+
+                            Product p = Product.Cache.Load(mt.ProductCode);
+
+                            if (p == null)
+                            {
+                                throw new Exception("无相关商品信息，请联系管理员");
+                            }
+                            else
+                            {
+                                lblMatchTicketInfo.Text = string.Format("<em>【{0}】{1}({2})</em>", mt.LeagueName, mt.TeamName, Arsenal_Team.Cache.Load(mt.TeamGuid).TeamEnglishName);
+                                lblMatchTicketPlayTime.Text = string.Format("<em>【伦敦】{0}</em>", mt.PlayTimeLocal.ToString("yyyy-MM-dd HH:mm"));
+
+                                string _strRank = mt.ProductInfo.Trim();
+                                if (lblMatchTicketRank != null && !string.IsNullOrEmpty(_strRank))
                                 {
-                                    throw new Exception("无相关比赛信息，请联系管理员");
-                                }
-
-                                _isMemberCouldPurchase = mt.CheckMemberCanPurchase(this.CurrentMemberPeriod);
-
-                                Product p = Product.Cache.Load(mt.ProductCode);
-
-                                if (p == null)
-                                {
-                                    throw new Exception("无相关商品信息，请联系管理员");
+                                    lblMatchTicketRank.Text = string.Format("<em>{0}</em>", _strRank.Substring(_strRank.Length - 7, 7));
                                 }
                                 else
                                 {
-                                    lblMatchTicketInfo.Text = string.Format("<em>【{0}】{1}({2})</em>", mt.LeagueName, mt.TeamName, Arsenal_Team.Cache.Load(mt.TeamGuid).TeamEnglishName);
-                                    lblMatchTicketPlayTime.Text = string.Format("<em>【伦敦】{0}</em>", mt.PlayTimeLocal.ToString("yyyy-MM-dd HH:mm"));
-
-                                    string _strRank = mt.ProductInfo.Trim();
-                                    if (lblMatchTicketRank != null && !string.IsNullOrEmpty(_strRank))
-                                    {
-                                        lblMatchTicketRank.Text = string.Format("<em>{0}</em>", _strRank.Substring(_strRank.Length - 7, 7));
-                                    }
-                                    else
-                                    {
-                                        lblMatchTicketRank.Text = string.Empty;
-                                    }
-
-                                    if (mt.AllowMemberClass.HasValue && mt.AllowMemberClass.Value == 2)
-                                    {
-                                        lblMatchTicketAllowMemberClass.Text = "<em>只限高级会员(Premier)</em>";
-                                    }
-                                    else if (mt.AllowMemberClass.HasValue && mt.AllowMemberClass == 1)
-                                    {
-                                        lblMatchTicketAllowMemberClass.Text = "<em>普通会员(Core)以上</em>";
-                                    }
-                                    else
-                                    {
-                                        lblMatchTicketAllowMemberClass.Text = "无";
-                                    }
-
-                                    ctrlPortalMatchInfo.MatchGuid = mt.MatchGuid;
+                                    lblMatchTicketRank.Text = string.Empty;
                                 }
-                            }
-                            catch
-                            {
-                                throw new Exception("无相关比赛信息，请联系管理员");
+
+                                if (mt.AllowMemberClass.HasValue && mt.AllowMemberClass.Value == 2)
+                                {
+                                    lblMatchTicketAllowMemberClass.Text = "<em>只限高级会员(Premier)</em>";
+                                }
+                                else if (mt.AllowMemberClass.HasValue && mt.AllowMemberClass == 1)
+                                {
+                                    lblMatchTicketAllowMemberClass.Text = "<em>普通会员(Core)以上</em>";
+                                }
+                                else
+                                {
+                                    lblMatchTicketAllowMemberClass.Text = "无";
+                                }
+
+                                ctrlPortalMatchInfo.MatchGuid = mt.MatchGuid;
                             }
                         }
                         else
@@ -195,16 +182,7 @@ namespace iArsenal.Web
                             throw new Exception("无相关比赛信息，请联系管理员");
                         }
 
-                        // Set Order Travel Date
-
-                        if (!string.IsNullOrEmpty(oiMatchTicket.Size))
-                        {
-                            lblOrderItem_TravelDate.Text = DateTime.Parse(oiMatchTicket.Size).ToString("yyyy年MM月dd日");
-                        }
-                        else
-                        {
-                            lblOrderItem_TravelDate.Text = string.Empty;
-                        }
+                        lblOrderItem_TravelDate.Text = oiMatchTicket.TravelDate.ToString("yyyy年MM月dd日");
                     }
                     else
                     {

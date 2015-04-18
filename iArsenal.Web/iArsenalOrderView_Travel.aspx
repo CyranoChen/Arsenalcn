@@ -99,7 +99,7 @@
                         <td class="FieldHeader">出行选项：
                         </td>
                         <td style="text-align: left" colspan="3">
-                            <asp:Label ID="lblOrderItem_TravelDate" runat="server"></asp:Label>
+                            <asp:Label ID="lblOrderItem_TravelInfo" runat="server"></asp:Label>
                         </td>
                     </tr>
                     <asp:PlaceHolder ID="phOrderPartner" runat="server" Visible="false">
@@ -181,6 +181,7 @@
                 </div>
             </div>
         </div>
+        
         <div class="Clear">
         </div>
     </div>

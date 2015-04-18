@@ -36,9 +36,6 @@ namespace iArsenal.Web
 
                 if (OrderID > 0)
                 {
-                    //OrderBase o = new OrderBase();
-                    //o.OrderID = OrderID;
-                    //o.Select();
                     OrdrTicket o = new OrdrTicket(OrderID);
 
                     if (ConfigAdmin.IsPluginAdmin(UID) && o != null)
@@ -105,7 +102,7 @@ namespace iArsenal.Web
                         else
                             lblOrderItemSize.Text = "不介意";
 
-                        lblOrderItemRemak.Text = oiTicket.Remark;
+                        lblOrderItemRemak.Text = oiTicket.SeatLevel;
                     }
                     else
                     {

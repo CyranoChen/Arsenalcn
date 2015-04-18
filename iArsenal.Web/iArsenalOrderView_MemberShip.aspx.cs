@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 
 using Arsenalcn.Common.Entity;
 using iArsenal.Entity;
-using System.Data.SqlClient;
 
 namespace iArsenal.Web
 {
@@ -39,9 +39,6 @@ namespace iArsenal.Web
 
                 if (OrderID > 0)
                 {
-                    //OrderBase o = new OrderBase();
-                    //o.OrderID = OrderID;
-                    //o.Select();
                     Order_MemberShip o = new Order_MemberShip(OrderID);
 
                     if (ConfigAdmin.IsPluginAdmin(UID) && o != null)

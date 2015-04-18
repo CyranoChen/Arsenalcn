@@ -121,13 +121,13 @@ namespace iArsenal.Web {
         protected global::System.Web.UI.WebControls.Label lblOrderCreateTime;
         
         /// <summary>
-        /// lblOrderItem_TravelDate control.
+        /// lblOrderItem_TravelInfo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblOrderItem_TravelDate;
+        protected global::System.Web.UI.WebControls.Label lblOrderItem_TravelInfo;
         
         /// <summary>
         /// phOrderPartner control.

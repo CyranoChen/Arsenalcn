@@ -167,7 +167,6 @@ namespace iArsenal.Entity
             base.Place(m, product, trans);
         }
 
-
         #region Members and Properties
 
         public bool IsTicketOnly { get; set; }

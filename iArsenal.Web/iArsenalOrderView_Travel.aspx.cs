@@ -40,9 +40,6 @@ namespace iArsenal.Web
 
                 if (OrderID > 0)
                 {
-                    //OrderBase o = new OrderBase();
-                    //o.OrderID = OrderID;
-                    //o.Select();
                     OrdrTravel o = new OrdrTravel(OrderID);
 
                     if (ConfigAdmin.IsPluginAdmin(UID) && o != null)
@@ -126,57 +123,79 @@ namespace iArsenal.Web
                     float price = 0f;
                     string priceInfo = string.Empty;
 
-                    OrderItem oiETPL = o.OITravelPlan;
-                    List<OrdrItmTravelPartner> listPartner = o.OITravelPartnerList.FindAll(oi =>
-                        oi.IsActive && !string.IsNullOrEmpty(oi.Remark));
+                    OrdrItmTravelPlan oiTravelPlan = o.OITravelPlan;
 
-                    if (oiETPL != null && oiETPL.IsActive)
+                    if (oiTravelPlan.Code.Equals("iETPL"))
                     {
-                        // Set Order Travel Date
+                        OrdrItmTravelPlanLondon oiLondon = new OrdrItmTravelPlanLondon();
+                        oiLondon.Mapper(oiTravelPlan);
 
-                        if (!string.IsNullOrEmpty(oiETPL.Size))
+                        if (oiLondon.IsActive)
                         {
-                            string _strFromDate = DateTime.Parse(oiETPL.Size.Split('|')[0]).ToString("yyyy年MM月dd日");
-                            string _strToDate = DateTime.Parse(oiETPL.Size.Split('|')[1]).ToString("yyyy年MM月dd日");
+                            // Set Order Travel Date
+                            lblOrderItem_TravelInfo.Text = string.Format("希望在 <em>{0}</em> 至 <em>{1}</em> 出行",
+                                oiLondon.TravelFromDate.ToString("yyyy年MM月dd日"), oiLondon.TravelToDate.ToString("yyyy年MM月dd日"));
 
-                            lblOrderItem_TravelDate.Text = string.Format("希望在 <em>{0}</em> 至 <em>{1}</em> 出行", _strFromDate, _strToDate);
+                            // Set Order Travel Option
+                            if (oiLondon.TravelOption != null && oiLondon.TravelOption.Length > 0)
+                            {
+                                string _strTravelOption = string.Join("|", oiLondon.TravelOption);
+
+                                _strTravelOption = _strTravelOption.Replace("PLANE", "统一预订航班");
+                                _strTravelOption = _strTravelOption.Replace("HOTEL", "统一预订住宿");
+                                _strTravelOption = _strTravelOption.Replace("MATCHDAY", "参加比赛日活动");
+                                _strTravelOption = _strTravelOption.Replace("LONDON", "参加伦敦游");
+                                _strTravelOption = _strTravelOption.Replace("MUSEUM", "参观球场和博物馆");
+
+                                lblOrderItem_TravelOption.Text = _strTravelOption;
+                            }
+                            else
+                            {
+                                lblOrderItem_TravelOption.Text = "无";
+                            }
                         }
                         else
                         {
-                            throw new Exception("此订单未填写推荐出行时间");
+                            throw new Exception("此订单未填写观赛信息");
                         }
+                    }
+                    else if (oiTravelPlan.Code.Equals("2015AsiaTrophy"))
+                    {
+                        OrdrItmTravelPlan2015AsiaTrophy oiAsiaTrophy = new OrdrItmTravelPlan2015AsiaTrophy();
+                        oiAsiaTrophy.Mapper(o.OITravelPlan);
 
-                        // Set Order Travel Option
-
-                        if (!string.IsNullOrEmpty(oiETPL.Remark))
+                        if (oiAsiaTrophy.IsActive)
                         {
-                            string _strTravelOption = oiETPL.Remark.Replace("|", "，");
-                            _strTravelOption = _strTravelOption.Replace("PLANE", "统一预订航班");
-                            _strTravelOption = _strTravelOption.Replace("HOTEL", "统一预订住宿");
-                            _strTravelOption = _strTravelOption.Replace("MATCHDAY", "参加比赛日活动");
-                            _strTravelOption = _strTravelOption.Replace("LONDON", "参加伦敦游");
-                            _strTravelOption = _strTravelOption.Replace("MUSEUM", "参观球场和博物馆");
+                            // Set Order Match Option
+                            lblOrderItem_TravelInfo.Text = string.Format("<em>{0}</em>{1}",
+                                oiAsiaTrophy.IsTicketOnly ? "观赛团" : "仅购票",
+                                oiAsiaTrophy.TravelOption.MatchOption.ToString());
 
-                            lblOrderItem_TravelOption.Text = _strTravelOption;
-                        }
-                        else
-                        {
-                            lblOrderItem_TravelOption.Text = "无";
+                            // Set Order Travel Option
+                            System.Text.StringBuilder sb = new System.Text.StringBuilder();
+
+                            if (oiAsiaTrophy.TravelOption.IsFlight) { sb.Append("统一购买机票"); }
+                            if (oiAsiaTrophy.TravelOption.IsHotel) { sb.Append("|统一预订宾馆"); }
+                            if (oiAsiaTrophy.TravelOption.IsTraining) { sb.Append("|参观训练课"); }
+                            if (oiAsiaTrophy.TravelOption.IsParty) { sb.Append("|参加球员见面会"); };
+                            if (oiAsiaTrophy.TravelOption.IsSingapore) { sb.Append("|参加当地团"); };
+
+                            lblOrderItem_TravelOption.Text = sb.ToString();
                         }
                     }
                     else
                     {
-                        throw new Exception("此订单未填写观赛信息");
+                        throw new Exception("此订单未有正确观赛信息");
                     }
 
                     // Set Travel Partner
+                    List<OrdrItmTravelPartner> listPartner = o.OITravelPartnerList.FindAll(oi =>
+                        oi.IsActive && oi.Partner != null);
 
                     if (listPartner != null && listPartner.Count > 0)
                     {
-                        var oiPartner = (OrderItem)listPartner[0];
-
-                        JavaScriptSerializer jsonSerializer = new JavaScriptSerializer();
-                        Partner pa = jsonSerializer.Deserialize<Partner>(oiPartner.Remark);
+                        OrdrItmTravelPartner oiPartner = listPartner[0];
+                        Partner pa = oiPartner.Partner;
 
                         if (pa != null)
                         {
@@ -194,7 +213,8 @@ namespace iArsenal.Web
                                 _strParterRelation = string.Empty;
                             }
 
-                            lblOrderItem_TravelPartner.Text = string.Format("<em>{0}</em>{5}，{1}，{2}；护照：（{3}）{4}", pa.Name, pa.Gender ? "男" : "女", pa.IDCardNo, pa.PassportNo, pa.PassportName, _strParterRelation);
+                            lblOrderItem_TravelPartner.Text = string.Format("<em>{0}</em>{5}，{1}，{2}；护照：（{3}）{4}",
+                                pa.Name, pa.Gender ? "男" : "女", pa.IDCardNo, pa.PassportNo, pa.PassportName, _strParterRelation);
                         }
 
                         phOrderPartner.Visible = true;
@@ -208,16 +228,17 @@ namespace iArsenal.Web
 
                     if (listPartner != null && listPartner.Count > 0)
                     {
-                        var oiPartner = (OrderItem)listPartner[0];
+                        OrdrItmTravelPartner oiPartner = listPartner[0];
 
-                        price = oiPartner.TotalPrice + oiETPL.TotalPrice;
-                        priceInfo = string.Format("观赛团预订定金：{0}+ 同伴定金：{1} = <em>{2}</em>元 (CNY)", oiETPL.TotalPrice.ToString("f0"), oiPartner.TotalPrice.ToString("f0"), price.ToString("f2"));
+                        price = oiPartner.TotalPrice + oiTravelPlan.TotalPrice;
+                        priceInfo = string.Format("观赛团预订定金：{0}+ 同伴定金：{1} = <em>{2}</em>元 (CNY)",
+                            oiTravelPlan.TotalPrice.ToString("f0"), oiPartner.TotalPrice.ToString("f0"), price.ToString("f2"));
 
                         phOrderPrice.Visible = true;
                     }
                     else
                     {
-                        price = oiETPL.TotalPrice;
+                        price = oiTravelPlan.TotalPrice;
                         priceInfo = string.Format("观赛团预订定金：<em>{0}</em>元 (CNY)", price.ToString("f2"));
 
                         phOrderPrice.Visible = true;

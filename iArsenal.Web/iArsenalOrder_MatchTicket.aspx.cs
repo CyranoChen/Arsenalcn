@@ -44,9 +44,9 @@ namespace iArsenal.Web
                     OrdrTicket o = new OrdrTicket(OrderID);
 
                     if (o.OIMatchTicket != null)
-                    { return Guid.Empty; }
-                    else
                     { return o.OIMatchTicket.MatchGuid; }
+                    else
+                    { return Guid.Empty; }
                 }
                 else if (!string.IsNullOrEmpty(Request.QueryString["MatchGuid"]))
                 {
@@ -124,10 +124,6 @@ namespace iArsenal.Web
 
                 if (OrderID > 0)
                 {
-                    //Order o = new Order();
-                    //o.OrderID = OrderID;
-                    //o.Select();
-
                     OrdrTicket o = new OrdrTicket(OrderID);
 
                     if (ConfigAdmin.IsPluginAdmin(UID) && o != null)
@@ -451,7 +447,7 @@ namespace iArsenal.Web
                     //Renew OrderType after Insert OrderItem and transcation commited
                     o.Update();
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", string.Format("alert('订单({0})保存成功');window.location.href = 'iArsenalOrderView_MatchTicket.aspx?OrderID={0}'", o.OrderID.ToString()), true);
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", string.Format("alert('订单({0})保存成功');window.location.href = 'ServerOrderView.ashx?OrderID={0}'", o.OrderID.ToString()), true);
                 }
                 catch (Exception ex)
                 {

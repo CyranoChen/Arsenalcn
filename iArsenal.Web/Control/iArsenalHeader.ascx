@@ -6,10 +6,10 @@
             <img src="uploadfiles/logo_ArsenalChina.png" alt="阿森纳中国官方球迷会" /></a>
     </h1>
     <div id="userPanel">
-        <h2 onclick="window.location.href='default.aspx'">
-        </h2>
+        <h2 onclick="window.location.href='default.aspx'"></h2>
         <asp:Panel ID="pnlLoginUser" CssClass="UserInfo" runat="server">
-            <asp:Label ID="lblUserInfo" runat="server"></asp:Label> - 
+            <asp:Label ID="lblUserInfo" runat="server"></asp:Label>
+            - 
             <a href="http://bbs.arsenalcn.com/usercpinbox.aspx" target="_blank">短消息</a> - 
             <a href="iArsenalMemberRegister.aspx">会员中心</a> - 
             <asp:Literal ID="ltrlAdminConfig" runat="server"></asp:Literal>
@@ -24,13 +24,13 @@
 <div id="menubar">
     <ul>
         <li class="nol"><a href="default.aspx">首页</a></li>
-        <li><a href="iArsenalOrder_ReplicaKit.aspx?Type=Home">本赛季主场球衣</a></li>
-        <li><a href="iArsenalOrder_ReplicaKit.aspx?Type=Away">本赛季客场球衣</a></li>
-        <li><a href="iArsenalOrder_ReplicaKit.aspx?Type=Cup">本赛季杯赛球衣</a></li>
-        <li style="display:none"><a href="iArsenalOrder_LondonTravel.aspx">2013/14赛季伦敦行</a></li>
-        <li><a href="iArsenalOrder_MatchList.aspx">本赛季主场球票</a></li>
-        <li><a href="iArsenalOrder_ArsenalDirect.aspx">阿森纳官方纪念品团购</a></li>
-        <li style="display:none"><a href="iArsenalOrder_TicketBeijing.aspx">2012亚洲行北京圣殿杯比赛门票</a></li>
+        <li><a href="iArsenalOrder_ReplicaKit.aspx?Type=Home">主场球衣</a></li>
+        <li><a href="iArsenalOrder_ReplicaKit.aspx?Type=Away">客场球衣</a></li>
+        <li><a href="iArsenalOrder_ReplicaKit.aspx?Type=Cup">杯赛球衣</a></li>
+        <li><a href="iArsenalOrder_LondonTravel.aspx">伦敦行</a></li>
+        <li><a href="iArsenalOrder_AsiaTrophy2015.aspx">英超亚洲杯</a></li>
+        <li><a href="iArsenalOrder_MatchList.aspx">主场球票</a></li>
+        <li><a href="iArsenalOrder_ArsenalDirect.aspx">纪念品团购</a></li>
         <li class="nor"><a href="iArsenalOrder.aspx">订单查询</a></li>
     </ul>
 </div>

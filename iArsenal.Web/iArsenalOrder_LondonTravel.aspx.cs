@@ -462,7 +462,7 @@ namespace iArsenal.Web
                     //Renew OrderType after Insert OrderItem and transcation commited
                     o.Update();
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", string.Format("alert('订单({0})保存成功');window.location.href = 'iArsenalOrderView_LondonTravel.aspx?OrderID={0}'", o.OrderID.ToString()), true);
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", string.Format("alert('订单({0})保存成功');window.location.href = 'ServerOrderView.ashx?OrderID={0}'", o.OrderID.ToString()), true);
                 }
                 catch (Exception ex)
                 {

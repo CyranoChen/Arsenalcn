@@ -174,7 +174,7 @@
                         <td class="FieldHeader">是否同行：
                         </td>
                         <td style="text-align: left; font-weight: bold;" id="tdPartner">
-                            <asp:CheckBox ID="cbPartner" runat="server" Text="有同行者" ToolTip="本活动出行同伴只限1人" />
+                            <asp:CheckBox ID="cbPartner" runat="server" Text="限定登记1名出行同伴" ToolTip="如需更多人数出行，请重新注册登记。" />
                         </td>
                         <td class="FieldHeader">
                             <span class="Partner">同伴姓名：</span>

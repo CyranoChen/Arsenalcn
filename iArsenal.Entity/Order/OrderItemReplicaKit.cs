@@ -7,16 +7,6 @@ namespace iArsenal.Entity
         public OrdrItmReplicaKit() { }
 
         public OrdrItmReplicaKit(int id) : base(id) { }
-
-        public override void Mapper(object obj)
-        {
-            base.Mapper(obj);
-        }
-
-        public override void Place(Member m, Product p, System.Data.SqlClient.SqlTransaction trans = null)
-        {
-            base.Place(m, p, trans);
-        }
     }
 
     public class OrdrItmReplicaKitHome : OrdrItmReplicaKit

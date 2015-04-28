@@ -413,10 +413,10 @@ namespace iArsenal.Web
                         }
 
                         //New Order Items
-                        //Product p = Product.Cache.Load(mt.ProductCode);
+                        Product p = Product.Cache.Load(mt.ProductCode);
 
-                        //if (p == null)
-                        //    throw new Exception("无相关商品信息，请联系管理员");
+                        if (p == null)
+                            throw new Exception("无相关商品信息，请联系管理员");
 
                         OrdrItmMatchTicket oi = new OrdrItmMatchTicket();
 
@@ -439,7 +439,7 @@ namespace iArsenal.Web
                         oi.Quantity = 1;
                         oi.Sale = null;
 
-                        oi.Place(m, trans);
+                        oi.Place(m, p, trans);
                     }
 
                     trans.Commit();

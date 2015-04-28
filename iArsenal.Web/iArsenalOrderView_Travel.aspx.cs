@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Script.Serialization;
 
 using Arsenalcn.Common.Entity;
 using iArsenal.Entity;
@@ -141,7 +139,7 @@ namespace iArsenal.Web
                             {
                                 string _strTravelOption = string.Join("|", oiLondon.TravelOption);
 
-                                _strTravelOption = _strTravelOption.Replace("PLANE", "统一预订航班");
+                                _strTravelOption = _strTravelOption.Replace("FLIGHT", "统一预订航班");
                                 _strTravelOption = _strTravelOption.Replace("HOTEL", "统一预订住宿");
                                 _strTravelOption = _strTravelOption.Replace("MATCHDAY", "参加比赛日活动");
                                 _strTravelOption = _strTravelOption.Replace("LONDON", "参加伦敦游");

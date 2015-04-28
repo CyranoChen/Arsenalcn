@@ -370,10 +370,10 @@ namespace iArsenal.Web
 
                         //New Order Items
                         //Product pTravelPlan = Product.Cache.Load("2015ATPL");
-                        //Product pTravelPartner = Product.Cache.Load("2015ATPA");
+                        Product pTravelPartner = Product.Cache.Load("2015ATPA");
 
-                        //if (pTravelPlan == null || pTravelPartner == null)
-                        //    throw new Exception("无观赛信息，请联系管理员");
+                        if (pTravelPartner == null)
+                            throw new Exception("无观赛信息，请联系管理员");
 
                         // Get Partner Information to Serialize Json
 
@@ -420,7 +420,7 @@ namespace iArsenal.Web
                             oiPartner.Quantity = 1;
                             oiPartner.Sale = null;
 
-                            oiPartner.Place(m, trans);
+                            oiPartner.Place(m, pTravelPartner, trans);
                         }
 
                         // Generate OrderItemTravelPlan

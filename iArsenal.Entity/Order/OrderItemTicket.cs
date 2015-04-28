@@ -38,15 +38,15 @@ namespace iArsenal.Entity
             this.Init();
         }
 
-        public void Place(Member m, System.Data.SqlClient.SqlTransaction trans = null)
+        public override void Place(Member m, Product p, System.Data.SqlClient.SqlTransaction trans = null)
         {
             this.Remark = MatchGuid.ToString();
             this.Size = TravelDate.ToString("yyyy-MM-dd");
 
-            Product product = Product.Cache.ProductList.Find(p =>
-                p.ProductType.Equals(ProductType.MatchTicket));
+            //Product product = Product.Cache.ProductList.Find(p =>
+            //    p.ProductType.Equals(ProductType.MatchTicket));
 
-            base.Place(m, product, trans);
+            base.Place(m, p, trans);
         }
 
         #region Members and Properties

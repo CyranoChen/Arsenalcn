@@ -192,7 +192,8 @@ namespace iArsenal.Web
                     // Set Order Price
 
                     price = oiMatchTicket.TotalPrice;
-                    priceInfo = string.Format("<合计> {2}：{0} × {1}", oiMatchTicket.UnitPrice.ToString("f2"), oiMatchTicket.Quantity.ToString(), Product.Cache.Load(oiMatchTicket.ProductGuid).DisplayName);
+                    priceInfo = string.Format("<合计> {2}：{0} × {1}", oiMatchTicket.UnitPrice.ToString("f2"), oiMatchTicket.Quantity.ToString(),
+                        Product.Cache.Load(oiMatchTicket.ProductGuid).DisplayName);
 
                     tbOrderPrice.Text = price.ToString();
                     lblOrderPrice.Text = string.Format("{0} = <em>{1}</em>元", priceInfo, price.ToString("f2"));

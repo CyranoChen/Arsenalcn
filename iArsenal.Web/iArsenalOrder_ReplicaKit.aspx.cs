@@ -155,9 +155,6 @@ namespace iArsenal.Web
 
                 if (OrderID > 0)
                 {
-                    //Order o = new Order();
-                    //o.OrderID = OrderID;
-                    //o.Select();
                     OrdrReplicaKit o = new OrdrReplicaKit(OrderID);
 
                     // Whether Home or Away ReplicaKit
@@ -280,7 +277,8 @@ namespace iArsenal.Web
                         {
                             ddlPlayerDetail.SelectedValue = player.PlayerGuid.ToString();
                         }
-                        else if (oiNumber.Remark.Equals("custom") && oiName.Remark.Equals("custom"))
+                        else if (oiNumber.Remark.Equals("custom", StringComparison.OrdinalIgnoreCase)
+                            && oiName.Remark.Equals("custom", StringComparison.OrdinalIgnoreCase))
                         {
                             // Custom Player Number & Name Printing
                             ddlPlayerDetail.SelectedValue = "custom";
@@ -509,24 +507,24 @@ namespace iArsenal.Web
 
                                     oiNumber.Size = tbPlayerNumber.Text.Trim();
                                     oiNumber.Sale = 0f;
-                                    oiNumber.Remark = "CUSTOM";
+                                    oiNumber.Remark = "custom";
                                     oiNumber.Place(m, trans);
 
                                     oiName.Size = tbPlayerName.Text.Trim();
                                     oiName.Sale = 0f;
-                                    oiName.Remark = "CUSTOM";
+                                    oiName.Remark = "custom";
                                     oiName.Place(m, trans);
                                 }
                                 else
                                 {
                                     oiNumber.Size = tbPlayerNumber.Text.Trim();
                                     oiNumber.Sale = null;
-                                    oiNumber.Remark = "CUSTOM";
+                                    oiNumber.Remark = "custom";
                                     oiNumber.Place(m, trans);
 
                                     oiName.Size = tbPlayerName.Text.Trim();
                                     oiName.Sale = null;
-                                    oiName.Remark = "CUSTOM";
+                                    oiName.Remark = "custom";
                                     oiName.Place(m, trans);
                                 }
                             }

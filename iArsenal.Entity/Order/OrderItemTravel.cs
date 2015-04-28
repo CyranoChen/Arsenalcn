@@ -9,7 +9,7 @@ namespace iArsenal.Entity
 
         public OrdrItmTravelPlan(int id) : base(id) { this.Init(); }
 
-        private void Init()
+        protected void Init()
         {
             if (ProductGuid == null)
                 throw new Exception("Loading OrderItem failed.");
@@ -25,11 +25,6 @@ namespace iArsenal.Entity
             base.Mapper(obj);
             this.Init();
         }
-
-        public override void Place(Member m, Product p, System.Data.SqlClient.SqlTransaction trans = null)
-        {
-            base.Place(m, p, trans);
-        }
     }
 
     public class OrdrItmTravelPlanLondon : OrdrItmTravelPlan
@@ -38,8 +33,10 @@ namespace iArsenal.Entity
 
         public OrdrItmTravelPlanLondon(int id) : base(id) { this.Init(); }
 
-        private void Init()
+        private new void Init()
         {
+            base.Init();
+
             DateTime _date = DateTime.MinValue;
             String[] _arrDate = Size.Split('|');
 
@@ -90,8 +87,7 @@ namespace iArsenal.Entity
                 this.Remark = string.Empty;
             }
 
-            Product product = Product.Cache.ProductList.Find(p =>
-                p.ProductType.Equals(ProductType.TravelPlan));
+            Product product = Product.Cache.Load("iETPL");
 
             base.Place(m, product, trans);
         }
@@ -113,8 +109,10 @@ namespace iArsenal.Entity
 
         public OrdrItmTravelPlan2015AsiaTrophy(int id) : base(id) { this.Init(); }
 
-        private void Init()
+        private new void Init()
         {
+            base.Init();
+
             Boolean _value;
             if (!string.IsNullOrEmpty(Size) && Boolean.TryParse(Size, out _value))
             {
@@ -161,8 +159,7 @@ namespace iArsenal.Entity
                 this.Remark = string.Empty;
             }
 
-            Product product = Product.Cache.ProductList.Find(p =>
-                p.ProductType.Equals(ProductType.TravelPlan));
+            Product product = Product.Cache.Load("2015ATPL");
 
             base.Place(m, product, trans);
         }
@@ -214,7 +211,7 @@ namespace iArsenal.Entity
             this.Init();
         }
 
-        public void Place(Member m, System.Data.SqlClient.SqlTransaction trans = null)
+        public override void Place(Member m, Product p, System.Data.SqlClient.SqlTransaction trans = null)
         {
             if (Partner != null)
             {
@@ -226,10 +223,7 @@ namespace iArsenal.Entity
                 this.Remark = string.Empty;
             }
 
-            Product product = Product.Cache.ProductList.Find(p =>
-                p.ProductType.Equals(ProductType.TravelPartner));
-
-            base.Place(m, product, trans);
+            base.Place(m, p, trans);
         }
 
         #region Members and Properties

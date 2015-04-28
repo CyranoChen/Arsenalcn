@@ -8,7 +8,7 @@ namespace iArsenal.Entity
 
         public OrdrItmMemberShip(int id) : base(id) { this.Init(); }
 
-        private void Init()
+        protected void Init()
         {
             MemberCardNo = Remark;
 
@@ -31,11 +31,6 @@ namespace iArsenal.Entity
 
             //if (!p.ProductType.Equals(ProductType.MemberShipCore) && !p.ProductType.Equals(ProductType.MemberShipPremier))
             //    throw new Exception("The OrderItem is not the type of MemberShip.");
-        }
-
-        public override void Mapper(object obj)
-        {
-            base.Mapper(obj);
         }
 
         public override void Place(Member m, Product p, System.Data.SqlClient.SqlTransaction trans = null)
@@ -63,8 +58,10 @@ namespace iArsenal.Entity
 
         public OrdrItmMemShipCore(int id) : base(id) { this.Init(); }
 
-        private void Init()
+        private new void Init()
         {
+            base.Init();
+
             if (ProductGuid == null)
                 throw new Exception("Loading OrderItem failed.");
 
@@ -95,8 +92,10 @@ namespace iArsenal.Entity
 
         public OrdrItmMemShipPremier(int id) : base(id) { this.Init(); }
 
-        private void Init()
+        private new void Init()
         {
+            base.Init();
+
             if (ProductGuid == null)
                 throw new Exception("Loading OrderItem failed.");
 

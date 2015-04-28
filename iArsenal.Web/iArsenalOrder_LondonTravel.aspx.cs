@@ -368,10 +368,10 @@ namespace iArsenal.Web
 
                         //New Order Items
                         //Product pETPL = Product.Cache.Load("iETPL");
-                        //Product pETPA = Product.Cache.Load("iETPA");
+                        Product pETPA = Product.Cache.Load("iETPA");
 
-                        //if (pETPL == null || pETPA == null)
-                        //    throw new Exception("无观赛信息，请联系管理员");
+                        if (pETPA == null)
+                            throw new Exception("无观赛信息，请联系管理员");
 
                         // Get Partner Information to Serialize Json
 
@@ -418,7 +418,7 @@ namespace iArsenal.Web
                             oiPartner.Quantity = 1;
                             oiPartner.Sale = null;
 
-                            oiPartner.Place(m, trans);
+                            oiPartner.Place(m, pETPA, trans);
                         }
 
                         // Generate OrderItemTravelPlan

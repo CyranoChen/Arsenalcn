@@ -24,13 +24,13 @@
 <div id="menubar">
     <ul>
         <li class="nol"><a href="default.aspx">首页</a></li>
-        <li><a href="iArsenalOrder_ReplicaKit.aspx?Type=Home">主场球衣</a></li>
-        <li><a href="iArsenalOrder_ReplicaKit.aspx?Type=Away">客场球衣</a></li>
-        <li><a href="iArsenalOrder_ReplicaKit.aspx?Type=Cup">杯赛球衣</a></li>
-        <li><a href="iArsenalOrder_LondonTravel.aspx">伦敦行</a></li>
-        <li><a href="iArsenalOrder_AsiaTrophy2015.aspx">英超亚洲杯</a></li>
-        <li><a href="iArsenalOrder_MatchList.aspx">主场球票</a></li>
-        <li><a href="iArsenalOrder_ArsenalDirect.aspx">纪念品团购</a></li>
+        <li><a href="iArsenalOrder_ReplicaKit.aspx?Type=Home">1415主场球衣</a></li>
+        <li><a href="iArsenalOrder_ReplicaKit.aspx?Type=Away">1415客场球衣</a></li>
+        <li><a href="iArsenalOrder_ReplicaKit.aspx?Type=Cup">1415杯赛球衣</a></li>
+        <li style="display:none"><a href="iArsenalOrder_LondonTravel.aspx">伦敦行</a></li>
+        <li><a href="iArsenalOrder_AsiaTrophy2015.aspx">2015英超亚洲杯观赛团</a></li>
+        <li style="display:none"><a href="iArsenalOrder_MatchList.aspx">主场球票</a></li>
+        <li><a href="iArsenalOrder_ArsenalDirect.aspx">官方纪念品团购</a></li>
         <li class="nor"><a href="iArsenalOrder.aspx">订单查询</a></li>
     </ul>
 </div>

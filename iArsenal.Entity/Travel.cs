@@ -5,6 +5,7 @@ namespace iArsenal.Entity
     public class TravelOption
     {
         public MatchOption MatchOption { get; set; }
+        public bool IsVisa { get; set; }
         public bool IsFlight { get; set; }
         public bool IsHotel { get; set; }
         public bool IsTraining { get; set; }

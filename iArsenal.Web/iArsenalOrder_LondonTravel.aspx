@@ -7,8 +7,7 @@
     <link href="Scripts/jquery.ui/jquery-ui.min.css" type="text/css" rel="stylesheet" />
     <script type="text/javascript" src="Scripts/jquery-ui-1.10.4.min.js"></script>
     <style type="text/css">
-        input.Region1, input.Region2
-        {
+        input.Region1, input.Region2 {
             display: none;
         }
     </style>
@@ -171,7 +170,7 @@
                         </td>
                     </tr>
                     <tr class="AlternatingRow">
-                        <td class="FieldHeader">是否同行：
+                        <td class="FieldHeader">同行信息：
                         </td>
                         <td style="text-align: left; font-weight: bold;" id="tdPartner">
                             <asp:CheckBox ID="cbPartner" runat="server" Text="限定登记1名出行同伴" ToolTip="如需更多人数出行，请重新注册登记。" />
@@ -181,6 +180,7 @@
                         </td>
                         <td style="text-align: left">
                             <asp:TextBox ID="tbPartnerName" runat="server" CssClass="TextBox Partner" Width="150px" MaxLength="20"></asp:TextBox>
+                            <span class="ValiSpan Partner">*</span>
                         </td>
                     </tr>
                     <tr class="Row Partner">
@@ -199,8 +199,8 @@
                         <td style="text-align: left">
                             <asp:RadioButtonList ID="rblPartnerGender" runat="server" RepeatDirection="Horizontal"
                                 RepeatLayout="Flow" CssClass="RadioButtonList">
-                                <asp:ListItem Text="男" Value="true" Selected="True"></asp:ListItem>
-                                <asp:ListItem Text="女" Value="false"></asp:ListItem>
+                                <asp:ListItem Text="男" Value="true"></asp:ListItem>
+                                <asp:ListItem Text="女" Value="false" Selected="True"></asp:ListItem>
                             </asp:RadioButtonList>
                         </td>
                     </tr>
@@ -209,6 +209,7 @@
                         </td>
                         <td style="text-align: left" colspan="3">
                             <asp:TextBox ID="tbPartnerIDCardNo" runat="server" CssClass="TextBox" Width="400px" MaxLength="20"></asp:TextBox>
+                            <span class="ValiSpan">*</span>
                         </td>
                     </tr>
                     <tr class="Row Partner">
@@ -216,11 +217,13 @@
                         </td>
                         <td style="text-align: left;">
                             <asp:TextBox ID="tbPartnerPassportNo" runat="server" CssClass="TextBox" Width="150px" MaxLength="20"></asp:TextBox>
+                            <span class="ValiSpan">*</span>
                         </td>
                         <td class="FieldHeader">同伴护照姓名：
                         </td>
                         <td style="text-align: left">
                             <asp:TextBox ID="tbPartnerPassportName" runat="server" CssClass="TextBox" Width="150px" MaxLength="20"></asp:TextBox>
+                            <span class="ValiSpan">*</span>
                         </td>
                     </tr>
                     <tr class="AlternatingRow">
@@ -257,7 +260,7 @@
                     <a>预约报名须知</a></h3>
                 <div class="Block">
                     <p>
-                        (1). 第一轮报名截止时间至新赛季阿森纳联赛赛程公布之日，约在2013年7月中下旬。
+                        (1). 第一轮报名截止时间至新赛季阿森纳联赛赛程公布之日，约在新赛季开始前7月中下旬。
                     </p>
                     <p>
                         (2). 请完整填写出行会员的个人信息，每位会员可以有一个同伴，同伴信息也请填写完整。我们会为会员的个人信息进行保密。
@@ -266,7 +269,7 @@
                         (3). 请填写希望出行的时间段，并勾选相关出行选项，如有特殊需求，请填写在备注栏中。
                     </p>
                     <p>
-                        (4). 我们会在收到预订报名表后，核对身份信息，并与您取得联系，然后邀请您加入出行专用的QQ群。
+                        (4). 我们会在收到预订报名表后，核对身份信息，并与您取得联系。
                     </p>
                     <p>
                         (5). 如有问题，可与ACN负责人Cyrano联系。QQ：<em>22287842</em>，<a href="http://bbs.arsenalcn.com/usercppostpm.aspx" target="_blank">ACN论坛短消息</a>，Email：<a href="mailto:cyrano@arsenalcn.com"><em>cyrano@arsenalcn.com</em>。</a>

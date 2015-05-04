@@ -131,19 +131,12 @@ namespace iArsenal.Entity
         {
             get
             {
-                try
-                {
-                    string tmpID = ConfigDictionary["ArsenalTeamGuid"];
+                string tmpID = ConfigDictionary["ArsenalTeamGuid"];
 
-                    if (!string.IsNullOrEmpty(tmpID))
-                        return new Guid(tmpID);
-                    else
-                        throw new Exception();
-                }
-                catch
-                {
+                if (!string.IsNullOrEmpty(tmpID))
+                    return new Guid(tmpID);
+                else
                     return new Guid("036478f0-9062-4533-be33-43197a0b1568");
-                }
             }
         }
 

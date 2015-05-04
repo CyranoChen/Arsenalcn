@@ -136,6 +136,7 @@ namespace iArsenal.Web
                             cbMatch1.Checked = to.MatchOption.Equals(MatchOption.All) || to.MatchOption.Equals(MatchOption.First);
                             cbMatch2.Checked = to.MatchOption.Equals(MatchOption.All) || to.MatchOption.Equals(MatchOption.Second);
 
+                            cblTravelOption.Items.FindByValue("VISA").Selected = to.IsVisa;
                             cblTravelOption.Items.FindByValue("FLIGHT").Selected = to.IsFlight;
                             cblTravelOption.Items.FindByValue("HOTEL").Selected = to.IsHotel;
                             cblTravelOption.Items.FindByValue("TRAINING").Selected = to.IsTraining;
@@ -461,6 +462,7 @@ namespace iArsenal.Web
 
                         if (!_isTicket)
                         {
+                            to.IsVisa = cblTravelOption.Items.FindByValue("VISA").Selected;
                             to.IsFlight = cblTravelOption.Items.FindByValue("FLIGHT").Selected;
                             to.IsHotel = cblTravelOption.Items.FindByValue("HOTEL").Selected;
                             to.IsTraining = cblTravelOption.Items.FindByValue("TRAINING").Selected;

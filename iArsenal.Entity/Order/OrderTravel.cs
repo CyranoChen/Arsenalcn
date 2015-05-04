@@ -30,7 +30,7 @@ namespace iArsenal.Entity
                     List<OrderItem> oiPartnerList = oiList.FindAll(oi => Product.Cache.Load(oi.ProductGuid).ProductType.Equals(ProductType.TravelPartner));
                     OITravelPartnerList = new List<OrdrItmTravelPartner>();
 
-                    foreach(OrderItem oi in oiPartnerList)
+                    foreach (OrderItem oi in oiPartnerList)
                     {
                         var oiPartner = new OrdrItmTravelPartner();
                         oiPartner.Mapper(oi);
@@ -38,7 +38,30 @@ namespace iArsenal.Entity
                         OITravelPartnerList.Add(oiPartner);
                     }
 
-                    base.UrlOrderView = "iArsenalOrderView_Travel.aspx";
+                    #region Generate UrlOrderView by Product Code
+                    Product p = Product.Cache.Load(OITravelPlan.ProductGuid);
+
+                    if (p != null && p.ProductType.Equals(ProductType.TravelPlan))
+                    {
+                        if (p.Code.Equals("iETPL", StringComparison.OrdinalIgnoreCase))
+                        {
+                            base.UrlOrderView = "iArsenalOrderView_LondonTravel.aspx";
+                        }
+                        else if (p.Code.Equals("2015ATPL", StringComparison.OrdinalIgnoreCase))
+                        {
+                            base.UrlOrderView = "iArsenalOrderView_AsiaTrophy2015.aspx";
+                        }
+                        else
+                        {
+                            throw new Exception("Unable to init Order_Travel.");
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception("Unable to init Order_Travel.");
+                    }
+                    #endregion
+
                 }
                 else
                 {

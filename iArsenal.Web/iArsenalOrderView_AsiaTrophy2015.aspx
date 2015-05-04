@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" MasterPageFile="iArsenalMaster.Master" AutoEventWireup="true"
-    CodeBehind="iArsenalOrderView_Travel.aspx.cs" Inherits="iArsenal.Web.iArsenalOrderView_Travel"
+    CodeBehind="iArsenalOrderView_AsiaTrophy2015.aspx.cs" Inherits="iArsenal.Web.iArsenalOrderView_AsiaTrophy2015"
     Title="订单信息查看" Theme="iArsenal" %>
 
 <%@ Register Src="Control/PortalSitePath.ascx" TagName="PortalSitePath" TagPrefix="uc1" %>
@@ -163,15 +163,14 @@
                 <h3 class="Col" onclick="$(this).toggleClass('Col'); $(this).toggleClass('Exp'); $(this).next('div').toggle('normal');">
                     <a>审核确认须知</a></h3>
                 <div class="Block">
-                    <p>(1). 在预约报名阶段，有任何消息更新，我们会通过QQ群：<em>875076</em>，进行联系通知，凡报名审核者请加入此群。</p>
-                    <p>(2). 在预约报名阶段，各位可以随时修改或取消预订信息。</p>
-                    <p>(3). 8月中旬，确定新赛季赛程公布起，会在QQ群中由所有参团者商议确定观看的具体比赛场次。（我们希望能够连续观看一个周末主场比赛，加一个周中欧冠主场比赛）</p>
-                    <p>(4). 8月中下旬，确定比赛日程后，由ACN联系阿森纳俱乐部，确定观赛行程，并为无法自行办理签证的会员出具邀请函。</p>
-                    <p>(5). 9月初，所有确认参团者交定金，预订比赛门票。（8月前，预约报名阶段暂不收取）</p>
-                    <p>(6). 9月底，所有确认参团者，办理签证，自行或统一预订航班与住宿，安排伦敦当地的活动日程。</p>
+                    <p>(1). 在预约报名阶段，有任何消息更新，我们会通过微博、微信：<em>iArsenalcn</em>，进行联系通知，请有意者关注或加入时，注明新加坡观赛与真实姓名即可。</p>
+                    <p>(2). 在预约报名阶段，各位可以随时修改或取消预定。</p>
+                    <p>(3). 6月中旬，确定大部分观赛行程与金额费用，并联系签订合同与收取全部费用。</p>
+                    <p>(4). 6月中下旬，办理签证、机票、酒店住宿等，确定新加坡当地游行程。</p>
+                    <p>(5). 7月初确定两场比赛时间与球票分配、赛前训练课与球员见面会活动细节。</p>
                 </div>
             </div>
-            <div class="InfoPanel">
+            <div class="InfoPanel" style="display: none">
                 <h3 class="Col" onclick="$(this).toggleClass('Col'); $(this).toggleClass('Exp'); $(this).next('div').toggle('normal');">
                     <a>其他补充说明</a></h3>
                 <div class="Block">
@@ -181,7 +180,6 @@
                 </div>
             </div>
         </div>
-        
         <div class="Clear">
         </div>
     </div>

@@ -150,8 +150,7 @@ namespace iArsenal.Entity
             {
                 if (!string.IsNullOrEmpty(Remark))
                 {
-                    try { return new Guid(Remark); }
-                    catch { throw new Exception("Can't get the Partner of OrderItem_PlayerNumber.Remark"); }
+                    return new Guid(Remark);
                 }
                 else
                 {
@@ -208,8 +207,7 @@ namespace iArsenal.Entity
             {
                 if (!string.IsNullOrEmpty(Remark))
                 {
-                    try { return new Guid(Remark); }
-                    catch { throw new Exception("Can't get the Partner of OrderItem_PlayerName.Remark"); }
+                    return new Guid(Remark);
                 }
                 else
                 {

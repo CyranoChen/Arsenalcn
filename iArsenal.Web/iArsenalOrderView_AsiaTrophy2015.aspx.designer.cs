@@ -10,7 +10,7 @@
 namespace iArsenal.Web {
     
     
-    public partial class iArsenalOrderView_Travel {
+    public partial class iArsenalOrderView_AsiaTrophy2015 {
         
         /// <summary>
         /// ucPortalSitePath control.

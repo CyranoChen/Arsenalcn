@@ -30,9 +30,9 @@
     </script>
 </asp:Content>
 <asp:Content ID="cphMain" ContentPlaceHolderID="cphMain" runat="server">
-    <div id="banner" style="height: 400px">
-        <a href="#" target="_blank">
-            <img src="uploadfiles/banner/banner20150406.png" alt="2015英超亚洲杯阿森纳观战团报名" /></a>
+    <div id="banner" style="height: 300px">
+        <a href="http://bbs.arsenalcn.com/showtopic-108034.aspx" target="_blank">
+            <img src="uploadfiles/banner/banner20150503.png" alt="2015英超亚洲杯阿森纳观战团报名" /></a>
     </div>
     <div id="ACN_Main">
         <uc1:PortalSitePath ID="ucPortalSitePath" runat="server" />
@@ -153,6 +153,8 @@
                         </td>
                         <td style="text-align: left">
                             <asp:TextBox ID="tbPartnerName" runat="server" CssClass="TextBox Partner" Width="150px" MaxLength="20"></asp:TextBox>
+                            <span class="ValiSpan Partner">*</span>
+
                         </td>
                     </tr>
                     <tr class="Row Partner">
@@ -171,8 +173,8 @@
                         <td style="text-align: left">
                             <asp:RadioButtonList ID="rblPartnerGender" runat="server" RepeatDirection="Horizontal"
                                 RepeatLayout="Flow" CssClass="RadioButtonList">
-                                <asp:ListItem Text="男" Value="true" Selected="True"></asp:ListItem>
-                                <asp:ListItem Text="女" Value="false"></asp:ListItem>
+                                <asp:ListItem Text="男" Value="true"></asp:ListItem>
+                                <asp:ListItem Text="女" Value="false" Selected="True"></asp:ListItem>
                             </asp:RadioButtonList>
                         </td>
                     </tr>
@@ -181,6 +183,8 @@
                         </td>
                         <td style="text-align: left" colspan="3">
                             <asp:TextBox ID="tbPartnerIDCardNo" runat="server" CssClass="TextBox" Width="400px" MaxLength="20"></asp:TextBox>
+                            <span class="ValiSpan">*</span>
+
                         </td>
                     </tr>
                     <tr class="Row Partner">
@@ -188,11 +192,14 @@
                         </td>
                         <td style="text-align: left;">
                             <asp:TextBox ID="tbPartnerPassportNo" runat="server" CssClass="TextBox" Width="150px" MaxLength="20"></asp:TextBox>
+                            <span class="ValiSpan">*</span>
+
                         </td>
                         <td class="FieldHeader">同伴护照姓名：
                         </td>
                         <td style="text-align: left">
                             <asp:TextBox ID="tbPartnerPassportName" runat="server" CssClass="TextBox" Width="150px" MaxLength="20"></asp:TextBox>
+                            <span class="ValiSpan">*</span>
                         </td>
                     </tr>
                     <tr class="Row">
@@ -210,11 +217,12 @@
                         </td>
                         <td style="text-align: left; line-height: 2;" colspan="3">
                             <asp:CheckBoxList ID="cblTravelOption" runat="server" RepeatDirection="Vertical" RepeatLayout="Flow">
+                                <asp:ListItem Text="代为办理签证" Value="VISA" Selected="True"></asp:ListItem>
                                 <asp:ListItem Text="统一购买机票前往新加坡" Value="FLIGHT" Selected="True"></asp:ListItem>
                                 <asp:ListItem Text="统一预订宾馆并安排入住" Value="HOTEL" Selected="True"></asp:ListItem>
                                 <asp:ListItem Text="参观赛前训练课" Value="TRAINING" Selected="True"></asp:ListItem>
                                 <asp:ListItem Text="参加球员见面会（暂未确定）" Value="PARTY"></asp:ListItem>
-                                <asp:ListItem Text="参加新加坡当地团一日游" Value="SINGAPORE"></asp:ListItem>
+                                <asp:ListItem Text="参加新加坡当地团一日游" Value="SINGAPORE" Selected="True"></asp:ListItem>
                             </asp:CheckBoxList>
                         </td>
                     </tr>
@@ -239,19 +247,19 @@
                     <a>预约报名须知</a></h3>
                 <div class="Block">
                     <p>
-                        (1). 第一轮报名截止时间至新赛季阿森纳联赛赛程公布之日，约在2013年7月中下旬。
+                        (1). 观赛团首轮报名截止：<em>2015年6月5日</em>。
                     </p>
                     <p>
-                        (2). 请完整填写出行会员的个人信息，每位会员可以有一个同伴，同伴信息也请填写完整。我们会为会员的个人信息进行保密。
+                        (2). 请完整填写出行会员的个人信息，每位会员可登记一个同伴，同伴信息也请填写完整。我们会为会员的个人信息进行保密。
                     </p>
                     <p>
-                        (3). 请填写希望出行的时间段，并勾选相关出行选项，如有特殊需求，请填写在备注栏中。
+                        (3). 我们会在收到预订报名表后，核对身份信息，并与您取得联系，并邀请您加入微信：<em>iArsenalcn</em>，关注最新信息发布。
                     </p>
                     <p>
-                        (4). 我们会在收到预订报名表后，核对身份信息，并与您取得联系，然后邀请您加入出行专用的QQ群。
+                        (4). 由于比赛场次与对阵暂未确定，只订球票不参团的会员，暂未开通，请敬候更新。<span style="font-weight: bold">（只购票的会员原则上不能享受赛前训练课和球员见面会等福利）</span>
                     </p>
                     <p>
-                        (5). 如有问题，可与ACN负责人Cyrano联系。QQ：<em>22287842</em>，<a href="http://bbs.arsenalcn.com/usercppostpm.aspx" target="_blank">ACN论坛短消息</a>，Email：<a href="mailto:cyrano@arsenalcn.com"><em>cyrano@arsenalcn.com</em>。</a>
+                        (5). 如有问题，可与ACN负责人Cyrano联系。QQ：<em>22287842</em>，Email：<a href="mailto:cyrano@arsenalcn.com"><em>cyrano@arsenalcn.com</em>。</a>
                     </p>
                 </div>
             </div>
@@ -259,13 +267,13 @@
                 <h3 class="Col" onclick="$(this).toggleClass('Col'); $(this).toggleClass('Exp'); $(this).next('div').toggle('normal');">
                     <a>出行日程安排（暂定）</a></h3>
                 <div class="Block">
-                    <p style="font-weight: bold;">注：观战团行程大约在5~7天左右，具体安排预计如下，详见<a href="http://bbs.arsenalcn.com/showtopic.aspx?topicid=104630&postid=1767535#1767535" target="_blank"><em>点击查看</em></a>。</p>
-                    <p>(1). <em>DAY1 (周五)</em> 各自出行前往英国伦敦，航班约在10个小时左右。北京时间上午出发，英国时间当天下午能到，自行到酒店办理住宿。（时差为8个小时，余下行程开始以英国当地时间为准）</p>
-                    <p>(2). <em>DAY2 (周六)</em> 阿森纳地铁站集合，开始比赛日当天活动与观战。比赛之后，可自由组合去酒吧、共进晚餐等。</p>
-                    <p>(3). <em>DAY3 (周日)</em> 非比赛日的参观酋长球场和博物馆的活动。半天自由活动。</p>
-                    <p>(4). <em>DAY4 (周一)</em> 伦敦一日自由行。不参加的会员也可自行活动，或自由组合。</p>
-                    <p>(5). <em>DAY5 (周二)</em> 阿森纳地铁站集合，开始比赛日当天活动与观战，一般是晚上19:45或者是20:45的比赛。</p>
-                    <p>(6). <em>DAY6 (周三)</em> 自由活动，或可安排回国航班。（考虑到时差，能到中国大概已经是北京时间周四了）</p>
+                    <p style="font-weight: bold;">注：观赛团行程基本确定为2015年7月14日至7月19日（六日游），比赛当日来回可作四日游，详见<a href="http://bbs.arsenalcn.com/showtopic-108034.aspx" target="_blank"><em>点击查看</em></a>。</p>
+                    <p>(1). <em>7月14日 (周二)</em> 统一或各自出行航班前往新加坡，接机回酒店入住。</p>
+                    <p>(2). <em>7月15日 (周三)</em> 比赛前国家体育场集合，发球票入场观战。比赛之后，可自由组合去酒吧与共进晚餐等。</p>
+                    <p>(3). <em>7月16日 (周四)</em> 新加坡一日游：鱼尾狮公园、双螺旋桥、市政厅、新加坡河、摩天轮、牛车水等景点浏览。</p>
+                    <p>(4). <em>7月17日 (周五)</em> 安排自由行，或有赛前训练课，或有球员见面会（待定）。</p>
+                    <p>(5). <em>7月18日 (周六)</em> 比赛前国家体育场集合，发球票入场观战。新加坡官方球迷会聚会活动。</p>
+                    <p>(6). <em>7月19日 (周日)</em> 自由活动、购物。送机回国。</p>
                 </div>
             </div>
         </div>

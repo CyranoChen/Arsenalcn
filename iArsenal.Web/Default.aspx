@@ -31,10 +31,12 @@
         <div id="slides">
             <a href="iArsenalMemberRegister.aspx">
                 <img src="uploadfiles/banner/banner20120511.png" alt="阿森纳中国官方球迷会实名认证" /></a>
+            <a href="iArsenalOrder_AsiaTrophy2015.aspx">
+                <img src="uploadfiles/banner/banner20150503.png" alt="2015英超亚洲杯阿森纳观赛团" /></a>
             <a href="iArsenalOrder_ReplicaKit.aspx">
                 <img src="uploadfiles/banner/banner20140816.png" alt="阿森纳新赛季主客场球衣许愿单" /></a>
-            <a href="#">
-                <img src="uploadfiles/banner/banner20130713.png" alt="阿森纳新赛季伦敦行观战团预订" /></a>
+            <!-- a href="iArsenalOrder_LondonTravel.aspx">
+                <img src="uploadfiles/banner/banner20130713.png" alt="阿森纳新赛季伦敦行观战团预订" /></a -->
             <a href="iArsenalOrder_MatchList.aspx">
                 <img src="uploadfiles/banner/banner20130714.png" alt="阿森纳新赛季比赛主场球票预订" /></a>
         </div>

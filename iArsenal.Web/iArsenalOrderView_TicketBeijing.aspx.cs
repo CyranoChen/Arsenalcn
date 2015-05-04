@@ -112,7 +112,7 @@ namespace iArsenal.Web
                     // Set Order Price
 
                     price = oiTicket.TotalPrice;
-                    priceInfo = string.Format("<合计> {0} × {1}", oiTicket.UnitPrice.ToString("f2"), oiTicket.Quantity.ToString(), price.ToString("f2"));
+                    priceInfo = string.Format("<合计> {0} × {1}", oiTicket.UnitPrice.ToString("f2"), oiTicket.Quantity.ToString());
 
                     if (!o.Sale.HasValue)
                         lblOrderPrice.Text = string.Format("{0} = <em>{1}</em>元 (CNY)", priceInfo, price.ToString("f2"));

@@ -40,7 +40,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -73,6 +73,7 @@
     <Compile Include="BetDetail.cs" />
     <Compile Include="Custom\UserClub.cs" />
     <Compile Include="Custom\CasinoGambler.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Group.cs" />
     <Compile Include="GroupTeam.cs" />
     <Compile Include="ArsenalTeam.cs" />

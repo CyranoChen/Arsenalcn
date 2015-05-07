@@ -32,7 +32,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -546,6 +546,7 @@
     <Compile Include="Control\ClubVideo.ascx.designer.cs">
       <DependentUpon>ClubVideo.ascx</DependentUpon>
     </Compile>
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="MyAdvertisementContainer.aspx.cs">
       <DependentUpon>MyAdvertisementContainer.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

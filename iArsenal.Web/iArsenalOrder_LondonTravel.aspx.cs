@@ -471,7 +471,7 @@ namespace iArsenal.Web
                     ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}')", ex.Message.ToString()), true);
                 }
 
-                conn.Close();
+                //conn.Close();
             }
         }
     }

@@ -33,6 +33,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisIgnoreGeneratedCode>false</CodeAnalysisIgnoreGeneratedCode>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -546,7 +547,6 @@
     <Compile Include="Control\ClubVideo.ascx.designer.cs">
       <DependentUpon>ClubVideo.ascx</DependentUpon>
     </Compile>
-    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="MyAdvertisementContainer.aspx.cs">
       <DependentUpon>MyAdvertisementContainer.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

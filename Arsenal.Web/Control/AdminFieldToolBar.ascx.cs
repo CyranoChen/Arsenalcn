@@ -1,6 +1,6 @@
 ﻿using System;
 
-using Arsenal.Entity;
+using Arsenal.Service;
 using Arsenalcn.Common.Utility;
 
 namespace Arsenal.Web.Control

@@ -1,6 +1,7 @@
 ﻿using System;
 
-using Arsenal.Entity;
+using Arsenal.Service;
+using Arsenalcn.Core;
 
 namespace Arsenal.Web
 {
@@ -34,9 +35,8 @@ namespace Arsenal.Web
         {
             if (LeagueGuid != Guid.Empty)
             {
-                League l = new League();
-                l.LeagueGuid = LeagueGuid;
-                l.Select();
+                IEntity entity = new Entity();
+                League l = entity.Single<League>(LeagueGuid);
 
                 tbLeagueGuid.Text = LeagueGuid.ToString();
                 tbLeagueName.Text = l.LeagueName;
@@ -75,13 +75,13 @@ namespace Arsenal.Web
                 if (LeagueGuid != Guid.Empty)
                 {
                     l.LeagueGuid = LeagueGuid;
-                    l.Update();
+                    l.Update<League>(l);
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('更新成功');window.location.href = window.location.href", true);
                 }
                 else
                 {
                     l.LeagueGuid = new Guid(tbLeagueGuid.Text.Trim());
-                    l.Insert();
+                    l.Create<League>(l);
                     this.ClientScript.RegisterClientScriptBlock(typeof(string), "save", "alert('添加成功');window.location.href = 'AdminLeague.aspx';", true);
                 }
             }
@@ -109,9 +109,8 @@ namespace Arsenal.Web
             {
                 if (LeagueGuid != Guid.Empty)
                 {
-                    League l = new League();
-                    l.LeagueGuid = LeagueGuid;
-                    l.Delete();
+                    IEntity entity = new Entity();
+                    entity.Delete<League>(LeagueGuid);
 
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('删除成功');window.location.href='AdminLeague.aspx'", true);
                 }

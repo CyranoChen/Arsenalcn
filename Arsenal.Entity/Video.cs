@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.Data;
 
-namespace Arsenal.Entity
+using Arsenalcn.Core;
+
+namespace Arsenal.Service
 {
-    public class Video
+    [AttrDbTable("Arsenal_Video", Key = "VideoGuid")]
+    public class Video : Entity
     {
         public Video() { }
 
-        private Video(DataRow dr)
+        public Video(DataRow dr)
         {
             InitVideo(dr);
         }
@@ -54,8 +57,6 @@ namespace Arsenal.Entity
                 GoalYear = dr["GoalYear"].ToString();
                 Opponent = dr["Opponent"].ToString();
 
-
-
                 // Generate Video File Path
                 //if (!string.IsNullOrEmpty(FileName))
                 //{
@@ -76,44 +77,44 @@ namespace Arsenal.Entity
                 throw new Exception("Unable to init Video.");
         }
 
-        public void Select()
-        {
-            DataRow dr = DataAccess.Video.GetVideoByID(VideoGuid);
+        //public void Select()
+        //{
+        //    DataRow dr = DataAccess.Video.GetVideoByID(VideoGuid);
 
-            if (dr != null)
-                InitVideo(dr);
-        }
+        //    if (dr != null)
+        //        InitVideo(dr);
+        //}
 
-        public void Update()
-        {
-            DataAccess.Video.UpdateVideo(VideoGuid, FileName, ArsenalMatchGuid, GoalPlayerGuid, GoalPlayerName, AssistPlayerGuid, AssistPlayerName, GoalRank, TeamworkRank, VideoType.ToString(), VideoLength, VideoWidth, VideoHeight, GoalYear, Opponent);
-        }
+        //public void Update()
+        //{
+        //    DataAccess.Video.UpdateVideo(VideoGuid, FileName, ArsenalMatchGuid, GoalPlayerGuid, GoalPlayerName, AssistPlayerGuid, AssistPlayerName, GoalRank, TeamworkRank, VideoType.ToString(), VideoLength, VideoWidth, VideoHeight, GoalYear, Opponent);
+        //}
 
-        public void Insert()
-        {
-            DataAccess.Video.InsertVideo(VideoGuid, FileName, ArsenalMatchGuid, GoalPlayerGuid, GoalPlayerName, AssistPlayerGuid, AssistPlayerName, GoalRank, TeamworkRank, VideoType.ToString(), VideoLength, VideoWidth, VideoHeight, GoalYear, Opponent);
-        }
+        //public void Insert()
+        //{
+        //    DataAccess.Video.InsertVideo(VideoGuid, FileName, ArsenalMatchGuid, GoalPlayerGuid, GoalPlayerName, AssistPlayerGuid, AssistPlayerName, GoalRank, TeamworkRank, VideoType.ToString(), VideoLength, VideoWidth, VideoHeight, GoalYear, Opponent);
+        //}
 
-        public void Delete()
-        {
-            DataAccess.Video.DeleteVideo(VideoGuid);
-        }
+        //public void Delete()
+        //{
+        //    DataAccess.Video.DeleteVideo(VideoGuid);
+        //}
 
-        public static List<Video> GetVideos()
-        {
-            DataTable dt = DataAccess.Video.GetVideos();
-            List<Video> list = new List<Video>();
+        //public static List<Video> GetVideos()
+        //{
+        //    DataTable dt = DataAccess.Video.GetVideos();
+        //    List<Video> list = new List<Video>();
 
-            if (dt != null)
-            {
-                foreach (DataRow dr in dt.Rows)
-                {
-                    list.Add(new Video(dr));
-                }
-            }
+        //    if (dt != null)
+        //    {
+        //        foreach (DataRow dr in dt.Rows)
+        //        {
+        //            list.Add(new Video(dr));
+        //        }
+        //    }
 
-            return list;
-        }
+        //    return list;
+        //}
 
         public static class Cache
         {
@@ -129,7 +130,7 @@ namespace Arsenal.Entity
 
             private static void InitCache()
             {
-                VideoList = GetVideos();
+                VideoList = new Video().All<Video>();
 
                 VideoList_Legend = VideoList.FindAll(delegate(Video v)
                 {
@@ -139,7 +140,7 @@ namespace Arsenal.Entity
                         return false;
                 });
 
-                ColList_GoalYear = DataAccess.Video.GetVideoDistColumn("GoalYear", false);
+                //ColList_GoalYear = DataAccess.Video.GetVideoDistColumn("GoalYear", false);
             }
 
             public static Video Load(Guid guid)
@@ -155,48 +156,63 @@ namespace Arsenal.Entity
 
         #region Members and Properties
 
+        [AttrDbColumn("VideoGuid", IsKey = true)]
         public Guid VideoGuid
         { get; set; }
 
+        [AttrDbColumn("FileName")]
         public string FileName
         { get; set; }
 
+        [AttrDbColumn("ArsenalMatchGuid")]
         public Guid? ArsenalMatchGuid
         { get; set; }
 
+        [AttrDbColumn("GoalPLayerGuid")]
         public Guid? GoalPlayerGuid
         { get; set; }
 
+        [AttrDbColumn("GoalPlayerName")]
         public string GoalPlayerName
         { get; set; }
 
+        [AttrDbColumn("AssistPlayerGuid")]
         public Guid? AssistPlayerGuid
         { get; set; }
 
+        [AttrDbColumn("AssistPlayerName")]
         public string AssistPlayerName
         { get; set; }
 
+        [AttrDbColumn("GoalRank")]
         public string GoalRank
         { get; set; }
 
+        [AttrDbColumn("TeamworkRank")]
         public string TeamworkRank
         { get; set; }
 
+        [AttrDbColumn("VideoType")]
         public VideoFileType VideoType
         { get; set; }
 
+        [AttrDbColumn("VideoLength")]
         public int VideoLength
         { get; set; }
 
+        [AttrDbColumn("VideoWidth")]
         public int VideoWidth
         { get; set; }
 
+        [AttrDbColumn("VideoHeight")]
         public int VideoHeight
         { get; set; }
 
+        [AttrDbColumn("GoalYear")]
         public string GoalYear
         { get; set; }
 
+        [AttrDbColumn("Opponent")]
         public string Opponent
         { get; set; }
 

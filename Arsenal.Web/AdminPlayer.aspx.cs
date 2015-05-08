@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Web.UI.WebControls;
 
-using Arsenal.Entity;
+using Arsenal.Service;
+using Arsenalcn.Core;
 
 namespace Arsenal.Web
 {
@@ -58,7 +59,9 @@ namespace Arsenal.Web
 
         private void BindData()
         {
-            List<Player> list = Player.GetPlayers().FindAll(delegate(Player p)
+            IEntity entity = new Entity();
+
+            List<Player> list = entity.All<Player>().FindAll(delegate(Player p)
                 {
                     Boolean returnValue = true;
                     string tmpString = string.Empty;
@@ -74,7 +77,7 @@ namespace Arsenal.Web
                     {
                         tmpString = ViewState["Position"].ToString();
                         if (!string.IsNullOrEmpty(tmpString))
-                            returnValue = returnValue && p.Position.ToString().Equals(tmpString, StringComparison.OrdinalIgnoreCase);
+                            returnValue = returnValue && p.Position.HasValue && p.Position.Value.ToString().Equals(tmpString, StringComparison.OrdinalIgnoreCase);
                     }
 
                     if (ViewState["IsLegend"] != null)

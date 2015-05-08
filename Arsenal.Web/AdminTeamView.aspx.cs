@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Web.UI.WebControls;
 
-using Arsenal.Entity;
+using Arsenal.Service;
+using Arsenalcn.Core;
 
 namespace Arsenal.Web
 {
@@ -47,9 +48,8 @@ namespace Arsenal.Web
         {
             if (TeamGuid != Guid.Empty)
             {
-                Team t = new Team();
-                t.TeamGuid = TeamGuid;
-                t.Select();
+                IEntity entity = new Entity();
+                Team t = entity.Single<Team>(TeamGuid);
 
                 tbTeamGuid.Text = t.TeamGuid.ToString();
                 tbTeamEnglishName.Text = t.TeamEnglishName;
@@ -95,7 +95,8 @@ namespace Arsenal.Web
                         RelationLeagueTeam rlt = new RelationLeagueTeam();
                         rlt.TeamGuid = TeamGuid;
                         rlt.LeagueGuid = leagueGuid;
-                        rlt.Insert();
+
+                        rlt.Create<RelationLeagueTeam>(rlt);
                     }
                     else
                     {
@@ -106,13 +107,13 @@ namespace Arsenal.Web
                 if (TeamGuid != Guid.Empty)
                 {
                     t.TeamGuid = TeamGuid;
-                    t.Update();
+                    t.Update<Team>(t);
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('更新成功');window.location.href = window.location.href", true);
                 }
                 else
                 {
                     t.TeamGuid = new Guid(tbTeamGuid.Text.Trim());
-                    t.Insert();
+                    t.Create<Team>(t);
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('添加成功');window.location.href = 'AdminTeam.aspx'", true);
                 }
             }
@@ -142,19 +143,24 @@ namespace Arsenal.Web
                 {
                     int countRelationLeagueTeam = int.MinValue;
 
-                    List<RelationLeagueTeam> list = RelationLeagueTeam.GetRelationLeagueTeams().FindAll(delegate(RelationLeagueTeam rlt) { return rlt.TeamGuid.Equals(TeamGuid); });
+                    IEntity entity = new Entity();
+                    List<RelationLeagueTeam> list = entity.All<RelationLeagueTeam>().FindAll(delegate(RelationLeagueTeam rlt) { return rlt.TeamGuid.Equals(TeamGuid); });
 
                     if (list != null && list.Count > 0)
                     {
                         countRelationLeagueTeam = list.Count;
 
+                        // TODO
                         foreach (RelationLeagueTeam rlt in list)
-                            rlt.Delete();
+                        {
+                            //rlt.Delete();
+                        }
+
                     }
 
                     Team t = new Team();
                     t.TeamGuid = TeamGuid;
-                    t.Delete();
+                    t.Delete<Team>(t);
 
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", string.Format("alert('删除成功(包括{0}个分类关联)');window.location.href='AdminTeam.aspx'", countRelationLeagueTeam.ToString()), true);
                 }

@@ -5,7 +5,7 @@ using System.Data.SqlClient;
 using Arsenalcn.Common;
 using Arsenalcn.Common.Entity;
 
-namespace Arsenal.Entity
+namespace Arsenal.Service
 {
     public class ConfigGlobal : Config
     {

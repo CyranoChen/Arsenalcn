@@ -9,7 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{D70612
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arsenal.DataAccess", "Arsenal.DataAccess\Arsenal.DataAccess.csproj", "{37CC8A18-346F-4FDF-AF3D-C12C36D047EB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arsenal.Entity", "Arsenal.Entity\Arsenal.Entity.csproj", "{18F784E1-6AC9-488C-9F00-B1CF2D5A8893}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arsenal.Service", "Arsenal.Entity\Arsenal.Service.csproj", "{18F784E1-6AC9-488C-9F00-B1CF2D5A8893}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arsenal.Web", "Arsenal.Web\Arsenal.Web.csproj", "{2F427066-57F9-495F-B91A-F4D0D097C949}"
 EndProject
@@ -51,6 +51,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arsenalcn.ClubSys.Service", "Arsenalcn.ClubSys.Service\Arsenalcn.ClubSys.Service.csproj", "{75829613-19BE-4D73-967E-19D3B5F7CB84}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arsenalcn.ClubSys.Web", "Arsenalcn.ClubSys.Web\Arsenalcn.ClubSys.Web.csproj", "{32CF12A8-B988-43D9-9934-265A13A7DF82}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arsenalcn.Core", "Arsenalcn.Core\Arsenalcn.Core.csproj", "{C46F6AF6-EBE1-4BAC-BC17-0989FA6C9B8E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arsenalcn.Core.Test", "Arsenalcn.Core.Test\Arsenalcn.Core.Test.csproj", "{F9E70403-E5AA-42AD-BBEC-B338038B9306}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -122,6 +126,14 @@ Global
 		{32CF12A8-B988-43D9-9934-265A13A7DF82}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{32CF12A8-B988-43D9-9934-265A13A7DF82}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{32CF12A8-B988-43D9-9934-265A13A7DF82}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C46F6AF6-EBE1-4BAC-BC17-0989FA6C9B8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C46F6AF6-EBE1-4BAC-BC17-0989FA6C9B8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C46F6AF6-EBE1-4BAC-BC17-0989FA6C9B8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C46F6AF6-EBE1-4BAC-BC17-0989FA6C9B8E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9E70403-E5AA-42AD-BBEC-B338038B9306}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9E70403-E5AA-42AD-BBEC-B338038B9306}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9E70403-E5AA-42AD-BBEC-B338038B9306}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9E70403-E5AA-42AD-BBEC-B338038B9306}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -143,5 +155,7 @@ Global
 		{2FD842D7-9D05-4EDB-A5BB-1D60E48E5BC5} = {D7061262-BFE2-4747-AFA8-94022986F024}
 		{75829613-19BE-4D73-967E-19D3B5F7CB84} = {45694A9F-40E6-4D5C-BA44-D0081A8884E7}
 		{32CF12A8-B988-43D9-9934-265A13A7DF82} = {45694A9F-40E6-4D5C-BA44-D0081A8884E7}
+		{C46F6AF6-EBE1-4BAC-BC17-0989FA6C9B8E} = {D7061262-BFE2-4747-AFA8-94022986F024}
+		{F9E70403-E5AA-42AD-BBEC-B338038B9306} = {D7061262-BFE2-4747-AFA8-94022986F024}
 	EndGlobalSection
 EndGlobal

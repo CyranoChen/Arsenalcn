@@ -1,6 +1,7 @@
 ﻿using System;
 
-using Arsenal.Entity;
+using Arsenal.Service;
+using Arsenalcn.Core;
 
 namespace Arsenal.Web
 {
@@ -34,9 +35,8 @@ namespace Arsenal.Web
         {
             if (PlayerGuid != Guid.Empty)
             {
-                Player p = new Player();
-                p.PlayerGuid = PlayerGuid;
-                p.Select();
+                IEntity entity = new Entity();
+                Player p = entity.Single<Player>(PlayerGuid);
 
                 lblPlayerBasicInfo.InnerHtml = string.Format("<em>{0}</em> 基本信息", p.DisplayName);
                 lblPlayerDetailInfo.InnerHtml = string.Format("<em>{0}</em> 详细信息", p.DisplayName);
@@ -58,11 +58,7 @@ namespace Arsenal.Web
                 else
                     tbPrintingName.Text = string.Empty;
 
-                if (p.Position == PlayerPostionType.Null)
-                    ddlPosition.SelectedValue = string.Empty;
-                else
-                    ddlPosition.SelectedValue = p.Position.ToString();
-
+                ddlPosition.SelectedValue = p.Position.HasValue ? p.Position.ToString() : string.Empty;
                 tbSquadNumber.Text = p.SquadNumber.ToString();
                 tbFaceURL.Text = p.FaceURL;
                 tbPhotoURL.Text = p.PhotoURL;
@@ -88,7 +84,7 @@ namespace Arsenal.Web
                     tbJoinDate.Text = string.Empty;
 
                 tbJoined.Text = p.Joined;
-                tbLeft.Text = p.Left;
+                tbLeft.Text = p.LeftYear;
                 tbDebut.Text = p.Debut;
                 tbFirstGoal.Text = p.FirstGoal;
                 tbPreviousClubs.Text = p.PreviousClubs;
@@ -131,9 +127,13 @@ namespace Arsenal.Web
                     p.PrintingName = null;
 
                 if (!string.IsNullOrEmpty(ddlPosition.SelectedValue))
+                {
                     p.Position = (PlayerPostionType)Enum.Parse(typeof(PlayerPostionType), ddlPosition.SelectedValue);
+                }
                 else
-                    p.Position = PlayerPostionType.Null;
+                {
+                    p.Position = null;
+                }
 
                 p.SquadNumber = Convert.ToInt16(tbSquadNumber.Text.Trim());
                 p.FaceURL = tbFaceURL.Text.Trim();
@@ -166,7 +166,7 @@ namespace Arsenal.Web
                     p.JoinDate = null;
 
                 p.Joined = tbJoined.Text.Trim();
-                p.Left = tbLeft.Text.Trim();
+                p.LeftYear = tbLeft.Text.Trim();
                 p.Debut = tbDebut.Text.Trim();
                 p.FirstGoal = tbFirstGoal.Text.Trim();
                 p.PreviousClubs = tbPreviousClubs.Text.Trim();
@@ -175,13 +175,13 @@ namespace Arsenal.Web
                 if (PlayerGuid != Guid.Empty)
                 {
                     p.PlayerGuid = PlayerGuid;
-                    p.Update();
+                    p.Update<Player>(p);
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('更新成功');window.location.href = window.location.href", true);
                 }
                 else
                 {
                     p.PlayerGuid = new Guid(tbPlayerGuid.Text.Trim());
-                    p.Insert();
+                    p.Create<Player>(p);
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('添加成功');window.location.href = 'AdminPlayer.aspx'", true);
                 }
             }
@@ -209,9 +209,8 @@ namespace Arsenal.Web
             {
                 if (PlayerGuid != Guid.Empty)
                 {
-                    Player p = new Player();
-                    p.PlayerGuid = PlayerGuid;
-                    p.Delete();
+                    IEntity entity = new Entity();
+                    entity.Delete<Player>(PlayerGuid);
 
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('删除成功');window.location.href='AdminPlayer.aspx'", true);
                 }

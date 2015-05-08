@@ -295,13 +295,17 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\Arsenal.Entity\Arsenal.Entity.csproj">
+    <ProjectReference Include="..\Arsenal.Entity\Arsenal.Service.csproj">
       <Project>{18f784e1-6ac9-488c-9f00-b1cf2d5a8893}</Project>
-      <Name>Arsenal.Entity</Name>
+      <Name>Arsenal.Service</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arsenalcn.Common\Arsenalcn.Common.csproj">
       <Project>{8258A2E1-6821-4BAE-9111-3FBB65703FE0}</Project>
       <Name>Arsenalcn.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Arsenalcn.Core\Arsenalcn.Core.csproj">
+      <Project>{c46f6af6-ebe1-4bac-bc17-0989fa6c9b8e}</Project>
+      <Name>Arsenalcn.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

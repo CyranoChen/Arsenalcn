@@ -3,7 +3,7 @@ using System.Data.SqlClient;
 
 namespace Arsenalcn.Common
 {
-    public class SQLConn
+    public static class SQLConn
     {
         public static SqlConnection GetConnection()
         {

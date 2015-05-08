@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Web.UI.WebControls;
 
-using Arsenal.Entity;
+using Arsenal.Service;
+using Arsenalcn.Core;
 
 namespace Arsenal.Web
 {
@@ -47,9 +48,8 @@ namespace Arsenal.Web
         {
             if (MatchGuid != Guid.Empty)
             {
-                Match m = new Match();
-                m.MatchGuid = MatchGuid;
-                m.Select();
+                IEntity entity = new Entity();
+                Match m = entity.Single<Match>(MatchGuid);
 
                 tbMatchGuid.Text = m.MatchGuid.ToString();
 
@@ -167,14 +167,14 @@ namespace Arsenal.Web
                 if (MatchGuid != Guid.Empty)
                 {
                     m.MatchGuid = MatchGuid;
-                    m.Update();
+                    m.Update<Match>(m);
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('更新成功');window.location.href = window.location.href", true);
                 }
                 else
                 {
                     m.MatchGuid = new Guid(tbMatchGuid.Text.Trim());
 
-                    m.Insert();
+                    m.Create<Match>(m);
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('添加成功');window.location.href = 'AdminMatch.aspx'", true);
                 }
             }
@@ -202,9 +202,8 @@ namespace Arsenal.Web
             {
                 if (MatchGuid != Guid.Empty)
                 {
-                    Match m = new Match();
-                    m.MatchGuid = MatchGuid;
-                    m.Delete();
+                    IEntity entity = new Entity();
+                    entity.Delete<Match>(MatchGuid);
 
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('删除成功');window.location.href='AdminMatch.aspx'", true);
                 }
@@ -221,7 +220,8 @@ namespace Arsenal.Web
 
         private void BindTeamData(Guid LeagueGuid)
         {
-            List<RelationLeagueTeam> list = RelationLeagueTeam.GetRelationLeagueTeams().FindAll(delegate(RelationLeagueTeam rlt) { return rlt.LeagueGuid.Equals(LeagueGuid); });
+            IEntity entity = new Entity();
+            List<RelationLeagueTeam> list = entity.All<RelationLeagueTeam>().FindAll(delegate(RelationLeagueTeam rlt) { return rlt.LeagueGuid.Equals(LeagueGuid); });
             List<Team> lstTeam = new List<Team>();
 
             if (list != null && list.Count > 0)

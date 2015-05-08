@@ -50,16 +50,16 @@ namespace Arsenalcn.Event
             }
             #endregion
 
-            #region ConfigGlobal Cache
-            try
-            {
-                Arsenal.Entity.ConfigGlobal.Cache.RefreshCache();
-            }
-            catch (Exception ex)
-            {
-                LogEvent.Logging(LogEventType.Error, "刷新全局配置缓存", ex.StackTrace, ex.Message);
-            }
-            #endregion
+            //#region ConfigGlobal Cache
+            //try
+            //{
+            //    Arsenal.Entity.ConfigGlobal.Cache.RefreshCache();
+            //}
+            //catch (Exception ex)
+            //{
+            //    LogEvent.Logging(LogEventType.Error, "刷新全局配置缓存", ex.StackTrace, ex.Message);
+            //}
+            //#endregion
 
             LogEvent.Logging(LogEventType.Success, "Regular Event End!", string.Empty, string.Empty);
         }

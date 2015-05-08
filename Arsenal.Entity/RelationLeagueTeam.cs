@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.Data;
 
-namespace Arsenal.Entity
+using Arsenalcn.Core;
+
+namespace Arsenal.Service
 {
-    public class RelationLeagueTeam
+    [AttrDbTable("Arsenal_RelationLeagueTeam", Key = "TeamGuid, LeagueGuid")]
+    public class RelationLeagueTeam : Entity
     {
         public RelationLeagueTeam() { }
 
-        private RelationLeagueTeam(DataRow dr)
+        public RelationLeagueTeam(DataRow dr)
         {
             InitRelationLeagueTeam(dr);
         }
@@ -24,60 +27,60 @@ namespace Arsenal.Entity
                 throw new Exception("Unable to init RelationLeagueTeam.");
         }
 
-        public void Select()
-        {
-            DataRow dr = DataAccess.RelationLeagueTeam.GetRelationLeagueTeamByID(TeamGuid, LeagueGuid);
+        //public void Select()
+        //{
+        //    DataRow dr = DataAccess.RelationLeagueTeam.GetRelationLeagueTeamByID(TeamGuid, LeagueGuid);
 
-            if (dr != null)
-                InitRelationLeagueTeam(dr);
-        }
+        //    if (dr != null)
+        //        InitRelationLeagueTeam(dr);
+        //}
 
-        public void Insert()
-        {
-            DataAccess.RelationLeagueTeam.InsertRelationLeagueTeam(TeamGuid, LeagueGuid);
-        }
+        //public void Insert()
+        //{
+        //    DataAccess.RelationLeagueTeam.InsertRelationLeagueTeam(TeamGuid, LeagueGuid);
+        //}
 
-        public void Delete()
-        {
-            DataAccess.RelationLeagueTeam.DeleteRelationLeagueTeam(TeamGuid, LeagueGuid);
-        }
+        //public void Delete()
+        //{
+        //    DataAccess.RelationLeagueTeam.DeleteRelationLeagueTeam(TeamGuid, LeagueGuid);
+        //}
 
-        public static List<RelationLeagueTeam> GetRelationLeagueTeams()
-        {
-            DataTable dt = DataAccess.RelationLeagueTeam.GetRelationLeagueTeams();
-            List<RelationLeagueTeam> list = new List<RelationLeagueTeam>();
+        //public static List<RelationLeagueTeam> GetRelationLeagueTeams()
+        //{
+        //    DataTable dt = DataAccess.RelationLeagueTeam.GetRelationLeagueTeams();
+        //    List<RelationLeagueTeam> list = new List<RelationLeagueTeam>();
 
-            if (dt != null)
-            {
-                foreach (DataRow dr in dt.Rows)
-                {
-                    list.Add(new RelationLeagueTeam(dr));
-                }
-            }
+        //    if (dt != null)
+        //    {
+        //        foreach (DataRow dr in dt.Rows)
+        //        {
+        //            list.Add(new RelationLeagueTeam(dr));
+        //        }
+        //    }
 
-            return list;
-        }
+        //    return list;
+        //}
 
         public static Boolean Exist(Guid tGuid, Guid lGuid)
         {
-            DataRow dr = DataAccess.RelationLeagueTeam.GetRelationLeagueTeamByID(tGuid, lGuid);
+            //DataRow dr = DataAccess.RelationLeagueTeam.GetRelationLeagueTeamByID(tGuid, lGuid);
 
-            if (dr != null)
-                return true;
-            else
-                return false;
+            return new RelationLeagueTeam().All<RelationLeagueTeam>().Exists(rlt =>
+                rlt.TeamGuid.Equals(tGuid) && rlt.LeagueGuid.Equals(lGuid));
         }
 
-        public static void CleanRelationLeagueTeam()
-        {
-            DataAccess.RelationLeagueTeam.CleanRelationLeagueTeam();
-        }
+        //public static void CleanRelationLeagueTeam()
+        //{
+        //    DataAccess.RelationLeagueTeam.CleanRelationLeagueTeam();
+        //}
 
         #region Members and Properties
 
+        [AttrDbColumn("TeamGuid", IsKey = true)]
         public Guid TeamGuid
         { get; set; }
 
+        [AttrDbColumn("LeagueGuid", IsKey = true)]
         public Guid LeagueGuid
         { get; set; }
 

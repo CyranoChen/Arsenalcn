@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Web.UI.WebControls;
 
-using Arsenal.Entity;
+using Arsenal.Service;
+using Arsenalcn.Core;
 
 namespace Arsenal.Web
 {
@@ -50,7 +51,8 @@ namespace Arsenal.Web
 
         private void BindData()
         {
-            List<Match> list = Match.GetMatchs().FindAll(delegate(Match m)
+            IEntity entity = new Entity();
+            List<Match> list = entity.All<Match>().FindAll(delegate(Match m)
             {
                 Boolean returnValue = true;
                 string tmpString = string.Empty;
@@ -157,7 +159,8 @@ namespace Arsenal.Web
 
         private void BindTeamData(Guid LeagueGuid)
         {
-            List<RelationLeagueTeam> list = RelationLeagueTeam.GetRelationLeagueTeams().FindAll(delegate(RelationLeagueTeam rlt) { return rlt.LeagueGuid.Equals(LeagueGuid); });
+            IEntity entity = new Entity();
+            List<RelationLeagueTeam> list = entity.All<RelationLeagueTeam>().FindAll(rlt => rlt.LeagueGuid.Equals(LeagueGuid));
             List<Team> lstTeam = new List<Team>();
 
             if (list != null && list.Count > 0)

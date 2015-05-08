@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Web.UI.WebControls;
 
-using Arsenal.Entity;
+using Arsenal.Service;
+using Arsenalcn.Core;
 
 namespace Arsenal.Web
 {
@@ -68,9 +69,8 @@ namespace Arsenal.Web
         {
             if (VideoGuid != Guid.Empty)
             {
-                Video v = new Video();
-                v.VideoGuid = VideoGuid;
-                v.Select();
+                IEntity entity = new Entity();
+                Video v = entity.Single<Video>(VideoGuid);
 
                 tbVideoGuid.Text = VideoGuid.ToString();
                 tbFileName.Text = v.FileName.ToString();
@@ -164,7 +164,7 @@ namespace Arsenal.Web
                 v.TeamworkRank = tbTeamworkRank.Text.Trim();
                 v.GoalYear = tbGoalYear.Text.Trim();
                 v.Opponent = tbOpponent.Text.Trim();
-
+                //v.VideoType = ddlVideoType.SelectedValue;
                 v.VideoType = (VideoFileType)Enum.Parse(typeof(VideoFileType), ddlVideoType.SelectedValue);
                 v.VideoLength = Convert.ToInt16(tbVideoLength.Text.Trim());
                 v.VideoWidth = Convert.ToInt16(tbVideoWidth.Text.Trim());
@@ -174,7 +174,7 @@ namespace Arsenal.Web
                 {
                     v.VideoGuid = VideoGuid;
                     //v.FileName = string.Format("{0}/{1}{2}", v.GoalPlayerName.Replace(" ", "_"), v.VideoGuid.ToString().ToUpper(), ddlVideoType.SelectedValue.ToUpper());
-                    v.Update();
+                    v.Update<Video>(v);
 
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('更新成功');window.location.href = window.location.href", true);
                 }
@@ -182,7 +182,7 @@ namespace Arsenal.Web
                 {
                     v.VideoGuid = new Guid(tbVideoGuid.Text.Trim());
                     //v.FileName = string.Format("{0}/{1}{2}", v.GoalPlayerName.Replace(" ", "_"), v.VideoGuid.ToString().ToUpper(), ddlVideoType.SelectedValue.ToUpper());
-                    v.Insert();
+                    v.Create<Video>(v);
 
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('添加成功');window.location.href = 'AdminVideo.aspx'", true);
                 }
@@ -211,9 +211,8 @@ namespace Arsenal.Web
             {
                 if (VideoGuid != Guid.Empty)
                 {
-                    Video v = new Video();
-                    v.VideoGuid = VideoGuid;
-                    v.Delete();
+                    IEntity entity = new Entity();
+                    entity.Delete<Video>(VideoGuid);
 
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('删除成功');window.location.href='AdminVideo.aspx'", true);
                 }

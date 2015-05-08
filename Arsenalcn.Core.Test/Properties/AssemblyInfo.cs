@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Arsenal.Service")]
+[assembly: AssemblyTitle("Arsenalcn.Core.Test")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Arsenal.cn")]
-[assembly: AssemblyProduct("Arsenal.Service")]
-[assembly: AssemblyCopyright("Copyright © Arsenal.cn 2012")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("Arsenalcn.Core.Test")]
+[assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("328b9faf-8870-4197-a4f1-d9735b8f3bba")]
+[assembly: Guid("1755e7b4-f81b-4cc7-8319-6316b2243277")]
 
 // Version information for an assembly consists of the following four values:
 //

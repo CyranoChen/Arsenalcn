@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Web.UI.WebControls;
+using System.Linq;
 
-using Arsenal.Entity;
+using Arsenal.Service;
+using Arsenalcn.Core;
 
 namespace Arsenal.Web
 {
@@ -51,7 +53,8 @@ namespace Arsenal.Web
 
         private void BindData()
         {
-            List<Video> list = Video.GetVideos().FindAll(delegate(Video v)
+            IEntity entity = new Entity();
+            List<Video> list = entity.All<Video>().FindAll(delegate(Video v)
                 {
                     Boolean returnValue = true;
                     string tmpString = string.Empty;
@@ -79,6 +82,10 @@ namespace Arsenal.Web
 
                     return returnValue;
                 });
+
+            list = list.OrderByDescending(i => i.GoalYear)
+                .ThenByDescending(i => i.GoalRank)
+                .ThenByDescending(i => i.TeamworkRank).ToList();
 
             #region set GridView Selected PageIndex
             if (VideoGuid.HasValue && VideoGuid != Guid.Empty)

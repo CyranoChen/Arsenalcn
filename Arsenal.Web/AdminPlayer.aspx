@@ -25,6 +25,9 @@
                 <asp:DropDownList ID="ddlSquadNumber" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlSquadNumber_SelectedIndexChanged">
                 </asp:DropDownList>
                 <asp:DropDownList ID="ddlPosition" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlPosition_SelectedIndexChanged">
+                    <asp:ListItem Value="Goalkeeper"></asp:ListItem>
+                    <asp:ListItem Value="Defender"></asp:ListItem>
+                    <asp:ListItem Value="Midfielder"></asp:ListItem>
                 </asp:DropDownList>
                 <asp:DropDownList ID="ddlIsLegend" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlIsLegend_SelectedIndexChanged">
                     <asp:ListItem Value="" Text="--状态--"></asp:ListItem>

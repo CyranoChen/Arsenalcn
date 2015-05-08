@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.Data;
 
-namespace Arsenal.Entity
+using Arsenalcn.Core;
+
+namespace Arsenal.Service
 {
-    public class Player
+    [AttrDbTable("Arsenal_Player", Key = "PlayerGuid")]
+    public class Player : Entity
     {
         public Player() { }
 
-        private Player(DataRow dr)
+        public Player(DataRow dr)
         {
             InitPlayer(dr);
         }
@@ -39,7 +42,7 @@ namespace Arsenal.Entity
                 if (!string.IsNullOrEmpty(dr["Position"].ToString()))
                     Position = (PlayerPostionType)Enum.Parse(typeof(PlayerPostionType), dr["Position"].ToString());
                 else
-                    Position = PlayerPostionType.Null;
+                    Position = null;
 
                 SquadNumber = Convert.ToInt16(dr["SquadNumber"]);
                 FaceURL = dr["FaceURL"].ToString();
@@ -65,7 +68,7 @@ namespace Arsenal.Entity
                     JoinDate = null;
 
                 Joined = dr["Joined"].ToString();
-                Left = dr["Left"].ToString();
+                LeftYear = dr["LeftYear"].ToString();
                 Debut = dr["Debut"].ToString();
                 FirstGoal = dr["FirstGoal"].ToString();
                 PreviousClubs = dr["PreviousClubs"].ToString();
@@ -75,52 +78,51 @@ namespace Arsenal.Entity
                 throw new Exception("Unable to init Player.");
         }
 
-        public void Select()
-        {
-            DataRow dr = DataAccess.Player.GetPlayerByID(PlayerGuid);
+        //public void Select()
+        //{
+        //    DataRow dr = DataAccess.Player.GetPlayerByID(PlayerGuid);
 
-            if (dr != null)
-                InitPlayer(dr);
-        }
+        //    if (dr != null)
+        //        InitPlayer(dr);
+        //}
 
-        public void Update()
-        {
-            string _position = string.Empty;
-            if (Position != PlayerPostionType.Null)
-                _position = Position.ToString();
+        //public override void Update<Player>(Player instance)
+        //{
+        //    string _position = string.Empty;
+        //    if (Position != PlayerPostionType.Null)
+        //        _position = Position.ToString();
 
-            DataAccess.Player.UpdatePlayer(PlayerGuid, FirstName, LastName, DisplayName, PrintingName, _position, SquadNumber, FaceURL, PhotoURL, Offset, IsLegend, IsLoan, Birthday, Born, Starts, Subs, Apps, Goals, JoinDate, Joined, Left, Debut, FirstGoal, PreviousClubs, Profile);
-        }
+        //}
 
-        public void Insert()
-        {
-            string _position = string.Empty;
-            if (Position != PlayerPostionType.Null)
-                _position = Position.ToString();
+        //public void Insert()
+        //{
+        //    string _position = string.Empty;
+        //    if (Position != PlayerPostionType.Null)
+        //        _position = Position.ToString();
 
-            DataAccess.Player.InsertPlayer(PlayerGuid, FirstName, LastName, DisplayName, PrintingName, _position, SquadNumber, FaceURL, PhotoURL, Offset, IsLegend, IsLoan, Birthday, Born, Starts, Subs, Apps, Goals, JoinDate, Joined, Left, Debut, FirstGoal, PreviousClubs, Profile);
-        }
+        //    DataAccess.Player.InsertPlayer(PlayerGuid, FirstName, LastName, DisplayName, PrintingName, _position, SquadNumber, FaceURL, PhotoURL, Offset, IsLegend, IsLoan, Birthday, Born, Starts, Subs, Apps, Goals, JoinDate, Joined, Left, Debut, FirstGoal, PreviousClubs, Profile);
+        //}
 
-        public void Delete()
-        {
-            DataAccess.Player.DeletePlayer(PlayerGuid);
-        }
+        //public void Delete()
+        //{
+        //    DataAccess.Player.DeletePlayer(PlayerGuid);
+        //}
 
-        public static List<Player> GetPlayers()
-        {
-            DataTable dt = DataAccess.Player.GetPlayers();
-            List<Player> list = new List<Player>();
+        //public static List<Player> GetPlayers()
+        //{
+        //    DataTable dt = DataAccess.Player.GetPlayers();
+        //    List<Player> list = new List<Player>();
 
-            if (dt != null)
-            {
-                foreach (DataRow dr in dt.Rows)
-                {
-                    list.Add(new Player(dr));
-                }
-            }
+        //    if (dt != null)
+        //    {
+        //        foreach (DataRow dr in dt.Rows)
+        //        {
+        //            list.Add(new Player(dr));
+        //        }
+        //    }
 
-            return list;
-        }
+        //    return list;
+        //}
 
         public static class Cache
         {
@@ -136,7 +138,7 @@ namespace Arsenal.Entity
 
             private static void InitCache()
             {
-                PlayerList = GetPlayers();
+                PlayerList = new Player().All<Player>();
 
                 PlayerList_HasSquadNumber = PlayerList.FindAll(delegate(Player p) { return p.SquadNumber > 0; });
                 PlayerList_HasSquadNumber.Sort(delegate(Player p1, Player p2)
@@ -147,8 +149,8 @@ namespace Arsenal.Entity
                         return p1.SquadNumber - p2.SquadNumber;
                 });
 
-                ColList_SquadNumber = DataAccess.Player.GetPlayerDistColumn("SquadNumber", true);
-                ColList_Position = DataAccess.Player.GetPlayerDistColumn("Position", false);
+                //ColList_SquadNumber = DataAccess.Player.GetPlayerDistColumn("SquadNumber", true);
+                //ColList_Position = DataAccess.Player.GetPlayerDistColumn("Position", false);
             }
 
             public static Player Load(Guid guid)
@@ -159,7 +161,7 @@ namespace Arsenal.Entity
             // for Acn Club Hard Code
             public static DataRow GetInfo(Guid guid)
             {
-                return DataAccess.Player.GetPlayerByID(guid);
+                return new Repository().Select<Player>(guid);
             }
 
             public static List<Player> PlayerList;
@@ -171,78 +173,103 @@ namespace Arsenal.Entity
 
         #region Members and Properties
 
+        [AttrDbColumn("PlayerGuid", IsKey = true)]
         public Guid PlayerGuid
         { get; set; }
 
+        [AttrDbColumn("FirstName")]
         public string FirstName
         { get; set; }
 
+        [AttrDbColumn("LastName")]
         public string LastName
         { get; set; }
 
+        [AttrDbColumn("DisplayName")]
         public string DisplayName
         { get; set; }
 
+        [AttrDbColumn("PrintingName")]
         public string PrintingName
         { get; set; }
 
-        public PlayerPostionType Position
+        [AttrDbColumn("Position")]
+        public PlayerPostionType? Position
         { get; set; }
 
+        [AttrDbColumn("SquadNumber")]
         public int SquadNumber
         { get; set; }
 
+        [AttrDbColumn("FaceURL")]
         public string FaceURL
         { get; set; }
 
+        [AttrDbColumn("PhotoURL")]
         public string PhotoURL
         { get; set; }
 
+        [AttrDbColumn("Offset")]
         public int Offset
         { get; set; }
 
+        [AttrDbColumn("IsLegend")]
         public bool IsLegend
         { get; set; }
 
+        [AttrDbColumn("IsLoan")]
         public bool IsLoan
         { get; set; }
 
+        [AttrDbColumn("Birthday")]
         public DateTime? Birthday
         { get; set; }
 
+        [AttrDbColumn("Born")]
         public string Born
         { get; set; }
 
+        [AttrDbColumn("Starts")]
         public int Starts
         { get; set; }
 
+        [AttrDbColumn("Subs")]
         public int Subs
         { get; set; }
 
+        [AttrDbColumn("Apps")]
         public int Apps
         { get; set; }
 
+        [AttrDbColumn("Goals")]
         public int Goals
         { get; set; }
 
+        [AttrDbColumn("JoinDate")]
         public DateTime? JoinDate
         { get; set; }
 
+        [AttrDbColumn("Joined")]
         public string Joined
         { get; set; }
 
-        public string Left
+        [AttrDbColumn("LeftYear")]
+        public string LeftYear
         { get; set; }
 
+        [AttrDbColumn("Debut")]
         public string Debut
         { get; set; }
 
+        [AttrDbColumn("FirstGoal")]
         public string FirstGoal
         { get; set; }
 
+        [AttrDbColumn("PreviousClubs")]
         public string PreviousClubs
         { get; set; }
 
+        [AttrDbColumn("Profile")]
         public string Profile
         { get; set; }
 
@@ -251,7 +278,6 @@ namespace Arsenal.Entity
 
     public enum PlayerPostionType
     {
-        Null,
         Goalkeeper,
         Defender,
         Midfielder,

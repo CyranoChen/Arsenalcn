@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web.UI.WebControls;
+using System.Linq;
 
-using Arsenal.Entity;
+using Arsenal.Service;
+using Arsenalcn.Core;
 
 namespace Arsenal.Web
 {
@@ -39,7 +41,9 @@ namespace Arsenal.Web
 
         private void BindData()
         {
-            List<League> list = League.GetLeagues().FindAll(delegate(League l)
+            IEntity entity = new Entity();
+
+            List<League> list = entity.All<League>().FindAll(delegate(League l)
             {
                 Boolean returnValue = true;
                 string tmpString = string.Empty;
@@ -67,6 +71,8 @@ namespace Arsenal.Web
 
                 return returnValue;
             });
+
+            list = list.OrderBy(i => i.LeagueOrder).ThenBy(i => i.LeagueOrgName).ToList();
 
             #region set GridView Selected PageIndex
             if (LeagueGuid.HasValue && LeagueGuid != Guid.Empty)

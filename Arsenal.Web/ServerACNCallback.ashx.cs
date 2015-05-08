@@ -6,7 +6,7 @@ using System.Text;
 using System.Web;
 using System.Xml;
 
-using Arsenal.Entity;
+using Arsenal.Service;
 
 namespace Arsenal.Web
 {

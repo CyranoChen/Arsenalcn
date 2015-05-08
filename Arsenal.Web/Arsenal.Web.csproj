@@ -295,8 +295,8 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\Arsenal.Entity\Arsenal.Service.csproj">
-      <Project>{18f784e1-6ac9-488c-9f00-b1cf2d5a8893}</Project>
+    <ProjectReference Include="..\Arsenal.Service\Arsenal.Service.csproj">
+      <Project>{852e458a-6cbd-42d1-ba22-8f6eda353aa7}</Project>
       <Name>Arsenal.Service</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arsenalcn.Common\Arsenalcn.Common.csproj">

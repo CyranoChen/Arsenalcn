@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{18F784E1-6AC9-488C-9F00-B1CF2D5A8893}</ProjectGuid>
+    <ProjectGuid>{852E458A-6CBD-42D1-BA22-8F6EDA353AA7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Arsenal.Entity</RootNamespace>
-    <AssemblyName>Arsenal.Entity</AssemblyName>
+    <RootNamespace>Arsenal.Service</RootNamespace>
+    <AssemblyName>Arsenal.Service</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

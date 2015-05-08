@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics.Contracts;
-using System.Reflection;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
 
 namespace Arsenalcn.Core
 {
@@ -33,19 +34,18 @@ namespace Arsenalcn.Core
             { return null; }
         }
 
-        //public T Single<T>(Expression<Func<T, bool>> predicate, params string[] includePaths) where T : class
-        //{
-        //    Contract.Requires(predicate != null);
+        public T Single<T>(Expression<Func<T, bool>> predicate) where T : class
+        {
+            Contract.Requires(predicate != null);
 
-        //    var instance = GetSetWithIncludedPaths<T>(includePaths).SingleOrDefault(predicate);
-        //    return instance;
-        //}
+            return All<T>().SingleOrDefault(predicate);
+        }
 
-        public List<T> All<T>()
+        public IQueryable<T> All<T>() where T : class
         {
             DataTable dt = repo.Select<T>();
 
-            List<T> list = new List<T>();
+            var list = new List<T>();
 
             if (dt != null)
             {
@@ -58,13 +58,15 @@ namespace Arsenalcn.Core
                 }
             }
 
-            return list;
+            return list.AsQueryable();
         }
 
-        //public IQueryable<T> All<T>(params string[] includePaths) where T : class
-        //{
-        //    return Query<T>(x => true, includePaths);
-        //}
+        public IQueryable<T> Query<T>(Expression<Func<T, bool>> predicate) where T : class
+        {
+            Contract.Requires(predicate != null);
+
+            return All<T>().Where(predicate);
+        }
 
         public void Create<T>(T instance, SqlTransaction trans = null) where T : class
         {
@@ -90,11 +92,14 @@ namespace Arsenalcn.Core
             repo.Update<T>(instance, trans);
         }
 
-        public void Delete<T>(object key, SqlTransaction trans = null) where T : class
+        public void Update<T>(IEnumerable<T> instances, SqlTransaction trans = null) where T : class
         {
-            Contract.Requires(key != null);
+            Contract.Requires(instances != null);
 
-            repo.Delete<T>(key, trans);
+            foreach (var instance in instances)
+            {
+                Update(instance, trans);
+            }
         }
 
         public void Delete<T>(T instance, SqlTransaction trans = null) where T : class
@@ -104,39 +109,37 @@ namespace Arsenalcn.Core
             repo.Delete<T>(instance, trans);
         }
 
-        //public void Delete<TModel>(Expression<Func<TModel, bool>> predicate)
-        //    where TModel : class, IEntity
-        //{
-        //    Contract.Requires(predicate != null);
+        public void Delete<T>(Expression<Func<T, bool>> predicate, SqlTransaction trans = null) where T : class
+        {
+            Contract.Requires(predicate != null);
 
-        //    TModel entity = Single(predicate);
-        //    Delete(entity);
-        //}
+            repo.Delete<T>(Single(predicate), trans);
+        }
 
-        //public IQueryable<TModel> Query<TModel>(Expression<Func<TModel, bool>> predicate, params string[] includePaths)
-        //    where TModel : class, IEntity
-        //{
-        //    Contract.Requires(predicate != null);
+        public static class Cache
+        {
+            static Cache()
+            {
+                InitCache();
+            }
 
-        //    var items = GetSetWithIncludedPaths<TModel>(includePaths);
+            public static void RefreshCache()
+            {
+                InitCache();
+            }
 
-        //    if (predicate != null)
-        //        return items.Where(predicate);
+            private static void InitCache()
+            {
+                IEntity entity = new Entity();
+                CacheList = entity.All<Entity>().ToList();
+            }
 
-        //    return items;
-        //}
+            public static Entity Load(Expression<Func<Entity, bool>> predicate)
+            {
+                return CacheList.AsQueryable().SingleOrDefault(predicate);
+            }
 
-
-        //private DbQuery<TModel> GetSetWithIncludedPaths<TModel>(IEnumerable<string> includedPaths) where TModel : class
-        //{
-        //    DbQuery<TModel> items = _context.Set<TModel>();
-
-        //    foreach (var path in includedPaths ?? Enumerable.Empty<string>())
-        //    {
-        //        items = items.Include(path);
-        //    }
-
-        //    return items;
-        //}
+            public static List<Entity> CacheList;
+        }
     }
 }

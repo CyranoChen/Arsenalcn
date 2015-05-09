@@ -48,8 +48,7 @@ namespace Arsenal.Web
         {
             if (MatchGuid != Guid.Empty)
             {
-                IEntity entity = new Entity();
-                Match m = entity.Single<Match>(MatchGuid);
+                Match m = new Match().Single<Match>(MatchGuid);
 
                 tbMatchGuid.Text = m.MatchGuid.ToString();
 
@@ -202,8 +201,10 @@ namespace Arsenal.Web
             {
                 if (MatchGuid != Guid.Empty)
                 {
-                    IEntity entity = new Entity();
-                    entity.Delete<Match>(MatchGuid);
+                    Match m = new Match();
+                    m.MatchGuid = MatchGuid;
+
+                    m.Delete<Match>(m);
 
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('删除成功');window.location.href='AdminMatch.aspx'", true);
                 }
@@ -220,31 +221,31 @@ namespace Arsenal.Web
 
         private void BindTeamData(Guid LeagueGuid)
         {
-            IEntity entity = new Entity();
-            List<RelationLeagueTeam> list = entity.All<RelationLeagueTeam>().FindAll(delegate(RelationLeagueTeam rlt) { return rlt.LeagueGuid.Equals(LeagueGuid); });
-            List<Team> lstTeam = new List<Team>();
+            // TODO
+            //List<RelationLeagueTeam> list = entity.All<RelationLeagueTeam>().FindAll(delegate(RelationLeagueTeam rlt) { return rlt.LeagueGuid.Equals(LeagueGuid); });
+            //List<Team> lstTeam = new List<Team>();
 
-            if (list != null && list.Count > 0)
-            {
-                foreach (RelationLeagueTeam rlt in list)
-                {
-                    Team t = Team.Cache.Load(rlt.TeamGuid);
+            //if (list != null && list.Count > 0)
+            //{
+            //    foreach (RelationLeagueTeam rlt in list)
+            //    {
+            //        Team t = Team.Cache.Load(rlt.TeamGuid);
 
-                    if (t != null)
-                        lstTeam.Add(t);
-                }
+            //        if (t != null)
+            //            lstTeam.Add(t);
+            //    }
 
-                lstTeam.Sort(delegate(Team t1, Team t2) { return Comparer<string>.Default.Compare(t1.TeamEnglishName, t2.TeamEnglishName); });
+            //    lstTeam.Sort(delegate(Team t1, Team t2) { return Comparer<string>.Default.Compare(t1.TeamEnglishName, t2.TeamEnglishName); });
 
-                ddlTeam.DataSource = lstTeam;
-                ddlTeam.DataTextField = "TeamDisplayName";
-                ddlTeam.DataValueField = "TeamGuid";
-                ddlTeam.DataBind();
-            }
-            else
-            {
-                ddlTeam.Items.Clear();
-            }
+            //    ddlTeam.DataSource = lstTeam;
+            //    ddlTeam.DataTextField = "TeamDisplayName";
+            //    ddlTeam.DataValueField = "TeamGuid";
+            //    ddlTeam.DataBind();
+            //}
+            //else
+            //{
+            //    ddlTeam.Items.Clear();
+            //}
 
             ddlTeam.Items.Insert(0, new ListItem("--请选择对阵球队--", string.Empty));
         }

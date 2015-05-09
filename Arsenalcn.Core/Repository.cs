@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Diagnostics.Contracts;
 using System.Reflection;
+using System.Text;
 
 using Microsoft.ApplicationBlocks.Data;
 
@@ -12,17 +13,14 @@ namespace Arsenalcn.Core
     public class Repository : IRepository
     {
         private readonly string conn;
-
         public Repository()
         {
-            conn = ConfigurationManager.ConnectionStrings["Arsenalcn.ConnectionString"].ConnectionString; ;
+            conn = DataAccess.ConnectString;
         }
 
         public DataTable Select<T>()
         {
-            var attr = (AttrDbTable)Attribute.GetCustomAttribute(typeof(T), typeof(AttrDbTable));
-
-            string sql = string.Format("SELECT * FROM {0}", attr.Name);
+            string sql = string.Format("SELECT * FROM {0}", Entity.GetTableAttr<T>().Name);
 
             DataSet ds = SqlHelper.ExecuteDataset(conn, CommandType.Text, sql);
 
@@ -34,13 +32,21 @@ namespace Arsenalcn.Core
 
         public DataRow Select<T>(object key)
         {
-            var attr = (AttrDbTable)Attribute.GetCustomAttribute(typeof(T), typeof(AttrDbTable));
+            Contract.Requires(key != null);
 
-            string sql = string.Format("SELECT * FROM {0} WHERE {1} = @key", attr.Name, attr.Key);
+            var attr = Entity.GetTableAttr<T>();
+
+            StringBuilder sql = new StringBuilder();
+            sql.AppendFormat("SELECT * FROM {0} WHERE {1} = @key ", attr.Name, attr.Key);
+
+            if (!string.IsNullOrEmpty(attr.Sort))
+            {
+                sql.AppendFormat("ORDER BY {0}", attr.Sort);
+            }
 
             SqlParameter[] para = { new SqlParameter("@key", key) };
 
-            DataSet ds = SqlHelper.ExecuteDataset(conn, CommandType.Text, sql, para);
+            DataSet ds = SqlHelper.ExecuteDataset(conn, CommandType.Text, sql.ToString(), para);
 
             if (ds.Tables[0].Rows.Count == 0)
                 return null;
@@ -50,22 +56,22 @@ namespace Arsenalcn.Core
 
         public void Insert<T>(T instance, SqlTransaction trans = null)
         {
-            var attr = (AttrDbTable)Attribute.GetCustomAttribute(typeof(T), typeof(AttrDbTable));
+            Contract.Requires(instance != null);
 
             List<string> listCol = new List<string>();
             List<string> listColPara = new List<string>();
             List<SqlParameter> listPara = new List<SqlParameter>();
 
-            foreach (var properInfo in instance.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
+            foreach (var propertyInfo in instance.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
             {
-                var attrCol = (AttrDbColumn)Attribute.GetCustomAttribute(properInfo, typeof(AttrDbColumn));
+                var attrCol = Entity.GetColumnAttr(propertyInfo);
 
                 if (attrCol != null)
                 {
                     listCol.Add(attrCol.Name);
                     listColPara.Add("@" + attrCol.Name);
 
-                    object _value = properInfo.GetValue(instance, null);
+                    object _value = propertyInfo.GetValue(instance, null);
                     SqlParameter _para = new SqlParameter("@" + attrCol.Name,
                         _value != null ? _value : (object)DBNull.Value);
                     listPara.Add(_para);
@@ -76,7 +82,7 @@ namespace Arsenalcn.Core
 
             if (listCol.Count > 0 && listColPara.Count > 0 && listPara.Count > 0)
             {
-                string sql = string.Format("INSERT INTO {0} ({1}) VALUES ({2})", attr.Name,
+                string sql = string.Format("INSERT INTO {0} ({1}) VALUES ({2})", Entity.GetTableAttr<T>().Name,
                     string.Join(", ", listCol.ToArray()), string.Join(", ", listColPara.ToArray()));
 
                 if (trans != null)
@@ -93,20 +99,20 @@ namespace Arsenalcn.Core
 
         public void Update<T>(T instance, SqlTransaction trans = null)
         {
-            var attr = (AttrDbTable)Attribute.GetCustomAttribute(typeof(T), typeof(AttrDbTable));
+            Contract.Requires(instance != null);
 
             List<string> listCol = new List<string>();
             List<SqlParameter> listPara = new List<SqlParameter>();
 
-            foreach (var properInfo in instance.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
+            foreach (var propertyInfo in instance.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
             {
-                var attrCol = (AttrDbColumn)Attribute.GetCustomAttribute(properInfo, typeof(AttrDbColumn));
+                var attrCol = Entity.GetColumnAttr(propertyInfo);
 
                 if (attrCol != null)
                 {
                     listCol.Add(string.Format("{0} = @{0}", attrCol.Name));
 
-                    object _value = properInfo.GetValue(instance, null);
+                    object _value = propertyInfo.GetValue(instance, null);
                     SqlParameter _para = new SqlParameter("@" + attrCol.Name,
                         _value != null ? _value : (object)DBNull.Value);
                     listPara.Add(_para);
@@ -118,7 +124,7 @@ namespace Arsenalcn.Core
             if (listCol.Count > 0 && listPara.Count > 0)
             {
                 string sql = string.Format("UPDATE {0} SET {1} WHERE {2} = @{2}",
-                    attr.Name, string.Join(", ", listCol.ToArray()), attr.Key);
+                    Entity.GetTableAttr<T>().Name, string.Join(", ", listCol.ToArray()), Entity.GetTableAttr<T>().Key);
 
                 if (trans != null)
                 {
@@ -134,9 +140,10 @@ namespace Arsenalcn.Core
 
         public void Delete<T>(object key, SqlTransaction trans = null)
         {
-            var attr = (AttrDbTable)Attribute.GetCustomAttribute(typeof(T), typeof(AttrDbTable));
+            Contract.Requires(key != null);
 
-            string sql = string.Format("DELETE {0} WHERE {1} = @key", attr.Name, attr.Key);
+            string sql = string.Format("DELETE {0} WHERE {1} = @key",
+                Entity.GetTableAttr<T>().Name, Entity.GetTableAttr<T>().Key);
 
             SqlParameter[] para = { new SqlParameter("@key", key) };
 
@@ -148,15 +155,6 @@ namespace Arsenalcn.Core
             {
                 SqlHelper.ExecuteNonQuery(conn, CommandType.Text, sql, para);
             }
-        }
-
-        public void Delete<T>(T instance, SqlTransaction trans = null)
-        {
-            var attr = (AttrDbTable)Attribute.GetCustomAttribute(typeof(T), typeof(AttrDbTable));
-
-            var key = instance.GetType().GetProperty(attr.Key.ToString()).GetValue(instance, null);
-
-            Delete<T>(key, trans);
         }
     }
 }

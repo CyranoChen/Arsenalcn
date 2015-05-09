@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
+using System.Linq;
 using System.Web.UI.WebControls;
 
 using Arsenal.Service;
-using Arsenalcn.Core;
 
 namespace Arsenal.Web
 {
@@ -59,9 +58,7 @@ namespace Arsenal.Web
 
         private void BindData()
         {
-            IEntity entity = new Entity();
-
-            List<Player> list = entity.All<Player>().FindAll(delegate(Player p)
+            List<Player> list = new Player().All<Player>().ToList().FindAll(delegate(Player p)
                 {
                     Boolean returnValue = true;
                     string tmpString = string.Empty;

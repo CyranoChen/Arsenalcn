@@ -41,9 +41,7 @@ namespace Arsenal.Web
 
         private void BindData()
         {
-            IEntity entity = new Entity();
-
-            List<League> list = entity.All<League>().FindAll(delegate(League l)
+            List<League> list = new League().All<League>().ToList().FindAll(delegate(League l)
             {
                 Boolean returnValue = true;
                 string tmpString = string.Empty;
@@ -71,8 +69,6 @@ namespace Arsenal.Web
 
                 return returnValue;
             });
-
-            list = list.OrderBy(i => i.LeagueOrder).ThenBy(i => i.LeagueOrgName).ToList();
 
             #region set GridView Selected PageIndex
             if (LeagueGuid.HasValue && LeagueGuid != Guid.Empty)

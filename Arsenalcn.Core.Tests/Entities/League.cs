@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 
 using Arsenalcn.Core;
 
-namespace Arsenal.Service
+namespace Arsenalcn.Core.Tests
 {
     [AttrDbTable("Arsenal_League", Key = "LeagueGuid")]
     public class League : Entity
@@ -12,36 +13,35 @@ namespace Arsenal.Service
         public League() : base() { }
 
         public League(DataRow dr)
+            : base(dr)
         {
-            InitLeague(dr);
+            // Generate League Name Info
+            LeagueNameInfo = LeagueName + LeagueSeason;
         }
 
-        private void InitLeague(DataRow dr)
-        {
-            if (dr != null)
-            {
-                LeagueGuid = (Guid)dr["LeagueGuid"];
-                LeagueName = dr["LeagueName"].ToString();
-                LeagueOrgName = dr["LeagueOrgName"].ToString();
-                LeagueSeason = dr["LeagueSeason"].ToString();
-                LeagueTime = (DateTime)dr["LeagueTime"];
-                LeagueLogo = dr["LeagueLogo"].ToString();
-                LeagueOrder = Convert.ToInt16(dr["LeagueOrder"]);
-                IsActive = Convert.ToBoolean(dr["IsActive"]);
+        //private void InitLeague(DataRow dr)
+        //{
+        //    if (dr != null)
+        //    {
+        //        LeagueGuid = (Guid)dr["LeagueGuid"];
+        //        LeagueName = dr["LeagueName"].ToString();
+        //        LeagueOrgName = dr["LeagueOrgName"].ToString();
+        //        LeagueSeason = dr["LeagueSeason"].ToString();
+        //        LeagueTime = (DateTime)dr["LeagueTime"];
+        //        LeagueLogo = dr["LeagueLogo"].ToString();
+        //        LeagueOrder = Convert.ToInt16(dr["LeagueOrder"]);
+        //        IsActive = Convert.ToBoolean(dr["IsActive"]);
 
-                // Generate League Count Info
-                List<RelationLeagueTeam> list = new RelationLeagueTeam().All<RelationLeagueTeam>().FindAll(rlt => rlt.LeagueGuid.Equals(LeagueGuid));
-                if (list != null && list.Count > 0)
-                    TeamCountInfo = list.Count;
-                else
-                    TeamCountInfo = 0;
+        //        // Generate League Count Info
+        //        IEntity entity = new Entity();
+        //        TeamCountInfo = entity.All<RelationLeagueTeam>().Count(rlt => rlt.LeagueGuid.Equals(LeagueGuid));
 
-                // Generate League Name Info
-                LeagueNameInfo = LeagueName + LeagueSeason;
-            }
-            else
-                throw new Exception("Unable to init League.");
-        }
+        //        // Generate League Name Info
+        //        LeagueNameInfo = LeagueName + LeagueSeason;
+        //    }
+        //    else
+        //        throw new Exception("Unable to init League.");
+        //}
 
         //public void Select()
         //{
@@ -82,32 +82,22 @@ namespace Arsenal.Service
         //    return list;
         //}
 
-        public static class Cache
-        {
-            static Cache()
-            {
-                InitCache();
-            }
+        //public static class Cache
+        //{
+        //    private override static void InitCache()
+        //    {
+        //        LeagueList = new League().All<League>();
+        //        LeagueList_Active = LeagueList.FindAll(l => l.IsActive);
+        //    }
 
-            public static void RefreshCache()
-            {
-                InitCache();
-            }
+        //    public static League Load(Guid guid)
+        //    {
+        //        return LeagueList.Find(l => l.LeagueGuid.Equals(guid));
+        //    }
 
-            private static void InitCache()
-            {
-                LeagueList = new League().All<League>();
-                LeagueList_Active = LeagueList.FindAll(l => l.IsActive);
-            }
-
-            public static League Load(Guid guid)
-            {
-                return LeagueList.Find(l => l.LeagueGuid.Equals(guid));
-            }
-
-            public static List<League> LeagueList;
-            public static List<League> LeagueList_Active;
-        }
+        //    public static List<League> LeagueList;
+        //    public static List<League> LeagueList_Active;
+        //}
 
         #region Members and Properties
         [AttrDbColumn("LeagueGuid", IsKey = true)]

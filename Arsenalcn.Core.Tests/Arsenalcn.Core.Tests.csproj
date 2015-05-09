@@ -6,8 +6,8 @@
     <ProjectGuid>{F9E70403-E5AA-42AD-BBEC-B338038B9306}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Arsenalcn.Core.Test</RootNamespace>
-    <AssemblyName>Arsenalcn.Core.Test</AssemblyName>
+    <RootNamespace>Arsenalcn.Core.Tests</RootNamespace>
+    <AssemblyName>Arsenalcn.Core.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -53,12 +53,14 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Entity_Tests.cs" />
+    <Compile Include="Entities\League.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository_Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Arsenalcn.Core\Arsenalcn.Core.csproj">
-      <Project>{C46F6AF6-EBE1-4BAC-BC17-0989FA6C9B8E}</Project>
+      <Project>{c46f6af6-ebe1-4bac-bc17-0989fa6c9b8e}</Project>
       <Name>Arsenalcn.Core</Name>
     </ProjectReference>
   </ItemGroup>

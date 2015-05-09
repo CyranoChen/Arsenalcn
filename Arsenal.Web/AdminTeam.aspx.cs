@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.UI.WebControls;
 
 using Arsenal.Service;
@@ -51,8 +52,7 @@ namespace Arsenal.Web
 
         private void BindData()
         {
-            IEntity entity = new Entity();
-            List<Team> list = entity.All<Team>().FindAll(delegate(Team t)
+            List<Team> list = new Team().All<Team>().ToList().FindAll(delegate(Team t)
             {
                 Boolean returnValue = true;
                 string tmpString = string.Empty;
@@ -60,8 +60,9 @@ namespace Arsenal.Web
                 if (ViewState["LeagueGuid"] != null)
                 {
                     tmpString = ViewState["LeagueGuid"].ToString();
-                    if (!string.IsNullOrEmpty(tmpString))
-                        returnValue = returnValue && RelationLeagueTeam.Exist(t.TeamGuid, new Guid(tmpString));
+                    // TODO
+                    //if (!string.IsNullOrEmpty(tmpString))
+                    //    returnValue = returnValue && RelationLeagueTeam.Exist(t.TeamGuid, new Guid(tmpString));
                 }
 
                 if (ViewState["TeamName"] != null)
@@ -155,27 +156,27 @@ namespace Arsenal.Web
                 else
                     throw new Exception("未选择比赛分类");
 
-                IEntity entity = new Entity();
+                // TODO
 
-                if (entity.All<RelationLeagueTeam>().Exists(delegate(RelationLeagueTeam rlt) { return rlt.TeamGuid.Equals(teamGuid) && rlt.LeagueGuid.Equals(leagueGuid); }))
-                {
-                    Team t = entity.Single<Team>(TeamGuid);
+                //if (entity.All<RelationLeagueTeam>().Exists(delegate(RelationLeagueTeam rlt) { return rlt.TeamGuid.Equals(teamGuid) && rlt.LeagueGuid.Equals(leagueGuid); }))
+                //{
+                //    Team t = entity.Single<Team>(TeamGuid);
 
-                    if (t.LeagueCountInfo <= 1)
-                        throw new Exception("该球队仅属于此分类，不能移除");
-                    else
-                    {
-                        //TODO
-                        RelationLeagueTeam lt = entity.All<RelationLeagueTeam>().Find(rlt =>
-                            rlt.TeamGuid.Equals(teamGuid) && rlt.LeagueGuid.Equals(leagueGuid));
+                //    if (t.LeagueCountInfo <= 1)
+                //        throw new Exception("该球队仅属于此分类，不能移除");
+                //    else
+                //    {
+                //        //TODO
+                //        RelationLeagueTeam lt = entity.All<RelationLeagueTeam>().Find(rlt =>
+                //            rlt.TeamGuid.Equals(teamGuid) && rlt.LeagueGuid.Equals(leagueGuid));
 
-                        //lt.Delete();
-                    }
-                }
-                else
-                {
-                    throw new Exception("该球队未在此分类中");
-                }
+                //        //lt.Delete();
+                //    }
+                //}
+                //else
+                //{
+                //    throw new Exception("该球队未在此分类中");
+                //}
             }
             catch (Exception ex)
             {

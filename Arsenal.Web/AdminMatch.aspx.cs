@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web.UI.WebControls;
+using System.Linq;
 
 using Arsenal.Service;
 using Arsenalcn.Core;
@@ -51,8 +52,7 @@ namespace Arsenal.Web
 
         private void BindData()
         {
-            IEntity entity = new Entity();
-            List<Match> list = entity.All<Match>().FindAll(delegate(Match m)
+            List<Match> list = new Match().All<Match>().ToList().FindAll(delegate(Match m)
             {
                 Boolean returnValue = true;
                 string tmpString = string.Empty;
@@ -159,34 +159,34 @@ namespace Arsenal.Web
 
         private void BindTeamData(Guid LeagueGuid)
         {
-            IEntity entity = new Entity();
-            List<RelationLeagueTeam> list = entity.All<RelationLeagueTeam>().FindAll(rlt => rlt.LeagueGuid.Equals(LeagueGuid));
-            List<Team> lstTeam = new List<Team>();
+            // TODO
+            //List<RelationLeagueTeam> list = entity.All<RelationLeagueTeam>().FindAll(rlt => rlt.LeagueGuid.Equals(LeagueGuid));
+            //List<Team> lstTeam = new List<Team>();
 
-            if (list != null && list.Count > 0)
-            {
-                foreach (RelationLeagueTeam rlt in list)
-                {
-                    Team t = Team.Cache.Load(rlt.TeamGuid);
+            //if (list != null && list.Count > 0)
+            //{
+            //    foreach (RelationLeagueTeam rlt in list)
+            //    {
+            //        Team t = Team.Cache.Load(rlt.TeamGuid);
 
-                    if (t != null)
-                        lstTeam.Add(t);
-                }
+            //        if (t != null)
+            //            lstTeam.Add(t);
+            //    }
 
-                lstTeam.Sort(delegate(Team t1, Team t2) { return Comparer<string>.Default.Compare(t1.TeamEnglishName, t2.TeamEnglishName); });
+            //    lstTeam.Sort(delegate(Team t1, Team t2) { return Comparer<string>.Default.Compare(t1.TeamEnglishName, t2.TeamEnglishName); });
 
-                ddlTeam.DataSource = lstTeam;
-                ddlTeam.DataTextField = "TeamDisplayName";
-                ddlTeam.DataValueField = "TeamGuid";
-                ddlTeam.DataBind();
+            //    ddlTeam.DataSource = lstTeam;
+            //    ddlTeam.DataTextField = "TeamDisplayName";
+            //    ddlTeam.DataValueField = "TeamGuid";
+            //    ddlTeam.DataBind();
 
-                ddlTeam.Visible = true;
-            }
-            else
-            {
-                ddlTeam.Items.Clear();
-                ddlTeam.Visible = false;
-            }
+            //    ddlTeam.Visible = true;
+            //}
+            //else
+            //{
+            //    ddlTeam.Items.Clear();
+            //    ddlTeam.Visible = false;
+            //}
 
             ddlTeam.Items.Insert(0, new ListItem("--请选择对阵球队--", string.Empty));
         }

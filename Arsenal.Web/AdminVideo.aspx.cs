@@ -53,8 +53,7 @@ namespace Arsenal.Web
 
         private void BindData()
         {
-            IEntity entity = new Entity();
-            List<Video> list = entity.All<Video>().FindAll(delegate(Video v)
+            List<Video> list = new Video().All<Video>().ToList().FindAll(delegate(Video v)
                 {
                     Boolean returnValue = true;
                     string tmpString = string.Empty;

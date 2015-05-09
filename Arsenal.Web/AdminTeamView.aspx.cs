@@ -48,8 +48,7 @@ namespace Arsenal.Web
         {
             if (TeamGuid != Guid.Empty)
             {
-                IEntity entity = new Entity();
-                Team t = entity.Single<Team>(TeamGuid);
+                Team t = new Team().Single<Team>(TeamGuid);
 
                 tbTeamGuid.Text = t.TeamGuid.ToString();
                 tbTeamEnglishName.Text = t.TeamEnglishName;
@@ -90,18 +89,20 @@ namespace Arsenal.Web
                 if (!string.IsNullOrEmpty(ddlTeamLeague.SelectedValue))
                 {
                     Guid leagueGuid = new Guid(ddlTeamLeague.SelectedValue);
-                    if (!RelationLeagueTeam.Exist(TeamGuid, leagueGuid))
-                    {
-                        RelationLeagueTeam rlt = new RelationLeagueTeam();
-                        rlt.TeamGuid = TeamGuid;
-                        rlt.LeagueGuid = leagueGuid;
 
-                        rlt.Create<RelationLeagueTeam>(rlt);
-                    }
-                    else
-                    {
-                        //throw new Exception("该球队已在此分类中");
-                    }
+                    // TODO
+                    //if (!RelationLeagueTeam.Exist(TeamGuid, leagueGuid))
+                    //{
+                    //    RelationLeagueTeam rlt = new RelationLeagueTeam();
+                    //    rlt.TeamGuid = TeamGuid;
+                    //    rlt.LeagueGuid = leagueGuid;
+
+                    //    rlt.Create<RelationLeagueTeam>(rlt);
+                    //}
+                    //else
+                    //{
+                    //    //throw new Exception("该球队已在此分类中");
+                    //}
                 }
 
                 if (TeamGuid != Guid.Empty)
@@ -143,20 +144,20 @@ namespace Arsenal.Web
                 {
                     int countRelationLeagueTeam = int.MinValue;
 
-                    IEntity entity = new Entity();
-                    List<RelationLeagueTeam> list = entity.All<RelationLeagueTeam>().FindAll(delegate(RelationLeagueTeam rlt) { return rlt.TeamGuid.Equals(TeamGuid); });
+                    //TODO
+                    //List<RelationLeagueTeam> list = entity.All<RelationLeagueTeam>().FindAll(delegate(RelationLeagueTeam rlt) { return rlt.TeamGuid.Equals(TeamGuid); });
 
-                    if (list != null && list.Count > 0)
-                    {
-                        countRelationLeagueTeam = list.Count;
+                    //if (list != null && list.Count > 0)
+                    //{
+                    //    countRelationLeagueTeam = list.Count;
 
-                        // TODO
-                        foreach (RelationLeagueTeam rlt in list)
-                        {
-                            //rlt.Delete();
-                        }
+                    //    // TODO
+                    //    foreach (RelationLeagueTeam rlt in list)
+                    //    {
+                    //        //rlt.Delete();
+                    //    }
 
-                    }
+                    //}
 
                     Team t = new Team();
                     t.TeamGuid = TeamGuid;

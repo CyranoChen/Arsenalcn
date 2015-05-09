@@ -31,11 +31,12 @@ namespace Arsenal.WebService
             return Arsenal.Service.Team.Cache.TeamList;
         }
 
-        [WebMethod(Description = "Arsenal.Service.Team.Cache.GetTeamsByLeagueGuid(Guid guid)")]
-        public List<Team> GetTeamsByLeagueGuid(Guid guid)
-        {
-            return Arsenal.Service.Team.Cache.GetTeamsByLeagueGuid(guid);
-        }
+        // TODO
+        //[WebMethod(Description = "Arsenal.Service.Team.Cache.GetTeamsByLeagueGuid(Guid guid)")]
+        //public List<Team> GetTeamsByLeagueGuid(Guid guid)
+        //{
+        //    return Arsenal.Service.Team.Cache.GetTeamsByLeagueGuid(guid);
+        //}
 
         [WebMethod(Description = "Arsenal.Service.League.Cache.LeagueList")]
         public List<League> GetLeagues()

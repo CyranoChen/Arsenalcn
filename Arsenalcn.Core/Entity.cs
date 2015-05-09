@@ -9,12 +9,31 @@ using System.Reflection;
 
 namespace Arsenalcn.Core
 {
-    public class Entity : IEntity
+    public abstract class Entity : IEntity
     {
         private readonly IRepository repo;
         public Entity()
         {
             repo = new Repository();
+        }
+
+        protected Entity(DataRow dr)
+        {
+            Contract.Requires(dr != null);
+
+            foreach (var propertyInfo in this.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
+            {
+                var attrCol = GetColumnAttr(propertyInfo);
+
+                if (attrCol != null)
+                {
+                    object value = dr[attrCol.Name];
+
+                    propertyInfo.SetValue(this, Convert.ChangeType(value, propertyInfo.PropertyType), null);
+                }
+                else
+                { continue; }
+            }
         }
 
         public T Single<T>(object key) where T : class
@@ -106,40 +125,59 @@ namespace Arsenalcn.Core
         {
             Contract.Requires(instance != null);
 
-            repo.Delete<T>(instance, trans);
+            var attr = (AttrDbTable)Attribute.GetCustomAttribute(typeof(T), typeof(AttrDbTable));
+
+            var key = instance.GetType().GetProperty(attr.Key.ToString()).GetValue(instance, null);
+
+            repo.Delete<T>(key, trans);
         }
 
         public void Delete<T>(Expression<Func<T, bool>> predicate, SqlTransaction trans = null) where T : class
         {
             Contract.Requires(predicate != null);
 
-            repo.Delete<T>(Single(predicate), trans);
+            var instances = Query(predicate);
+
+            foreach (var instance in instances)
+            {
+                Delete<T>(instance, trans);
+            }
         }
 
-        public static class Cache
+        public static AttrDbTable GetTableAttr<T>()
         {
-            static Cache()
-            {
-                InitCache();
-            }
-
-            public static void RefreshCache()
-            {
-                InitCache();
-            }
-
-            private static void InitCache()
-            {
-                IEntity entity = new Entity();
-                CacheList = entity.All<Entity>().ToList();
-            }
-
-            public static Entity Load(Expression<Func<Entity, bool>> predicate)
-            {
-                return CacheList.AsQueryable().SingleOrDefault(predicate);
-            }
-
-            public static List<Entity> CacheList;
+            return (AttrDbTable)Attribute.GetCustomAttribute(typeof(T), typeof(AttrDbTable));
         }
+
+        public static AttrDbColumn GetColumnAttr(PropertyInfo pi)
+        {
+            return (AttrDbColumn)Attribute.GetCustomAttribute(pi, typeof(AttrDbColumn));
+        }
+
+        //protected static class Cache
+        //{
+        //    static Cache()
+        //    {
+        //        InitCache();
+        //    }
+
+        //    public static void RefreshCach()
+        //    {
+        //        InitCache();
+        //    }
+
+        //    private static void InitCache()
+        //    {
+        //        IEntity entity = new Entity();
+        //        CacheList = entity.All<Entity>().ToList();
+        //    }
+
+        //    public static Entity Load(Expression<Func<Entity, bool>> predicate)
+        //    {
+        //        return CacheList.AsQueryable().SingleOrDefault(predicate);
+        //    }
+
+        //    public static List<Entity> CacheList;
+        //}
     }
 }

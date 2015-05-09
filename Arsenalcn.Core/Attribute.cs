@@ -6,12 +6,14 @@ namespace Arsenalcn.Core
     public class AttrDbTable : Attribute
     {
         public string Name;
-        public object Key;
+        public string Key;
+        public string Sort;
 
         public AttrDbTable(string name)
         {
             Name = name;
             Key = "ID";
+            Sort = string.Empty;
         }
     }
 

@@ -35,8 +35,7 @@ namespace Arsenal.Web
         {
             if (LeagueGuid != Guid.Empty)
             {
-                IEntity entity = new Entity();
-                League l = entity.Single<League>(LeagueGuid);
+                League l = new League().Single<League>(LeagueGuid);
 
                 tbLeagueGuid.Text = LeagueGuid.ToString();
                 tbLeagueName.Text = l.LeagueName;
@@ -109,8 +108,10 @@ namespace Arsenal.Web
             {
                 if (LeagueGuid != Guid.Empty)
                 {
-                    IEntity entity = new Entity();
-                    entity.Delete<League>(LeagueGuid);
+                    League l = new League();
+                    l.LeagueGuid = LeagueGuid;
+
+                    l.Delete<League>(l);
 
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('删除成功');window.location.href='AdminLeague.aspx'", true);
                 }

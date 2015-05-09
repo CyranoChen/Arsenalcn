@@ -69,8 +69,7 @@ namespace Arsenal.Web
         {
             if (VideoGuid != Guid.Empty)
             {
-                IEntity entity = new Entity();
-                Video v = entity.Single<Video>(VideoGuid);
+                Video v = new Video().Single<Video>(VideoGuid);
 
                 tbVideoGuid.Text = VideoGuid.ToString();
                 tbFileName.Text = v.FileName.ToString();
@@ -211,8 +210,9 @@ namespace Arsenal.Web
             {
                 if (VideoGuid != Guid.Empty)
                 {
-                    IEntity entity = new Entity();
-                    entity.Delete<Video>(VideoGuid);
+                    Video v = new Video();
+                    v.VideoGuid = VideoGuid;
+                    v.Delete<Video>(v);
 
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('删除成功');window.location.href='AdminVideo.aspx'", true);
                 }

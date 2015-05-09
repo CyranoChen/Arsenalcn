@@ -15,7 +15,5 @@ namespace Arsenalcn.Core
         void Update<T>(T instance, SqlTransaction trans = null);
 
         void Delete<T>(object key, SqlTransaction trans = null);
-
-        void Delete<T>(T instance, SqlTransaction trans = null);
     }
 }

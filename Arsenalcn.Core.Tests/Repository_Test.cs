@@ -5,10 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using Arsenalcn.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Arsenalcn.Core.Test
+using Arsenalcn.Core;
+
+namespace Arsenalcn.Core.Tests
 {
     [TestClass()]
     public class Repository_Test
@@ -45,49 +46,9 @@ namespace Arsenalcn.Core.Test
 
             DataRow dr = repo.Select<League>(l.LeagueGuid);
 
+            repo.Delete<League>(l.LeagueGuid);
+
             Assert.IsNotNull(dr);
         }
-    }
-
-    [AttrDbTable("Arsenal_League", Key = "LeagueGuid")]
-    public class League
-    {
-        public League() { }
-
-        #region Members and Properties
-
-        [AttrDbColumn("LeagueGuid", IsKey = true)]
-        public Guid LeagueGuid
-        { get; set; }
-
-        [AttrDbColumn("LeagueName")]
-        public string LeagueName
-        { get; set; }
-
-        [AttrDbColumn("LeagueOrgName")]
-        public string LeagueOrgName
-        { get; set; }
-
-        [AttrDbColumn("LeagueSeason")]
-        public string LeagueSeason
-        { get; set; }
-
-        [AttrDbColumn("LeagueTime")]
-        public DateTime LeagueTime
-        { get; set; }
-
-        [AttrDbColumn("LeagueLogo")]
-        public string LeagueLogo
-        { get; set; }
-
-        [AttrDbColumn("LeagueOrder")]
-        public int LeagueOrder
-        { get; set; }
-
-        [AttrDbColumn("IsActive")]
-        public bool IsActive
-        { get; set; }
-
-        #endregion
     }
 }

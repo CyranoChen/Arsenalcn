@@ -35,8 +35,7 @@ namespace Arsenal.Web
         {
             if (PlayerGuid != Guid.Empty)
             {
-                IEntity entity = new Entity();
-                Player p = entity.Single<Player>(PlayerGuid);
+                Player p = new Player().Single<Player>(PlayerGuid);
 
                 lblPlayerBasicInfo.InnerHtml = string.Format("<em>{0}</em> 基本信息", p.DisplayName);
                 lblPlayerDetailInfo.InnerHtml = string.Format("<em>{0}</em> 详细信息", p.DisplayName);
@@ -209,8 +208,10 @@ namespace Arsenal.Web
             {
                 if (PlayerGuid != Guid.Empty)
                 {
-                    IEntity entity = new Entity();
-                    entity.Delete<Player>(PlayerGuid);
+                    Player p = new Player();
+                    p.PlayerGuid = PlayerGuid;
+
+                    p.Delete<Player>(p);
 
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('删除成功');window.location.href='AdminPlayer.aspx'", true);
                 }

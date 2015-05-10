@@ -10,8 +10,8 @@ using Arsenalcn.Core;
 
 namespace Arsenal.Service
 {
-    [AttrDbTable("Arsenal_RelationLeagueTeam", Key = "TeamGuid, LeagueGuid")]
-    public class RelationLeagueTeam
+    [AttrDbTable("Arsenal_RelationLeagueTeam", Key = "")]
+    public class RelationLeagueTeam : IRelationLeagueTeam
     {
         public RelationLeagueTeam() { }
 

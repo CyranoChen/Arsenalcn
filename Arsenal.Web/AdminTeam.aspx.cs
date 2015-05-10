@@ -4,7 +4,6 @@ using System.Linq;
 using System.Web.UI.WebControls;
 
 using Arsenal.Service;
-using Arsenalcn.Core;
 
 namespace Arsenal.Web
 {
@@ -52,33 +51,32 @@ namespace Arsenal.Web
 
         private void BindData()
         {
-            List<Team> list = new Team().All<Team>().ToList().FindAll(delegate(Team t)
-            {
-                Boolean returnValue = true;
-                string tmpString = string.Empty;
+            var list = new Team().All<Team>().ToList().FindAll(x =>
+             {
+                 Boolean returnValue = true;
+                 string tmpString = string.Empty;
 
-                if (ViewState["LeagueGuid"] != null)
-                {
-                    tmpString = ViewState["LeagueGuid"].ToString();
-                    // TODO
-                    //if (!string.IsNullOrEmpty(tmpString))
-                    //    returnValue = returnValue && RelationLeagueTeam.Exist(t.TeamGuid, new Guid(tmpString));
-                }
+                 if (ViewState["LeagueGuid"] != null)
+                 {
+                     tmpString = ViewState["LeagueGuid"].ToString();
+                     if (!string.IsNullOrEmpty(tmpString))
+                         returnValue = returnValue && new RelationLeagueTeam() { TeamGuid = x.TeamGuid, LeagueGuid = new Guid(tmpString) }.Any();
+                 }
 
-                if (ViewState["TeamName"] != null)
-                {
-                    tmpString = ViewState["TeamName"].ToString();
-                    if (!string.IsNullOrEmpty(tmpString))
-                        returnValue = returnValue && (t.TeamDisplayName.Contains(tmpString) || t.TeamEnglishName.Contains(tmpString));
-                }
+                 if (ViewState["TeamName"] != null)
+                 {
+                     tmpString = ViewState["TeamName"].ToString();
+                     if (!string.IsNullOrEmpty(tmpString))
+                         returnValue = returnValue && (x.TeamDisplayName.Contains(tmpString) || x.TeamEnglishName.Contains(tmpString));
+                 }
 
-                return returnValue;
-            });
+                 return returnValue;
+             });
 
             #region set GridView Selected PageIndex
-            if (TeamGuid.HasValue && TeamGuid != Guid.Empty)
+            if (TeamGuid.HasValue && !TeamGuid.Equals(Guid.Empty))
             {
-                int i = list.FindIndex(delegate(Team p) { return p.TeamGuid == TeamGuid; });
+                int i = list.FindIndex(x => x.TeamGuid.Equals(TeamGuid));
                 if (i >= 0)
                 {
                     gvTeam.PageIndex = i / gvTeam.PageSize;
@@ -156,27 +154,23 @@ namespace Arsenal.Web
                 else
                     throw new Exception("未选择比赛分类");
 
-                // TODO
+                var rlt = new RelationLeagueTeam() { TeamGuid = teamGuid, LeagueGuid = leagueGuid };
 
-                //if (entity.All<RelationLeagueTeam>().Exists(delegate(RelationLeagueTeam rlt) { return rlt.TeamGuid.Equals(teamGuid) && rlt.LeagueGuid.Equals(leagueGuid); }))
-                //{
-                //    Team t = entity.Single<Team>(TeamGuid);
-
-                //    if (t.LeagueCountInfo <= 1)
-                //        throw new Exception("该球队仅属于此分类，不能移除");
-                //    else
-                //    {
-                //        //TODO
-                //        RelationLeagueTeam lt = entity.All<RelationLeagueTeam>().Find(rlt =>
-                //            rlt.TeamGuid.Equals(teamGuid) && rlt.LeagueGuid.Equals(leagueGuid));
-
-                //        //lt.Delete();
-                //    }
-                //}
-                //else
-                //{
-                //    throw new Exception("该球队未在此分类中");
-                //}
+                if (rlt.Any())
+                {
+                    if (rlt.All().Count(x => x.TeamGuid.Equals(TeamGuid)) <= 1)
+                    {
+                        throw new Exception("该球队仅属于此分类，不能移除");
+                    }
+                    else
+                    {
+                        rlt.Delete();
+                    }
+                }
+                else
+                {
+                    throw new Exception("该球队未在此分类中");
+                }
             }
             catch (Exception ex)
             {

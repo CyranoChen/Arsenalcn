@@ -7,7 +7,7 @@ using Arsenalcn.Core;
 
 namespace Arsenal.Service
 {
-    [AttrDbTable("Arsenal_Video", Key = "VideoGuid")]
+    [AttrDbTable("Arsenal_Video", Key = "VideoGuid", Sort = "GoalYear DESC, GoalRank DESC, TeamworkRank DESC")]
     public class Video : Entity
     {
         public Video() : base() { }
@@ -37,28 +37,25 @@ namespace Arsenal.Service
 
             private static void InitCache()
             {
-                VideoList = new Video().All<Video>().ToList();
+                IEntity instance = new Video();
 
-                VideoList_Legend = VideoList.FindAll(delegate(Video v)
-                {
-                    if (v.GoalPlayerGuid.HasValue)
-                        return Player.Cache.Load(v.GoalPlayerGuid.Value).IsLegend;
-                    else
-                        return false;
-                });
+                VideoList = instance.All<Video>().ToList();
 
-                //ColList_GoalYear = DataAccess.Video.GetVideoDistColumn("GoalYear", false);
+                VideoList_Legend = VideoList.FindAll(x =>
+                    x.GoalPlayerGuid.HasValue ? Player.Cache.Load(x.GoalPlayerGuid.Value).IsLegend : false);
+
+                ColList_GoalYear = DistinctOrderBy(instance.Query<Video>(x => !string.IsNullOrEmpty(x.GoalYear)), x => x.GoalYear);
             }
 
             public static Video Load(Guid guid)
             {
-                return VideoList.Find(v => v.VideoGuid.Equals(guid));
+                return VideoList.Find(x => x.VideoGuid.Equals(guid));
             }
 
             public static List<Video> VideoList;
             public static List<Video> VideoList_Legend;
 
-            public static DataTable ColList_GoalYear;
+            public static IEnumerable<string> ColList_GoalYear;
         }
 
         #region Members and Properties

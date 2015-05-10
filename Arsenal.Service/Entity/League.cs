@@ -16,7 +16,8 @@ namespace Arsenal.Service
             : base(dr)
         {
             // Generate League Count Info
-            TeamCountInfo = this.All<RelationLeagueTeam>().Count(rlt => rlt.LeagueGuid.Equals(LeagueGuid));
+            IRelationLeagueTeam instance = new RelationLeagueTeam();
+            TeamCountInfo = instance.All().Count(x => x.LeagueGuid.Equals(LeagueGuid));
 
             // Generate League Name Info
             LeagueNameInfo = LeagueName + LeagueSeason;
@@ -37,12 +38,12 @@ namespace Arsenal.Service
             private static void InitCache()
             {
                 LeagueList = new League().All<League>().ToList();
-                LeagueList_Active = LeagueList.FindAll(l => l.IsActive);
+                LeagueList_Active = LeagueList.FindAll(x => x.IsActive);
             }
 
             public static League Load(Guid guid)
             {
-                return LeagueList.Find(l => l.LeagueGuid.Equals(guid));
+                return LeagueList.Find(x => x.LeagueGuid.Equals(guid));
             }
 
             public static List<League> LeagueList;

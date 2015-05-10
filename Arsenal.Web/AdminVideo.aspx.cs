@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
 using System.Web.UI.WebControls;
 using System.Linq;
 
 using Arsenal.Service;
-using Arsenalcn.Core;
 
 namespace Arsenal.Web
 {
@@ -19,9 +16,8 @@ namespace Arsenal.Web
             if (!IsPostBack)
             {
                 #region Bind ddlGoalYear
-                DataTable dt = Video.Cache.ColList_GoalYear;
 
-                ddlGoalYear.DataSource = dt;
+                ddlGoalYear.DataSource = Video.Cache.ColList_GoalYear;
                 ddlGoalYear.DataTextField = "GoalYear";
                 ddlGoalYear.DataValueField = "GoalYear";
                 ddlGoalYear.DataBind();
@@ -53,43 +49,39 @@ namespace Arsenal.Web
 
         private void BindData()
         {
-            List<Video> list = new Video().All<Video>().ToList().FindAll(delegate(Video v)
-                {
-                    Boolean returnValue = true;
-                    string tmpString = string.Empty;
+            var list = new Video().All<Video>().ToList().FindAll(x =>
+                 {
+                     Boolean returnValue = true;
+                     string tmpString = string.Empty;
 
-                    if (ViewState["GoalYear"] != null)
-                    {
-                        tmpString = ViewState["GoalYear"].ToString();
-                        if (!string.IsNullOrEmpty(tmpString))
-                            returnValue = returnValue && v.GoalYear.Equals(tmpString);
-                    }
+                     if (ViewState["GoalYear"] != null)
+                     {
+                         tmpString = ViewState["GoalYear"].ToString();
+                         if (!string.IsNullOrEmpty(tmpString))
+                             returnValue = returnValue && x.GoalYear.Equals(tmpString);
+                     }
 
-                    if (ViewState["GoalRank"] != null)
-                    {
-                        tmpString = ViewState["GoalRank"].ToString();
-                        if (!string.IsNullOrEmpty(tmpString))
-                            returnValue = returnValue && v.GoalRank.Equals(tmpString);
-                    }
+                     if (ViewState["GoalRank"] != null)
+                     {
+                         tmpString = ViewState["GoalRank"].ToString();
+                         if (!string.IsNullOrEmpty(tmpString))
+                             returnValue = returnValue && x.GoalRank.Equals(tmpString);
+                     }
 
-                    if (ViewState["TeamworkRank"] != null)
-                    {
-                        tmpString = ViewState["TeamworkRank"].ToString();
-                        if (!string.IsNullOrEmpty(tmpString))
-                            returnValue = returnValue && v.TeamworkRank.Equals(tmpString);
-                    }
+                     if (ViewState["TeamworkRank"] != null)
+                     {
+                         tmpString = ViewState["TeamworkRank"].ToString();
+                         if (!string.IsNullOrEmpty(tmpString))
+                             returnValue = returnValue && x.TeamworkRank.Equals(tmpString);
+                     }
 
-                    return returnValue;
-                });
-
-            list = list.OrderByDescending(i => i.GoalYear)
-                .ThenByDescending(i => i.GoalRank)
-                .ThenByDescending(i => i.TeamworkRank).ToList();
+                     return returnValue;
+                 });
 
             #region set GridView Selected PageIndex
-            if (VideoGuid.HasValue && VideoGuid != Guid.Empty)
+            if (VideoGuid.HasValue && !VideoGuid.Equals(Guid.Empty))
             {
-                int i = list.FindIndex(delegate(Video v) { return v.VideoGuid == VideoGuid; });
+                int i = list.FindIndex(x => x.VideoGuid.Equals(VideoGuid));
                 if (i >= 0)
                 {
                     gvVideo.PageIndex = i / gvVideo.PageSize;

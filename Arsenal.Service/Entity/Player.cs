@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Linq.Expressions;
 
 using Arsenalcn.Core;
-using System.Linq.Expressions;
 
 namespace Arsenal.Service
 {
-    [AttrDbTable("Arsenal_Player", Key = "PlayerGuid")]
+    [AttrDbTable("Arsenal_Player", Key = "PlayerGuid", Sort = "IsLegend, IsLoan, SquadNumber, LastName")]
     public class Player : Entity
     {
         public Player() : base() { }
@@ -29,21 +29,27 @@ namespace Arsenal.Service
 
             private static void InitCache()
             {
-                PlayerList = new Player().All<Player>().ToList();
+                IEntity instance = new Player();
 
-                PlayerList_HasSquadNumber = PlayerList.FindAll(p => p.SquadNumber > 0)
-                    .OrderBy(p => p.SquadNumber).ThenBy(p => p.DisplayName).ToList();
+                PlayerList = instance.All<Player>().ToList();
 
-                //ColList_SquadNumber = DataAccess.Player.GetPlayerDistColumn("SquadNumber", true);
-                //ColList_Position = DataAccess.Player.GetPlayerDistColumn("Position", false);
+                PlayerList_HasSquadNumber = PlayerList.FindAll(x => x.SquadNumber > 0)
+                    .OrderBy(x => x.SquadNumber).ThenBy(x => x.DisplayName).ToList();
+
+                // TODO
+                ColList_SquadNumber = instance.All<Player>().GroupBy(x => x.SquadNumber)
+                    .Select(g => g.First()).OrderBy(x => x.SquadNumber)
+                    .Select(x => x.SquadNumber).AsEnumerable();
+
+                ColList_Position = DistinctOrderBy(instance.Query<Player>(x => x.Position.HasValue), x => x.Position.Value.ToString());
             }
 
             public static Player Load(Guid guid)
             {
-                return PlayerList.Find(p => p.PlayerGuid.Equals(guid));
+                return PlayerList.Find(x => x.PlayerGuid.Equals(guid));
             }
 
-            // for Acn Club Hard Code
+            // HC: Acn Club API
             public static DataRow GetInfo(Guid guid)
             {
                 IRepository repo = new Repository();
@@ -53,13 +59,11 @@ namespace Arsenal.Service
             public static List<Player> PlayerList;
             public static List<Player> PlayerList_HasSquadNumber;
 
-            public static DataTable ColList_SquadNumber;
-            public static DataTable ColList_Position;
+            public static IEnumerable<int> ColList_SquadNumber;
+            public static IEnumerable<string> ColList_Position;
         }
 
         #region Members and Properties
-
-        public readonly Expression<Func<Player, object>> orderPredicate = p => p.DisplayName;
 
         [AttrDbColumn("PlayerGuid", IsKey = true)]
         public Guid PlayerGuid

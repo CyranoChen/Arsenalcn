@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web.UI.WebControls;
 
@@ -58,7 +57,7 @@ namespace Arsenal.Web
 
         private void BindData()
         {
-            List<Player> list = new Player().All<Player>().ToList().FindAll(delegate(Player p)
+            var list = new Player().All<Player>().ToList().FindAll(x =>
                 {
                     Boolean returnValue = true;
                     string tmpString = string.Empty;
@@ -67,37 +66,37 @@ namespace Arsenal.Web
                     {
                         tmpString = ViewState["SquadNumber"].ToString();
                         if (!string.IsNullOrEmpty(tmpString))
-                            returnValue = returnValue && p.SquadNumber.Equals(Convert.ToInt16(tmpString));
+                            returnValue = returnValue && x.SquadNumber.Equals(Convert.ToInt16(tmpString));
                     }
 
                     if (ViewState["Position"] != null)
                     {
                         tmpString = ViewState["Position"].ToString();
                         if (!string.IsNullOrEmpty(tmpString))
-                            returnValue = returnValue && p.Position.HasValue && p.Position.Value.ToString().Equals(tmpString, StringComparison.OrdinalIgnoreCase);
+                            returnValue = returnValue && x.Position.HasValue && x.Position.Value.ToString().Equals(tmpString, StringComparison.OrdinalIgnoreCase);
                     }
 
                     if (ViewState["IsLegend"] != null)
                     {
                         tmpString = ViewState["IsLegend"].ToString();
                         if (!string.IsNullOrEmpty(tmpString))
-                            returnValue = returnValue && p.IsLegend.Equals(Convert.ToBoolean(tmpString));
+                            returnValue = returnValue && x.IsLegend.Equals(Convert.ToBoolean(tmpString));
                     }
 
                     if (ViewState["DisplayName"] != null)
                     {
                         tmpString = ViewState["DisplayName"].ToString();
                         if (!string.IsNullOrEmpty(tmpString) && tmpString != "--球员姓名--")
-                            returnValue = returnValue && p.DisplayName.ToLower().Contains(tmpString.ToLower());
+                            returnValue = returnValue && x.DisplayName.ToLower().Contains(tmpString.ToLower());
                     }
 
                     return returnValue;
                 });
 
             #region set GridView Selected PageIndex
-            if (PlayerGuid.HasValue && PlayerGuid != Guid.Empty)
+            if (PlayerGuid.HasValue && !PlayerGuid.Value.Equals(Guid.Empty))
             {
-                int i = list.FindIndex(delegate(Player p) { return p.PlayerGuid == PlayerGuid; });
+                int i = list.FindIndex(x => x.PlayerGuid.Equals(PlayerGuid));
                 if (i >= 0)
                 {
                     gvPlayer.PageIndex = i / gvPlayer.PageSize;

@@ -20,9 +20,17 @@ namespace Arsenalcn.Core
 
         public DataTable Select<T>()
         {
-            string sql = string.Format("SELECT * FROM {0}", Entity.GetTableAttr<T>().Name);
+            var attr = Entity.GetTableAttr<T>();
 
-            DataSet ds = SqlHelper.ExecuteDataset(conn, CommandType.Text, sql);
+            StringBuilder sql = new StringBuilder();
+            sql.AppendFormat("SELECT * FROM {0}  ", attr.Name);
+
+            if (!string.IsNullOrEmpty(attr.Sort))
+            {
+                sql.AppendFormat("ORDER BY {0}", attr.Sort);
+            }
+
+            DataSet ds = SqlHelper.ExecuteDataset(conn, CommandType.Text, sql.ToString());
 
             if (ds.Tables[0].Rows.Count == 0)
                 return null;
@@ -36,17 +44,11 @@ namespace Arsenalcn.Core
 
             var attr = Entity.GetTableAttr<T>();
 
-            StringBuilder sql = new StringBuilder();
-            sql.AppendFormat("SELECT * FROM {0} WHERE {1} = @key ", attr.Name, attr.Key);
-
-            if (!string.IsNullOrEmpty(attr.Sort))
-            {
-                sql.AppendFormat("ORDER BY {0}", attr.Sort);
-            }
+            string sql = string.Format("SELECT * FROM {0} WHERE {1} = @key", attr.Name, attr.Key);
 
             SqlParameter[] para = { new SqlParameter("@key", key) };
 
-            DataSet ds = SqlHelper.ExecuteDataset(conn, CommandType.Text, sql.ToString(), para);
+            DataSet ds = SqlHelper.ExecuteDataset(conn, CommandType.Text, sql, para);
 
             if (ds.Tables[0].Rows.Count == 0)
                 return null;

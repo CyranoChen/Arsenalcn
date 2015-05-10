@@ -5,7 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 
-namespace Arsenal.Service.Interface
+namespace Arsenal.Service
 {
     public interface IRelationLeagueTeam
     {

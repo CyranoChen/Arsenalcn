@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Web.UI.WebControls;
 using System.Linq;
 
 using Arsenal.Service;
-using Arsenalcn.Core;
 
 namespace Arsenal.Web
 {
@@ -41,39 +39,40 @@ namespace Arsenal.Web
 
         private void BindData()
         {
-            List<League> list = new League().All<League>().ToList().FindAll(delegate(League l)
-            {
-                Boolean returnValue = true;
-                string tmpString = string.Empty;
-
-                if (ViewState["LeagueName"] != null)
+            var list = new League().All<League>().ToList().FindAll(x =>
                 {
-                    tmpString = ViewState["LeagueName"].ToString();
-                    if (!string.IsNullOrEmpty(tmpString) && tmpString != "--分类名称--")
-                        returnValue = returnValue && (l.LeagueName.ToLower().Contains(tmpString.ToLower()) || l.LeagueOrgName.ToLower().Contains(tmpString.ToLower()));
-                }
+                    Boolean returnValue = true;
+                    string tmpString = string.Empty;
 
-                if (ViewState["LeagueSeason"] != null)
-                {
-                    tmpString = ViewState["LeagueSeason"].ToString();
-                    if (!string.IsNullOrEmpty(tmpString) && tmpString != "--所属赛季--")
-                        returnValue = returnValue && l.LeagueSeason.Equals(tmpString, StringComparison.OrdinalIgnoreCase);
-                }
+                    if (ViewState["LeagueName"] != null)
+                    {
+                        tmpString = ViewState["LeagueName"].ToString();
+                        if (!string.IsNullOrEmpty(tmpString) && tmpString != "--分类名称--")
+                            returnValue = returnValue && (x.LeagueName.ToLower().Contains(tmpString.ToLower()) || x.LeagueOrgName.ToLower().Contains(tmpString.ToLower()));
+                    }
 
-                if (ViewState["IsActive"] != null)
-                {
-                    tmpString = ViewState["IsActive"].ToString();
-                    if (!string.IsNullOrEmpty(tmpString))
-                        returnValue = returnValue && l.IsActive.Equals(Convert.ToBoolean(tmpString));
-                }
+                    if (ViewState["LeagueSeason"] != null)
+                    {
+                        tmpString = ViewState["LeagueSeason"].ToString();
+                        if (!string.IsNullOrEmpty(tmpString) && tmpString != "--所属赛季--")
+                            returnValue = returnValue && x.LeagueSeason.Equals(tmpString, StringComparison.OrdinalIgnoreCase);
+                    }
 
-                return returnValue;
-            });
+                    if (ViewState["IsActive"] != null)
+                    {
+                        tmpString = ViewState["IsActive"].ToString();
+                        if (!string.IsNullOrEmpty(tmpString))
+                            returnValue = returnValue && x.IsActive.Equals(Convert.ToBoolean(tmpString));
+                    }
+
+                    return returnValue;
+                });
 
             #region set GridView Selected PageIndex
-            if (LeagueGuid.HasValue && LeagueGuid != Guid.Empty)
+            if (LeagueGuid.HasValue && !LeagueGuid.Value.Equals(Guid.Empty))
             {
-                int i = list.FindIndex(delegate(League l) { return l.LeagueGuid == LeagueGuid; });
+                int i = list.FindIndex(x => x.LeagueGuid.Equals(LeagueGuid));
+
                 if (i >= 0)
                 {
                     gvLeague.PageIndex = i / gvLeague.PageSize;

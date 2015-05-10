@@ -27,9 +27,11 @@ namespace Arsenalcn.Core
 
                 if (attrCol != null)
                 {
-                    object value = dr[attrCol.Name];
-
-                    propertyInfo.SetValue(this, Convert.ChangeType(value, propertyInfo.PropertyType), null);
+                    if (!Convert.IsDBNull(dr[attrCol.Name]))
+                    {
+                        //propertyInfo.SetValue(this, Convert.ChangeType(dr[attrCol.Name], propertyInfo.PropertyType.GetGenericArguments()[0]), null);
+                        propertyInfo.SetValue(this, Convert.ChangeType(dr[attrCol.Name], (Nullable.GetUnderlyingType(propertyInfo.PropertyType) ?? propertyInfo.PropertyType)), null);
+                    }
                 }
                 else
                 { continue; }
@@ -152,6 +154,33 @@ namespace Arsenalcn.Core
         public static AttrDbColumn GetColumnAttr(PropertyInfo pi)
         {
             return (AttrDbColumn)Attribute.GetCustomAttribute(pi, typeof(AttrDbColumn));
+        }
+
+        public static AttrDbColumn GetColumnAttr<T>(string name)
+        {
+            Contract.Requires(!string.IsNullOrEmpty(name));
+
+            return GetColumnAttr(typeof(T).GetProperty(name));
+        }
+
+        public static IEnumerable<T> DistinctBy<T, TKey>(IEnumerable<T> instances, Func<T, TKey> keySelector)
+        {
+            Contract.Requires(instances != null);
+
+            HashSet<TKey> seenKeys = new HashSet<TKey>();
+
+            foreach (T instance in instances)
+            {
+                if (seenKeys.Add(keySelector(instance)))
+                {
+                    yield return instance;
+                }
+            }
+        }
+
+        public static IEnumerable<TKey> DistinctOrderBy<T, TKey>(IEnumerable<T> instances, Func<T, TKey> keySelector)
+        {
+            return DistinctBy(instances, keySelector).OrderBy(keySelector).Select(keySelector);
         }
 
         //protected static class Cache

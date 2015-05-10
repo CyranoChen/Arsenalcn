@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.UI.WebControls;
 
 using Arsenal.Service;
-using Arsenalcn.Core;
 
 namespace Arsenal.Web
 {
@@ -90,19 +90,12 @@ namespace Arsenal.Web
                 {
                     Guid leagueGuid = new Guid(ddlTeamLeague.SelectedValue);
 
-                    // TODO
-                    //if (!RelationLeagueTeam.Exist(TeamGuid, leagueGuid))
-                    //{
-                    //    RelationLeagueTeam rlt = new RelationLeagueTeam();
-                    //    rlt.TeamGuid = TeamGuid;
-                    //    rlt.LeagueGuid = leagueGuid;
+                    var rlt = new RelationLeagueTeam() { TeamGuid = TeamGuid, LeagueGuid = leagueGuid };
 
-                    //    rlt.Create<RelationLeagueTeam>(rlt);
-                    //}
-                    //else
-                    //{
-                    //    //throw new Exception("该球队已在此分类中");
-                    //}
+                    if (!rlt.Any())
+                    {
+                        rlt.Create();
+                    }
                 }
 
                 if (TeamGuid != Guid.Empty)
@@ -144,20 +137,17 @@ namespace Arsenal.Web
                 {
                     int countRelationLeagueTeam = int.MinValue;
 
-                    //TODO
-                    //List<RelationLeagueTeam> list = entity.All<RelationLeagueTeam>().FindAll(delegate(RelationLeagueTeam rlt) { return rlt.TeamGuid.Equals(TeamGuid); });
+                    IRelationLeagueTeam instance = new RelationLeagueTeam();
 
-                    //if (list != null && list.Count > 0)
-                    //{
-                    //    countRelationLeagueTeam = list.Count;
+                    // TODO
+                    var query = instance.Query(x => x.TeamGuid.Equals(TeamGuid));
 
-                    //    // TODO
-                    //    foreach (RelationLeagueTeam rlt in list)
-                    //    {
-                    //        //rlt.Delete();
-                    //    }
+                    if (query != null && query.Count() > 0)
+                    {
+                        countRelationLeagueTeam = query.Count();
 
-                    //}
+                        instance.Delete(x => x.TeamGuid.Equals(TeamGuid));
+                    }
 
                     Team t = new Team();
                     t.TeamGuid = TeamGuid;

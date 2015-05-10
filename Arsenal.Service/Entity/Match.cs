@@ -7,7 +7,7 @@ using Arsenalcn.Core;
 
 namespace Arsenal.Service
 {
-    [AttrDbTable("Arsenal_Match", Key = "MatchGuid")]
+    [AttrDbTable("Arsenal_Match", Key = "MatchGuid", Sort = "PlayTime DESC")]
     public class Match : Entity
     {
         public Match() : base() { }
@@ -19,13 +19,15 @@ namespace Arsenal.Service
 
             if (ResultHome.HasValue && ResultAway.HasValue)
             {
+                var _strResult = "{0} : {1}";
+
                 if (IsHome)
-                    ResultInfo = ResultHome.Value.ToString() + "：" + ResultAway.Value.ToString();
+                    ResultInfo = string.Format(_strResult, ResultHome.Value.ToString(), ResultAway.Value.ToString());
                 else
-                    ResultInfo = ResultAway.Value.ToString() + "：" + ResultHome.Value.ToString();
+                    ResultInfo = string.Format(_strResult, ResultAway.Value.ToString(), ResultHome.Value.ToString());
             }
             else
-                ResultInfo = string.Empty;
+            { ResultInfo = string.Empty; }
 
             #endregion
         }
@@ -49,7 +51,7 @@ namespace Arsenal.Service
 
             public static Match Load(Guid guid)
             {
-                return MatchList.Find(m => m.MatchGuid.Equals(guid));
+                return MatchList.Find(x => x.MatchGuid.Equals(guid));
             }
 
             public static List<Match> MatchList;

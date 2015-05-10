@@ -1,7 +1,6 @@
 ﻿using System;
 
 using Arsenal.Service;
-using Arsenalcn.Core;
 
 namespace Arsenal.Web
 {

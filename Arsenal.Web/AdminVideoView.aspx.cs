@@ -16,10 +16,8 @@ namespace Arsenal.Web
             if (!IsPostBack)
             {
                 #region Bind ddlLeague, ddlMatch
-                List<League> leagueList = League.Cache.LeagueList.FindAll(delegate(League l)
-                {
-                    return Match.Cache.MatchList.FindAll(delegate(Match m) { return m.LeagueGuid.Equals(l.LeagueGuid); }).Count > 0;
-                });
+                List<League> leagueList = League.Cache.LeagueList.FindAll(l =>
+                    Match.Cache.MatchList.FindAll(m => m.LeagueGuid.Equals(l.LeagueGuid)).Count > 0);
 
                 ddlLeague.DataSource = leagueList;
                 ddlLeague.DataTextField = "LeagueNameInfo";
@@ -233,11 +231,11 @@ namespace Arsenal.Web
 
             ddlMatch.Items.Clear();
 
-            List<Match> list = Match.Cache.MatchList.FindAll(delegate(Match m) { return m.IsActive && m.LeagueGuid.Equals(LeagueGuid); });
+            var query = Match.Cache.MatchList.FindAll(x => x.IsActive && x.LeagueGuid.Equals(LeagueGuid));
 
-            if (list != null && list.Count > 0)
+            if (query != null && query.Count > 0)
             {
-                foreach (Match m in list)
+                foreach (var m in query)
                 {
                     if (m.Round.HasValue)
                         _strRound = string.Format("【{0}】", m.Round.Value.ToString());

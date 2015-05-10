@@ -4,7 +4,6 @@ using System.Web.UI.WebControls;
 using System.Linq;
 
 using Arsenal.Service;
-using Arsenalcn.Core;
 
 namespace Arsenal.Web
 {
@@ -18,7 +17,8 @@ namespace Arsenal.Web
             if (!IsPostBack)
             {
                 #region Bind ddlLeague
-                List<League> list = League.Cache.LeagueList.FindAll(delegate(League l) { return Match.Cache.MatchList.Exists(delegate(Match m) { return m.LeagueGuid.Equals(l.LeagueGuid); }); });
+                List<League> list = League.Cache.LeagueList.FindAll(l =>
+                    Match.Cache.MatchList.Exists(m => m.LeagueGuid.Equals(l.LeagueGuid)));
 
                 ddlLeague.DataSource = list;
                 ddlLeague.DataTextField = "LeagueNameInfo";
@@ -52,7 +52,7 @@ namespace Arsenal.Web
 
         private void BindData()
         {
-            List<Match> list = new Match().All<Match>().ToList().FindAll(delegate(Match m)
+            var list = new Match().All<Match>().ToList().FindAll(x =>
             {
                 Boolean returnValue = true;
                 string tmpString = string.Empty;
@@ -61,30 +61,30 @@ namespace Arsenal.Web
                 {
                     tmpString = ViewState["LeagueGuid"].ToString();
                     if (!string.IsNullOrEmpty(tmpString))
-                        returnValue = returnValue && m.LeagueGuid.Equals(new Guid(tmpString));
+                        returnValue = returnValue && x.LeagueGuid.Equals(new Guid(tmpString));
                 }
 
                 if (ViewState["TeamGuid"] != null)
                 {
                     tmpString = ViewState["TeamGuid"].ToString();
                     if (!string.IsNullOrEmpty(tmpString))
-                        returnValue = returnValue && m.TeamGuid.Equals(new Guid(tmpString));
+                        returnValue = returnValue && x.TeamGuid.Equals(new Guid(tmpString));
                 }
 
                 if (ViewState["IsHome"] != null)
                 {
                     tmpString = ViewState["IsHome"].ToString();
                     if (!string.IsNullOrEmpty(tmpString))
-                        returnValue = returnValue && m.IsHome.Equals(Convert.ToBoolean(tmpString));
+                        returnValue = returnValue && x.IsHome.Equals(Convert.ToBoolean(tmpString));
                 }
 
                 return returnValue;
             });
 
             #region set GridView Selected PageIndex
-            if (MatchGuid.HasValue && MatchGuid != Guid.Empty)
+            if (MatchGuid.HasValue && !MatchGuid.Value.Equals(Guid.Empty))
             {
-                int i = list.FindIndex(delegate(Match m) { return m.MatchGuid == MatchGuid; });
+                int i = list.FindIndex(x => x.MatchGuid.Equals(MatchGuid));
                 if (i >= 0)
                 {
                     gvMatch.PageIndex = i / gvMatch.PageSize;
@@ -159,34 +159,32 @@ namespace Arsenal.Web
 
         private void BindTeamData(Guid LeagueGuid)
         {
-            // TODO
-            //List<RelationLeagueTeam> list = entity.All<RelationLeagueTeam>().FindAll(rlt => rlt.LeagueGuid.Equals(LeagueGuid));
-            //List<Team> lstTeam = new List<Team>();
+            IRelationLeagueTeam instance = new RelationLeagueTeam();
+            var query = instance.Query(x => x.LeagueGuid.Equals(LeagueGuid));
+            var list = new List<Team>();
 
-            //if (list != null && list.Count > 0)
-            //{
-            //    foreach (RelationLeagueTeam rlt in list)
-            //    {
-            //        Team t = Team.Cache.Load(rlt.TeamGuid);
+            if (query != null && query.Count() > 0)
+            {
+                foreach (var rlt in query)
+                {
+                    Team t = Team.Cache.Load(rlt.TeamGuid);
 
-            //        if (t != null)
-            //            lstTeam.Add(t);
-            //    }
+                    if (t != null)
+                        list.Add(t);
+                }
 
-            //    lstTeam.Sort(delegate(Team t1, Team t2) { return Comparer<string>.Default.Compare(t1.TeamEnglishName, t2.TeamEnglishName); });
+                ddlTeam.DataSource = list.OrderBy(x => x.TeamEnglishName);
+                ddlTeam.DataTextField = "TeamDisplayName";
+                ddlTeam.DataValueField = "TeamGuid";
+                ddlTeam.DataBind();
 
-            //    ddlTeam.DataSource = lstTeam;
-            //    ddlTeam.DataTextField = "TeamDisplayName";
-            //    ddlTeam.DataValueField = "TeamGuid";
-            //    ddlTeam.DataBind();
-
-            //    ddlTeam.Visible = true;
-            //}
-            //else
-            //{
-            //    ddlTeam.Items.Clear();
-            //    ddlTeam.Visible = false;
-            //}
+                ddlTeam.Visible = true;
+            }
+            else
+            {
+                ddlTeam.Items.Clear();
+                ddlTeam.Visible = false;
+            }
 
             ddlTeam.Items.Insert(0, new ListItem("--请选择对阵球队--", string.Empty));
         }

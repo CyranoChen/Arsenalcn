@@ -11,8 +11,8 @@ namespace Arsenal.Web
         {
             try
             {
-                List<Match> lstBefore = Match.Cache.MatchList.FindAll(delegate(Match m) { return m.PlayTime < DateTime.Now; });
-                List<Match> lstAfter = Match.Cache.MatchList.FindAll(delegate(Match m) { return m.PlayTime > DateTime.Now; });
+                List<Match> lstBefore = Match.Cache.MatchList.FindAll(x => x.PlayTime < DateTime.Now);
+                List<Match> lstAfter = Match.Cache.MatchList.FindAll(x => x.PlayTime > DateTime.Now);
 
                 lstBefore.Sort(delegate(Match m1, Match m2) { return Comparer<DateTime>.Default.Compare(m2.PlayTime, m1.PlayTime); });
                 lstAfter.Sort(delegate(Match m1, Match m2) { return Comparer<DateTime>.Default.Compare(m1.PlayTime, m2.PlayTime); });

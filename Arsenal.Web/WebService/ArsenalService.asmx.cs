@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Web.Services;
 
 using Arsenal.Service;
-using Arsenalcn.Core;
 
 namespace Arsenal.WebService
 {
@@ -31,12 +30,11 @@ namespace Arsenal.WebService
             return Arsenal.Service.Team.Cache.TeamList;
         }
 
-        // TODO
-        //[WebMethod(Description = "Arsenal.Service.Team.Cache.GetTeamsByLeagueGuid(Guid guid)")]
-        //public List<Team> GetTeamsByLeagueGuid(Guid guid)
-        //{
-        //    return Arsenal.Service.Team.Cache.GetTeamsByLeagueGuid(guid);
-        //}
+        [WebMethod(Description = "Arsenal.Service.Team.Cache.GetTeamsByLeagueGuid(Guid guid)")]
+        public List<Team> GetTeamsByLeagueGuid(Guid guid)
+        {
+            return Arsenal.Service.Team.Cache.GetTeamsByLeagueGuid(guid);
+        }
 
         [WebMethod(Description = "Arsenal.Service.League.Cache.LeagueList")]
         public List<League> GetLeagues()

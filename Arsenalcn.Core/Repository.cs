@@ -64,16 +64,24 @@ namespace Arsenalcn.Core
             List<string> listColPara = new List<string>();
             List<SqlParameter> listPara = new List<SqlParameter>();
 
-            foreach (var propertyInfo in instance.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
+            foreach (var pi in instance.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
             {
-                var attrCol = Entity.GetColumnAttr(propertyInfo);
+                var attrCol = Entity.GetColumnAttr(pi);
 
                 if (attrCol != null)
                 {
+                    object _value = pi.GetValue(instance, null);
+
+                    // skip the property of the self-increase main-key
+                    if (attrCol.IsKey)
+                    {
+                        var type = Nullable.GetUnderlyingType(pi.PropertyType) ?? pi.PropertyType;
+                        if (type.Equals(typeof(int))) { continue; }
+                    }
+
                     listCol.Add(attrCol.Name);
                     listColPara.Add("@" + attrCol.Name);
 
-                    object _value = propertyInfo.GetValue(instance, null);
                     SqlParameter _para = new SqlParameter("@" + attrCol.Name,
                         _value != null ? _value : (object)DBNull.Value);
                     listPara.Add(_para);
@@ -112,9 +120,10 @@ namespace Arsenalcn.Core
 
                 if (attrCol != null)
                 {
+                    object _value = propertyInfo.GetValue(instance, null);
+
                     listCol.Add(string.Format("{0} = @{0}", attrCol.Name));
 
-                    object _value = propertyInfo.GetValue(instance, null);
                     SqlParameter _para = new SqlParameter("@" + attrCol.Name,
                         _value != null ? _value : (object)DBNull.Value);
                     listPara.Add(_para);

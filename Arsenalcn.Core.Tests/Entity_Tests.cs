@@ -13,17 +13,53 @@ namespace Arsenalcn.Core.Tests
     public class Entity_Tests
     {
         [TestMethod()]
-        public void Single_Test()
+        public void All_Test()
+        {
+            IEntity instance = new League();
+
+            var query = instance.All<League>();
+
+            Assert.IsNotNull(query);
+        }
+
+        [TestMethod()]
+        public void Query_Test()
+        {
+            IEntity instance = new League();
+
+            var query = instance.Query<League>(x => x.IsActive);
+
+            Assert.IsNotNull(query);
+        }
+
+        [TestMethod()]
+        public void Crud_Test()
         {
             League l = new League();
 
-            var guid = "fd32f77d-47a7-4d5f-b7ce-068e3e1a0833";
+            l.LeagueGuid = Guid.NewGuid();
+            l.LeagueName = "test";
+            l.LeagueOrgName = "t";
+            l.LeagueSeason = "2015";
+            l.LeagueTime = DateTime.Now;
+            l.LeagueLogo = string.Empty;
+            l.LeagueOrder = 1000;
+            l.IsActive = true;
 
-            var instance = l.Single<League>(guid);
+            IEntity instance = new League();
 
-            Console.Write(instance.LeagueNameInfo.ToString());
+            instance.Create<League>(l);
 
-            Assert.IsNotNull(instance);
+            l.IsActive = false;
+
+            instance.Update<League>(l);
+
+            l = instance.Single<League>(l.LeagueGuid);
+
+            instance.Delete<League>(l);
+
+            Assert.IsNotNull(l);
         }
+
     }
 }

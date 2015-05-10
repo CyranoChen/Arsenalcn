@@ -27,7 +27,7 @@ namespace Arsenalcn.Core.Tests
         }
 
         [TestMethod()]
-        public void Insert_Test()
+        public void Repo_Test()
         {
             League l = new League();
 
@@ -43,6 +43,10 @@ namespace Arsenalcn.Core.Tests
             IRepository repo = new Repository();
 
             repo.Insert<League>(l);
+
+            l.IsActive = false;
+
+            repo.Update<League>(l);
 
             DataRow dr = repo.Select<League>(l.LeagueGuid);
 

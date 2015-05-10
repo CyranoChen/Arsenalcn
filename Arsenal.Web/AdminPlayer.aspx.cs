@@ -17,8 +17,6 @@ namespace Arsenal.Web
             {
                 #region Bind ddlSquadNumber
                 ddlSquadNumber.DataSource = Player.Cache.ColList_SquadNumber;
-                ddlSquadNumber.DataTextField = "SquadNumber";
-                ddlSquadNumber.DataValueField = "SquadNumber";
                 ddlSquadNumber.DataBind();
 
                 ddlSquadNumber.Items.Insert(0, new ListItem("--球员号码--", string.Empty));
@@ -26,8 +24,6 @@ namespace Arsenal.Web
 
                 #region Bind ddlPosition
                 ddlPosition.DataSource = Player.Cache.ColList_Position;
-                ddlPosition.DataTextField = "Position";
-                ddlPosition.DataValueField = "Position";
                 ddlPosition.DataBind();
 
                 ddlPosition.Items.Insert(0, new ListItem("--球员位置--", string.Empty));

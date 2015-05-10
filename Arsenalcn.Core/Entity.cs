@@ -21,16 +21,26 @@ namespace Arsenalcn.Core
         {
             Contract.Requires(dr != null);
 
-            foreach (var propertyInfo in this.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
+            foreach (var pi in this.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
             {
-                var attrCol = GetColumnAttr(propertyInfo);
+                var attrCol = GetColumnAttr(pi);
+                var type = Nullable.GetUnderlyingType(pi.PropertyType) ?? pi.PropertyType;
 
                 if (attrCol != null)
                 {
                     if (!Convert.IsDBNull(dr[attrCol.Name]))
                     {
-                        //propertyInfo.SetValue(this, Convert.ChangeType(dr[attrCol.Name], propertyInfo.PropertyType.GetGenericArguments()[0]), null);
-                        propertyInfo.SetValue(this, Convert.ChangeType(dr[attrCol.Name], (Nullable.GetUnderlyingType(propertyInfo.PropertyType) ?? propertyInfo.PropertyType)), null);
+                        // SetValue for EnumType
+                        if (type.BaseType.Equals(typeof(Enum)))
+                        {
+                            object value = Enum.Parse(type, dr[attrCol.Name].ToString(), true);
+
+                            pi.SetValue(this, Convert.ChangeType(value, type), null);
+                        }
+                        else
+                        {
+                            pi.SetValue(this, Convert.ChangeType(dr[attrCol.Name], type), null);
+                        }
                     }
                 }
                 else

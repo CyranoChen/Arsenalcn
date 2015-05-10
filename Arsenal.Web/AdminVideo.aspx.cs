@@ -18,8 +18,6 @@ namespace Arsenal.Web
                 #region Bind ddlGoalYear
 
                 ddlGoalYear.DataSource = Video.Cache.ColList_GoalYear;
-                ddlGoalYear.DataTextField = "GoalYear";
-                ddlGoalYear.DataValueField = "GoalYear";
                 ddlGoalYear.DataBind();
 
                 ddlGoalYear.Items.Insert(0, new ListItem("--进球年份--", string.Empty));

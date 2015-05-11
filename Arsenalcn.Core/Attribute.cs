@@ -13,7 +13,7 @@ namespace Arsenalcn.Core
         {
             Name = name;
             Key = "ID";
-            Sort = string.Empty;
+            Sort = "ID";
         }
     }
 

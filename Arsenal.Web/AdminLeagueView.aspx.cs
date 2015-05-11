@@ -79,6 +79,7 @@ namespace Arsenal.Web
                 else
                 {
                     l.LeagueGuid = new Guid(tbLeagueGuid.Text.Trim());
+
                     l.Create<League>(l);
                     this.ClientScript.RegisterClientScriptBlock(typeof(string), "save", "alert('添加成功');window.location.href = 'AdminLeague.aspx';", true);
                 }

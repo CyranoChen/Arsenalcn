@@ -1,11 +1,13 @@
 ﻿using System;
 
 using Arsenal.Service;
+using Arsenalcn.Core;
 
 namespace Arsenal.Web
 {
     public partial class AdminPlayerView : AdminPageBase
     {
+        private readonly IRepository repo = new Repository();
         protected void Page_Load(object sender, EventArgs e)
         {
             ctrlAdminFieldToolBar.AdminUserName = this.Username;
@@ -34,7 +36,7 @@ namespace Arsenal.Web
         {
             if (PlayerGuid != Guid.Empty)
             {
-                Player p = new Player().Single<Player>(PlayerGuid);
+                Player p = repo.Single<Player>(PlayerGuid);
 
                 lblPlayerBasicInfo.InnerHtml = string.Format("<em>{0}</em> 基本信息", p.DisplayName);
                 lblPlayerDetailInfo.InnerHtml = string.Format("<em>{0}</em> 详细信息", p.DisplayName);
@@ -102,6 +104,11 @@ namespace Arsenal.Web
             try
             {
                 Player p = new Player();
+
+                if (!PlayerGuid.Equals(Guid.Empty))
+                {
+                    p = repo.Single<Player>(PlayerGuid);
+                }
 
                 if (!string.IsNullOrEmpty(tbFirstName.Text.Trim()))
                     p.FirstName = tbFirstName.Text.Trim();
@@ -172,14 +179,12 @@ namespace Arsenal.Web
 
                 if (PlayerGuid != Guid.Empty)
                 {
-                    p.PlayerGuid = PlayerGuid;
-                    p.Update<Player>(p);
+                    repo.Update(p);
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('更新成功');window.location.href = window.location.href", true);
                 }
                 else
                 {
-                    p.PlayerGuid = new Guid(tbPlayerGuid.Text.Trim());
-                    p.Create<Player>(p);
+                    repo.Insert(p);
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('添加成功');window.location.href = 'AdminPlayer.aspx'", true);
                 }
             }
@@ -207,10 +212,7 @@ namespace Arsenal.Web
             {
                 if (PlayerGuid != Guid.Empty)
                 {
-                    Player p = new Player();
-                    p.PlayerGuid = PlayerGuid;
-
-                    p.Delete<Player>(p);
+                    repo.Delete<Player>(PlayerGuid);
 
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('删除成功');window.location.href='AdminPlayer.aspx'", true);
                 }

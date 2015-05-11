@@ -4,11 +4,13 @@ using System.Linq;
 using System.Web.UI.WebControls;
 
 using Arsenal.Service;
+using Arsenalcn.Core;
 
 namespace Arsenal.Web
 {
     public partial class AdminMatchView : AdminPageBase
     {
+        private readonly IRepository repo = new Repository();
         protected void Page_Load(object sender, EventArgs e)
         {
             ctrlAdminFieldToolBar.AdminUserName = this.Username;
@@ -48,9 +50,9 @@ namespace Arsenal.Web
         {
             if (MatchGuid != Guid.Empty)
             {
-                Match m = new Match().Single<Match>(MatchGuid);
+                Match m = repo.Single<Match>(MatchGuid);
 
-                tbMatchGuid.Text = m.MatchGuid.ToString();
+                tbMatchGuid.Text = m.ID.ToString();
 
                 if (m.LeagueGuid.HasValue)
                 {
@@ -111,6 +113,11 @@ namespace Arsenal.Web
             {
                 Match m = new Match();
 
+                if (!MatchGuid.Equals(Guid.Empty))
+                {
+                    m = repo.Single<Match>(MatchGuid);
+                }
+
                 if (!string.IsNullOrEmpty(ddlTeam.SelectedValue))
                 {
                     m.TeamGuid = new Guid(ddlTeam.SelectedValue);
@@ -167,15 +174,12 @@ namespace Arsenal.Web
 
                 if (MatchGuid != Guid.Empty)
                 {
-                    m.MatchGuid = MatchGuid;
-                    m.Update<Match>(m);
+                    repo.Update(m);
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('更新成功');window.location.href = window.location.href", true);
                 }
                 else
                 {
-                    m.MatchGuid = new Guid(tbMatchGuid.Text.Trim());
-
-                    m.Create<Match>(m);
+                    repo.Insert(m);
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('添加成功');window.location.href = 'AdminMatch.aspx'", true);
                 }
             }
@@ -203,10 +207,7 @@ namespace Arsenal.Web
             {
                 if (MatchGuid != Guid.Empty)
                 {
-                    Match m = new Match();
-                    m.MatchGuid = MatchGuid;
-
-                    m.Delete<Match>(m);
+                    repo.Delete<Match>(MatchGuid);
 
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('删除成功');window.location.href='AdminMatch.aspx'", true);
                 }

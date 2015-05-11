@@ -1,29 +1,27 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
-using System.Data.SqlClient;
 using System.Diagnostics.Contracts;
-using System.Linq;
-using System.Linq.Expressions;
 using System.Reflection;
+using System.Web;
 
 namespace Arsenalcn.Core
 {
-    public abstract class Entity : IEntity
+    public abstract class Entity<TKey> : IEntity where TKey : struct
     {
-        private readonly IRepository repo;
-        public Entity()
-        {
-            repo = new Repository();
-        }
+        public Entity() { }
 
         protected Entity(DataRow dr)
         {
             Contract.Requires(dr != null);
 
+            var attr = (AttrDbTable)Attribute.GetCustomAttribute(this.GetType(), typeof(AttrDbTable));
+
+            this.ID = (TKey)dr[attr.Key];
+
             foreach (var pi in this.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
             {
-                var attrCol = GetColumnAttr(pi);
+                var attrCol = Repository.GetColumnAttr(pi);
                 var type = Nullable.GetUnderlyingType(pi.PropertyType) ?? pi.PropertyType;
 
                 if (attrCol != null)
@@ -48,175 +46,112 @@ namespace Arsenalcn.Core
             }
         }
 
-        public T Single<T>(object key) where T : class
+        #region Members and Properties
+
+        [Key]
+        public virtual TKey ID
         {
-            Contract.Requires(key != null);
-
-            DataRow dr = repo.Select<T>(key);
-
-            if (dr != null)
+            get
             {
-                ConstructorInfo ci = typeof(T).GetConstructor(new Type[] { typeof(DataRow) });
-                Object[] para = new Object[] { dr };
-
-                return (T)ci.Invoke(para);
-            }
-            else
-            { return null; }
-        }
-
-        public T Single<T>(Expression<Func<T, bool>> predicate) where T : class
-        {
-            Contract.Requires(predicate != null);
-
-            return All<T>().SingleOrDefault(predicate);
-        }
-
-        public IQueryable<T> All<T>() where T : class
-        {
-            DataTable dt = repo.Select<T>();
-
-            var list = new List<T>();
-
-            if (dt != null)
-            {
-                foreach (DataRow dr in dt.Rows)
+                if (typeof(TKey).Equals(typeof(Guid)))
                 {
-                    ConstructorInfo ci = typeof(T).GetConstructor(new Type[] { typeof(DataRow) });
-                    Object[] para = new Object[] { dr };
-
-                    list.Add((T)ci.Invoke(para));
+                    if (_id == null || (_id != null && _id.Equals(Guid.Empty)))
+                    {
+                        _id = Guid.NewGuid();
+                    }
                 }
+
+                return _id == null ? default(TKey) : (TKey)_id;
             }
+            protected set { _id = value; }
+        }
+        private object _id;
 
-            return list.AsQueryable();
+        [Unique, StringLength(50)]
+        public virtual string Key
+        {
+            get { return _key = _key ?? GenerateKey(); }
+            protected set { _key = value; }
+        }
+        private string _key;
+
+        #endregion
+
+        protected virtual string GenerateKey()
+        {
+            return KeyGenerator.Generate();
         }
 
-        public IQueryable<T> Query<T>(Expression<Func<T, bool>> predicate) where T : class
+        public override bool Equals(object obj)
         {
-            Contract.Requires(predicate != null);
-
-            return All<T>().Where(predicate);
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != typeof(Entity<TKey>)) return false;
+            return Equals((Entity<TKey>)obj);
         }
 
-        public void Create<T>(T instance, SqlTransaction trans = null) where T : class
+        public bool Equals(Entity<TKey> other)
         {
-            Contract.Requires(instance != null);
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            if (other.GetType() != GetType()) return false;
 
-            repo.Insert<T>(instance, trans);
+            if (default(TKey).Equals(ID) || default(TKey).Equals(other.ID))
+                return Equals(other._key, _key);
+
+            return other.ID.Equals(ID);
         }
 
-        public void Create<T>(IEnumerable<T> instances, SqlTransaction trans = null) where T : class
+        public override int GetHashCode()
         {
-            Contract.Requires(instances != null);
-
-            foreach (var instance in instances)
+            unchecked
             {
-                Create(instance, trans);
+                if (default(TKey).Equals(ID))
+                    return Key.GetHashCode() * 397;
+
+                return ID.GetHashCode();
             }
         }
 
-        public void Update<T>(T instance, SqlTransaction trans = null) where T : class
+        public override string ToString()
         {
-            Contract.Requires(instance != null);
-
-            repo.Update<T>(instance, trans);
+            return Key;
         }
 
-        public void Update<T>(IEnumerable<T> instances, SqlTransaction trans = null) where T : class
+        public static bool operator ==(Entity<TKey> left, Entity<TKey> right)
         {
-            Contract.Requires(instances != null);
+            return Equals(left, right);
+        }
 
-            foreach (var instance in instances)
+        public static bool operator !=(Entity<TKey> left, Entity<TKey> right)
+        {
+            return !Equals(left, right);
+        }
+
+        public static class KeyGenerator
+        {
+            public static string Generate()
             {
-                Update(instance, trans);
+                return Generate(Guid.NewGuid().ToString("D").Substring(24));
             }
-        }
 
-        public void Delete<T>(T instance, SqlTransaction trans = null) where T : class
-        {
-            Contract.Requires(instance != null);
-
-            var attr = (AttrDbTable)Attribute.GetCustomAttribute(typeof(T), typeof(AttrDbTable));
-
-            var key = instance.GetType().GetProperty(attr.Key.ToString()).GetValue(instance, null);
-
-            repo.Delete<T>(key, trans);
-        }
-
-        public void Delete<T>(Expression<Func<T, bool>> predicate, SqlTransaction trans = null) where T : class
-        {
-            Contract.Requires(predicate != null);
-
-            var instances = Query(predicate);
-
-            foreach (var instance in instances)
+            public static string Generate(string input)
             {
-                Delete<T>(instance, trans);
+                Contract.Requires(!string.IsNullOrWhiteSpace(input));
+                return HttpUtility.UrlEncode(input.Replace(" ", "_").Replace("-", "_").Replace("&", "and"));
             }
         }
+    }
 
-        public static AttrDbTable GetTableAttr<T>()
-        {
-            return (AttrDbTable)Attribute.GetCustomAttribute(typeof(T), typeof(AttrDbTable));
-        }
+    public interface IEntity
+    {
+        /// <summary>
+        /// The entity's unique (and URL-safe) public identifier
+        /// </summary>
+        /// <remarks>
+        /// This is the identifier that should be exposed via the web, etc.
+        /// </remarks>
 
-        public static AttrDbColumn GetColumnAttr(PropertyInfo pi)
-        {
-            return (AttrDbColumn)Attribute.GetCustomAttribute(pi, typeof(AttrDbColumn));
-        }
-
-        public static AttrDbColumn GetColumnAttr<T>(string name)
-        {
-            Contract.Requires(!string.IsNullOrEmpty(name));
-
-            return GetColumnAttr(typeof(T).GetProperty(name));
-        }
-
-        public static IEnumerable<T> DistinctBy<T, TKey>(IEnumerable<T> instances, Func<T, TKey> keySelector)
-        {
-            Contract.Requires(instances != null);
-
-            HashSet<TKey> seenKeys = new HashSet<TKey>();
-
-            foreach (T instance in instances)
-            {
-                if (seenKeys.Add(keySelector(instance)))
-                {
-                    yield return instance;
-                }
-            }
-        }
-
-        public static IEnumerable<TKey> DistinctOrderBy<T, TKey>(IEnumerable<T> instances, Func<T, TKey> keySelector)
-        {
-            return DistinctBy(instances, keySelector).OrderBy(keySelector).Select(keySelector);
-        }
-
-        //protected static class Cache
-        //{
-        //    static Cache()
-        //    {
-        //        InitCache();
-        //    }
-
-        //    public static void RefreshCach()
-        //    {
-        //        InitCache();
-        //    }
-
-        //    private static void InitCache()
-        //    {
-        //        IEntity entity = new Entity();
-        //        CacheList = entity.All<Entity>().ToList();
-        //    }
-
-        //    public static Entity Load(Expression<Func<Entity, bool>> predicate)
-        //    {
-        //        return CacheList.AsQueryable().SingleOrDefault(predicate);
-        //    }
-
-        //    public static List<Entity> CacheList;
-        //}
+        string Key { get; }
     }
 }

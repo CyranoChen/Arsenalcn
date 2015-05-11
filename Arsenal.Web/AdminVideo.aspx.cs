@@ -3,11 +3,13 @@ using System.Web.UI.WebControls;
 using System.Linq;
 
 using Arsenal.Service;
+using Arsenalcn.Core;
 
 namespace Arsenal.Web
 {
     public partial class AdminVideo : AdminPageBase
     {
+        private readonly IRepository repo = new Repository();
         protected void Page_Load(object sender, EventArgs e)
         {
             ctrlAdminFieldToolBar.AdminUserName = this.Username;
@@ -47,7 +49,7 @@ namespace Arsenal.Web
 
         private void BindData()
         {
-            var list = new Video().All<Video>().ToList().FindAll(x =>
+            var list = repo.All<Video>().ToList().FindAll(x =>
                  {
                      Boolean returnValue = true;
                      string tmpString = string.Empty;
@@ -79,7 +81,7 @@ namespace Arsenal.Web
             #region set GridView Selected PageIndex
             if (VideoGuid.HasValue && !VideoGuid.Equals(Guid.Empty))
             {
-                int i = list.FindIndex(x => x.VideoGuid.Equals(VideoGuid));
+                int i = list.FindIndex(x => x.ID.Equals(VideoGuid));
                 if (i >= 0)
                 {
                     gvVideo.PageIndex = i / gvVideo.PageSize;
@@ -158,7 +160,7 @@ namespace Arsenal.Web
 
                     if (m != null)
                     {
-                        ltrlMatchOpponentInfo.Text = string.Format("<a href=\"AdminMatchView.aspx?MatchGuid={0}\" target=\"_blank\"><em>{1}</em></a>", m.MatchGuid.ToString(), m.TeamName);
+                        ltrlMatchOpponentInfo.Text = string.Format("<a href=\"AdminMatchView.aspx?MatchGuid={0}\" target=\"_blank\"><em>{1}</em></a>", m.ID.ToString(), m.TeamName);
                     }
                     else
                     {

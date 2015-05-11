@@ -4,11 +4,13 @@ using System.Web.UI.WebControls;
 using System.Linq;
 
 using Arsenal.Service;
+using Arsenalcn.Core;
 
 namespace Arsenal.Web
 {
     public partial class AdminMatch : AdminPageBase
     {
+        private readonly IRepository repo = new Repository();
         protected void Page_Load(object sender, EventArgs e)
         {
             ctrlAdminFieldToolBar.AdminUserName = this.Username;
@@ -18,11 +20,11 @@ namespace Arsenal.Web
             {
                 #region Bind ddlLeague
                 List<League> list = League.Cache.LeagueList.FindAll(l =>
-                    Match.Cache.MatchList.Exists(m => m.LeagueGuid.Equals(l.LeagueGuid)));
+                    Match.Cache.MatchList.Exists(m => m.LeagueGuid.Equals(l.ID)));
 
                 ddlLeague.DataSource = list;
                 ddlLeague.DataTextField = "LeagueNameInfo";
-                ddlLeague.DataValueField = "LeagueGuid";
+                ddlLeague.DataValueField = "ID";
                 ddlLeague.DataBind();
 
                 ddlLeague.Items.Insert(0, new ListItem("--请选择比赛分类--", string.Empty));
@@ -52,7 +54,7 @@ namespace Arsenal.Web
 
         private void BindData()
         {
-            var list = new Match().All<Match>().ToList().FindAll(x =>
+            var list = repo.All<Match>().ToList().FindAll(x =>
             {
                 Boolean returnValue = true;
                 string tmpString = string.Empty;
@@ -84,7 +86,7 @@ namespace Arsenal.Web
             #region set GridView Selected PageIndex
             if (MatchGuid.HasValue && !MatchGuid.Value.Equals(Guid.Empty))
             {
-                int i = list.FindIndex(x => x.MatchGuid.Equals(MatchGuid));
+                int i = list.FindIndex(x => x.ID.Equals(MatchGuid));
                 if (i >= 0)
                 {
                     gvMatch.PageIndex = i / gvMatch.PageSize;

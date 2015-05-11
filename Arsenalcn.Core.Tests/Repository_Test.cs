@@ -15,23 +15,40 @@ namespace Arsenalcn.Core.Tests
     public class Repository_Test
     {
         [TestMethod()]
-        public void Select_Test()
+        public void Single_Test()
         {
             IRepository repo = new Repository();
 
-            DataTable dt = repo.Select<League>();
+            var instance = repo.Single<League>(new Guid("066edf53-f823-4020-b740-f4c9fff98ec8"));
 
-            Console.WriteLine(dt.Rows.Count.ToString());
-
-            Assert.IsNotNull(dt);
+            Assert.IsNotNull(instance);
         }
 
         [TestMethod()]
-        public void Repo_Test()
+        public void All_Test()
+        {
+            IRepository repo = new Repository();
+
+            var query = repo.All<League>();
+
+            Assert.IsNotNull(query);
+        }
+
+        [TestMethod()]
+        public void Query_Test()
+        {
+            IRepository repo = new Repository();
+
+            var query = repo.Query<League>(x => x.IsActive);
+
+            Assert.IsNotNull(query);
+        }
+
+        [TestMethod()]
+        public void Crud_Test()
         {
             League l = new League();
 
-            l.LeagueGuid = Guid.NewGuid();
             l.LeagueName = "test";
             l.LeagueOrgName = "t";
             l.LeagueSeason = "2015";
@@ -42,17 +59,19 @@ namespace Arsenalcn.Core.Tests
 
             IRepository repo = new Repository();
 
-            repo.Insert<League>(l);
+            repo.Insert(l);
 
             l.IsActive = false;
 
-            repo.Update<League>(l);
+            repo.Update(l);
 
-            DataRow dr = repo.Select<League>(l.LeagueGuid);
+            repo.Delete<League>(l.ID);
 
-            repo.Delete<League>(l.LeagueGuid);
+            repo.Insert(l);
 
-            Assert.IsNotNull(dr);
+            repo.Delete(l);
+
+            Assert.IsNotNull(l);
         }
     }
 }

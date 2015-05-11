@@ -8,7 +8,7 @@ using Arsenalcn.Core;
 namespace Arsenal.Service
 {
     [AttrDbTable("Arsenal_Match", Key = "MatchGuid", Sort = "PlayTime DESC")]
-    public class Match : Entity
+    public class Match : Entity<Guid>
     {
         public Match() : base() { }
 
@@ -46,22 +46,20 @@ namespace Arsenal.Service
 
             private static void InitCache()
             {
-                MatchList = new Match().All<Match>().ToList();
+                IRepository repo = new Repository();
+
+                MatchList = repo.All<Match>().ToList();
             }
 
             public static Match Load(Guid guid)
             {
-                return MatchList.Find(x => x.MatchGuid.Equals(guid));
+                return MatchList.Find(x => x.ID.Equals(guid));
             }
 
             public static List<Match> MatchList;
         }
 
         #region Members and Properties
-
-        [AttrDbColumn("MatchGuid", IsKey = true)]
-        public Guid MatchGuid
-        { get; set; }
 
         [AttrDbColumn("TeamGuid")]
         public Guid TeamGuid

@@ -4,11 +4,13 @@ using System.Linq;
 using System.Web.UI.WebControls;
 
 using Arsenal.Service;
+using Arsenalcn.Core;
 
 namespace Arsenal.Web
 {
     public partial class AdminTeamView : AdminPageBase
     {
+        private readonly IRepository repo = new Repository();
         protected void Page_Load(object sender, EventArgs e)
         {
             ctrlAdminFieldToolBar.AdminUserName = this.Username;
@@ -48,9 +50,9 @@ namespace Arsenal.Web
         {
             if (TeamGuid != Guid.Empty)
             {
-                Team t = new Team().Single<Team>(TeamGuid);
+                Team t = repo.Single<Team>(TeamGuid);
 
-                tbTeamGuid.Text = t.TeamGuid.ToString();
+                tbTeamGuid.Text = t.ID.ToString();
                 tbTeamEnglishName.Text = t.TeamEnglishName;
                 tbTeamDisplayName.Text = t.TeamDisplayName;
                 tbTeamLogo.Text = t.TeamLogo;
@@ -74,6 +76,11 @@ namespace Arsenal.Web
             try
             {
                 Team t = new Team();
+
+                if (!TeamGuid.Equals(Guid.Empty))
+                {
+                    t = repo.Single<Team>(TeamGuid);
+                }
 
                 t.TeamEnglishName = tbTeamEnglishName.Text.Trim();
                 t.TeamDisplayName = tbTeamDisplayName.Text.Trim();
@@ -100,14 +107,12 @@ namespace Arsenal.Web
 
                 if (TeamGuid != Guid.Empty)
                 {
-                    t.TeamGuid = TeamGuid;
-                    t.Update<Team>(t);
+                    repo.Update(t);
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('更新成功');window.location.href = window.location.href", true);
                 }
                 else
                 {
-                    t.TeamGuid = new Guid(tbTeamGuid.Text.Trim());
-                    t.Create<Team>(t);
+                    repo.Insert(t);
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('添加成功');window.location.href = 'AdminTeam.aspx'", true);
                 }
             }
@@ -149,9 +154,7 @@ namespace Arsenal.Web
                         instance.Delete(x => x.TeamGuid.Equals(TeamGuid));
                     }
 
-                    Team t = new Team();
-                    t.TeamGuid = TeamGuid;
-                    t.Delete<Team>(t);
+                    repo.Delete<Team>(TeamGuid);
 
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", string.Format("alert('删除成功(包括{0}个分类关联)');window.location.href='AdminTeam.aspx'", countRelationLeagueTeam.ToString()), true);
                 }

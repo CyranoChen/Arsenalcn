@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Arsenalcn.Core
 {
@@ -13,7 +14,7 @@ namespace Arsenalcn.Core
         {
             Name = name;
             Key = "ID";
-            Sort = "ID";
+            Sort = string.Empty;
         }
     }
 
@@ -21,17 +22,15 @@ namespace Arsenalcn.Core
     public class AttrDbColumn : Attribute
     {
         public string Name;
-        public bool IsKey;
-        public int Length;
-        public bool IsNull;
+        public bool Key;
 
         public AttrDbColumn(string name)
         {
             Name = name;
-            IsKey = false;
-            Length = 0;
-            IsNull = true;
+            Key = false;
         }
     }
 
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
+    public class UniqueAttribute : RequiredAttribute { }
 }

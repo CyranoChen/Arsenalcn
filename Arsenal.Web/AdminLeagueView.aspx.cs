@@ -1,11 +1,13 @@
 ﻿using System;
 
 using Arsenal.Service;
+using Arsenalcn.Core;
 
 namespace Arsenal.Web
 {
     public partial class AdminLeagueView : AdminPageBase
     {
+        private readonly IRepository repo = new Repository();
         protected void Page_Load(object sender, EventArgs e)
         {
             ctrlAdminFieldToolBar.AdminUserName = this.Username;
@@ -34,7 +36,7 @@ namespace Arsenal.Web
         {
             if (LeagueGuid != Guid.Empty)
             {
-                League l = new League().Single<League>(LeagueGuid);
+                League l = repo.Single<League>(LeagueGuid);
 
                 tbLeagueGuid.Text = LeagueGuid.ToString();
                 tbLeagueName.Text = l.LeagueName;
@@ -58,6 +60,11 @@ namespace Arsenal.Web
             {
                 League l = new League();
 
+                if (!LeagueGuid.Equals(Guid.Empty))
+                {
+                    l = repo.Single<League>(LeagueGuid);
+                }
+
                 if (!string.IsNullOrEmpty(tbLeagueName.Text.Trim()))
                     l.LeagueName = tbLeagueName.Text.Trim();
                 else
@@ -72,15 +79,12 @@ namespace Arsenal.Web
 
                 if (LeagueGuid != Guid.Empty)
                 {
-                    l.LeagueGuid = LeagueGuid;
-                    l.Update<League>(l);
+                    repo.Update(l);
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('更新成功');window.location.href = window.location.href", true);
                 }
                 else
                 {
-                    l.LeagueGuid = new Guid(tbLeagueGuid.Text.Trim());
-
-                    l.Create<League>(l);
+                    repo.Insert(l);
                     this.ClientScript.RegisterClientScriptBlock(typeof(string), "save", "alert('添加成功');window.location.href = 'AdminLeague.aspx';", true);
                 }
             }
@@ -108,10 +112,7 @@ namespace Arsenal.Web
             {
                 if (LeagueGuid != Guid.Empty)
                 {
-                    League l = new League();
-                    l.LeagueGuid = LeagueGuid;
-
-                    l.Delete<League>(l);
+                    repo.Delete<League>(LeagueGuid);
 
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('删除成功');window.location.href='AdminLeague.aspx'", true);
                 }

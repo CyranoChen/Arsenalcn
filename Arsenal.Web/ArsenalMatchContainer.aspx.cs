@@ -61,7 +61,7 @@ namespace Arsenal.Web
                         tAway = teamArsenal;
                     }
 
-                    strTeamInfo = string.Format(strMatchTeamInfo, tHome.TeamEnglishName, tHome.TeamDisplayName, tHome.TeamLogo, tAway.TeamLogo, tAway.TeamEnglishName, tAway.TeamDisplayName, tHome.TeamGuid.ToString(), tAway.TeamGuid.ToString(), m1.CasinoMatchGuid.HasValue ? m1.CasinoMatchGuid.Value.ToString() : string.Empty);
+                    strTeamInfo = string.Format(strMatchTeamInfo, tHome.TeamEnglishName, tHome.TeamDisplayName, tHome.TeamLogo, tAway.TeamLogo, tAway.TeamEnglishName, tAway.TeamDisplayName, tHome.ID.ToString(), tAway.ID.ToString(), m1.CasinoMatchGuid.HasValue ? m1.CasinoMatchGuid.Value.ToString() : string.Empty);
 
                     // Tackle with Match Result
                     if (m1.ResultHome.HasValue && m1.ResultAway.HasValue)
@@ -96,7 +96,7 @@ namespace Arsenal.Web
                         tAway = teamArsenal;
                     }
 
-                    strTeamInfo = string.Format(strMatchTeamInfo, tHome.TeamEnglishName, tHome.TeamDisplayName, tHome.TeamLogo, tAway.TeamLogo, tAway.TeamEnglishName, tAway.TeamDisplayName, tHome.TeamGuid.ToString(), tAway.TeamGuid.ToString(), m2.CasinoMatchGuid.HasValue ? m2.CasinoMatchGuid.Value.ToString() : string.Empty);
+                    strTeamInfo = string.Format(strMatchTeamInfo, tHome.TeamEnglishName, tHome.TeamDisplayName, tHome.TeamLogo, tAway.TeamLogo, tAway.TeamEnglishName, tAway.TeamDisplayName, tHome.ID.ToString(), tAway.ID.ToString(), m2.CasinoMatchGuid.HasValue ? m2.CasinoMatchGuid.Value.ToString() : string.Empty);
                     strMatch2 = string.Format(strMatchInfoNext, m2.LeagueGuid.Value.ToString(), strLeagueInfo, strTeamInfo, m2.PlayTime.ToString("yyyy-MM-dd HH:mm"), m2.CasinoMatchGuid.HasValue ? m2.CasinoMatchGuid.Value.ToString() : string.Empty);
                 }
 
@@ -126,7 +126,7 @@ namespace Arsenal.Web
                         tAway = teamArsenal;
                     }
 
-                    strTeamInfo = string.Format(strMatchTeamInfo, tHome.TeamEnglishName, tHome.TeamDisplayName, tHome.TeamLogo, tAway.TeamLogo, tAway.TeamEnglishName, tAway.TeamDisplayName, tHome.TeamGuid.ToString(), tAway.TeamGuid.ToString(), m3.CasinoMatchGuid.HasValue ? m3.CasinoMatchGuid.Value.ToString() : string.Empty);
+                    strTeamInfo = string.Format(strMatchTeamInfo, tHome.TeamEnglishName, tHome.TeamDisplayName, tHome.TeamLogo, tAway.TeamLogo, tAway.TeamEnglishName, tAway.TeamDisplayName, tHome.ID.ToString(), tAway.ID.ToString(), m3.CasinoMatchGuid.HasValue ? m3.CasinoMatchGuid.Value.ToString() : string.Empty);
                     strMatch3 = string.Format(strMatchInfoNext, m3.LeagueGuid.Value.ToString(), strLeagueInfo, strTeamInfo, m3.PlayTime.ToString("yyyy-MM-dd HH:mm"), m3.CasinoMatchGuid.HasValue ? m3.CasinoMatchGuid.Value.ToString() : string.Empty);
                 }
 

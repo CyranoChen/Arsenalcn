@@ -4,11 +4,13 @@ using System.Linq;
 using System.Web.UI.WebControls;
 
 using Arsenal.Service;
+using Arsenalcn.Core;
 
 namespace Arsenal.Web
 {
     public partial class AdminTeam : AdminPageBase
     {
+        private readonly IRepository repo = new Repository();
         protected void Page_Load(object sender, EventArgs e)
         {
             ctrlAdminFieldToolBar.AdminUserName = this.Username;
@@ -51,7 +53,7 @@ namespace Arsenal.Web
 
         private void BindData()
         {
-            var list = new Team().All<Team>().ToList().FindAll(x =>
+            var list = repo.All<Team>().ToList().FindAll(x =>
              {
                  Boolean returnValue = true;
                  string tmpString = string.Empty;
@@ -60,7 +62,7 @@ namespace Arsenal.Web
                  {
                      tmpString = ViewState["LeagueGuid"].ToString();
                      if (!string.IsNullOrEmpty(tmpString))
-                         returnValue = returnValue && new RelationLeagueTeam() { TeamGuid = x.TeamGuid, LeagueGuid = new Guid(tmpString) }.Any();
+                         returnValue = returnValue && new RelationLeagueTeam() { TeamGuid = x.ID, LeagueGuid = new Guid(tmpString) }.Any();
                  }
 
                  if (ViewState["TeamName"] != null)
@@ -76,7 +78,7 @@ namespace Arsenal.Web
             #region set GridView Selected PageIndex
             if (TeamGuid.HasValue && !TeamGuid.Equals(Guid.Empty))
             {
-                int i = list.FindIndex(x => x.TeamGuid.Equals(TeamGuid));
+                int i = list.FindIndex(x => x.ID.Equals(TeamGuid));
                 if (i >= 0)
                 {
                     gvTeam.PageIndex = i / gvTeam.PageSize;

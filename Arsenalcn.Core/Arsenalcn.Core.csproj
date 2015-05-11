@@ -32,15 +32,16 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attribute.cs" />
     <Compile Include="DAHelper\DataAccess.cs" />
     <Compile Include="Entity.cs" />
-    <Compile Include="IEntity.cs" />
     <Compile Include="IRepository.cs" />
     <Compile Include="DAHelper\SQLHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

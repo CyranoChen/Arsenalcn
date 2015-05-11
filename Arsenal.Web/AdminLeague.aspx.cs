@@ -3,11 +3,13 @@ using System.Web.UI.WebControls;
 using System.Linq;
 
 using Arsenal.Service;
+using Arsenalcn.Core;
 
 namespace Arsenal.Web
 {
     public partial class AdminLeague : AdminPageBase
     {
+        private readonly IRepository repo = new Repository();
         protected void Page_Load(object sender, EventArgs e)
         {
             ctrlAdminFieldToolBar.AdminUserName = this.Username;
@@ -39,7 +41,7 @@ namespace Arsenal.Web
 
         private void BindData()
         {
-            var list = new League().All<League>().ToList().FindAll(x =>
+            var list = repo.All<League>().ToList().FindAll(x =>
                 {
                     Boolean returnValue = true;
                     string tmpString = string.Empty;
@@ -71,7 +73,7 @@ namespace Arsenal.Web
             #region set GridView Selected PageIndex
             if (LeagueGuid.HasValue && !LeagueGuid.Value.Equals(Guid.Empty))
             {
-                int i = list.FindIndex(x => x.LeagueGuid.Equals(LeagueGuid));
+                int i = list.FindIndex(x => x.ID.Equals(LeagueGuid));
 
                 if (i >= 0)
                 {

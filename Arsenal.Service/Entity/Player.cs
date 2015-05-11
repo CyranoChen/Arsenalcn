@@ -9,7 +9,7 @@ using Arsenalcn.Core;
 namespace Arsenal.Service
 {
     [AttrDbTable("Arsenal_Player", Key = "PlayerGuid", Sort = "IsLegend, IsLoan, SquadNumber, LastName")]
-    public class Player : Entity
+    public class Player : Entity<Guid>
     {
         public Player() : base() { }
 
@@ -29,31 +29,43 @@ namespace Arsenal.Service
 
             private static void InitCache()
             {
-                IEntity instance = new Player();
+                IRepository repo = new Repository();
 
-                PlayerList = instance.All<Player>().ToList();
+                PlayerList = repo.All<Player>().ToList();
 
                 PlayerList_HasSquadNumber = PlayerList.FindAll(x => x.SquadNumber > 0)
                     .OrderBy(x => x.SquadNumber).ThenBy(x => x.DisplayName).ToList();
 
                 // TODO
-                ColList_SquadNumber = instance.All<Player>().GroupBy(x => x.SquadNumber)
+                ColList_SquadNumber = repo.All<Player>().GroupBy(x => x.SquadNumber)
                     .Select(g => g.First()).OrderBy(x => x.SquadNumber)
                     .Select(x => x.SquadNumber).AsEnumerable();
 
-                ColList_Position = DistinctOrderBy(instance.Query<Player>(x => x.Position.HasValue), x => x.Position.Value.ToString());
+                ColList_Position = Repository.DistinctOrderBy(repo.Query<Player>(x => x.Position.HasValue), x => x.Position.Value.ToString());
             }
 
             public static Player Load(Guid guid)
             {
-                return PlayerList.Find(x => x.PlayerGuid.Equals(guid));
+                return PlayerList.Find(x => x.ID.Equals(guid));
             }
 
             // HC: Acn Club API
             public static DataRow GetInfo(Guid guid)
             {
                 IRepository repo = new Repository();
-                return repo.Select<Player>(guid);
+
+                var attr = Repository.GetTableAttr<Player>();
+
+                string sql = string.Format("SELECT * FROM {0} WHERE {1} = @key", attr.Name, attr.Key);
+
+                System.Data.SqlClient.SqlParameter[] para = { new System.Data.SqlClient.SqlParameter("@key", guid) };
+
+                DataSet ds = DataAccess.ExecuteDataset(sql, para);
+
+                if (ds.Tables[0].Rows.Count == 0)
+                { return null; }
+                else
+                { return ds.Tables[0].Rows[0]; }
             }
 
             public static List<Player> PlayerList;
@@ -64,10 +76,6 @@ namespace Arsenal.Service
         }
 
         #region Members and Properties
-
-        [AttrDbColumn("PlayerGuid", IsKey = true)]
-        public Guid PlayerGuid
-        { get; set; }
 
         [AttrDbColumn("FirstName")]
         public string FirstName

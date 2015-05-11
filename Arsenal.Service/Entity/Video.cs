@@ -8,7 +8,7 @@ using Arsenalcn.Core;
 namespace Arsenal.Service
 {
     [AttrDbTable("Arsenal_Video", Key = "VideoGuid", Sort = "GoalYear DESC, GoalRank DESC, TeamworkRank DESC")]
-    public class Video : Entity
+    public class Video : Entity<Guid>
     {
         public Video() : base() { }
 
@@ -16,7 +16,8 @@ namespace Arsenal.Service
             : base(dr)
         {
             // Generate Video File Path
-            VideoFilePath = string.Format("{0}{1}.{2}", ConfigGlobal.ArsenalVideoUrl, VideoGuid.ToString(), VideoType.ToString()).ToLower();
+            VideoFilePath = string.Format("{0}{1}.{2}",
+                ConfigGlobal.ArsenalVideoUrl, this.ID.ToString(), VideoType.ToString()).ToLower();
 
             // TEMP: Fix the video width & height equal 0
             VideoWidth = VideoWidth > 0 ? VideoWidth : 480;
@@ -37,19 +38,19 @@ namespace Arsenal.Service
 
             private static void InitCache()
             {
-                IEntity instance = new Video();
+                IRepository repo = new Repository();
 
-                VideoList = instance.All<Video>().ToList();
+                VideoList = repo.All<Video>().ToList();
 
                 VideoList_Legend = VideoList.FindAll(x =>
                     x.GoalPlayerGuid.HasValue ? Player.Cache.Load(x.GoalPlayerGuid.Value).IsLegend : false);
 
-                ColList_GoalYear = DistinctOrderBy(instance.Query<Video>(x => !string.IsNullOrEmpty(x.GoalYear)), x => x.GoalYear);
+                ColList_GoalYear = Repository.DistinctOrderBy(repo.Query<Video>(x => !string.IsNullOrEmpty(x.GoalYear)), x => x.GoalYear);
             }
 
             public static Video Load(Guid guid)
             {
-                return VideoList.Find(x => x.VideoGuid.Equals(guid));
+                return VideoList.Find(x => x.ID.Equals(guid));
             }
 
             public static List<Video> VideoList;
@@ -59,10 +60,6 @@ namespace Arsenal.Service
         }
 
         #region Members and Properties
-
-        [AttrDbColumn("VideoGuid", IsKey = true)]
-        public Guid VideoGuid
-        { get; set; }
 
         [AttrDbColumn("FileName")]
         public string FileName

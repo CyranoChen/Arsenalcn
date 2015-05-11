@@ -9,6 +9,7 @@ namespace Arsenal.Web
 {
     public partial class AdminVideoView : AdminPageBase
     {
+        private readonly IRepository repo = new Repository();
         protected void Page_Load(object sender, EventArgs e)
         {
             ctrlAdminFieldToolBar.AdminUserName = this.Username;
@@ -17,11 +18,11 @@ namespace Arsenal.Web
             {
                 #region Bind ddlLeague, ddlMatch
                 List<League> leagueList = League.Cache.LeagueList.FindAll(l =>
-                    Match.Cache.MatchList.FindAll(m => m.LeagueGuid.Equals(l.LeagueGuid)).Count > 0);
+                    Match.Cache.MatchList.FindAll(m => m.LeagueGuid.Equals(l.ID)).Count > 0);
 
                 ddlLeague.DataSource = leagueList;
                 ddlLeague.DataTextField = "LeagueNameInfo";
-                ddlLeague.DataValueField = "LeagueGuid";
+                ddlLeague.DataValueField = "ID";
                 ddlLeague.DataBind();
 
                 ddlLeague.Items.Insert(0, new ListItem("--请选择比赛分类--", string.Empty));
@@ -35,8 +36,8 @@ namespace Arsenal.Web
                 {
                     foreach (Player p in list)
                     {
-                        ddlGoalPlayer.Items.Add(new ListItem(string.Format("NO.{0} - {1}", p.SquadNumber.ToString(), p.DisplayName), p.PlayerGuid.ToString()));
-                        ddlAssistPlayer.Items.Add(new ListItem(string.Format("NO.{0} - {1}", p.SquadNumber.ToString(), p.DisplayName), p.PlayerGuid.ToString()));
+                        ddlGoalPlayer.Items.Add(new ListItem(string.Format("NO.{0} - {1}", p.SquadNumber.ToString(), p.DisplayName), p.ID.ToString()));
+                        ddlAssistPlayer.Items.Add(new ListItem(string.Format("NO.{0} - {1}", p.SquadNumber.ToString(), p.DisplayName), p.ID.ToString()));
                     }
                 }
 
@@ -67,7 +68,7 @@ namespace Arsenal.Web
         {
             if (VideoGuid != Guid.Empty)
             {
-                Video v = new Video().Single<Video>(VideoGuid);
+                Video v = repo.Single<Video>(VideoGuid);
 
                 tbVideoGuid.Text = VideoGuid.ToString();
                 tbFileName.Text = v.FileName.ToString();
@@ -125,6 +126,11 @@ namespace Arsenal.Web
             {
                 Video v = new Video();
 
+                if (!VideoGuid.Equals(Guid.Empty))
+                {
+                    v = repo.Single<Video>(VideoGuid);
+                }
+
                 v.FileName = tbFileName.Text.Trim();
 
                 if (!string.IsNullOrEmpty(ddlLeague.SelectedValue) && !string.IsNullOrEmpty(ddlMatch.SelectedValue))
@@ -169,18 +175,12 @@ namespace Arsenal.Web
 
                 if (VideoGuid != Guid.Empty)
                 {
-                    v.VideoGuid = VideoGuid;
-                    //v.FileName = string.Format("{0}/{1}{2}", v.GoalPlayerName.Replace(" ", "_"), v.VideoGuid.ToString().ToUpper(), ddlVideoType.SelectedValue.ToUpper());
-                    v.Update<Video>(v);
-
+                    repo.Update(v);
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('更新成功');window.location.href = window.location.href", true);
                 }
                 else
                 {
-                    v.VideoGuid = new Guid(tbVideoGuid.Text.Trim());
-                    //v.FileName = string.Format("{0}/{1}{2}", v.GoalPlayerName.Replace(" ", "_"), v.VideoGuid.ToString().ToUpper(), ddlVideoType.SelectedValue.ToUpper());
-                    v.Create<Video>(v);
-
+                    repo.Insert(v);
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('添加成功');window.location.href = 'AdminVideo.aspx'", true);
                 }
             }
@@ -208,9 +208,7 @@ namespace Arsenal.Web
             {
                 if (VideoGuid != Guid.Empty)
                 {
-                    Video v = new Video();
-                    v.VideoGuid = VideoGuid;
-                    v.Delete<Video>(v);
+                    repo.Delete<Video>(VideoGuid);
 
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('删除成功');window.location.href='AdminVideo.aspx'", true);
                 }
@@ -242,7 +240,7 @@ namespace Arsenal.Web
                     else
                         _strRound = string.Empty;
 
-                    ddlMatch.Items.Add(new ListItem(string.Format("【{0}】-{1}- {2}", m.IsHome ? "主" : "客", _strRound, m.TeamName), m.MatchGuid.ToString()));
+                    ddlMatch.Items.Add(new ListItem(string.Format("【{0}】-{1}- {2}", m.IsHome ? "主" : "客", _strRound, m.TeamName), m.ID.ToString()));
                 }
             }
             else

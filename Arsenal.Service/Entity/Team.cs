@@ -8,7 +8,7 @@ using Arsenalcn.Core;
 namespace Arsenal.Service
 {
     [AttrDbTable("Arsenal_Team", Key = "TeamGuid", Sort = "TeamEnglishName")]
-    public class Team : Entity
+    public class Team : Entity<Guid>
     {
         public Team() : base() { }
 
@@ -17,7 +17,7 @@ namespace Arsenal.Service
         {
             // Generate League Count Info
             IRelationLeagueTeam instance = new RelationLeagueTeam();
-            LeagueCountInfo = instance.All().Count(x => x.TeamGuid.Equals(TeamGuid));
+            LeagueCountInfo = instance.All().Count(x => x.TeamGuid.Equals(this.ID));
         }
 
         public static class Cache
@@ -34,28 +34,26 @@ namespace Arsenal.Service
 
             private static void InitCache()
             {
-                TeamList = new Team().All<Team>().ToList();
+                IRepository repo = new Repository();
+
+                TeamList = repo.All<Team>().ToList();
             }
 
             public static Team Load(Guid guid)
             {
-                return TeamList.Find(x => x.TeamGuid.Equals(guid));
+                return TeamList.Find(x => x.ID.Equals(guid));
             }
 
             public static List<Team> GetTeamsByLeagueGuid(Guid guid)
             {
                 return TeamList.FindAll(x =>
-                    new RelationLeagueTeam() { TeamGuid = x.TeamGuid, LeagueGuid = guid }.Any());
+                    new RelationLeagueTeam() { TeamGuid = x.ID, LeagueGuid = guid }.Any());
             }
 
             public static List<Team> TeamList;
         }
 
         #region Members and Properties
-
-        [AttrDbColumn("TeamGuid", IsKey = true)]
-        public Guid TeamGuid
-        { get; set; }
 
         [AttrDbColumn("TeamEnglishName")]
         public string TeamEnglishName

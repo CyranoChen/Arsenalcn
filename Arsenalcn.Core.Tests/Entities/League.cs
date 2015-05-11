@@ -7,8 +7,8 @@ using Arsenalcn.Core;
 
 namespace Arsenalcn.Core.Tests
 {
-    [AttrDbTable("Arsenal_League", Key = "LeagueGuid")]
-    public class League : Entity
+    [AttrDbTable("Arsenal_League", Key = "LeagueGuid", Sort = "LeagueOrder")]
+    public class League : Entity<Guid>
     {
         public League() : base() { }
 
@@ -100,9 +100,6 @@ namespace Arsenalcn.Core.Tests
         //}
 
         #region Members and Properties
-        [AttrDbColumn("LeagueGuid", IsKey = true)]
-        public Guid LeagueGuid
-        { get; set; }
 
         [AttrDbColumn("LeagueName")]
         public string LeagueName

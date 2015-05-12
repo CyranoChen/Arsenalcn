@@ -2,34 +2,46 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 
-using Arsenalcn.Common;
-using Arsenalcn.Common.Entity;
+using Arsenalcn.Core;
 
 namespace Arsenal.Service
 {
-    public class ConfigGlobal : Config
+    public static class ConfigGlobal
     {
-        ConfigGlobal() { }
+        static ConfigGlobal()
+        {
+            Init();
+        }
 
-        const ConfigSystem currSystem = ConfigSystem.Arsenal;
+        public static void RefreshCache()
+        {
+            Init();
+        }
+
+        private static void Init()
+        {
+            const ConfigSystem currSystem = ConfigSystem.Arsenal;
+            ConfigDictionary = Config.Cache.GetDictionaryByConfigSystem(currSystem);
+        }
+
+        public static bool IsPluginAdmin(int userid)
+        {
+            string[] admins = ConfigGlobal.PluginAdmin;
+            if (userid > 0 && admins.Length > 0)
+            {
+                foreach (string a in admins)
+                {
+                    if (a == userid.ToString())
+                        return true;
+                }
+            }
+
+            return false;
+        }
+
+        public static Dictionary<string, string> ConfigDictionary;
 
         #region Members and Properties
-
-        public static SqlConnection SQLConnectionStrings
-        {
-            get
-            {
-                return SQLConn.GetConnection();
-            }
-        }
-
-        public static Dictionary<string, string> ConfigDictionary
-        {
-            get
-            {
-                return Config.GetDictionaryByConfigSystem(currSystem);
-            }
-        }
 
         public static string APIAppKey
         {
@@ -168,24 +180,6 @@ namespace Arsenal.Service
         }
 
         #endregion
-    }
-
-    public class ConfigAdmin
-    {
-        public static bool IsPluginAdmin(int userid)
-        {
-            string[] admins = ConfigGlobal.PluginAdmin;
-            if (userid > 0 && admins.Length > 0)
-            {
-                foreach (string a in admins)
-                {
-                    if (a == userid.ToString())
-                        return true;
-                }
-            }
-
-            return false;
-        }
     }
 }
 

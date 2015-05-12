@@ -13,7 +13,7 @@ namespace Arsenal.Web.Control
             else
                 phAnonymous.Visible = false;
 
-            if (ConfigAdmin.IsPluginAdmin(UserID))
+            if (ConfigGlobal.IsPluginAdmin(UserID))
                 pnlFuncLink.Visible = true;
             else
                 pnlFuncLink.Visible = false;

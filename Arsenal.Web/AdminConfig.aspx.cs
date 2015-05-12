@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Web.UI.WebControls;
+using System.Linq;
 
-using Arsenalcn.Common;
-using Arsenalcn.Common.Entity;
 using Arsenal.Service;
+using Arsenalcn.Core;
 
 namespace Arsenal.Web
 {
@@ -23,9 +22,9 @@ namespace Arsenal.Web
 
         private void BindData()
         {
-            List<Config> list = Config.GetConfigs().FindAll(delegate(Config c) { return c.ConfigSystem.Equals(ConfigSystem.Arsenal); });
+            IConfig instance = new Config();
 
-            gvSysConfig.DataSource = list;
+            gvSysConfig.DataSource = instance.All().Where(x => x.ConfigSystem.Equals(ConfigSystem.Arsenal));
             gvSysConfig.DataBind();
         }
 
@@ -48,9 +47,11 @@ namespace Arsenal.Web
 
                     c.ConfigSystem = ConfigSystem.Arsenal;
                     c.ConfigKey = gvSysConfig.DataKeys[gvSysConfig.EditIndex].Value.ToString();
+
                     c.ConfigValue = tbConfigValue.Text.Trim();
 
                     c.Update();
+
                     Config.Cache.RefreshCache();
                 }
                 catch (Exception ex)

@@ -13,7 +13,7 @@ namespace Arsenal.Web
 
             base.OnInitComplete(e);
 
-            if (!ConfigAdmin.IsPluginAdmin(this.UID))
+            if (!ConfigGlobal.IsPluginAdmin(this.UID))
             {
                 Response.Redirect("Default.aspx");
             }

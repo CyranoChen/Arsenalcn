@@ -92,7 +92,7 @@ namespace Arsenal.Service
 
             SqlParameter[] para = { new SqlParameter("@teamGuid", TeamGuid), new SqlParameter("@leagueGuid", LeagueGuid) };
 
-            DataAccess.ExecuteNonQuery(sql, para);
+            DataAccess.ExecuteNonQuery(sql, para, trans);
         }
 
         public void Create(IEnumerable<RelationLeagueTeam> instances, SqlTransaction trans = null)
@@ -112,7 +112,7 @@ namespace Arsenal.Service
 
             SqlParameter[] para = { new SqlParameter("@teamGuid", TeamGuid), new SqlParameter("@leagueGuid", LeagueGuid) };
 
-            DataAccess.ExecuteNonQuery(sql, para);
+            DataAccess.ExecuteNonQuery(sql, para, trans);
         }
 
         public void Delete(Expression<Func<RelationLeagueTeam, bool>> predicate, SqlTransaction trans = null)

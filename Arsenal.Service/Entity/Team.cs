@@ -17,6 +17,7 @@ namespace Arsenal.Service
         {
             // Generate League Count Info
             IRelationLeagueTeam instance = new RelationLeagueTeam();
+
             LeagueCountInfo = instance.All().Count(x => x.TeamGuid.Equals(this.ID));
         }
 

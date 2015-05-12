@@ -248,7 +248,7 @@ namespace Arsenalcn.Core
             }
         }
 
-        public static AttrDbTable GetTableAttr<T>()
+        public static AttrDbTable GetTableAttr<T>() where T : class
         {
             return (AttrDbTable)Attribute.GetCustomAttribute(typeof(T), typeof(AttrDbTable));
         }
@@ -258,14 +258,14 @@ namespace Arsenalcn.Core
             return (AttrDbColumn)Attribute.GetCustomAttribute(pi, typeof(AttrDbColumn));
         }
 
-        public static AttrDbColumn GetColumnAttr<T>(string name)
+        public static AttrDbColumn GetColumnAttr<T>(string name) where T : class
         {
             Contract.Requires(!string.IsNullOrEmpty(name));
 
             return GetColumnAttr(typeof(T).GetProperty(name));
         }
 
-        public static IEnumerable<T> DistinctBy<T, TKey>(IEnumerable<T> instances, Func<T, TKey> keySelector)
+        public static IEnumerable<T> DistinctBy<T, TKey>(IEnumerable<T> instances, Func<T, TKey> keySelector) where T : class
         {
             Contract.Requires(instances != null);
 
@@ -280,7 +280,7 @@ namespace Arsenalcn.Core
             }
         }
 
-        public static IEnumerable<TKey> DistinctOrderBy<T, TKey>(IEnumerable<T> instances, Func<T, TKey> keySelector)
+        public static IEnumerable<TKey> DistinctOrderBy<T, TKey>(IEnumerable<T> instances, Func<T, TKey> keySelector) where T : class
         {
             return DistinctBy(instances, keySelector).OrderBy(keySelector).Select(keySelector);
         }

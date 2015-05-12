@@ -42,10 +42,10 @@
                 <uc3:CustomPagerInfo ID="ctrlCustomPagerInfo" runat="server" />
             </div>
         </div>
-        <asp:GridView ID="gvLeague" runat="server" DataKeyNames="LeagueGuid" OnPageIndexChanging="gvLeague_PageIndexChanging"
+        <asp:GridView ID="gvLeague" runat="server" DataKeyNames="ID" OnPageIndexChanging="gvLeague_PageIndexChanging"
             PageSize="20" OnSelectedIndexChanged="gvLeague_SelectedIndexChanged">
             <Columns>
-                <asp:BoundField DataField="LeagueGuid" Visible="false" />
+                <asp:BoundField DataField="ID" Visible="false" />
                 <asp:BoundField DataField="LeagueName" HeaderText="分类名称" DataFormatString="<em>{0}</em>"
                     HtmlEncode="false" ControlStyle-CssClass="TextBox" ControlStyle-Width="120px" />
                 <asp:BoundField DataField="LeagueOrgName" HeaderText="英文名" ControlStyle-CssClass="TextBox"

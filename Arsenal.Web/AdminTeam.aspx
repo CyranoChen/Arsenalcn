@@ -36,10 +36,10 @@
                 <uc3:CustomPagerInfo ID="ctrlCustomPagerInfo" runat="server" />
             </div>
         </div>
-        <asp:GridView ID="gvTeam" runat="server" DataKeyNames="TeamGuid" OnPageIndexChanging="gvTeam_PageIndexChanging"
+        <asp:GridView ID="gvTeam" runat="server" DataKeyNames="ID" OnPageIndexChanging="gvTeam_PageIndexChanging"
             PageSize="50" OnSelectedIndexChanged="gvTeam_SelectedIndexChanged" OnRowDeleting="gvTeam_RowDeleting">
             <Columns>
-                <asp:BoundField DataField="TeamGuid" Visible="false" />
+                <asp:BoundField DataField="ID" Visible="false" />
                 <asp:BoundField HeaderText="球队英文名" DataField="TeamEnglishName" />
                 <asp:BoundField HeaderText="球队显示名" DataField="TeamDisplayName" DataFormatString="<em>{0}</em>"
                     HtmlEncode="false" />

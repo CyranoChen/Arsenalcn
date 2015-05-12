@@ -40,10 +40,10 @@
                 <uc3:CustomPagerInfo ID="ctrlCustomPagerInfo" runat="server" />
             </div>
         </div>
-        <asp:GridView ID="gvVideo" runat="server" DataKeyNames="VideoGuid" OnPageIndexChanging="gvVideo_PageIndexChanging"
+        <asp:GridView ID="gvVideo" runat="server" DataKeyNames="ID" OnPageIndexChanging="gvVideo_PageIndexChanging"
             PageSize="20" OnSelectedIndexChanged="gvVideo_SelectedIndexChanged" OnRowDataBound="gvVideo_RowDataBound">
             <Columns>
-                <asp:BoundField DataField="VideoGuid" Visible="false" />
+                <asp:BoundField DataField="ID" Visible="false" />
                 <asp:BoundField DataField="GoalYear" HeaderText="年份" ControlStyle-CssClass="TextBox"
                     ControlStyle-Width="30px" />
                 <asp:BoundField DataField="GoalPlayerName" HeaderText="进球球员" ReadOnly="true" />

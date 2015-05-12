@@ -22,7 +22,7 @@ namespace Arsenal.Web
 
                 ddlTeamLeague.DataSource = list;
                 ddlTeamLeague.DataTextField = "LeagueNameInfo";
-                ddlTeamLeague.DataValueField = "LeagueGuid";
+                ddlTeamLeague.DataValueField = "ID";
                 ddlTeamLeague.DataBind();
 
                 ddlTeamLeague.Items.Insert(0, new ListItem("--请选择比赛分类--", string.Empty));

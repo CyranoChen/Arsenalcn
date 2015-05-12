@@ -276,7 +276,7 @@ namespace Arsenalcn.ClubSys.Service
                 {
                     list.RemoveAll(delegate(ArsenalVideo v)
                     {
-                        return userList.Exists((delegate(Entity.UserVideo uv) { return uv.VideoGuid.Equals(v.VideoGuid); }));
+                        return userList.Exists((delegate(Entity.UserVideo uv) { return uv.VideoGuid.Equals(v.ID); }));
                     });
                 }
             }
@@ -284,7 +284,7 @@ namespace Arsenalcn.ClubSys.Service
             if (list != null && list.Count > 0)
             {
                 Random rand = new Random(Guid.NewGuid().GetHashCode());
-                return list[rand.Next(0, list.Count - 1)].VideoGuid;
+                return list[rand.Next(0, list.Count - 1)].ID;
             }
             else
             {

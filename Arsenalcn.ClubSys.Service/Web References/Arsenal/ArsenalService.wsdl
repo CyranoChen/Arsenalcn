@@ -19,25 +19,34 @@
         </s:sequence>
       </s:complexType>
       <s:complexType name="Match">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:EntityOfGuid">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="TeamGuid" type="s1:guid" />
+              <s:element minOccurs="0" maxOccurs="1" name="TeamName" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="IsHome" type="s:boolean" />
+              <s:element minOccurs="1" maxOccurs="1" name="ResultHome" nillable="true" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="ResultAway" nillable="true" type="s:int" />
+              <s:element minOccurs="0" maxOccurs="1" name="ResultInfo" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="PlayTime" type="s:dateTime" />
+              <s:element minOccurs="1" maxOccurs="1" name="LeagueGuid" nillable="true" type="s1:guid" />
+              <s:element minOccurs="0" maxOccurs="1" name="LeagueName" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="Round" nillable="true" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="GroupGuid" nillable="true" type="s1:guid" />
+              <s:element minOccurs="1" maxOccurs="1" name="CasinoMatchGuid" nillable="true" type="s1:guid" />
+              <s:element minOccurs="0" maxOccurs="1" name="ReportImageURL" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="ReportURL" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="TopicURL" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="IsActive" type="s:boolean" />
+              <s:element minOccurs="0" maxOccurs="1" name="Remark" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="EntityOfGuid" abstract="true">
         <s:sequence>
-          <s:element minOccurs="1" maxOccurs="1" name="MatchGuid" type="s1:guid" />
-          <s:element minOccurs="1" maxOccurs="1" name="TeamGuid" type="s1:guid" />
-          <s:element minOccurs="0" maxOccurs="1" name="TeamName" type="s:string" />
-          <s:element minOccurs="1" maxOccurs="1" name="IsHome" type="s:boolean" />
-          <s:element minOccurs="1" maxOccurs="1" name="ResultHome" nillable="true" type="s:int" />
-          <s:element minOccurs="1" maxOccurs="1" name="ResultAway" nillable="true" type="s:int" />
-          <s:element minOccurs="0" maxOccurs="1" name="ResultInfo" type="s:string" />
-          <s:element minOccurs="1" maxOccurs="1" name="PlayTime" type="s:dateTime" />
-          <s:element minOccurs="1" maxOccurs="1" name="LeagueGuid" nillable="true" type="s1:guid" />
-          <s:element minOccurs="0" maxOccurs="1" name="LeagueName" type="s:string" />
-          <s:element minOccurs="1" maxOccurs="1" name="Round" nillable="true" type="s:int" />
-          <s:element minOccurs="1" maxOccurs="1" name="GroupGuid" nillable="true" type="s1:guid" />
-          <s:element minOccurs="1" maxOccurs="1" name="CasinoMatchGuid" nillable="true" type="s1:guid" />
-          <s:element minOccurs="0" maxOccurs="1" name="ReportImageURL" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="ReportURL" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="TopicURL" type="s:string" />
-          <s:element minOccurs="1" maxOccurs="1" name="IsActive" type="s:boolean" />
-          <s:element minOccurs="0" maxOccurs="1" name="Remark" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ID" type="s1:guid" />
+          <s:element minOccurs="0" maxOccurs="1" name="Key" type="s:string" />
         </s:sequence>
       </s:complexType>
       <s:element name="GetPlayers">
@@ -56,37 +65,39 @@
         </s:sequence>
       </s:complexType>
       <s:complexType name="Player">
-        <s:sequence>
-          <s:element minOccurs="1" maxOccurs="1" name="PlayerGuid" type="s1:guid" />
-          <s:element minOccurs="0" maxOccurs="1" name="FirstName" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="LastName" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="DisplayName" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="PrintingName" type="s:string" />
-          <s:element minOccurs="1" maxOccurs="1" name="Position" type="tns:PlayerPostionType" />
-          <s:element minOccurs="1" maxOccurs="1" name="SquadNumber" type="s:int" />
-          <s:element minOccurs="0" maxOccurs="1" name="FaceURL" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="PhotoURL" type="s:string" />
-          <s:element minOccurs="1" maxOccurs="1" name="Offset" type="s:int" />
-          <s:element minOccurs="1" maxOccurs="1" name="IsLegend" type="s:boolean" />
-          <s:element minOccurs="1" maxOccurs="1" name="IsLoan" type="s:boolean" />
-          <s:element minOccurs="1" maxOccurs="1" name="Birthday" nillable="true" type="s:dateTime" />
-          <s:element minOccurs="0" maxOccurs="1" name="Born" type="s:string" />
-          <s:element minOccurs="1" maxOccurs="1" name="Starts" type="s:int" />
-          <s:element minOccurs="1" maxOccurs="1" name="Subs" type="s:int" />
-          <s:element minOccurs="1" maxOccurs="1" name="Apps" type="s:int" />
-          <s:element minOccurs="1" maxOccurs="1" name="Goals" type="s:int" />
-          <s:element minOccurs="1" maxOccurs="1" name="JoinDate" nillable="true" type="s:dateTime" />
-          <s:element minOccurs="0" maxOccurs="1" name="Joined" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="Left" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="Debut" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="FirstGoal" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="PreviousClubs" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="Profile" type="s:string" />
-        </s:sequence>
+        <s:complexContent mixed="false">
+          <s:extension base="tns:EntityOfGuid">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="FirstName" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="LastName" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="DisplayName" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="PrintingName" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="Position" nillable="true" type="tns:PlayerPostionType" />
+              <s:element minOccurs="1" maxOccurs="1" name="SquadNumber" type="s:int" />
+              <s:element minOccurs="0" maxOccurs="1" name="FaceURL" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="PhotoURL" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="Offset" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="IsLegend" type="s:boolean" />
+              <s:element minOccurs="1" maxOccurs="1" name="IsLoan" type="s:boolean" />
+              <s:element minOccurs="1" maxOccurs="1" name="Birthday" nillable="true" type="s:dateTime" />
+              <s:element minOccurs="0" maxOccurs="1" name="Born" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="Starts" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="Subs" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="Apps" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="Goals" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="JoinDate" nillable="true" type="s:dateTime" />
+              <s:element minOccurs="0" maxOccurs="1" name="Joined" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="LeftYear" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Debut" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="FirstGoal" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="PreviousClubs" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Profile" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
       </s:complexType>
       <s:simpleType name="PlayerPostionType">
         <s:restriction base="s:string">
-          <s:enumeration value="Null" />
           <s:enumeration value="Goalkeeper" />
           <s:enumeration value="Defender" />
           <s:enumeration value="Midfielder" />
@@ -110,20 +121,23 @@
         </s:sequence>
       </s:complexType>
       <s:complexType name="Team">
-        <s:sequence>
-          <s:element minOccurs="1" maxOccurs="1" name="TeamGuid" type="s1:guid" />
-          <s:element minOccurs="0" maxOccurs="1" name="TeamEnglishName" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="TeamDisplayName" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="TeamLogo" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="TeamNickName" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="Founded" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="Ground" type="s:string" />
-          <s:element minOccurs="1" maxOccurs="1" name="Capacity" nillable="true" type="s:int" />
-          <s:element minOccurs="0" maxOccurs="1" name="Chairman" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="Manager" type="s:string" />
-          <s:element minOccurs="1" maxOccurs="1" name="LeagueGuid" type="s1:guid" />
-          <s:element minOccurs="1" maxOccurs="1" name="LeagueCountInfo" type="s:int" />
-        </s:sequence>
+        <s:complexContent mixed="false">
+          <s:extension base="tns:EntityOfGuid">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="TeamEnglishName" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="TeamDisplayName" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="TeamLogo" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="TeamNickName" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Founded" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Ground" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="Capacity" nillable="true" type="s:int" />
+              <s:element minOccurs="0" maxOccurs="1" name="Chairman" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Manager" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="LeagueGuid" type="s1:guid" />
+              <s:element minOccurs="1" maxOccurs="1" name="LeagueCountInfo" type="s:int" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
       </s:complexType>
       <s:element name="GetTeamsByLeagueGuid">
         <s:complexType>
@@ -155,18 +169,21 @@
         </s:sequence>
       </s:complexType>
       <s:complexType name="League">
-        <s:sequence>
-          <s:element minOccurs="1" maxOccurs="1" name="LeagueGuid" type="s1:guid" />
-          <s:element minOccurs="0" maxOccurs="1" name="LeagueName" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="LeagueOrgName" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="LeagueSeason" type="s:string" />
-          <s:element minOccurs="1" maxOccurs="1" name="LeagueTime" type="s:dateTime" />
-          <s:element minOccurs="0" maxOccurs="1" name="LeagueLogo" type="s:string" />
-          <s:element minOccurs="1" maxOccurs="1" name="LeagueOrder" type="s:int" />
-          <s:element minOccurs="1" maxOccurs="1" name="IsActive" type="s:boolean" />
-          <s:element minOccurs="1" maxOccurs="1" name="TeamCountInfo" type="s:int" />
-          <s:element minOccurs="0" maxOccurs="1" name="LeagueNameInfo" type="s:string" />
-        </s:sequence>
+        <s:complexContent mixed="false">
+          <s:extension base="tns:EntityOfGuid">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="LeagueName" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="LeagueOrgName" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="LeagueSeason" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="LeagueTime" type="s:dateTime" />
+              <s:element minOccurs="0" maxOccurs="1" name="LeagueLogo" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="LeagueOrder" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="IsActive" type="s:boolean" />
+              <s:element minOccurs="1" maxOccurs="1" name="TeamCountInfo" type="s:int" />
+              <s:element minOccurs="0" maxOccurs="1" name="LeagueNameInfo" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
       </s:complexType>
       <s:element name="GetVideos">
         <s:complexType />
@@ -184,24 +201,27 @@
         </s:sequence>
       </s:complexType>
       <s:complexType name="Video">
-        <s:sequence>
-          <s:element minOccurs="1" maxOccurs="1" name="VideoGuid" type="s1:guid" />
-          <s:element minOccurs="0" maxOccurs="1" name="FileName" type="s:string" />
-          <s:element minOccurs="1" maxOccurs="1" name="ArsenalMatchGuid" nillable="true" type="s1:guid" />
-          <s:element minOccurs="1" maxOccurs="1" name="GoalPlayerGuid" nillable="true" type="s1:guid" />
-          <s:element minOccurs="0" maxOccurs="1" name="GoalPlayerName" type="s:string" />
-          <s:element minOccurs="1" maxOccurs="1" name="AssistPlayerGuid" nillable="true" type="s1:guid" />
-          <s:element minOccurs="0" maxOccurs="1" name="AssistPlayerName" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="GoalRank" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="TeamworkRank" type="s:string" />
-          <s:element minOccurs="1" maxOccurs="1" name="VideoType" type="tns:VideoFileType" />
-          <s:element minOccurs="1" maxOccurs="1" name="VideoLength" type="s:int" />
-          <s:element minOccurs="1" maxOccurs="1" name="VideoWidth" type="s:int" />
-          <s:element minOccurs="1" maxOccurs="1" name="VideoHeight" type="s:int" />
-          <s:element minOccurs="0" maxOccurs="1" name="GoalYear" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="Opponent" type="s:string" />
-          <s:element minOccurs="0" maxOccurs="1" name="VideoFilePath" type="s:string" />
-        </s:sequence>
+        <s:complexContent mixed="false">
+          <s:extension base="tns:EntityOfGuid">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="FileName" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="ArsenalMatchGuid" nillable="true" type="s1:guid" />
+              <s:element minOccurs="1" maxOccurs="1" name="GoalPlayerGuid" nillable="true" type="s1:guid" />
+              <s:element minOccurs="0" maxOccurs="1" name="GoalPlayerName" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="AssistPlayerGuid" nillable="true" type="s1:guid" />
+              <s:element minOccurs="0" maxOccurs="1" name="AssistPlayerName" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="GoalRank" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="TeamworkRank" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="VideoType" type="tns:VideoFileType" />
+              <s:element minOccurs="1" maxOccurs="1" name="VideoLength" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="VideoWidth" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="VideoHeight" type="s:int" />
+              <s:element minOccurs="0" maxOccurs="1" name="GoalYear" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Opponent" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="VideoFilePath" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
       </s:complexType>
       <s:simpleType name="VideoFileType">
         <s:restriction base="s:string">
@@ -256,32 +276,32 @@
   </wsdl:message>
   <wsdl:portType name="ServiceArsenalSoap">
     <wsdl:operation name="GetMatchs">
-      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Arsenal.Entity.Match.Cache.MatchList</wsdl:documentation>
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Arsenal.Service.Match.Cache.MatchList</wsdl:documentation>
       <wsdl:input message="tns:GetMatchsSoapIn" />
       <wsdl:output message="tns:GetMatchsSoapOut" />
     </wsdl:operation>
     <wsdl:operation name="GetPlayers">
-      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Arsenal.Entity.Player.Cache.PlayerList</wsdl:documentation>
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Arsenal.Service.Player.Cache.PlayerList</wsdl:documentation>
       <wsdl:input message="tns:GetPlayersSoapIn" />
       <wsdl:output message="tns:GetPlayersSoapOut" />
     </wsdl:operation>
     <wsdl:operation name="GetTeams">
-      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Arsenal.Entity.Team.Cache.TeamList</wsdl:documentation>
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Arsenal.Service.Team.Cache.TeamList</wsdl:documentation>
       <wsdl:input message="tns:GetTeamsSoapIn" />
       <wsdl:output message="tns:GetTeamsSoapOut" />
     </wsdl:operation>
     <wsdl:operation name="GetTeamsByLeagueGuid">
-      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Arsenal.Entity.Team.Cache.GetTeamsByLeagueGuid(Guid guid)</wsdl:documentation>
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Arsenal.Service.Team.Cache.GetTeamsByLeagueGuid(Guid guid)</wsdl:documentation>
       <wsdl:input message="tns:GetTeamsByLeagueGuidSoapIn" />
       <wsdl:output message="tns:GetTeamsByLeagueGuidSoapOut" />
     </wsdl:operation>
     <wsdl:operation name="GetLeagues">
-      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Arsenal.Entity.League.Cache.LeagueList</wsdl:documentation>
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Arsenal.Service.League.Cache.LeagueList</wsdl:documentation>
       <wsdl:input message="tns:GetLeaguesSoapIn" />
       <wsdl:output message="tns:GetLeaguesSoapOut" />
     </wsdl:operation>
     <wsdl:operation name="GetVideos">
-      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Arsenal.Entity.Video.Cache.VideoList</wsdl:documentation>
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Arsenal.Service.Video.Cache.VideoList</wsdl:documentation>
       <wsdl:input message="tns:GetVideosSoapIn" />
       <wsdl:output message="tns:GetVideosSoapOut" />
     </wsdl:operation>

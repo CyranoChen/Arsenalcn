@@ -1,6 +1,6 @@
 ﻿<%@ Page Language="C#" MasterPageFile="DefaultMaster.master" AutoEventWireup="true"
     CodeBehind="AdminProductView.aspx.cs" Inherits="iArsenal.Web.AdminProductView"
-    Title="后台管理 添加/更新商品" %>
+    Title="后台管理 添加/更新商品" Theme="Arsenalcn" %>
 
 <%@ Register Src="Control/AdminPanel.ascx" TagName="AdminPanel" TagPrefix="uc1" %>
 <%@ Register Src="Control/AdminFieldToolBar.ascx" TagName="AdminFieldToolBar" TagPrefix="uc2" %>

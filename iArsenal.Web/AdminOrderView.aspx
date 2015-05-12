@@ -1,5 +1,6 @@
 ﻿<%@ Page Language="C#" MasterPageFile="DefaultMaster.master" AutoEventWireup="true"
-    CodeBehind="AdminOrderView.aspx.cs" Inherits="iArsenal.Web.AdminOrderView" Title="后台管理 添加/更新订单" %>
+    CodeBehind="AdminOrderView.aspx.cs" Inherits="iArsenal.Web.AdminOrderView"
+    Title="后台管理 添加/更新订单" Theme="Arsenalcn" %>
 
 <%@ Register Src="Control/AdminPanel.ascx" TagName="AdminPanel" TagPrefix="uc1" %>
 <%@ Register Src="Control/AdminFieldToolBar.ascx" TagName="AdminFieldToolBar" TagPrefix="uc2" %>

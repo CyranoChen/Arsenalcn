@@ -41,7 +41,7 @@ namespace Arsenalcn.ClubSys.Service
 
             public static Arsenal.Match Load(Guid guid)
             {
-                return MatchList.Find(delegate(Arsenal.Match m) { return m.MatchGuid.Equals(guid); });
+                return MatchList.Find(delegate(Arsenal.Match m) { return m.ID.Equals(guid); });
             }
 
             public static List<Arsenal.Match> MatchList;

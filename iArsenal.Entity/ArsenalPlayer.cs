@@ -37,7 +37,7 @@ namespace iArsenal.Entity
 
             public static Arsenal.Player Load(Guid guid)
             {
-                return PlayerList.Find(p => p.PlayerGuid.Equals(guid));
+                return PlayerList.Find(p => p.ID.Equals(guid));
             }
 
             public static List<Arsenal.Player> PlayerList;

@@ -49,7 +49,7 @@ namespace Arsenalcn.ClubSys.Service
 
             public static Arsenal.Video Load(Guid guid)
             {
-                return VideoList.Find(delegate(Arsenal.Video v) { return v.VideoGuid.Equals(guid); });
+                return VideoList.Find(delegate(Arsenal.Video v) { return v.ID.Equals(guid); });
             }
 
             public static List<Arsenal.Video> GetAvailableVideosByRank(int GRank, int TRank)

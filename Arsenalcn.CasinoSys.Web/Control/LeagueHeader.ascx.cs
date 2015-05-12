@@ -47,9 +47,9 @@ namespace Arsenalcn.CasinoSys.Web.Control
                 ArsenalLeauge l = e.Item.DataItem as ArsenalLeauge;
                 Literal ltrlLeagueInfo = e.Item.FindControl("ltrlLeagueInfo") as Literal;
 
-                string href = string.Format("{0}?League={1}", pageURL, l.LeagueGuid.ToString());
+                string href = string.Format("{0}?League={1}", pageURL, l.ID.ToString());
 
-                ltrlLeagueInfo.Text = string.Format("<li id=\"{0}\"><a href=\"{1}\" target=\"_self\" title=\"{3}\"><img src=\"{2}\" alt=\"{3}\" /></a></li>", l.LeagueGuid.ToString(), href, l.LeagueLogo.ToString(), l.LeagueName.ToString());
+                ltrlLeagueInfo.Text = string.Format("<li id=\"{0}\"><a href=\"{1}\" target=\"_self\" title=\"{3}\"><img src=\"{2}\" alt=\"{3}\" /></a></li>", l.ID.ToString(), href, l.LeagueLogo.ToString(), l.LeagueName.ToString());
             }
         }
     }

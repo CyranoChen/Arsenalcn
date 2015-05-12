@@ -29,7 +29,7 @@ namespace iArsenal.Entity
 
             public static Arsenal.Team Load(Guid guid)
             {
-                return TeamList.Find(t => t.TeamGuid.Equals(guid));
+                return TeamList.Find(t => t.ID.Equals(guid));
             }
 
             public static List<Arsenal.Team> TeamList;

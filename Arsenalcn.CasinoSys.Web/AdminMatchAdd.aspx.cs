@@ -21,7 +21,7 @@ namespace Arsenalcn.CasinoSys.Web
 
                 ddlLeague.DataSource = list;
                 ddlLeague.DataTextField = "LeagueNameInfo";
-                ddlLeague.DataValueField = "LeagueGuid";
+                ddlLeague.DataValueField = "ID";
                 ddlLeague.DataBind();
 
                 ListItem itemLeague = new ListItem("--请选择比赛分类--", Guid.Empty.ToString());
@@ -40,12 +40,12 @@ namespace Arsenalcn.CasinoSys.Web
             {
                 ddlHomeTeam.DataSource = list;
                 ddlHomeTeam.DataTextField = "TeamDisplayName";
-                ddlHomeTeam.DataValueField = "TeamGuid";
+                ddlHomeTeam.DataValueField = "ID";
                 ddlHomeTeam.DataBind();
 
                 ddlAwayTeam.DataSource = list;
                 ddlAwayTeam.DataTextField = "TeamDisplayName";
-                ddlAwayTeam.DataValueField = "TeamGuid";
+                ddlAwayTeam.DataValueField = "ID";
                 ddlAwayTeam.DataBind();
             }
             else

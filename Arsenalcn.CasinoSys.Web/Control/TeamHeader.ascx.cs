@@ -14,7 +14,7 @@ namespace Arsenalcn.CasinoSys.Web.Control
 
             if (t != null)
             {
-                DataTable dt = CasinoItem.GetEndViewByTeam(t.TeamGuid);
+                DataTable dt = CasinoItem.GetEndViewByTeam(t.ID);
                 int matchCount = 0;
                 int wonCount = 0;
                 int drawCount = 0;
@@ -25,7 +25,7 @@ namespace Arsenalcn.CasinoSys.Web.Control
                     foreach (DataRow dr in dt.Rows)
                     {
                         Match m = new Match((Guid)dr["MatchGuid"]);
-                        if (t.TeamGuid == m.Home)
+                        if (t.ID == m.Home)
                         {
                             if (m.ResultHome > m.ResultAway)
                                 wonCount++;
@@ -34,7 +34,7 @@ namespace Arsenalcn.CasinoSys.Web.Control
                             else
                                 drawCount++;
                         }
-                        else if (t.TeamGuid == m.Away)
+                        else if (t.ID == m.Away)
                         {
                             if (m.ResultHome < m.ResultAway)
                                 wonCount++;

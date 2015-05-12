@@ -20,11 +20,11 @@ namespace Arsenalcn.CasinoSys.Web.Control
                 float _tbs = ConfigGlobal.TotalBetStandard;
 
                 List<Entity.CasinoGambler> listUpper =
-                    Entity.CasinoGambler.GetCasinoGamblers(l.LeagueGuid).FindAll(delegate(Entity.CasinoGambler cg)
+                    Entity.CasinoGambler.GetCasinoGamblers(l.ID).FindAll(delegate(Entity.CasinoGambler cg)
                     { return cg.TotalBet >= _tbs; });
 
                 List<Entity.CasinoGambler> listLower =
-                    Entity.CasinoGambler.GetCasinoGamblers(l.LeagueGuid).FindAll(delegate(Entity.CasinoGambler cg)
+                    Entity.CasinoGambler.GetCasinoGamblers(l.ID).FindAll(delegate(Entity.CasinoGambler cg)
                     { return cg.TotalBet < _tbs; });
 
                 if (listUpper.Count == 0 && listLower.Count == 0)

@@ -135,9 +135,9 @@ namespace Arsenalcn.CasinoSys.Web
                     string _strTeamLogo = "<img src=\"{3}\" alt=\"{1}\" /> ";
 
                     lblHome.Text = string.Format(_strTeamName + _strTeamLogo,
-                        tHome.TeamGuid.ToString(), tHome.TeamEnglishName, tHome.TeamDisplayName, tHome.TeamLogo);
+                        tHome.ID.ToString(), tHome.TeamEnglishName, tHome.TeamDisplayName, tHome.TeamLogo);
                     lblAway.Text = string.Format(_strTeamLogo + _strTeamName,
-                        tAway.TeamGuid.ToString(), tAway.TeamEnglishName, tAway.TeamDisplayName, tAway.TeamLogo);
+                        tAway.ID.ToString(), tAway.TeamEnglishName, tAway.TeamDisplayName, tAway.TeamLogo);
 
                     hlVersus.NavigateUrl = string.Format("CasinoTeam.aspx?Match={0}", m.MatchGuid.ToString());
                     hlVersus.Text = string.Format("<em title=\"{0}{1}\">vs</em>", tHome.Ground,

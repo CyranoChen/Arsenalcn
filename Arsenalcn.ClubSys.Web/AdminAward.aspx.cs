@@ -35,7 +35,7 @@ namespace Arsenalcn.ClubSys.Web
             });
 
             lstPlayer.DataSource = list;
-            lstPlayer.DataValueField = "PlayerGuid";
+            lstPlayer.DataValueField = "ID";
             lstPlayer.DataBind();
 
             ListItem li = new ListItem("不发放球星卡", Guid.Empty.ToString());

@@ -42,7 +42,7 @@ namespace iArsenal.Entity
 
             public static Match Load(Guid guid)
             {
-                return MatchList.Find(delegate(Match m) { return m.MatchGuid.Equals(guid); });
+                return MatchList.Find(delegate(Match m) { return m.ID.Equals(guid); });
             }
 
             public static List<Match> MatchList;

@@ -41,7 +41,7 @@ namespace Arsenalcn.ClubSys.Service
 
             public static Arsenal.Player Load(Guid guid)
             {
-                return PlayerList.Find(delegate(Arsenal.Player p) { return p.PlayerGuid.Equals(guid); });
+                return PlayerList.Find(delegate(Arsenal.Player p) { return p.ID.Equals(guid); });
             }
 
             public static List<Arsenal.Player> PlayerList;

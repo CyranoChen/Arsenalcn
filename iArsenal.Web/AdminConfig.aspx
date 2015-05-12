@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" MasterPageFile="DefaultMaster.master" AutoEventWireup="true"
-    CodeBehind="AdminConfig.aspx.cs" Inherits="iArsenal.Web.AdminConfig" Title="后台管理 全局配置" %>
+    CodeBehind="AdminConfig.aspx.cs" Inherits="iArsenal.Web.AdminConfig" Title="后台管理 全局配置" Theme="Arsenalcn" %>
 
 <%@ Register Src="Control/AdminPanel.ascx" TagName="AdminPanel" TagPrefix="uc1" %>
 <%@ Register Src="Control/AdminFieldToolBar.ascx" TagName="AdminFieldToolBar" TagPrefix="uc2" %>

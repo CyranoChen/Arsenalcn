@@ -32,20 +32,20 @@ namespace Arsenalcn.ClubSys.Web
                     if (v != null)
                     {
                         _jsonVideo = string.Format("{{ \"VideoGuid\": \"{0}\", \"VideoFilePath\": \"{1}\", \"VideoType\": \"{2}\", \"VideoWidth\": \"{3}\",  \"VideoHeight\": \"{4}\", \"GoalRank\": \"{5}\", \"TeamworkRank\": \"{6}\" }}",
-                            v.VideoGuid.ToString(), v.VideoFilePath, v.VideoType.ToString(), v.VideoWidth.ToString(), v.VideoHeight.ToString(), v.GoalRank.ToString(), v.TeamworkRank.ToString());
+                            v.ID.ToString(), v.VideoFilePath, v.VideoType.ToString(), v.VideoWidth.ToString(), v.VideoHeight.ToString(), v.GoalRank.ToString(), v.TeamworkRank.ToString());
 
                         if (v.GoalPlayerGuid.HasValue)
                         {
                             ArsenalPlayer pg = Arsenal_Player.Cache.Load(v.GoalPlayerGuid.Value);
                             _jsonGoalPlayer = string.Format("{{ \"PlayerGuid\": \"{0}\", \"DisplayName\": \"{1}\", \"PhotoURL\": \"{2}\" }}",
-                                pg.PlayerGuid.ToString(), pg.DisplayName, pg.PhotoURL);
+                                pg.ID.ToString(), pg.DisplayName, pg.PhotoURL);
                         }
 
                         if (v.AssistPlayerGuid.HasValue)
                         {
                             ArsenalPlayer pa = Arsenal_Player.Cache.Load(v.AssistPlayerGuid.Value);
                             _jsonAssistPlayer = string.Format("{{ \"PlayerGuid\": \"{0}\", \"DisplayName\": \"{1}\", \"PhotoURL\": \"{2}\" }}",
-                                pa.PlayerGuid.ToString(), pa.DisplayName, pa.PhotoURL);
+                                pa.ID.ToString(), pa.DisplayName, pa.PhotoURL);
                         }
 
                         if (v.ArsenalMatchGuid.HasValue)
@@ -60,7 +60,7 @@ namespace Arsenalcn.ClubSys.Web
                             if (m.IsHome)
                             {
                                 _jsonMatch = string.Format(_strMatchInfo,
-                                    m.MatchGuid.ToString(),
+                                    m.ID.ToString(),
                                     ta.TeamEnglishName,
                                     _strAcnCasinoPath + ta.TeamLogo,
                                     m.ResultHome.Value.ToString(),
@@ -72,7 +72,7 @@ namespace Arsenalcn.ClubSys.Web
                             else
                             {
                                 _jsonMatch = string.Format(_strMatchInfo,
-                                    m.MatchGuid.ToString(),
+                                    m.ID.ToString(),
                                     to.TeamEnglishName,
                                     _strAcnCasinoPath + to.TeamLogo,
                                     m.ResultHome.Value.ToString(),

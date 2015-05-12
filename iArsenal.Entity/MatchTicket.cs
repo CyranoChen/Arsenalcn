@@ -24,7 +24,7 @@ namespace iArsenal.Entity
 
             Match m = Arsenal_Match.Cache.Load(MatchGuid);
 
-            MatchGuid = m.MatchGuid;
+            MatchGuid = m.ID;
             TeamGuid = m.TeamGuid;
             TeamName = m.TeamName;
             IsHome = m.IsHome;
@@ -121,7 +121,7 @@ namespace iArsenal.Entity
                 foreach (Match m in mlist)
                 {
                     MatchTicket mt = new MatchTicket();
-                    mt.MatchGuid = m.MatchGuid;
+                    mt.MatchGuid = m.ID;
                     mt.Select();
 
                     list.Add(mt);

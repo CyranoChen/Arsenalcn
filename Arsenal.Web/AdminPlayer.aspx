@@ -25,9 +25,6 @@
                 <asp:DropDownList ID="ddlSquadNumber" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlSquadNumber_SelectedIndexChanged">
                 </asp:DropDownList>
                 <asp:DropDownList ID="ddlPosition" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlPosition_SelectedIndexChanged">
-                    <asp:ListItem Value="Goalkeeper"></asp:ListItem>
-                    <asp:ListItem Value="Defender"></asp:ListItem>
-                    <asp:ListItem Value="Midfielder"></asp:ListItem>
                 </asp:DropDownList>
                 <asp:DropDownList ID="ddlIsLegend" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlIsLegend_SelectedIndexChanged">
                     <asp:ListItem Value="" Text="--状态--"></asp:ListItem>
@@ -47,10 +44,10 @@
                 <uc3:CustomPagerInfo ID="ctrlCustomPagerInfo" runat="server" />
             </div>
         </div>
-        <asp:GridView ID="gvPlayer" runat="server" DataKeyNames="PlayerGuid" OnPageIndexChanging="gvPlayer_PageIndexChanging"
+        <asp:GridView ID="gvPlayer" runat="server" DataKeyNames="ID" OnPageIndexChanging="gvPlayer_PageIndexChanging"
             PageSize="20" OnSelectedIndexChanged="gvPlayer_SelectedIndexChanged">
             <Columns>
-                <asp:BoundField DataField="PlayerGuid" Visible="false" />
+                <asp:BoundField DataField="ID" Visible="false" />
                 <asp:BoundField DataField="SquadNumber" HeaderText="号码" DataFormatString="<em>{0}</em>"
                     HtmlEncode="false" ControlStyle-CssClass="TextBox" ControlStyle-Width="15px" />
                 <asp:BoundField DataField="DisplayName" HeaderText="球员名" ReadOnly="true" />

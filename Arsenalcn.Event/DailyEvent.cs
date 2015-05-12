@@ -95,17 +95,6 @@ namespace Arsenalcn.Event
             }
             #endregion
 
-            #region Clean Object
-            try
-            {
-                //Arsenal.Entity.RelationLeagueTeam.CleanRelationLeagueTeam();
-            }
-            catch (Exception ex)
-            {
-                LogEvent.Logging(LogEventType.Error, "(Arsenal)分类与球队关系清理出错", ex.StackTrace, ex.Message);
-            }
-            #endregion
-
             #region Update Arsenal Match Result
             try
             {

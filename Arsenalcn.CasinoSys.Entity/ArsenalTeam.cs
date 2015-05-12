@@ -41,7 +41,7 @@ namespace Arsenalcn.CasinoSys.Entity
 
             public static Arsenal.Team Load(Guid guid)
             {
-                return TeamList.Find(delegate(Arsenal.Team t) { return t.TeamGuid.Equals(guid); });
+                return TeamList.Find(delegate(Arsenal.Team t) { return t.ID.Equals(guid); });
             }
 
             public static List<Arsenal.Team> GetTeamsByLeagueGuid(Guid guid)

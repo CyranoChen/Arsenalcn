@@ -147,8 +147,8 @@ namespace Arsenalcn.CasinoSys.Web
                     ArsenalTeam homeT = Arsenal_Team.Cache.Load(m.Home);
                     ArsenalTeam awayT = Arsenal_Team.Cache.Load(m.Away);
 
-                    ltrlHome.Text = string.Format("<a class=\"StrongLink\" href=\"CasinoTeam.aspx?Team={0}\">{1}</a>", homeT.TeamGuid.ToString(), homeT.TeamDisplayName);
-                    ltrlAway.Text = string.Format("<a class=\"StrongLink\" href=\"CasinoTeam.aspx?Team={0}\">{1}</a>", awayT.TeamGuid.ToString(), awayT.TeamDisplayName);
+                    ltrlHome.Text = string.Format("<a class=\"StrongLink\" href=\"CasinoTeam.aspx?Team={0}\">{1}</a>", homeT.ID.ToString(), homeT.TeamDisplayName);
+                    ltrlAway.Text = string.Format("<a class=\"StrongLink\" href=\"CasinoTeam.aspx?Team={0}\">{1}</a>", awayT.ID.ToString(), awayT.TeamDisplayName);
 
                     ltrlVS.Text = string.Format("<a href=\"CasinoTeam.aspx?Match={0}\"><em title=\"{1}({2})\">vs</em></a>", m.MatchGuid.ToString(), homeT.Ground, homeT.Capacity.ToString());
                 }

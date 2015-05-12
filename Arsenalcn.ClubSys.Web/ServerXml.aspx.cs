@@ -411,7 +411,7 @@ namespace Arsenalcn.ClubSys.Web
 
                 foreach (ArsenalPlayer p in list)
                 {
-                    xmlContent.AppendFormat("<PlayerInfo Guid=\"{0}\" DisplayName=\"{1}\" SquadNumber=\"{2}\" FaceURL=\"{3}\" />", p.PlayerGuid.ToString(), p.DisplayName, p.SquadNumber.ToString(), p.FaceURL);
+                    xmlContent.AppendFormat("<PlayerInfo Guid=\"{0}\" DisplayName=\"{1}\" SquadNumber=\"{2}\" FaceURL=\"{3}\" />", p.ID.ToString(), p.DisplayName, p.SquadNumber.ToString(), p.FaceURL);
                 }
                 xmlContent.Append("</CurrArsenalPlayer>");
 

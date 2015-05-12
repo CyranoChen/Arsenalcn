@@ -23,13 +23,13 @@ namespace Arsenalcn.CasinoSys.Web
 
                 ddlLeague.DataSource = list;
                 ddlLeague.DataTextField = "LeagueNameInfo";
-                ddlLeague.DataValueField = "LeagueGuid";
+                ddlLeague.DataValueField = "ID";
                 ddlLeague.DataBind();
                 ddlLeague.Items.Insert(0, item);
 
                 ddlGroupLeague.DataSource = list;
                 ddlGroupLeague.DataTextField = "LeagueNameInfo";
-                ddlGroupLeague.DataValueField = "LeagueGuid";
+                ddlGroupLeague.DataValueField = "ID";
                 ddlGroupLeague.DataBind();
                 ddlGroupLeague.Items.Insert(0, item);
 
@@ -113,7 +113,7 @@ namespace Arsenalcn.CasinoSys.Web
 
             lbLeagueTeam.DataSource = list;
             lbLeagueTeam.DataTextField = "TeamDisplayName";
-            lbLeagueTeam.DataValueField = "TeamGuid";
+            lbLeagueTeam.DataValueField = "ID";
             lbLeagueTeam.DataBind();
 
             #region Set lbLeagueTeam Selected Items

@@ -22,7 +22,7 @@ namespace Arsenal.Web
 
                 ddlLeague.DataSource = list;
                 ddlLeague.DataTextField = "LeagueNameInfo";
-                ddlLeague.DataValueField = "LeagueGuid";
+                ddlLeague.DataValueField = "ID";
                 ddlLeague.DataBind();
 
                 ddlLeague.Items.Insert(0, new ListItem("--请选择比赛分类--", string.Empty));
@@ -240,7 +240,7 @@ namespace Arsenal.Web
 
                 ddlTeam.DataSource = list.OrderBy(x => x.TeamEnglishName);
                 ddlTeam.DataTextField = "TeamDisplayName";
-                ddlTeam.DataValueField = "TeamGuid";
+                ddlTeam.DataValueField = "ID";
                 ddlTeam.DataBind();
             }
             else

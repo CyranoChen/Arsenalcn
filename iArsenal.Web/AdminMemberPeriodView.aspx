@@ -1,6 +1,6 @@
 ﻿<%@ Page Language="C#" MasterPageFile="DefaultMaster.master" AutoEventWireup="true"
     CodeBehind="AdminMemberPeriodView.aspx.cs" Inherits="iArsenal.Web.AdminMemberPeriodView"
-    Title="后台管理 添加/更新会籍" %>
+    Title="后台管理 添加/更新会籍" Theme="Arsenalcn" %>
 
 <%@ Register Src="Control/AdminPanel.ascx" TagName="AdminPanel" TagPrefix="uc1" %>
 <%@ Register Src="Control/AdminFieldToolBar.ascx" TagName="AdminFieldToolBar" TagPrefix="uc2" %>

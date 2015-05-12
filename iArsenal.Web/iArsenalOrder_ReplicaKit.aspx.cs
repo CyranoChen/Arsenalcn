@@ -24,7 +24,7 @@ namespace iArsenal.Web
                     {
                         ddlPlayerDetail.Items.Clear();
                         ddlPlayerDetail.DataSource = list;
-                        ddlPlayerDetail.DataValueField = "PlayerGuid";
+                        ddlPlayerDetail.DataValueField = "ID";
                         ddlPlayerDetail.DataBind();
 
                         ddlPlayerDetail.Items.Insert(0, new ListItem("--请选择印字印号--", string.Empty));
@@ -275,7 +275,7 @@ namespace iArsenal.Web
 
                         if (player != null)
                         {
-                            ddlPlayerDetail.SelectedValue = player.PlayerGuid.ToString();
+                            ddlPlayerDetail.SelectedValue = player.ID.ToString();
                         }
                         else if (oiNumber.Remark.Equals("custom", StringComparison.OrdinalIgnoreCase)
                             && oiName.Remark.Equals("custom", StringComparison.OrdinalIgnoreCase))
@@ -298,7 +298,7 @@ namespace iArsenal.Web
                                     && ap.SquadNumber.Equals(Convert.ToInt16(oiNumber.Size)));
 
                                 if (player != null)
-                                    ddlPlayerDetail.SelectedValue = player.PlayerGuid.ToString();
+                                    ddlPlayerDetail.SelectedValue = player.ID.ToString();
                                 else
                                     ddlPlayerDetail.SelectedValue = string.Empty;
                             }
@@ -550,24 +550,24 @@ namespace iArsenal.Web
 
                                     oiNumber.Size = player.SquadNumber.ToString();
                                     oiNumber.Sale = 0f;
-                                    oiNumber.Remark = player.PlayerGuid.ToString();
+                                    oiNumber.Remark = player.ID.ToString();
                                     oiNumber.Place(m, trans);
 
                                     oiName.Size = _printingName;
                                     oiName.Sale = 0f;
-                                    oiName.Remark = player.PlayerGuid.ToString();
+                                    oiName.Remark = player.ID.ToString();
                                     oiName.Place(m, trans);
                                 }
                                 else
                                 {
                                     oiNumber.Size = player.SquadNumber.ToString();
                                     oiNumber.Sale = null;
-                                    oiNumber.Remark = player.PlayerGuid.ToString();
+                                    oiNumber.Remark = player.ID.ToString();
                                     oiNumber.Place(m, trans);
 
                                     oiName.Size = _printingName;
                                     oiName.Sale = null;
-                                    oiName.Remark = player.PlayerGuid.ToString();
+                                    oiName.Remark = player.ID.ToString();
                                     oiName.Place(m, trans);
                                 }
                             }

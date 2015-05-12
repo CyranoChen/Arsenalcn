@@ -5,6 +5,7 @@ using System.Web.UI.WebControls;
 
 using Arsenalcn.Common;
 using Arsenalcn.Common.Entity;
+using Arsenal.Service;
 
 namespace Arsenal.Web
 {
@@ -88,6 +89,10 @@ namespace Arsenal.Web
                 Service.Player.Cache.RefreshCache();
                 Service.Team.Cache.RefreshCache();
                 Service.Video.Cache.RefreshCache();
+
+                IRelationLeagueTeam instance = new RelationLeagueTeam();
+
+                instance.Clean();
 
                 ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('更新全部缓存成功');window.location.href=window.location.href", true);
             }

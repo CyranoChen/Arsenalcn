@@ -36,7 +36,7 @@ namespace Arsenalcn.CasinoSys.Web
 
                     ddlSeason.DataSource = list;
                     ddlSeason.DataTextField = "LeagueSeason";
-                    ddlSeason.DataValueField = "LeagueGuid";
+                    ddlSeason.DataValueField = "ID";
                     ddlSeason.DataBind();
                     ddlSeason.SelectedValue = CurrentLeague.ToString();
 
@@ -215,7 +215,7 @@ namespace Arsenalcn.CasinoSys.Web
                         t.TeamEnglishName, t.TeamLogo);
 
                     hlTeamInfo.Text = string.Format("<em>{0}</em>", t.TeamDisplayName);
-                    hlTeamInfo.NavigateUrl = string.Format("CasinoTeam.aspx?Team={0}", t.TeamGuid.ToString());
+                    hlTeamInfo.NavigateUrl = string.Format("CasinoTeam.aspx?Team={0}", t.ID.ToString());
                 }
 
                 if (ltrlGoalDiff != null)
@@ -246,7 +246,7 @@ namespace Arsenalcn.CasinoSys.Web
                         t.TeamEnglishName, t.TeamLogo);
 
                     hlTeamInfo.Text = string.Format("<em>{0}</em>", t.TeamDisplayName);
-                    hlTeamInfo.NavigateUrl = string.Format("CasinoTeam.aspx?Team={0}", t.TeamGuid.ToString());
+                    hlTeamInfo.NavigateUrl = string.Format("CasinoTeam.aspx?Team={0}", t.ID.ToString());
                 }
             }
         }

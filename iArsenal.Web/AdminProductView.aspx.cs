@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Web.UI.WebControls;
 using System.Linq;
 
-using iArsenal.Entity;
+using iArsenal.Service;
+using Arsenalcn.Core;
 
 namespace iArsenal.Web
 {
     public partial class AdminProductView : AdminPageBase
     {
+        private readonly IRepository repo = new Repository();
         protected void Page_Load(object sender, EventArgs e)
         {
             ctrlAdminFieldToolBar.AdminUserName = this.Username;
@@ -38,9 +40,7 @@ namespace iArsenal.Web
         {
             if (ProductGuid != Guid.Empty)
             {
-                Product p = new Product();
-                p.ProductGuid = ProductGuid;
-                p.Select();
+                Product p = repo.Single<Product>(ProductGuid);
 
                 tbProductGuid.Text = ProductGuid.ToString();
                 tbCode.Text = p.Code;
@@ -81,10 +81,10 @@ namespace iArsenal.Web
 
         private void BindItemData()
         {
-            List<OrderItem> list = OrderItem.GetOrderItems().FindAll(oi => oi.ProductGuid.Equals(ProductGuid));
-            List<Order> oList = Order.GetOrders().FindAll(o => list.Any(oi => oi.OrderID.Equals(o.OrderID)));
+            var query = repo.Query<Order>(o =>
+                repo.Query<OrderItem>(x => x.ProductGuid.Equals(ProductGuid)).Any(x => x.OrderID.Equals(o.ID)));
 
-            gvProductOrder.DataSource = oList;
+            gvProductOrder.DataSource = query;
             gvProductOrder.DataBind();
 
             #region set Control Custom Pager
@@ -95,7 +95,7 @@ namespace iArsenal.Web
 
                 ctrlCustomPagerInfo.PageIndex = gvProductOrder.PageIndex;
                 ctrlCustomPagerInfo.PageCount = gvProductOrder.PageCount;
-                ctrlCustomPagerInfo.RowCount = list.Count;
+                ctrlCustomPagerInfo.RowCount = query.Count();
                 ctrlCustomPagerInfo.InitComponent();
             }
             else
@@ -157,6 +157,11 @@ namespace iArsenal.Web
             {
                 Product p = new Product();
 
+                if (!ProductGuid.Equals(Guid.Empty))
+                {
+                    p = repo.Single<Product>(ProductGuid);
+                }
+
                 if (!string.IsNullOrEmpty(tbCode.Text.Trim()))
                     p.Code = tbCode.Text.Trim();
                 else
@@ -190,20 +195,19 @@ namespace iArsenal.Web
 
                 if (ProductGuid != Guid.Empty)
                 {
-                    p.ProductGuid = ProductGuid;
-                    p.Update();
+                    repo.Update(p);
+
                     Product.Cache.RefreshCache();
 
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('更新成功');window.location.href=window.location.href", true);
                 }
                 else
                 {
-                    p.ProductGuid = new Guid(tbProductGuid.Text.Trim());
-
-                    if (Product.GetProducts().FindIndex(delegate(Product tmpP) { return tmpP.Code.ToLower().Equals(tbCode.Text.Trim().ToLower()); }) >= 0)
+                    if (repo.All<Product>().Any(x => x.Code.ToLower().Equals(tbCode.Text.Trim().ToLower())))
                         throw new Exception("Product Code is already in use");
 
-                    p.Insert();
+                    repo.Insert(p);
+
                     Product.Cache.RefreshCache();
 
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('添加成功');window.location.href = 'AdminProduct.aspx'", true);
@@ -233,9 +237,7 @@ namespace iArsenal.Web
             {
                 if (ProductGuid != Guid.Empty)
                 {
-                    Product p = new Product();
-                    p.ProductGuid = ProductGuid;
-                    p.Delete();
+                    repo.Delete<Product>(ProductGuid);
 
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('删除成功');window.location.href='AdminProduct.aspx'", true);
                 }

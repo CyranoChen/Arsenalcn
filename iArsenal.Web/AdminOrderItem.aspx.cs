@@ -1,13 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Linq;
 using System.Web.UI.WebControls;
 
-using iArsenal.Entity;
+using iArsenal.Service;
+using Arsenalcn.Core;
 
 namespace iArsenal.Web
 {
     public partial class AdminOrderItem : AdminPageBase
     {
+        private readonly IRepository repo = new Repository();
         protected void Page_Load(object sender, EventArgs e)
         {
             ctrlAdminFieldToolBar.AdminUserName = this.Username;
@@ -37,7 +39,7 @@ namespace iArsenal.Web
 
         private void BindData()
         {
-            List<OrderItem> list = OrderItem.GetOrderItems().FindAll(delegate(OrderItem oi)
+            var list = repo.All<OrderItem>().ToList().FindAll(x =>
             {
                 Boolean returnValue = true;
                 string tmpString = string.Empty;
@@ -46,21 +48,21 @@ namespace iArsenal.Web
                 {
                     tmpString = ViewState["OrderItemID"].ToString();
                     if (!string.IsNullOrEmpty(tmpString) && !tmpString.Equals("--许愿编号--"))
-                        returnValue = returnValue && oi.OrderItemID.Equals(Convert.ToInt32(tmpString));
+                        returnValue = returnValue && x.ID.Equals(Convert.ToInt32(tmpString));
                 }
 
                 if (ViewState["MemberName"] != null)
                 {
                     tmpString = ViewState["MemberName"].ToString();
                     if (!string.IsNullOrEmpty(tmpString) && !tmpString.Equals("--会员姓名--"))
-                        returnValue = returnValue && oi.MemberName.Contains(tmpString);
+                        returnValue = returnValue && x.MemberName.Contains(tmpString);
                 }
 
                 if (ViewState["Code"] != null)
                 {
                     tmpString = ViewState["Code"].ToString();
                     if (!string.IsNullOrEmpty(tmpString) && !tmpString.Equals("--编码--"))
-                        returnValue = returnValue && oi.Code.ToLower().Contains(tmpString.ToLower());
+                        returnValue = returnValue && x.Code.ToLower().Contains(tmpString.ToLower());
                 }
 
                 return returnValue;
@@ -69,7 +71,7 @@ namespace iArsenal.Web
             #region set GridView Selected PageIndex
             if (OrderItemID > 0)
             {
-                int i = list.FindIndex(delegate(OrderItem oi) { return oi.OrderItemID == OrderItemID; });
+                int i = list.FindIndex(x => x.ID.Equals(OrderItemID));
                 if (i >= 0)
                 {
                     gvOrderItem.PageIndex = i / gvOrderItem.PageSize;

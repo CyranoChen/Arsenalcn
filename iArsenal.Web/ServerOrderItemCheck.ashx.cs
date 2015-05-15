@@ -2,7 +2,7 @@
 using System.Web;
 using System.Web.Script.Serialization;
 
-using iArsenal.Entity;
+using iArsenal.Service;
 
 namespace iArsenal.Web
 {

@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Web.UI.WebControls;
 
-using Arsenalcn.Common.Utility;
-using iArsenal.Entity;
+using Arsenalcn.Core;
+using Arsenalcn.Core.Utility;
+using iArsenal.Service;
 
 namespace iArsenal.Web
 {
     public partial class AdminOrder : AdminPageBase
     {
+        private readonly IRepository repo = new Repository();
         protected void Page_Load(object sender, EventArgs e)
         {
             ctrlAdminFieldToolBar.AdminUserName = this.Username;
@@ -57,9 +60,7 @@ namespace iArsenal.Web
         {
             if (MemberID > 0)
             {
-                Member m = new Member();
-                m.MemberID = MemberID;
-                m.Select();
+                Member m = repo.Single<Member>(MemberID);
 
                 if (m != null)
                 {
@@ -69,7 +70,7 @@ namespace iArsenal.Web
                 }
             }
 
-            List<Order> list = Order.GetOrders().FindAll(delegate(Order o)
+            List<Order> list = repo.All<Order>().ToList().FindAll(x =>
             {
                 Boolean returnValue = true;
                 string tmpString = string.Empty;
@@ -78,28 +79,28 @@ namespace iArsenal.Web
                 {
                     tmpString = ViewState["OrderID"].ToString();
                     if (!string.IsNullOrEmpty(tmpString) && !tmpString.Equals("--订单编号--"))
-                        returnValue = returnValue && o.OrderID.Equals(Convert.ToInt32(tmpString));
+                        returnValue = returnValue && x.ID.Equals(Convert.ToInt32(tmpString));
                 }
 
                 if (ViewState["MemberName"] != null)
                 {
                     tmpString = ViewState["MemberName"].ToString();
                     if (!string.IsNullOrEmpty(tmpString) && !tmpString.Equals("--会员姓名--"))
-                        returnValue = returnValue && o.MemberName.Contains(tmpString);
+                        returnValue = returnValue && x.MemberName.Contains(tmpString);
                 }
 
                 if (ViewState["Mobile"] != null)
                 {
                     tmpString = ViewState["Mobile"].ToString();
                     if (!string.IsNullOrEmpty(tmpString) && !tmpString.Equals("--手机--"))
-                        returnValue = returnValue && o.Mobile.Equals(tmpString);
+                        returnValue = returnValue && x.Mobile.Equals(tmpString);
                 }
 
                 if (ViewState["OrderDate"] != null)
                 {
                     tmpString = ViewState["OrderDate"].ToString();
                     if (!string.IsNullOrEmpty(tmpString) && !tmpString.Equals("--下单时间--"))
-                        returnValue = returnValue && o.CreateTime.CompareTo(Convert.ToDateTime(tmpString)) > 0;
+                        returnValue = returnValue && x.CreateTime.CompareTo(Convert.ToDateTime(tmpString)) > 0;
                 }
 
                 if (ViewState["ProductType"] != null)
@@ -107,21 +108,21 @@ namespace iArsenal.Web
                     tmpString = ViewState["ProductType"].ToString();
                     if (!string.IsNullOrEmpty(tmpString))
                         returnValue = returnValue &&
-                            o.OrderType.HasValue ? o.OrderType.Value.ToString().Equals(tmpString) : false;
+                            x.OrderType.HasValue ? x.OrderType.Value.ToString().Equals(tmpString) : false;
                 }
 
                 if (ViewState["Status"] != null)
                 {
                     tmpString = ViewState["Status"].ToString();
                     if (!string.IsNullOrEmpty(tmpString))
-                        returnValue = returnValue && ((int)o.Status).Equals(Convert.ToInt32(tmpString));
+                        returnValue = returnValue && ((int)x.Status).Equals(Convert.ToInt32(tmpString));
                 }
 
                 if (ViewState["IsActive"] != null)
                 {
                     tmpString = ViewState["IsActive"].ToString();
                     if (!string.IsNullOrEmpty(tmpString))
-                        returnValue = returnValue && o.IsActive.Equals(Convert.ToBoolean(tmpString));
+                        returnValue = returnValue && x.IsActive.Equals(Convert.ToBoolean(tmpString));
                 }
 
                 return returnValue;
@@ -130,7 +131,7 @@ namespace iArsenal.Web
             #region set GridView Selected PageIndex
             if (OrderID > 0)
             {
-                int i = list.FindIndex(delegate(Order o) { return o.OrderID == OrderID; });
+                int i = list.FindIndex(x => x.ID.Equals(OrderID));
                 if (i >= 0)
                 {
                     gvOrder.PageIndex = i / gvOrder.PageSize;
@@ -244,37 +245,37 @@ namespace iArsenal.Web
             try
             {
                 #region Get the Order List
-                List<Order> list = Order.GetOrders().FindAll(delegate(Order o)
+                var list = repo.All<Order>().ToList().FindAll(x =>
                 {
-                    Boolean returnValue = o.IsActive; // Export the active order
+                    Boolean returnValue = x.IsActive; // Export the active order
                     string tmpString = string.Empty;
 
                     if (ViewState["OrderID"] != null)
                     {
                         tmpString = ViewState["OrderID"].ToString();
                         if (!string.IsNullOrEmpty(tmpString) && !tmpString.Equals("--订单编号--"))
-                            returnValue = returnValue && o.OrderID.Equals(Convert.ToInt32(tmpString));
+                            returnValue = returnValue && x.ID.Equals(Convert.ToInt32(tmpString));
                     }
 
                     if (ViewState["MemberName"] != null)
                     {
                         tmpString = ViewState["MemberName"].ToString();
                         if (!string.IsNullOrEmpty(tmpString) && !tmpString.Equals("--会员姓名--"))
-                            returnValue = returnValue && o.MemberName.Contains(tmpString);
+                            returnValue = returnValue && x.MemberName.Contains(tmpString);
                     }
 
                     if (ViewState["Mobile"] != null)
                     {
                         tmpString = ViewState["Mobile"].ToString();
                         if (!string.IsNullOrEmpty(tmpString) && !tmpString.Equals("--手机--"))
-                            returnValue = returnValue && o.Mobile.Equals(tmpString);
+                            returnValue = returnValue && x.Mobile.Equals(tmpString);
                     }
 
                     if (ViewState["OrderDate"] != null)
                     {
                         tmpString = ViewState["OrderDate"].ToString();
                         if (!string.IsNullOrEmpty(tmpString) && !tmpString.Equals("--下单时间--"))
-                            returnValue = returnValue && o.CreateTime.CompareTo(Convert.ToDateTime(tmpString)) > 0;
+                            returnValue = returnValue && x.CreateTime.CompareTo(Convert.ToDateTime(tmpString)) > 0;
                     }
 
                     if (ViewState["ProductType"] != null)
@@ -282,14 +283,14 @@ namespace iArsenal.Web
                         tmpString = ViewState["ProductType"].ToString();
                         if (!string.IsNullOrEmpty(tmpString))
                             returnValue = returnValue &&
-                                o.OrderType.HasValue ? o.OrderType.Value.ToString().Equals(tmpString) : false;
+                                x.OrderType.HasValue ? x.OrderType.Value.ToString().Equals(tmpString) : false;
                     }
 
                     if (ViewState["Status"] != null)
                     {
                         tmpString = ViewState["Status"].ToString();
                         if (!string.IsNullOrEmpty(tmpString))
-                            returnValue = returnValue && ((int)o.Status).Equals(Convert.ToInt32(tmpString));
+                            returnValue = returnValue && ((int)x.Status).Equals(Convert.ToInt32(tmpString));
                     }
 
                     return returnValue;
@@ -349,7 +350,7 @@ namespace iArsenal.Web
 
                                 #region Convert ReplicaKit Order to DataRow
 
-                                OrdrReplicaKit oReplicaKit = new OrdrReplicaKit(o.OrderID);
+                                OrdrReplicaKit oReplicaKit = repo.Single<OrdrReplicaKit>(o.ID);
 
                                 // Whether Home or Away or Cup ReplicaKit
                                 OrderItem oiReplicaKit = null;
@@ -368,7 +369,7 @@ namespace iArsenal.Web
                                 }
                                 else
                                 {
-                                    throw new Exception(string.Format("此订单未购买球衣商品(OrderID:{0})", oReplicaKit.OrderID.ToString()));
+                                    throw new Exception(string.Format("此订单未购买球衣商品(OrderID:{0})", oReplicaKit.ID.ToString()));
                                 }
 
                                 OrdrItmPlayerNumber oiNumber = oReplicaKit.OIPlayerNumber;
@@ -378,8 +379,7 @@ namespace iArsenal.Web
                                 OrdrItmChampionshipPatch oiChampionPatch = oReplicaKit.OIChampionshipPatch;
 
                                 // get Member Info By Order
-                                m.MemberID = o.MemberID;
-                                m.Select();
+                                m = repo.Single<Member>(o.MemberID);
 
                                 // get Product Info By OrderItem
                                 p = Product.Cache.Load(oiReplicaKit.ProductGuid);
@@ -389,7 +389,7 @@ namespace iArsenal.Web
                                 dr["Member"] = string.Format("{0}({1})", o.MemberName, o.MemberID.ToString());
                                 dr["Contact"] = o.Mobile;
 
-                                dr["OID"] = o.OrderID;
+                                dr["OID"] = o.ID;
                                 dr["Code"] = oiReplicaKit.Code;
                                 dr["Souvenir"] = p.Name;
                                 dr["As"] = p.DisplayName;
@@ -567,20 +567,18 @@ namespace iArsenal.Web
 
                                 #region Convert Wish Order to DataRow
 
-                                OrdrWish oWish = new OrdrWish(o.OrderID);
+                                OrdrWish oWish = repo.Single<OrdrWish>(o.ID);
 
                                 // get Member Info By Order
-                                m.MemberID = o.MemberID;
-                                m.Select();
+                                m = repo.Single<Member>(o.MemberID);
 
-                                List<OrderItem> oiList = OrderItem.GetOrderItems(o.OrderID).FindAll(oi => oi.IsActive);
-                                oiList.Sort(delegate(OrderItem oi1, OrderItem oi2) { return oi1.OrderItemID - oi2.OrderItemID; });
+                                var query = repo.Query<OrderItem>(x => x.OrderID.Equals(o.ID) && x.IsActive).OrderBy(x => x.ID);
 
-                                if (oiList != null && oiList.Count > 0)
+                                if (query != null && query.Count() > 0)
                                 {
                                     int _listCount = 0;
 
-                                    foreach (OrderItem oi in oiList)
+                                    foreach (var oi in query)
                                     {
                                         dr = dt.NewRow();
 
@@ -590,7 +588,7 @@ namespace iArsenal.Web
                                             dr["Member"] = string.Format("{0}({1})", o.MemberName, o.MemberID.ToString());
                                             dr["Contact"] = o.Mobile;
 
-                                            dr["OID"] = o.OrderID;
+                                            dr["OID"] = o.ID;
                                             dr["Order Price"] = o.PriceInfo;
                                             dr["Remark"] = o.Remark;
                                         }
@@ -691,10 +689,10 @@ namespace iArsenal.Web
 
                 if (cbOrderID != null)
                 {
-                    cbOrderID.Text = o.OrderID.ToString();
+                    cbOrderID.Text = o.ID.ToString();
 
-                    hlOrderID.Text = o.OrderID.ToString();
-                    hlOrderID.NavigateUrl = string.Format("ServerOrderView.ashx?OrderID={0}", o.OrderID.ToString());
+                    hlOrderID.Text = o.ID.ToString();
+                    hlOrderID.NavigateUrl = string.Format("ServerOrderView.ashx?OrderID={0}", o.ID.ToString());
                 }
 
                 if (hlName != null)

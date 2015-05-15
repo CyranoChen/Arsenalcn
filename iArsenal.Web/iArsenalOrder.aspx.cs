@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web.UI.WebControls;
+using System.Linq;
 
-using iArsenal.Entity;
+using iArsenal.Service;
+using Arsenalcn.Core;
 
 namespace iArsenal.Web
 {
     public partial class iArsenalOrder : MemberPageBase
     {
+        private readonly IRepository repo = new Repository();
         protected void Page_Load(object sender, EventArgs e)
         {
             ctrlCustomPagerInfo.PageChanged += new Control.CustomPagerInfo.PageChangedEventHandler(ctrlCustomPagerInfo_PageChanged);
@@ -39,7 +42,7 @@ namespace iArsenal.Web
         {
             try
             {
-                List<Order> list = Order.GetOrders(this.MID).FindAll(delegate(Order o)
+                var list = repo.Query<Order>(x => x.MemberID.Equals(this.MID)).ToList().FindAll(x =>
                 {
                     Boolean returnValue = true;
                     string tmpString = string.Empty;
@@ -48,7 +51,7 @@ namespace iArsenal.Web
                     {
                         tmpString = ViewState["OrderID"].ToString();
                         if (!string.IsNullOrEmpty(tmpString) && !tmpString.Equals("--订单编号--"))
-                            returnValue = returnValue && o.OrderID.Equals(Convert.ToInt32(tmpString));
+                            returnValue = returnValue && x.ID.Equals(Convert.ToInt32(tmpString));
                     }
 
                     if (ViewState["ProductType"] != null)
@@ -56,11 +59,11 @@ namespace iArsenal.Web
                         tmpString = ViewState["ProductType"].ToString();
                         if (!string.IsNullOrEmpty(tmpString))
                             returnValue = returnValue &&
-                                o.OrderType.HasValue ? o.OrderType.Value.ToString().Equals(tmpString) : false;
+                                x.OrderType.HasValue ? x.OrderType.Value.ToString().Equals(tmpString) : false;
                     }
 
                     // Find all Orders which belong to Current Member & Active
-                    returnValue = returnValue && o.IsActive;
+                    returnValue = returnValue && x.IsActive;
 
                     return returnValue;
                 });
@@ -69,7 +72,7 @@ namespace iArsenal.Web
                 #region set GridView Selected PageIndex
                 if (OrderID > 0)
                 {
-                    int i = list.FindIndex(delegate(Order o) { return o.OrderID == OrderID; });
+                    int i = list.FindIndex(x => x.ID.Equals(OrderID));
                     if (i >= 0)
                     {
                         gvOrder.PageIndex = i / gvOrder.PageSize;
@@ -136,13 +139,11 @@ namespace iArsenal.Web
         {
             if (gvOrder.SelectedIndex != -1)
             {
-                Order o = new Order();
-                o.OrderID = (int)gvOrder.DataKeys[gvOrder.SelectedIndex].Value;
-                o.Select();
+                Order o = repo.Single<Order>((int)gvOrder.DataKeys[gvOrder.SelectedIndex].Value);
 
                 if (o != null)
                 {
-                    Response.Redirect(string.Format("ServerOrderView.ashx?OrderID={0}", o.OrderID.ToString()));
+                    Response.Redirect(string.Format("ServerOrderView.ashx?OrderID={0}", o.ID.ToString()));
                 }
             }
         }

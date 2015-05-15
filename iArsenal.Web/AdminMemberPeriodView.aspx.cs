@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using Arsenalcn.Common.Entity;
-using iArsenal.Entity;
+using System.Linq;
+
+using Arsenalcn.Core;
+using iArsenal.Service;
 
 namespace iArsenal.Web
 {
     public partial class AdminMemberPeriodView : AdminPageBase
     {
+        private readonly IRepository repo = new Repository();
         protected void Page_Load(object sender, EventArgs e)
         {
             ctrlAdminFieldToolBar.AdminUserName = this.Username;
@@ -35,9 +38,7 @@ namespace iArsenal.Web
         {
             if (MemberPeriodID > 0)
             {
-                MemberPeriod mp = new MemberPeriod();
-                mp.MemberPeriodID = MemberPeriodID;
-                mp.Select();
+                MemberPeriod mp = repo.Single<MemberPeriod>(MemberPeriodID);
 
                 // Set Visible for the member back button for this memberPeriod
                 if (mp.MemberID > 0)
@@ -51,11 +52,9 @@ namespace iArsenal.Web
 
                 if (mp.OrderID.HasValue)
                 {
-                    Order o = new Order();
-                    o.OrderID = mp.OrderID.Value;
-                    o.Select();
+                    Order o = repo.Single<Order>(mp.OrderID.Value);
 
-                    tbOrderID.Text = o.OrderID.ToString();
+                    tbOrderID.Text = o.ID.ToString();
 
                     o.CalcOrderPrice();
                     tbOrderPrice.Text = o.PriceInfo;
@@ -84,6 +83,11 @@ namespace iArsenal.Web
             {
                 MemberPeriod mp = new MemberPeriod();
 
+                if (MemberPeriodID > 0)
+                {
+                    mp = repo.Single<MemberPeriod>(MemberPeriodID);
+                }
+
                 if (!string.IsNullOrEmpty(tbMemberID.Text.Trim()))
                     mp.MemberID = Convert.ToInt32(tbMemberID.Text.Trim());
                 else
@@ -111,19 +115,20 @@ namespace iArsenal.Web
 
                 if (MemberPeriodID > 0)
                 {
-                    mp.MemberPeriodID = MemberPeriodID;
-                    mp.Update();
+                    repo.Update(mp);
+
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('更新成功');window.location.href=window.location.href", true);
                 }
                 else
                 {
                     // Whether this MemberPeriod Exists
-                    List<MemberPeriod> list = MemberPeriod.GetMemberPeriods(mp.MemberID);
+                    var query = repo.Query < MemberPeriod>(x => x.MemberID.Equals(mp.MemberID));
 
-                    if (list.Exists(tmpMP => tmpMP.StartDate <= mp.StartDate && tmpMP.EndDate >= mp.EndDate))
+                    if (query.Any(x => x.StartDate <= mp.StartDate && x.EndDate >= mp.EndDate))
                         throw new Exception(string.Format("The Member Period in active for this Member(No.{0})", mp.MemberID.ToString()));
 
-                    mp.Insert();
+                    repo.Insert(mp);
+
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('添加成功');window.location.href = 'AdminMemberPeriod.aspx'", true);
                 }
             }
@@ -147,9 +152,7 @@ namespace iArsenal.Web
 
         protected void btnBackMember_Click(object sender, EventArgs e)
         {
-            MemberPeriod mp = new MemberPeriod();
-            mp.MemberPeriodID = MemberPeriodID;
-            mp.Select();
+            MemberPeriod mp = repo.Single<MemberPeriod>(MemberPeriodID);
 
             if (mp.MemberID > 0)
                 Response.Redirect("AdminMemberView.aspx?MemberID=" + mp.MemberID.ToString());
@@ -161,9 +164,7 @@ namespace iArsenal.Web
             {
                 if (MemberPeriodID > 0)
                 {
-                    MemberPeriod m = new MemberPeriod();
-                    m.MemberPeriodID = MemberPeriodID;
-                    m.Delete();
+                    repo.Delete<MemberPeriod>(MemberPeriodID);
 
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('删除成功');window.location.href='AdminMemberPeriod.aspx'", true);
                 }

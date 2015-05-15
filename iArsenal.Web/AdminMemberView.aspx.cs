@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using System.Web.UI.WebControls;
 
-using Arsenalcn.Common.Utility;
-using iArsenal.Entity;
+using Arsenalcn.Core;
+using Arsenalcn.Core.Utility;
+using iArsenal.Service;
 
 namespace iArsenal.Web
 {
     public partial class AdminMemberView : AdminPageBase
     {
+        private readonly IRepository repo = new Repository();
         protected void Page_Load(object sender, EventArgs e)
         {
             ctrlAdminFieldToolBar.AdminUserName = this.Username;
@@ -39,9 +41,7 @@ namespace iArsenal.Web
         {
             if (MemberID > 0)
             {
-                Member m = new Member();
-                m.MemberID = MemberID;
-                m.Select();
+                Member m = repo.Single<Member>(MemberID);
 
                 lblMemberInfo.Text = string.Format("会员姓名<em>({0})</em>:", MemberID.ToString());
 
@@ -127,9 +127,9 @@ namespace iArsenal.Web
 
         private void BindItemData()
         {
-            List<MemberPeriod> list = MemberPeriod.GetMemberPeriods(MemberID);
+            var query = repo.Query<MemberPeriod>(x => x.MemberID.Equals(MemberID));
 
-            gvMemberPeriod.DataSource = list;
+            gvMemberPeriod.DataSource = query;
             gvMemberPeriod.DataBind();
         }
 
@@ -146,6 +146,11 @@ namespace iArsenal.Web
             try
             {
                 Member m = new Member();
+
+                if (MemberID > 0)
+                {
+                    m = repo.Single<Member>(MemberID);
+                }
 
                 m.Name = tbName.Text.Trim();
                 m.IsActive = cbIsActive.Checked;
@@ -235,17 +240,16 @@ namespace iArsenal.Web
 
                 #region Filter Member By AcnID
                 int tmpMID = int.MinValue;
-                Member tmpM = new Member();
-                tmpM.Select(m.AcnID);
 
-                if (tmpM != null && tmpM.MemberID > 0)
-                    tmpMID = tmpM.MemberID;
+                Member tmpM = repo.Single<Member>(x => x.AcnID.Equals(m.AcnID));
+
+                if (tmpM != null)
+                    tmpMID = tmpM.ID > 0 ? tmpM.ID : int.MinValue;
                 #endregion
 
                 if (MemberID > 0 && (MemberID == tmpMID || tmpMID == int.MinValue))
                 {
-                    m.MemberID = MemberID;
-                    m.Update();
+                    repo.Update(m);
                     Member.Cache.RefreshCache();
 
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('更新成功');window.location.href=window.location.href", true);
@@ -261,7 +265,7 @@ namespace iArsenal.Web
                     }
                     else
                     {
-                        m.Insert();
+                        repo.Insert(m);
                         Member.Cache.RefreshCache();
 
                         ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('添加成功');window.location.href = 'AdminMember.aspx'", true);
@@ -292,9 +296,7 @@ namespace iArsenal.Web
             {
                 if (MemberID > 0)
                 {
-                    Member m = new Member();
-                    m.MemberID = MemberID;
-                    m.Delete();
+                    repo.Delete<Member>(MemberID);
 
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('删除成功');window.location.href='AdminMember.aspx'", true);
                 }

@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.UI.WebControls;
 
-using iArsenal.Entity;
+using Arsenalcn.Core;
+using iArsenal.Service;
 
 namespace iArsenal.Web
 {
     public partial class AdminMember : AdminPageBase
     {
+        private readonly IRepository repo = new Repository();
         protected void Page_Load(object sender, EventArgs e)
         {
             ctrlAdminFieldToolBar.AdminUserName = this.Username;
@@ -37,7 +40,7 @@ namespace iArsenal.Web
 
         private void BindData()
         {
-            List<Member> list = Member.GetMembers().FindAll(delegate(Member m)
+            var list = repo.All<Member>().ToList().FindAll(x =>
             {
                 Boolean returnValue = true;
                 string tmpString = string.Empty;
@@ -46,35 +49,35 @@ namespace iArsenal.Web
                 {
                     tmpString = ViewState["Name"].ToString();
                     if (!string.IsNullOrEmpty(tmpString) && tmpString != "--会员姓名--")
-                        returnValue = returnValue && m.Name.Contains(tmpString);
+                        returnValue = returnValue && x.Name.Contains(tmpString);
                 }
 
                 if (ViewState["AcnName"] != null)
                 {
                     tmpString = ViewState["AcnName"].ToString();
                     if (!string.IsNullOrEmpty(tmpString) && tmpString != "--ACN会员名--")
-                        returnValue = returnValue && m.AcnName.ToLower().Contains(tmpString.ToLower());
+                        returnValue = returnValue && x.AcnName.ToLower().Contains(tmpString.ToLower());
                 }
 
                 if (ViewState["Region"] != null)
                 {
                     tmpString = ViewState["Region"].ToString();
                     if (!string.IsNullOrEmpty(tmpString) && tmpString != "--所在地区--")
-                        returnValue = returnValue && m.RegionInfo.Contains(tmpString);
+                        returnValue = returnValue && x.RegionInfo.Contains(tmpString);
                 }
 
                 if (ViewState["Mobile"] != null)
                 {
                     tmpString = ViewState["Mobile"].ToString();
                     if (!string.IsNullOrEmpty(tmpString) && tmpString != "--手机--")
-                        returnValue = returnValue && m.Mobile.Equals(tmpString);
+                        returnValue = returnValue && x.Mobile.Equals(tmpString);
                 }
 
                 if (ViewState["MemberType"] != null)
                 {
                     tmpString = ViewState["MemberType"].ToString();
                     if (!string.IsNullOrEmpty(tmpString) && tmpString != "0")
-                        returnValue = returnValue && ((int)m.MemberType).ToString().Equals(tmpString);
+                        returnValue = returnValue && ((int)x.MemberType).ToString().Equals(tmpString);
                 }
 
                 return returnValue;
@@ -83,7 +86,7 @@ namespace iArsenal.Web
             #region set GridView Selected PageIndex
             if (MemberID > 0)
             {
-                int i = list.FindIndex(delegate(Member m) { return m.MemberID == MemberID; });
+                int i = list.FindIndex(x => x.ID.Equals(MemberID));
                 if (i >= 0)
                 {
                     gvMember.PageIndex = i / gvMember.PageSize;
@@ -214,7 +217,7 @@ namespace iArsenal.Web
                             break;
                     }
 
-                    hlName.NavigateUrl = string.Format("AdminOrder.aspx?MemberID={0}", m.MemberID);
+                    hlName.NavigateUrl = string.Format("AdminOrder.aspx?MemberID={0}", m.ID);
                 }
 
             }

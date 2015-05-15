@@ -137,6 +137,63 @@ namespace Arsenalcn.Core
             else { throw new Exception("Unable to find any valid DB columns"); }
         }
 
+        public object InsertOutKey<T>(T instance, SqlTransaction trans = null) where T : class, IEntity
+        {
+            Contract.Requires(instance != null);
+
+            List<string> listCol = new List<string>();
+            List<string> listColPara = new List<string>();
+            List<SqlParameter> listPara = new List<SqlParameter>();
+
+            foreach (var pi in instance.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
+            {
+                var attrCol = GetColumnAttr(pi);
+
+                if (attrCol != null)
+                {
+                    object _value = pi.GetValue(instance, null);
+
+                    listCol.Add(attrCol.Name);
+                    listColPara.Add("@" + attrCol.Name);
+
+                    SqlParameter _para = new SqlParameter("@" + attrCol.Name,
+                        _value != null ? _value : (object)DBNull.Value);
+                    listPara.Add(_para);
+                }
+                else
+                { continue; }
+            }
+
+            var attr = GetTableAttr<T>();
+
+            if (listCol.Count > 0 && listColPara.Count > 0 && listPara.Count > 0)
+            {
+                string sql = string.Format("INSERT INTO {0} ({1}) VALUES ({2}); SELECT SCOPE_IDENTITY();",
+                    attr.Name, string.Join(", ", listCol.ToArray()), string.Join(", ", listColPara.ToArray()));
+
+                var primary = instance.GetType().GetProperty("ID");
+
+                // skip the property of the self-increase main-key
+                if (!primary.PropertyType.Equals(typeof(int)))
+                {
+                    listCol.Add(attr.Key);
+                    listColPara.Add("@key");
+                    listPara.Add(new SqlParameter("@key", primary.GetValue(instance, null)));
+                }
+
+                if (trans != null)
+                {
+                    return SqlHelper.ExecuteScalar(trans, CommandType.Text, sql, listPara.ToArray());
+                }
+                else
+                {
+                    return SqlHelper.ExecuteScalar(conn, CommandType.Text, sql, listPara.ToArray());
+                }
+            }
+            else { throw new Exception("Unable to find any valid DB columns"); }
+        }
+
+
         public void Insert<T>(IEnumerable<T> instances, SqlTransaction trans = null) where T : class, IEntity
         {
             Contract.Requires(instances != null);

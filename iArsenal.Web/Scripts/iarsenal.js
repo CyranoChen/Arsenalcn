@@ -1,5 +1,5 @@
 ﻿/* Javascript Version iArsenal */
-/* Version: 1.7.9 || Date: 2015-01-05 || Author: Cyrano */
+/* Version: 1.8.1 || Date: 2015-05-14 || Author: Cyrano */
 /* type="text/javascript" */
 
 $(document).ready(function () {
@@ -94,7 +94,7 @@ function NationDataBindImpl(obj) {
             if (data.result != "error" && JSON.stringify(data) != "[]") {
                 $ddlRegion1.empty();
                 $.each(data, function (entryIndex, entry) {
-                    $ddlRegion1.append($("<option>", { value: entry.ItemID }).text(entry.Name));
+                    $ddlRegion1.append($("<option>", { value: entry.ID }).text(entry.Name));
                 });
 
                 if ($.trim($tbRegion1.val()) != "") {
@@ -133,7 +133,7 @@ function RegionDataBindImpl(rid, obj, value) {
                 obj.empty();
 
                 $.each(data, function (entryIndex, entry) {
-                    obj.append($("<option>", { value: entry.ItemID }).text(entry.Name));
+                    obj.append($("<option>", { value: entry.ID }).text(entry.Name));
                 });
 
                 if (value != "") {
@@ -434,7 +434,7 @@ function UnPackageWishOrderItemList(obj) {
 }
 
 function UnPackageWishOrderItem(obj, entry) {
-    obj.find("input.OrderItemID").val(entry.OrderItemID);
+    obj.find("input.OrderItemID").val(entry.ID);
     obj.find("input.ProductGuid").val(entry.ProductGuid);
     obj.find("input.ProductCode").val(entry.Code);
     obj.find("input.ProductName").val(entry.ProductName);

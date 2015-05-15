@@ -2,12 +2,15 @@
 using System.Web;
 using System.Web.Script.Serialization;
 
-using iArsenal.Entity;
+using iArsenal.Service;
+using Arsenalcn.Core;
 
 namespace iArsenal.Web
 {
     public class ServerBulkOrder : IHttpHandler
     {
+        private readonly IRepository repo = new Repository();
+
         public void ProcessRequest(HttpContext context)
         {
             string responseText = string.Empty;
@@ -30,15 +33,14 @@ namespace iArsenal.Web
                             {
                                 try
                                 {
-                                    Order o = new Order();
-                                    o.OrderID = _id;
-                                    o.Select();
+                                    Order o = repo.Single<Order>(_id);
 
                                     if (o != null && o.Status.Equals(OrderStatusType.Confirmed))
                                     {
                                         o.Status = OrderStatusType.Ordered;
                                         o.UpdateTime = DateTime.Now;
-                                        o.Update();
+
+                                        repo.Update(o);
 
                                         countSucceed++;
                                         continue;

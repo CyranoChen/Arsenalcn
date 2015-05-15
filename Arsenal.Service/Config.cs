@@ -8,20 +8,13 @@ namespace Arsenal.Service
 {
     public static class ConfigGlobal
     {
-        static ConfigGlobal()
+        public static Dictionary<string, string> ConfigDictionary
         {
-            Init();
-        }
-
-        public static void RefreshCache()
-        {
-            Init();
-        }
-
-        private static void Init()
-        {
-            const ConfigSystem currSystem = ConfigSystem.Arsenal;
-            ConfigDictionary = Config.Cache.GetDictionaryByConfigSystem(currSystem);
+            get
+            {
+                var currSystem = ConfigSystem.Arsenal;
+                return Config.Cache.GetDictionaryByConfigSystem(currSystem);
+            }
         }
 
         public static bool IsPluginAdmin(int userid)
@@ -38,8 +31,6 @@ namespace Arsenal.Service
 
             return false;
         }
-
-        public static Dictionary<string, string> ConfigDictionary;
 
         #region Members and Properties
 

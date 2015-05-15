@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.UI.WebControls;
 
-using iArsenal.Entity;
+using iArsenal.Service;
+using Arsenalcn.Core;
 
 namespace iArsenal.Web
 {
     public partial class AdminOrderView : AdminPageBase
     {
+        private readonly IRepository repo = new Repository();
         protected void Page_Load(object sender, EventArgs e)
         {
             ctrlAdminFieldToolBar.AdminUserName = this.Username;
@@ -37,9 +40,7 @@ namespace iArsenal.Web
         {
             if (OrderID > 0)
             {
-                Order o = new Order();
-                o.OrderID = OrderID;
-                o.Select();
+                Order o = repo.Single<Order>(OrderID);
 
                 lblOrderInfo.Text = string.Format("更新会员的订单 ID:<a href=\"ServerOrderView.ashx?OrderID={0}\" target=\"_blank\"><em>{0}</em></a>", OrderID.ToString());
 
@@ -83,9 +84,9 @@ namespace iArsenal.Web
 
         private void BindItemData()
         {
-            List<OrderItem> list = OrderItem.GetOrderItems(OrderID);
+            var query = repo.Query<OrderItem>(x => x.OrderID.Equals(OrderID));
 
-            gvOrderItem.DataSource = list;
+            gvOrderItem.DataSource = query;
             gvOrderItem.DataBind();
 
             #region set Control Custom Pager
@@ -96,7 +97,7 @@ namespace iArsenal.Web
 
                 ctrlCustomPagerInfo.PageIndex = gvOrderItem.PageIndex;
                 ctrlCustomPagerInfo.PageCount = gvOrderItem.PageCount;
-                ctrlCustomPagerInfo.RowCount = list.Count;
+                ctrlCustomPagerInfo.RowCount = query.Count();
                 ctrlCustomPagerInfo.InitComponent();
             }
             else
@@ -138,6 +139,11 @@ namespace iArsenal.Web
             {
                 Order o = new Order();
 
+                if (OrderID > 0)
+                {
+                    o = repo.Single<Order>(OrderID);
+                }
+
                 if (!string.IsNullOrEmpty(tbMemberID.Text.Trim()))
                     o.MemberID = Convert.ToInt32(tbMemberID.Text.Trim());
                 else
@@ -171,13 +177,14 @@ namespace iArsenal.Web
 
                 if (OrderID > 0)
                 {
-                    o.OrderID = OrderID;
-                    o.Update();
+                    repo.Update(o);
+
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('更新成功');window.location.href = window.location.href", true);
                 }
                 else
                 {
-                    o.Insert();
+                    repo.Insert(o);
+
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('添加成功');window.location.href = 'AdminOrder.aspx'", true);
                 }
             }
@@ -193,9 +200,8 @@ namespace iArsenal.Web
             {
                 if (OrderID > 0)
                 {
-                    Order o = new Order();
-                    o.OrderID = OrderID;
-                    o.Select();
+                    Order o = repo.Single<Order>(OrderID);
+
                     o.CalcOrderPrice();
 
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", string.Format("alert('重新计算总价为{0}元');window.location.href=window.location.href", o.Price.ToString("f2")), true);
@@ -229,13 +235,13 @@ namespace iArsenal.Web
             {
                 if (OrderID > 0)
                 {
-                    int countOrderItem = OrderItem.RemoveOrderItemByOrderID(OrderID);
+                    var query = repo.Query<OrderItem>(x => x.OrderID.Equals(OrderID));
+                    
+                    repo.Delete<OrderItem>(x => x.OrderID.Equals(OrderID));
 
-                    Order o = new Order();
-                    o.OrderID = OrderID;
-                    o.Delete();
+                    repo.Delete<Order>(OrderID);
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", string.Format("alert('删除成功(包括{0}个许愿)');window.location.href='AdminOrder.aspx'", countOrderItem.ToString()), true);
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", string.Format("alert('删除成功(包括{0}个许愿)');window.location.href='AdminOrder.aspx'", query.Count().ToString(), true));
                 }
                 else
                 {

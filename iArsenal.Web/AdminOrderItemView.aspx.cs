@@ -1,11 +1,13 @@
 ﻿using System;
 
-using iArsenal.Entity;
+using iArsenal.Service;
+using Arsenalcn.Core;
 
 namespace iArsenal.Web
 {
     public partial class AdminOrderItemView : AdminPageBase
     {
+        private readonly IRepository repo = new Repository();
         protected void Page_Load(object sender, EventArgs e)
         {
             ctrlAdminFieldToolBar.AdminUserName = this.Username;
@@ -34,9 +36,7 @@ namespace iArsenal.Web
         {
             if (OrderItemID > 0)
             {
-                OrderItem oi = new OrderItem();
-                oi.OrderItemID = OrderItemID;
-                oi.Select();
+                OrderItem oi = repo.Single<OrderItem>(OrderItemID);
 
                 lblOrderItemInfo.Text = string.Format("更新会员的许愿单 ID:<em>{0}</em>", OrderItemID.ToString());
 
@@ -83,6 +83,11 @@ namespace iArsenal.Web
             {
                 OrderItem oi = new OrderItem();
 
+                if (OrderItemID > 0)
+                {
+                    oi = repo.Single<OrderItem>(OrderItemID);
+                }
+
                 if (!string.IsNullOrEmpty(tbMemberID.Text.Trim()))
                     oi.MemberID = Convert.ToInt32(tbMemberID.Text.Trim());
                 else
@@ -113,13 +118,14 @@ namespace iArsenal.Web
 
                 if (OrderItemID > 0)
                 {
-                    oi.OrderItemID = OrderItemID;
-                    oi.Update();
+                    repo.Update(oi);
+
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('更新成功');window.location.href=window.location.href", true);
                 }
                 else
                 {
-                    oi.Insert();
+                    repo.Insert(oi);
+
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('添加成功');window.location.href = 'AdminOrderItem.aspx'", true);
                 }
             }
@@ -143,9 +149,7 @@ namespace iArsenal.Web
 
         protected void btnBackOrder_Click(object sender, EventArgs e)
         {
-            OrderItem oi = new OrderItem();
-            oi.OrderItemID = OrderItemID;
-            oi.Select();
+            OrderItem oi = repo.Single<OrderItem>(OrderItemID);
 
             if (oi.OrderID > 0)
                 Response.Redirect("AdminOrderView.aspx?OrderID=" + oi.OrderID.ToString());
@@ -157,9 +161,7 @@ namespace iArsenal.Web
             {
                 if (OrderItemID > 0)
                 {
-                    OrderItem oi = new OrderItem();
-                    oi.OrderItemID = OrderItemID;
-                    oi.Delete();
+                    repo.Delete<OrderItem>(OrderItemID);
 
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('删除成功');window.location.href='AdminOrderItem.aspx'", true);
                 }

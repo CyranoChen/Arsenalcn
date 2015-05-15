@@ -16,6 +16,7 @@ namespace Arsenalcn.Core
         IQueryable<T> Query<T>(Expression<Func<T, bool>> predicate) where T : class, IEntity;
 
         void Insert<T>(T instance, SqlTransaction trans = null) where T : class, IEntity;
+        object InsertOutKey<T>(T instance, SqlTransaction trans = null) where T : class, IEntity;
         void Insert<T>(IEnumerable<T> instances, SqlTransaction trans = null) where T : class, IEntity;
 
         void Update<T>(T instance, SqlTransaction trans = null) where T : class, IEntity;

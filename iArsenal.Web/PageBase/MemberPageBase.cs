@@ -1,13 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 
-using Arsenalcn.Common.Utility;
-using iArsenal.Entity;
+using Arsenalcn.Core;
+using Arsenalcn.Core.Utility;
+using iArsenal.Service;
 
 namespace iArsenal.Web
 {
     public class MemberPageBase : AcnPageBase
     {
+        private readonly IRepository repo = new Repository();
+
         public int MID { get; set; }
 
         public string MemberName { get; set; }
@@ -23,30 +25,23 @@ namespace iArsenal.Web
 
             if (UID > 0)
             {
-                Member member = new Member();
-                member.Select(UID);
+                Member m = Member.Cache.LoadByAcnID(this.UID);
 
-                if (member != null && member.MemberID > 0)
+                if (m != null && m.ID > 0)
                 {
-                    this.MID = member.MemberID;
-                    this.MemberName = member.Name;
+                    this.MID = m.ID;
+                    this.MemberName = m.Name;
 
-                    member.IP = IPLocation.GetIP();
-                    member.LastLoginTime = DateTime.Now;
+                    m.IP = IPLocation.GetIP();
+                    m.LastLoginTime = DateTime.Now;
 
-                    member.Update();
+                    repo.Update(m);
 
-                    // Set the Current Available Member Period
-                    List<MemberPeriod> list = MemberPeriod.GetMemberPeriods(this.MID).FindAll(mp => mp.IsActive);
 
-                    if (list != null & list.Count > 0)
-                    {
-                        this.CurrentMemberPeriod = list.Find(mp => mp.StartDate <= DateTime.Now && mp.EndDate >= DateTime.Now);
-                    }
-                    else
-                    {
-                        this.CurrentMemberPeriod = null;
-                    }
+                    // TODO: change to cache mode
+                    this.CurrentMemberPeriod = repo.Single<MemberPeriod>(x =>
+                        x.MemberID.Equals(this.MID) && x.IsActive &&
+                        x.StartDate <= DateTime.Now && x.EndDate >= DateTime.Now);
                 }
                 else
                 {

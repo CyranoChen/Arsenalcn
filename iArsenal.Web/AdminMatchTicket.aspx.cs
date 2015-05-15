@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.UI.WebControls;
 
-using iArsenal.Entity;
+using Arsenalcn.Core;
+using iArsenal.Service;
 
 namespace iArsenal.Web
 {
     public partial class AdminMatchTicket : AdminPageBase
     {
+        private readonly IRepository repo = new Repository();
         protected void Page_Load(object sender, EventArgs e)
         {
             ctrlAdminFieldToolBar.AdminUserName = this.Username;
@@ -83,7 +85,7 @@ namespace iArsenal.Web
 
         private void BindData()
         {
-            List<MatchTicket> list = MatchTicket.GetMatchTickets().FindAll(delegate(MatchTicket mt)
+            var list = repo.All<MatchTicket>().ToList().FindAll(x =>
             {
                 Boolean returnValue = true;
                 string tmpString = string.Empty;
@@ -92,35 +94,35 @@ namespace iArsenal.Web
                 {
                     tmpString = ViewState["LeagueGuid"].ToString();
                     if (!string.IsNullOrEmpty(tmpString))
-                        returnValue = returnValue && mt.LeagueGuid.Equals(new Guid(tmpString));
+                        returnValue = returnValue && x.LeagueGuid.Equals(new Guid(tmpString));
                 }
 
                 if (ViewState["IsHome"] != null)
                 {
                     tmpString = ViewState["IsHome"].ToString();
                     if (!string.IsNullOrEmpty(tmpString))
-                        returnValue = returnValue && mt.IsHome.Equals(Convert.ToBoolean(tmpString));
+                        returnValue = returnValue && x.IsHome.Equals(Convert.ToBoolean(tmpString));
                 }
 
                 if (ViewState["ProductCode"] != null)
                 {
                     tmpString = ViewState["ProductCode"].ToString();
                     if (!string.IsNullOrEmpty(tmpString))
-                        returnValue = returnValue && mt.ProductCode.Equals(tmpString, StringComparison.OrdinalIgnoreCase);
+                        returnValue = returnValue && x.ProductCode.Equals(tmpString, StringComparison.OrdinalIgnoreCase);
                 }
 
                 if (ViewState["AllowMemberClass"] != null)
                 {
                     tmpString = ViewState["AllowMemberClass"].ToString();
-                    if (!string.IsNullOrEmpty(tmpString) && mt.AllowMemberClass.HasValue)
-                        returnValue = returnValue && mt.AllowMemberClass.Equals(Convert.ToInt16(tmpString));
+                    if (!string.IsNullOrEmpty(tmpString) && x.AllowMemberClass.HasValue)
+                        returnValue = returnValue && x.AllowMemberClass.Equals(Convert.ToInt16(tmpString));
                 }
 
                 if (ViewState["TeamName"] != null)
                 {
                     tmpString = ViewState["TeamName"].ToString();
                     if (!string.IsNullOrEmpty(tmpString) && tmpString != "--对阵球队--")
-                        returnValue = returnValue && mt.TeamName.ToLower().Contains(tmpString.ToLower());
+                        returnValue = returnValue && x.TeamName.ToLower().Contains(tmpString.ToLower());
                 }
 
                 return returnValue;
@@ -129,7 +131,7 @@ namespace iArsenal.Web
             #region set GridView Selected PageIndex
             if (MatchGuid.HasValue && MatchGuid != Guid.Empty)
             {
-                int i = list.FindIndex(delegate(MatchTicket mt) { return mt.MatchGuid == MatchGuid; });
+                int i = list.FindIndex(mt => mt.ID.Equals(MatchGuid));
                 if (i >= 0)
                 {
                     gvMatchTicket.PageIndex = i / gvMatchTicket.PageSize;

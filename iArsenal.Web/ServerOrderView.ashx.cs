@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Web;
 
-using iArsenal.Entity;
+using iArsenal.Service;
 
 namespace iArsenal.Web
 {
@@ -16,13 +16,13 @@ namespace iArsenal.Web
 
                 if (!string.IsNullOrEmpty(_strOrderID) && int.TryParse(_strOrderID, out _orderID))
                 {
-                    Order o = Order.Select(_orderID);
+                    var o = Order.SelectByID(_orderID);
 
                     if (o != null)
                     {
                         if (!string.IsNullOrEmpty(o.UrlOrderView))
                         {
-                            context.Response.Redirect(string.Format("{0}?OrderID={1}", o.UrlOrderView, o.OrderID.ToString()), false);
+                            context.Response.Redirect(string.Format("{0}?OrderID={1}", o.UrlOrderView, o.ID.ToString()), false);
                             context.ApplicationInstance.CompleteRequest();
                         }
                         else

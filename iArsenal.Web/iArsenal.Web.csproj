@@ -1030,13 +1030,13 @@
     <Content Include="DefaultMaster.master" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Arsenalcn.Common\Arsenalcn.Common.csproj">
-      <Project>{8258A2E1-6821-4BAE-9111-3FBB65703FE0}</Project>
-      <Name>Arsenalcn.Common</Name>
+    <ProjectReference Include="..\Arsenalcn.Core\Arsenalcn.Core.csproj">
+      <Project>{c46f6af6-ebe1-4bac-bc17-0989fa6c9b8e}</Project>
+      <Name>Arsenalcn.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\iArsenal.Entity\iArsenal.Entity.csproj">
+    <ProjectReference Include="..\iArsenal.Service\iArsenal.Service.csproj">
       <Project>{bab0e195-5717-4cc8-b599-b265708d353a}</Project>
-      <Name>iArsenal.Entity</Name>
+      <Name>iArsenal.Service</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

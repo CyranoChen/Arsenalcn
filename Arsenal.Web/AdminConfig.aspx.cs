@@ -24,7 +24,7 @@ namespace Arsenal.Web
         {
             IConfig instance = new Config();
 
-            gvSysConfig.DataSource = instance.All().Where(x => x.ConfigSystem.Equals(ConfigSystem.Arsenal));
+            gvSysConfig.DataSource = instance.All(ConfigSystem.Arsenal).ToList();
             gvSysConfig.DataBind();
         }
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Web.Script.Serialization;
 using System.Web.UI.WebControls;
 
-using iArsenal.Entity;
+using iArsenal.Service;
 
 namespace iArsenal.Web.Control
 {

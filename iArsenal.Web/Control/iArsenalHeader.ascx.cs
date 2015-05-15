@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.Web;
 
-using iArsenal.Entity;
+using iArsenal.Service;
+using Arsenalcn.Core;
 
 namespace iArsenal.Web.Control
 {
     public partial class iArsenalHeader : System.Web.UI.UserControl
     {
+        private readonly IRepository repo = new Repository();
+
         private string _userName = string.Empty;
         /// <summary>
         /// Current User Name
@@ -75,19 +78,18 @@ namespace iArsenal.Web.Control
                 pnlAnonymousUser.Visible = false;
                 pnlLoginUser.Visible = true;
 
-                Member member = new Member();
-                member.Select(_userId);
+                Member m = Member.Cache.LoadByAcnID(_userId);
 
-                if (member != null && member.MemberID > 0)
+                if (m != null && m.ID > 0)
                 {
-                    lblUserInfo.Text = string.Format("欢迎访问，<b>{0}</b> (<em>NO.{1}</em>)", member.Name, member.MemberID.ToString());
+                    lblUserInfo.Text = string.Format("欢迎访问，<b>{0}</b> (<em>NO.{1}</em>)", m.Name, m.ID.ToString());
                 }
                 else
                 {
                     lblUserInfo.Text = string.Format("欢迎访问，<b>{0}</b> (<em>ID.{1}</em>)", _userName, _userId.ToString());
                 }
 
-                if (ConfigAdmin.IsPluginAdmin(_userId))
+                if (ConfigGlobal.IsPluginAdmin(_userId))
                 {
                     ltrlAdminConfig.Text = string.Format("<a href=\"AdminConfig.aspx\" target=\"_blank\">后台管理</a> - ");
                 }

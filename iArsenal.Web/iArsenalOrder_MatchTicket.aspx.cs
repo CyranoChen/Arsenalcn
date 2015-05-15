@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Data.SqlClient;
 
-using iArsenal.Entity;
+using Arsenalcn.Core;
+using iArsenal.Service;
 
 namespace iArsenal.Web
 {
     public partial class iArsenalOrder_MatchTicket : MemberPageBase
     {
+        private readonly IRepository repo = new Repository();
         protected void Page_Load(object sender, EventArgs e)
         {
             #region Assign Control Property
@@ -41,7 +43,7 @@ namespace iArsenal.Web
             {
                 if (OrderID > 0)
                 {
-                    OrdrTicket o = new OrdrTicket(OrderID);
+                    OrdrTicket o = repo.Single<OrdrTicket>(OrderID);
 
                     if (o.OIMatchTicket != null)
                     { return o.OIMatchTicket.MatchGuid; }
@@ -124,15 +126,13 @@ namespace iArsenal.Web
 
                 if (OrderID > 0)
                 {
-                    OrdrTicket o = new OrdrTicket(OrderID);
+                    OrdrTicket o = repo.Single<OrdrTicket>(OrderID);
 
-                    if (ConfigAdmin.IsPluginAdmin(UID) && o != null)
+                    if (ConfigGlobal.IsPluginAdmin(UID) && o != null)
                     {
                         lblMemberName.Text = string.Format("<b>{0}</b> (<em>NO.{1}</em>)", o.MemberName, o.MemberID.ToString());
 
-                        Member m = new Member();
-                        m.MemberID = o.MemberID;
-                        m.Select();
+                        Member m = repo.Single<Member>(o.MemberID);
 
                         if (m == null || !m.IsActive)
                         {
@@ -207,9 +207,7 @@ namespace iArsenal.Web
                 else
                 {
                     //Fill Member draft information into textbox
-                    Member m = new Member();
-                    m.MemberID = this.MID;
-                    m.Select();
+                    Member m = repo.Single<Member>(this.MID);
 
                     #region Set Member Nation & Region
                     if (!string.IsNullOrEmpty(m.Nation))
@@ -263,7 +261,7 @@ namespace iArsenal.Web
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
-            using (SqlConnection conn = ConfigGlobal.SQLConnectionStrings)
+            using (SqlConnection conn = new SqlConnection(DataAccess.ConnectString))
             {
                 conn.Open();
                 SqlTransaction trans = conn.BeginTransaction();
@@ -283,9 +281,7 @@ namespace iArsenal.Web
                         throw new Exception("无相关比赛信息，请联系管理员");
                     }
 
-                    Member m = new Member();
-                    m.MemberID = this.MID;
-                    m.Select();
+                    Member m = repo.Single<Member>(this.MID);
 
                     // Update Member Information
                     #region Get Member Nation & Region
@@ -362,28 +358,32 @@ namespace iArsenal.Web
 
                     m.MemberType = MemberType.Match;
 
-                    m.Update();
+                    repo.Update(m);
 
                     // New Order
                     Order o = new Order();
+                    int _newID = int.MinValue;
 
                     if (OrderID > 0)
                     {
-                        o.OrderID = OrderID;
-                        o.Select();
+                        o = repo.Single<Order>(OrderID);
                     }
 
                     o.Mobile = m.Mobile;
                     o.UpdateTime = DateTime.Now;
                     o.Description = tbOrderDescription.Text.Trim();
+                    o.OrderType = OrderBaseType.Ticket;
 
                     if (OrderID > 0)
                     {
-                        o.Update(trans);
+                        repo.Update(o, trans);
+
+                        // used by setting OrderItem foreign key
+                        _newID = OrderID;
                     }
                     else
                     {
-                        o.MemberID = m.MemberID;
+                        o.MemberID = m.ID;
                         o.MemberName = m.Name;
 
                         o.Address = m.Address;
@@ -398,56 +398,47 @@ namespace iArsenal.Web
                         o.IsActive = true;
                         o.Remark = string.Empty;
 
-                        o.Insert(trans);
-                        //o.Select();
+                        //Get the Order ID after Insert new one
+                        _newID = (int)repo.InsertOutKey<Order>(o, trans);
                     }
 
-                    //Get the Order ID after Insert new one
+                    //New Order Items
+                    Product p = Product.Cache.Load(mt.ProductCode);
 
-                    if (o.OrderID > 0)
+                    if (p == null)
+                        throw new Exception("无相关商品信息，请联系管理员");
+
+                    OrdrItmMatchTicket oi = new OrdrItmMatchTicket();
+
+                    //Remove Order Item of this Order
+                    if (OrderID > 0 && o.ID.Equals(OrderID))
                     {
-                        //Remove Order Item of this Order
-                        if (o.OrderID.Equals(OrderID))
-                        {
-                            int countOrderItem = OrderItem.RemoveOrderItemByOrderID(o.OrderID, trans);
-                        }
-
-                        //New Order Items
-                        Product p = Product.Cache.Load(mt.ProductCode);
-
-                        if (p == null)
-                            throw new Exception("无相关商品信息，请联系管理员");
-
-                        OrdrItmMatchTicket oi = new OrdrItmMatchTicket();
-
-                        // Genernate Travel Date
-                        DateTime _date;
-                        if (!string.IsNullOrEmpty(tbTravelDate.Text.Trim()) && DateTime.TryParse(tbTravelDate.Text.Trim(), out _date))
-                        {
-                            oi.TravelDate = _date;
-                        }
-                        else
-                        {
-                            throw new Exception("请正确填写计划出行时间");
-                        }
-
-                        // Every Member can only purchase ONE ticket of each match
-
-                        oi.MatchGuid = mt.MatchGuid;
-
-                        oi.OrderID = o.OrderID;
-                        oi.Quantity = 1;
-                        oi.Sale = null;
-
-                        oi.Place(m, p, trans);
+                        repo.Delete<OrderItem>(x => x.OrderID.Equals(OrderID), trans);
                     }
+
+                    // Genernate Travel Date
+                    DateTime _date;
+                    if (!string.IsNullOrEmpty(tbTravelDate.Text.Trim()) && DateTime.TryParse(tbTravelDate.Text.Trim(), out _date))
+                    {
+                        oi.TravelDate = _date;
+                    }
+                    else
+                    {
+                        throw new Exception("请正确填写计划出行时间");
+                    }
+
+                    // Every Member can only purchase ONE ticket of each match
+
+                    oi.MatchGuid = mt.ID;
+                    oi.OrderID = _newID;
+                    oi.Quantity = 1;
+                    oi.Sale = null;
+
+                    oi.Place(m, p, trans);
 
                     trans.Commit();
 
-                    //Renew OrderType after Insert OrderItem and transcation commited
-                    o.Update();
-
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", string.Format("alert('订单({0})保存成功');window.location.href = 'ServerOrderView.ashx?OrderID={0}'", o.OrderID.ToString()), true);
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", string.Format("alert('订单({0})保存成功');window.location.href = 'ServerOrderView.ashx?OrderID={0}'", _newID.ToString()), true);
                 }
                 catch (Exception ex)
                 {

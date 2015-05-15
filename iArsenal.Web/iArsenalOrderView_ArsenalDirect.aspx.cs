@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.UI.WebControls;
 
-using iArsenal.Entity;
+using iArsenal.Service;
+using Arsenalcn.Core;
 
 namespace iArsenal.Web
 {
     public partial class iArsenalOrderView_ArsenalDirect : MemberPageBase
     {
+        private readonly IRepository repo = new Repository();
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -38,9 +41,9 @@ namespace iArsenal.Web
 
                 if (OrderID > 0)
                 {
-                    OrdrWish o = new OrdrWish(OrderID);
+                    OrdrWish o = repo.Single<OrdrWish>(OrderID);
 
-                    if (ConfigAdmin.IsPluginAdmin(UID) && o != null)
+                    if (ConfigGlobal.IsPluginAdmin(UID) && o != null)
                     {
                         lblMemberName.Text = string.Format("<b>{0}</b> (<em>NO.{1}</em>)", o.MemberName, o.MemberID.ToString());
                     }
@@ -62,9 +65,7 @@ namespace iArsenal.Web
 
                     lblOrderMobile.Text = string.Format("<em>{0}</em>", o.Mobile);
 
-                    Member m = new Member();
-                    m.MemberID = o.MemberID;
-                    m.Select();
+                    Member m = repo.Single<Member>(o.MemberID);
 
                     if (m != null)
                     {
@@ -81,7 +82,7 @@ namespace iArsenal.Web
 
                     lblOrderAddress.Text = o.Address;
                     lblOrderDescription.Text = o.Description;
-                    lblOrderID.Text = string.Format("<em>{0}</em>", o.OrderID.ToString());
+                    lblOrderID.Text = string.Format("<em>{0}</em>", o.ID.ToString());
                     lblOrderCreateTime.Text = o.CreateTime.ToString("yyyy-MM-dd HH:mm");
 
                     if (!string.IsNullOrEmpty(o.Remark))
@@ -138,19 +139,18 @@ namespace iArsenal.Web
 
         private void BindItemData()
         {
-            OrdrWish o = new OrdrWish(OrderID);
+            OrdrWish o = repo.Single<OrdrWish>(OrderID);
 
             // Should be Calculator in this Page
             float price = 0f;
             string priceInfo = string.Empty;
             List<string> _lstPriceInfo = new List<string>();
 
-            List<OrderItem> oiList = OrderItem.GetOrderItems(o.OrderID).FindAll(oi => oi.IsActive);
-            oiList.Sort(delegate(OrderItem oi1, OrderItem oi2) { return oi1.OrderItemID - oi2.OrderItemID; });
+            var query = repo.Query<OrderItem>(x => x.ID.Equals(o.ID) && x.IsActive).OrderBy(x => x.ID);
 
-            if (oiList != null && oiList.Count > 0)
+            if (query != null && query.Count() > 0)
             {
-                foreach (OrderItem oi in oiList)
+                foreach (OrderItem oi in query)
                 {
                     if (!oi.ProductGuid.Equals(Guid.Empty) && oi.TotalPrice > 0)
                     {
@@ -163,7 +163,7 @@ namespace iArsenal.Web
                     }
                 }
 
-                gvWishItem.DataSource = oiList;
+                gvWishItem.DataSource = query;
                 gvWishItem.DataBind();
             }
             else
@@ -232,9 +232,7 @@ namespace iArsenal.Web
             {
                 if (OrderID > 0)
                 {
-                    Order o = new Order();
-                    o.OrderID = OrderID;
-                    o.Select();
+                    Order o = repo.Single<Order>(OrderID);
 
                     if (o == null || !o.MemberID.Equals(MID) || !o.IsActive)
                         throw new Exception("此订单无效或非当前用户订单");
@@ -242,9 +240,10 @@ namespace iArsenal.Web
                     o.Status = OrderStatusType.Submitted;
                     o.UpdateTime = DateTime.Now;
                     o.Price = Convert.ToSingle(tbOrderPrice.Text.Trim());
-                    o.Update();
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", string.Format("alert('谢谢您的预订，您的订单已经提交成功。\\r\\n请在审核后完成订单确认，订单号为：{0}'); window.location.href = window.location.href", o.OrderID.ToString()), true);
+                    repo.Update(o);
+
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", string.Format("alert('谢谢您的预订，您的订单已经提交成功。\\r\\n请在审核后完成订单确认，订单号为：{0}'); window.location.href = window.location.href", o.ID.ToString()), true);
                 }
                 else
                 {
@@ -263,14 +262,12 @@ namespace iArsenal.Web
             {
                 if (OrderID > 0)
                 {
-                    Order o = new Order();
-                    o.OrderID = OrderID;
-                    o.Select();
+                    Order o = repo.Single<Order>(OrderID);
 
                     if (o == null || !o.MemberID.Equals(MID) || !o.IsActive)
                         throw new Exception("此订单无效或非当前用户订单");
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", string.Format("window.location.href = 'iArsenalOrder_ArsenalDirect.aspx?OrderID={0}'", o.OrderID.ToString()), true);
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", string.Format("window.location.href = 'iArsenalOrder_ArsenalDirect.aspx?OrderID={0}'", o.ID.ToString()), true);
                 }
                 else
                 {
@@ -290,9 +287,7 @@ namespace iArsenal.Web
             {
                 if (OrderID > 0)
                 {
-                    Order o = new Order();
-                    o.OrderID = OrderID;
-                    o.Select();
+                    Order o = repo.Single<Order>(OrderID);
 
                     if (o == null || !o.MemberID.Equals(MID) || !o.IsActive)
                         throw new Exception("此订单无效或非当前用户订单");
@@ -300,9 +295,10 @@ namespace iArsenal.Web
                     o.Status = OrderStatusType.Confirmed;
                     o.UpdateTime = DateTime.Now;
                     o.Price = Convert.ToSingle(tbOrderPrice.Text.Trim());
-                    o.Update();
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", string.Format("alert('谢谢您的预订，您的订单已经确认成功。\\r\\n我们将在到货后与您联系，订单号为：{0}'); window.location.href = window.location.href", o.OrderID.ToString()), true);
+                    repo.Update(o);
+
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", string.Format("alert('谢谢您的预订，您的订单已经确认成功。\\r\\n我们将在到货后与您联系，订单号为：{0}'); window.location.href = window.location.href", o.ID.ToString()), true);
                 }
                 else
                 {
@@ -321,9 +317,7 @@ namespace iArsenal.Web
             {
                 if (OrderID > 0)
                 {
-                    Order o = new Order();
-                    o.OrderID = OrderID;
-                    o.Select();
+                    Order o = repo.Single<Order>(OrderID);
 
                     if (o == null || !o.MemberID.Equals(MID) || !o.IsActive)
                         throw new Exception("此订单无效或非当前用户订单");
@@ -331,9 +325,10 @@ namespace iArsenal.Web
                     o.IsActive = false;
                     o.UpdateTime = DateTime.Now;
                     o.Price = Convert.ToSingle(tbOrderPrice.Text.Trim());
-                    o.Update();
+                    
+                    repo.Update(o);
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", string.Format("alert('此订单({0})已经取消');window.location.href = 'iArsenalOrder.aspx'", o.OrderID.ToString()), true);
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", string.Format("alert('此订单({0})已经取消');window.location.href = 'iArsenalOrder.aspx'", o.ID.ToString()), true);
                 }
                 else
                 {

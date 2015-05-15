@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.UI.WebControls;
 
-using iArsenal.Entity;
+using iArsenal.Service;
+using Arsenalcn.Core;
 
 namespace iArsenal.Web
 {
     public partial class AdminMemberPeriod : AdminPageBase
     {
+        private readonly IRepository repo = new Repository();
         protected void Page_Load(object sender, EventArgs e)
         {
             ctrlAdminFieldToolBar.AdminUserName = this.Username;
@@ -37,7 +40,7 @@ namespace iArsenal.Web
 
         private void BindData()
         {
-            List<MemberPeriod> list = MemberPeriod.GetMemberPeriods().FindAll(delegate(MemberPeriod mp)
+            var list = repo.All<MemberPeriod>().ToList().FindAll(x =>
             {
                 Boolean returnValue = true;
                 string tmpString = string.Empty;
@@ -46,28 +49,28 @@ namespace iArsenal.Web
                 {
                     tmpString = ViewState["MemberID"].ToString();
                     if (!string.IsNullOrEmpty(tmpString) && tmpString != "--会员编号--")
-                        returnValue = returnValue && mp.MemberID.Equals(Convert.ToInt32(tmpString));
+                        returnValue = returnValue && x.MemberID.Equals(Convert.ToInt32(tmpString));
                 }
 
                 if (ViewState["MemberName"] != null)
                 {
                     tmpString = ViewState["MemberName"].ToString();
                     if (!string.IsNullOrEmpty(tmpString) && tmpString != "--会员姓名--")
-                        returnValue = returnValue && mp.MemberName.Contains(tmpString);
+                        returnValue = returnValue && x.MemberName.Contains(tmpString);
                 }
 
                 if (ViewState["MemberCardNo"] != null)
                 {
                     tmpString = ViewState["MemberCardNo"].ToString();
                     if (!string.IsNullOrEmpty(tmpString) && tmpString != "--会员卡号--")
-                        returnValue = returnValue && mp.MemberCardNo.ToLower().Contains(tmpString.ToLower());
+                        returnValue = returnValue && x.MemberCardNo.ToLower().Contains(tmpString.ToLower());
                 }
 
                 if (ViewState["MemberClass"] != null)
                 {
                     tmpString = ViewState["MemberClass"].ToString();
                     if (!string.IsNullOrEmpty(tmpString))
-                        returnValue = returnValue && ((int)mp.MemberClass).ToString().Equals(tmpString);
+                        returnValue = returnValue && ((int)x.MemberClass).ToString().Equals(tmpString);
                 }
 
                 return returnValue;
@@ -76,7 +79,7 @@ namespace iArsenal.Web
             #region set GridView Selected PageIndex
             if (MemberPeriodID > 0)
             {
-                int i = list.FindIndex(delegate(MemberPeriod m) { return m.MemberPeriodID == MemberPeriodID; });
+                int i = list.FindIndex(x => x.ID.Equals(MemberPeriodID));
                 if (i >= 0)
                 {
                     gvMemberPeriod.PageIndex = i / gvMemberPeriod.PageSize;
@@ -197,7 +200,7 @@ namespace iArsenal.Web
                             break;
                     }
 
-                    hlName.NavigateUrl = string.Format("AdminMemberView.aspx?MemberID={0}", m.MemberID);
+                    hlName.NavigateUrl = string.Format("AdminMemberView.aspx?MemberID={0}", m.ID);
                 }
 
             }

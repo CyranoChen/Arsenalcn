@@ -1,6 +1,6 @@
 ﻿using System;
 
-using iArsenal.Entity;
+using iArsenal.Service;
 
 namespace iArsenal.Web.Control
 {

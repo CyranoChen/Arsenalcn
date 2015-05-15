@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Web.UI.WebControls;
 using System.Linq;
 
-using iArsenal.Entity;
+using iArsenal.Service;
+using Arsenalcn.Core;
 
 namespace iArsenal.Web
 {
     public partial class AdminMatchTicketView : AdminPageBase
     {
+        private readonly IRepository repo = new Repository();
         protected void Page_Load(object sender, EventArgs e)
         {
             ctrlAdminFieldToolBar.AdminUserName = this.Username;
@@ -50,13 +52,11 @@ namespace iArsenal.Web
         {
             if (MatchGuid != Guid.Empty)
             {
-                MatchTicket mt = new MatchTicket();
-                mt.MatchGuid = MatchGuid;
-                mt.Select();
+                MatchTicket mt = repo.Single<MatchTicket>(MatchGuid);
 
                 // Get Match Info
 
-                lblMatchGuid.Text = mt.MatchGuid.ToString();
+                lblMatchGuid.Text = mt.ID.ToString();
 
                 if (mt.LeagueGuid.HasValue && !string.IsNullOrEmpty(mt.LeagueName))
                     lblLeagueName.Text = string.Format("<em>{0}</em>", mt.LeagueName);
@@ -109,10 +109,10 @@ namespace iArsenal.Web
 
         private void BindItemData()
         {
-            List<OrderItem> list = OrderItem.GetOrderItems().FindAll(oi => oi.Remark.Equals(MatchGuid.ToString()));
-            List<Order> oList = Order.GetOrders().FindAll(o => list.Any(oi => oi.OrderID.Equals(o.OrderID)));
+            var query = repo.Query<Order>(o =>
+                repo.Query<OrderItem>(x => x.Remark.Equals(MatchGuid.ToString())).Any(x => x.OrderID.Equals(o.ID)));
 
-            gvMatchOrder.DataSource = oList;
+            gvMatchOrder.DataSource = query;
             gvMatchOrder.DataBind();
         }
 
@@ -182,8 +182,11 @@ namespace iArsenal.Web
             try
             {
                 MatchTicket mt = new MatchTicket();
-                mt.MatchGuid = MatchGuid;
-                mt.Select();
+
+                if (!MatchGuid.Equals(Guid.Empty))
+                {
+                    mt = repo.Single<MatchTicket>(MatchGuid);
+                }
 
                 DateTime _deadline;
                 if (!string.IsNullOrEmpty(tbDeadline.Text.Trim()) && DateTime.TryParse(tbDeadline.Text.Trim(), out _deadline))
@@ -206,16 +209,16 @@ namespace iArsenal.Web
                 mt.ProductCode = ddlProductCode.SelectedValue;
 
                 // Check whether MatchTicket Instance in DB
-                if (mt.Exist())
+                if (mt.Any())
                 {
-                    mt.Update();
+                    repo.Update(mt);
                     MatchTicket.Cache.RefreshCache();
 
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('更新成功');window.location.href=window.location.href", true);
                 }
                 else
                 {
-                    mt.Insert();
+                    repo.Insert(mt);
                     MatchTicket.Cache.RefreshCache();
 
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('添加成功');window.location.href = 'AdminMatchTicket.aspx'", true);
@@ -245,9 +248,7 @@ namespace iArsenal.Web
             {
                 if (MatchGuid != Guid.Empty)
                 {
-                    MatchTicket mt = new MatchTicket();
-                    mt.MatchGuid = MatchGuid;
-                    mt.Delete();
+                    repo.Delete<MatchTicket>(MatchGuid);
 
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('删除成功');window.location.href='AdminMatchTicket.aspx'", true);
                 }

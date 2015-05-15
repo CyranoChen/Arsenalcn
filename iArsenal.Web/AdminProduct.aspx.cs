@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.UI.WebControls;
 
-using iArsenal.Entity;
+using iArsenal.Service;
+using Arsenalcn.Core;
 
 namespace iArsenal.Web
 {
     public partial class AdminProduct : AdminPageBase
     {
+        private readonly IRepository repo = new Repository();
         protected void Page_Load(object sender, EventArgs e)
         {
             ctrlAdminFieldToolBar.AdminUserName = this.Username;
@@ -39,7 +42,7 @@ namespace iArsenal.Web
 
         private void BindData()
         {
-            List<Product> list = Product.GetProducts().FindAll(delegate(Product p)
+            var list = repo.All<Product>().ToList().FindAll(x =>
             {
                 Boolean returnValue = true;
                 string tmpString = string.Empty;
@@ -48,35 +51,35 @@ namespace iArsenal.Web
                 {
                     tmpString = ViewState["Code"].ToString();
                     if (!string.IsNullOrEmpty(tmpString) && tmpString != "--编码--")
-                        returnValue = returnValue && p.Code.ToLower().Contains(tmpString.ToLower());
+                        returnValue = returnValue && x.Code.ToLower().Contains(tmpString.ToLower());
                 }
 
                 if (ViewState["Name"] != null)
                 {
                     tmpString = ViewState["Name"].ToString();
                     if (!string.IsNullOrEmpty(tmpString) && tmpString != "--名称--")
-                        returnValue = returnValue && p.Name.ToLower().Contains(tmpString.ToLower());
+                        returnValue = returnValue && x.Name.ToLower().Contains(tmpString.ToLower());
                 }
 
                 if (ViewState["DisplayName"] != null)
                 {
                     tmpString = ViewState["DisplayName"].ToString();
                     if (!string.IsNullOrEmpty(tmpString) && tmpString != "--译名--")
-                        returnValue = returnValue && p.DisplayName.Contains(tmpString);
+                        returnValue = returnValue && x.DisplayName.Contains(tmpString);
                 }
 
                 if (ViewState["ProductType"] != null)
                 {
                     tmpString = ViewState["ProductType"].ToString();
                     if (!string.IsNullOrEmpty(tmpString))
-                        returnValue = returnValue && ((int)p.ProductType).Equals(Convert.ToInt32(tmpString));
+                        returnValue = returnValue && ((int)x.ProductType).Equals(Convert.ToInt32(tmpString));
                 }
 
                 if (ViewState["IsActive"] != null)
                 {
                     tmpString = ViewState["IsActive"].ToString();
                     if (!string.IsNullOrEmpty(tmpString))
-                        returnValue = returnValue && p.IsActive.Equals(Convert.ToBoolean(tmpString));
+                        returnValue = returnValue && x.IsActive.Equals(Convert.ToBoolean(tmpString));
                 }
 
                 return returnValue;
@@ -85,7 +88,7 @@ namespace iArsenal.Web
             #region set GridView Selected PageIndex
             if (ProductGuid.HasValue && ProductGuid != Guid.Empty)
             {
-                int i = list.FindIndex(delegate(Product p) { return p.ProductGuid == ProductGuid; });
+                int i = list.FindIndex(x => x.ID.Equals(ProductGuid));
                 if (i >= 0)
                 {
                     gvProduct.PageIndex = i / gvProduct.PageSize;

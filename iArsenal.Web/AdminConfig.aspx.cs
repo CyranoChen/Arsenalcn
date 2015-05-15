@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web.UI.WebControls;
+using System.Linq;
 
-using Arsenalcn.Common.Entity;
-using iArsenal.Entity;
+using iArsenal.Service;
+using Arsenalcn.Core;
 
 namespace iArsenal.Web
 {
@@ -21,9 +22,9 @@ namespace iArsenal.Web
 
         private void BindData()
         {
-            List<Config> list = Config.GetConfigs().FindAll(delegate(Config c) { return c.ConfigSystem.Equals(ConfigSystem.iArsenal); });
+            IConfig instance = new Config();
 
-            gvSysConfig.DataSource = list;
+            gvSysConfig.DataSource = instance.All(ConfigSystem.iArsenal).ToList();
             gvSysConfig.DataBind();
         }
 
@@ -88,11 +89,8 @@ namespace iArsenal.Web
                 Arsenal_Team.Cache.RefreshCache();
 
                 MatchTicket.Cache.RefreshCache();
-
                 Member.Cache.RefreshCache();
-
                 Product.Cache.RefreshCache();
-
                 Order.RefreshOrderBaseType();
 
                 ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('更新全部缓存成功');window.location.href=window.location.href", true);

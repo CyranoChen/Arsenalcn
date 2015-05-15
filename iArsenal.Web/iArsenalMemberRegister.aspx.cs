@@ -1,13 +1,14 @@
 ﻿using System;
 
-using Arsenalcn.Common.Utility;
-using iArsenal.Entity;
-
+using Arsenalcn.Core;
+using Arsenalcn.Core.Utility;
+using iArsenal.Service;
 
 namespace iArsenal.Web
 {
     public partial class iArsenalMemberRegister : AcnPageBase
     {
+        private readonly IRepository repo = new Repository();
         protected override void OnInit(EventArgs e)
         {
             AnonymousRedirect = true;
@@ -19,15 +20,16 @@ namespace iArsenal.Web
         {
             get
             {
-                Member mem = new Member();
-                mem.Select(this.UID);
+                Member m = Member.Cache.LoadByAcnID(this.UID);
 
-                if (mem != null && mem.MemberID > 0)
+                if (m != null && m.ID > 0)
                 {
-                    return mem.MemberID;
+                    return m.ID;
                 }
                 else
+                {
                     return int.MinValue;
+                }
             }
         }
 
@@ -45,9 +47,7 @@ namespace iArsenal.Web
 
             if (MemberID > 0)
             {
-                Member m = new Member();
-                m.MemberID = MemberID;
-                m.Select();
+                Member m = repo.Single<Member>(MemberID);
 
                 tbName.Text = m.Name;
                 rblGender.SelectedValue = m.Gender.ToString().ToLower();
@@ -68,8 +68,7 @@ namespace iArsenal.Web
 
                 if (MemberID > 0)
                 {
-                    m.MemberID = MemberID;
-                    m.Select();
+                    m = repo.Single<Member>(MemberID);
                 }
                 else
                 {
@@ -119,15 +118,16 @@ namespace iArsenal.Web
 
                 if (MemberID > 0)
                 {
-                    m.MemberID = MemberID;
-                    m.Update();
+                    repo.Update(m);
+
                     Member.Cache.RefreshCache();
 
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('您的实名会员信息更新成功');window.location.href=window.location.href+'#anchorBack'", true);
                 }
                 else
                 {
-                    m.Insert();
+                    repo.Insert(m);
+
                     Member.Cache.RefreshCache();
 
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('您的实名会员信息已注册成功');window.location.href= 'Default.aspx'", true);

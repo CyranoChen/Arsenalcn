@@ -1,6 +1,6 @@
 ﻿using System;
 
-using iArsenal.Entity;
+using iArsenal.Service;
 
 namespace iArsenal.Web.Control
 {
@@ -13,7 +13,7 @@ namespace iArsenal.Web.Control
             else
                 phAnonymous.Visible = false;
 
-            if (ConfigAdmin.IsPluginAdmin(UserID))
+            if (ConfigGlobal.IsPluginAdmin(UserID))
                 pnlFuncLink.Visible = true;
             else
                 pnlFuncLink.Visible = false;

@@ -10,6 +10,7 @@ namespace Arsenalcn.Core
         bool Any();
 
         IQueryable<Config> All();
+        IQueryable<Config> All(ConfigSystem cs);
         //IQueryable<Config> Query(Expression<Func<Config, bool>> predicate);
 
         //void Create(SqlTransaction trans = null);

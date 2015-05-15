@@ -1,6 +1,6 @@
 ﻿using System;
 
-using iArsenal.Entity;
+using iArsenal.Service;
 
 namespace iArsenal.Web
 {
@@ -13,7 +13,7 @@ namespace iArsenal.Web
 
             base.OnInitComplete(e);
 
-            if (!ConfigAdmin.IsPluginAdmin(this.UID))
+            if (!ConfigGlobal.IsPluginAdmin(this.UID))
             {
                 Response.Redirect("Default.aspx");
             }

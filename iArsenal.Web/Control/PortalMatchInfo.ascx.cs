@@ -1,7 +1,7 @@
 ﻿using System;
 
-using iArsenal.Entity;
-using ArsenalTeam = iArsenal.Entity.Arsenal.Team;
+using iArsenal.Service;
+using ArsenalTeam = iArsenal.Service.Arsenal.Team;
 
 namespace iArsenal.Web.Control
 {

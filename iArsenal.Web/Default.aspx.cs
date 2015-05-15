@@ -1,6 +1,6 @@
 ﻿using System;
 
-using iArsenal.Entity;
+using iArsenal.Service;
 
 namespace iArsenal.Web
 {
@@ -16,7 +16,7 @@ namespace iArsenal.Web
             {
                 //ltrlPluginName.Text = string.Format("<strong>欢迎进入{0}</strong>", ConfigGlobal.PluginDisplayName);
 
-                //if (ConfigAdmin.IsPluginAdmin(this.UID))
+                //if (ConfigGlobal.IsPluginAdmin(this.UID))
                 //    pnlAdmin.Visible = true;
                 //else
                 //    pnlAdmin.Visible = false;

@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Data.SqlClient;
 
-using iArsenal.Entity;
+using Arsenalcn.Core;
+using iArsenal.Service;
 
 namespace iArsenal.Web
 {
     public partial class iArsenalOrder_MemberShip : MemberPageBase
     {
+        private readonly IRepository repo = new Repository();
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -38,7 +40,8 @@ namespace iArsenal.Web
                 # region Check whether core or premier membership
                 if (OrderID > 0)
                 {
-                    Order_MemberShip o = new Order_MemberShip(OrderID);
+                    Order_MemberShip o = repo.Single<Order_MemberShip>(OrderID);
+
                     OrdrItmMemberShip oiMemberShip = null;
 
                     if (o.OIMemberShipCore != null && o.OIMemberShipCore.IsActive)
@@ -113,15 +116,13 @@ namespace iArsenal.Web
 
                 if (OrderID > 0)
                 {
-                    Order_MemberShip o = new Order_MemberShip(OrderID);
+                    Order_MemberShip o = repo.Single<Order_MemberShip>(OrderID);
 
-                    if (ConfigAdmin.IsPluginAdmin(UID) && o != null)
+                    if (ConfigGlobal.IsPluginAdmin(UID) && o != null)
                     {
                         lblMemberName.Text = string.Format("<b>{0}</b> (<em>NO.{1}</em>)", o.MemberName, o.MemberID.ToString());
 
-                        Member m = new Member();
-                        m.MemberID = o.MemberID;
-                        m.Select();
+                        Member m = repo.Single<Member>(o.MemberID);
 
                         if (m == null || !m.IsActive)
                         {
@@ -216,9 +217,7 @@ namespace iArsenal.Web
                 else
                 {
                     //Fill Member draft information into textbox
-                    Member m = new Member();
-                    m.MemberID = this.MID;
-                    m.Select();
+                    Member m = repo.Single<Member>(this.MID);
 
                     #region Set Member Nation & Region
                     if (!string.IsNullOrEmpty(m.Nation))
@@ -286,16 +285,14 @@ namespace iArsenal.Web
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
-            using (SqlConnection conn = ConfigGlobal.SQLConnectionStrings)
+            using (SqlConnection conn = new SqlConnection(DataAccess.ConnectString))
             {
                 conn.Open();
                 SqlTransaction trans = conn.BeginTransaction();
 
                 try
                 {
-                    Member m = new Member();
-                    m.MemberID = this.MID;
-                    m.Select();
+                    Member m = repo.Single<Member>(this.MID);
 
                     // Update Member Information
 
@@ -373,28 +370,32 @@ namespace iArsenal.Web
 
                     m.MemberType = MemberType.Match;
 
-                    m.Update();
+                    repo.Update(m);
 
                     // New Order
                     Order o = new Order();
+                    int _newID = int.MinValue;
 
                     if (OrderID > 0)
                     {
-                        o.OrderID = OrderID;
-                        o.Select();
+                        o = repo.Single<Order>(OrderID);
                     }
 
                     o.Mobile = m.Mobile;
                     o.UpdateTime = DateTime.Now;
                     o.Description = tbOrderDescription.Text.Trim();
+                    o.OrderType = OrderBaseType.MemberShip;
 
                     if (OrderID > 0)
                     {
-                        o.Update(trans);
+                        repo.Update(o, trans);
+
+                        // used by setting OrderItem foreign key
+                        _newID = OrderID;
                     }
                     else
                     {
-                        o.MemberID = m.MemberID;
+                        o.MemberID = m.ID;
                         o.MemberName = m.Name;
 
                         o.Address = m.Address;
@@ -409,62 +410,54 @@ namespace iArsenal.Web
                         o.IsActive = true;
                         o.Remark = string.Empty;
 
-                        o.Insert(trans);
-                        //o.Select();
+                        //Get the Order ID after Insert new one
+                        _newID = (int)repo.InsertOutKey<Order>(o, trans);
                     }
 
-                    //Get the Order ID after Insert new one
+                    //New Order Items
+                    OrdrItmMemberShip oi = new OrdrItmMemberShip();
 
-                    if (o.OrderID > 0)
+                    if (!string.IsNullOrEmpty(tbMemberClass.Text.Trim()))
                     {
                         //Remove Order Item of this Order
-                        if (o.OrderID.Equals(OrderID))
+                        if (OrderID > 0 && o.ID.Equals(OrderID))
                         {
-                            int countOrderItem = OrderItem.RemoveOrderItemByOrderID(o.OrderID);
+                            repo.Delete<OrderItem>(x => x.OrderID.Equals(OrderID), trans);
                         }
 
-                        //New Order Items
-                        OrdrItmMemberShip oi = new OrdrItmMemberShip();
+                        ProductType _currProductType = (ProductType)Enum.Parse(typeof(ProductType), tbMemberClass.Text.Trim());
+                        Product pMembership = Product.Cache.Load(_currProductType).Find(p => p.IsActive);
 
-                        if (!string.IsNullOrEmpty(tbMemberClass.Text.Trim()))
+                        if (pMembership == null)
+                            throw new Exception("无相关会籍可申请，请联系管理员");
+
+                        // Validate Member Card No
+                        int _cardNo = 0;
+                        if (!string.IsNullOrEmpty(tbMemberCardNo.Text.Trim()) && int.TryParse(tbMemberCardNo.Text.Trim(), out _cardNo))
                         {
-                            ProductType _currProductType = (ProductType)Enum.Parse(typeof(ProductType), tbMemberClass.Text.Trim());
-                            Product pMembership = Product.Cache.Load(_currProductType).Find(p => p.IsActive);
-
-                            if (pMembership == null)
-                                throw new Exception("无相关会籍可申请，请联系管理员");
-
-                            // Validate Member Card No
-                            int _cardNo = 0;
-                            if (!string.IsNullOrEmpty(tbMemberCardNo.Text.Trim()) && int.TryParse(tbMemberCardNo.Text.Trim(), out _cardNo))
-                            {
-                                oi.MemberCardNo = _cardNo.ToString();
-                            }
-                            else
-                            {
-                                throw new Exception("请正确填写会员卡号");
-                            }
-
-                            oi.EndDate = CurrSeasonDeadline;
-
-                            oi.OrderID = o.OrderID;
-                            oi.Quantity = 1;
-                            oi.Sale = null;
-
-                            oi.Place(m, pMembership, trans);
+                            oi.MemberCardNo = _cardNo.ToString();
                         }
                         else
                         {
-                            throw new Exception("此订单未登记会籍信息");
+                            throw new Exception("请正确填写会员卡号");
                         }
+
+                        oi.EndDate = CurrSeasonDeadline;
+
+                        oi.OrderID = _newID;
+                        oi.Quantity = 1;
+                        oi.Sale = null;
+
+                        oi.Place(m, pMembership, trans);
+                    }
+                    else
+                    {
+                        throw new Exception("此订单未登记会籍信息");
                     }
 
                     trans.Commit();
 
-                    //Renew OrderType after Insert OrderItem and transcation commited
-                    o.Update();
-
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", string.Format("alert('订单({0})保存成功');window.location.href = 'ServerOrderView.ashx?OrderID={0}'", o.OrderID.ToString()), true);
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", string.Format("alert('订单({0})保存成功');window.location.href = 'ServerOrderView.ashx?OrderID={0}'", _newID.ToString()), true);
                 }
                 catch (Exception ex)
                 {

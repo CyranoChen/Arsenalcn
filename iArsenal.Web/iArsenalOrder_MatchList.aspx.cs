@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.UI.WebControls;
 
-using iArsenal.Entity;
-using ArsenalTeam = iArsenal.Entity.Arsenal.Team;
+using iArsenal.Service;
+using ArsenalTeam = iArsenal.Service.Arsenal.Team;
 
 namespace iArsenal.Web
 {
@@ -199,7 +199,7 @@ namespace iArsenal.Web
 
                 if (hlTicketApply != null && mt.Deadline > DateTime.Now)
                 {
-                    hlTicketApply.NavigateUrl = string.Format("iArsenalOrder_MatchTicket.aspx?MatchGuid={0}", mt.MatchGuid.ToString());
+                    hlTicketApply.NavigateUrl = string.Format("iArsenalOrder_MatchTicket.aspx?MatchGuid={0}", mt.ID.ToString());
                     hlTicketApply.Target = "_self";
                     hlTicketApply.Visible = true;
                 }

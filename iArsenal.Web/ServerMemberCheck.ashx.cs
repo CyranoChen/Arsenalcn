@@ -2,12 +2,14 @@
 using System.Web;
 using System.Web.Script.Serialization;
 
-using iArsenal.Entity;
+using iArsenal.Service;
+using Arsenalcn.Core;
 
 namespace iArsenal.Web
 {
     public class ServerMemberCheck : IHttpHandler
     {
+        private readonly IRepository repo = new Repository();
         public void ProcessRequest(HttpContext context)
         {
             string responseText = string.Empty;
@@ -18,9 +20,7 @@ namespace iArsenal.Web
                 {
                     string mID = context.Request.QueryString["MemberID"];
 
-                    Member m = new Member();
-                    m.MemberID = Convert.ToInt32(mID);
-                    m.Select();
+                    Member m = repo.Single<Member>(Convert.ToInt32(mID));
 
                     if (m != null)
                     {

@@ -84,6 +84,11 @@ namespace Arsenalcn.Core
             return list.AsQueryable();
         }
 
+        public IQueryable<Config> All(ConfigSystem cs)
+        {
+            return All().Where(x => x.ConfigSystem.Equals(cs));
+        }
+
         public void Update(SqlTransaction trans = null)
         {
             Contract.Requires(this.Any());

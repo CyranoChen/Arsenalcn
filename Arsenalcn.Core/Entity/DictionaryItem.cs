@@ -6,7 +6,7 @@ using System.Linq;
 namespace Arsenalcn.Core
 {
     [AttrDbTable("Arsenalcn_DictionaryItem", Sort = "OrderNum")]
-    public class DictionaryItem : Entity<long>
+    public class DictionaryItem : Entity<int>
     {
         public DictionaryItem() : base() { }
 

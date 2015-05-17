@@ -299,9 +299,12 @@ namespace Arsenalcn.Core
 
             var instances = Query<T>(predicate);
 
-            foreach (var instance in instances)
+            if (instances != null && instances.Count() > 0)
             {
-                Delete<T>(instance, trans);
+                foreach (var instance in instances)
+                {
+                    Delete<T>(instance, trans);
+                }
             }
         }
 

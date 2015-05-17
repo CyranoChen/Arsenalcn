@@ -12,7 +12,7 @@ namespace iArsenal.Service
     {
         public Product() : base() { }
 
-        private Product(DataRow dr)
+        public Product(DataRow dr)
             : base(dr)
         {
             #region Generate Product Type Info
@@ -185,7 +185,7 @@ namespace iArsenal.Service
         { get; set; }
 
         [AttrDbColumn("Size")]
-        public ProductSizeType Size
+        public ProductSizeType? Size
         { get; set; }
 
         [AttrDbColumn("Currency")]
@@ -259,7 +259,6 @@ namespace iArsenal.Service
 
     public enum ProductSizeType
     {
-        Null,
         Childrens,
         Adults,
         Infants,

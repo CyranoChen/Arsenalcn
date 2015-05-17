@@ -25,23 +25,28 @@ namespace iArsenal.Web
 
             if (UID > 0)
             {
-                Member m = Member.Cache.LoadByAcnID(this.UID);
-
-                if (m != null && m.ID > 0)
+                if (this.MID == null || this.MID <= 0)
                 {
-                    this.MID = m.ID;
-                    this.MemberName = m.Name;
+                    Member m = Member.Cache.LoadByAcnID(this.UID);
 
-                    m.IP = IPLocation.GetIP();
-                    m.LastLoginTime = DateTime.Now;
+                    if (m != null && m.ID > 0)
+                    {
+                        this.MID = m.ID;
+                        this.MemberName = m.Name;
 
-                    repo.Update(m);
+                        m.IP = IPLocation.GetIP();
+                        m.LastLoginTime = DateTime.Now;
 
+                        repo.Update(m);
+                    }
 
-                    // TODO: change to cache mode
-                    this.CurrentMemberPeriod = repo.Single<MemberPeriod>(x =>
-                        x.MemberID.Equals(this.MID) && x.IsActive &&
-                        x.StartDate <= DateTime.Now && x.EndDate >= DateTime.Now);
+                    if (this.CurrentMemberPeriod == null)
+                    {
+                        // TODO: change to cache mode
+                        this.CurrentMemberPeriod = repo.Single<MemberPeriod>(x =>
+                            x.MemberID.Equals(this.MID) && x.IsActive &&
+                            x.StartDate <= DateTime.Now && x.EndDate >= DateTime.Now);
+                    }
                 }
                 else
                 {

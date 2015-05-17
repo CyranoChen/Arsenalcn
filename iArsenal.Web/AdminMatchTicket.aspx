@@ -47,10 +47,10 @@
                 <uc3:CustomPagerInfo ID="ctrlCustomPagerInfo" runat="server" />
             </div>
         </div>
-        <asp:GridView ID="gvMatchTicket" runat="server" DataKeyNames="MatchGuid" OnPageIndexChanging="gvMatchTicket_PageIndexChanging"
+        <asp:GridView ID="gvMatchTicket" runat="server" DataKeyNames="ID" OnPageIndexChanging="gvMatchTicket_PageIndexChanging"
             PageSize="20" OnSelectedIndexChanged="gvMatchTicket_SelectedIndexChanged" OnRowDataBound="gvMatchTicket_RowDataBound">
             <Columns>
-                <asp:BoundField DataField="MatchGuid" Visible="false" />
+                <asp:BoundField DataField="ID" Visible="false" />
                 <asp:BoundField DataField="LeagueName" HeaderText="分类" />
                 <asp:BoundField DataField="Round" HeaderText="轮次" />
                 <asp:TemplateField HeaderText="主客场">

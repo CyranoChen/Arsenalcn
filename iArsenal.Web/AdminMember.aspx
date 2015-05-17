@@ -44,10 +44,10 @@
                 <uc3:CustomPagerInfo ID="ctrlCustomPagerInfo" runat="server" />
             </div>
         </div>
-        <asp:GridView ID="gvMember" runat="server" DataKeyNames="MemberID" OnPageIndexChanging="gvMember_PageIndexChanging"
+        <asp:GridView ID="gvMember" runat="server" DataKeyNames="ID" OnPageIndexChanging="gvMember_PageIndexChanging"
             PageSize="10" OnSelectedIndexChanged="gvMember_SelectedIndexChanged" OnRowDataBound="gvMember_RowDataBound">
             <Columns>
-                <asp:BoundField HeaderText="标识" DataField="MemberID" />
+                <asp:BoundField HeaderText="标识" DataField="ID" />
                 <asp:TemplateField HeaderText="会员姓名">
                     <ItemTemplate>
                         <asp:HyperLink ID="hlName" runat="server"></asp:HyperLink>

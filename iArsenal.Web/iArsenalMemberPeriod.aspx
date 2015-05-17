@@ -44,9 +44,9 @@
                     <a class="Premier" href="iArsenalOrder_MemberShip.aspx?Type=Premier" title="注册本赛季ACN高级(Premier)会员"></a>
                 </div>
             </div>
-            <asp:GridView ID="gvMemberPeriod" runat="server" DataKeyNames="MemberPeriodID">
+            <asp:GridView ID="gvMemberPeriod" runat="server" DataKeyNames="ID">
                 <Columns>
-                    <asp:BoundField HeaderText="标识" DataField="MemberPeriodID" Visible="false" />
+                    <asp:BoundField HeaderText="标识" DataField="ID" Visible="false" />
                     <asp:BoundField HeaderText="卡号" DataField="MemberCardNo" />
                     <asp:BoundField HeaderText="等级" DataField="MemberClass" DataFormatString="<em>{0}</em>" HtmlEncode="false" />
                     <asp:BoundField HeaderText="开始时间" DataField="StartDate" DataFormatString="{0:yyyy-MM-dd}" />

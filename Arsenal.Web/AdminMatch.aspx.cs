@@ -177,7 +177,7 @@ namespace Arsenal.Web
 
                 ddlTeam.DataSource = list.OrderBy(x => x.TeamEnglishName);
                 ddlTeam.DataTextField = "TeamDisplayName";
-                ddlTeam.DataValueField = "TeamGuid";
+                ddlTeam.DataValueField = "ID";
                 ddlTeam.DataBind();
 
                 ddlTeam.Visible = true;

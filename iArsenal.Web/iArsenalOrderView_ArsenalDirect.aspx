@@ -92,10 +92,10 @@
                     </tr>
                     <tr>
                         <td colspan="4" style="padding: 0px;">
-                            <asp:GridView ID="gvWishItem" runat="server" DataKeyNames="OrderItemID" OnPageIndexChanging="gvWishItem_PageIndexChanging"
+                            <asp:GridView ID="gvWishItem" runat="server" DataKeyNames="ID" OnPageIndexChanging="gvWishItem_PageIndexChanging"
                                 PageSize="10" OnRowDataBound="gvWishItem_RowDataBound">
                                 <Columns>
-                                    <asp:BoundField HeaderText="编号" DataField="OrderItemID" Visible="false" />
+                                    <asp:BoundField HeaderText="编号" DataField="ID" Visible="false" />
                                     <asp:BoundField HeaderText="编码" DataField="Code" DataFormatString="<em>{0}</em>"
                                         HtmlEncode="false" />
                                     <asp:BoundField HeaderText="名称" DataField="ProductName" ItemStyle-HorizontalAlign="Left" />

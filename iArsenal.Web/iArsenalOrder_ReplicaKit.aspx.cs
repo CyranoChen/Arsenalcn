@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Web.UI.WebControls;
 
 using Arsenalcn.Core;
@@ -135,6 +136,8 @@ namespace iArsenal.Web
             {
                 lblMemberName.Text = string.Format("<b>{0}</b> (<em>NO.{1}</em>)", this.MemberName, this.MID.ToString());
                 lblMemberACNInfo.Text = string.Format("<b>{0}</b> (<em>ID.{1}</em>)", this.Username, this.UID.ToString());
+
+                var _list = Product.Cache.ProductList;
 
                 Product pNumber = Product.Cache.Load(ProductType.PlayerNumber).Find(p => p.IsActive);
                 Product pName = Product.Cache.Load(ProductType.PlayerName).Find(p => p.IsActive);
@@ -350,13 +353,12 @@ namespace iArsenal.Web
                     tbAlipay.Text = m.TaobaoName;
                     tbOrderAddress.Text = m.Address;
 
-                    List<Product> list = Product.Cache.Load(CurrProductType).FindAll(p => p.IsActive);
-                    list.Sort(delegate(Product p1, Product p2) { return string.Compare(p1.Code, p2.Code); });
+                    var query = Product.Cache.Load(CurrProductType).FindAll(x => x.IsActive).OrderBy(x => x.Code);
 
-                    if (list != null && list.Count > 0)
+                    if (query != null && query.Count() > 0)
                     {
-                        ddlReplicaKit.DataSource = list;
-                        ddlReplicaKit.DataValueField = "ProductGuid";
+                        ddlReplicaKit.DataSource = query;
+                        ddlReplicaKit.DataValueField = "ID";
                         ddlReplicaKit.DataBind();
 
                         ddlReplicaKit.Items.Insert(0, new ListItem("--请选择球衣类型--", string.Empty));

@@ -146,10 +146,10 @@
                     </tr>
                 </tbody>
             </table>
-            <asp:GridView ID="gvProductOrder" runat="server" DataKeyNames="OrderID" OnPageIndexChanging="gvProductOrder_PageIndexChanging"
+            <asp:GridView ID="gvProductOrder" runat="server" DataKeyNames="ID" OnPageIndexChanging="gvProductOrder_PageIndexChanging"
                 OnSelectedIndexChanged="gvProductOrder_SelectedIndexChanged" OnRowDataBound="gvProductOrder_RowDataBound" PageSize="5">
                 <Columns>
-                    <asp:HyperLinkField HeaderText="编号" DataTextField="OrderID" DataNavigateUrlFields="OrderID"
+                    <asp:HyperLinkField HeaderText="编号" DataTextField="ID" DataNavigateUrlFields="ID"
                         DataNavigateUrlFormatString="ServerOrderView.ashx?OrderID={0}" Target="_blank" />
                     <asp:HyperLinkField HeaderText="会员姓名" DataTextField="MemberName" DataTextFormatString="<em>{0}</em>"
                         DataNavigateUrlFields="MemberID" DataNavigateUrlFormatString="AdminOrder.aspx?MemberID={0}" />

@@ -130,10 +130,10 @@
                     </tr>
                 </tbody>
             </table>
-            <asp:GridView ID="gvOrderItem" runat="server" DataKeyNames="OrderItemID" OnPageIndexChanging="gvOrderItem_PageIndexChanging"
+            <asp:GridView ID="gvOrderItem" runat="server" DataKeyNames="ID" OnPageIndexChanging="gvOrderItem_PageIndexChanging"
                 PageSize="10" OnSelectedIndexChanged="gvOrderItem_SelectedIndexChanged">
                 <Columns>
-                    <asp:BoundField HeaderText="编号" DataField="OrderItemID" />
+                    <asp:BoundField HeaderText="编号" DataField="ID" />
                     <asp:BoundField HeaderText="创建时间" DataField="CreateTime" DataFormatString="{0:yyyy-MM-dd HH:mm:ss}" Visible="false" />
                     <asp:BoundField HeaderText="编码" DataField="Code" DataFormatString="<em>{0}</em>"
                         HtmlEncode="false" />

@@ -247,9 +247,9 @@
                     </tr>
                 </tbody>
             </table>
-            <asp:GridView ID="gvMemberPeriod" runat="server" DataKeyNames="MemberPeriodID" OnSelectedIndexChanged="gvMemberPeriod_SelectedIndexChanged">
+            <asp:GridView ID="gvMemberPeriod" runat="server" DataKeyNames="ID" OnSelectedIndexChanged="gvMemberPeriod_SelectedIndexChanged">
                 <Columns>
-                    <asp:BoundField HeaderText="标识" DataField="MemberPeriodID" />
+                    <asp:BoundField HeaderText="标识" DataField="ID" />
                     <asp:BoundField HeaderText="会员编号" DataField="MemberID" DataFormatString="<em>{0}</em>"
                         HtmlEncode="false" />
                     <asp:HyperLinkField HeaderText="会员姓名" DataTextField="MemberName" DataTextFormatString="<em>{0}</em>"

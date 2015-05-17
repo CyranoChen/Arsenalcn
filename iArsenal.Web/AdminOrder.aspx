@@ -69,7 +69,7 @@
                 <uc3:CustomPagerInfo ID="ctrlCustomPagerInfo" runat="server" />
             </div>
         </div>
-        <asp:GridView ID="gvOrder" runat="server" DataKeyNames="OrderID" OnPageIndexChanging="gvOrder_PageIndexChanging"
+        <asp:GridView ID="gvOrder" runat="server" DataKeyNames="ID" OnPageIndexChanging="gvOrder_PageIndexChanging"
             PageSize="10" OnSelectedIndexChanged="gvOrder_SelectedIndexChanged" OnRowDataBound="gvOrder_RowDataBound">
             <Columns>
                 <asp:TemplateField HeaderText="编号">

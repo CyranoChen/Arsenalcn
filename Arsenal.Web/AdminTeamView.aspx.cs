@@ -140,19 +140,11 @@ namespace Arsenal.Web
             {
                 if (TeamGuid != Guid.Empty)
                 {
-                    int countRelationLeagueTeam = int.MinValue;
-
                     IRelationLeagueTeam instance = new RelationLeagueTeam();
 
-                    // TODO
-                    var query = instance.Query(x => x.TeamGuid.Equals(TeamGuid));
+                    int countRelationLeagueTeam = instance.Query(x => x.TeamGuid.Equals(TeamGuid)).Count();
 
-                    if (query != null && query.Count() > 0)
-                    {
-                        countRelationLeagueTeam = query.Count();
-
-                        instance.Delete(x => x.TeamGuid.Equals(TeamGuid));
-                    }
+                    instance.Delete(x => x.TeamGuid.Equals(TeamGuid));
 
                     repo.Delete<Team>(TeamGuid);
 

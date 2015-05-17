@@ -40,10 +40,10 @@
                     <uc3:CustomPagerInfo ID="ctrlCustomPagerInfo" runat="server" />
                 </div>
             </div>
-            <asp:GridView ID="gvOrder" runat="server" DataKeyNames="OrderID" OnPageIndexChanging="gvOrder_PageIndexChanging"
+            <asp:GridView ID="gvOrder" runat="server" DataKeyNames="ID" OnPageIndexChanging="gvOrder_PageIndexChanging"
                 PageSize="10" OnSelectedIndexChanged="gvOrder_SelectedIndexChanged" OnRowDataBound="gvOrder_RowDataBound">
                 <Columns>
-                    <asp:BoundField HeaderText="编号" DataField="OrderID" />
+                    <asp:BoundField HeaderText="编号" DataField="ID" />
                     <asp:BoundField HeaderText="创建时间" DataField="CreateTime" DataFormatString="{0:yyyy-MM-dd HH:mm}" />
                     <asp:BoundField HeaderText="定金" DataField="Deposit" NullDisplayText="/" DataFormatString="{0:f2}"
                         ItemStyle-HorizontalAlign="Right" Visible="false" />

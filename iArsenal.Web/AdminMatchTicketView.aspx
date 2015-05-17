@@ -122,10 +122,10 @@
                     </tr>
                 </tbody>
             </table>
-            <asp:GridView ID="gvMatchOrder" runat="server" DataKeyNames="OrderID" OnPageIndexChanging="gvMatchOrder_PageIndexChanging"
+            <asp:GridView ID="gvMatchOrder" runat="server" DataKeyNames="ID" OnPageIndexChanging="gvMatchOrder_PageIndexChanging"
                 OnSelectedIndexChanged="gvMatchOrder_SelectedIndexChanged" OnRowDataBound="gvMatchOrder_RowDataBound">
                 <Columns>
-                    <asp:HyperLinkField HeaderText="编号" DataTextField="OrderID" DataNavigateUrlFields="OrderID"
+                    <asp:HyperLinkField HeaderText="编号" DataTextField="ID" DataNavigateUrlFields="ID"
                         DataNavigateUrlFormatString="ServerOrderView.ashx?OrderID={0}" Target="_blank" />
                     <asp:TemplateField HeaderText="会员姓名">
                         <ItemTemplate>

@@ -121,9 +121,12 @@ namespace Arsenal.Service
 
             var instances = Query(predicate);
 
-            foreach (var instance in instances)
+            if (instances != null && instances.Count() > 0)
             {
-                instance.Delete(trans);
+                foreach (var instance in instances)
+                {
+                    instance.Delete(trans);
+                }
             }
         }
 

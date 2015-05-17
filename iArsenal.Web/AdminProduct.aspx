@@ -59,10 +59,10 @@
                 <uc3:CustomPagerInfo ID="ctrlCustomPagerInfo" runat="server" />
             </div>
         </div>
-        <asp:GridView ID="gvProduct" runat="server" DataKeyNames="ProductGuid" OnPageIndexChanging="gvProduct_PageIndexChanging"
+        <asp:GridView ID="gvProduct" runat="server" DataKeyNames="ID" OnPageIndexChanging="gvProduct_PageIndexChanging"
             PageSize="10" OnSelectedIndexChanged="gvProduct_SelectedIndexChanged">
             <Columns>
-                <asp:BoundField DataField="ProductGuid" Visible="false" />
+                <asp:BoundField DataField="ID" Visible="false" />
                 <asp:BoundField DataField="Code" HeaderText="编码" DataFormatString="<em>{0}</em>"
                     HtmlEncode="false" />
                 <asp:BoundField DataField="Name" HeaderText="名称" />

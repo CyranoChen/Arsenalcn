@@ -84,9 +84,9 @@ namespace iArsenal.Web
 
         private void BindItemData()
         {
-            var query = repo.Query<OrderItem>(x => x.OrderID.Equals(OrderID));
+            var list = repo.Query<OrderItem>(x => x.OrderID.Equals(OrderID)).ToList();
 
-            gvOrderItem.DataSource = query;
+            gvOrderItem.DataSource = list;
             gvOrderItem.DataBind();
 
             #region set Control Custom Pager
@@ -97,7 +97,7 @@ namespace iArsenal.Web
 
                 ctrlCustomPagerInfo.PageIndex = gvOrderItem.PageIndex;
                 ctrlCustomPagerInfo.PageCount = gvOrderItem.PageCount;
-                ctrlCustomPagerInfo.RowCount = query.Count();
+                ctrlCustomPagerInfo.RowCount = list.Count;
                 ctrlCustomPagerInfo.InitComponent();
             }
             else
@@ -236,7 +236,7 @@ namespace iArsenal.Web
                 if (OrderID > 0)
                 {
                     var query = repo.Query<OrderItem>(x => x.OrderID.Equals(OrderID));
-                    
+
                     repo.Delete<OrderItem>(x => x.OrderID.Equals(OrderID));
 
                     repo.Delete<Order>(OrderID);

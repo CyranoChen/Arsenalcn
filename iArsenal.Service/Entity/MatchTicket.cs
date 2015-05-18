@@ -11,11 +11,16 @@ using System.Data.SqlClient;
 namespace iArsenal.Service
 {
     [AttrDbTable("iArsenal_MatchTicket", Key = "MatchGuid", Sort = "Deadline DESC")]
-    public class MatchTicket : Entity<Guid>
+    public class MatchTicket
     {
-        public MatchTicket() : base() { }
+        public MatchTicket() { }
 
         public MatchTicket(DataRow dr)
+        {
+            Init(dr);
+        }
+
+        private void Init(DataRow dr = null)
         {
             // Match Info Initializer
             Match m = Arsenal_Match.Cache.Load(ID);
@@ -84,6 +89,118 @@ namespace iArsenal.Service
             }
         }
 
+        public void Single()
+        {
+            string sql = string.Format("SELECT * FROM {0} WHERE MatchGuid = @key",
+                Repository.GetTableAttr<MatchTicket>().Name);
+
+            SqlParameter[] para = {
+                                      new SqlParameter("@key", ID), 
+                                  };
+
+            DataSet ds = DataAccess.ExecuteDataset(sql, para);
+
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                Init(ds.Tables[0].Rows[0]);
+            }
+            else
+            {
+                Init();
+            }
+        }
+
+        public bool Any()
+        {
+            string sql = string.Format("SELECT * FROM {0} WHERE MatchGuid = @key",
+                Repository.GetTableAttr<MatchTicket>().Name);
+
+            SqlParameter[] para = { new SqlParameter("@key", ID), };
+
+            DataSet ds = DataAccess.ExecuteDataset(sql, para);
+
+            if (ds.Tables[0].Rows[0] != null)
+            { return true; }
+            else
+            { return false; }
+        }
+
+        // Get MatchTickets by Arsenal Matchs
+        public static List<MatchTicket> All()
+        {
+            var mlist = Arsenal_Match.Cache.MatchList;
+
+            if (mlist != null && mlist.Count > 0)
+            {
+                var list = new List<MatchTicket>();
+
+                foreach (Match m in mlist)
+                {
+                    MatchTicket mt = new MatchTicket();
+                    mt.ID = m.ID;
+                    mt.Single();
+
+                    list.Add(mt);
+                }
+
+                return list;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public void Create(SqlTransaction trans = null)
+        {
+            string sql = @"INSERT INTO {0} (MatchGuid, ProductCode, Deadline, AllowMemberClass, TicketCount, IsActive, Remark) 
+                               VALUES (@key, @productCode, @deadline, @allowMemberClass, @ticketCount, @isActive, @remark)";
+
+            sql = string.Format(sql, Repository.GetTableAttr<MatchTicket>().Name);
+
+            SqlParameter[] para = {
+                                      new SqlParameter("@matchGuid", ID),
+                                      new SqlParameter("@productCode", ProductCode),
+                                      new SqlParameter("@deadline", Deadline),
+                                      new SqlParameter("@allowMemberClass", !AllowMemberClass.HasValue ? (object)DBNull.Value : (object)AllowMemberClass.Value),
+                                      new SqlParameter("@TicketCount", !TicketCount.HasValue ? (object)DBNull.Value : (object)TicketCount.Value),
+                                      new SqlParameter("@isActive", IsActive),
+                                      new SqlParameter("@remark", Remark)
+                                  };
+
+            DataAccess.ExecuteNonQuery(sql, para, trans);
+        }
+
+        public void Update(SqlTransaction trans = null)
+        {
+            string sql = @"UPDATE {0} SET ProductCode = @productCode, Deadline = @deadline, AllowMemberClass = @allowMemberClass,
+                                  TicketCount = @ticketCount, IsActive = @isActive, Remark = @remark WHERE MatchGuid = @key";
+
+            sql = string.Format(sql, Repository.GetTableAttr<MatchTicket>().Name);
+
+            SqlParameter[] para = {
+                                      new SqlParameter("@key", ID),
+                                      new SqlParameter("@productCode", ProductCode),
+                                      new SqlParameter("@deadline", Deadline),
+                                      new SqlParameter("@allowMemberClass", !AllowMemberClass.HasValue ? (object)DBNull.Value : (object)AllowMemberClass.Value),
+                                      new SqlParameter("@TicketCount", !TicketCount.HasValue ? (object)DBNull.Value : (object)TicketCount.Value),
+                                      new SqlParameter("@isActive", IsActive),
+                                      new SqlParameter("@remark", Remark)
+                                  };
+
+            DataAccess.ExecuteNonQuery(sql, para, trans);
+        }
+
+        public void Delete(SqlTransaction trans = null)
+        {
+            string sql = string.Format("DELETE FROM {0} WHERE MatchGuid = @key",
+                Repository.GetTableAttr<MatchTicket>().Name);
+
+            SqlParameter[] para = { new SqlParameter("@key", ID) };
+
+            DataAccess.ExecuteNonQuery(sql, para, trans);
+        }
+
         public static void MatchTicketCountStatistics()
         {
             try
@@ -117,7 +234,7 @@ namespace iArsenal.Service
                             continue;
                         }
 
-                        repo.Update<MatchTicket>(mt);
+                        mt.Update();
                     }
 
                     MatchTicket.Cache.RefreshCache();
@@ -125,21 +242,6 @@ namespace iArsenal.Service
             }
             catch
             { throw new Exception(); }
-        }
-
-        public bool Any()
-        {
-            string sql = string.Format("SELECT * FROM {0} WHERE MatchGuid = @key",
-                Repository.GetTableAttr<MatchTicket>().Name);
-
-            SqlParameter[] para = { new SqlParameter("@key", ID), };
-
-            DataSet ds = DataAccess.ExecuteDataset(sql, para);
-
-            if (ds.Tables[0].Rows[0] != null)
-            { return true; }
-            else
-            { return false; }
         }
 
         private static DateTime ConvertToDST(DateTime date)
@@ -198,9 +300,7 @@ namespace iArsenal.Service
 
             private static void InitCache()
             {
-                IRepository repo = new Repository();
-
-                MatchTicketList = repo.All<MatchTicket>().ToList();
+                MatchTicketList = All();
             }
 
             public static MatchTicket Load(Guid guid)
@@ -214,6 +314,9 @@ namespace iArsenal.Service
         #region Members and Properties
 
         // Match Info Properties
+
+        public Guid ID
+        { get; set; }
 
         public Guid TeamGuid
         { get; set; }

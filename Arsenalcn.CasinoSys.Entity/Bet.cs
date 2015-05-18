@@ -107,7 +107,8 @@ namespace Arsenalcn.CasinoSys.Entity
                     trans.Rollback();
                     throw ex;
                 }
-                conn.Close();
+
+                //conn.Close();
             }
         }
 
@@ -144,9 +145,11 @@ namespace Arsenalcn.CasinoSys.Entity
                 catch (Exception ex)
                 {
                     trans.Rollback();
+
                     throw ex;
                 }
-                conn.Close();
+
+                //conn.Close();
             }
         }
 

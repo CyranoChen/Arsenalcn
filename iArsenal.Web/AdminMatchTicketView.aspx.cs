@@ -52,7 +52,9 @@ namespace iArsenal.Web
         {
             if (MatchGuid != Guid.Empty)
             {
-                MatchTicket mt = repo.Single<MatchTicket>(MatchGuid);
+                MatchTicket mt = new MatchTicket();
+                mt.ID = MatchGuid;
+                mt.Single();
 
                 // Get Match Info
 
@@ -109,10 +111,10 @@ namespace iArsenal.Web
 
         private void BindItemData()
         {
-            var query = repo.Query<Order>(o =>
-                repo.Query<OrderItem>(x => x.Remark.Equals(MatchGuid.ToString())).Any(x => x.OrderID.Equals(o.ID)));
+            var query = repo.Query<OrderItem>(x => x.Remark.Equals(MatchGuid.ToString()));
+            var list = repo.Query<Order>(o => query.Any(x => x.OrderID.Equals(o.ID))).ToList();
 
-            gvMatchOrder.DataSource = query;
+            gvMatchOrder.DataSource = list;
             gvMatchOrder.DataBind();
         }
 
@@ -182,11 +184,8 @@ namespace iArsenal.Web
             try
             {
                 MatchTicket mt = new MatchTicket();
-
-                if (!MatchGuid.Equals(Guid.Empty))
-                {
-                    mt = repo.Single<MatchTicket>(MatchGuid);
-                }
+                mt.ID = MatchGuid;
+                mt.Single();
 
                 DateTime _deadline;
                 if (!string.IsNullOrEmpty(tbDeadline.Text.Trim()) && DateTime.TryParse(tbDeadline.Text.Trim(), out _deadline))
@@ -211,14 +210,16 @@ namespace iArsenal.Web
                 // Check whether MatchTicket Instance in DB
                 if (mt.Any())
                 {
-                    repo.Update(mt);
+                    mt.Update();
+
                     MatchTicket.Cache.RefreshCache();
 
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('更新成功');window.location.href=window.location.href", true);
                 }
                 else
                 {
-                    repo.Insert(mt);
+                    mt.Create();
+
                     MatchTicket.Cache.RefreshCache();
 
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('添加成功');window.location.href = 'AdminMatchTicket.aspx'", true);
@@ -248,7 +249,9 @@ namespace iArsenal.Web
             {
                 if (MatchGuid != Guid.Empty)
                 {
-                    repo.Delete<MatchTicket>(MatchGuid);
+                    MatchTicket mt = new MatchTicket();
+                    mt.ID = MatchGuid;
+                    mt.Delete();
 
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('删除成功');window.location.href='AdminMatchTicket.aspx'", true);
                 }

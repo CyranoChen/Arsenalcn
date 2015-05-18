@@ -85,7 +85,7 @@ namespace iArsenal.Web
 
         private void BindData()
         {
-            var list = repo.All<MatchTicket>().ToList().FindAll(x =>
+            var list = MatchTicket.All().FindAll(x =>
             {
                 Boolean returnValue = true;
                 string tmpString = string.Empty;

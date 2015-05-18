@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Web.UI.WebControls;
+using System.Linq;
 
 using Arsenalcn.Core;
 using Arsenalcn.Core.Utility;
@@ -127,9 +126,9 @@ namespace iArsenal.Web
 
         private void BindItemData()
         {
-            var query = repo.Query<MemberPeriod>(x => x.MemberID.Equals(MemberID));
+            var list = repo.Query<MemberPeriod>(x => x.MemberID.Equals(MemberID)).ToList();
 
-            gvMemberPeriod.DataSource = query;
+            gvMemberPeriod.DataSource = list;
             gvMemberPeriod.DataBind();
         }
 
@@ -241,7 +240,7 @@ namespace iArsenal.Web
                 #region Filter Member By AcnID
                 int tmpMID = int.MinValue;
 
-                Member tmpM = repo.Single<Member>(x => x.AcnID.Equals(m.AcnID));
+                Member tmpM = repo.First<Member>(x => x.AcnID.Equals(m.AcnID));
 
                 if (tmpM != null)
                     tmpMID = tmpM.ID > 0 ? tmpM.ID : int.MinValue;

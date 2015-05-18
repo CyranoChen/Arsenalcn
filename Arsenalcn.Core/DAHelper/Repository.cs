@@ -39,11 +39,18 @@ namespace Arsenalcn.Core
             return (T)ci.Invoke(new Object[] { ds.Tables[0].Rows[0] });
         }
 
-        public T Single<T>(Expression<Func<T, bool>> predicate) where T : class, IEntity
+        public T First<T>(Expression<Func<T, bool>> predicate) where T : class, IEntity
         {
             Contract.Requires(predicate != null);
 
-            return All<T>().SingleOrDefault(predicate);
+            return All<T>().First(predicate);
+        }
+
+        public T Last<T>(Expression<Func<T, bool>> predicate) where T : class, IEntity
+        {
+            Contract.Requires(predicate != null);
+
+            return All<T>().Last(predicate);
         }
 
         public IQueryable<T> All<T>() where T : class, IEntity

@@ -146,11 +146,11 @@ namespace iArsenal.Web
             string priceInfo = string.Empty;
             List<string> _lstPriceInfo = new List<string>();
 
-            var query = repo.Query<OrderItem>(x => x.ID.Equals(o.ID) && x.IsActive).OrderBy(x => x.ID);
+            var list = repo.Query<OrderItem>(x => x.OrderID.Equals(o.ID) && x.IsActive).OrderBy(x => x.ID).ToList();
 
-            if (query != null && query.Count() > 0)
+            if (list != null && list.Count() > 0)
             {
-                foreach (OrderItem oi in query)
+                foreach (OrderItem oi in list)
                 {
                     if (!oi.ProductGuid.Equals(Guid.Empty) && oi.TotalPrice > 0)
                     {
@@ -163,7 +163,7 @@ namespace iArsenal.Web
                     }
                 }
 
-                gvWishItem.DataSource = query;
+                gvWishItem.DataSource = list;
                 gvWishItem.DataBind();
             }
             else

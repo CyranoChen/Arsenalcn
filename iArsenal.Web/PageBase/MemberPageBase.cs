@@ -25,7 +25,7 @@ namespace iArsenal.Web
 
             if (UID > 0)
             {
-                if (this.MID == null || this.MID <= 0)
+                if (this.MID <= 0)
                 {
                     Member m = Member.Cache.LoadByAcnID(this.UID);
 
@@ -43,7 +43,7 @@ namespace iArsenal.Web
                     if (this.CurrentMemberPeriod == null)
                     {
                         // TODO: change to cache mode
-                        this.CurrentMemberPeriod = repo.Single<MemberPeriod>(x =>
+                        this.CurrentMemberPeriod = repo.First<MemberPeriod>(x =>
                             x.MemberID.Equals(this.MID) && x.IsActive &&
                             x.StartDate <= DateTime.Now && x.EndDate >= DateTime.Now);
                     }

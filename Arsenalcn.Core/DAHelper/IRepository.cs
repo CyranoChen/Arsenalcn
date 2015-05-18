@@ -10,7 +10,8 @@ namespace Arsenalcn.Core
     public interface IRepository
     {
         T Single<T>(object key) where T : class, IEntity;
-        T Single<T>(Expression<Func<T, bool>> predicate) where T : class, IEntity;
+        T First<T>(Expression<Func<T, bool>> predicate) where T : class, IEntity;
+        T Last<T>(Expression<Func<T, bool>> predicate) where T : class, IEntity;
 
         IQueryable<T> All<T>() where T : class, IEntity;
         IQueryable<T> Query<T>(Expression<Func<T, bool>> predicate) where T : class, IEntity;

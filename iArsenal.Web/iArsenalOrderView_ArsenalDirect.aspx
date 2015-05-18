@@ -91,7 +91,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="4" style="padding: 0px;">
+                        <td colspan="4" style="padding: 0;">
                             <asp:GridView ID="gvWishItem" runat="server" DataKeyNames="ID" OnPageIndexChanging="gvWishItem_PageIndexChanging"
                                 PageSize="10" OnRowDataBound="gvWishItem_RowDataBound">
                                 <Columns>

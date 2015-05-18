@@ -10,7 +10,7 @@ namespace iArsenal.Service
     {
         public MemberPeriod() : base() { }
 
-        public MemberPeriod(DataRow dr) { }
+        public MemberPeriod(DataRow dr) : base(dr) { }
 
         #region Members and Properties
 

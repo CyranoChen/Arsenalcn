@@ -81,10 +81,10 @@ namespace iArsenal.Web
 
         private void BindItemData()
         {
-            var query = repo.Query<Order>(o =>
-                repo.Query<OrderItem>(x => x.ProductGuid.Equals(ProductGuid)).Any(x => x.OrderID.Equals(o.ID)));
+            var query = repo.Query<OrderItem>(x => x.ProductGuid.Equals(ProductGuid));
+            var list = repo.Query<Order>(o => query.Any(x => x.OrderID.Equals(o.ID))).ToList();
 
-            gvProductOrder.DataSource = query;
+            gvProductOrder.DataSource = list;
             gvProductOrder.DataBind();
 
             #region set Control Custom Pager

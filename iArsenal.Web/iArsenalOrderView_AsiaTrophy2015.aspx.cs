@@ -130,15 +130,15 @@ namespace iArsenal.Web
 
                         if (oiAsiaTrophy.TravelOption.MatchOption.Equals(MatchOption.First))
                         {
-                            _strMatchInfo = "7月15日 阿森纳 vs ?待定";
+                            _strMatchInfo = "7月15日（周三）比赛";
                         }
                         else if (oiAsiaTrophy.TravelOption.MatchOption.Equals(MatchOption.Second))
                         {
-                            _strMatchInfo = "7月18日 阿森纳 vs ?待定";
+                            _strMatchInfo = "7月18日（周六）比赛";
                         }
                         else
                         {
-                            _strMatchInfo = "7月15日 阿森纳 vs ?待定 + 7月18日 阿森纳 vs ?待定";
+                            _strMatchInfo = "7月15日（周三）比赛 + 7月18日（周六）比赛";
                         }
 
                         lblOrderItem_TravelInfo.Text = string.Format("<em>{0}：</em>{1}",
@@ -147,12 +147,12 @@ namespace iArsenal.Web
                         // Set Order Travel Option
                         System.Text.StringBuilder sb = new System.Text.StringBuilder();
 
-                        if (oiAsiaTrophy.TravelOption.IsVisa) { sb.Append("代办签证 "); }
-                        if (oiAsiaTrophy.TravelOption.IsFlight) { sb.Append("| 购买机票 "); }
-                        if (oiAsiaTrophy.TravelOption.IsHotel) { sb.Append("| 预订宾馆 "); }
-                        if (oiAsiaTrophy.TravelOption.IsTraining) { sb.Append("| 训练课 "); }
-                        if (oiAsiaTrophy.TravelOption.IsParty) { sb.Append("| 球员见面会 "); };
-                        if (oiAsiaTrophy.TravelOption.IsSingapore) { sb.Append("| 当地团"); };
+                        if (oiAsiaTrophy.TravelOption.IsVisa) { sb.Append("【代办签证】"); }
+                        if (oiAsiaTrophy.TravelOption.IsFlight) { sb.Append("【购买机票】"); }
+                        if (oiAsiaTrophy.TravelOption.IsHotel) { sb.Append("【预订宾馆】"); }
+                        if (oiAsiaTrophy.TravelOption.IsTraining) { sb.Append("【训练课】"); }
+                        if (oiAsiaTrophy.TravelOption.IsParty) { sb.Append("【球员见面会】"); };
+                        if (oiAsiaTrophy.TravelOption.IsSingapore) { sb.Append("【当地团】"); };
 
                         lblOrderItem_TravelOption.Text = sb.ToString();
                     }

@@ -19,7 +19,9 @@ namespace Arsenalcn.Core.Tests
         {
             IRepository repo = new Repository();
 
-            var instance = repo.Single<League>(new Guid("066edf53-f823-4020-b740-f4c9fff98ec8"));
+            var key = new Guid("066edf53-f823-4020-b740-f4c9fff98ec8");
+
+            var instance = repo.Single<League>(key);
 
             Assert.IsNotNull(instance);
         }
@@ -39,9 +41,16 @@ namespace Arsenalcn.Core.Tests
         {
             IRepository repo = new Repository();
 
-            var query = repo.Query<League>(x => x.IsActive);
+            var query1 = repo.Query<League>(x => x.IsActive);
 
-            Assert.IsNotNull(query);
+            var pc = new PropertyCollection();
+
+            pc.Add("IsActive", true);
+
+            var query2 = repo.Query<League>(pc);
+
+            Assert.IsNotNull(query1);
+            Assert.IsNotNull(query2);
         }
 
         [TestMethod()]

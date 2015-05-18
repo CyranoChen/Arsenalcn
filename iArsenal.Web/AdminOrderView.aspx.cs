@@ -235,13 +235,13 @@ namespace iArsenal.Web
             {
                 if (OrderID > 0)
                 {
-                    var query = repo.Query<OrderItem>(x => x.OrderID.Equals(OrderID));
+                    int delCount = repo.Query<OrderItem>(x => x.OrderID.Equals(OrderID)).Count();
 
                     repo.Delete<OrderItem>(x => x.OrderID.Equals(OrderID));
 
                     repo.Delete<Order>(OrderID);
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", string.Format("alert('删除成功(包括{0}个许愿)');window.location.href='AdminOrder.aspx'", query.Count().ToString(), true));
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", string.Format("alert('删除成功(包括{0}个许愿)');window.location.href='AdminOrder.aspx'", delCount.ToString()), true);
                 }
                 else
                 {

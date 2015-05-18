@@ -138,8 +138,9 @@
                         <td class="FieldHeader">观看场次：
                         </td>
                         <td style="text-align: left" colspan="3">
-                            <asp:CheckBox ID="cbMatch1" runat="server" Text="7月15日 阿森纳 vs ?待定" Checked="true" />
-                            <asp:CheckBox ID="cbMatch2" runat="server" Text="7月18日 阿森纳 vs ?待定" Checked="true" />
+                            <asp:CheckBox ID="cbMatch1" runat="server" Text="7月15日(周三) 18:00 埃弗顿 vs 斯托克城，20:30 阿森纳 vs 新加坡明星队" Checked="true" />
+                            <br />
+                            <asp:CheckBox ID="cbMatch2" runat="server" Text="7月18日(周六) 18:00 三四名决赛，20:30 冠亚军决赛" Checked="true" />
                         </td>
                     </tr>
                     <tr class="AlternatingRow">
@@ -248,12 +249,15 @@
                 <div class="Block">
                     <p>
                         (1). 观赛团首轮报名截止：<em>2015年6月5日</em>。
+                   
                     </p>
                     <p>
                         (2). 请完整填写出行会员的个人信息，每位会员可登记一个同伴，同伴信息也请填写完整。我们会为会员的个人信息进行保密。
+                   
                     </p>
                     <p>
                         (3). 我们会在收到预订报名表后，核对身份信息，并与您取得联系，并邀请您加入微信：<em>iArsenalcn</em>，关注最新信息发布。
+                   
                     </p>
                     <p>
                         (4). 由于比赛场次与对阵暂未确定，只订球票不参团的会员，暂未开通，请敬候更新。<span style="font-weight: bold">（只购票的会员原则上不能享受赛前训练课和球员见面会等福利）</span>

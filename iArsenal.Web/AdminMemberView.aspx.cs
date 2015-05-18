@@ -4,6 +4,7 @@ using System.Linq;
 using Arsenalcn.Core;
 using Arsenalcn.Core.Utility;
 using iArsenal.Service;
+using System.Data;
 
 namespace iArsenal.Web
 {
@@ -240,7 +241,11 @@ namespace iArsenal.Web
                 #region Filter Member By AcnID
                 int tmpMID = int.MinValue;
 
-                Member tmpM = repo.First<Member>(x => x.AcnID.Equals(m.AcnID));
+                var pc = new PropertyCollection();
+
+                pc.Add("AcnID", m.AcnID);
+
+                Member tmpM = repo.Query<Member>(pc).First();
 
                 if (tmpM != null)
                     tmpMID = tmpM.ID > 0 ? tmpM.ID : int.MinValue;

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Data;
+using System.Linq;
 
 using Arsenalcn.Core;
 using Arsenalcn.Core.Utility;
@@ -43,8 +45,12 @@ namespace iArsenal.Web
                     if (this.CurrentMemberPeriod == null)
                     {
                         // TODO: change to cache mode
-                        this.CurrentMemberPeriod = repo.First<MemberPeriod>(x =>
-                            x.MemberID.Equals(this.MID) && x.IsActive &&
+                        var pc = new PropertyCollection();
+
+                        pc.Add("MemberID", this.MID);
+                        pc.Add("IsActive", true);
+
+                        this.CurrentMemberPeriod = repo.Query<MemberPeriod>(pc).First(x =>
                             x.StartDate <= DateTime.Now && x.EndDate >= DateTime.Now);
                     }
                 }

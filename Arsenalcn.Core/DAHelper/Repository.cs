@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Text;
 
 using Microsoft.ApplicationBlocks.Data;
+using System.Collections;
 
 namespace Arsenalcn.Core
 {
@@ -39,20 +40,6 @@ namespace Arsenalcn.Core
             return (T)ci.Invoke(new Object[] { ds.Tables[0].Rows[0] });
         }
 
-        public T First<T>(Expression<Func<T, bool>> predicate) where T : class, IEntity
-        {
-            Contract.Requires(predicate != null);
-
-            return All<T>().First(predicate);
-        }
-
-        public T Last<T>(Expression<Func<T, bool>> predicate) where T : class, IEntity
-        {
-            Contract.Requires(predicate != null);
-
-            return All<T>().Last(predicate);
-        }
-
         public IQueryable<T> All<T>() where T : class, IEntity
         {
             var attr = GetTableAttr<T>();
@@ -79,6 +66,66 @@ namespace Arsenalcn.Core
             }
 
             return list.AsQueryable();
+        }
+
+        public IQueryable<T> Query<T>(PropertyCollection properties) where T : class, IEntity
+        {
+            Contract.Requires(properties != null);
+
+            List<string> listCol = new List<string>();
+            List<SqlParameter> listPara = new List<SqlParameter>();
+
+            var attr = GetTableAttr<T>();
+
+            foreach (var p in properties.Keys)
+            {
+                var attrCol = GetColumnAttr<T>(p.ToString());
+
+                if (attrCol != null)
+                {
+                    object _value = properties[p];
+
+                    listCol.Add(string.Format("{0} = @{0}", attrCol.Name));
+
+                    SqlParameter _para = new SqlParameter("@" + attrCol.Name,
+                        _value != null ? _value : (object)DBNull.Value);
+                    listPara.Add(_para);
+                }
+                else if (p.ToString().Equals("ID"))
+                {
+                    listCol.Add(string.Format("{0} = @key", attr.Key));
+                    listPara.Add(new SqlParameter("@key", properties[p]));
+                }
+                else
+                { continue; }
+            }
+
+            if (listCol.Count > 0 && listPara.Count > 0)
+            {
+                StringBuilder sql = new StringBuilder();
+                sql.AppendFormat("SELECT * FROM {0} WHERE {1} ", attr.Name, string.Join(" AND ", listCol.ToArray()));
+
+                if (!string.IsNullOrEmpty(attr.Sort))
+                {
+                    sql.AppendFormat("ORDER BY {0}", attr.Sort);
+                }
+
+                DataSet ds = SqlHelper.ExecuteDataset(conn, CommandType.Text, sql.ToString(), listPara.ToArray());
+
+                if (ds.Tables[0].Rows.Count == 0) { return null; }
+
+                var list = new List<T>();
+
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    ConstructorInfo ci = typeof(T).GetConstructor(new Type[] { typeof(DataRow) });
+
+                    list.Add((T)ci.Invoke(new Object[] { dr }));
+                }
+
+                return list.AsQueryable();
+            }
+            else { return null; }
         }
 
         public IQueryable<T> Query<T>(Expression<Func<T, bool>> predicate) where T : class, IEntity

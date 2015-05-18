@@ -216,10 +216,8 @@ namespace iArsenal.Service
 
                     foreach (MatchTicket mt in query)
                     {
-                        var _count = oQuery.Count(o =>
-                            oiQuery.Where(oi => oi.Remark.Equals(mt.ID.ToString()))
-                            .Any(oi => oi.OrderID.Equals(o.ID)));
-
+                        var _query = oiQuery.Where(oi => oi.Remark.Equals(mt.ID.ToString()));
+                        var _count = oQuery.Count(o => _query.Any(oi => oi.OrderID.Equals(o.ID)));
 
                         if (_count > 0 && !mt.TicketCount.Equals(_count))
                         {

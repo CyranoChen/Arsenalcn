@@ -36,10 +36,11 @@ namespace Arsenal.Service
                 PlayerList_HasSquadNumber = PlayerList.FindAll(x => x.SquadNumber > 0)
                     .OrderBy(x => x.SquadNumber).ThenBy(x => x.DisplayName).ToList();
 
-                // TODO
-                ColList_SquadNumber = repo.All<Player>().GroupBy(x => x.SquadNumber)
-                    .Select(g => g.First()).OrderBy(x => x.SquadNumber)
-                    .Select(x => x.SquadNumber).AsEnumerable();
+                //ColList_SquadNumber = repo.All<Player>().GroupBy(x => x.SquadNumber)
+                //    .Select(g => g.First()).OrderBy(x => x.SquadNumber)
+                //    .Select(x => x.SquadNumber).AsEnumerable();
+
+                ColList_SquadNumber = Repository.DistinctOrderBy(repo.All<Player>(), x => x.SquadNumber);
 
                 ColList_Position = Repository.DistinctOrderBy(repo.Query<Player>(x => x.Position.HasValue), x => x.Position.Value.ToString());
             }

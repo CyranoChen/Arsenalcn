@@ -111,10 +111,10 @@ namespace iArsenal.Web
 
         private void BindItemData()
         {
-            var query = repo.Query<OrderItem>(x => x.Remark.Equals(MatchGuid.ToString()));
-            var list = repo.Query<Order>(o => query.Any(x => x.OrderID.Equals(o.ID))).ToList();
+            var list = repo.Query<OrderItem>(x => x.Remark.Equals(MatchGuid.ToString())).ToList();
+            var query = repo.Query<Order>(o => list.Any(x => x.OrderID.Equals(o.ID)));
 
-            gvMatchOrder.DataSource = list;
+            gvMatchOrder.DataSource = query.ToList();
             gvMatchOrder.DataBind();
         }
 

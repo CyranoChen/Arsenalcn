@@ -356,7 +356,7 @@ namespace iArsenal.Web
                         o.Remark = string.Empty;
 
                         //Get the Order ID after Insert new one
-                        _newID = (int)repo.InsertOutKey<Order>(o, trans);
+                        _newID = Convert.ToInt32(repo.InsertOutKey<Order>(o, trans));
                     }
 
                     //Remove Order Item of this Order

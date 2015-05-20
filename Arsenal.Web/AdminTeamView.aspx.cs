@@ -140,15 +140,15 @@ namespace Arsenal.Web
             {
                 if (TeamGuid != Guid.Empty)
                 {
-                    IRelationLeagueTeam instance = new RelationLeagueTeam();
+                    IRelationLeagueTeam instance = new RelationLeagueTeam() { TeamGuid = TeamGuid };
+                    var query = instance.QueryByTeamGuid();
 
-                    int countRelationLeagueTeam = instance.Query(x => x.TeamGuid.Equals(TeamGuid)).Count();
-
-                    instance.Delete(x => x.TeamGuid.Equals(TeamGuid));
+                    if (query != null && query.Count() > 0)
+                    { instance.Delete(query.AsEnumerable()); }
 
                     repo.Delete<Team>(TeamGuid);
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", string.Format("alert('删除成功(包括{0}个分类关联)');window.location.href='AdminTeam.aspx'", countRelationLeagueTeam.ToString()), true);
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", string.Format("alert('删除成功(包括{0}个分类关联)');window.location.href='AdminTeam.aspx'", query.Count().ToString()), true);
                 }
                 else
                 {

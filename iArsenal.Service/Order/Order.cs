@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
@@ -146,78 +147,93 @@ namespace iArsenal.Service
             else { return null; }
         }
 
-        public void GetOrderBaseType()
+        public void RefreshOrderType()
         {
             IRepository repo = new Repository();
-            var query = repo.Query<OrderItem>(x => Product.Cache.Load(x.ProductGuid) != null);
+            var query = repo.Query<OrderItem>(x => Product.Cache.Load(x.ProductGuid) != null && x.OrderID.Equals(ID));
 
-            if (query != null && query.Count() > 0)
+            if (query.Count() > 0)
             {
-                if (query.Any(delegate(OrderItem x)
-                {
-                    var _type = Product.Cache.Load(x.ProductGuid).ProductType;
-                    return _type.Equals(ProductType.ReplicaKitHome) || _type.Equals(ProductType.ReplicaKitAway) || _type.Equals(ProductType.ReplicaKitCup);
-                }))
-                {
-                    OrderType = OrderBaseType.ReplicaKit;
-                }
-                else if (query.Any(delegate(OrderItem x)
-                {
-                    var _type = Product.Cache.Load(x.ProductGuid).ProductType;
-                    return _type.Equals(ProductType.MatchTicket) || _type.Equals(ProductType.TicketBeijing);
-                }))
-                {
-                    OrderType = OrderBaseType.Ticket;
-                }
-                else if (query.Any(x => Product.Cache.Load(x.ProductGuid).ProductType.Equals(ProductType.TravelPlan)))
-                {
-                    OrderType = OrderBaseType.Travel;
-                }
-                else if (query.Any(delegate(OrderItem x)
-                {
-                    if (!x.ProductGuid.Equals(Guid.Empty))
-                    {
-                        return Product.Cache.Load(x.ProductGuid).ProductType.Equals(ProductType.Other);
-                    }
-                    else
-                    {
-                        return true;
-                    }
-                }))
-                {
-                    OrderType = OrderBaseType.Wish;
-                }
-                else if (query.Any(delegate(OrderItem x)
-                 {
-                     var _type = Product.Cache.Load(x.ProductGuid).ProductType;
-                     return _type.Equals(ProductType.MemberShipCore) || _type.Equals(ProductType.MemberShipPremier);
-                 }))
-                {
-                    OrderType = OrderBaseType.MemberShip;
-                }
-                else
-                {
-                    OrderType = null;
-                }
-            }
-            else
-            {
-                OrderType = null;
+                OrderType = SetOrderType(query.ToList());
             }
         }
 
+        private static OrderBaseType? SetOrderType(List<OrderItem> list)
+        {
+            if (list.Any(delegate(OrderItem x)
+            {
+                var _type = Product.Cache.Load(x.ProductGuid).ProductType;
+                return _type.Equals(ProductType.ReplicaKitHome) || _type.Equals(ProductType.ReplicaKitAway) || _type.Equals(ProductType.ReplicaKitCup);
+            }))
+            {
+                return OrderBaseType.ReplicaKit;
+            }
+            else if (list.Any(delegate(OrderItem x)
+            {
+                var _type = Product.Cache.Load(x.ProductGuid).ProductType;
+                return _type.Equals(ProductType.MatchTicket) || _type.Equals(ProductType.TicketBeijing);
+            }))
+            {
+                return OrderBaseType.Ticket;
+            }
+            else if (list.Any(x => Product.Cache.Load(x.ProductGuid).ProductType.Equals(ProductType.TravelPlan)))
+            {
+                return OrderBaseType.Travel;
+            }
+            else if (list.Any(delegate(OrderItem x)
+            {
+                if (!x.ProductGuid.Equals(Guid.Empty))
+                {
+                    return Product.Cache.Load(x.ProductGuid).ProductType.Equals(ProductType.Other);
+                }
+                else
+                {
+                    return true;
+                }
+            }))
+            {
+                return OrderBaseType.Wish;
+            }
+            else if (list.Any(delegate(OrderItem x)
+            {
+                var _type = Product.Cache.Load(x.ProductGuid).ProductType;
+                return _type.Equals(ProductType.MemberShipCore) || _type.Equals(ProductType.MemberShipPremier);
+            }))
+            {
+                return OrderBaseType.MemberShip;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        // TODO : improve the performance
         public static void RefreshOrderBaseType()
         {
             IRepository repo = new Repository();
-            var query = repo.All<Order>();
+            var oQuery = repo.All<Order>();
+            var oiQuery = repo.Query<OrderItem>(x => Product.Cache.Load(x.ProductGuid) != null);
 
-            if (query != null && query.Count() > 0)
+            if (oQuery.Count() > 0 && oiQuery.Count() > 0)
             {
-                foreach (var o in query)
+                foreach (var o in oQuery)
                 {
-                    o.GetOrderBaseType();
+                    var _type = o.OrderType;
+                    var query = oiQuery.Where(x => x.OrderID.Equals(o.ID));
 
-                    repo.Update(o);
+                    // Refresh the OrderType of instance
+                    if (query.Count() > 0)
+                    {
+                        o.OrderType = SetOrderType(query.ToList());
+
+                        if (!_type.Equals(o.OrderType))
+                        {
+                            repo.Update(o);
+                        }
+                    }
+                    else
+                    { continue; }
                 }
             }
         }

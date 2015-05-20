@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Linq;
+using System.Web;
 
 using Arsenalcn.Core;
 using Arsenalcn.Core.Utility;
@@ -12,11 +13,47 @@ namespace iArsenal.Web
     {
         private readonly IRepository repo = new Repository();
 
-        public int MID { get; set; }
+        public int MID
+        {
+            get
+            {
+                if (Request.Cookies["mid"] != null && !string.IsNullOrEmpty(Request.Cookies["mid"].Value))
+                {
+                    //already login
+                    return int.Parse(Request.Cookies["mid"].Value);
+                }
+                else
+                {
+                    return -1;
+                }
+            }
+        }
 
-        public string MemberName { get; set; }
+        public string MemberName
+        {
+            get
+            {
+                if (Request.Cookies["member_name"] != null && !string.IsNullOrEmpty(Request.Cookies["member_name"].Value))
+                    return HttpUtility.UrlDecode(Request.Cookies["member_name"].Value);
+                else
+                    return string.Empty;
+            }
+        }
 
-        public MemberPeriod CurrentMemberPeriod { get; set; }
+        public int CurrentMemberPeriodID
+        {
+            get
+            {
+                if (Request.Cookies["current_mpid"] != null && !string.IsNullOrEmpty(Request.Cookies["current_mpid"].Value))
+                {
+                    return int.Parse(Request.Cookies["current_mpid"].Value);
+                }
+                else
+                {
+                    return -1;
+                }
+            }
+        }
 
         protected override void OnInitComplete(EventArgs e)
         {
@@ -27,38 +64,44 @@ namespace iArsenal.Web
 
             if (UID > 0)
             {
+                // TODO: change to cache mode, LOGOUT
                 if (this.MID <= 0)
                 {
-                    Member m = Member.Cache.LoadByAcnID(this.UID);
+                    var pcMember = new PropertyCollection();
+
+                    pcMember.Add("AcnID", this.UID);
+
+                    Member m = repo.Query<Member>(pcMember).FirstOrDefault();
 
                     if (m != null && m.ID > 0)
                     {
-                        this.MID = m.ID;
-                        this.MemberName = m.Name;
+                        Response.SetCookie(new HttpCookie("mid", m.ID.ToString()));
+                        Response.SetCookie(new HttpCookie("member_name", HttpUtility.UrlEncode(m.Name.ToString())));
 
                         m.IP = IPLocation.GetIP();
                         m.LastLoginTime = DateTime.Now;
 
                         repo.Update(m);
-                    }
 
-                    if (this.CurrentMemberPeriod == null)
+                        if (this.CurrentMemberPeriodID < 0)
+                        {
+                            var pcMemberPeriod = new PropertyCollection();
+
+                            pcMemberPeriod.Add("MemberID", this.MID);
+                            pcMemberPeriod.Add("IsActive", true);
+
+                            var mp = repo.Query<MemberPeriod>(pcMemberPeriod).FirstOrDefault(x =>
+                                x.StartDate <= DateTime.Now && x.EndDate >= DateTime.Now);
+
+                            Response.SetCookie(new HttpCookie("current_mpid", mp.ID.ToString()));
+                        }
+                    }
+                    else
                     {
-                        // TODO: change to cache mode
-                        var pc = new PropertyCollection();
-
-                        pc.Add("MemberID", this.MID);
-                        pc.Add("IsActive", true);
-
-                        this.CurrentMemberPeriod = repo.Query<MemberPeriod>(pc).First(x =>
-                            x.StartDate <= DateTime.Now && x.EndDate >= DateTime.Now);
+                        Response.Clear();
+                        Response.Redirect("iArsenalMemberRegister.aspx", false);
+                        Context.ApplicationInstance.CompleteRequest();
                     }
-                }
-                else
-                {
-                    Response.Clear();
-                    Response.Redirect("iArsenalMemberRegister.aspx", false);
-                    Context.ApplicationInstance.CompleteRequest();
                 }
             }
 

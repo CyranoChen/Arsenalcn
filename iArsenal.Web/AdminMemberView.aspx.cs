@@ -1,10 +1,10 @@
 ﻿using System;
+using System.Data;
 using System.Linq;
 
 using Arsenalcn.Core;
 using Arsenalcn.Core.Utility;
 using iArsenal.Service;
-using System.Data;
 
 namespace iArsenal.Web
 {
@@ -245,13 +245,15 @@ namespace iArsenal.Web
 
                 pc.Add("AcnID", m.AcnID);
 
-                Member tmpM = repo.Query<Member>(pc).First();
+                Member tmpMem = repo.Query<Member>(pc).FirstOrDefault();
 
-                if (tmpM != null)
-                    tmpMID = tmpM.ID > 0 ? tmpM.ID : int.MinValue;
+                if (tmpMem != null)
+                {
+                    tmpMID = tmpMem.ID > 0 ? tmpMem.ID : int.MinValue;
+                }
                 #endregion
 
-                if (MemberID > 0 && (MemberID == tmpMID || tmpMID == int.MinValue))
+                if (MemberID > 0 && (MemberID.Equals(tmpMID) || tmpMID <= 0))
                 {
                     repo.Update(m);
                     Member.Cache.RefreshCache();

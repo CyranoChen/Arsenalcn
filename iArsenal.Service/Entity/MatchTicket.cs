@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 
 using iArsenal.Service.Arsenal;
-using iArsenal.Service.ServiceProvider;
 using Arsenalcn.Core;
-using System.Data.SqlClient;
 
 namespace iArsenal.Service
 {
@@ -216,8 +215,8 @@ namespace iArsenal.Service
 
                     foreach (MatchTicket mt in query)
                     {
-                        var _query = oiQuery.Where(oi => oi.Remark.Equals(mt.ID.ToString()));
-                        var _count = oQuery.Count(o => _query.Any(oi => oi.OrderID.Equals(o.ID)));
+                        var _list = oiQuery.Where(oi => oi.Remark.Equals(mt.ID.ToString())).ToList();
+                        var _count = oQuery.Count(o => _list.Any(oi => oi.OrderID.Equals(o.ID)));
 
                         if (_count > 0 && !mt.TicketCount.Equals(_count))
                         {

@@ -58,31 +58,48 @@ namespace Arsenal.Service
             return ds.Tables[0].Rows.Count > 0;
         }
 
-        public IQueryable<RelationLeagueTeam> All()
+        public IQueryable<RelationLeagueTeam> QueryByLeagueGuid()
         {
-            string sql = string.Format("SELECT * FROM {0}", Repository.GetTableAttr<RelationLeagueTeam>().Name);
+            var list = new List<RelationLeagueTeam>();
 
-            DataSet ds = DataAccess.ExecuteDataset(sql);
+            string sql = string.Format("SELECT * FROM {0} WHERE LeagueGuid = @leagueGuid",
+                Repository.GetTableAttr<RelationLeagueTeam>().Name);
 
-            if (ds.Tables[0].Rows.Count == 0) { return null; }
+            SqlParameter[] para = { new SqlParameter("@leagueGuid", LeagueGuid) };
 
-            DataTable dt = ds.Tables[0];
+            DataSet ds = DataAccess.ExecuteDataset(sql, para);
 
-            IList<RelationLeagueTeam> list = new List<RelationLeagueTeam>();
-
-            foreach (DataRow dr in dt.Rows)
+            if (ds.Tables[0].Rows.Count > 0)
             {
-                list.Add(new RelationLeagueTeam(dr));
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    list.Add(new RelationLeagueTeam(dr));
+                }
             }
 
             return list.AsQueryable();
         }
 
-        public IQueryable<RelationLeagueTeam> Query(Expression<Func<RelationLeagueTeam, bool>> predicate)
+        public IQueryable<RelationLeagueTeam> QueryByTeamGuid()
         {
-            Contract.Requires(predicate != null);
+            var list = new List<RelationLeagueTeam>();
 
-            return All().Where(predicate);
+            string sql = string.Format("SELECT * FROM {0} WHERE TeamGuid = @teamGuid",
+                Repository.GetTableAttr<RelationLeagueTeam>().Name);
+
+            SqlParameter[] para = { new SqlParameter("@teamGuid", TeamGuid) };
+
+            DataSet ds = DataAccess.ExecuteDataset(sql, para);
+
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    list.Add(new RelationLeagueTeam(dr));
+                }
+            }
+
+            return list.AsQueryable();
         }
 
         public void Create(SqlTransaction trans = null)
@@ -115,20 +132,30 @@ namespace Arsenal.Service
             DataAccess.ExecuteNonQuery(sql, para, trans);
         }
 
-        public void Delete(Expression<Func<RelationLeagueTeam, bool>> predicate, SqlTransaction trans = null)
+        public void Delete(IEnumerable<RelationLeagueTeam> instances, SqlTransaction trans = null)
         {
-            Contract.Requires(predicate != null);
+            Contract.Requires(instances != null);
 
-            var instances = Query(predicate);
-
-            if (instances != null && instances.Count() > 0)
+            foreach (var instance in instances)
             {
-                foreach (var instance in instances)
-                {
-                    instance.Delete(trans);
-                }
+                instance.Delete(trans);
             }
         }
+
+        //public void Delete(Expression<Func<RelationLeagueTeam, bool>> predicate, SqlTransaction trans = null)
+        //{
+        //    Contract.Requires(predicate != null);
+
+        //    var instances = Query(predicate);
+
+        //    if (instances != null && instances.Count() > 0)
+        //    {
+        //        foreach (var instance in instances)
+        //        {
+        //            instance.Delete(trans);
+        //        }
+        //    }
+        //}
 
         public void Clean(SqlTransaction trans = null)
         {

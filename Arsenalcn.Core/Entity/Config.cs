@@ -38,7 +38,7 @@ namespace Arsenalcn.Core
                 Repository.GetTableAttr<Config>().Name);
 
             SqlParameter[] para = {
-                                      new SqlParameter("@configSystem", ConfigSystem), 
+                                      new SqlParameter("@configSystem", ConfigSystem.ToString()), 
                                       new SqlParameter("@configKey", ConfigKey)
                                   };
 
@@ -53,7 +53,7 @@ namespace Arsenalcn.Core
                 Repository.GetTableAttr<Config>().Name);
 
             SqlParameter[] para = {
-                                      new SqlParameter("@configSystem", ConfigSystem), 
+                                      new SqlParameter("@configSystem", ConfigSystem.ToString()), 
                                       new SqlParameter("@configKey", ConfigKey)
                                   };
 
@@ -97,7 +97,7 @@ namespace Arsenalcn.Core
                  Repository.GetTableAttr<Config>().Name);
 
             SqlParameter[] para = { 
-                                      new SqlParameter("@configSystem", ConfigSystem), 
+                                      new SqlParameter("@configSystem", ConfigSystem.ToString()), 
                                       new SqlParameter("@configKey", ConfigKey), 
                                       new SqlParameter("@configValue", ConfigValue) };
 

@@ -63,9 +63,9 @@ namespace iArsenal.Web
                         //Build Member & ACNUser Cookie Information
                         if (xml.HasChildNodes && !xml.FirstChild.NextSibling.Name.Equals("error_response"))
                         {
-                            context.Response.SetCookie(new HttpCookie("session_key", xml.GetElementsByTagName("session_key").Item(0).InnerText));
-                            context.Response.SetCookie(new HttpCookie("uid", xml.GetElementsByTagName("uid").Item(0).InnerText));
-                            context.Response.SetCookie(new HttpCookie("user_name", HttpUtility.UrlEncode(xml.GetElementsByTagName("user_name").Item(0).InnerText)));
+                            context.Response.SetCookie(new HttpCookie("session_key", xml.GetElementsByTagName("session_key").Item(0).InnerText.Trim()));
+                            context.Response.SetCookie(new HttpCookie("uid", xml.GetElementsByTagName("uid").Item(0).InnerText.Trim()));
+                            context.Response.SetCookie(new HttpCookie("user_name", HttpUtility.UrlEncode(xml.GetElementsByTagName("user_name").Item(0).InnerText.Trim())));
                         }
                         else
                         {

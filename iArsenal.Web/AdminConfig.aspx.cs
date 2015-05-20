@@ -48,6 +48,7 @@ namespace iArsenal.Web
 
                     c.ConfigSystem = ConfigSystem.iArsenal;
                     c.ConfigKey = gvSysConfig.DataKeys[gvSysConfig.EditIndex].Value.ToString();
+
                     c.ConfigValue = tbConfigValue.Text.Trim();
 
                     c.Update();
@@ -91,7 +92,8 @@ namespace iArsenal.Web
                 MatchTicket.Cache.RefreshCache();
                 Member.Cache.RefreshCache();
                 Product.Cache.RefreshCache();
-                Order.RefreshOrderBaseType();
+
+                //Order.RefreshOrderBaseType();
 
                 ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('更新全部缓存成功');window.location.href=window.location.href", true);
             }

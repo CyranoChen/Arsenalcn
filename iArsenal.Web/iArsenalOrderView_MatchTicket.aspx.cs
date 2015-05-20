@@ -137,7 +137,10 @@ namespace iArsenal.Web
                                 throw new Exception("无相关比赛信息，请联系管理员");
                             }
 
-                            _isMemberCouldPurchase = mt.CheckMemberCanPurchase(this.CurrentMemberPeriod);
+                            // TODO
+                            var mp = repo.Single<MemberPeriod>(this.CurrentMemberPeriodID);
+
+                            _isMemberCouldPurchase = mt.CheckMemberCanPurchase(mp);
 
                             Product p = Product.Cache.Load(mt.ProductCode);
 

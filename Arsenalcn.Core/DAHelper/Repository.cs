@@ -42,6 +42,8 @@ namespace Arsenalcn.Core
 
         public IQueryable<T> All<T>() where T : class, IEntity
         {
+            var list = new List<T>();
+
             var attr = GetTableAttr<T>();
 
             StringBuilder sql = new StringBuilder();
@@ -54,15 +56,14 @@ namespace Arsenalcn.Core
 
             DataSet ds = SqlHelper.ExecuteDataset(conn, CommandType.Text, sql.ToString());
 
-            if (ds.Tables[0].Rows.Count == 0) { return null; }
-
-            var list = new List<T>();
-
-            foreach (DataRow dr in ds.Tables[0].Rows)
+            if (ds.Tables[0].Rows.Count > 0)
             {
-                ConstructorInfo ci = typeof(T).GetConstructor(new Type[] { typeof(DataRow) });
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    ConstructorInfo ci = typeof(T).GetConstructor(new Type[] { typeof(DataRow) });
 
-                list.Add((T)ci.Invoke(new Object[] { dr }));
+                    list.Add((T)ci.Invoke(new Object[] { dr }));
+                }
             }
 
             return list.AsQueryable();
@@ -71,6 +72,8 @@ namespace Arsenalcn.Core
         public IQueryable<T> Query<T>(PropertyCollection properties) where T : class, IEntity
         {
             Contract.Requires(properties != null);
+
+            var list = new List<T>();
 
             List<string> listCol = new List<string>();
             List<SqlParameter> listPara = new List<SqlParameter>();
@@ -112,20 +115,18 @@ namespace Arsenalcn.Core
 
                 DataSet ds = SqlHelper.ExecuteDataset(conn, CommandType.Text, sql.ToString(), listPara.ToArray());
 
-                if (ds.Tables[0].Rows.Count == 0) { return null; }
-
-                var list = new List<T>();
-
-                foreach (DataRow dr in ds.Tables[0].Rows)
+                if (ds.Tables[0].Rows.Count > 0)
                 {
-                    ConstructorInfo ci = typeof(T).GetConstructor(new Type[] { typeof(DataRow) });
+                    foreach (DataRow dr in ds.Tables[0].Rows)
+                    {
+                        ConstructorInfo ci = typeof(T).GetConstructor(new Type[] { typeof(DataRow) });
 
-                    list.Add((T)ci.Invoke(new Object[] { dr }));
+                        list.Add((T)ci.Invoke(new Object[] { dr }));
+                    }
                 }
-
-                return list.AsQueryable();
             }
-            else { return null; }
+
+            return list.AsQueryable();
         }
 
         public IQueryable<T> Query<T>(Expression<Func<T, bool>> predicate) where T : class, IEntity
@@ -166,18 +167,18 @@ namespace Arsenalcn.Core
 
             if (listCol.Count > 0 && listColPara.Count > 0 && listPara.Count > 0)
             {
-                string sql = string.Format("INSERT INTO {0} ({1}) VALUES ({2})", attr.Name,
-                    string.Join(", ", listCol.ToArray()), string.Join(", ", listColPara.ToArray()));
-
+                // skip the property of the self-increase main-key
                 var primary = instance.GetType().GetProperty("ID");
 
-                // skip the property of the self-increase main-key
                 if (!primary.PropertyType.Equals(typeof(int)))
                 {
                     listCol.Add(attr.Key);
                     listColPara.Add("@key");
                     listPara.Add(new SqlParameter("@key", primary.GetValue(instance, null)));
                 }
+
+                string sql = string.Format("INSERT INTO {0} ({1}) VALUES ({2})", attr.Name,
+                    string.Join(", ", listCol.ToArray()), string.Join(", ", listColPara.ToArray()));
 
                 if (trans != null)
                 {
@@ -222,18 +223,18 @@ namespace Arsenalcn.Core
 
             if (listCol.Count > 0 && listColPara.Count > 0 && listPara.Count > 0)
             {
-                string sql = string.Format("INSERT INTO {0} ({1}) VALUES ({2}); SELECT SCOPE_IDENTITY();",
-                    attr.Name, string.Join(", ", listCol.ToArray()), string.Join(", ", listColPara.ToArray()));
-
+                // skip the property of the self-increase main-key
                 var primary = instance.GetType().GetProperty("ID");
 
-                // skip the property of the self-increase main-key
                 if (!primary.PropertyType.Equals(typeof(int)))
                 {
                     listCol.Add(attr.Key);
                     listColPara.Add("@key");
                     listPara.Add(new SqlParameter("@key", primary.GetValue(instance, null)));
                 }
+
+                string sql = string.Format("INSERT INTO {0} ({1}) VALUES ({2}); SELECT SCOPE_IDENTITY();",
+                    attr.Name, string.Join(", ", listCol.ToArray()), string.Join(", ", listColPara.ToArray()));
 
                 if (trans != null)
                 {
@@ -246,7 +247,6 @@ namespace Arsenalcn.Core
             }
             else { throw new Exception("Unable to find any valid DB columns"); }
         }
-
 
         public void Insert<T>(IEnumerable<T> instances, SqlTransaction trans = null) where T : class, IEntity
         {

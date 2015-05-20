@@ -318,20 +318,20 @@ namespace iArsenal.Web
                             }
 
                             // Get all Member Period of current season
-                            var query = repo.Query<MemberPeriod>(x => x.IsActive && x.StartDate <= DateTime.Now && x.EndDate >= DateTime.Now);
+                            var list = repo.Query<MemberPeriod>(x => x.IsActive && x.StartDate <= DateTime.Now && x.EndDate >= DateTime.Now).ToList();
 
                             bool _updateFlag = false;
 
                             // Valiate the Member Period Information
-                            if (query != null && query.Count() > 0)
+                            if (list != null && list.Count() > 0)
                             {
-                                if (query.Any(x =>
+                                if (list.Any(x =>
                                     x.MemberID.Equals(o.MemberID) && x.MemberName.Equals(o.MemberName)
                                     && p.ProductType.Equals(ProductType.MemberShipCore)))
                                 {
                                     throw new Exception("此会员当前赛季已经有会籍信息");
                                 }
-                                else if (query.Any(x =>
+                                else if (list.Any(x =>
                                                 x.MemberID.Equals(o.MemberID) && x.MemberName.Equals(o.MemberName)
                                                 && x.MemberClass.Equals(MemberClassType.Core))
                                             && p.ProductType.Equals(ProductType.MemberShipPremier))
@@ -339,7 +339,7 @@ namespace iArsenal.Web
                                     _updateFlag = true;
                                 }
 
-                                if (!_updateFlag && query.Any(x => !x.MemberID.Equals(o.MemberID)
+                                if (!_updateFlag && list.Any(x => !x.MemberID.Equals(o.MemberID)
                                     && x.MemberCardNo.Equals(oiMemberShip.MemberCardNo, StringComparison.OrdinalIgnoreCase)))
                                 {
                                     throw new Exception("此会员卡号已被其他会员占用");
@@ -349,7 +349,7 @@ namespace iArsenal.Web
                             if (_updateFlag)
                             {
                                 // Level up the core member to premier for current season
-                                MemberPeriod mpCore = query.SingleOrDefault(x =>
+                                MemberPeriod mpCore = list.SingleOrDefault(x =>
                                     x.MemberID.Equals(o.MemberID) && x.MemberName.Equals(o.MemberName)
                                     && x.MemberClass.Equals(MemberClassType.Core));
 

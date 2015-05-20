@@ -79,6 +79,10 @@ namespace iArsenal.Web
                     {
                         oi_ReplicaKit = (OrdrItmReplicaKitAway)o.OIReplicaKitAway;
                     }
+                    else if (o.OIReplicaKitCup != null && o.OIReplicaKitCup.IsActive)
+                    {
+                        oi_ReplicaKit = (OrdrItmReplicaKitCup)o.OIReplicaKitCup;
+                    }
                     else if (o.OIReplicaKitHome != null && o.OIReplicaKitHome.IsActive)
                     {
                         oi_ReplicaKit = (OrdrItmReplicaKitHome)o.OIReplicaKitHome;
@@ -437,7 +441,7 @@ namespace iArsenal.Web
                         o.Remark = string.Empty;
 
                         //Get the Order ID after Insert new one
-                        _newID = (int)repo.InsertOutKey<Order>(o, trans);
+                        _newID = Convert.ToInt32(repo.InsertOutKey<Order>(o, trans));
                     }
 
                     //Remove Order Item of this Order

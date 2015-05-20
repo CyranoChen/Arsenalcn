@@ -160,7 +160,7 @@ namespace Arsenal.Web
 
                 if (rlt.Any())
                 {
-                    if (rlt.All().Count(x => x.TeamGuid.Equals(TeamGuid)) <= 1)
+                    if (rlt.QueryByTeamGuid().Count() <= 1)
                     {
                         throw new Exception("该球队仅属于此分类，不能移除");
                     }

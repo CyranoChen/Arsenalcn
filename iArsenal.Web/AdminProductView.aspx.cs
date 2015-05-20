@@ -81,10 +81,10 @@ namespace iArsenal.Web
 
         private void BindItemData()
         {
-            var query = repo.Query<OrderItem>(x => x.ProductGuid.Equals(ProductGuid));
-            var list = repo.Query<Order>(o => query.Any(x => x.OrderID.Equals(o.ID))).ToList();
+            var list = repo.Query<OrderItem>(x => x.ProductGuid.Equals(ProductGuid)).ToList();
+            var query = repo.Query<Order>(o => list.Any(x => x.OrderID.Equals(o.ID)));
 
-            gvProductOrder.DataSource = list;
+            gvProductOrder.DataSource = query.ToList();
             gvProductOrder.DataBind();
 
             #region set Control Custom Pager
@@ -203,7 +203,7 @@ namespace iArsenal.Web
                 }
                 else
                 {
-                    if (repo.All<Product>().Any(x => x.Code.ToLower().Equals(tbCode.Text.Trim().ToLower())))
+                    if (repo.All<Product>().ToList().Any(x => x.Code.ToLower().Equals(tbCode.Text.Trim().ToLower())))
                         throw new Exception("Product Code is already in use");
 
                     repo.Insert(p);

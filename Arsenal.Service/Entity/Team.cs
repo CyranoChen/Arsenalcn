@@ -16,9 +16,9 @@ namespace Arsenal.Service
             : base(dr)
         {
             // Generate League Count Info
-            IRelationLeagueTeam instance = new RelationLeagueTeam();
+            IRelationLeagueTeam instance = new RelationLeagueTeam() { TeamGuid = this.ID };
 
-            LeagueCountInfo = instance.All().Count(x => x.TeamGuid.Equals(this.ID));
+            LeagueCountInfo = instance.QueryByTeamGuid().Count();
         }
 
         public static class Cache

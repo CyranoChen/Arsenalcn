@@ -1,5 +1,5 @@
 ﻿/* Javascript Version iArsenal */
-/* Version: 1.8.1 || Date: 2015-05-14 || Author: Cyrano */
+/* Version: 1.8.2 || Date: 2015-05-20 || Author: Cyrano */
 /* type="text/javascript" */
 
 $(document).ready(function () {
@@ -230,7 +230,7 @@ function ProductCheck() {
             if (status == "success" && data != null) {
                 if (data.result != "error" && JSON.stringify(data) != "{}") {
                     $tbProductCode.val(data.Code);
-                    $tbProductGuid.val(data.ProductGuid);
+                    $tbProductGuid.val(data.ID);
                     $tbProductName.val($.format("{0} ({1})", data.DisplayName, data.Name));
                     $tbProductUnitPrice.val(data.PriceCNY.toLocaleString());
 
@@ -367,8 +367,8 @@ function AutoCompleteProductImpl(obj) {
 }
 
 function AutoFillProductImpl(obj, data) {
-    if (data.ProductGuid != undefined) {
-        obj.find("input.ProductGuid").val(data.ProductGuid);
+    if (data.ID != undefined) {
+        obj.find("input.ProductGuid").val(data.ID);
         obj.find("input.ProductCode").val(data.Code);
         obj.find("input.ProductName").val($.format("{0} ({1})", data.DisplayName, data.Name));
         obj.find("input.ProductSize").val("");
@@ -443,7 +443,7 @@ function UnPackageWishOrderItem(obj, entry) {
 
     $.getJSON("ServerProductCheck.ashx", { ProductCode: entry.Code }, function (data, status, xhr) {
         if (status == "success" && data != null) {
-            if (data.ProductGuid != undefined) {
+            if (data.ID != undefined) {
                 if (data.SaleInfo != "") {
                     obj.find("input.ProductPrice").val(data.Sale);
                     obj.find("span.ProductPriceInfo").text($.format("{0} × {1} = {2}{3}",

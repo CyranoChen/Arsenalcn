@@ -159,10 +159,11 @@ namespace Arsenal.Web
             ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('更新缓存成功');window.location.href = window.location.href", true);
         }
 
-        private void BindTeamData(Guid LeagueGuid)
+        private void BindTeamData(Guid guid)
         {
-            IRelationLeagueTeam instance = new RelationLeagueTeam();
-            var query = instance.Query(x => x.LeagueGuid.Equals(LeagueGuid));
+            IRelationLeagueTeam instance = new RelationLeagueTeam() { LeagueGuid = guid };
+            var query = instance.QueryByLeagueGuid();
+
             var list = new List<Team>();
 
             if (query != null && query.Count() > 0)

@@ -145,6 +145,39 @@ namespace iArsenal.Web.Control
                         Response.Cookies.Add(mycookie);//写入立即过期的*/
                         Response.Cookies["user_name"].Expires = DateTime.Now.AddDays(-1);
                     }
+
+                    if (Request.Cookies["mid"] != null)
+                    {
+                        HttpCookie mycookie;
+                        mycookie = Request.Cookies["mid"];
+                        TimeSpan ts = new TimeSpan(0, 0, 0, 0);//时间跨度 
+                        mycookie.Expires = DateTime.Now.Add(ts);//立即过期 
+                        Response.Cookies.Remove("mid");//清除 
+                        Response.Cookies.Add(mycookie);//写入立即过期的*/
+                        Response.Cookies["mid"].Expires = DateTime.Now.AddDays(-1);
+                    }
+
+                    if (Request.Cookies["member_name"] != null)
+                    {
+                        HttpCookie mycookie;
+                        mycookie = Request.Cookies["member_name"];
+                        TimeSpan ts = new TimeSpan(0, 0, 0, 0);//时间跨度 
+                        mycookie.Expires = DateTime.Now.Add(ts);//立即过期 
+                        Response.Cookies.Remove("member_name");//清除 
+                        Response.Cookies.Add(mycookie);//写入立即过期的*/
+                        Response.Cookies["member_name"].Expires = DateTime.Now.AddDays(-1);
+                    }
+
+                    if (Request.Cookies["current_mpid"] != null)
+                    {
+                        HttpCookie mycookie;
+                        mycookie = Request.Cookies["current_mpid"];
+                        TimeSpan ts = new TimeSpan(0, 0, 0, 0);//时间跨度 
+                        mycookie.Expires = DateTime.Now.Add(ts);//立即过期 
+                        Response.Cookies.Remove("current_mpid");//清除 
+                        Response.Cookies.Add(mycookie);//写入立即过期的*/
+                        Response.Cookies["current_mpid"].Expires = DateTime.Now.AddDays(-1);
+                    }
                 }
 
                 Response.Redirect("default.aspx");

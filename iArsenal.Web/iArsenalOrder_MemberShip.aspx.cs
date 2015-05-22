@@ -118,7 +118,9 @@ namespace iArsenal.Web
                 {
                     Order_MemberShip o = repo.Single<Order_MemberShip>(OrderID);
 
-                    if (ConfigGlobal.IsPluginAdmin(UID) && o != null)
+                    if (o == null || !o.IsActive) { throw new Exception("此订单无效"); }
+
+                    if (ConfigGlobal.IsPluginAdmin(UID) || o.MemberID.Equals(MID))
                     {
                         lblMemberName.Text = string.Format("<b>{0}</b> (<em>NO.{1}</em>)", o.MemberName, o.MemberID.ToString());
 
@@ -178,8 +180,7 @@ namespace iArsenal.Web
                     }
                     else
                     {
-                        if (o == null || !o.MemberID.Equals(MID) || !o.IsActive)
-                            throw new Exception("此订单无效或非当前用户订单");
+                        throw new Exception("此订单非当前用户订单");
                     }
 
                     // Whether Core or Premier MemberShip

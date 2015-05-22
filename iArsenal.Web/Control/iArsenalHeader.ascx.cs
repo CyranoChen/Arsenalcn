@@ -167,17 +167,6 @@ namespace iArsenal.Web.Control
                         Response.Cookies.Add(mycookie);//写入立即过期的*/
                         Response.Cookies["member_name"].Expires = DateTime.Now.AddDays(-1);
                     }
-
-                    if (Request.Cookies["current_mpid"] != null)
-                    {
-                        HttpCookie mycookie;
-                        mycookie = Request.Cookies["current_mpid"];
-                        TimeSpan ts = new TimeSpan(0, 0, 0, 0);//时间跨度 
-                        mycookie.Expires = DateTime.Now.Add(ts);//立即过期 
-                        Response.Cookies.Remove("current_mpid");//清除 
-                        Response.Cookies.Add(mycookie);//写入立即过期的*/
-                        Response.Cookies["current_mpid"].Expires = DateTime.Now.AddDays(-1);
-                    }
                 }
 
                 Response.Redirect("default.aspx");

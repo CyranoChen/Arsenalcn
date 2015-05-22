@@ -40,21 +40,6 @@ namespace iArsenal.Web
             }
         }
 
-        public int CurrentMemberPeriodID
-        {
-            get
-            {
-                if (Request.Cookies["current_mpid"] != null && !string.IsNullOrEmpty(Request.Cookies["current_mpid"].Value))
-                {
-                    return int.Parse(Request.Cookies["current_mpid"].Value);
-                }
-                else
-                {
-                    return -1;
-                }
-            }
-        }
-
         protected override void OnInitComplete(EventArgs e)
         {
             //_adminPage = false;
@@ -82,19 +67,6 @@ namespace iArsenal.Web
                         m.LastLoginTime = DateTime.Now;
 
                         repo.Update(m);
-
-                        if (this.CurrentMemberPeriodID < 0)
-                        {
-                            var pcMemberPeriod = new PropertyCollection();
-
-                            pcMemberPeriod.Add("MemberID", this.MID);
-                            pcMemberPeriod.Add("IsActive", true);
-
-                            var mp = repo.Query<MemberPeriod>(pcMemberPeriod).FirstOrDefault(x =>
-                                x.StartDate <= DateTime.Now && x.EndDate >= DateTime.Now);
-
-                            Response.SetCookie(new HttpCookie("current_mpid", mp.ID.ToString()));
-                        }
                     }
                     else
                     {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Linq;
 
 using Arsenalcn.Core;
 
@@ -11,6 +12,19 @@ namespace iArsenal.Service
         public MemberPeriod() : base() { }
 
         public MemberPeriod(DataRow dr) : base(dr) { }
+
+        public static MemberPeriod GetCurrentMemberPeriodByMemberID(int id)
+        {
+            var pcMemberPeriod = new PropertyCollection();
+
+            pcMemberPeriod.Add("MemberID", id);
+            pcMemberPeriod.Add("IsActive", true);
+
+            IRepository repo = new Repository();
+
+            return repo.Query<MemberPeriod>(pcMemberPeriod).FirstOrDefault(x =>
+                x.StartDate <= DateTime.Now && x.EndDate >= DateTime.Now);
+        }
 
         #region Members and Properties
 

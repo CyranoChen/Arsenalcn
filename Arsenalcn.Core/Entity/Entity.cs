@@ -77,6 +77,19 @@ namespace Arsenalcn.Core
 
         #endregion
 
+        public virtual void Mapper(Object obj)
+        {
+            foreach (var properInfo in this.GetType()
+                .GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance))
+            {
+                var properInfoOrgin = obj.GetType().GetProperty(properInfo.Name);
+                if (properInfoOrgin != null)
+                {
+                    properInfo.SetValue(this, properInfoOrgin.GetValue(obj, null), null);
+                }
+            }
+        }
+
         protected virtual string GenerateKey()
         {
             return KeyGenerator.Generate();

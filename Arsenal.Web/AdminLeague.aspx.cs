@@ -41,7 +41,7 @@ namespace Arsenal.Web
 
         private void BindData()
         {
-            var list = repo.All<League>().ToList().FindAll(x =>
+            var list = repo.All<League>().FindAll(x =>
                 {
                     Boolean returnValue = true;
                     string tmpString = string.Empty;

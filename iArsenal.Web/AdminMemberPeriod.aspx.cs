@@ -40,7 +40,7 @@ namespace iArsenal.Web
 
         private void BindData()
         {
-            var list = repo.All<MemberPeriod>().ToList().FindAll(x =>
+            var list = repo.All<MemberPeriod>().FindAll(x =>
             {
                 Boolean returnValue = true;
                 string tmpString = string.Empty;

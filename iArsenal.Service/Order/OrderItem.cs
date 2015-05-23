@@ -25,51 +25,6 @@ namespace iArsenal.Service
             #endregion
         }
 
-        public virtual void Mapper(Object obj)
-        {
-            foreach (var properInfo in this.GetType()
-                .GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance))
-            {
-                var properInfoOrgin = obj.GetType().GetProperty(properInfo.Name);
-                if (properInfoOrgin != null)
-                {
-                    properInfo.SetValue(this, properInfoOrgin.GetValue(obj, null), null);
-                }
-            }
-        }
-
-        //public static List<OrderItem> GetOrderItems(int orderID)
-        //{
-        //    DataTable dt = DataAccess.OrderItem.GetOrderItems(orderID);
-        //    List<OrderItem> list = new List<OrderItem>();
-
-        //    if (dt != null)
-        //    {
-        //        foreach (DataRow dr in dt.Rows)
-        //        {
-        //            list.Add(new OrderItem(dr));
-        //        }
-        //    }
-
-        //    return list;
-        //}
-
-        //public static int RemoveOrderItemByOrderID(int orderID, SqlTransaction trans = null)
-        //{
-        //    int count = 0;
-
-        //    List<OrderItem> list = OrderItem.GetOrderItems(orderID);
-
-        //    if (list != null && list.Count > 0)
-        //    {
-        //        count = list.Count;
-
-        //        DataAccess.OrderItem.DeleteOrderItemByOrderID(orderID, trans);
-        //    }
-
-        //    return count;
-        //}
-
         public virtual void Place(Member m, Product p, SqlTransaction trans = null)
         {
             MemberID = m.ID;

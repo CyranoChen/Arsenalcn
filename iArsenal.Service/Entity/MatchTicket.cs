@@ -10,7 +10,7 @@ using Arsenalcn.Core;
 namespace iArsenal.Service
 {
     [AttrDbTable("iArsenal_MatchTicket", Key = "MatchGuid", Sort = "Deadline DESC")]
-    public class MatchTicket
+    public class MatchTicket : IMatchTicket
     {
         public MatchTicket() { }
 
@@ -118,14 +118,11 @@ namespace iArsenal.Service
 
             DataSet ds = DataAccess.ExecuteDataset(sql, para);
 
-            if (ds.Tables[0].Rows[0] != null)
-            { return true; }
-            else
-            { return false; }
+            return ds.Tables[0].Rows.Count > 0;
         }
 
         // Get MatchTickets by Arsenal Matchs
-        public static List<MatchTicket> All()
+        public List<MatchTicket> All()
         {
             var mlist = Arsenal_Match.Cache.MatchList;
 
@@ -158,7 +155,7 @@ namespace iArsenal.Service
             sql = string.Format(sql, Repository.GetTableAttr<MatchTicket>().Name);
 
             SqlParameter[] para = {
-                                      new SqlParameter("@matchGuid", ID),
+                                      new SqlParameter("@key", ID),
                                       new SqlParameter("@productCode", ProductCode),
                                       new SqlParameter("@deadline", Deadline),
                                       new SqlParameter("@allowMemberClass", !AllowMemberClass.HasValue ? (object)DBNull.Value : (object)AllowMemberClass.Value),
@@ -200,45 +197,40 @@ namespace iArsenal.Service
             DataAccess.ExecuteNonQuery(sql, para, trans);
         }
 
-        public static void MatchTicketCountStatistics()
+        public void MatchTicketCountStatistics()
         {
-            try
+            var query = MatchTicket.Cache.MatchTicketList.FindAll(mt => mt.IsActive);
+
+            if (query != null && query.Count > 0)
             {
-                var query = MatchTicket.Cache.MatchTicketList.FindAll(mt => mt.IsActive);
+                IRepository repo = new Repository();
 
-                if (query != null && query.Count > 0)
+                var oQuery = repo.Query<Order>(o => o.IsActive && o.OrderType.Equals(OrderBaseType.Ticket) && !o.Status.Equals(OrderStatusType.Error));
+                var oiQuery = repo.Query<OrderItem>(oi => oi.IsActive & !string.IsNullOrEmpty(oi.Remark));
+
+                foreach (MatchTicket mt in query)
                 {
-                    IRepository repo = new Repository();
+                    var _list = oiQuery.Where(oi => oi.Remark.Equals(mt.ID.ToString())).ToList();
+                    var _count = oQuery.Count(o => _list.Any(oi => oi.OrderID.Equals(o.ID)));
 
-                    var oQuery = repo.Query<Order>(o => o.IsActive && o.OrderType.Equals(OrderBaseType.Ticket) && !o.Status.Equals(OrderStatusType.Error));
-                    var oiQuery = repo.Query<OrderItem>(oi => oi.IsActive & !string.IsNullOrEmpty(oi.Remark));
-
-                    foreach (MatchTicket mt in query)
+                    if (_count > 0 && !mt.TicketCount.Equals(_count))
                     {
-                        var _list = oiQuery.Where(oi => oi.Remark.Equals(mt.ID.ToString())).ToList();
-                        var _count = oQuery.Count(o => _list.Any(oi => oi.OrderID.Equals(o.ID)));
-
-                        if (_count > 0 && !mt.TicketCount.Equals(_count))
-                        {
-                            mt.TicketCount = _count;
-                        }
-                        else if (_count == 0 && mt.TicketCount.HasValue)
-                        {
-                            mt.TicketCount = null;
-                        }
-                        else
-                        {
-                            continue;
-                        }
-
-                        mt.Update();
+                        mt.TicketCount = _count;
+                    }
+                    else if (_count == 0 && mt.TicketCount.HasValue)
+                    {
+                        mt.TicketCount = null;
+                    }
+                    else
+                    {
+                        continue;
                     }
 
-                    MatchTicket.Cache.RefreshCache();
+                    mt.Update();
                 }
+
+                MatchTicket.Cache.RefreshCache();
             }
-            catch
-            { throw new Exception(); }
         }
 
         private static DateTime ConvertToDST(DateTime date)
@@ -297,7 +289,9 @@ namespace iArsenal.Service
 
             private static void InitCache()
             {
-                MatchTicketList = All();
+                IMatchTicket instance = new MatchTicket();
+
+                MatchTicketList = instance.All();
             }
 
             public static MatchTicket Load(Guid guid)
@@ -311,7 +305,7 @@ namespace iArsenal.Service
         #region Members and Properties
 
         // Match Info Properties
-
+        [AttrDbColumn("MatchGuid", Key = true)]
         public Guid ID
         { get; set; }
 

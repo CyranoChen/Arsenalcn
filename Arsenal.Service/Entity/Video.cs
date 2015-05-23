@@ -40,7 +40,7 @@ namespace Arsenal.Service
             {
                 IRepository repo = new Repository();
 
-                VideoList = repo.All<Video>().ToList();
+                VideoList = repo.All<Video>();
 
                 VideoList_Legend = VideoList.FindAll(x =>
                     x.GoalPlayerGuid.HasValue ? Player.Cache.Load(x.GoalPlayerGuid.Value).IsLegend : false);

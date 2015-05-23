@@ -16,9 +16,7 @@ namespace Arsenal.Service
             : base(dr)
         {
             // Generate League Count Info
-            IRelationLeagueTeam instance = new RelationLeagueTeam() { LeagueGuid = this.ID };
-
-            TeamCountInfo = instance.QueryByLeagueGuid().Count();
+            TeamCountInfo = RelationLeagueTeam.QueryByLeagueGuid(this.ID).Count;
 
             // Generate League Name Info
             LeagueNameInfo = LeagueName + LeagueSeason;
@@ -40,7 +38,7 @@ namespace Arsenal.Service
             {
                 IRepository repo = new Repository();
 
-                LeagueList = repo.All<League>().ToList();
+                LeagueList = repo.All<League>();
                 LeagueList_Active = LeagueList.FindAll(x => x.IsActive);
             }
 

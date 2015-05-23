@@ -85,7 +85,9 @@ namespace iArsenal.Web
 
         private void BindData()
         {
-            var list = MatchTicket.All().FindAll(x =>
+            IMatchTicket instance = new MatchTicket();
+
+            var list = instance.All().FindAll(x =>
             {
                 Boolean returnValue = true;
                 string tmpString = string.Empty;
@@ -203,7 +205,9 @@ namespace iArsenal.Web
             Arsenal_Player.Cache.RefreshCache();
             Arsenal_Team.Cache.RefreshCache();
 
-            MatchTicket.MatchTicketCountStatistics();
+            IMatchTicket instance = new MatchTicket();
+
+            instance.MatchTicketCountStatistics();
 
             ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('更新缓存成功');window.location.href=window.location.href", true);
         }

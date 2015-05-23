@@ -70,7 +70,7 @@ namespace iArsenal.Web
                 }
             }
 
-            List<Order> list = repo.All<Order>().ToList().FindAll(x =>
+            var list = repo.All<Order>().FindAll(x =>
             {
                 Boolean returnValue = true;
                 string tmpString = string.Empty;
@@ -245,7 +245,7 @@ namespace iArsenal.Web
             try
             {
                 #region Get the Order List
-                var list = repo.All<Order>().ToList().FindAll(x =>
+                var list = repo.All<Order>().FindAll(x =>
                 {
                     Boolean returnValue = x.IsActive; // Export the active order
                     string tmpString = string.Empty;

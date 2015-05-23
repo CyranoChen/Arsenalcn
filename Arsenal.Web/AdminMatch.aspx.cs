@@ -54,7 +54,7 @@ namespace Arsenal.Web
 
         private void BindData()
         {
-            var list = repo.All<Match>().ToList().FindAll(x =>
+            var list = repo.All<Match>().FindAll(x =>
             {
                 Boolean returnValue = true;
                 string tmpString = string.Empty;
@@ -161,14 +161,13 @@ namespace Arsenal.Web
 
         private void BindTeamData(Guid guid)
         {
-            IRelationLeagueTeam instance = new RelationLeagueTeam() { LeagueGuid = guid };
-            var query = instance.QueryByLeagueGuid();
+            var rltList = RelationLeagueTeam.QueryByLeagueGuid(guid);
 
             var list = new List<Team>();
 
-            if (query != null && query.Count() > 0)
+            if (rltList != null && rltList.Count > 0)
             {
-                foreach (var rlt in query)
+                foreach (var rlt in rltList)
                 {
                     Team t = Team.Cache.Load(rlt.TeamGuid);
 

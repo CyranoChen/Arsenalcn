@@ -9,7 +9,6 @@ using System.Reflection;
 using System.Text;
 
 using Microsoft.ApplicationBlocks.Data;
-using System.Collections;
 
 namespace Arsenalcn.Core
 {
@@ -40,7 +39,7 @@ namespace Arsenalcn.Core
             return (T)ci.Invoke(new Object[] { ds.Tables[0].Rows[0] });
         }
 
-        public IQueryable<T> All<T>() where T : class, IEntity
+        public List<T> All<T>() where T : class, IEntity
         {
             var list = new List<T>();
 
@@ -66,10 +65,10 @@ namespace Arsenalcn.Core
                 }
             }
 
-            return list.AsQueryable();
+            return list;
         }
 
-        public IQueryable<T> Query<T>(PropertyCollection properties) where T : class, IEntity
+        public List<T> Query<T>(PropertyCollection properties) where T : class, IEntity
         {
             Contract.Requires(properties != null);
 
@@ -126,14 +125,14 @@ namespace Arsenalcn.Core
                 }
             }
 
-            return list.AsQueryable();
+            return list;
         }
 
         public IQueryable<T> Query<T>(Expression<Func<T, bool>> predicate) where T : class, IEntity
         {
             Contract.Requires(predicate != null);
 
-            return All<T>().Where(predicate);
+            return All<T>().AsQueryable().Where(predicate);
         }
 
         public void Insert<T>(T instance, SqlTransaction trans = null) where T : class, IEntity

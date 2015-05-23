@@ -175,6 +175,8 @@ namespace iArsenal.Web
                 o.Description = tbDescription.Text.Trim();
                 o.Remark = tbRemark.Text.Trim();
 
+                o.RefreshOrderType();
+
                 if (OrderID > 0)
                 {
                     repo.Update(o);

@@ -203,7 +203,7 @@ namespace iArsenal.Web
                 }
                 else
                 {
-                    if (repo.All<Product>().ToList().Any(x => x.Code.ToLower().Equals(tbCode.Text.Trim().ToLower())))
+                    if (repo.All<Product>().Any(x => x.Code.ToLower().Equals(tbCode.Text.Trim().ToLower())))
                         throw new Exception("Product Code is already in use");
 
                     repo.Insert(p);

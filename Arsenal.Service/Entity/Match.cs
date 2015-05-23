@@ -48,7 +48,7 @@ namespace Arsenal.Service
             {
                 IRepository repo = new Repository();
 
-                MatchList = repo.All<Match>().ToList();
+                MatchList = repo.All<Match>();
             }
 
             public static Match Load(Guid guid)

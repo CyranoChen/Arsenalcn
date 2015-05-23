@@ -42,7 +42,7 @@ namespace iArsenal.Web
 
         private void BindData()
         {
-            var list = repo.All<Product>().ToList().FindAll(x =>
+            var list = repo.All<Product>().FindAll(x =>
             {
                 Boolean returnValue = true;
                 string tmpString = string.Empty;

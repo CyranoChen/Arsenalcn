@@ -31,7 +31,7 @@ namespace Arsenal.Service
             {
                 IRepository repo = new Repository();
 
-                PlayerList = repo.All<Player>().ToList();
+                PlayerList = repo.All<Player>();
 
                 PlayerList_HasSquadNumber = PlayerList.FindAll(x => x.SquadNumber > 0)
                     .OrderBy(x => x.SquadNumber).ThenBy(x => x.DisplayName).ToList();

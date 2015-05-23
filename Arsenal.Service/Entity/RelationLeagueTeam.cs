@@ -3,15 +3,13 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics.Contracts;
-using System.Linq;
-using System.Linq.Expressions;
 
 using Arsenalcn.Core;
 
 namespace Arsenal.Service
 {
     [AttrDbTable("Arsenal_RelationLeagueTeam", Key = "", Sort = "")]
-    public class RelationLeagueTeam : IRelationLeagueTeam
+    public class RelationLeagueTeam
     {
         public RelationLeagueTeam() { }
 
@@ -58,14 +56,14 @@ namespace Arsenal.Service
             return ds.Tables[0].Rows.Count > 0;
         }
 
-        public IQueryable<RelationLeagueTeam> QueryByLeagueGuid()
+        public static List<RelationLeagueTeam> QueryByLeagueGuid(Guid lGuid)
         {
             var list = new List<RelationLeagueTeam>();
 
             string sql = string.Format("SELECT * FROM {0} WHERE LeagueGuid = @leagueGuid",
                 Repository.GetTableAttr<RelationLeagueTeam>().Name);
 
-            SqlParameter[] para = { new SqlParameter("@leagueGuid", LeagueGuid) };
+            SqlParameter[] para = { new SqlParameter("@leagueGuid", lGuid) };
 
             DataSet ds = DataAccess.ExecuteDataset(sql, para);
 
@@ -77,17 +75,17 @@ namespace Arsenal.Service
                 }
             }
 
-            return list.AsQueryable();
+            return list;
         }
 
-        public IQueryable<RelationLeagueTeam> QueryByTeamGuid()
+        public static List<RelationLeagueTeam> QueryByTeamGuid(Guid tGuid)
         {
             var list = new List<RelationLeagueTeam>();
 
             string sql = string.Format("SELECT * FROM {0} WHERE TeamGuid = @teamGuid",
                 Repository.GetTableAttr<RelationLeagueTeam>().Name);
 
-            SqlParameter[] para = { new SqlParameter("@teamGuid", TeamGuid) };
+            SqlParameter[] para = { new SqlParameter("@teamGuid", tGuid) };
 
             DataSet ds = DataAccess.ExecuteDataset(sql, para);
 
@@ -99,7 +97,7 @@ namespace Arsenal.Service
                 }
             }
 
-            return list.AsQueryable();
+            return list;
         }
 
         public void Create(SqlTransaction trans = null)
@@ -132,7 +130,7 @@ namespace Arsenal.Service
             DataAccess.ExecuteNonQuery(sql, para, trans);
         }
 
-        public void Delete(IEnumerable<RelationLeagueTeam> instances, SqlTransaction trans = null)
+        public static void Delete(IEnumerable<RelationLeagueTeam> instances, SqlTransaction trans = null)
         {
             Contract.Requires(instances != null);
 
@@ -142,22 +140,7 @@ namespace Arsenal.Service
             }
         }
 
-        //public void Delete(Expression<Func<RelationLeagueTeam, bool>> predicate, SqlTransaction trans = null)
-        //{
-        //    Contract.Requires(predicate != null);
-
-        //    var instances = Query(predicate);
-
-        //    if (instances != null && instances.Count() > 0)
-        //    {
-        //        foreach (var instance in instances)
-        //        {
-        //            instance.Delete(trans);
-        //        }
-        //    }
-        //}
-
-        public void Clean(SqlTransaction trans = null)
+        public static void Clean(SqlTransaction trans = null)
         {
             string sql = string.Format(@"DELETE FROM {0} WHERE (TeamGuid NOT IN (SELECT TeamGuid FROM {1})) OR
                                (LeagueGuid NOT IN (SELECT LeagueGuid FROM {2}))",
@@ -165,7 +148,7 @@ namespace Arsenal.Service
                                Repository.GetTableAttr<Team>().Name,
                                Repository.GetTableAttr<League>().Name);
 
-            DataAccess.ExecuteNonQuery(sql);
+            DataAccess.ExecuteNonQuery(sql, null, trans);
         }
 
         #region Members and Properties

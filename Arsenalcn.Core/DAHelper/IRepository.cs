@@ -11,8 +11,8 @@ namespace Arsenalcn.Core
     {
         T Single<T>(object key) where T : class, IEntity;
 
-        IQueryable<T> All<T>() where T : class, IEntity;
-        IQueryable<T> Query<T>(PropertyCollection properties) where T : class, IEntity;
+        List<T> All<T>() where T : class, IEntity;
+        List<T> Query<T>(PropertyCollection properties) where T : class, IEntity;
         IQueryable<T> Query<T>(Expression<Func<T, bool>> predicate) where T : class, IEntity;
 
         void Insert<T>(T instance, SqlTransaction trans = null) where T : class, IEntity;

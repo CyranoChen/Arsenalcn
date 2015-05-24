@@ -3,6 +3,7 @@ using System.Data;
 using System.Linq;
 
 using Arsenalcn.Core;
+using System.Collections;
 
 namespace iArsenal.Service
 {
@@ -15,14 +16,14 @@ namespace iArsenal.Service
 
         public static MemberPeriod GetCurrentMemberPeriodByMemberID(int id)
         {
-            var pcMemberPeriod = new PropertyCollection();
+            var htWhere = new Hashtable();
 
-            pcMemberPeriod.Add("MemberID", id);
-            pcMemberPeriod.Add("IsActive", true);
+            htWhere.Add("MemberID", id);
+            htWhere.Add("IsActive", true);
 
             IRepository repo = new Repository();
 
-            return repo.Query<MemberPeriod>(pcMemberPeriod).FirstOrDefault(x =>
+            return repo.Query<MemberPeriod>(htWhere).FirstOrDefault(x =>
                 x.StartDate <= DateTime.Now && x.EndDate >= DateTime.Now);
         }
 

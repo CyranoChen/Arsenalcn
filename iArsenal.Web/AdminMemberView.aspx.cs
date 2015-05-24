@@ -5,6 +5,7 @@ using System.Linq;
 using Arsenalcn.Core;
 using Arsenalcn.Core.Utility;
 using iArsenal.Service;
+using System.Collections;
 
 namespace iArsenal.Web
 {
@@ -241,11 +242,11 @@ namespace iArsenal.Web
                 #region Filter Member By AcnID
                 int tmpMID = int.MinValue;
 
-                var pc = new PropertyCollection();
+                var htWhere = new Hashtable();
 
-                pc.Add("AcnID", m.AcnID);
+                htWhere.Add("AcnID", m.AcnID);
 
-                Member tmpMem = repo.Query<Member>(pc).FirstOrDefault();
+                Member tmpMem = repo.Query<Member>(htWhere).FirstOrDefault();
 
                 if (tmpMem != null)
                 {

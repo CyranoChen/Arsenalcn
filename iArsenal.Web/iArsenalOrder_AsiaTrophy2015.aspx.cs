@@ -357,13 +357,16 @@ namespace iArsenal.Web
                         o.Remark = string.Empty;
 
                         //Get the Order ID after Insert new one
-                        _newID = Convert.ToInt32(repo.InsertOutKey<Order>(o, trans));
+                        object _key = null;
+                        repo.Insert<Order>(o, out _key, trans);
+                        _newID = Convert.ToInt32(_key);
                     }
 
                     //Remove Order Item of this Order
                     if (OrderID > 0 && o.ID.Equals(OrderID))
                     {
-                        repo.Delete<OrderItem>(x => x.OrderID.Equals(OrderID), trans);
+                        int _count = 0;
+                        repo.Delete<OrderItem>(x => x.OrderID.Equals(OrderID), out _count, trans);
                     }
 
                     //New Order Items

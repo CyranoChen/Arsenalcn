@@ -6,6 +6,7 @@ using System.Web;
 using Arsenalcn.Core;
 using Arsenalcn.Core.Utility;
 using iArsenal.Service;
+using System.Collections;
 
 namespace iArsenal.Web
 {
@@ -52,11 +53,11 @@ namespace iArsenal.Web
                 // TODO: change to cache mode, LOGOUT
                 if (this.MID <= 0)
                 {
-                    var pcMember = new PropertyCollection();
+                    var htWhere = new Hashtable();
 
-                    pcMember.Add("AcnID", this.UID);
+                    htWhere.Add("AcnID", this.UID);
 
-                    Member m = repo.Query<Member>(pcMember).FirstOrDefault();
+                    Member m = repo.Query<Member>(htWhere).FirstOrDefault();
 
                     if (m != null && m.ID > 0)
                     {

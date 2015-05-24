@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -68,9 +69,9 @@ namespace Arsenalcn.Core
             return list;
         }
 
-        public List<T> Query<T>(PropertyCollection properties) where T : class, IEntity
+        public List<T> Query<T>(Hashtable htWhere) where T : class, IEntity
         {
-            Contract.Requires(properties != null);
+            Contract.Requires(htWhere != null);
 
             var list = new List<T>();
 
@@ -79,13 +80,13 @@ namespace Arsenalcn.Core
 
             var attr = GetTableAttr<T>();
 
-            foreach (var p in properties.Keys)
+            foreach (var de in htWhere.Keys)
             {
-                var attrCol = GetColumnAttr<T>(p.ToString());
+                var attrCol = GetColumnAttr<T>(de.ToString());
 
                 if (attrCol != null)
                 {
-                    object _value = properties[p];
+                    object _value = htWhere[de];
 
                     listCol.Add(string.Format("{0} = @{0}", attrCol.Name));
 
@@ -93,10 +94,10 @@ namespace Arsenalcn.Core
                         _value != null ? _value : (object)DBNull.Value);
                     listPara.Add(_para);
                 }
-                else if (p.ToString().Equals("ID"))
+                else if (de.ToString().Equals("ID"))
                 {
                     listCol.Add(string.Format("{0} = @key", attr.Key));
-                    listPara.Add(new SqlParameter("@key", properties[p]));
+                    listPara.Add(new SqlParameter("@key", htWhere[de]));
                 }
                 else
                 { continue; }
@@ -191,7 +192,7 @@ namespace Arsenalcn.Core
             else { throw new Exception("Unable to find any valid DB columns"); }
         }
 
-        public object InsertOutKey<T>(T instance, SqlTransaction trans = null) where T : class, IEntity
+        public void Insert<T>(T instance, out object key, SqlTransaction trans = null) where T : class, IEntity
         {
             Contract.Requires(instance != null);
 
@@ -237,14 +238,17 @@ namespace Arsenalcn.Core
 
                 if (trans != null)
                 {
-                    return SqlHelper.ExecuteScalar(trans, CommandType.Text, sql, listPara.ToArray());
+                    key = SqlHelper.ExecuteScalar(trans, CommandType.Text, sql, listPara.ToArray());
                 }
                 else
                 {
-                    return SqlHelper.ExecuteScalar(conn, CommandType.Text, sql, listPara.ToArray());
+                    key = SqlHelper.ExecuteScalar(conn, CommandType.Text, sql, listPara.ToArray());
                 }
             }
-            else { throw new Exception("Unable to find any valid DB columns"); }
+            else
+            {
+                key = null;
+            }
         }
 
         public void Insert<T>(IEnumerable<T> instances, SqlTransaction trans = null) where T : class, IEntity
@@ -346,13 +350,15 @@ namespace Arsenalcn.Core
             Delete<T>(key, trans);
         }
 
-        public void Delete<T>(Expression<Func<T, bool>> predicate, SqlTransaction trans = null) where T : class, IEntity
+        public void Delete<T>(Expression<Func<T, bool>> predicate, out int count, SqlTransaction trans = null) where T : class, IEntity
         {
             Contract.Requires(predicate != null);
 
             var instances = Query<T>(predicate);
 
-            if (instances != null && instances.Count() > 0)
+            count = instances.Count();
+
+            if (instances != null && count > 0)
             {
                 foreach (var instance in instances)
                 {

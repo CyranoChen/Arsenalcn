@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Arsenalcn.Core;
+using System.Collections;
 
 namespace Arsenalcn.Core.Tests
 {
@@ -43,11 +44,11 @@ namespace Arsenalcn.Core.Tests
 
             var query1 = repo.Query<League>(x => x.IsActive);
 
-            var pc = new PropertyCollection();
+            var ht = new Hashtable();
 
-            pc.Add("IsActive", true);
+            ht.Add("IsActive", true);
 
-            var query2 = repo.Query<League>(pc);
+            var query2 = repo.Query<League>(ht);
 
             Assert.IsNotNull(query1);
             Assert.IsNotNull(query2);

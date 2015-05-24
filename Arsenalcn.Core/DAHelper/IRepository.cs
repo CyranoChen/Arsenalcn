@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
@@ -12,11 +12,11 @@ namespace Arsenalcn.Core
         T Single<T>(object key) where T : class, IEntity;
 
         List<T> All<T>() where T : class, IEntity;
-        List<T> Query<T>(PropertyCollection properties) where T : class, IEntity;
+        List<T> Query<T>(Hashtable htWhere) where T : class, IEntity;
         IQueryable<T> Query<T>(Expression<Func<T, bool>> predicate) where T : class, IEntity;
 
         void Insert<T>(T instance, SqlTransaction trans = null) where T : class, IEntity;
-        object InsertOutKey<T>(T instance, SqlTransaction trans = null) where T : class, IEntity;
+        void Insert<T>(T instance, out object key, SqlTransaction trans = null) where T : class, IEntity;
         void Insert<T>(IEnumerable<T> instances, SqlTransaction trans = null) where T : class, IEntity;
 
         void Update<T>(T instance, SqlTransaction trans = null) where T : class, IEntity;
@@ -24,6 +24,6 @@ namespace Arsenalcn.Core
 
         void Delete<T>(object key, SqlTransaction trans = null) where T : class, IEntity;
         void Delete<T>(T instance, SqlTransaction trans = null) where T : class, IEntity;
-        void Delete<T>(Expression<Func<T, bool>> predicate, SqlTransaction trans = null) where T : class, IEntity;
+        void Delete<T>(Expression<Func<T, bool>> predicate, out int count, SqlTransaction trans = null) where T : class, IEntity;
     }
 }

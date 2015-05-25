@@ -9,7 +9,7 @@ using System.Text;
 namespace Arsenalcn.Core
 {
     [AttrDbTable("Arsenalcn_Config", Key = "", Sort = "ConfigSystem, ConfigKey")]
-    public class Config : IConfig
+    public class Config
     {
         public Config() { }
 
@@ -62,31 +62,30 @@ namespace Arsenalcn.Core
             return ds.Tables[0].Rows.Count > 0;
         }
 
-        public IQueryable<Config> All()
+        private static List<Config> All()
         {
             var attr = Repository.GetTableAttr<Config>();
+
+            var list = new List<Config>();
 
             string sql = string.Format("SELECT * FROM {0} ORDER BY {1}", attr.Name, attr.Sort);
 
             DataSet ds = DataAccess.ExecuteDataset(sql);
 
-            if (ds.Tables[0].Rows.Count == 0) { return null; }
-
-            DataTable dt = ds.Tables[0];
-
-            IList<Config> list = new List<Config>();
-
-            foreach (DataRow dr in dt.Rows)
+            if (ds.Tables[0].Rows.Count > 0)
             {
-                list.Add(new Config(dr));
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    list.Add(new Config(dr));
+                }
             }
 
-            return list.AsQueryable();
+            return list;
         }
 
-        public IQueryable<Config> All(ConfigSystem cs)
+        public static IQueryable<Config> All(ConfigSystem cs)
         {
-            return All().Where(x => x.ConfigSystem.Equals(cs));
+            return All().AsQueryable().Where(x => x.ConfigSystem.Equals(cs));
         }
 
         public void Update(SqlTransaction trans = null)
@@ -118,9 +117,7 @@ namespace Arsenalcn.Core
 
             private static void InitCache()
             {
-                IConfig instance = new Config();
-
-                ConfigList = instance.All().ToList();
+                ConfigList = All();
             }
 
             public static Config Load(ConfigSystem cs, string key)

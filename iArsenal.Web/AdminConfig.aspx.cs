@@ -22,9 +22,7 @@ namespace iArsenal.Web
 
         private void BindData()
         {
-            IConfig instance = new Config();
-
-            gvSysConfig.DataSource = instance.All(ConfigSystem.iArsenal).ToList();
+            gvSysConfig.DataSource = Config.All(ConfigSystem.iArsenal).ToList();
             gvSysConfig.DataBind();
         }
 

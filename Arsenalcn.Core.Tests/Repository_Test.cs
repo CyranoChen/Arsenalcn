@@ -38,6 +38,20 @@ namespace Arsenalcn.Core.Tests
         }
 
         [TestMethod()]
+        public void AllByPager_Test()
+        {
+            IRepository repo = new Repository();
+
+            var ht = new Hashtable();
+
+            ht.Add("LeagueTime", "DESC");
+
+            var query = repo.All<League>(new Pager(2) { Size = 20 }, ht);
+
+            Assert.IsNotNull(query);
+        }
+
+        [TestMethod()]
         public void Query_Test()
         {
             IRepository repo = new Repository();
@@ -52,6 +66,24 @@ namespace Arsenalcn.Core.Tests
 
             Assert.IsNotNull(query1);
             Assert.IsNotNull(query2);
+        }
+
+        [TestMethod()]
+        public void QueryByPager_Test()
+        {
+            IRepository repo = new Repository();
+
+            var orderBy = new Hashtable();
+
+            orderBy.Add("LeagueTime", "DESC");
+
+            var whereBy = new Hashtable();
+
+            whereBy.Add("IsActive", true);
+
+            var query = repo.Query<League>(new Pager(2) { Size = 5 }, whereBy, orderBy);
+
+            Assert.IsNotNull(query);
         }
 
         [TestMethod()]

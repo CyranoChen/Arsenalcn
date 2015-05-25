@@ -12,7 +12,11 @@ namespace Arsenalcn.Core
         T Single<T>(object key) where T : class, IEntity;
 
         List<T> All<T>() where T : class, IEntity;
+        List<T> All<T>(Pager pager, Hashtable htOrder = null) where T : class, IEntity;
+
         List<T> Query<T>(Hashtable htWhere) where T : class, IEntity;
+        List<T> Query<T>(Pager pager, Hashtable htWhere, Hashtable htOrder = null) where T : class, IEntity;
+
         IQueryable<T> Query<T>(Expression<Func<T, bool>> predicate) where T : class, IEntity;
 
         void Insert<T>(T instance, SqlTransaction trans = null) where T : class, IEntity;

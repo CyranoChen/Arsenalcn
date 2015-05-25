@@ -69,6 +69,60 @@ namespace Arsenalcn.Core
             return list;
         }
 
+        public List<T> All<T>(Pager pager, Hashtable htOrder = null) where T : class, IEntity
+        {
+            Contract.Requires(pager != null);
+
+            var list = new List<T>();
+
+            var attr = GetTableAttr<T>();
+
+            string _strOrderBy = !string.IsNullOrEmpty(attr.Sort) ? attr.Sort : attr.Key;
+
+            if (htOrder != null)
+            {
+                var listOrder = new List<string>();
+
+                foreach (var de in htOrder.Keys)
+                {
+                    var attrCol = GetColumnAttr<T>(de.ToString());
+                    string _value = htOrder[de].ToString().ToUpper();
+
+                    if (attrCol != null)
+                    {
+                        listOrder.Add(string.Format("{0} {1}", attrCol.Name, _value.Equals("DESC") ? _value : string.Empty));
+                    }
+                    else if (de.ToString().Equals("ID"))
+                    {
+                        listOrder.Add(string.Format("{0} {1}", attr.Key, _value.Equals("DESC") ? _value : string.Empty));
+                    }
+                    else
+                    { continue; }
+                }
+
+                _strOrderBy = string.Join(", ", listOrder.ToArray());
+            }
+
+            string innerSql = string.Format("(SELECT ROW_NUMBER() OVER(ORDER BY {1}) AS RowNo, * FROM {0})", attr.Name, _strOrderBy);
+
+            string sql = string.Format("SELECT * FROM {0} AS t WHERE t.RowNo BETWEEN {1} AND {2}",
+                innerSql, ((pager.Index - 1) * pager.Size).ToString(), (pager.Index * pager.Size - 1).ToString());
+
+            DataSet ds = SqlHelper.ExecuteDataset(conn, CommandType.Text, sql);
+
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    ConstructorInfo ci = typeof(T).GetConstructor(new Type[] { typeof(DataRow) });
+
+                    list.Add((T)ci.Invoke(new Object[] { dr }));
+                }
+            }
+
+            return list;
+        }
+
         public List<T> Query<T>(Hashtable htWhere) where T : class, IEntity
         {
             Contract.Requires(htWhere != null);
@@ -114,6 +168,94 @@ namespace Arsenalcn.Core
                 }
 
                 DataSet ds = SqlHelper.ExecuteDataset(conn, CommandType.Text, sql.ToString(), listPara.ToArray());
+
+                if (ds.Tables[0].Rows.Count > 0)
+                {
+                    foreach (DataRow dr in ds.Tables[0].Rows)
+                    {
+                        ConstructorInfo ci = typeof(T).GetConstructor(new Type[] { typeof(DataRow) });
+
+                        list.Add((T)ci.Invoke(new Object[] { dr }));
+                    }
+                }
+            }
+
+            return list;
+        }
+
+        public List<T> Query<T>(Pager pager, Hashtable htWhere, Hashtable htOrder = null) where T : class, IEntity
+        {
+            Contract.Requires(pager != null);
+            Contract.Requires(htWhere != null);
+
+            var list = new List<T>();
+
+            var attr = GetTableAttr<T>();
+
+            // Generate WhereBy Clause
+            List<string> listCol = new List<string>();
+            List<SqlParameter> listPara = new List<SqlParameter>();
+
+            foreach (var de in htWhere.Keys)
+            {
+                var attrCol = GetColumnAttr<T>(de.ToString());
+
+                if (attrCol != null)
+                {
+                    object _value = htWhere[de];
+
+                    listCol.Add(string.Format("{0} = @{0}", attrCol.Name));
+
+                    SqlParameter _para = new SqlParameter("@" + attrCol.Name,
+                        _value != null ? _value : (object)DBNull.Value);
+                    listPara.Add(_para);
+                }
+                else if (de.ToString().Equals("ID"))
+                {
+                    listCol.Add(string.Format("{0} = @key", attr.Key));
+                    listPara.Add(new SqlParameter("@key", htWhere[de]));
+                }
+                else
+                { continue; }
+            }
+
+            // Generate OrderBy Clause
+            string _strOrderBy = !string.IsNullOrEmpty(attr.Sort) ? attr.Sort : attr.Key;
+
+            if (htOrder != null)
+            {
+                var listOrder = new List<string>();
+
+                foreach (var de in htOrder.Keys)
+                {
+                    var attrCol = GetColumnAttr<T>(de.ToString());
+                    string _value = htOrder[de].ToString().ToUpper();
+
+                    if (attrCol != null)
+                    {
+                        listOrder.Add(string.Format("{0} {1}", attrCol.Name, _value.Equals("DESC") ? _value : string.Empty));
+                    }
+                    else if (de.ToString().Equals("ID"))
+                    {
+                        listOrder.Add(string.Format("{0} {1}", attr.Key, _value.Equals("DESC") ? _value : string.Empty));
+                    }
+                    else
+                    { continue; }
+                }
+
+                _strOrderBy = string.Join(", ", listOrder.ToArray());
+            }
+
+            // Build Sql and Execute
+            if (listCol.Count > 0 && listPara.Count > 0)
+            {
+                string innerSql = string.Format("(SELECT ROW_NUMBER() OVER(ORDER BY {1}) AS RowNo, * FROM {0} WHERE {2})",
+                    attr.Name, _strOrderBy, string.Join(" AND ", listCol.ToArray()));
+
+                string sql = string.Format("SELECT * FROM {0} AS t WHERE t.RowNo BETWEEN {1} AND {2}",
+                    innerSql, ((pager.Index - 1) * pager.Size).ToString(), (pager.Index * pager.Size - 1).ToString());
+
+                DataSet ds = SqlHelper.ExecuteDataset(conn, CommandType.Text, sql, listPara.ToArray());
 
                 if (ds.Tables[0].Rows.Count > 0)
                 {
@@ -369,7 +511,12 @@ namespace Arsenalcn.Core
 
         public static AttrDbTable GetTableAttr<T>() where T : class
         {
-            return (AttrDbTable)Attribute.GetCustomAttribute(typeof(T), typeof(AttrDbTable));
+            var attr = (AttrDbTable)Attribute.GetCustomAttribute(typeof(T), typeof(AttrDbTable));
+
+            if (attr != null)
+            { return attr; }
+            else
+            { return new AttrDbTable(typeof(T).Name); }
         }
 
         public static AttrDbColumn GetColumnAttr(PropertyInfo pi)

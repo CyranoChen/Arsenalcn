@@ -58,6 +58,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AdminSchedule.aspx" />
     <Content Include="AdminConfig.aspx" />
     <Content Include="AdminLeague.aspx" />
     <Content Include="AdminLeagueView.aspx" />
@@ -131,6 +132,13 @@
     <Content Include="WebService\ArsenalService.asmx" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdminSchedule.aspx.cs">
+      <DependentUpon>AdminSchedule.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminSchedule.aspx.designer.cs">
+      <DependentUpon>AdminSchedule.aspx</DependentUpon>
+    </Compile>
     <Compile Include="AdminConfig.aspx.cs">
       <DependentUpon>AdminConfig.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -302,6 +310,10 @@
     <ProjectReference Include="..\Arsenalcn.Core\Arsenalcn.Core.csproj">
       <Project>{c46f6af6-ebe1-4bac-bc17-0989fa6c9b8e}</Project>
       <Name>Arsenalcn.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Arsenalcn.Scheduler\Arsenalcn.Scheduler.csproj">
+      <Project>{9891ab95-a348-45b7-80ee-1c41d4d70baa}</Project>
+      <Name>Arsenalcn.Scheduler</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

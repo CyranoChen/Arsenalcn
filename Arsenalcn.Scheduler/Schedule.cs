@@ -1,15 +1,14 @@
 using System;
-using System.Xml.Serialization;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
+using System.Diagnostics.Contracts;
 
 using Arsenalcn.Core;
-using System.Data;
-using System.Diagnostics.Contracts;
-using System.Data.SqlClient;
-using System.Collections.Generic;
 
 namespace Arsenalcn.Scheduler
 {
-    [AttrDbTable("Arsenalcn_Schedule", Key = "", Sort = "IsSystem, ScheduleKey")]
+    [AttrDbTable("Arsenalcn_Schedule", Key = "ScheduleKey", Sort = "IsSystem, ScheduleKey")]
     public class Schedule
     {
         public Schedule() { }
@@ -28,14 +27,26 @@ namespace Arsenalcn.Scheduler
                 ScheduleKey = dr["ScheduleKey"].ToString();
                 ScheduleType = dr["ScheduleType"].ToString();
                 DailyTime = Convert.ToInt32(dr["DailyTime"]);
-
                 Minutes = Convert.ToInt32(dr["Minutes"]);
                 //Minutes = Minutes < ScheduleManager.TimerMinutesInterval ? ScheduleManager.TimerMinutesInterval : Minutes;
-
                 LastCompletedTime = Convert.ToDateTime(dr["LastCompletedTime"]);
                 IsSystem = Convert.ToBoolean(dr["IsSystem"]);
                 IsActive = Convert.ToBoolean(dr["IsActive"]);
                 Remark = dr["Remark"].ToString();
+
+                #region Generate ExecuteTimeInfo
+
+                if (DailyTime >= 0)
+                {
+                    ExecuteTimeInfo = string.Format("定时执行：{0}时{1}分",
+                        (DailyTime / 60).ToString(), (DailyTime % 60).ToString());
+                }
+                else
+                {
+                    ExecuteTimeInfo = string.Format("轮询执行：{0}分钟", Minutes.ToString());
+                }
+
+                #endregion
             }
             else
             { throw new Exception("Unable to init Schedule"); }
@@ -44,7 +55,7 @@ namespace Arsenalcn.Scheduler
         public void Single()
         {
             string sql = string.Format("SELECT * FROM {0} WHERE ScheduleKey = @key",
-                Repository.GetTableAttr<Config>().Name);
+                Repository.GetTableAttr<Schedule>().Name);
 
             SqlParameter[] para = { new SqlParameter("@key", ScheduleKey) };
 
@@ -56,7 +67,7 @@ namespace Arsenalcn.Scheduler
         public bool Any()
         {
             string sql = string.Format("SELECT * FROM {0} WHERE ScheduleKey = @key",
-                Repository.GetTableAttr<Config>().Name);
+                Repository.GetTableAttr<Schedule>().Name);
 
             SqlParameter[] para = { new SqlParameter("@key", ScheduleKey) };
 
@@ -92,7 +103,7 @@ namespace Arsenalcn.Scheduler
 
             string sql = string.Format(@"UPDATE {0} SET ScheduleType = @scheduleType, DailyTime = @dailyTime, Minutes = @minutes, 
                              LastCompletedTime = @lastCompletedTime, IsSystem = @isSystem, IsActive = @isActive, Remark = @remark 
-                             WHERE ScheduleKey = @key", Repository.GetTableAttr<Config>().Name);
+                             WHERE ScheduleKey = @key", Repository.GetTableAttr<Schedule>().Name);
 
             SqlParameter[] para = { 
                                       new SqlParameter("@scheduleType", ScheduleType), 
@@ -142,14 +153,17 @@ namespace Arsenalcn.Scheduler
         /// </summary>
         [AttrDbColumn("LastCompletedTime")]
         public DateTime LastCompletedTime
-        {
-            get { return LastCompletedTime; }
-            set
-            {
-                dateWasSet = true;
-                LastCompletedTime = value;
-            }
-        }
+        { get; set; }
+
+        //public DateTime LastCompletedTime
+        //{
+        //    get { return LastCompletedTime; }
+        //    set
+        //    {
+        //        dateWasSet = true;
+        //        LastCompletedTime = value;
+        //    }
+        //}
 
         //internal testing variable
         bool dateWasSet = false;
@@ -164,6 +178,9 @@ namespace Arsenalcn.Scheduler
 
         [AttrDbColumn("Remark")]
         public string Remark
+        { get; set; }
+
+        public string ExecuteTimeInfo
         { get; set; }
 
         #endregion

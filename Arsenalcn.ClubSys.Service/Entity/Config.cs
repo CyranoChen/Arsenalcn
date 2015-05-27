@@ -307,7 +307,7 @@ namespace Arsenalcn.ClubSys.Entity
                     if (!string.IsNullOrEmpty(tmpID))
                         return new Guid(tmpID);
                     else
-                        throw new Exception();
+                        return Guid.Empty;
                 }
                 catch
                 {

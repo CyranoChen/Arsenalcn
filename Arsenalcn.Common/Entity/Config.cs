@@ -46,12 +46,12 @@ namespace Arsenalcn.Common.Entity
 
                     trans.Commit();
                 }
-                catch (Exception ex)
+                catch
                 {
                     trans.Rollback();
-                    throw ex;
                 }
-                conn.Close();
+
+                //conn.Close();
             }
         }
 
@@ -67,12 +67,12 @@ namespace Arsenalcn.Common.Entity
 
                     trans.Commit();
                 }
-                catch (Exception ex)
+                catch
                 {
                     trans.Rollback();
-                    throw ex;
                 }
-                conn.Close();
+
+                //conn.Close();
             }
         }
 

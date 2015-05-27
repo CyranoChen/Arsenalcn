@@ -26,7 +26,7 @@ namespace Arsenalcn.ClubSys.Service
 
                     playerID = (int)com.ExecuteScalar();
 
-                    con.Close();
+                    //con.Close();
                 }
 
                 if (playerID > 0)
@@ -45,7 +45,7 @@ namespace Arsenalcn.ClubSys.Service
 
                         com.ExecuteNonQuery();
 
-                        con.Close();
+                        //con.Close();
                     }
                 }
             }
@@ -70,7 +70,7 @@ namespace Arsenalcn.ClubSys.Service
 
                 totalBonus = count * ConfigGlobal.BingoGetCost;
 
-                con.Close();
+                //con.Close();
             }
 
             return totalBonus;
@@ -89,7 +89,7 @@ namespace Arsenalcn.ClubSys.Service
 
                 com.ExecuteNonQuery();
 
-                con.Close();
+                //con.Close();
             }
            
             Player player = PlayerStrip.GetPlayerInfoByPlayerID(playerID);
@@ -123,7 +123,7 @@ namespace Arsenalcn.ClubSys.Service
 
                 sda.Fill(dt);
 
-                con.Close();
+                //con.Close();
 
                 return dt;
             }

@@ -11,7 +11,7 @@ namespace Arsenalcn.Core.Scheduler
     {
         public Schedule() { }
 
-        public Schedule(DataRow dr)
+        private Schedule(DataRow dr)
         {
             Contract.Requires(dr != null);
 
@@ -25,8 +25,10 @@ namespace Arsenalcn.Core.Scheduler
                 ScheduleKey = dr["ScheduleKey"].ToString();
                 ScheduleType = dr["ScheduleType"].ToString();
                 DailyTime = Convert.ToInt32(dr["DailyTime"]);
+
                 Minutes = Convert.ToInt32(dr["Minutes"]);
-                //Minutes = Minutes < ScheduleManager.TimerMinutesInterval ? ScheduleManager.TimerMinutesInterval : Minutes;
+                Minutes = Minutes < ScheduleManager.TimerMinutesInterval ? ScheduleManager.TimerMinutesInterval : Minutes;
+
                 LastCompletedTime = Convert.ToDateTime(dr["LastCompletedTime"]);
                 IsSystem = Convert.ToBoolean(dr["IsSystem"]);
                 IsActive = Convert.ToBoolean(dr["IsActive"]);
@@ -164,7 +166,7 @@ namespace Arsenalcn.Core.Scheduler
         //}
 
         //internal testing variable
-        bool dateWasSet = false;
+        //bool dateWasSet = false;
 
         [AttrDbColumn("IsSystem")]
         public bool IsSystem
@@ -184,7 +186,6 @@ namespace Arsenalcn.Core.Scheduler
         #endregion
 
         private ISchedule _ischedule = null;
-
         /// <summary>
         /// The current implementation of IScheduler
         /// </summary>
@@ -229,11 +230,11 @@ namespace Arsenalcn.Core.Scheduler
 
         public bool ShouldExecute()
         {
-            if (!dateWasSet) //if the date was not set (and it can not be configured), check the data store
-            {
-                //TODO: SELECT @lastexecuted = MAX([lastexecuted]) FROM [dnt_scheduledevents] WHERE [key] = @key AND [servername] = @servername
-                //LastCompleted = DatabaseProvider.GetInstance().GetLastExecuteScheduledEventDateTime(this.Key, Environment.MachineName);
-            }
+            //if (!dateWasSet) //if the date was not set (and it can not be configured), check the data store
+            //{
+            //TODO: SELECT @lastexecuted = MAX([lastexecuted]) FROM [dnt_scheduledevents] WHERE [key] = @key AND [servername] = @servername
+            //LastCompleted = DatabaseProvider.GetInstance().GetLastExecuteScheduledEventDateTime(this.Key, Environment.MachineName);
+            //}
 
             //If we have a TimeOfDay value, use it and ignore the Minutes interval
             if (this.DailyTime > -1)

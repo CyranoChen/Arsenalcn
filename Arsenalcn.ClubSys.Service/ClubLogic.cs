@@ -125,7 +125,7 @@ namespace Arsenalcn.ClubSys.Service
 
                 con.Open();
                 com.ExecuteNonQuery();
-                con.Close();
+                //con.Close();
             }
         }
 
@@ -147,7 +147,7 @@ namespace Arsenalcn.ClubSys.Service
 
                 con.Open();
                 com.ExecuteNonQuery();
-                con.Close();
+                //con.Close();
             }
         }
 
@@ -583,7 +583,7 @@ namespace Arsenalcn.ClubSys.Service
 
                 con.Open();
                 com.ExecuteNonQuery();
-                con.Close();
+                //con.Close();
 
                 return (UserClubStatus)returnPara.Value;
             }

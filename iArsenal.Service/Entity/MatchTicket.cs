@@ -10,11 +10,11 @@ using Arsenalcn.Core;
 namespace iArsenal.Service
 {
     [AttrDbTable("iArsenal_MatchTicket", Key = "MatchGuid", Sort = "Deadline DESC")]
-    public class MatchTicket : IMatchTicket
+    public class MatchTicket
     {
         public MatchTicket() { }
 
-        public MatchTicket(DataRow dr)
+        private MatchTicket(DataRow dr)
         {
             Init(dr);
         }
@@ -122,7 +122,7 @@ namespace iArsenal.Service
         }
 
         // Get MatchTickets by Arsenal Matchs
-        public List<MatchTicket> All()
+        public static List<MatchTicket> All()
         {
             var mlist = Arsenal_Match.Cache.MatchList;
 
@@ -197,7 +197,7 @@ namespace iArsenal.Service
             DataAccess.ExecuteNonQuery(sql, para, trans);
         }
 
-        public void MatchTicketCountStatistics()
+        public static void MatchTicketCountStatistics()
         {
             var query = MatchTicket.Cache.MatchTicketList.FindAll(mt => mt.IsActive);
 
@@ -289,9 +289,7 @@ namespace iArsenal.Service
 
             private static void InitCache()
             {
-                IMatchTicket instance = new MatchTicket();
-
-                MatchTicketList = instance.All();
+                MatchTicketList = All();
             }
 
             public static MatchTicket Load(Guid guid)

@@ -329,10 +329,9 @@ namespace Arsenalcn.CasinoSys.Web
 
                     this.ClientScript.RegisterClientScriptBlock(typeof(string), "success", "alert('统计积分榜成功');", true);
                 }
-                catch (Exception ex)
+                catch
                 {
                     this.ClientScript.RegisterClientScriptBlock(typeof(string), "failed", "alert('统计积分榜失败');", true);
-                    throw ex;
                 }
             }
 

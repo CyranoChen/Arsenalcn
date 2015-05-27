@@ -96,7 +96,7 @@ namespace Arsenalcn.ClubSys.Web
                     result = "error";
                 }
 
-                conn.Close();
+                //conn.Close();
             }
 
             if (!String.IsNullOrEmpty(returnURL))

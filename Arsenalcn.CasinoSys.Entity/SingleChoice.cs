@@ -102,12 +102,12 @@ namespace Arsenalcn.CasinoSys.Entity
                     DataAccess.ChoiceOption.CleanChoiceOption(trans);
                     trans.Commit();
                 }
-                catch (Exception ex)
+                catch
                 {
                     trans.Rollback();
-                    throw ex;
                 }
-                conn.Close();
+                
+                //conn.Close();
             }
         }
 

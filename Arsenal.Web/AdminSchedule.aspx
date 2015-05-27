@@ -10,11 +10,6 @@
     <uc1:AdminPanel ID="pnlAdmin" runat="server" />
     <div id="MainPanel">
         <uc2:AdminFieldToolBar ID="ctrlAdminFieldToolBar" runat="server" />
-        <div class="FunctionBar">
-            <div class="DivFloatRight">
-            </div>
-            <div class="Clear"></div>
-        </div>
         <asp:GridView ID="gvSchedule" runat="server" OnRowUpdating="gvSchedule_RowUpdating"
             DataKeyNames="ScheduleKey" OnPageIndexChanging="gvSchedule_PageIndexChanging"
             PageSize="50" OnRowCancelingEdit="gvSchedule_RowCancelingEdit" OnRowEditing="gvSchedule_RowEditing">

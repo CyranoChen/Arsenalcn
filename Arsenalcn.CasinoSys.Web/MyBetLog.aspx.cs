@@ -191,10 +191,9 @@ namespace Arsenalcn.CasinoSys.Web
                     else
                         throw new Exception("非本人投注项");
                 }
-                catch (Exception ex)
+                catch
                 {
                     this.ClientScript.RegisterClientScriptBlock(typeof(string), "failed", "alert('投注退还失败');", true);
-                    throw ex;
                 }
 
                 BindData();

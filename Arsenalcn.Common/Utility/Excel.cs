@@ -36,9 +36,9 @@ namespace Arsenalcn.Common.Utility
             HttpContext.Current.Response.Close();
             HttpContext.Current.Response.End();
 
-            gv.Dispose();
-            tw.Dispose();
-            hw.Dispose();
+            //gv.Dispose();
+            //tw.Dispose();
+            //hw.Dispose();
 
             gv = null;
             tw = null;

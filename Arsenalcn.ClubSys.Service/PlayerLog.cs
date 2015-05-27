@@ -30,7 +30,7 @@ namespace Arsenalcn.ClubSys.Service
 
                 com.ExecuteNonQuery();
 
-                con.Close();
+                //con.Close();
             }
         }
 
@@ -52,7 +52,7 @@ namespace Arsenalcn.ClubSys.Service
 
                 sda.Fill(dt);
 
-                con.Close();
+               //con.Close();
 
                 foreach (DataRow dr in dt.Rows)
                 {

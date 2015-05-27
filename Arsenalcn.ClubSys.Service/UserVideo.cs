@@ -309,7 +309,7 @@ namespace Arsenalcn.ClubSys.Service
 
                 com.ExecuteNonQuery();
 
-                con.Close();
+                //con.Close();
             }
         }
 

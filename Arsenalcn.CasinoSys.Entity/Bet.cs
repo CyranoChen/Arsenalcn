@@ -102,10 +102,9 @@ namespace Arsenalcn.CasinoSys.Entity
                     else
                         throw new Exception("Failed to create bet (MatchResult).");
                 }
-                catch (Exception ex)
+                catch
                 {
                     trans.Rollback();
-                    throw ex;
                 }
 
                 //conn.Close();
@@ -142,11 +141,9 @@ namespace Arsenalcn.CasinoSys.Entity
                     else
                         throw new Exception("Failed to create bet (SingleChoice).");
                 }
-                catch (Exception ex)
+                catch
                 {
                     trans.Rollback();
-
-                    throw ex;
                 }
 
                 //conn.Close();
@@ -165,12 +162,12 @@ namespace Arsenalcn.CasinoSys.Entity
                     DataAccess.BetDetail.CleanBetDetail(trans);
                     trans.Commit();
                 }
-                catch (Exception ex)
+                catch
                 {
                     trans.Rollback();
-                    throw ex;
                 }
-                conn.Close();
+
+                //conn.Close();
             }
         }
 
@@ -207,12 +204,12 @@ namespace Arsenalcn.CasinoSys.Entity
                     DataAccess.BetDetail.CleanBetDetail(trans);
                     trans.Commit();
                 }
-                catch (Exception ex)
+                catch
                 {
                     trans.Rollback();
-                    throw ex;
                 }
-                conn.Close();
+
+                //conn.Close();
             }
         }
 

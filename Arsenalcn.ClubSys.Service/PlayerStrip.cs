@@ -154,14 +154,9 @@ namespace Arsenalcn.ClubSys.Service
 
                 con.Open();
 
-                try
-                {
-                    count = (int)com.ExecuteScalar();
-                }
-                catch
-                { }
+                count = (int)com.ExecuteScalar();
 
-                con.Close();
+                //con.Close();
             }
 
             return count;
@@ -185,7 +180,7 @@ namespace Arsenalcn.ClubSys.Service
 
                 sda.Fill(dt);
 
-                con.Close();
+                //con.Close();
 
                 foreach (DataRow dr in dt.Rows)
                 {
@@ -216,7 +211,7 @@ namespace Arsenalcn.ClubSys.Service
 
                 sda.Fill(dt);
 
-                con.Close();
+                //con.Close();
 
                 foreach (DataRow dr in dt.Rows)
                 {
@@ -246,7 +241,7 @@ namespace Arsenalcn.ClubSys.Service
 
                 sda.Fill(dt);
 
-                con.Close();
+                //con.Close();
 
                 foreach (DataRow dr in dt.Rows)
                 {
@@ -277,7 +272,7 @@ namespace Arsenalcn.ClubSys.Service
 
                 sda.Fill(dt);
 
-                con.Close();
+                //con.Close();
 
                 foreach (DataRow dr in dt.Rows)
                 {
@@ -308,7 +303,7 @@ namespace Arsenalcn.ClubSys.Service
 
                 sda.Fill(dt);
 
-                con.Close();
+                //con.Close();
 
                 foreach (DataRow dr in dt.Rows)
                 {
@@ -337,7 +332,7 @@ namespace Arsenalcn.ClubSys.Service
 
                 Decimal id = (Decimal)com.ExecuteScalar();
 
-                con.Close();
+                //con.Close();
 
                 return (int)id;
             }
@@ -368,7 +363,7 @@ namespace Arsenalcn.ClubSys.Service
 
                 com.ExecuteNonQuery();
 
-                con.Close();
+                //con.Close();
             }
         }
         public static string UpdateBingoResult(int userID, string userName, BingoResult result, string resultType)
@@ -395,7 +390,7 @@ namespace Arsenalcn.ClubSys.Service
 
                             com.ExecuteNonQuery();
 
-                            con.Close();
+                            //con.Close();
                         }
 
                         UpdateBingoResultLog(userID, result);
@@ -425,7 +420,7 @@ namespace Arsenalcn.ClubSys.Service
 
                             com.ExecuteNonQuery();
 
-                            con.Close();
+                            //con.Close();
                         }
 
                         UpdateBingoResultLog(userID, result);
@@ -521,7 +516,7 @@ namespace Arsenalcn.ClubSys.Service
 
                                 com.ExecuteNonQuery();
 
-                                con.Close();
+                                //con.Close();
                             }
 
                             if (result.ResultDetail == "strips")
@@ -592,7 +587,7 @@ namespace Arsenalcn.ClubSys.Service
 
                 count = (int)com.ExecuteScalar();
 
-                con.Close();
+                //con.Close();
             }
 
             if (ConfigGlobal.DailyClubEquipmentCount - count < 0)
@@ -616,7 +611,7 @@ namespace Arsenalcn.ClubSys.Service
 
                 count = (int)com.ExecuteScalar();
 
-                con.Close();
+                //con.Close();
             }
 
             return count;
@@ -639,7 +634,7 @@ namespace Arsenalcn.ClubSys.Service
 
                 count = (int)com.ExecuteScalar();
 
-                con.Close();
+                //con.Close();
             }
 
             return count;
@@ -660,7 +655,7 @@ namespace Arsenalcn.ClubSys.Service
 
                 count = (int)com.ExecuteScalar();
 
-                con.Close();
+                //con.Close();
             }
 
             return count;
@@ -683,7 +678,7 @@ namespace Arsenalcn.ClubSys.Service
 
                 count = (int)com.ExecuteScalar();
 
-                con.Close();
+                //con.Close();
             }
 
             return count;
@@ -704,7 +699,7 @@ namespace Arsenalcn.ClubSys.Service
 
                 count = (int)com.ExecuteScalar();
 
-                con.Close();
+                //con.Close();
             }
 
             return count;
@@ -727,7 +722,7 @@ namespace Arsenalcn.ClubSys.Service
 
                 count = (int)com.ExecuteScalar();
 
-                con.Close();
+                //con.Close();
             }
 
             return count;
@@ -772,7 +767,7 @@ namespace Arsenalcn.ClubSys.Service
 
                     int count = (int)com.ExecuteScalar();
 
-                    con.Close();
+                    //con.Close();
 
                     return count;
                 }
@@ -799,7 +794,7 @@ namespace Arsenalcn.ClubSys.Service
 
                 sda.Fill(dt);
 
-                con.Close();
+                //con.Close();
 
                 foreach (DataRow dr in dt.Rows)
                 {
@@ -830,7 +825,7 @@ namespace Arsenalcn.ClubSys.Service
 
                 sda.Fill(dt);
 
-                con.Close();
+                //con.Close();
 
                 foreach (DataRow dr in dt.Rows)
                 {
@@ -857,7 +852,7 @@ namespace Arsenalcn.ClubSys.Service
 
                 int count = (int)com.ExecuteScalar();
 
-                con.Close();
+                //con.Close();
 
                 return count;
             }
@@ -881,7 +876,7 @@ namespace Arsenalcn.ClubSys.Service
 
                 sda.Fill(dt);
 
-                con.Close();
+                //con.Close();
 
                 if (dt.Rows.Count != 0)
                 {
@@ -910,7 +905,7 @@ namespace Arsenalcn.ClubSys.Service
 
                 sda.Fill(dt);
 
-                con.Close();
+                //con.Close();
 
                 if (dt.Rows.Count != 0)
                 {
@@ -941,7 +936,7 @@ namespace Arsenalcn.ClubSys.Service
 
                 com.ExecuteNonQuery();
 
-                con.Close();
+                //con.Close();
             }
         }
 
@@ -964,7 +959,7 @@ namespace Arsenalcn.ClubSys.Service
 
                     com.ExecuteNonQuery();
 
-                    con.Close();
+                    //con.Close();
                 }
             }
         }
@@ -987,7 +982,7 @@ namespace Arsenalcn.ClubSys.Service
 
                 sda.Fill(dt);
 
-                con.Close();
+                //con.Close();
 
                 if (dt.Rows.Count != 0)
                 {
@@ -1019,7 +1014,7 @@ namespace Arsenalcn.ClubSys.Service
 
                     com.ExecuteNonQuery();
 
-                    con.Close();
+                    //con.Close();
                 }
             }
         }
@@ -1044,7 +1039,7 @@ namespace Arsenalcn.ClubSys.Service
 
                     com.ExecuteNonQuery();
 
-                    con.Close();
+                    //con.Close();
                 }
             }
         }
@@ -1065,7 +1060,7 @@ namespace Arsenalcn.ClubSys.Service
 
                 com.ExecuteNonQuery();
 
-                con.Close();
+                //con.Close();
             }
         }
 
@@ -1084,7 +1079,7 @@ namespace Arsenalcn.ClubSys.Service
 
                 com.ExecuteNonQuery();
 
-                con.Close();
+                //con.Close();
             }
         }
 
@@ -1102,7 +1097,7 @@ namespace Arsenalcn.ClubSys.Service
 
                 count = (int)com.ExecuteScalar();
 
-                con.Close();
+                //con.Close();
             }
 
             return count;
@@ -1143,7 +1138,7 @@ namespace Arsenalcn.ClubSys.Service
                 {
                     int id = (int)com.ExecuteScalar();
 
-                    con.Close();
+                    //con.Close();
 
                     return id == bingoHistoryID;
                 }
@@ -1175,7 +1170,7 @@ namespace Arsenalcn.ClubSys.Service
 
                 sda.Fill(players);
 
-                con.Close();
+                //con.Close();
             }
 
             return players;
@@ -1201,7 +1196,7 @@ namespace Arsenalcn.ClubSys.Service
 
                 sda.Fill(players);
 
-                con.Close();
+                //con.Close();
             }
 
             return players;
@@ -1224,7 +1219,7 @@ namespace Arsenalcn.ClubSys.Service
 
                 sda.Fill(players);
 
-                con.Close();
+                //con.Close();
             }
 
             return players;
@@ -1255,7 +1250,7 @@ namespace Arsenalcn.ClubSys.Service
 
                 com.ExecuteNonQuery();
 
-                con.Close();
+                //con.Close();
             }
         }
     }

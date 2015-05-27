@@ -12,19 +12,18 @@ namespace Arsenalcn.Core.Scheduler
     /// </summary>
     public class ScheduleManager
     {
-        public static string RootPath;
-
-        private ScheduleManager() { }
+        ScheduleManager() { }
 
         public static readonly int TimerMinutesInterval = 5;
-        static ScheduleManager()
-        {
-            // TODO: GetConfig from System.Configuration
-            //if (ScheduleConfigs.GetConfig().TimerMinutesInterval > 0)
-            //{
-            //    TimerMinutesInterval = ScheduleConfigs.GetConfig().TimerMinutesInterval;
-            //}
-        }
+
+        //static ScheduleManager()
+        //{
+        //    // TODO: GetConfig from System.Configuration
+        //    //if (ScheduleConfigs.GetConfig().TimerMinutesInterval > 0)
+        //    //{
+        //    //    TimerMinutesInterval = ScheduleConfigs.GetConfig().TimerMinutesInterval;
+        //    //}
+        //}
 
         public static void Execute()
         {

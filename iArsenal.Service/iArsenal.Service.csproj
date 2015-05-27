@@ -48,7 +48,6 @@
     <Compile Include="Config.cs" />
     <Compile Include="Entity\MemberPeriod.cs" />
     <Compile Include="Entity\MatchTicket.cs" />
-    <Compile Include="Interface\IMatchTicket.cs" />
     <Compile Include="Order\OrderItemMemberShip.cs" />
     <Compile Include="Order\OrderMemberShip.cs" />
     <Compile Include="Order\OrderWish.cs" />

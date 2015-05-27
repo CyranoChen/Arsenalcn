@@ -122,13 +122,28 @@ namespace Arsenal.Service
             }
         }
 
-        public static bool PluginContainerActive
+        //public static bool PluginContainerActive
+        //{
+        //    get
+        //    {
+        //        try
+        //        {
+        //            return Convert.ToBoolean(ConfigDictionary["PluginContainerActive"]);
+        //        }
+        //        catch
+        //        {
+        //            return false;
+        //        }
+        //    }
+        //}
+
+        public static bool SchedulerActive
         {
             get
             {
                 try
                 {
-                    return Convert.ToBoolean(ConfigDictionary["PluginContainerActive"]);
+                    return Convert.ToBoolean(ConfigDictionary["SchedulerActive"]);
                 }
                 catch
                 {

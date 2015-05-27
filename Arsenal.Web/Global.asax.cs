@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 
+using Arsenal.Service;
 using Arsenalcn.Core.Scheduler;
 
 namespace Arsenal.Web
@@ -11,11 +12,11 @@ namespace Arsenal.Web
         protected void Application_Start(object sender, EventArgs e)
         {
             //if (eventTimer == null && ScheduleConfigs.GetConfig().Enabled)
-            if (eventTimer == null)
+            if (eventTimer == null && ConfigGlobal.SchedulerActive)
             {
                 //EventLogs.LogFileName = Utils.GetMapPath(string.Format("{0}cache/scheduleeventfaildlog.config", BaseConfigs.GetForumPath));
                 //EventManager.RootPath = Utils.GetMapPath(BaseConfigs.GetForumPath);
-                eventTimer = new Timer(new TimerCallback(SchedulerCallback), null, 60000, ScheduleManager.TimerMinutesInterval * 60000);
+                eventTimer = new Timer(new TimerCallback(SchedulerCallback), null, 60 * 1000, ScheduleManager.TimerMinutesInterval * 60 * 1000);
             }
         }
 
@@ -23,12 +24,10 @@ namespace Arsenal.Web
         {
             try
             {
-                //if (ScheduleConfigs.GetConfig().Enabled)
-                //{
-                //    EventManager.Execute();
-                //}
-
-                ScheduleManager.Execute();
+                if (ConfigGlobal.SchedulerActive)
+                {
+                    ScheduleManager.Execute();
+                }
             }
             catch
             {

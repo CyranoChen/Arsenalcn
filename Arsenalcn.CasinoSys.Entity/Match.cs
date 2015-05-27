@@ -112,12 +112,12 @@ namespace Arsenalcn.CasinoSys.Entity
 
                     trans.Commit();
                 }
-                catch (Exception ex)
+                catch
                 {
                     trans.Rollback();
-                    throw ex;
                 }
-                conn.Close();
+                
+                //conn.Close();
             }
         }
 
@@ -188,12 +188,12 @@ namespace Arsenalcn.CasinoSys.Entity
                         trans.Commit();
                     }
                 }
-                catch (Exception ex)
+                catch
                 {
                     trans.Rollback();
-                    throw ex;
                 }
-                conn.Close();
+                
+                //conn.Close();
             }
         }
 
@@ -334,12 +334,12 @@ namespace Arsenalcn.CasinoSys.Entity
 
                     trans.Commit();
                 }
-                catch (Exception ex)
+                catch
                 {
                     trans.Rollback();
-                    throw ex;
                 }
-                conn.Close();
+                
+                //conn.Close();
             }
         }
 

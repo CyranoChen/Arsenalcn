@@ -21,10 +21,8 @@ namespace Arsenalcn.ClubSys.Service
                 com.Parameters.Add(new SqlParameter("@clientIP", clientIP == string.Empty ? (object)DBNull.Value : clientIP));
 
                 con.Open();
-
                 com.ExecuteNonQuery();
-
-                con.Close();
+                //con.Close();
             }
         }
     }

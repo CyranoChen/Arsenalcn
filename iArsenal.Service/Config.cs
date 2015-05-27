@@ -130,6 +130,21 @@ namespace iArsenal.Service
             }
         }
 
+        public static bool SchedulerActive
+        {
+            get
+            {
+                try
+                {
+                    return Convert.ToBoolean(ConfigDictionary["SchedulerActive"]);
+                }
+                catch
+                {
+                    return false;
+                }
+            }
+        }
+
         public static Guid ArsenalTeamGuid
         {
             get

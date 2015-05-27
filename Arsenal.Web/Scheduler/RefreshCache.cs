@@ -2,6 +2,7 @@
 
 using Arsenalcn.Core;
 using Arsenalcn.Core.Scheduler;
+using Arsenal.Service;
 
 namespace Arsenal.Scheduler
 {
@@ -11,13 +12,13 @@ namespace Arsenal.Scheduler
         {
             Config.Cache.RefreshCache();
 
-            Service.League.Cache.RefreshCache();
-            Service.Match.Cache.RefreshCache();
-            Service.Player.Cache.RefreshCache();
-            Service.Team.Cache.RefreshCache();
-            Service.Video.Cache.RefreshCache();
+            League.Cache.RefreshCache();
+            Match.Cache.RefreshCache();
+            Player.Cache.RefreshCache();
+            Team.Cache.RefreshCache();
+            Video.Cache.RefreshCache();
 
-            Service.RelationLeagueTeam.Clean();
+            RelationLeagueTeam.Clean();
         }
     }
 }

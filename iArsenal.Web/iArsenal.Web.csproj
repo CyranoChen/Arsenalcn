@@ -61,6 +61,7 @@
     <Content Include="AdminMemberView.aspx" />
     <Content Include="AdminConfig.aspx" />
     <Content Include="AdminMember.aspx" />
+    <Content Include="AdminSchedule.aspx" />
     <Content Include="App_Themes\Arsenalcn\acn.css" />
     <Content Include="App_Themes\Arsenalcn\base.css" />
     <Content Include="App_Themes\Arsenalcn\component.css" />
@@ -131,6 +132,7 @@
     <Content Include="AdminMemberPeriod.aspx" />
     <Content Include="AdminMemberPeriodView.aspx" />
     <Content Include="Control\PortalWorkflowInfo.ascx" />
+    <Content Include="Global.asax" />
     <Content Include="iArsenalOrderView_ArsenalDirect.aspx" />
     <Content Include="iArsenalOrderView_AsiaTrophy2015.aspx" />
     <Content Include="iArsenalOrderView_LondonTravel.aspx" />
@@ -269,6 +271,13 @@
     <Compile Include="AdminMemberPeriodView.aspx.designer.cs">
       <DependentUpon>AdminMemberPeriodView.aspx</DependentUpon>
     </Compile>
+    <Compile Include="AdminSchedule.aspx.cs">
+      <DependentUpon>AdminSchedule.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminSchedule.aspx.designer.cs">
+      <DependentUpon>AdminSchedule.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Control\PortalBulkOrderInfo.ascx.cs">
       <DependentUpon>PortalBulkOrderInfo.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -282,6 +291,9 @@
     </Compile>
     <Compile Include="Control\PortalWorkflowInfo.ascx.designer.cs">
       <DependentUpon>PortalWorkflowInfo.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="iArsenalOrderView_ArsenalDirect.aspx.cs">
       <DependentUpon>iArsenalOrderView_ArsenalDirect.aspx</DependentUpon>
@@ -468,6 +480,7 @@
     <Compile Include="iArsenalMaster.Master.designer.cs">
       <DependentUpon>iArsenalMaster.Master</DependentUpon>
     </Compile>
+    <Compile Include="Scheduler\RefreshCache.cs" />
     <Compile Include="ServerACNCallback.ashx.cs">
       <DependentUpon>ServerACNCallback.ashx</DependentUpon>
     </Compile>

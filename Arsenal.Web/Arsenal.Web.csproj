@@ -127,6 +127,7 @@
     <Content Include="AdminPlayerView.aspx" />
     <Content Include="ArsenalPortal.aspx" />
     <Content Include="Default.aspx" />
+    <Content Include="Global.asax" />
     <Content Include="Scripts\arsenal.js" />
     <Content Include="Scripts\jquery-1.7.1.min.js" />
     <Content Include="WebService\ArsenalService.asmx" />
@@ -216,6 +217,9 @@
     <Compile Include="ArsenalPortal.aspx.designer.cs">
       <DependentUpon>ArsenalPortal.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
     <Compile Include="PageBase\AcnPageBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -293,6 +297,7 @@
       <DependentUpon>DefaultMaster.master</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scheduler\RefreshCache.cs" />
     <Compile Include="ServerACNCallback.ashx.cs">
       <DependentUpon>ServerACNCallback.ashx</DependentUpon>
     </Compile>
@@ -310,10 +315,6 @@
     <ProjectReference Include="..\Arsenalcn.Core\Arsenalcn.Core.csproj">
       <Project>{c46f6af6-ebe1-4bac-bc17-0989fa6c9b8e}</Project>
       <Name>Arsenalcn.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Arsenalcn.Scheduler\Arsenalcn.Scheduler.csproj">
-      <Project>{9891ab95-a348-45b7-80ee-1c41d4d70baa}</Project>
-      <Name>Arsenalcn.Scheduler</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

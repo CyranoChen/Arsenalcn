@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Web.UI.WebControls;
-using System.Linq;
 
-using Arsenalcn.Core;
-using Arsenalcn.Scheduler;
+using Arsenalcn.Core.Scheduler;
 
 namespace Arsenal.Web
 {

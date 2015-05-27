@@ -4,9 +4,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics.Contracts;
 
-using Arsenalcn.Core;
-
-namespace Arsenalcn.Scheduler
+namespace Arsenalcn.Core.Scheduler
 {
     [AttrDbTable("Arsenalcn_Schedule", Key = "ScheduleKey", Sort = "IsSystem, ScheduleKey")]
     public class Schedule

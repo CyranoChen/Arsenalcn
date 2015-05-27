@@ -1,11 +1,9 @@
 using System;
-using System.Diagnostics;
-using System.Web;
-using System.Threading;
-using System.Collections.Generic;
 using System.Collections;
+using System.Collections.Generic;
+using System.Threading;
 
-namespace Arsenalcn.Scheduler
+namespace Arsenalcn.Core.Scheduler
 {
     /// <summary>
     /// ScheduleManager is called from the EventHttpModule (or another means of scheduling a Timer). Its sole purpose

@@ -54,6 +54,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Entities\League.cs" />
+    <Compile Include="Logger_Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository_Test.cs" />
   </ItemGroup>

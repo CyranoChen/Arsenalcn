@@ -48,6 +48,9 @@
     <Compile Include="DAHelper\IRepository.cs" />
     <Compile Include="DAHelper\SQLHelper.cs" />
     <Compile Include="Entity\Pager.cs" />
+    <Compile Include="Logger\DaoLog.cs" />
+    <Compile Include="Logger\ILog.cs" />
+    <Compile Include="Logger\Log.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DAHelper\Repository.cs" />
     <Compile Include="Scheduler\ISchedule.cs" />
@@ -56,6 +59,7 @@
     <Compile Include="Utility\Excel.cs" />
     <Compile Include="Utility\IP.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

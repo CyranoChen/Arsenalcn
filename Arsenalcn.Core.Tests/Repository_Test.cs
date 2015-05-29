@@ -1,14 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Collections;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-using Arsenalcn.Core;
-using System.Collections;
 
 namespace Arsenalcn.Core.Tests
 {

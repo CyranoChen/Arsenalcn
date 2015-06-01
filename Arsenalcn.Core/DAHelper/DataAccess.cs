@@ -3,7 +3,10 @@ using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics.Contracts;
+using System.Reflection;
+using System.Threading;
 
+using Arsenalcn.Core.Logger;
 using Microsoft.ApplicationBlocks.Data;
 
 namespace Arsenalcn.Core
@@ -11,6 +14,7 @@ namespace Arsenalcn.Core
     public static class DataAccess
     {
         public static string ConnectString;
+
         static DataAccess()
         {
             ConnectString = ConfigurationManager.ConnectionStrings["Arsenalcn.ConnectionString"].ConnectionString;
@@ -18,22 +22,66 @@ namespace Arsenalcn.Core
 
         public static DataSet ExecuteDataset(string sql, SqlParameter[] para = null)
         {
-            Contract.Requires(!string.IsNullOrEmpty(sql));
+            ILog log = new DaoLog();
 
-            return SqlHelper.ExecuteDataset(ConnectString, CommandType.Text, sql, para);
+            try
+            {
+                Contract.Requires(!string.IsNullOrEmpty(sql));
+
+                DataSet ds = SqlHelper.ExecuteDataset(ConnectString, CommandType.Text, sql, para);
+
+                log.Debug(sql, new LogInfo()
+                {
+                    MethodInstance = MethodBase.GetCurrentMethod(),
+                    ThreadInstance = Thread.CurrentThread
+                });
+
+                return ds;
+            }
+            catch (Exception ex)
+            {
+                log.Debug(ex, new LogInfo()
+                {
+                    MethodInstance = MethodBase.GetCurrentMethod(),
+                    ThreadInstance = Thread.CurrentThread
+                });
+
+                throw ex;
+            }
         }
 
         public static void ExecuteNonQuery(string sql, SqlParameter[] para = null, SqlTransaction trans = null)
         {
-            Contract.Requires(!string.IsNullOrEmpty(sql));
+            ILog log = new DaoLog();
 
-            if (trans != null)
+            try
             {
-                SqlHelper.ExecuteNonQuery(trans, CommandType.Text, sql, para);
+                Contract.Requires(!string.IsNullOrEmpty(sql));
+
+                if (trans != null)
+                {
+                    SqlHelper.ExecuteNonQuery(trans, CommandType.Text, sql, para);
+                }
+                else
+                {
+                    SqlHelper.ExecuteNonQuery(ConnectString, CommandType.Text, sql, para);
+                }
+
+                log.Debug(sql, new LogInfo()
+                {
+                    MethodInstance = MethodBase.GetCurrentMethod(),
+                    ThreadInstance = Thread.CurrentThread
+                });
             }
-            else
+            catch (Exception ex)
             {
-                SqlHelper.ExecuteNonQuery(ConnectString, CommandType.Text, sql, para);
+                log.Debug(ex, new LogInfo()
+                {
+                    MethodInstance = MethodBase.GetCurrentMethod(),
+                    ThreadInstance = Thread.CurrentThread
+                });
+
+                throw ex;
             }
         }
     }

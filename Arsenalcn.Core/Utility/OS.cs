@@ -6,9 +6,7 @@ namespace Arsenalcn.Core.Utility
     {
         public static string GetOS()
         {
-            OperatingSystem osInfo = Environment.OSVersion;
-
-            return osInfo.VersionString;
+            return Environment.OSVersion.VersionString;
         }
     }
 }

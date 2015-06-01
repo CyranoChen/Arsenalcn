@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.ApplicationBlocks.Data;
+using System;
+using System.Data;
 using System.Data.SqlClient;
 using System.Reflection;
 using System.Threading;
@@ -77,7 +79,8 @@ namespace Arsenalcn.Core.Logger
                                       new SqlParameter("@userOS", userClient != null? userClient.UserOS : string.Empty)
                                   };
 
-            DataAccess.ExecuteNonQuery(sql, para);
+            // no logging method
+            SqlHelper.ExecuteNonQuery(DataAccess.ConnectString, CommandType.Text, sql, para);
         }
 
         protected static void Logging(string logger, DateTime createTime, LogLevel level, string message, string stackTrace, Thread thread, MethodBase method, UserClientInfo userClient = null)
@@ -94,14 +97,15 @@ namespace Arsenalcn.Core.Logger
                                       new SqlParameter("@message", message),
                                       new SqlParameter("@stackTrace", stackTrace),
                                       new SqlParameter("@thread", thread.Name ?? thread.ManagedThreadId.ToString()),
-                                      new SqlParameter("@method", method.Name ?? method.ToString()),
+                                      new SqlParameter("@method", method != null ? string.Format("{0}, {1}", method.Name, method.DeclaringType.FullName) : string.Empty),
                                       new SqlParameter("@userID", userClient != null ? userClient.UserID : -1),
                                       new SqlParameter("@userIP", userClient != null ? userClient.UserIP : "127.0.0.1"),
                                       new SqlParameter("@userBrowser", userClient != null ? userClient.UserBrowser : string.Empty),
                                       new SqlParameter("@userOS", userClient != null? userClient.UserOS : string.Empty)
                                   };
 
-            DataAccess.ExecuteNonQuery(sql, para);
+            // no logging method
+            SqlHelper.ExecuteNonQuery(DataAccess.ConnectString, CommandType.Text, sql, para);
         }
     }
 

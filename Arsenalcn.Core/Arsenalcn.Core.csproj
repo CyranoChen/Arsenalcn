@@ -61,7 +61,7 @@
     <Compile Include="Utility\Browser.cs" />
     <Compile Include="Utility\Excel.cs" />
     <Compile Include="Utility\IP.cs" />
-    <Compile Include="Utility\OSInfo.cs" />
+    <Compile Include="Utility\OS.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

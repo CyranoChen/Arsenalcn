@@ -3,7 +3,10 @@ using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Diagnostics.Contracts;
 using System.Reflection;
+using System.Threading;
 using System.Web;
+
+using Arsenalcn.Core.Logger;
 
 namespace Arsenalcn.Core
 {
@@ -13,36 +16,49 @@ namespace Arsenalcn.Core
 
         protected Entity(DataRow dr)
         {
-            Contract.Requires(dr != null);
-
-            var attr = (AttrDbTable)Attribute.GetCustomAttribute(this.GetType(), typeof(AttrDbTable));
-
-            this.ID = (TKey)dr[attr.Key];
-
-            foreach (var pi in this.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
+            try
             {
-                var attrCol = Repository.GetColumnAttr(pi);
-                var type = Nullable.GetUnderlyingType(pi.PropertyType) ?? pi.PropertyType;
+                Contract.Requires(dr != null);
 
-                if (attrCol != null)
+                var attr = (AttrDbTable)Attribute.GetCustomAttribute(this.GetType(), typeof(AttrDbTable));
+
+                this.ID = (TKey)dr[attr.Key];
+
+                foreach (var pi in this.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
                 {
-                    if (!Convert.IsDBNull(dr[attrCol.Name]))
-                    {
-                        // SetValue for EnumType
-                        if (type.BaseType.Equals(typeof(Enum)))
-                        {
-                            object value = Enum.Parse(type, dr[attrCol.Name].ToString(), true);
+                    var attrCol = Repository.GetColumnAttr(pi);
+                    var type = Nullable.GetUnderlyingType(pi.PropertyType) ?? pi.PropertyType;
 
-                            pi.SetValue(this, Convert.ChangeType(value, type), null);
-                        }
-                        else
+                    if (attrCol != null)
+                    {
+                        if (!Convert.IsDBNull(dr[attrCol.Name]))
                         {
-                            pi.SetValue(this, Convert.ChangeType(dr[attrCol.Name], type), null);
+                            // SetValue for EnumType
+                            if (type.BaseType.Equals(typeof(Enum)))
+                            {
+                                object value = Enum.Parse(type, dr[attrCol.Name].ToString(), true);
+
+                                pi.SetValue(this, Convert.ChangeType(value, type), null);
+                            }
+                            else
+                            {
+                                pi.SetValue(this, Convert.ChangeType(dr[attrCol.Name], type), null);
+                            }
                         }
                     }
+                    else
+                    { continue; }
                 }
-                else
-                { continue; }
+            }
+            catch (Exception ex)
+            {
+                ILog log = new AppLog();
+
+                log.Debug(ex, new LogInfo()
+                {
+                    MethodInstance = MethodBase.GetCurrentMethod(),
+                    ThreadInstance = Thread.CurrentThread
+                });
             }
         }
 
@@ -79,14 +95,27 @@ namespace Arsenalcn.Core
 
         public virtual void Mapper(Object obj)
         {
-            foreach (var properInfo in this.GetType()
-                .GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance))
+            try
             {
-                var properInfoOrgin = obj.GetType().GetProperty(properInfo.Name);
-                if (properInfoOrgin != null)
+                foreach (var properInfo in this.GetType()
+                    .GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance))
                 {
-                    properInfo.SetValue(this, properInfoOrgin.GetValue(obj, null), null);
+                    var properInfoOrgin = obj.GetType().GetProperty(properInfo.Name);
+                    if (properInfoOrgin != null)
+                    {
+                        properInfo.SetValue(this, properInfoOrgin.GetValue(obj, null), null);
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                ILog log = new AppLog();
+
+                log.Debug(ex, new LogInfo()
+                {
+                    MethodInstance = MethodBase.GetCurrentMethod(),
+                    ThreadInstance = Thread.CurrentThread
+                });
             }
         }
 

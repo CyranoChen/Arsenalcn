@@ -1,6 +1,7 @@
+using Arsenalcn.Core.Logger;
 using System;
 using System.Collections;
-using System.Collections.Generic;
+using System.Reflection;
 using System.Threading;
 
 namespace Arsenalcn.Core.Scheduler
@@ -27,25 +28,44 @@ namespace Arsenalcn.Core.Scheduler
 
         public static void Execute()
         {
-            List<Schedule> list = Schedule.All().FindAll(x => x.IsActive);
+            ILog log = new AppLog();
 
-            if (list != null && list.Count > 0)
+            try
             {
-                foreach (var s in list)
+                var list = Schedule.All().FindAll(x => x.IsActive);
+
+                if (list != null && list.Count > 0)
                 {
-                    if (s.ShouldExecute())
+                    foreach (var s in list)
                     {
-                        /// Call this method BEFORE processing the ScheduledEvent. This will help protect against long running events 
-                        /// being fired multiple times. Note, it is not absolute protection. App restarts will cause events to look like
-                        /// they were completed, even if they were not. Again, ScheduledEvents are helpful...but not 100% reliable
-                        s.LastCompletedTime = DateTime.Now;
-                        s.Update();
+                        if (s.ShouldExecute())
+                        {
+                            /// Call this method BEFORE processing the ScheduledEvent. This will help protect against long running events 
+                            /// being fired multiple times. Note, it is not absolute protection. App restarts will cause events to look like
+                            /// they were completed, even if they were not. Again, ScheduledEvents are helpful...but not 100% reliable
+                            s.LastCompletedTime = DateTime.Now;
+                            s.Update();
 
-                        ISchedule instance = s.IScheduleInstance;
+                            ISchedule instance = s.IScheduleInstance;
 
-                        ManagedThreadPool.QueueUserWorkItem(new WaitCallback(instance.Execute));
+                            ManagedThreadPool.QueueUserWorkItem(new WaitCallback(instance.Execute));
+
+                            log.Debug(string.Format("ISchedule: {0}", s.ScheduleType), new LogInfo()
+                            {
+                                MethodInstance = MethodBase.GetCurrentMethod(),
+                                ThreadInstance = Thread.CurrentThread
+                            });
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                log.Debug(ex, new LogInfo()
+                {
+                    MethodInstance = MethodBase.GetCurrentMethod(),
+                    ThreadInstance = Thread.CurrentThread
+                });
             }
         }
     }

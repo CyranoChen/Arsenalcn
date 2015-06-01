@@ -5,20 +5,26 @@ using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Arsenalcn.Core.Logger;
+using Arsenalcn.Core.Utility;
 
 namespace Arsenalcn.Core.Tests
 {
     [TestClass()]
     public class Logger_Tests
     {
+
         [TestMethod()]
         public void Logger_Test()
         {
             string sql = "INSERT XXX INTO XXX";
 
-            ILog log = new DaoLog();
+            ILog log1 = new DaoLog();
 
-            log.Debug(sql, new LogInfo() { MethodInstance = MethodBase.GetCurrentMethod(), ThreadInstance = Thread.CurrentThread });
+            log1.Debug(sql, new LogInfo() { MethodInstance = MethodBase.GetCurrentMethod(), ThreadInstance = Thread.CurrentThread });
+
+            //ILog log2 = new UserLog();
+
+            //log2.Debug(sql, new LogInfo() { UserClient = new UserClientInfo { UserIP = IPLocation.GetIP(), UserID = 0, UserBrowser = BrowserInfo.GetBrowser() } });
 
             Assert.IsTrue(true);
         }

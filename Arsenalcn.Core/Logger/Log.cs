@@ -58,8 +58,8 @@ namespace Arsenalcn.Core.Logger
 
         protected static void Logging(string logger, DateTime createTime, LogLevel level, string message, string stackTrace, UserClientInfo userClient = null)
         {
-            string sql = @"INSERT INTO {0} (Logger, CreateTime, LogLevel, Message, StackTrace, Thread, Method, UserID, UserIP, UserBrowser) 
-                               VALUES (@logger, @createTime, @logLevel, @message, @stackTrace, @thread, @method, @userID, @userIP, @userBrowser)";
+            string sql = @"INSERT INTO {0} (Logger, CreateTime, LogLevel, Message, StackTrace, Thread, Method, UserID, UserIP, UserBrowser, UserOS) 
+                               VALUES (@logger, @createTime, @logLevel, @message, @stackTrace, @thread, @method, @userID, @userIP, @userBrowser, @userOS)";
 
             sql = string.Format(sql, Repository.GetTableAttr<Log>().Name);
 
@@ -73,7 +73,8 @@ namespace Arsenalcn.Core.Logger
                                       new SqlParameter("@method", string.Empty),
                                       new SqlParameter("@userID", userClient != null ? userClient.UserID : -1),
                                       new SqlParameter("@userIP", userClient != null ? userClient.UserIP : "127.0.0.1"),
-                                      new SqlParameter("@userBrowser", userClient != null ? userClient.UserBrowser : string.Empty)
+                                      new SqlParameter("@userBrowser", userClient != null ? userClient.UserBrowser : string.Empty),
+                                      new SqlParameter("@userOS", userClient != null? userClient.UserOS : string.Empty)
                                   };
 
             DataAccess.ExecuteNonQuery(sql, para);
@@ -81,8 +82,8 @@ namespace Arsenalcn.Core.Logger
 
         protected static void Logging(string logger, DateTime createTime, LogLevel level, string message, string stackTrace, Thread thread, MethodBase method, UserClientInfo userClient = null)
         {
-            string sql = @"INSERT INTO {0} (Logger, CreateTime, LogLevel, Message, StackTrace, Thread, Method, UserID, UserIP, UserBrowser) 
-                               VALUES (@logger, @createTime, @logLevel, @message, @stackTrace, @thread, @method, @userID, @userIP, @userBrowser)";
+            string sql = @"INSERT INTO {0} (Logger, CreateTime, LogLevel, Message, StackTrace, Thread, Method, UserID, UserIP, UserBrowser, UserOS) 
+                               VALUES (@logger, @createTime, @logLevel, @message, @stackTrace, @thread, @method, @userID, @userIP, @userBrowser, @userOS)";
 
             sql = string.Format(sql, Repository.GetTableAttr<Log>().Name);
 
@@ -96,7 +97,8 @@ namespace Arsenalcn.Core.Logger
                                       new SqlParameter("@method", method.Name ?? method.ToString()),
                                       new SqlParameter("@userID", userClient != null ? userClient.UserID : -1),
                                       new SqlParameter("@userIP", userClient != null ? userClient.UserIP : "127.0.0.1"),
-                                      new SqlParameter("@userBrowser", userClient != null ? userClient.UserBrowser : string.Empty)
+                                      new SqlParameter("@userBrowser", userClient != null ? userClient.UserBrowser : string.Empty),
+                                      new SqlParameter("@userOS", userClient != null? userClient.UserOS : string.Empty)
                                   };
 
             DataAccess.ExecuteNonQuery(sql, para);
@@ -137,6 +139,9 @@ namespace Arsenalcn.Core.Logger
         { get; set; }
 
         public string UserBrowser
+        { get; set; }
+
+        public string UserOS
         { get; set; }
 
         #endregion

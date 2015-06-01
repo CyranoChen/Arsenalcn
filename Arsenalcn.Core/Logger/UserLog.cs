@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Threading;
+using System.Diagnostics.Contracts;
 
 namespace Arsenalcn.Core.Logger
 {
@@ -7,54 +7,134 @@ namespace Arsenalcn.Core.Logger
     {
         public UserLog() { }
 
-        public void Debug(Thread thread, string message)
+        public void Debug(string message, LogInfo para = null)
         {
-            Logging(this.GetType().Name, DateTime.Now, thread, LogLevel.Debug, message);
+            if (para != null)
+            {
+                Logging(this.GetType().Name, DateTime.Now, LogLevel.Debug, message, string.Empty, para.UserClient);
+            }
+            else
+            {
+                Logging(this.GetType().Name, DateTime.Now, LogLevel.Debug, message, string.Empty);
+            }
         }
 
-        public void Debug(Thread thread, Exception ex)
+        public void Debug(Exception ex, LogInfo para = null)
         {
-            Logging(this.GetType().Name, DateTime.Now, thread, LogLevel.Debug, ex.Message, ex.StackTrace);
+            Contract.Requires(ex != null);
+
+            if (para != null)
+            {
+                Logging(this.GetType().Name, DateTime.Now, LogLevel.Debug, ex.Message, ex.StackTrace, para.UserClient);
+            }
+            else
+            {
+                Logging(this.GetType().Name, DateTime.Now, LogLevel.Debug, ex.Message, ex.StackTrace);
+            }
         }
 
-        public void Info(Thread thread, string message)
+        public void Info(string message, LogInfo para = null)
         {
-            Logging(this.GetType().Name, DateTime.Now, thread, LogLevel.Info, message);
+            if (para != null)
+            {
+                Logging(this.GetType().Name, DateTime.Now, LogLevel.Info, message, string.Empty, para.UserClient);
+            }
+            else
+            {
+                Logging(this.GetType().Name, DateTime.Now, LogLevel.Info, message, string.Empty);
+            }
         }
 
-        public void Info(Thread thread, Exception ex)
+        public void Info(Exception ex, LogInfo para = null)
         {
-            Logging(this.GetType().Name, DateTime.Now, thread, LogLevel.Info, ex.Message, ex.StackTrace);
+            Contract.Requires(ex != null);
+
+            if (para != null)
+            {
+                Logging(this.GetType().Name, DateTime.Now, LogLevel.Info, ex.Message, ex.StackTrace, para.UserClient);
+            }
+            else
+            {
+                Logging(this.GetType().Name, DateTime.Now, LogLevel.Info, ex.Message, ex.StackTrace);
+            }
         }
 
-        public void Warn(Thread thread, string message)
+        public void Warn(string message, LogInfo para = null)
         {
-            Logging(this.GetType().Name, DateTime.Now, thread, LogLevel.Warn, message);
+            if (para != null)
+            {
+                Logging(this.GetType().Name, DateTime.Now, LogLevel.Warn, message, string.Empty, para.UserClient);
+            }
+            else
+            {
+                Logging(this.GetType().Name, DateTime.Now, LogLevel.Warn, message, string.Empty);
+            }
         }
 
-        public void Warn(Thread thread, Exception ex)
+        public void Warn(Exception ex, LogInfo para = null)
         {
-            Logging(this.GetType().Name, DateTime.Now, thread, LogLevel.Warn, ex.Message, ex.StackTrace);
+            Contract.Requires(ex != null);
+
+            if (para != null)
+            {
+                Logging(this.GetType().Name, DateTime.Now, LogLevel.Warn, ex.Message, ex.StackTrace, para.UserClient);
+            }
+            else
+            {
+                Logging(this.GetType().Name, DateTime.Now, LogLevel.Warn, ex.Message, ex.StackTrace);
+            }
         }
 
-        public void Error(Thread thread, string message)
+        public void Error(string message, LogInfo para = null)
         {
-            Logging(this.GetType().Name, DateTime.Now, thread, LogLevel.Error, message);
+            if (para != null)
+            {
+                Logging(this.GetType().Name, DateTime.Now, LogLevel.Error, message, string.Empty, para.UserClient);
+            }
+            else
+            {
+                Logging(this.GetType().Name, DateTime.Now, LogLevel.Error, message, string.Empty);
+            }
         }
 
-        public void Error(Thread thread, Exception ex)
+        public void Error(Exception ex, LogInfo para = null)
         {
-            Logging(this.GetType().Name, DateTime.Now, thread, LogLevel.Error, ex.Message, ex.StackTrace);
+            Contract.Requires(ex != null);
+
+            if (para != null)
+            {
+                Logging(this.GetType().Name, DateTime.Now, LogLevel.Error, ex.Message, ex.StackTrace, para.UserClient);
+            }
+            else
+            {
+                Logging(this.GetType().Name, DateTime.Now, LogLevel.Error, ex.Message, ex.StackTrace);
+            }
         }
 
-        public void Fatal(Thread thread, string message)
+        public void Fatal(string message, LogInfo para = null)
         {
-            Logging(this.GetType().Name, DateTime.Now, thread, LogLevel.Fatal, message);
+            if (para != null)
+            {
+                Logging(this.GetType().Name, DateTime.Now, LogLevel.Fatal, message, string.Empty, para.UserClient);
+            }
+            else
+            {
+                Logging(this.GetType().Name, DateTime.Now, LogLevel.Fatal, message, string.Empty);
+            }
         }
 
-        public void Fatal(Thread thread, Exception ex)
+        public void Fatal(Exception ex, LogInfo para = null)
         {
-            Logging(this.GetType().Name, DateTime.Now, thread, LogLevel.Fatal, ex.Message, ex.StackTrace);
+            Contract.Requires(ex != null);
+
+            if (para != null)
+            {
+                Logging(this.GetType().Name, DateTime.Now, LogLevel.Fatal, ex.Message, ex.StackTrace, para.UserClient);
+            }
+            else
+            {
+                Logging(this.GetType().Name, DateTime.Now, LogLevel.Fatal, ex.Message, ex.StackTrace);
+            }
         }
     }
 }

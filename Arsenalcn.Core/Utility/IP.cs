@@ -12,6 +12,8 @@ namespace Arsenalcn.Core.Utility
     {
         public static string GetIP()
         {
+            if (HttpContext.Current == null) { return string.Empty; }
+
             string result = HttpContext.Current.Request.ServerVariables["HTTP_X_FORWARDED_FOR"];
 
             if (string.IsNullOrEmpty(result))
@@ -32,7 +34,7 @@ namespace Arsenalcn.Core.Utility
 
         public static string GetIPInfo(string ip)
         {
-            string ipInfo = IpSearch.GetAddressWithIP(ip);
+            string ipInfo = IPSearch.GetAddressWithIP(ip);
 
             // 如果数据库文件不存在
             if (ipInfo == null)
@@ -62,7 +64,7 @@ namespace Arsenalcn.Core.Utility
     /// <summary>
     /// 判断IP归属地类
     /// </summary>
-    public class IpSearch
+    public class IPSearch
     {
         private static object lockHelper = new object();
 
@@ -70,7 +72,7 @@ namespace Arsenalcn.Core.Utility
 
         static string filePath = string.Empty;
 
-        static IpSearch()
+        static IPSearch()
         {
             string ipdatadir = "/App_Data";
             //if (!Directory.Exists(GetMapPath(ipdatadir)))

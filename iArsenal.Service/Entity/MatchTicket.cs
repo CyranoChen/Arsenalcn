@@ -128,13 +128,33 @@ namespace iArsenal.Service
 
             if (mlist != null && mlist.Count > 0)
             {
+                // Get DataSet of iArsenal_MatchTicket 
+                var attr = Repository.GetTableAttr<MatchTicket>();
+                string sql = string.Format("SELECT * FROM {0} ORDER BY {1}", attr.Name, attr.Sort);
+                DataSet ds = DataAccess.ExecuteDataset(sql);
+
+                if (ds.Tables[0].Rows.Count > 0)
+                {
+                    DataTable dt = ds.Tables[0];
+                    dt.PrimaryKey = new DataColumn[] { dt.Columns["MatchGuid"] };
+                }
+
                 var list = new List<MatchTicket>();
 
                 foreach (Match m in mlist)
                 {
                     MatchTicket mt = new MatchTicket();
                     mt.ID = m.ID;
-                    mt.Single();
+
+                    if (ds.Tables[0].Rows.Count > 0)
+                    {
+                        DataRow dr = ds.Tables[0].Rows.Find(m.ID);
+                        mt.Init(dr);
+                    }
+                    else
+                    {
+                        mt.Init();
+                    }
 
                     list.Add(mt);
                 }

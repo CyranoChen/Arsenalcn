@@ -14,6 +14,7 @@
 
         $(function () {
             var $btnSubmit = $(".FooterBtnBar .SubmitBtn");
+            $btnSubmit.click(function () { return PackageWishOrderItemList($('tbody.ArsenalDirect_WishList')); });
 
             $.getJSON("ServerOrderItemCheck.ashx", { OrderItem: "0" }, function (data, status, xhr) {
                 if (status == "success" && data != null) {
@@ -43,7 +44,7 @@
 <asp:Content ID="cphMain" ContentPlaceHolderID="cphMain" runat="server">
     <div id="banner" style="height: 400px">
         <a href="http://arsenalcn.taobao.com" target="_blank">
-            <img src="uploadfiles/banner/banner20150410.png" alt="阿森纳官方纪念品团购服务" /></a>
+            <img src="uploadfiles/banner/banner20150601.png" alt="阿森纳官方纪念品团购服务" /></a>
     </div>
     <div id="ACN_Main">
         <uc1:PortalSitePath ID="ucPortalSitePath" runat="server" />
@@ -103,6 +104,7 @@
                 <tbody class="ArsenalDirect_WishList">
                     <tr class="CommandRow">
                         <td colspan="3">-- 商品信息栏 --
+                           
                             <asp:TextBox ID="tbWishOrderItemListInfo" runat="server" CssClass="WishOrderItemListInfo"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="rfvWishOrderItemListInfo" runat="server" ControlToValidate="tbWishOrderItemListInfo"
                                 Display="Dynamic" ErrorMessage="*请填写订购纪念品信息（商品编码和数量必填）" CssClass="ValiSpan"></asp:RequiredFieldValidator>
@@ -142,7 +144,7 @@
             </table>
             <div class="FooterBtnBar">
                 <asp:Button ID="btnSubmit" runat="server" Text="保存订单信息" CssClass="InputBtn SubmitBtn"
-                    OnClick="btnSubmit_Click" OnClientClick="return PackageWishOrderItemList($('tbody.ArsenalDirect_WishList'))" />
+                    OnClick="btnSubmit_Click" />
                 <input id="btnReset" type="reset" value="重置表单" class="InputBtn" />
             </div>
         </div>
@@ -151,7 +153,8 @@
                 <h3 class="Col" onclick="$(this).toggleClass('Col'); $(this).toggleClass('Exp'); $(this).next('div').toggle('normal');">
                     <a>ACN团代购说明</a></h3>
                 <div class="Block">
-                    <p>(1). Arsenal官方专卖店上的所有纪念品均可预订，团代购价格(CNY) = 纪念品正价(GBP) × 约定汇率 + 国内快递费（从中国上海发到国内各地的运费，只发<em>【顺丰速运】</em>）。</p>
+                    <p>(1). Arsenal官方专卖店上的所有纪念品均可预订，团代购价格(CNY) = 纪念品正价(GBP) × 约定汇率。</p>
+                    <p>(2). 约定汇率含全部国际运费和海关关税分摊；国内快递费自理（从中国上海发到国内各地的运费，只发<em>【顺丰速运】</em>）</p>
                     <p>(2). Arsenal官方专卖店网址： <a href="http://arsenaldirect.arsenal.com/" target="_blank"><em>http://arsenaldirect.arsenal.com</em></a></p>
                     <p>(3). 此功能入口负责除主客场球衣外，所有阿森纳纪念品的订购。若需订购各款球衣，请点击菜单中的<a href="iArsenalOrder_ReplicaKit.aspx" target="_blank"><em>【主客场球衣预订服务】</em></a>。</p>
                     <p>(4). 订购操作中如有问题，请咨询官方球迷会服务微信号：<em>iArsenalCN</em>。加入时验证方式为您注册本服务中心的真实姓名和手机号码，并注明<em>【团购】</em>字样。 </p>

@@ -1,5 +1,5 @@
 ﻿/* Javascript Version iArsenal */
-/* Version: 1.8.2 || Date: 2015-05-20 || Author: Cyrano */
+/* Version: 1.8.3 || Date: 2015-06-02 || Author: Cyrano */
 /* type="text/javascript" */
 
 $(document).ready(function () {
@@ -484,7 +484,7 @@ function PackageWishOrderItemList(obj) {
         $tbWishOrderItemListInfo.val(_arrayOrderItemList);
         $rfvWishOrderItemListInfo.hide();
 
-        return confirm($.format("您将预订【{0}】件商品，是否提交订单信息？", _arrayOrderItemList.length));
+        return confirm($.format("您将预订【{0}】种商品，是否提交订单信息？", _arrayOrderItemList.length));
     } else {
         $tbWishOrderItemListInfo.val("");
         $rfvWishOrderItemListInfo.show();
@@ -497,8 +497,14 @@ function PackageWishOrderItem(obj) {
     var _jsonOrderItem = JSON.parse(JSON.stringify(cacheOrderItem));
     var $tbWishProductGuid = obj.find("input.ProductGuid");
     var $tbWishProductCode = obj.find("input.ProductCode");
+    var $tbWishProductQuantity = obj.find("input.ProductQuantity");
+
+    var _quantity = $.trim($tbWishProductQuantity.val());
 
     if ($.trim($tbWishProductGuid.val()) == "" && $.trim($tbWishProductCode.val()) == "") {
+        return "";
+    }
+    else if (_quantity == "" || isNaN(_quantity) || _quantity <= 0) {
         return "";
     }
     else {

@@ -118,6 +118,31 @@ namespace Arsenalcn.Core.Scheduler
             DataAccess.ExecuteNonQuery(sql, para, trans);
         }
 
+        //public static class Cache
+        //{
+        //    static Cache()
+        //    {
+        //        InitCache();
+        //    }
+
+        //    public static void RefreshCache()
+        //    {
+        //        InitCache();
+        //    }
+
+        //    private static void InitCache()
+        //    {
+        //        ScheduleList = All();
+        //    }
+
+        //    public static Schedule Load(string key)
+        //    {
+        //        return ScheduleList.Find(x => x.ScheduleKey.Equals(key, StringComparison.OrdinalIgnoreCase));
+        //    }
+
+        //    public static List<Schedule> ScheduleList;
+        //}
+
         #region Members and Properties
 
         [AttrDbColumn("ScheduleKey", Key = true)]

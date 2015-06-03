@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Reflection;
 using System.Threading;
 
-using iArsenal.Service;
+using Arsenalcn.Core.Logger;
 using Arsenalcn.Core.Scheduler;
+using iArsenal.Service;
 
 namespace iArsenal.Web
 {
@@ -11,11 +13,8 @@ namespace iArsenal.Web
         static Timer eventTimer;
         protected void Application_Start(object sender, EventArgs e)
         {
-            //if (eventTimer == null && ScheduleConfigs.GetConfig().Enabled)
             if (eventTimer == null && ConfigGlobal.SchedulerActive)
             {
-                //EventLogs.LogFileName = Utils.GetMapPath(string.Format("{0}cache/scheduleeventfaildlog.config", BaseConfigs.GetForumPath));
-                //EventManager.RootPath = Utils.GetMapPath(BaseConfigs.GetForumPath);
                 eventTimer = new Timer(new TimerCallback(SchedulerCallback), null, 60 * 1000, ScheduleManager.TimerMinutesInterval * 60 * 1000);
             }
         }
@@ -29,9 +28,15 @@ namespace iArsenal.Web
                     ScheduleManager.Execute();
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                //EventLogs.WriteFailedLog("Failed ScheduledEventCallBack");
+                ILog log = new AppLog();
+
+                log.Warn(ex, new LogInfo()
+                {
+                    MethodInstance = MethodBase.GetCurrentMethod(),
+                    ThreadInstance = Thread.CurrentThread
+                });
             }
         }
     }

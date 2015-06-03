@@ -16,7 +16,7 @@ namespace Arsenal.Service
             : base(dr)
         {
             // Generate League Count Info
-            LeagueCountInfo = RelationLeagueTeam.QueryByTeamGuid(this.ID).Count;
+            LeagueCountInfo = RelationLeagueTeam.Cache.RelationLeagueTeamList.Count(x => x.TeamGuid.Equals(this.ID));
         }
 
         public static class Cache

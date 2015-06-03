@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Reflection;
+using System.Threading;
 using System.Web.UI.WebControls;
 
+using Arsenalcn.Core.Logger;
 using Arsenalcn.Core.Scheduler;
 
 namespace Arsenal.Web
@@ -21,6 +24,48 @@ namespace Arsenal.Web
         {
             gvSchedule.DataSource = Schedule.All();
             gvSchedule.DataBind();
+        }
+
+        protected void gvSchedule_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ILog log = new AppLog();
+            var logInfo = new LogInfo()
+            {
+                MethodInstance = MethodBase.GetCurrentMethod(),
+                ThreadInstance = Thread.CurrentThread
+            };
+
+            try
+            {
+                if (gvSchedule.SelectedIndex != -1)
+                {
+                    string key = gvSchedule.DataKeys[gvSchedule.SelectedIndex].Value.ToString();
+
+                    Schedule s = new Schedule();
+                    s.ScheduleKey = key;
+                    s.Single();
+
+                    ISchedule instance = s.IScheduleInstance;
+                    ManagedThreadPool.QueueUserWorkItem(new WaitCallback(instance.Execute));
+
+                    s.LastCompletedTime = DateTime.Now;
+                    s.Update();
+
+                    log.Info(string.Format("ISchedule Manually: {0}", s.ScheduleType), logInfo);
+
+                    //this.ClientScript.RegisterClientScriptBlock(typeof(string), "success", string.Format("任务：{0}执行成功');", s.ScheduleType), true);
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex, logInfo);
+
+                //this.ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}');", ex.Message.ToString()), true);
+            }
+            finally
+            {
+                //BindData();
+            }
         }
 
         protected void gvSchedule_RowEditing(object sender, GridViewEditEventArgs e)

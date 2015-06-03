@@ -8,7 +8,7 @@
             <ul>
                 <li><a href="AdminConfig.aspx">全局配置</a></li>
                 <li><a href="AdminSchedule.aspx">计划任务</a></li>
-                <li style="display: none"><a href="AdminDNTMessage.aspx">短信管理</a></li>
+                <li><a href="AdminLog.aspx">日志查询</a></li>
             </ul>
         </div>
     </div>

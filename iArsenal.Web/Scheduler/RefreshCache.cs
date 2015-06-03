@@ -21,9 +21,11 @@ namespace iArsenal.Scheduler
                 ThreadInstance = Thread.CurrentThread
             };
 
+            string _scheduleType = this.GetType().DeclaringType.FullName;
+
             try
             {
-                log.Info("Scheduler Start (RefreshCache)", logInfo);
+                log.Info(string.Format("Scheduler Start: {0}", _scheduleType), logInfo);
 
                 Config.Cache.RefreshCache();
 
@@ -34,6 +36,8 @@ namespace iArsenal.Scheduler
                 MatchTicket.Cache.RefreshCache();
                 Member.Cache.RefreshCache();
                 Product.Cache.RefreshCache();
+
+                log.Info(string.Format("Scheduler End: {0}", _scheduleType), logInfo);
             }
             catch (Exception ex)
             {

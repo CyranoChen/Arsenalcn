@@ -48,12 +48,12 @@ namespace Arsenalcn.Core.Scheduler
                             /// Call this method BEFORE processing the ScheduledEvent. This will help protect against long running events 
                             /// being fired multiple times. Note, it is not absolute protection. App restarts will cause events to look like
                             /// they were completed, even if they were not. Again, ScheduledEvents are helpful...but not 100% reliable
-                            s.LastCompletedTime = DateTime.Now;
-                            s.Update();
 
                             ISchedule instance = s.IScheduleInstance;
-
                             ManagedThreadPool.QueueUserWorkItem(new WaitCallback(instance.Execute));
+
+                            s.LastCompletedTime = DateTime.Now;
+                            s.Update();
 
                             log.Debug(string.Format("ISchedule: {0}", s.ScheduleType), logInfo);
                         }

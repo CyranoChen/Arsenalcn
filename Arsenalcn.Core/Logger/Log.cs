@@ -1,15 +1,69 @@
-﻿using Microsoft.ApplicationBlocks.Data;
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Diagnostics.Contracts;
 using System.Reflection;
 using System.Threading;
+
+using Microsoft.ApplicationBlocks.Data;
 
 namespace Arsenalcn.Core.Logger
 {
     [AttrDbTable("Arsenalcn_Log", Sort = "ID DESC")]
-    public abstract class Log
+    public class Log
     {
+        public Log() { }
+
+        public Log(DataRow dr)
+        {
+            Contract.Requires(dr != null);
+
+            Init(dr);
+        }
+
+        private void Init(DataRow dr)
+        {
+            if (dr != null)
+            {
+                ID = Convert.ToInt32(dr["ID"]);
+                Logger = dr["Logger"].ToString();
+                CreateTime = Convert.ToDateTime(dr["CreateTime"]);
+                Level = (LogLevel)Enum.Parse(typeof(LogLevel), dr["LogLevel"].ToString());
+                Message = dr["Message"].ToString();
+                StackTrace = dr["StackTrace"].ToString();
+                Thread = dr["Thread"].ToString();
+                Method = dr["Method"].ToString();
+                UserID = Convert.ToInt32(dr["UserID"]);
+                UserIP = dr["UserIP"].ToString();
+                UserBrowser = dr["UserBrowser"].ToString();
+                UserOS = dr["UserOS"].ToString();
+            }
+            else
+                throw new Exception("Unable to init Log.");
+        }
+
+        public static List<Log> All()
+        {
+            var list = new List<Log>();
+
+            var attr = Repository.GetTableAttr<Log>();
+
+            string sql = string.Format("SELECT * FROM {0} ORDER BY {1}", attr.Name, attr.Sort);
+
+            DataSet ds = DataAccess.ExecuteDataset(sql);
+
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    list.Add(new Log(dr));
+                }
+            }
+
+            return list;
+        }
+
         #region Members and Properties
 
         [AttrDbColumn("ID", Key = true)]
@@ -54,6 +108,10 @@ namespace Arsenalcn.Core.Logger
 
         [AttrDbColumn("UserBrowser")]
         public string UserBrowser
+        { get; set; }
+
+        [AttrDbColumn("UserOS")]
+        public string UserOS
         { get; set; }
 
         #endregion

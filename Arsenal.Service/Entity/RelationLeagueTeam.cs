@@ -56,6 +56,25 @@ namespace Arsenal.Service
             return ds.Tables[0].Rows.Count > 0;
         }
 
+        public static List<RelationLeagueTeam> All()
+        {
+            var list = new List<RelationLeagueTeam>();
+
+            string sql = string.Format("SELECT * FROM {0}", Repository.GetTableAttr<RelationLeagueTeam>().Name);
+
+            DataSet ds = DataAccess.ExecuteDataset(sql);
+
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    list.Add(new RelationLeagueTeam(dr));
+                }
+            }
+
+            return list;
+        }
+
         public static List<RelationLeagueTeam> QueryByLeagueGuid(Guid lGuid)
         {
             var list = new List<RelationLeagueTeam>();
@@ -150,6 +169,27 @@ namespace Arsenal.Service
 
             DataAccess.ExecuteNonQuery(sql, null, trans);
         }
+
+        public static class Cache
+        {
+            static Cache()
+            {
+                InitCache();
+            }
+
+            public static void RefreshCache()
+            {
+                InitCache();
+            }
+
+            private static void InitCache()
+            {
+                RelationLeagueTeamList = All();
+            }
+
+            public static List<RelationLeagueTeam> RelationLeagueTeamList;
+        }
+
 
         #region Members and Properties
 

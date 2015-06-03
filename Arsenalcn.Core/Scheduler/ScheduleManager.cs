@@ -29,6 +29,11 @@ namespace Arsenalcn.Core.Scheduler
         public static void Execute()
         {
             ILog log = new AppLog();
+            var logInfo = new LogInfo()
+            {
+                MethodInstance = MethodBase.GetCurrentMethod(),
+                ThreadInstance = Thread.CurrentThread
+            };
 
             try
             {
@@ -50,22 +55,16 @@ namespace Arsenalcn.Core.Scheduler
 
                             ManagedThreadPool.QueueUserWorkItem(new WaitCallback(instance.Execute));
 
-                            log.Debug(string.Format("ISchedule: {0}", s.ScheduleType), new LogInfo()
-                            {
-                                MethodInstance = MethodBase.GetCurrentMethod(),
-                                ThreadInstance = Thread.CurrentThread
-                            });
+                            log.Debug(string.Format("ISchedule: {0}", s.ScheduleType), logInfo);
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                log.Debug(ex, new LogInfo()
-                {
-                    MethodInstance = MethodBase.GetCurrentMethod(),
-                    ThreadInstance = Thread.CurrentThread
-                });
+                log.Debug(ex, logInfo);
+
+                throw ex;
             }
         }
     }

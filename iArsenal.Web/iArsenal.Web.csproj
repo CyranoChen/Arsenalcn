@@ -1075,7 +1075,6 @@
     <Content Include="ServerMemberCheck.ashx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\ipdata.config" />
     <Content Include="ServerOrderView.ashx" />
     <Content Include="ServerOrderItemCheck.ashx" />
     <Content Include="ServerRegionCheck.ashx" />
@@ -1087,6 +1086,9 @@
       <DependentUpon>iarsenal.min.js</DependentUpon>
     </Content>
     <Content Include="ServerBulkOrder.ashx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

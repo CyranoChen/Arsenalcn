@@ -3,6 +3,7 @@ using System.Web.UI.WebControls;
 using System.Linq;
 
 using Arsenalcn.Core;
+using Arsenal.Service;
 
 namespace Arsenal.Web
 {
@@ -81,13 +82,14 @@ namespace Arsenal.Web
             {
                 Config.Cache.RefreshCache();
 
-                Service.League.Cache.RefreshCache();
-                Service.Match.Cache.RefreshCache();
-                Service.Player.Cache.RefreshCache();
-                Service.Team.Cache.RefreshCache();
-                Service.Video.Cache.RefreshCache();
+                RelationLeagueTeam.Clean();
+                RelationLeagueTeam.Cache.RefreshCache();
 
-                Service.RelationLeagueTeam.Clean();
+                League.Cache.RefreshCache();
+                Match.Cache.RefreshCache();
+                Player.Cache.RefreshCache();
+                Team.Cache.RefreshCache();
+                Video.Cache.RefreshCache();
 
                 ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('更新全部缓存成功');window.location.href=window.location.href", true);
             }

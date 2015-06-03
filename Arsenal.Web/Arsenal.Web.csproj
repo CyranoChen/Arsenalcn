@@ -306,7 +306,9 @@
       <SubType>Component</SubType>
     </Compile>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Arsenal.Service\Arsenal.Service.csproj">
       <Project>{852e458a-6cbd-42d1-ba22-8f6eda353aa7}</Project>
@@ -322,7 +324,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Themes\Arsenalcn\acn.skin" />
-    <Content Include="App_Data\ipdata.config" />
     <None Include="Properties\PublishProfiles\Arsenal.Deployment.pubxml" />
     <Content Include="ServerACNCallback.ashx" />
     <Content Include="Web.config">

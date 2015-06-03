@@ -12,6 +12,8 @@ namespace Arsenalcn.Core
 {
     public abstract class Entity<TKey> : IEntity where TKey : struct
     {
+        private readonly ILog log = new AppLog();
+
         public Entity() { }
 
         protected Entity(DataRow dr)
@@ -52,13 +54,13 @@ namespace Arsenalcn.Core
             }
             catch (Exception ex)
             {
-                ILog log = new AppLog();
-
                 log.Debug(ex, new LogInfo()
                 {
                     MethodInstance = MethodBase.GetCurrentMethod(),
                     ThreadInstance = Thread.CurrentThread
                 });
+
+                throw ex;
             }
         }
 
@@ -109,13 +111,13 @@ namespace Arsenalcn.Core
             }
             catch (Exception ex)
             {
-                ILog log = new AppLog();
-
                 log.Debug(ex, new LogInfo()
                 {
                     MethodInstance = MethodBase.GetCurrentMethod(),
                     ThreadInstance = Thread.CurrentThread
                 });
+
+                throw ex;
             }
         }
 

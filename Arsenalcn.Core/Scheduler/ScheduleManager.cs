@@ -63,6 +63,8 @@ namespace Arsenalcn.Core.Scheduler
             catch (Exception ex)
             {
                 log.Debug(ex, logInfo);
+
+                throw ex;
             }
         }
     }

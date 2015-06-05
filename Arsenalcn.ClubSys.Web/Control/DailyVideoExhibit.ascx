@@ -6,9 +6,9 @@
     <h3 class="Col" onclick="$(this).toggleClass('Col'); $(this).toggleClass('Exp'); $(this).next('div').toggle('normal');">
         <a>每日集锦赏析</a>
     </h3>
-    <div class="Block ClubSys_CollectionInfo" style="margin: 0px;">
+    <div class="Block ClubSys_CollectionInfo" style="margin: 0;">
         <asp:LinkButton ID="btnSwfView" ToolTip="点击播放" runat="server" CssClass="SwfViewBtnLeft"></asp:LinkButton>
-        <div class="ClubSys_ItemPH" style="float: none; margin: 0px; padding: 0px;">
+        <div class="ClubSys_ItemPH" style="float: none; margin: 0; padding: 0;">
             <asp:Literal ID="ltrlVideo" runat="server"></asp:Literal>
         </div>
         <div class="Clear">

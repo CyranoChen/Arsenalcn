@@ -13,8 +13,8 @@ body {
 }
 
 frameset {
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
     border: none;
 }
 
@@ -58,7 +58,7 @@ span.Sale {
 /** Portal #Header **/
 #header {
     overflow: hidden;
-    padding: 0px 5px;
+    padding: 0 5px;
     background: #852b37;
     height: 120px;
 }
@@ -107,7 +107,7 @@ span.Sale {
 }
 
     #menubar ul {
-        padding: 0px 40px;
+        padding: 0 40px;
     }
 
         #menubar ul li {
@@ -132,7 +132,7 @@ span.Sale {
                 font-weight: bold;
                 height: 30px;
                 line-height: 30px;
-                padding: 0px 20px;
+                padding: 0 20px;
             }
 
                 #menubar ul li a:hover, #menubar ul li a.selected {
@@ -167,7 +167,7 @@ span.Sale {
     border-top: 1px solid #9c824a;
     background: #eeeeee;
     padding: 20px 0;
-    margin: 0px;
+    margin: 0;
     clear: both;
 }
 
@@ -339,7 +339,7 @@ span.Sale {
     .MatchTicket_MatchInfo a.StrongLink {
         font-size: 10.5pt;
         font-weight: bold;
-        padding: 0px 2px;
+        padding: 0 2px;
         display: none;
     }
 
@@ -349,7 +349,7 @@ span.Sale {
         border: 1px solid #ccc;
         background: #f5f5f5;
         padding: 2px;
-        margin: 0px 15px;
+        margin: 0 15px;
     }
 
 .MatchTicket_CategoryName {

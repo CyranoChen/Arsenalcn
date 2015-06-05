@@ -8,7 +8,7 @@
     width: 16px;
     height: 17px;
     display: block;
-    margin: 0px auto;
+    margin: 0 auto;
 }
 
 .CasinoSys_Disagree {
@@ -16,7 +16,7 @@
     width: 16px;
     height: 17px;
     display: block;
-    margin: 0px auto;
+    margin: 0 auto;
 }
 
 .CasinoSys_Good {
@@ -24,7 +24,7 @@
     width: 20px;
     height: 20px;
     display: block;
-    margin: 0px auto;
+    margin: 0 auto;
 }
 
 .CasinoSys_True {
@@ -32,7 +32,7 @@
     width: 20px;
     height: 20px;
     display: block;
-    margin: 0px auto;
+    margin: 0 auto;
 }
 
 .CasinoSys_False {
@@ -40,7 +40,7 @@
     width: 20px;
     height: 20px;
     display: block;
-    margin: 0px auto;
+    margin: 0 auto;
 }
 
 .RowCasinoSys_True td {
@@ -84,7 +84,7 @@
 .CasinoSys_Tip {
     background: #fff48d;
     text-align: left;
-    margin: 0px 1px;
+    margin: 0 1px;
     padding: 3px;
 }
 
@@ -110,11 +110,11 @@
 .CasinoSys_Header, .CategoryHeader {
     background: #fef5f4;
     border-bottom: 2px solid #9c824a;
-    margin: 0px 1px;
+    margin: 0 1px;
 }
 
     .CategoryHeader ul {
-        margin: 0px;
+        margin: 0;
     }
 
         .CategoryHeader ul li {
@@ -160,7 +160,7 @@
 
         .CasinoSys_Header .NoList ul li {
             background: none;
-            padding: 0px;
+            padding: 0;
         }
 
     .CasinoSys_Header .GameItemList {
@@ -191,7 +191,7 @@
         font-size: 14px;
         color: #da7b00;
         font-weight: bold;
-        padding: 0px 5px;
+        padding: 0 5px;
     }
 
     .CasinoSys_Header .CasinoSys_GameBet ul li {

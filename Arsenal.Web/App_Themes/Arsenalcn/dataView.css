@@ -35,6 +35,11 @@
                 color: #eee;
             }
 
+            .DataView .Header th a.CheckAll {
+                text-decoration: none;
+                cursor: pointer;
+            }
+
     .DataView .Pager td, .Footer td {
         font-weight: bold;
         text-align: right;
@@ -183,7 +188,7 @@
 /* FunctionBar */
 .FunctionBar {
     background: #fff48d;
-    margin: 0px 1px;
+    margin: 0 1px;
     padding: 3px;
     min-height: 30px;
 }
@@ -221,7 +226,7 @@
     .TreeView .SelectedNode {
         background: #f0edb9;
         text-decoration: underline;
-        padding: 0px 2px;
+        padding: 0 2px;
         color: #333333;
         font-weight: bold;
     }
@@ -345,7 +350,7 @@
 
             .InfoPanel .Block ul li em {
                 color: #aa0000;
-                padding: 0px 5px 0px 1px;
+                padding: 0 5px 0px 1px;
                 font-weight: bold;
                 font-size: 11px;
             }

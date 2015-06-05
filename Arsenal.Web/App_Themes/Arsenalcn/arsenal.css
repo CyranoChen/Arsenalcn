@@ -17,7 +17,7 @@
 .Arsenal_Header {
     background: none;
     border: none;
-    margin: 0px;
+    margin: 0;
 }
 
     .Arsenal_Header .GameItemList {
@@ -53,7 +53,7 @@
             font-size: 14px;
             color: #da7b00;
             font-weight: bold;
-            padding: 0px 5px;
+            padding: 0 5px;
         }
 
         .Arsenal_Header .Arsenal_GameName img {
@@ -86,7 +86,7 @@
             font-style: italic;
             font-weight: bold;
             color: #aa0000;
-            margin: 0px 5px;
+            margin: 0 5px;
         }
 
     .Arsenal_Header .Clear {

@@ -22,7 +22,7 @@
 
     .ClubSys_ShowTopic em, .ClubSys_ShowTopicCrown em {
         color: #aa0000;
-        padding: 0px 4px;
+        padding: 0 4px;
         font-weight: bold;
         font-size: 10px;
         font-family: Arial, Verdana, Tahoma;
@@ -32,7 +32,7 @@
 .ClubSys_Rank {
     background: url(images/clubsys/ClubStar3.gif) repeat left top;
     height: 20px;
-    margin: 0px auto;
+    margin: 0 auto;
 }
 
 .ClubSys_Star1 {
@@ -58,7 +58,7 @@
     width: 16px;
     height: 17px;
     display: block;
-    margin: 0px auto;
+    margin: 0 auto;
 }
 
 .ClubSys_Disagree {
@@ -66,7 +66,7 @@
     width: 16px;
     height: 17px;
     display: block;
-    margin: 0px auto;
+    margin: 0 auto;
 }
 
 .ClubSys_Star {
@@ -74,7 +74,7 @@
     width: 16px;
     height: 16px;
     display: block;
-    margin: 0px auto;
+    margin: 0 auto;
 }
 
 .ClubSys_Cash {
@@ -82,13 +82,13 @@
     width: 18px;
     height: 16px;
     display: block;
-    margin: 0px auto;
+    margin: 0 auto;
 }
 
 .ClubSys_Tip {
     background: #fff48d;
     text-align: left;
-    margin: 0px 1px;
+    margin: 0 1px;
     padding: 3px;
 }
 
@@ -173,32 +173,32 @@
 .ClubSys_PlayerLV {
     background: url(images/clubsys/PlayerLV.gif) repeat top left;
     height: 20px;
-    margin: 0px auto;
+    margin: 0 auto;
 }
 
 .ClubSys_PlayerLV1 {
     color: #ad30d9;
-    margin: 0px 2px;
+    margin: 0 2px;
 }
 
 .ClubSys_PlayerLV2 {
     color: #73d930;
-    margin: 0px 2px;
+    margin: 0 2px;
 }
 
 .ClubSys_PlayerLV3 {
     color: #304dd9;
-    margin: 0px 2px;
+    margin: 0 2px;
 }
 
 .ClubSys_PlayerLV4 {
     color: #aa9d2c;
-    margin: 0px 2px;
+    margin: 0 2px;
 }
 
 .ClubSys_PlayerLV5 {
     color: #d11915;
-    margin: 0px 2px;
+    margin: 0 2px;
 }
 
 /** ClubSys_GetStrip **/
@@ -256,7 +256,7 @@ a.ClubSys_LuckyGet {
 .ClubSys_Header {
     background: #fef5f4;
     border-bottom: 2px solid #9c824a;
-    margin: 0px 1px;
+    margin: 0 1px;
 }
 
     .ClubSys_Header table {
@@ -324,7 +324,7 @@ a.ClubSys_LuckyGet {
 
 /* ClubSys_CollectionInfo */
 .ClubSys_CollectionInfo {
-    margin: 0px 1px 1px 1px;
+    margin: 0 1px 1px 1px;
     text-align: center;
     background: #fff url(images/clubsys/CollectionInfoBg.jpg) repeat-y center top;
 }
@@ -350,7 +350,7 @@ a.ClubSys_LuckyGet {
 .ClubSys_ItemPH .CurrentStrip {
     position: absolute;
     left: 40px;
-    top: 0px;
+    top: 0;
     background: url(images/clubsys/CurrentStrip.gif) no-repeat top center;
     width: 30px;
     height: 29px;
@@ -360,7 +360,7 @@ a.ClubSys_LuckyGet {
 .ClubSys_ItemPH a.BtnSetCurrent {
     display: none;
     position: absolute;
-    right: 0px;
+    right: 0;
     bottom: 15px;
     background: url(images/clubsys/BtnSetCurrent.gif) no-repeat bottom center;
     width: 16px;
@@ -371,7 +371,7 @@ a.ClubSys_LuckyGet {
 .ClubSys_ItemPH a.BtnCancelCurrent {
     display: none;
     position: absolute;
-    right: 0px;
+    right: 0;
     bottom: 15px;
     background: url(images/clubsys/BtnCancelCurrent.gif) no-repeat bottom center;
     width: 16px;
@@ -382,7 +382,7 @@ a.ClubSys_LuckyGet {
 .ClubSys_ItemPH a.BtnActive {
     display: none;
     position: absolute;
-    right: 0px;
+    right: 0;
     bottom: 15px;
     background: url(images/clubsys/BtnActive.gif) no-repeat bottom center;
     width: 16px;
@@ -393,7 +393,7 @@ a.ClubSys_LuckyGet {
 .ClubSys_ItemPH a.SwfViewBtn {
     display: none;
     position: absolute;
-    right: 0px;
+    right: 0;
     bottom: 45px;
     background: url(images/clubsys/zoomin.gif) no-repeat top center;
     width: 18px;
@@ -420,7 +420,7 @@ a.ClubSys_LuckyGet {
     position: relative;
     text-align: center;
     width: 500px;
-    margin: 0px auto;
+    margin: 0 auto;
 }
 
     .ClubSys_ProfileInfo a {
@@ -532,7 +532,7 @@ a.ClubSys_LuckyGet {
                     text-align: right;
                     color: #666;
                     display: inline-block;
-                    padding: 0px 2px 0px 10px;
+                    padding: 0 2px 0px 10px;
                     font-weight: normal;
                     background: url(images/LiIcon.gif) no-repeat 0px 6px;
                 }
@@ -570,7 +570,7 @@ a.ClubSys_LuckyGet {
 }
 
     .ClubSys_MainInfo .AdminPanel ul {
-        margin: 0px 10px;
+        margin: 0 10px;
         clear: both;
     }
 
@@ -606,7 +606,7 @@ a.ClubSys_LuckyGet {
         .ClubSys_MainInfo .AdminPanel .CreateDate em {
             font-size: 14px;
             font-weight: bold;
-            padding: 0px 2px;
+            padding: 0 2px;
         }
 
 /* ClubSys_RankInfo */
@@ -630,7 +630,7 @@ a.ClubSys_LuckyGet {
 
 .ClubSys_RankInfo {
     background: #fff;
-    margin: 0px 1px 1px 1px;
+    margin: 0 1px 1px 1px;
     height: auto;
 }
 
@@ -681,7 +681,7 @@ a.ClubSys_LuckyGet {
                 font-family: Georgia, Tahoma, Verdana;
                 float: left;
                 width: 80px;
-                padding: 0px 10px;
+                padding: 0 10px;
                 text-align: right;
                 font-size: 12px;
                 white-space: nowrap;
@@ -767,8 +767,8 @@ a.ClubSys_LuckyGet {
         width: 680px;
         height: 20px;
         position: absolute;
-        top: 0px;
-        left: 0px;
+        top: 0;
+        left: 0;
         z-index: 100;
         clear: both;
         display: none;
@@ -820,8 +820,8 @@ a.ClubSys_LuckyGet {
         cursor: pointer;
         background: #fff url(images/clubsys/arsenalvideolayout.png) no-repeat center center;
         position: absolute;
-        top: 0px;
-        left: 0px;
+        top: 0;
+        left: 0;
         z-index: 1;
         clear: both;
     }
@@ -994,8 +994,8 @@ a.ClubSys_LuckyGet {
         height: 400px;
         display: none;
         position: absolute;
-        top: 0px;
-        left: 0px;
+        top: 0;
+        left: 0;
         z-index: 10;
     }
 

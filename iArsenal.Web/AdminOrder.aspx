@@ -74,7 +74,7 @@
             <Columns>
                 <asp:TemplateField HeaderText="编号">
                     <HeaderTemplate>
-                        <a class="checkAll" title="单击全选">编号</a>
+                        <a class="CheckAll" title="单击全选">编号</a>
                     </HeaderTemplate>
                     <ItemTemplate>
                         <asp:CheckBox ID="cbOrderID" runat="server" />

@@ -9,6 +9,7 @@
     background: #fff;
     width: 100%;
     border: 1px solid #9c824a;
+    border-collapse: collapse;
 }
 
     .DataView td {

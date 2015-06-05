@@ -24,7 +24,7 @@
     <div id="MainPanel">
         <uc2:AdminFieldToolBar ID="ctrlAdminFieldToolBar" runat="server" />
         <div class="Arsenal_MainInfo">
-            <table class="DataView" cellspacing="0" cellpadding="5">
+            <table class="DataView" cellspacing="0">
                 <thead>
                     <tr class="Header">
                         <th colspan="4">添加/更新阿森纳比赛球票信息

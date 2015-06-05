@@ -30,7 +30,7 @@
             <table class="DataView">
                 <thead>
                     <tr class="Header">
-                        <th colspan="4" style="text-align: left">
+                        <th colspan="4" class="FieldColumn">
                             <a name="anchorBack" id="anchorBack">感谢预订新赛季阿森纳球衣，请仔细确认并提交订单信息：</a>
                         </th>
                     </tr>
@@ -43,26 +43,26 @@
                     <tr class="Row">
                         <td class="FieldHeader" style="width: 100px">真实姓名：
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:Label ID="lblMemberName" runat="server"></asp:Label>
                         </td>
                         <td class="FieldHeader" style="width: 100px">手机：
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:Label ID="lblOrderMobile" runat="server"></asp:Label>
                         </td>
                     </tr>
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">付款方式：
                         </td>
-                        <td style="text-align: left" colspan="3">
+                        <td class="FieldColumn" colspan="3">
                             <asp:Label ID="lblOrderPayment" runat="server"></asp:Label>
                         </td>
                     </tr>
                     <tr class="Row">
                         <td class="FieldHeader">收货地址：
                         </td>
-                        <td style="text-align: left" colspan="3">
+                        <td class="FieldColumn" colspan="3">
                             <asp:Label ID="lblOrderAddress" runat="server"></asp:Label>
                         </td>
                     </tr>
@@ -73,19 +73,19 @@
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">订单号：
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:Label ID="lblOrderID" runat="server"></asp:Label>
                         </td>
                         <td class="FieldHeader">创建时间：
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:Label ID="lblOrderCreateTime" runat="server"></asp:Label>
                         </td>
                     </tr>
                     <tr class="Row">
                         <td class="FieldHeader">购买球衣：
                         </td>
-                        <td style="text-align: left" colspan="3">
+                        <td class="FieldColumn" colspan="3">
                             <asp:Label ID="lblOrderItem_ReplicaKit" runat="server"></asp:Label>
                             <asp:TextBox ID="tbOrderItem_ReplicaKit" runat="server" CssClass="OrderProductGuid"></asp:TextBox>
                         </td>
@@ -93,26 +93,26 @@
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">尺寸：
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:Label ID="lblOrderItem_ReplicaKitSize" runat="server"></asp:Label>
                         </td>
                         <td class="FieldHeader">印字印号：
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:Label ID="lblOrderItem_PlayerDetail" runat="server"></asp:Label>
                         </td>
                     </tr>
                     <tr class="Row">
                         <td class="FieldHeader">袖标：
                         </td>
-                        <td style="text-align: left" colspan="3">
+                        <td class="FieldColumn" colspan="3">
                             <asp:Label ID="lblOrderItem_Patch" runat="server"></asp:Label>
                         </td>
                     </tr>
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">备注：
                         </td>
-                        <td style="text-align: left" colspan="3">
+                        <td class="FieldColumn" colspan="3">
                             <asp:Label ID="lblOrderDescription" runat="server"></asp:Label>
                         </td>
                     </tr>
@@ -124,7 +124,7 @@
                         <tr class="AlternatingRow">
                             <td class="FieldHeader">订单反馈：
                             </td>
-                            <td style="text-align: left" colspan="3">
+                            <td class="FieldColumn" colspan="3">
                                 <asp:Label ID="lblOrderRemark" runat="server"></asp:Label>
                             </td>
                         </tr>

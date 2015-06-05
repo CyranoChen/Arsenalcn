@@ -19,7 +19,7 @@
             <table class="DataView">
                 <thead>
                     <tr class="Header">
-                        <th colspan="4" style="text-align: left">
+                        <th colspan="4" class="FieldColumn">
                             <a name="anchorBack" id="anchorBack">感谢您报名参加本次观赛活动，请仔细确认并提交预订信息：</a>
                         </th>
                     </tr>
@@ -32,50 +32,50 @@
                     <tr class="Row">
                         <td class="FieldHeader" style="width: 110px">真实姓名：
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:Label ID="lblMemberName" runat="server"></asp:Label>
                         </td>
                         <td class="FieldHeader" style="width: 110px">手机：
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:Label ID="lblOrderMobile" runat="server"></asp:Label>
                         </td>
                     </tr>
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">现居住地：
                         </td>
-                        <td style="text-align: left" colspan="3">
+                        <td class="FieldColumn" colspan="3">
                             <asp:Label ID="lblMemberRegion" runat="server"></asp:Label>
                         </td>
                     </tr>
                     <tr class="Row">
                         <td class="FieldHeader">身份证号：
                         </td>
-                        <td style="text-align: left" colspan="3">
+                        <td class="FieldColumn" colspan="3">
                             <asp:Label ID="lblMemberIDCardNo" runat="server"></asp:Label>
                         </td>
                     </tr>
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">护照号码：
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:Label ID="lblMemberPassportNo" runat="server"></asp:Label>
                         </td>
                         <td class="FieldHeader">护照姓名：
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:Label ID="lblMemberPassportName" runat="server"></asp:Label>
                         </td>
                     </tr>
                     <tr class="Row">
                         <td class="FieldHeader">微信/QQ：
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:Label ID="lblMemberQQ" runat="server"></asp:Label>
                         </td>
                         <td class="FieldHeader">邮箱：
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:Label ID="lblMemberEmail" runat="server"></asp:Label>
                         </td>
                     </tr>
@@ -86,19 +86,19 @@
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">订单号：
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:Label ID="lblOrderID" runat="server"></asp:Label>
                         </td>
                         <td class="FieldHeader">创建时间：
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:Label ID="lblOrderCreateTime" runat="server"></asp:Label>
                         </td>
                     </tr>
                     <tr class="Row">
                         <td class="FieldHeader">出行选项：
                         </td>
-                        <td style="text-align: left" colspan="3">
+                        <td class="FieldColumn" colspan="3">
                             <asp:Label ID="lblOrderItem_TravelInfo" runat="server"></asp:Label>
                         </td>
                     </tr>
@@ -106,7 +106,7 @@
                         <tr class="AlternatingRow">
                             <td class="FieldHeader">同伴信息：
                             </td>
-                            <td style="text-align: left" colspan="3">
+                            <td class="FieldColumn" colspan="3">
                                 <asp:Label ID="lblOrderItem_TravelPartner" runat="server"></asp:Label>
                             </td>
                         </tr>
@@ -114,14 +114,14 @@
                     <tr class="Row">
                         <td class="FieldHeader">观赛选项：
                         </td>
-                        <td style="text-align: left" colspan="3">
+                        <td class="FieldColumn" colspan="3">
                             <asp:Label ID="lblOrderItem_TravelOption" runat="server"></asp:Label>
                         </td>
                     </tr>
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">备注：
                         </td>
-                        <td style="text-align: left" colspan="3">
+                        <td class="FieldColumn" colspan="3">
                             <asp:Label ID="lblOrderDescription" runat="server"></asp:Label>
                         </td>
                     </tr>
@@ -133,7 +133,7 @@
                         <tr class="AlternatingRow">
                             <td class="FieldHeader">订单反馈：
                             </td>
-                            <td style="text-align: left" colspan="3">
+                            <td class="FieldColumn" colspan="3">
                                 <asp:Label ID="lblOrderRemark" runat="server"></asp:Label>
                             </td>
                         </tr>

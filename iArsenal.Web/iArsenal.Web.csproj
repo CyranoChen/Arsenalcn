@@ -58,6 +58,8 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AdminLog.aspx" />
+    <Content Include="AdminLogView.aspx" />
     <Content Include="AdminMemberView.aspx" />
     <Content Include="AdminConfig.aspx" />
     <Content Include="AdminMember.aspx" />
@@ -216,6 +218,20 @@
     <Content Include="Scripts\iarsenal.js" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdminLog.aspx.cs">
+      <DependentUpon>AdminLog.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminLog.aspx.designer.cs">
+      <DependentUpon>AdminLog.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminLogView.aspx.cs">
+      <DependentUpon>AdminLogView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminLogView.aspx.designer.cs">
+      <DependentUpon>AdminLogView.aspx</DependentUpon>
+    </Compile>
     <Compile Include="AdminMemberView.aspx.cs">
       <DependentUpon>AdminMemberView.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

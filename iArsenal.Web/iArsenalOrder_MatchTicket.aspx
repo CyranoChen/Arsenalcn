@@ -32,7 +32,7 @@
             <table class="DataView">
                 <thead>
                     <tr class="Header">
-                        <th colspan="4" style="text-align: left">
+                        <th colspan="4" class="FieldColumn">
                             <a name="anchorBack" id="anchorBack">欢迎进入新赛季比赛主场球票预订系统，请仔细确认并填写以下信息：</a>
                         </th>
                     </tr>
@@ -45,19 +45,19 @@
                     <tr class="Row">
                         <td class="FieldHeader" style="width: 110px;">真实姓名：
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:Label ID="lblMemberName" runat="server"></asp:Label>
                         </td>
                         <td class="FieldHeader" style="width: 110px;">ACN帐号：
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:Label ID="lblMemberACNInfo" runat="server"></asp:Label>
                         </td>
                     </tr>
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">现居住地：
                         </td>
-                        <td style="text-align: left" id="tdRegion" colspan="3">
+                        <td class="FieldColumn" id="tdRegion" colspan="3">
                             <asp:DropDownList ID="ddlNation" runat="server" CssClass="Nation">
                                 <asp:ListItem Value="" Text="--请选择国家--" Selected="True"></asp:ListItem>
                                 <asp:ListItem Value="中国" Text="中国"></asp:ListItem>
@@ -75,7 +75,7 @@
                     <tr class="Row">
                         <td class="FieldHeader">身份证号：
                         </td>
-                        <td style="text-align: left" colspan="3">
+                        <td class="FieldColumn" colspan="3">
                             <asp:TextBox ID="tbIDCardNo" runat="server" CssClass="TextBox" Width="400px" MaxLength="20"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="rfvIDCardNo" runat="server" ControlToValidate="tbIDCardNo"
                                 Display="Dynamic" ErrorMessage="*" CssClass="ValiSpan"></asp:RequiredFieldValidator>
@@ -91,7 +91,7 @@
                         </td>
                         <td class="FieldHeader">护照姓名：
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:TextBox ID="tbPassportName" runat="server" CssClass="TextBox" Width="150px" MaxLength="20"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="rfvPassportName" runat="server" ControlToValidate="tbPassportName"
                                 Display="Dynamic" ErrorMessage="*" CssClass="ValiSpan"></asp:RequiredFieldValidator>
@@ -100,14 +100,14 @@
                     <tr class="Row">
                         <td class="FieldHeader">手机：
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:TextBox ID="tbMobile" runat="server" CssClass="TextBox" Width="150px" MaxLength="20"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="rfvMobile" runat="server" ControlToValidate="tbMobile"
                                 Display="Dynamic" ErrorMessage="*" CssClass="ValiSpan"></asp:RequiredFieldValidator>
                         </td>
                         <td class="FieldHeader">微信/QQ：
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:TextBox ID="tbQQ" runat="server" CssClass="TextBox" Width="150px" MaxLength="20"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="rfvQQ" runat="server" ControlToValidate="tbQQ"
                                 Display="Dynamic" ErrorMessage="*" CssClass="ValiSpan"></asp:RequiredFieldValidator>
@@ -116,7 +116,7 @@
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">邮箱：
                         </td>
-                        <td style="text-align: left" colspan="3">
+                        <td class="FieldColumn" colspan="3">
                             <asp:TextBox ID="tbEmail" runat="server" CssClass="TextBox" Width="300px" MaxLength="40"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="rfvEmail" runat="server" ControlToValidate="tbEmail"
                                 Display="Dynamic" ErrorMessage="*" CssClass="ValiSpan"></asp:RequiredFieldValidator>
@@ -129,7 +129,7 @@
                     <tr class="Row">
                         <td class="FieldHeader">比赛信息：
                         </td>
-                        <td style="text-align: left" colspan="3">
+                        <td class="FieldColumn" colspan="3">
                             <asp:Label ID="lblMatchTicketInfo" runat="server"></asp:Label>
                         </td>
                     </tr>
@@ -160,7 +160,7 @@
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">备注：
                         </td>
-                        <td style="text-align: left" colspan="3">
+                        <td class="FieldColumn" colspan="3">
                             <asp:TextBox ID="tbOrderDescription" runat="server" CssClass="TextBox" Width="300px"
                                 TextMode="MultiLine" Rows="4"></asp:TextBox>
                         </td>

@@ -12,7 +12,7 @@
     <div id="MainPanel">
         <uc2:AdminFieldToolBar ID="ctrlAdminFieldToolBar" runat="server" />
         <div class="Arsenal_MainInfo">
-            <table class="DataView" cellspacing="0" cellpadding="5">
+            <table class="DataView" cellspacing="0">
                 <thead>
                     <tr class="Header">
                         <th colspan="4">添加/更新官方球迷会的团购商品名录
@@ -23,12 +23,12 @@
                     <tr class="Row">
                         <td class="FieldHeader">商品GUID:
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:TextBox ID="tbProductGuid" runat="server" CssClass="TextBoxRead" Width="180px"></asp:TextBox>
                         </td>
                         <td class="FieldHeader">编码:
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:TextBox ID="tbCode" runat="server" CssClass="TextBox" Width="100px"></asp:TextBox>
                             <asp:CheckBox ID="cbIsActive" runat="server" Checked="true" Text="有效" />
                         </td>
@@ -36,19 +36,19 @@
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">名称:
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:TextBox ID="tbName" runat="server" CssClass="TextBox" Width="180px"></asp:TextBox>
                         </td>
                         <td class="FieldHeader">译名:
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:TextBox ID="tbDisplayName" runat="server" CssClass="TextBox" Width="180px"></asp:TextBox>
                         </td>
                     </tr>
                     <tr class="Row">
                         <td class="FieldHeader">类型:
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:DropDownList ID="ddlProductType" runat="server">
                                 <asp:ListItem Value="" Text="--类型--" Selected="True"></asp:ListItem>
                                 <asp:ListItem Value="1" Text="主场球衣"></asp:ListItem>
@@ -70,26 +70,26 @@
                         </td>
                         <td class="FieldHeader">库存:
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:TextBox ID="tbStock" runat="server" CssClass="TextBox" Width="180px" Text="0"></asp:TextBox>
                         </td>
                     </tr>
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">材料:
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:TextBox ID="tbMaterial" runat="server" CssClass="TextBox" Width="180px"></asp:TextBox>
                         </td>
                         <td class="FieldHeader">颜色:
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:TextBox ID="tbColour" runat="server" CssClass="TextBox" Width="180px"></asp:TextBox>
                         </td>
                     </tr>
                     <tr class="Row">
                         <td class="FieldHeader">尺寸:
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:DropDownList ID="ddlSize" runat="server">
                                 <asp:ListItem Text="--请选择商品尺寸--" Value="" Selected="True"></asp:ListItem>
                                 <asp:ListItem Text="儿童尺寸" Value="Childrens"></asp:ListItem>
@@ -101,7 +101,7 @@
                         </td>
                         <td class="FieldHeader">货币:
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:DropDownList ID="ddlCurrency" runat="server">
                                 <asp:ListItem Text="英磅" Value="GBP" Selected="True"></asp:ListItem>
                                 <asp:ListItem Text="人民币" Value="CNY"></asp:ListItem>
@@ -112,26 +112,26 @@
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">价格:
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:TextBox ID="tbPrice" runat="server" CssClass="TextBox" Text="0"></asp:TextBox>
                         </td>
                         <td class="FieldHeader">促销:
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:TextBox ID="tbSale" runat="server" CssClass="TextBox"></asp:TextBox>
                         </td>
                     </tr>
                     <tr class="Row">
                         <td class="FieldHeader">图片:
                         </td>
-                        <td style="text-align: left" colspan="3">
+                        <td class="FieldColumn" colspan="3">
                             <asp:TextBox ID="tbImageURL" runat="server" CssClass="TextBox" Width="400px" Text="UploadFiles/Product/"></asp:TextBox>
                         </td>
                     </tr>
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">描述:
                         </td>
-                        <td style="text-align: left" colspan="3">
+                        <td class="FieldColumn" colspan="3">
                             <asp:TextBox ID="tbDescription" runat="server" CssClass="TextBox" Width="400px" TextMode="MultiLine"
                                 Rows="4"></asp:TextBox>
                         </td>
@@ -139,7 +139,7 @@
                     <tr class="Row">
                         <td class="FieldHeader">备注:
                         </td>
-                        <td style="text-align: left" colspan="3">
+                        <td class="FieldColumn" colspan="3">
                             <asp:TextBox ID="tbRemark" runat="server" CssClass="TextBox" Width="400px" TextMode="MultiLine"
                                 Rows="4"></asp:TextBox>
                         </td>

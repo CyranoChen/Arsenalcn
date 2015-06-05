@@ -27,7 +27,7 @@
     <div id="MainPanel">
         <uc2:AdminFieldToolBar ID="ctrlAdminFieldToolBar" runat="server" />
         <div class="ASC_MainInfo">
-            <table class="DataView" cellspacing="0" cellpadding="5">
+            <table class="DataView" cellspacing="0">
                 <thead>
                     <tr class="Header">
                         <th colspan="4">添加/更新官方球迷会实名会员信息
@@ -43,19 +43,19 @@
                         <td class="FieldHeader">
                             <asp:Label ID="lblMemberInfo" runat="server"></asp:Label>
                         </td>
-                        <td style="text-align: left" class="MemberInfo">
+                        <td class="FieldColumn MemberInfo">
                             <asp:TextBox ID="tbName" runat="server" CssClass="TextBox" Width="200px"></asp:TextBox>
                         </td>
                         <td class="FieldHeader">状态:
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:CheckBox ID="cbIsActive" runat="server" Checked="true" Text="有效" />
                         </td>
                     </tr>
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">会员类型:
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:DropDownList ID="ddlMemberType" runat="server">
                                 <asp:ListItem Text="--请选择类型--" Value="0" Selected="True"></asp:ListItem>
                                 <asp:ListItem Text="观赛" Value="1"></asp:ListItem>
@@ -71,7 +71,7 @@
                         </td>
                         <td class="FieldHeader">ACN信息:
                         </td>
-                        <td style="text-align: left" id="tdAcnInfo">
+                        <td class="FieldColumn" id="tdAcnInfo">
                             <asp:TextBox ID="tbAcnID" runat="server" CssClass="TextBox AcnID" Width="50px"></asp:TextBox>
                             <asp:TextBox ID="tbAcnName" runat="server" CssClass="TextBoxRead AcnName"></asp:TextBox>
                             <asp:TextBox ID="tbAcnSessionKey" runat="server" CssClass="TextBoxRead AcnSessionKey" Width="50px"></asp:TextBox>
@@ -81,24 +81,24 @@
                     <tr class="Row">
                         <td class="FieldHeader">会员卡号:
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:TextBox ID="tbMemberCardNo" runat="server" CssClass="TextBox" Width="200px"></asp:TextBox>
                         </td>
                         <td class="FieldHeader">淘宝帐号:
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:TextBox ID="tbTaobaoName" runat="server" CssClass="TextBox" Width="200px"></asp:TextBox>
                         </td>
                     </tr>
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">IP地址:
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:TextBox ID="tbIP" runat="server" CssClass="TextBox" Width="200px"></asp:TextBox>
                         </td>
                         <td class="FieldHeader">IP信息:
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:Label ID="lblIPInfo" runat="server"></asp:Label>
                         </td>
                     </tr>
@@ -109,26 +109,26 @@
                     <tr class="Row">
                         <td class="FieldHeader">身份证号:
                         </td>
-                        <td style="text-align: left" colspan="3">
+                        <td class="FieldColumn" colspan="3">
                             <asp:TextBox ID="tbIDCardNo" runat="server" CssClass="TextBox" Width="200px"></asp:TextBox>
                         </td>
                     </tr>
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">加入时间:
                         </td>
-                        <td style="text-align: left" id="tdJoinDate">
+                        <td class="FieldColumn" id="tdJoinDate">
                             <asp:TextBox ID="tbJoinDate" runat="server" CssClass="TextBox" Width="200px"></asp:TextBox>
                         </td>
                         <td class="FieldHeader">上次活动:
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:TextBox ID="tbLastLoginTime" runat="server" CssClass="TextBox" Width="200px"></asp:TextBox>
                         </td>
                     </tr>
                     <tr class="Row">
                         <td class="FieldHeader">性别:
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:RadioButtonList ID="rblGender" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow">
                                 <asp:ListItem Text="男" Value="true" Selected="True"></asp:ListItem>
                                 <asp:ListItem Text="女" Value="false"></asp:ListItem>
@@ -136,31 +136,31 @@
                         </td>
                         <td class="FieldHeader">护照编号:
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:TextBox ID="tbPassportNo" runat="server" CssClass="TextBox" Width="200px"></asp:TextBox>
                         </td>
                     </tr>
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">生日:
                         </td>
-                        <td style="text-align: left" id="tdBirthday">
+                        <td class="FieldColumn" id="tdBirthday">
                             <asp:TextBox ID="tbBirthday" runat="server" CssClass="TextBox" Width="200px"></asp:TextBox>
                         </td>
                         <td class="FieldHeader">护照姓名:
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:TextBox ID="tbPassportName" runat="server" CssClass="TextBox" Width="200px"></asp:TextBox>
                         </td>
                     </tr>
                     <tr class="Row">
                         <td class="FieldHeader">MSN:
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:TextBox ID="tbMSN" runat="server" CssClass="TextBox" Width="200px"></asp:TextBox>
                         </td>
                         <td class="FieldHeader">微信/QQ:
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:TextBox ID="tbQQ" runat="server" CssClass="TextBox" Width="200px"></asp:TextBox>
                         </td>
                     </tr>
@@ -171,7 +171,7 @@
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">所在国家/地区:
                         </td>
-                        <td style="text-align: left" id="tdRegion" colspan="3">
+                        <td class="FieldColumn" id="tdRegion" colspan="3">
                             <asp:DropDownList ID="ddlNation" runat="server" CssClass="Nation">
                                 <asp:ListItem Value="" Text="--请选择国家--" Selected="True"></asp:ListItem>
                                 <asp:ListItem Value="中国" Text="中国"></asp:ListItem>
@@ -189,38 +189,38 @@
                     <tr class="Row">
                         <td class="FieldHeader">职业:
                         </td>
-                        <td style="text-align: left" colspan="3">
+                        <td class="FieldColumn" colspan="3">
                             <asp:TextBox ID="tbCareer" runat="server" CssClass="TextBox" Width="200px"></asp:TextBox>
                         </td>
                     </tr>
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">移动电话:
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:TextBox ID="tbMobile" runat="server" CssClass="TextBox" Width="200px"></asp:TextBox>
                         </td>
                         <td class="FieldHeader">邮箱:
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:TextBox ID="tbEmail" runat="server" CssClass="TextBox" Width="200px"></asp:TextBox>
                         </td>
                     </tr>
                     <tr class="Row">
                         <td class="FieldHeader">固定电话:
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:TextBox ID="tbTelephone" runat="server" CssClass="TextBox" Width="200px"></asp:TextBox>
                         </td>
                         <td class="FieldHeader">邮编:
                         </td>
-                        <td style="text-align: left" colspan="3">
+                        <td class="FieldColumn" colspan="3">
                             <asp:TextBox ID="tbZipCode" runat="server" CssClass="TextBox" Width="200px"></asp:TextBox>
                         </td>
                     </tr>
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">地址:
                         </td>
-                        <td style="text-align: left" colspan="3">
+                        <td class="FieldColumn" colspan="3">
                             <asp:TextBox ID="tbAddress" runat="server" CssClass="TextBox" Rows="4" Width="500px"
                                 TextMode="MultiLine"></asp:TextBox>
                         </td>
@@ -232,7 +232,7 @@
                     <tr class="Row">
                         <td class="FieldHeader">简介:
                         </td>
-                        <td style="text-align: left" colspan="3">
+                        <td class="FieldColumn" colspan="3">
                             <asp:TextBox ID="tbDescription" runat="server" CssClass="TextBox" Rows="5" Width="500px"
                                 TextMode="MultiLine"></asp:TextBox>
                         </td>
@@ -240,7 +240,7 @@
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">备注:
                         </td>
-                        <td style="text-align: left" colspan="3">
+                        <td class="FieldColumn" colspan="3">
                             <asp:TextBox ID="tbRemark" runat="server" CssClass="TextBox" Rows="5" Width="500px"
                                 TextMode="MultiLine"></asp:TextBox>
                         </td>

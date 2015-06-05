@@ -16,7 +16,7 @@
             <table class="DataView">
                 <thead>
                     <tr class="Header">
-                        <th colspan="2" style="text-align: left">
+                        <th colspan="2" class="FieldColumn">
                             <a name="anchorBack" id="anchorBack">请如实填写您的会员信息，谢谢配合：</a>
                             <asp:Label ID="lblACNInfo" runat="server"></asp:Label>
                         </th>
@@ -26,7 +26,7 @@
                     <tr class="Row">
                         <td class="FieldHeader">真实姓名：
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:TextBox ID="tbName" runat="server" CssClass="TextBox" Width="300px"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="rfvName" runat="server" ControlToValidate="tbName"
                                 Display="Dynamic" ErrorMessage="*" CssClass="ValiSpan"></asp:RequiredFieldValidator>
@@ -35,7 +35,7 @@
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">性别：
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:RadioButtonList ID="rblGender" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow"
                                 CssClass="RadioButtonList">
                                 <asp:ListItem Text="男" Value="true" Selected="True"></asp:ListItem>
@@ -46,14 +46,14 @@
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">身份证号：
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:TextBox ID="tbIDCardNo" runat="server" CssClass="TextBox" Width="300px"></asp:TextBox>
                         </td>
                     </tr>
                     <tr class="Row">
                         <td class="FieldHeader">手机：
                         </td>
-                        <td style="text-align: left" class="MemberInfo">
+                        <td class="FieldColumn" class="MemberInfo">
                             <asp:TextBox ID="tbMobile" runat="server" CssClass="TextBox" Width="300px"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="rfvMobile" runat="server" ControlToValidate="tbMobile"
                                 Display="Dynamic" ErrorMessage="*" CssClass="ValiSpan"></asp:RequiredFieldValidator>
@@ -62,7 +62,7 @@
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">邮箱：
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:TextBox ID="tbEmail" runat="server" CssClass="TextBox" Width="300px"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="rfvEmail" runat="server" ControlToValidate="tbEmail"
                                 Display="Dynamic" ErrorMessage="*" CssClass="ValiSpan"></asp:RequiredFieldValidator>
@@ -71,14 +71,16 @@
                     <tr class="Row">
                         <td class="FieldHeader">微信/QQ：
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:TextBox ID="tbQQ" runat="server" CssClass="TextBox" Width="300px"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="rfvQQ" runat="server" ControlToValidate="tbQQ"
+                                Display="Dynamic" ErrorMessage="*" CssClass="ValiSpan"></asp:RequiredFieldValidator>
                         </td>
                     </tr>
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">地址：
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:TextBox ID="tbAddress" runat="server" CssClass="TextBox" Width="300px" TextMode="MultiLine"
                                 Rows="3"></asp:TextBox>
                         </td>
@@ -86,7 +88,7 @@
                     <tr class="Row">
                         <td class="FieldHeader">简介：
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:TextBox ID="tbDescription" runat="server" CssClass="TextBox" Width="300px" TextMode="MultiLine"
                                 Rows="3"></asp:TextBox>
                         </td>

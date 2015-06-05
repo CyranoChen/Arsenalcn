@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" MasterPageFile="DefaultMaster.master" AutoEventWireup="true"
-    CodeBehind="AdminLogView.aspx.cs" Inherits="Arsenal.Web.AdminLogView" Title="后台管理 详细日志查看" Theme="Arsenalcn" %>
+    CodeBehind="AdminLogView.aspx.cs" Inherits="iArsenal.Web.AdminLogView" Title="后台管理 详细日志查看" Theme="Arsenalcn" %>
 
 <%@ Register Src="Control/AdminPanel.ascx" TagName="AdminPanel" TagPrefix="uc1" %>
 <%@ Register Src="Control/AdminFieldToolBar.ascx" TagName="AdminFieldToolBar" TagPrefix="uc2" %>
@@ -10,7 +10,7 @@
     <div id="MainPanel">
         <uc2:AdminFieldToolBar ID="ctrlAdminFieldToolBar" runat="server" />
         <div class="CasinoSys_MainInfo">
-            <table class="DataView">
+            <table class="DataView" cellspacing="0">
                 <thead>
                     <tr class="Header">
                         <th colspan="4">

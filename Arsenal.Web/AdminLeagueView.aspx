@@ -10,7 +10,7 @@
     <div id="MainPanel">
         <uc2:AdminFieldToolBar ID="ctrlAdminFieldToolBar" runat="server" />
         <div class="CasinoSys_MainInfo">
-            <table class="DataView" cellspacing="0" >
+            <table class="DataView">
                 <thead>
                     <tr class="Header">
                         <th colspan="2">添加比赛分类，标志请事先上传，并复制URL。
@@ -21,42 +21,42 @@
                     <tr class="Row">
                         <td class="FieldHeader" style="width: 30%">分类GUID:
                         </td>
-                        <td align="left">
+                        <td class="FieldColumn">
                             <asp:TextBox ID="tbLeagueGuid" runat="server" CssClass="TextBoxRead" Width="300px"></asp:TextBox>
                         </td>
                     </tr>
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">分类名称：
                         </td>
-                        <td align="left">
+                        <td class="FieldColumn">
                             <asp:TextBox ID="tbLeagueName" runat="server" CssClass="TextBox" Width="300px"></asp:TextBox>
                         </td>
                     </tr>
                     <tr class="Row">
                         <td class="FieldHeader">分类英文名：
                         </td>
-                        <td align="left">
+                        <td class="FieldColumn">
                             <asp:TextBox ID="tbLeagueOrgName" runat="server" CssClass="TextBox" Width="300px"></asp:TextBox>
                         </td>
                     </tr>
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">赛季：
                         </td>
-                        <td align="left">
+                        <td class="FieldColumn">
                             <asp:TextBox ID="tbLeagueSeason" runat="server" CssClass="TextBox" Width="300px"></asp:TextBox>
                         </td>
                     </tr>
                     <tr class="Row">
                         <td class="FieldHeader">开始时间：
                         </td>
-                        <td align="left">
+                        <td class="FieldColumn">
                             <asp:TextBox ID="tbLeagueTime" runat="server" CssClass="TextBox" Width="300px"></asp:TextBox>
                         </td>
                     </tr>
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">标志：
                         </td>
-                        <td align="left">
+                        <td class="FieldColumn">
                             <asp:TextBox ID="tbLeagueLogo" runat="server" CssClass="TextBox" Text="UploadFiles/League/"
                                 Width="300px"></asp:TextBox>
                         </td>
@@ -64,14 +64,14 @@
                     <tr class="Row">
                         <td class="FieldHeader">排序：
                         </td>
-                        <td align="left">
+                        <td class="FieldColumn">
                             <asp:TextBox ID="tbLeagueOrder" runat="server" CssClass="TextBox" Width="50px" Text="0"></asp:TextBox>
                         </td>
                     </tr>
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">状态：
                         </td>
-                        <td align="left">
+                        <td class="FieldColumn">
                             <asp:CheckBox ID="cbIsActive" runat="server" Checked="true" Text="是否有效" />
                         </td>
                     </tr>

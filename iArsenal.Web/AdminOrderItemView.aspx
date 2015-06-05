@@ -17,7 +17,7 @@
     <div id="MainPanel">
         <uc2:AdminFieldToolBar ID="ctrlAdminFieldToolBar" runat="server" />
         <div class="Arsenal_MainInfo">
-            <table class="DataView" cellspacing="0" cellpadding="5">
+            <table class="DataView" cellspacing="0">
                 <thead>
                     <tr class="Header">
                         <th colspan="4">
@@ -33,26 +33,26 @@
                     <tr class="Row">
                         <td class="FieldHeader">会员信息:
                         </td>
-                        <td style="text-align: left" id="tdMemberInfo">
+                        <td class="FieldColumn" id="tdMemberInfo">
                             <asp:TextBox ID="tbMemberID" runat="server" CssClass="TextBox MemberID" Width="50px"></asp:TextBox>
                             <asp:TextBox ID="tbMemberName" runat="server" CssClass="TextBoxRead MemberName"></asp:TextBox>
                             <a id="btnMemberCheck" class="LinkBtn" href="javascript:MemberCheck()">检查</a>
                         </td>
                         <td class="FieldHeader">创建时间:
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:TextBox ID="tbCreateTime" runat="server" CssClass="TextBoxRead" Width="180px"></asp:TextBox>
                         </td>
                     </tr>
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">关联订单:
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:TextBox ID="tbOrderID" runat="server" CssClass="TextBox" Width="180px"></asp:TextBox>
                         </td>
                         <td class="FieldHeader">状态:
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:CheckBox ID="cbIsActive" runat="server" Checked="true" Text="有效" />
                         </td>
                     </tr>
@@ -63,13 +63,13 @@
                     <tr class="Row">
                         <td class="FieldHeader">商品编码:
                         </td>
-                        <td style="text-align: left" class="ProductInfo">
+                        <td class="FieldColumn ProductInfo">
                             <asp:TextBox ID="tbCode" runat="server" CssClass="TextBox ProductCode" Width="100px"></asp:TextBox>
                             <a id="btnProductCheck" class="LinkBtn" href="javascript:ProductCheck()">检查</a>
                         </td>
                         <td class="FieldHeader">商品名称:
                         </td>
-                        <td style="text-align: left" class="ProductInfo">
+                        <td class="FieldColumn ProductInfo">
                             <asp:TextBox ID="tbProductGuid" runat="server" CssClass="TextBox ProductGuid"></asp:TextBox>
                             <asp:TextBox ID="tbProductName" runat="server" CssClass="TextBox ProductName" Width="180px"></asp:TextBox>
                         </td>
@@ -77,12 +77,12 @@
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">尺寸:
                         </td>
-                        <td style="text-align: left" class="ProductInfo">
+                        <td class="FieldColumn ProductInfo">
                             <asp:TextBox ID="tbSize" runat="server" CssClass="TextBox" Width="180px"></asp:TextBox>
                         </td>
                         <td class="FieldHeader">单价:
                         </td>
-                        <td style="text-align: left" class="ProductInfo">
+                        <td class="FieldColumn" class="ProductInfo">
                             <asp:TextBox ID="tbUnitPrice" runat="server" CssClass="TextBox ProductUnitPrice"
                                 Width="100px" Text="0"></asp:TextBox>
                         </td>
@@ -90,13 +90,13 @@
                     <tr class="Row">
                         <td class="FieldHeader">数量:
                         </td>
-                        <td style="text-align: left" class="ProductInfo">
+                        <td class="FieldColumn" class="ProductInfo">
                             <asp:TextBox ID="tbQuantity" runat="server" CssClass="TextBox ProductQuantity" Width="100px"
                                 Text="0"></asp:TextBox>
                         </td>
                         <td class="FieldHeader">优惠价/总价:
                         </td>
-                        <td style="text-align: left" class="ProductInfo">
+                        <td class="FieldColumn" class="ProductInfo">
                             <asp:TextBox ID="tbSale" runat="server" CssClass="TextBox" Width="100px"></asp:TextBox>
                             <span>/</span>
                             <asp:Label ID="lblPrice" runat="server" CssClass="ProductTotalPrice" Text="?"></asp:Label>
@@ -105,7 +105,7 @@
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">备注:
                         </td>
-                        <td style="text-align: left" colspan="3">
+                        <td class="FieldColumn" colspan="3">
                             <asp:TextBox ID="tbRemark" runat="server" CssClass="TextBox" Width="400px" TextMode="MultiLine"
                                 Rows="4"></asp:TextBox>
                         </td>

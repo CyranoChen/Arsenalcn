@@ -43,7 +43,7 @@
 </asp:Content>
 <asp:Content ID="cphMain" ContentPlaceHolderID="cphMain" runat="server">
     <div id="banner" style="height: 400px">
-        <a href="http://arsenalcn.taobao.com" target="_blank">
+        <a href="http://bbs.arsenalcn.com/showtopic-108067.aspx" target="_blank">
             <img src="uploadfiles/banner/banner20150601.png" alt="阿森纳官方纪念品团购服务" /></a>
     </div>
     <div id="ACN_Main">
@@ -52,7 +52,7 @@
             <table class="DataView">
                 <thead>
                     <tr class="Header">
-                        <th colspan="4" style="text-align: left">
+                        <th colspan="4" class="FieldColumn">
                             <a name="anchorBack" id="anchorBack">欢迎进入阿森纳官方纪念品团购服务，请仔细确认并填写以下信息：</a>
                         </th>
                     </tr>
@@ -65,12 +65,12 @@
                     <tr class="Row">
                         <td class="FieldHeader" style="width: 110px;">真实姓名：
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:Label ID="lblMemberName" runat="server"></asp:Label>
                         </td>
                         <td class="FieldHeader" style="width: 110px;">ACN帐号：
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:Label ID="lblMemberACNInfo" runat="server"></asp:Label>
                         </td>
                     </tr>
@@ -93,7 +93,7 @@
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">收货地址：
                         </td>
-                        <td style="text-align: left" colspan="3">
+                        <td class="FieldColumn" colspan="3">
                             <asp:TextBox ID="tbOrderAddress" runat="server" CssClass="TextBox" Width="300px"
                                 TextMode="MultiLine" Rows="3" MaxLength="200"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="rfvOrderAddress" runat="server" ControlToValidate="tbOrderAddress"
@@ -135,7 +135,7 @@
                     <tr class="AlternatingRow WishRemark">
                         <td class="FieldHeader">备注：
                         </td>
-                        <td style="text-align: left" colspan="3">
+                        <td class="FieldColumn" colspan="3">
                             <asp:TextBox ID="tbOrderDescription" runat="server" CssClass="TextBox" Width="300px"
                                 TextMode="MultiLine" Rows="4"></asp:TextBox>
                         </td>

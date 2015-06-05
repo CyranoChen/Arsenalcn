@@ -13,7 +13,7 @@
         <uc2:AdminFieldToolBar ID="ctrlAdminFieldToolBar" runat="server" />
         <uc3:CustomPagerInfo ID="ctrlCustomPagerInfo" runat="server" />
         <div class="Arsenal_MainInfo">
-            <table class="DataView" cellspacing="0" cellpadding="5">
+            <table class="DataView" cellspacing="0">
                 <thead>
                     <tr class="Header">
                         <th colspan="4">
@@ -25,21 +25,21 @@
                     <tr class="Row">
                         <td class="FieldHeader">会员信息:
                         </td>
-                        <td style="text-align: left" id="tdMemberInfo">
+                        <td class="FieldColumn" id="tdMemberInfo">
                             <asp:TextBox ID="tbMemberID" runat="server" CssClass="TextBox MemberID" Width="50px"></asp:TextBox>
                             <asp:TextBox ID="tbMemberName" runat="server" CssClass="TextBoxRead MemberName"></asp:TextBox>
                             <a id="btnMemberCheck" class="LinkBtn" href="javascript:MemberCheck()">检查</a>
                         </td>
                         <td class="FieldHeader">有效:
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:CheckBox ID="cbIsActive" runat="server" Checked="true" Text="有效" />
                         </td>
                     </tr>
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">状态:
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:DropDownList ID="ddlStatus" runat="server">
                                 <asp:ListItem Value="1" Text="未提交"></asp:ListItem>
                                 <asp:ListItem Value="2" Text="审核中"></asp:ListItem>
@@ -52,38 +52,38 @@
                         </td>
                         <td class="FieldHeader">评价:
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:TextBox ID="tbRate" runat="server" CssClass="TextBox" Width="80px" Text="0"></asp:TextBox>
                         </td>
                     </tr>
                     <tr class="Row">
                         <td class="FieldHeader">创建时间:
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:TextBox ID="tbCreateTime" runat="server" CssClass="TextBox" Width="180px"></asp:TextBox>
                         </td>
                         <td class="FieldHeader">更新时间:
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:TextBox ID="tbUpdateTime" runat="server" CssClass="TextBox" Width="180px"></asp:TextBox>
                         </td>
                     </tr>
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">收货手机:
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:TextBox ID="tbMobile" runat="server" CssClass="TextBox" Width="180px"></asp:TextBox>
                         </td>
                         <td class="FieldHeader">付款方式:
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:TextBox ID="tbPayment" runat="server" CssClass="TextBox" Width="180px"></asp:TextBox>
                         </td>
                     </tr>
                     <tr class="Row">
                         <td class="FieldHeader">收货地址:
                         </td>
-                        <td style="text-align: left" colspan="3">
+                        <td class="FieldColumn" colspan="3">
                             <asp:TextBox ID="tbAddress" runat="server" CssClass="TextBox" Width="400px" TextMode="MultiLine"
                                 Rows="3"></asp:TextBox>
                         </td>
@@ -91,31 +91,31 @@
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">定金:
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:TextBox ID="tbDeposit" runat="server" CssClass="TextBox" Width="180px"></asp:TextBox>
                         </td>
                         <td class="FieldHeader">邮费:
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:TextBox ID="tbPostage" runat="server" CssClass="TextBox" Width="180px" Text="0"></asp:TextBox>
                         </td>
                     </tr>
                     <tr class="Row">
                         <td class="FieldHeader">总价:
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:TextBox ID="tbPrice" runat="server" CssClass="TextBox" Width="180px" Text="0"></asp:TextBox>
                         </td>
                         <td class="FieldHeader">优惠价:
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:TextBox ID="tbSale" runat="server" CssClass="TextBox" Width="180px"></asp:TextBox>
                         </td>
                     </tr>
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">描述:
                         </td>
-                        <td style="text-align: left" colspan="3">
+                        <td class="FieldColumn" colspan="3">
                             <asp:TextBox ID="tbDescription" runat="server" CssClass="TextBox" Width="400px" TextMode="MultiLine"
                                 Rows="3"></asp:TextBox>
                         </td>
@@ -123,7 +123,7 @@
                     <tr class="Row">
                         <td class="FieldHeader">备注:
                         </td>
-                        <td style="text-align: left" colspan="3">
+                        <td class="FieldColumn" colspan="3">
                             <asp:TextBox ID="tbRemark" runat="server" CssClass="TextBox" Width="400px" TextMode="MultiLine"
                                 Rows="3"></asp:TextBox>
                         </td>

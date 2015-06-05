@@ -8,6 +8,7 @@
     text-align: center;
     width: 95%;
     margin: 10px auto;
+    border-collapse: collapse;
 }
 
     .DataView td {

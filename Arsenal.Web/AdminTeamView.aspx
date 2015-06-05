@@ -10,7 +10,7 @@
     <div id="MainPanel">
         <uc2:AdminFieldToolBar ID="ctrlAdminFieldToolBar" runat="server" />
         <div class="Arsenal_MainInfo">
-            <table class="DataView" cellspacing="0" >
+            <table class="DataView">
                 <thead>
                     <tr class="Header">
                         <th colspan="2">
@@ -23,7 +23,7 @@
                         <td class="FieldHeader" style="width: 30%">
                             球队GUID:
                         </td>
-                        <td align="left">
+                        <td class="FieldColumn">
                             <asp:TextBox ID="tbTeamGuid" runat="server" CssClass="TextBoxRead" Width="300px"></asp:TextBox>
                         </td>
                     </tr>
@@ -31,7 +31,7 @@
                         <td class="FieldHeader">
                             球队英文名：
                         </td>
-                        <td align="left">
+                        <td class="FieldColumn">
                             <asp:TextBox ID="tbTeamEnglishName" runat="server" CssClass="TextBox" Width="300px"></asp:TextBox>
                         </td>
                     </tr>
@@ -39,7 +39,7 @@
                         <td class="FieldHeader">
                             球队显示名：
                         </td>
-                        <td align="left">
+                        <td class="FieldColumn">
                             <asp:TextBox ID="tbTeamDisplayName" runat="server" CssClass="TextBox" Width="300px"></asp:TextBox>
                         </td>
                     </tr>
@@ -47,7 +47,7 @@
                         <td class="FieldHeader">
                             球队标志：
                         </td>
-                        <td align="left">
+                        <td class="FieldColumn">
                             <asp:TextBox ID="tbTeamLogo" runat="server" CssClass="TextBox" Width="300px" Text="UploadFiles/Team/"></asp:TextBox>
                         </td>
                     </tr>
@@ -55,7 +55,7 @@
                         <td class="FieldHeader">
                             球队昵称：
                         </td>
-                        <td align="left">
+                        <td class="FieldColumn">
                             <asp:TextBox ID="tbTeamNickName" runat="server" CssClass="TextBox" Width="300px"></asp:TextBox>
                         </td>
                     </tr>
@@ -63,7 +63,7 @@
                         <td class="FieldHeader">
                             主场：
                         </td>
-                        <td align="left">
+                        <td class="FieldColumn">
                             <asp:TextBox ID="tbGround" runat="server" CssClass="TextBox" Width="300px"></asp:TextBox>
                         </td>
                     </tr>
@@ -71,7 +71,7 @@
                         <td class="FieldHeader">
                             创建年份：
                         </td>
-                        <td align="left">
+                        <td class="FieldColumn">
                             <asp:TextBox ID="tbTeamFounded" runat="server" CssClass="TextBox" Width="300px"></asp:TextBox>
                         </td>
                     </tr>
@@ -79,7 +79,7 @@
                         <td class="FieldHeader">
                             容量：
                         </td>
-                        <td align="left">
+                        <td class="FieldColumn">
                             <asp:TextBox ID="tbCapacity" runat="server" CssClass="TextBox" Width="300px" Text="0"></asp:TextBox>
                         </td>
                     </tr>
@@ -87,7 +87,7 @@
                         <td class="FieldHeader">
                             主席：
                         </td>
-                        <td align="left">
+                        <td class="FieldColumn">
                             <asp:TextBox ID="tbChairMan" runat="server" CssClass="TextBox" Width="300px"></asp:TextBox>
                         </td>
                     </tr>
@@ -95,7 +95,7 @@
                         <td class="FieldHeader">
                             主教练：
                         </td>
-                        <td align="left">
+                        <td class="FieldColumn">
                             <asp:TextBox ID="tbManager" runat="server" CssClass="TextBox" Width="300px"></asp:TextBox>
                         </td>
                     </tr>
@@ -103,7 +103,7 @@
                         <td class="FieldHeader">
                             所属分类(添加)：
                         </td>
-                        <td align="left">
+                        <td class="FieldColumn">
                             <asp:DropDownList ID="ddlTeamLeague" runat="server" Width="300px">
                             </asp:DropDownList>
                         </td>

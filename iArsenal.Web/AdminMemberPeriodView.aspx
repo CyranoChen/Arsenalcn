@@ -39,7 +39,7 @@
     <div id="MainPanel">
         <uc2:AdminFieldToolBar ID="ctrlAdminFieldToolBar" runat="server" />
         <div class="ASC_MainInfo">
-            <table class="DataView" cellspacing="0" cellpadding="5">
+            <table class="DataView" cellspacing="0">
                 <thead>
                     <tr class="Header">
                         <th colspan="4">添加/更新官方球迷会收费会籍信息
@@ -50,21 +50,21 @@
                     <tr class="Row">
                         <td class="FieldHeader">会员信息:
                         </td>
-                        <td style="text-align: left" id="tdMemberInfo">
+                        <td class="FieldColumn" id="tdMemberInfo">
                             <asp:TextBox ID="tbMemberID" runat="server" CssClass="TextBox MemberID" Width="50px"></asp:TextBox>
                             <asp:TextBox ID="tbMemberName" runat="server" CssClass="TextBoxRead MemberName"></asp:TextBox>
                             <a id="btnMemberCheck" class="LinkBtn" href="javascript:MemberCheck()">检查</a>
                         </td>
                         <td class="FieldHeader">状态:
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:CheckBox ID="cbIsActive" runat="server" Checked="true" Text="有效" />
                         </td>
                     </tr>
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">会员等级:
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:DropDownList ID="ddlMemberClass" runat="server">
                                 <asp:ListItem Text="--请选择会员等级--" Selected="True"></asp:ListItem>
                                 <asp:ListItem Text="普通会员" Value="1"></asp:ListItem>
@@ -73,14 +73,14 @@
                         </td>
                         <td class="FieldHeader">会员卡号:
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:TextBox ID="tbMemberCardNo" runat="server" CssClass="TextBox" Width="200px"></asp:TextBox>
                         </td>
                     </tr>
                     <tr class="Row">
                         <td class="FieldHeader">订单信息:
                         </td>
-                        <td style="text-align: left" id="tdAcnInfo" colspan="3">
+                        <td class="FieldColumn" id="tdAcnInfo" colspan="3">
                             <asp:TextBox ID="tbOrderID" runat="server" CssClass="TextBox OrderID" Width="50px"></asp:TextBox>
                             <asp:TextBox ID="tbOrderPrice" runat="server" CssClass="TextBoxRead OrderPrice"></asp:TextBox>
                             <a id="btnOrderCheck" class="LinkBtn" href="javascript:OrderCheck()">检查</a>
@@ -89,19 +89,19 @@
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">开始时间:
                         </td>
-                        <td style="text-align: left" id="tdStartDate">
+                        <td class="FieldColumn" id="tdStartDate">
                             <asp:TextBox ID="tbStartDate" runat="server" CssClass="TextBox" Width="200px"></asp:TextBox>
                         </td>
                         <td class="FieldHeader">结束时间:
                         </td>
-                        <td style="text-align: left" id="tdEndDate">
+                        <td class="FieldColumn" id="tdEndDate">
                             <asp:TextBox ID="tbEndDate" runat="server" CssClass="TextBox" Width="200px"></asp:TextBox>
                         </td>
                     </tr>
                     <tr class="Row">
                         <td class="FieldHeader">简介:
                         </td>
-                        <td style="text-align: left" colspan="3">
+                        <td class="FieldColumn" colspan="3">
                             <asp:TextBox ID="tbDescription" runat="server" CssClass="TextBox" Rows="5" Width="500px"
                                 TextMode="MultiLine"></asp:TextBox>
                         </td>
@@ -109,7 +109,7 @@
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">备注:
                         </td>
-                        <td style="text-align: left" colspan="3">
+                        <td class="FieldColumn" colspan="3">
                             <asp:TextBox ID="tbRemark" runat="server" CssClass="TextBox" Rows="5" Width="500px"
                                 TextMode="MultiLine"></asp:TextBox>
                         </td>

@@ -10,7 +10,7 @@
     <div id="MainPanel">
         <uc2:AdminFieldToolBar ID="ctrlAdminFieldToolBar" runat="server" />
         <div class="Arsenal_MainInfo">
-            <table class="DataView" cellspacing="0" >
+            <table class="DataView">
                 <thead>
                     <tr class="Header">
                         <th colspan="4">添加/更新视频集锦，添加后请将视频COPY到服务器上。

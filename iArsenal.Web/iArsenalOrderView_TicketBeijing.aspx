@@ -20,7 +20,7 @@
             <table class="DataView">
                 <thead>
                     <tr class="Header">
-                        <th colspan="4" style="text-align: left">
+                        <th colspan="4" class="FieldColumn">
                             <a name="anchorBack" id="anchorBack">感谢预订“阿森纳2012亚洲行北京圣殿杯比赛球票”，请仔细确认并提交订单信息：</a>
                         </th>
                     </tr>
@@ -33,38 +33,38 @@
                     <tr class="Row">
                         <td class="FieldHeader" style="width: 100px">真实姓名：
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:Label ID="lblMemberName" runat="server"></asp:Label>
                         </td>
                         <td class="FieldHeader" style="width: 100px">身份证号：
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:Label ID="lblMemberIDCardNo" runat="server"></asp:Label>
                         </td>
                     </tr>
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">邮箱：
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:Label ID="lblMemberEmail" runat="server"></asp:Label>
                         </td>
                         <td class="FieldHeader">手机：
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:Label ID="lblOrderMobile" runat="server"></asp:Label>
                         </td>
                     </tr>
                     <tr class="Row">
                         <td class="FieldHeader">来自于：
                         </td>
-                        <td style="text-align: left" colspan="3">
+                        <td class="FieldColumn" colspan="3">
                             <asp:Label ID="lblMemberRegion" runat="server"></asp:Label>
                         </td>
                     </tr>
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">付款方式：
                         </td>
-                        <td style="text-align: left" colspan="3">
+                        <td class="FieldColumn" colspan="3">
                             <asp:Label ID="lblOrderPayment" runat="server"></asp:Label>
                         </td>
                     </tr>
@@ -75,19 +75,19 @@
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">订单号：
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:Label ID="lblOrderID" runat="server"></asp:Label>
                         </td>
                         <td class="FieldHeader">创建时间：
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:Label ID="lblOrderCreateTime" runat="server"></asp:Label>
                         </td>
                     </tr>
                     <tr class="Row">
                         <td class="FieldHeader">购买球票：
                         </td>
-                        <td style="text-align: left" colspan="3">
+                        <td class="FieldColumn" colspan="3">
                             <asp:Label ID="lblOrderItem_TicketBeijing" runat="server"></asp:Label>
                             <asp:TextBox ID="tbOrderItem_TicketBeijing" runat="server" CssClass="OrderProductGuid"></asp:TextBox>
                         </td>
@@ -95,26 +95,26 @@
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">订购数量：
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:Label ID="lblOrderItemQuantity" runat="server"></asp:Label>
                         </td>
                         <td class="FieldHeader">所在看台：
                         </td>
-                        <td style="text-align: left">
+                        <td class="FieldColumn">
                             <asp:Label ID="lblOrderItemSize" runat="server"></asp:Label>
                         </td>
                     </tr>
                     <tr class="Row">
                         <td class="FieldHeader">活动情况：
                         </td>
-                        <td style="text-align: left" colspan="3">
+                        <td class="FieldColumn" colspan="3">
                             <asp:Label ID="lblOrderItemRemak" runat="server"></asp:Label>
                         </td>
                     </tr>
                     <tr class="Row">
                         <td class="FieldHeader">备注：
                         </td>
-                        <td style="text-align: left" colspan="3">
+                        <td class="FieldColumn" colspan="3">
                             <asp:Label ID="lblOrderDescription" runat="server"></asp:Label>
                         </td>
                     </tr>
@@ -126,7 +126,7 @@
                         <tr class="AlternatingRow">
                             <td class="FieldHeader">订单反馈：
                             </td>
-                            <td style="text-align: left" colspan="3">
+                            <td class="FieldColumn" colspan="3">
                                 <asp:Label ID="lblOrderRemark" runat="server"></asp:Label>
                             </td>
                         </tr>

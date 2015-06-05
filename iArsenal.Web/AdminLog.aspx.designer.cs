@@ -10,141 +10,123 @@
 namespace iArsenal.Web {
     
     
-    public partial class iArsenalMemberRegister {
+    public partial class AdminLog {
         
         /// <summary>
-        /// ucPortalSitePath control.
+        /// pnlAdmin control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::iArsenal.Web.Control.PortalSitePath ucPortalSitePath;
+        protected global::iArsenal.Web.Control.AdminPanel pnlAdmin;
         
         /// <summary>
-        /// lblACNInfo control.
+        /// ctrlAdminFieldToolBar control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblACNInfo;
+        protected global::iArsenal.Web.Control.AdminFieldToolBar ctrlAdminFieldToolBar;
         
         /// <summary>
-        /// tbName control.
+        /// ddlLogger control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbName;
+        protected global::System.Web.UI.WebControls.DropDownList ddlLogger;
         
         /// <summary>
-        /// rfvName control.
+        /// ddlLevel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvName;
+        protected global::System.Web.UI.WebControls.DropDownList ddlLevel;
         
         /// <summary>
-        /// rblGender control.
+        /// ddlException control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButtonList rblGender;
+        protected global::System.Web.UI.WebControls.DropDownList ddlException;
         
         /// <summary>
-        /// tbIDCardNo control.
+        /// tbMethod control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbIDCardNo;
+        protected global::System.Web.UI.WebControls.TextBox tbMethod;
         
         /// <summary>
-        /// tbMobile control.
+        /// tbUserID control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbMobile;
+        protected global::System.Web.UI.WebControls.TextBox tbUserID;
         
         /// <summary>
-        /// rfvMobile control.
+        /// tbUserIP control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvMobile;
+        protected global::System.Web.UI.WebControls.TextBox tbUserIP;
         
         /// <summary>
-        /// tbEmail control.
+        /// tbUserBrowser control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbEmail;
+        protected global::System.Web.UI.WebControls.TextBox tbUserBrowser;
         
         /// <summary>
-        /// rfvEmail control.
+        /// tbUserOS control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvEmail;
+        protected global::System.Web.UI.WebControls.TextBox tbUserOS;
         
         /// <summary>
-        /// tbQQ control.
+        /// btnFilter control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbQQ;
+        protected global::System.Web.UI.WebControls.LinkButton btnFilter;
         
         /// <summary>
-        /// rfvQQ control.
+        /// ctrlCustomPagerInfo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvQQ;
+        protected global::iArsenal.Web.Control.CustomPagerInfo ctrlCustomPagerInfo;
         
         /// <summary>
-        /// tbAddress control.
+        /// gvLog control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbAddress;
-        
-        /// <summary>
-        /// tbDescription control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbDescription;
-        
-        /// <summary>
-        /// btnSubmit control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSubmit;
+        protected global::System.Web.UI.WebControls.GridView gvLog;
     }
 }

@@ -126,7 +126,7 @@ namespace iArsenal.Web
                     {
                         // Set IsTicket
 
-                        cblTravelOption.SelectedValue = oiTP.IsTicketOnly ? "Ticket" : "Tour";
+                        rblIsTicketOnly.SelectedValue = oiTP.IsTicketOnly ? "Ticket" : "Tour";
 
                         // Set Order Travel Option
 
@@ -459,15 +459,12 @@ namespace iArsenal.Web
                         throw new Exception("请选择观赛的场次");
                     }
 
-                    if (!_isTicket)
-                    {
-                        to.IsVisa = cblTravelOption.Items.FindByValue("VISA").Selected;
-                        to.IsFlight = cblTravelOption.Items.FindByValue("FLIGHT").Selected;
-                        to.IsHotel = cblTravelOption.Items.FindByValue("HOTEL").Selected;
-                        to.IsTraining = cblTravelOption.Items.FindByValue("TRAINING").Selected;
-                        to.IsParty = cblTravelOption.Items.FindByValue("PARTY").Selected;
-                        to.IsSingapore = cblTravelOption.Items.FindByValue("SINGAPORE").Selected;
-                    }
+                    to.IsVisa = cblTravelOption.Items.FindByValue("VISA").Selected;
+                    to.IsFlight = cblTravelOption.Items.FindByValue("FLIGHT").Selected;
+                    to.IsHotel = cblTravelOption.Items.FindByValue("HOTEL").Selected;
+                    to.IsTraining = cblTravelOption.Items.FindByValue("TRAINING").Selected;
+                    to.IsParty = cblTravelOption.Items.FindByValue("PARTY").Selected;
+                    to.IsSingapore = cblTravelOption.Items.FindByValue("SINGAPORE").Selected;
 
                     oiPlan.IsTicketOnly = _isTicket;
                     oiPlan.TravelOption = to;

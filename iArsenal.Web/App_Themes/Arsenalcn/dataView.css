@@ -1,5 +1,5 @@
 ﻿/* CSS Version DataView */
-/* Version: 1.4.2 || Date: 2015-01-05 || Author: Cyrano */
+/* Version: 1.4.2 || Date: 2015-06-05 || Author: Cyrano */
 /* Cascading Style Sheets Level 2 Revision 1 */
 
 /* DataView */
@@ -99,6 +99,10 @@
         padding: 5px;
         padding-right: 10px;
         white-space: nowrap;
+    }
+
+    .DataView td.FieldColumn {
+        text-align: left;
     }
 
     .DataView .CommandRow td {

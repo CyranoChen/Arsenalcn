@@ -26,6 +26,7 @@ namespace Arsenal.Web
             }
         }
 
+
         private int _logID = int.MinValue;
         private int LogID
         {
@@ -77,8 +78,53 @@ namespace Arsenal.Web
                             returnValue = returnValue && x.Method.ToLower().Contains(tmpString.ToLower());
                     }
 
+                    if (ViewState["UserID"] != null)
+                    {
+                        tmpString = ViewState["UserID"].ToString();
+                        if (!string.IsNullOrEmpty(tmpString) && tmpString != "--ID--")
+                            returnValue = returnValue && x.UserID.Equals(Convert.ToInt32(tmpString));
+                    }
+
+                    if (ViewState["UserIP"] != null)
+                    {
+                        tmpString = ViewState["UserIP"].ToString();
+                        if (!string.IsNullOrEmpty(tmpString) && tmpString != "--IP--")
+                            returnValue = returnValue && x.UserIP.ToLower().Contains(tmpString.ToLower());
+                    }
+
+                    if (ViewState["UserBrowser"] != null)
+                    {
+                        tmpString = ViewState["UserBrowser"].ToString();
+                        if (!string.IsNullOrEmpty(tmpString) && tmpString != "--浏览器--")
+                            returnValue = returnValue && x.UserBrowser.ToLower().Contains(tmpString.ToLower());
+                    }
+
+                    if (ViewState["UserOS"] != null)
+                    {
+                        tmpString = ViewState["UserOS"].ToString();
+                        if (!string.IsNullOrEmpty(tmpString) && tmpString != "--操作系统--")
+                            returnValue = returnValue && x.UserOS.ToLower().Contains(tmpString.ToLower());
+                    }
+
                     return returnValue;
                 });
+
+            if (ddlLogger.SelectedValue.Equals("UserLog"))
+            {
+                gvLog.Columns[5].Visible = false; // Method
+                gvLog.Columns[6].Visible = true; // UserID
+                gvLog.Columns[7].Visible = true; // UserIP
+                gvLog.Columns[8].Visible = true; // UserBrowser
+                gvLog.Columns[9].Visible = true; // UserOS
+            }
+            else
+            {
+                gvLog.Columns[5].Visible = true; // Method
+                gvLog.Columns[6].Visible = false; // UserID
+                gvLog.Columns[7].Visible = false; // UserIP
+                gvLog.Columns[8].Visible = false; // UserBrowser
+                gvLog.Columns[9].Visible = false; // UserOS
+            }
 
             #region set GridView Selected PageIndex
             if (LogID > 0)
@@ -120,6 +166,21 @@ namespace Arsenal.Web
                 ctrlCustomPagerInfo.Visible = false;
             }
             #endregion
+        }
+
+        protected void gvLog_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                Log l = e.Row.DataItem as Log;
+
+                Literal ltrlException = e.Row.FindControl("ltrlException") as Literal;
+
+                if (ltrlException != null && !string.IsNullOrEmpty(l.StackTrace))
+                {
+                    ltrlException.Text = string.Format("<em style=\"cursor: pointer\" title=\"{0}\">Exception</em>", l.StackTrace);
+                }
+            }
         }
 
         protected void gvLog_PageIndexChanging(object sender, GridViewPageEventArgs e)
@@ -194,6 +255,26 @@ namespace Arsenal.Web
                 ViewState["Method"] = tbMethod.Text.Trim();
             else
                 ViewState["Method"] = string.Empty;
+
+            if (!string.IsNullOrEmpty(tbUserID.Text.Trim()))
+                ViewState["UserID"] = tbUserID.Text.Trim();
+            else
+                ViewState["UserID"] = string.Empty;
+
+            if (!string.IsNullOrEmpty(tbUserIP.Text.Trim()))
+                ViewState["UserIP"] = tbUserIP.Text.Trim();
+            else
+                ViewState["UserIP"] = string.Empty;
+
+            if (!string.IsNullOrEmpty(tbUserBrowser.Text.Trim()))
+                ViewState["UserBrowser"] = tbUserBrowser.Text.Trim();
+            else
+                ViewState["UserBrowser"] = string.Empty;
+
+            if (!string.IsNullOrEmpty(tbUserOS.Text.Trim()))
+                ViewState["UserOS"] = tbUserOS.Text.Trim();
+            else
+                ViewState["UserOS"] = string.Empty;
 
             LogID = 0;
             gvLog.PageIndex = 0;

@@ -8,7 +8,7 @@
     <AlternatingRowStyle CssClass="AlternatingRow" Wrap="false" />
 </asp:GridView>
 
-<asp:DetailsView runat="server" CssClass="DataView" BorderWidth="1"  CellPadding="5" GridLines="Horizontal">
+<asp:DetailsView runat="server" CssClass="DataView" BorderWidth="1" GridLines="Horizontal">
     <FooterStyle CssClass="Footer" />
     <CommandRowStyle CssClass="CommandRow" />
     <RowStyle CssClass="Row" HorizontalAlign="Left" />

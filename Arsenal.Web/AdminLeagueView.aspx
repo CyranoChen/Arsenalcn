@@ -10,7 +10,7 @@
     <div id="MainPanel">
         <uc2:AdminFieldToolBar ID="ctrlAdminFieldToolBar" runat="server" />
         <div class="CasinoSys_MainInfo">
-            <table class="DataView" cellspacing="0" cellpadding="5">
+            <table class="DataView" cellspacing="0" >
                 <thead>
                     <tr class="Header">
                         <th colspan="2">添加比赛分类，标志请事先上传，并复制URL。

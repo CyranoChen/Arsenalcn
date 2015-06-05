@@ -10,7 +10,7 @@
 namespace Arsenal.Web {
     
     
-    public partial class AdminLog {
+    public partial class AdminLogView {
         
         /// <summary>
         /// pnlAdmin control.
@@ -31,31 +31,49 @@ namespace Arsenal.Web {
         protected global::Arsenal.Web.Control.AdminFieldToolBar ctrlAdminFieldToolBar;
         
         /// <summary>
-        /// ddlLogger control.
+        /// ltrlLogID control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlLogger;
+        protected global::System.Web.UI.WebControls.Literal ltrlLogID;
         
         /// <summary>
-        /// ddlLevel control.
+        /// tbLogger control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlLevel;
+        protected global::System.Web.UI.WebControls.TextBox tbLogger;
         
         /// <summary>
-        /// ddlException control.
+        /// tbCreateTime control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlException;
+        protected global::System.Web.UI.WebControls.TextBox tbCreateTime;
+        
+        /// <summary>
+        /// tbLevel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox tbLevel;
+        
+        /// <summary>
+        /// tbThread control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox tbThread;
         
         /// <summary>
         /// tbMethod control.
@@ -65,6 +83,15 @@ namespace Arsenal.Web {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox tbMethod;
+        
+        /// <summary>
+        /// tbMessage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox tbMessage;
         
         /// <summary>
         /// tbUserID control.
@@ -103,30 +130,21 @@ namespace Arsenal.Web {
         protected global::System.Web.UI.WebControls.TextBox tbUserOS;
         
         /// <summary>
-        /// btnFilter control.
+        /// tbStackTrace control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnFilter;
+        protected global::System.Web.UI.WebControls.TextBox tbStackTrace;
         
         /// <summary>
-        /// ctrlCustomPagerInfo control.
+        /// btnCancel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Arsenal.Web.Control.CustomPagerInfo ctrlCustomPagerInfo;
-        
-        /// <summary>
-        /// gvLog control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gvLog;
+        protected global::System.Web.UI.WebControls.Button btnCancel;
     }
 }

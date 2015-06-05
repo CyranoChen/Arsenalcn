@@ -58,6 +58,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AdminLogView.aspx" />
     <Content Include="AdminLog.aspx" />
     <Content Include="AdminSchedule.aspx" />
     <Content Include="AdminConfig.aspx" />
@@ -134,6 +135,13 @@
     <Content Include="WebService\ArsenalService.asmx" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdminLogView.aspx.cs">
+      <DependentUpon>AdminLogView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminLogView.aspx.designer.cs">
+      <DependentUpon>AdminLogView.aspx</DependentUpon>
+    </Compile>
     <Compile Include="AdminLog.aspx.cs">
       <DependentUpon>AdminLog.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

@@ -43,6 +43,18 @@ namespace Arsenalcn.Core.Logger
                 throw new Exception("Unable to init Log.");
         }
 
+        public void Single()
+        {
+            string sql = string.Format("SELECT * FROM {0} WHERE ID = @key",
+                Repository.GetTableAttr<Log>().Name);
+
+            SqlParameter[] para = { new SqlParameter("@key", ID) };
+
+            DataSet ds = DataAccess.ExecuteDataset(sql, para);
+
+            if (ds.Tables[0].Rows.Count > 0) { Init(ds.Tables[0].Rows[0]); }
+        }
+
         public static List<Log> All()
         {
             var list = new List<Log>();

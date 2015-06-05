@@ -16,7 +16,7 @@
     <div id="MainPanel">
         <uc2:AdminFieldToolBar ID="ctrlAdminFieldToolBar" runat="server" />
         <div class="Arsenal_MainInfo">
-            <table class="DataView" cellspacing="0" cellpadding="5">
+            <table class="DataView" cellspacing="0" >
                 <thead>
                     <tr class="Header">
                         <th colspan="2" align="left">
@@ -80,7 +80,7 @@
                     </tr>
                 </tbody>
             </table>
-            <table class="DataView" cellspacing="0" cellpadding="5">
+            <table class="DataView" cellspacing="0" >
                 <thead>
                     <tr class="Header">
                         <th colspan="2" align="left">

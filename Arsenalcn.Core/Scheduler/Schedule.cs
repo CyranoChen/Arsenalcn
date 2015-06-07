@@ -255,12 +255,6 @@ namespace Arsenalcn.Core.Scheduler
 
         public bool ShouldExecute()
         {
-            //if (!dateWasSet) //if the date was not set (and it can not be configured), check the data store
-            //{
-            //TODO: SELECT @lastexecuted = MAX([lastexecuted]) FROM [dnt_scheduledevents] WHERE [key] = @key AND [servername] = @servername
-            //LastCompleted = DatabaseProvider.GetInstance().GetLastExecuteScheduledEventDateTime(this.Key, Environment.MachineName);
-            //}
-
             //If we have a TimeOfDay value, use it and ignore the Minutes interval
             if (this.DailyTime > -1)
             {
@@ -278,18 +272,5 @@ namespace Arsenalcn.Core.Scheduler
                 return LastCompletedTime.AddMinutes(this.Minutes) < DateTime.Now;
             }
         }
-
-        // TODO: 
-        //public static void SetLastExecuteScheduledEventDateTime(string key, string servername, DateTime lastexecuted)
-        //{
-        //    Discuz.Data.Event.SetLastExecuteScheduledEventDateTime(key, servername, lastexecuted);
-        //}
-
-
-        // TODO:
-        //public static DateTime GetLastExecuteScheduledEventDateTime(string key, string servername)
-        //{
-        //    return Discuz.Data.Event.GetLastExecuteScheduledEventDateTime(key, servername);
-        //}
     }
 }

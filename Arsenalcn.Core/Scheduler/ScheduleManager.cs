@@ -11,20 +11,9 @@ namespace Arsenalcn.Core.Scheduler
     /// is to iterate over an array of schedules and deterimine of the Schedule's ISchedule should be processed. All schedules are
     /// added to the managed threadpool. 
     /// </summary>
-    public class ScheduleManager
+    public static class ScheduleManager
     {
-        ScheduleManager() { }
-
         public static readonly int TimerMinutesInterval = 5;
-
-        //static ScheduleManager()
-        //{
-        //    // TODO: GetConfig from System.Configuration
-        //    //if (ScheduleConfigs.GetConfig().TimerMinutesInterval > 0)
-        //    //{
-        //    //    TimerMinutesInterval = ScheduleConfigs.GetConfig().TimerMinutesInterval;
-        //    //}
-        //}
 
         public static void Execute()
         {
@@ -64,7 +53,7 @@ namespace Arsenalcn.Core.Scheduler
             {
                 log.Debug(ex, logInfo);
 
-                throw ex;
+                throw;
             }
         }
     }

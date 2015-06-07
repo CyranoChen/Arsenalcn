@@ -60,7 +60,7 @@ namespace Arsenalcn.Core
                     ThreadInstance = Thread.CurrentThread
                 });
 
-                throw ex;
+                throw;
             }
         }
 
@@ -117,7 +117,7 @@ namespace Arsenalcn.Core
                     ThreadInstance = Thread.CurrentThread
                 });
 
-                throw ex;
+                throw;
             }
         }
 

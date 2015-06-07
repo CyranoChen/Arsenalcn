@@ -200,8 +200,8 @@ namespace iArsenal.Web
         protected void btnRefreshCache_Click(object sender, EventArgs e)
         {
             MatchTicket.Cache.RefreshCache();
-            Arsenal_Player.Cache.RefreshCache();
-            Arsenal_Team.Cache.RefreshCache();
+            //Arsenal_Player.Cache.RefreshCache();
+            //Arsenal_Team.Cache.RefreshCache();
 
             MatchTicket.MatchTicketCountStatistics();
 

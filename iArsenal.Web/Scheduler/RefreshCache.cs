@@ -37,6 +37,8 @@ namespace iArsenal.Scheduler
                 Member.Cache.RefreshCache();
                 Product.Cache.RefreshCache();
 
+                Order.RefreshOrderBaseType();
+
                 log.Info("Scheduler End: (RefreshCache)", logInfo);
             }
             catch (Exception ex)

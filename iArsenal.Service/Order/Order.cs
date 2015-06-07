@@ -208,24 +208,24 @@ namespace iArsenal.Service
             }
         }
 
-        // TODO : improve the performance
+        // Don't place LINQ to Foreach, first ToList(), then use list.FindAll to improve performance
         public static void RefreshOrderBaseType()
         {
             IRepository repo = new Repository();
-            var oQuery = repo.All<Order>();
-            var oiQuery = repo.Query<OrderItem>(x => Product.Cache.Load(x.ProductGuid) != null);
+            var oList = repo.All<Order>();
+            var oiList = repo.Query<OrderItem>(x => Product.Cache.Load(x.ProductGuid) != null).ToList();
 
-            if (oQuery.Count() > 0 && oiQuery.Count() > 0)
+            if (oList.Count > 0 && oiList.Count > 0)
             {
-                foreach (var o in oQuery)
+                foreach (var o in oList)
                 {
                     var _type = o.OrderType;
-                    var query = oiQuery.Where(x => x.OrderID.Equals(o.ID));
+                    var list = oiList.FindAll(x => x.OrderID.Equals(o.ID));
 
                     // Refresh the OrderType of instance
-                    if (query.Count() > 0)
+                    if (list.Count > 0)
                     {
-                        o.OrderType = SetOrderType(query.ToList());
+                        o.OrderType = SetOrderType(list);
 
                         if (!_type.Equals(o.OrderType))
                         {

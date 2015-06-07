@@ -13,7 +13,7 @@
         <uc2:AdminFieldToolBar ID="ctrlAdminFieldToolBar" runat="server" />
         <uc3:CustomPagerInfo ID="ctrlCustomPagerInfo" runat="server" />
         <div class="Arsenal_MainInfo">
-            <table class="DataView" cellspacing="0">
+            <table class="DataView">
                 <thead>
                     <tr class="Header">
                         <th colspan="4">

@@ -10,7 +10,7 @@
     <div id="MainPanel">
         <uc2:AdminFieldToolBar ID="ctrlAdminFieldToolBar" runat="server" />
         <div class="CasinoSys_MainInfo">
-            <table class="DataView" cellspacing="0">
+            <table class="DataView">
                 <thead>
                     <tr class="Header">
                         <th colspan="4">

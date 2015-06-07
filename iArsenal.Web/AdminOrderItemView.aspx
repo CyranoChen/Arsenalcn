@@ -17,7 +17,7 @@
     <div id="MainPanel">
         <uc2:AdminFieldToolBar ID="ctrlAdminFieldToolBar" runat="server" />
         <div class="Arsenal_MainInfo">
-            <table class="DataView" cellspacing="0">
+            <table class="DataView">
                 <thead>
                     <tr class="Header">
                         <th colspan="4">
@@ -82,7 +82,7 @@
                         </td>
                         <td class="FieldHeader">单价:
                         </td>
-                        <td class="FieldColumn" class="ProductInfo">
+                        <td class="FieldColumn ProductInfo">
                             <asp:TextBox ID="tbUnitPrice" runat="server" CssClass="TextBox ProductUnitPrice"
                                 Width="100px" Text="0"></asp:TextBox>
                         </td>
@@ -90,13 +90,13 @@
                     <tr class="Row">
                         <td class="FieldHeader">数量:
                         </td>
-                        <td class="FieldColumn" class="ProductInfo">
+                        <td class="FieldColumn ProductInfo">
                             <asp:TextBox ID="tbQuantity" runat="server" CssClass="TextBox ProductQuantity" Width="100px"
                                 Text="0"></asp:TextBox>
                         </td>
                         <td class="FieldHeader">优惠价/总价:
                         </td>
-                        <td class="FieldColumn" class="ProductInfo">
+                        <td class="FieldColumn ProductInfo">
                             <asp:TextBox ID="tbSale" runat="server" CssClass="TextBox" Width="100px"></asp:TextBox>
                             <span>/</span>
                             <asp:Label ID="lblPrice" runat="server" CssClass="ProductTotalPrice" Text="?"></asp:Label>

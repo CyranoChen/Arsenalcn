@@ -24,7 +24,7 @@
     <div id="MainPanel">
         <uc2:AdminFieldToolBar ID="ctrlAdminFieldToolBar" runat="server" />
         <div class="Arsenal_MainInfo">
-            <table class="DataView" cellspacing="0">
+            <table class="DataView">
                 <thead>
                     <tr class="Header">
                         <th colspan="4">添加/更新阿森纳比赛球票信息
@@ -39,43 +39,43 @@
                     <tr class="Row">
                         <td class="FieldHeader">比赛GUID:
                         </td>
-                        <td style="text-align: left;" colspan="3">
+                        <td class="FieldColumn" colspan="3">
                             <asp:Label ID="lblMatchGuid" runat="server"></asp:Label>
                         </td>
                     </tr>
                     <tr class="AlternatingRow">
                         <td class="FieldHeader" style="width: 15%">所属分类:
                         </td>
-                        <td style="text-align: left; width: 35%">
+                        <td class="FieldColumn" style="width: 35%">
                             <asp:Label ID="lblLeagueName" runat="server"></asp:Label>
                         </td>
                         <td class="FieldHeader" style="width: 15%">对阵:
                         </td>
-                        <td style="text-align: left; width: 35%">
+                        <td class="FieldColumn" style="width: 35%">
                             <asp:Label ID="lblTeamName" runat="server"></asp:Label>
                         </td>
                     </tr>
                     <tr class="Row">
                         <td class="FieldHeader">主客场:
                         </td>
-                        <td style="text-align: left;">
+                        <td class="FieldColumn">
                             <asp:Label ID="lblIsHome" runat="server"></asp:Label>
                         </td>
                         <td class="FieldHeader">轮次:
                         </td>
-                        <td style="text-align: left;">
+                        <td class="FieldColumn">
                             <asp:Label ID="lblRound" runat="server"></asp:Label>
                         </td>
                     </tr>
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">比赛时间:
                         </td>
-                        <td style="text-align: left;">
+                        <td class="FieldColumn">
                             <asp:Label ID="lblPlayTime" runat="server"></asp:Label>
                         </td>
                         <td class="FieldHeader">比赛结果(主v客):
                         </td>
-                        <td style="text-align: left;">
+                        <td class="FieldColumn">
                             <asp:Label ID="lblResultInfo" runat="server"></asp:Label>
                         </td>
                     </tr>
@@ -86,13 +86,13 @@
                     <tr class="Row">
                         <td class="FieldHeader">比赛等级:
                         </td>
-                        <td style="text-align: left;">
+                        <td class="FieldColumn">
                             <asp:DropDownList ID="ddlProductCode" runat="server">
                             </asp:DropDownList>
                         </td>
                         <td class="FieldHeader">适用会员:
                         </td>
-                        <td style="text-align: left;">
+                        <td class="FieldColumn">
                             <asp:DropDownList ID="ddlAllowMemberClass" runat="server">
                                 <asp:ListItem Text="--全部--" Value="" Selected="True"></asp:ListItem>
                                 <asp:ListItem Text="普通会员" Value="1"></asp:ListItem>
@@ -103,19 +103,19 @@
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">截止时间:
                         </td>
-                        <td style="text-align: left;" id="tdDeadline">
+                        <td class="FieldColumn" id="tdDeadline">
                             <asp:TextBox ID="tbDeadline" runat="server" CssClass="TextBox" Width="180px"></asp:TextBox>
                         </td>
                         <td class="FieldHeader">有效:
                         </td>
-                        <td style="text-align: left;">
+                        <td class="FieldColumn">
                             <asp:CheckBox ID="cbIsActive" runat="server" Text="有效" Checked="true" />
                         </td>
                     </tr>
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">备注:
                         </td>
-                        <td style="text-align: left;" colspan="3">
+                        <td class="FieldColumn" colspan="3">
                             <asp:TextBox ID="tbRemark" runat="server" CssClass="TextBox" Width="400px" TextMode="MultiLine"
                                 Rows="4"></asp:TextBox>
                         </td>

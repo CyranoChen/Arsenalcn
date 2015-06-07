@@ -27,7 +27,7 @@
     <div id="MainPanel">
         <uc2:AdminFieldToolBar ID="ctrlAdminFieldToolBar" runat="server" />
         <div class="ASC_MainInfo">
-            <table class="DataView" cellspacing="0">
+            <table class="DataView">
                 <thead>
                     <tr class="Header">
                         <th colspan="4">添加/更新官方球迷会实名会员信息

@@ -66,7 +66,7 @@
                 <asp:BoundField HeaderText="创建时间" DataField="CreateTime" DataFormatString="{0:yyyy-MM-dd HH:mm:ss}" />
                 <asp:BoundField HeaderText="级别" DataField="Level" />
                 <asp:BoundField HeaderText="消息" DataField="Message" DataFormatString="<em>{0}</em>"
-                    HtmlEncode="false" ItemStyle-HorizontalAlign="Left" />
+                    HtmlEncode="false" ItemStyle-HorizontalAlign="Left" ItemStyle-CssClass="Wrap" />
                 <asp:BoundField HeaderText="方法信息" DataField="Method" ItemStyle-HorizontalAlign="Left" />
                 <asp:BoundField HeaderText="用户ID" DataField="UserID" />
                 <asp:BoundField HeaderText="用户IP" DataField="UserIP" />

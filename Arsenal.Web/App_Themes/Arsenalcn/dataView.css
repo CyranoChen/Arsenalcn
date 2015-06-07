@@ -17,6 +17,11 @@
         border-top: 1px solid #9c824a;
     }
 
+        .DataView td.Wrap {
+            white-space: normal;
+            line-height: 1.5;
+        }
+
     .DataView .Header th {
         background: #000 url(images/title_bg.jpg) repeat-x;
         padding: 8px;

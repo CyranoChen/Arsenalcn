@@ -17,6 +17,11 @@
         border-bottom: 1px dashed #ccc;
     }
 
+        .DataView td.Wrap {
+            white-space: normal;
+            line-height: 1.5;
+        }
+
         .DataView td a {
             font-size: 10.5pt;
         }

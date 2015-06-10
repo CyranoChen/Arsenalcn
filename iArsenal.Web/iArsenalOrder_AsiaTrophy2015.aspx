@@ -155,7 +155,6 @@
                         <td class="FieldColumn">
                             <asp:TextBox ID="tbPartnerName" runat="server" CssClass="TextBox Partner" Width="150px" MaxLength="20"></asp:TextBox>
                             <span class="ValiSpan Partner">*</span>
-
                         </td>
                     </tr>
                     <tr class="Row Partner">
@@ -223,7 +222,7 @@
                                 <asp:ListItem Text="统一预订宾馆并安排入住" Value="HOTEL" Selected="True"></asp:ListItem>
                                 <asp:ListItem Text="参观赛前训练课" Value="TRAINING" Selected="True"></asp:ListItem>
                                 <asp:ListItem Text="参加球员见面会（暂未确定）" Value="PARTY"></asp:ListItem>
-                                <asp:ListItem Text="参加新加坡当地团一日游" Value="SINGAPORE" Selected="True"></asp:ListItem>
+                                <asp:ListItem Text="参加新加坡当地球迷会活动" Value="SINGAPORE" Selected="True"></asp:ListItem>
                             </asp:CheckBoxList>
                         </td>
                     </tr>
@@ -250,13 +249,16 @@
                     <p>
                         (1). 观赛团首轮报名截止：<em>2015年6月5日</em>。
                    
+                   
                     </p>
                     <p>
                         (2). 请完整填写出行会员的个人信息，每位会员可登记一个同伴，同伴信息也请填写完整。我们会为会员的个人信息进行保密。
                    
+                   
                     </p>
                     <p>
                         (3). 我们会在收到预订报名表后，核对身份信息，并与您取得联系，并邀请您加入微信：<em>iArsenalcn</em>，关注最新信息发布。
+                   
                    
                     </p>
                     <p>

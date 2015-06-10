@@ -4,6 +4,7 @@
 
 <%@ Register Src="Control/PortalSitePath.ascx" TagName="PortalSitePath" TagPrefix="uc1" %>
 <%@ Register Src="Control/PortalWorkflowInfo.ascx" TagName="PortalWorkflowInfo" TagPrefix="uc2" %>
+<%@ Register Src="Control/PortalPaymentInfo.ascx" TagName="PortalPaymentInfo" TagPrefix="uc3" %>
 <asp:Content ID="cphHead" ContentPlaceHolderID="cphHead" runat="server">
     <style type="text/css">
         .OrderPrice {
@@ -159,15 +160,16 @@
             </div>
         </div>
         <div id="rightPanel">
+            <uc3:PortalPaymentInfo ID="ucPortalPaymentInfo" runat="server" />
             <div class="InfoPanel">
                 <h3 class="Col" onclick="$(this).toggleClass('Col'); $(this).toggleClass('Exp'); $(this).next('div').toggle('normal');">
                     <a>审核确认须知</a></h3>
                 <div class="Block">
-                    <p>(1). 在预约报名阶段，有任何消息更新，我们会通过微博、微信：<em>iArsenalcn</em>，进行联系通知，请有意者关注或加入时，注明新加坡观赛与真实姓名即可。</p>
-                    <p>(2). 在预约报名阶段，各位可以随时修改或取消预定。</p>
-                    <p>(3). 6月中旬，确定大部分观赛行程与金额费用，并联系签订合同与收取全部费用。</p>
-                    <p>(4). 6月中下旬，办理签证、机票、酒店住宿等，确定新加坡当地游行程。</p>
-                    <p>(5). 7月初确定两场比赛时间与球票分配、赛前训练课与球员见面会活动细节。</p>
+                    <p>(1). 我们会通过微博、微信：<em>iArsenalcn</em>，进行联系通知，请有意者关注或加入时，注明新加坡观赛与真实姓名即可。</p>
+                    <p>(2). 请各位确定自己的行程安排与参与活动项目的信息。</p>
+                    <p>(3). 左侧计算出了各位的球票、训练课门票定金费用，分项价格已通过确认函的邮件发给各位。请根据上方的付款方式，在<em>6月15日</em>前转帐付款。</p>
+                    <p>(4). <em>6月15日</em>前付款确认的会员可确保比赛门票，并获得优先分配训练课门票的机会。如训练课不对外公开，我们将全额退还定金。</p>
+                    <p>(5). 预计将会7月初确定球票领取方式、球迷会联谊活动、赛前训练课和球员见面会（如有）的所有活动细节。</p>
                 </div>
             </div>
             <div class="InfoPanel" style="display: none">

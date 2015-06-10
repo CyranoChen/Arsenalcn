@@ -204,7 +204,7 @@ namespace iArsenal.Web
                         OrdrItmTravelPartner oiPartner = listPartner[0];
 
                         price = oiPartner.TotalPrice + oiAsiaTrophy.TotalPrice;
-                        priceInfo = string.Format("观赛团预订定金：{0}+ 同伴定金：{1} = <em>{2}</em>元 (CNY)",
+                        priceInfo = string.Format("观赛团费用（如球票、训练课定金等）：{0}+ 同伴1名：{1} = <em>{2}</em>元 (CNY)",
                             oiAsiaTrophy.TotalPrice.ToString("f0"), oiPartner.TotalPrice.ToString("f0"), price.ToString("f2"));
 
                         phOrderPrice.Visible = true;
@@ -212,7 +212,7 @@ namespace iArsenal.Web
                     else
                     {
                         price = oiAsiaTrophy.TotalPrice;
-                        priceInfo = string.Format("观赛团预订定金：<em>{0}</em>元 (CNY)", price.ToString("f2"));
+                        priceInfo = string.Format("观赛团费用（如球票、训练课定金等）：<em>{0}</em>元 (CNY)", price.ToString("f2"));
 
                         phOrderPrice.Visible = true;
                     }
@@ -241,6 +241,8 @@ namespace iArsenal.Web
                         btnSubmit.Visible = false;
                         btnModify.Visible = false;
                         btnCancel.Visible = false;
+
+                        phOrderPrice.Visible = true;
                     }
                 }
                 else

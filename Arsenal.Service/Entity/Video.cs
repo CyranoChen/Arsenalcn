@@ -7,7 +7,7 @@ using Arsenalcn.Core;
 
 namespace Arsenal.Service
 {
-    [AttrDbTable("Arsenal_Video", Key = "VideoGuid", Sort = "GoalYear DESC, GoalRank DESC, TeamworkRank DESC")]
+    [DbTable("Arsenal_Video", Key = "VideoGuid", Sort = "GoalYear DESC, GoalRank DESC, TeamworkRank DESC")]
     public class Video : Entity<Guid>
     {
         public Video() : base() { }
@@ -61,59 +61,59 @@ namespace Arsenal.Service
 
         #region Members and Properties
 
-        [AttrDbColumn("FileName")]
+        [DbColumn("FileName")]
         public string FileName
         { get; set; }
 
-        [AttrDbColumn("ArsenalMatchGuid")]
+        [DbColumn("ArsenalMatchGuid")]
         public Guid? ArsenalMatchGuid
         { get; set; }
 
-        [AttrDbColumn("GoalPLayerGuid")]
+        [DbColumn("GoalPLayerGuid")]
         public Guid? GoalPlayerGuid
         { get; set; }
 
-        [AttrDbColumn("GoalPlayerName")]
+        [DbColumn("GoalPlayerName")]
         public string GoalPlayerName
         { get; set; }
 
-        [AttrDbColumn("AssistPlayerGuid")]
+        [DbColumn("AssistPlayerGuid")]
         public Guid? AssistPlayerGuid
         { get; set; }
 
-        [AttrDbColumn("AssistPlayerName")]
+        [DbColumn("AssistPlayerName")]
         public string AssistPlayerName
         { get; set; }
 
-        [AttrDbColumn("GoalRank")]
+        [DbColumn("GoalRank")]
         public string GoalRank
         { get; set; }
 
-        [AttrDbColumn("TeamworkRank")]
+        [DbColumn("TeamworkRank")]
         public string TeamworkRank
         { get; set; }
 
-        [AttrDbColumn("VideoType")]
+        [DbColumn("VideoType")]
         public VideoFileType VideoType
         { get; set; }
 
-        [AttrDbColumn("VideoLength")]
+        [DbColumn("VideoLength")]
         public int VideoLength
         { get; set; }
 
-        [AttrDbColumn("VideoWidth")]
+        [DbColumn("VideoWidth")]
         public int VideoWidth
         { get; set; }
 
-        [AttrDbColumn("VideoHeight")]
+        [DbColumn("VideoHeight")]
         public int VideoHeight
         { get; set; }
 
-        [AttrDbColumn("GoalYear")]
+        [DbColumn("GoalYear")]
         public string GoalYear
         { get; set; }
 
-        [AttrDbColumn("Opponent")]
+        [DbColumn("Opponent")]
         public string Opponent
         { get; set; }
 

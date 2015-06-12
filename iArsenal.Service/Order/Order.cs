@@ -8,7 +8,7 @@ using Arsenalcn.Core;
 
 namespace iArsenal.Service
 {
-    [AttrDbTable("iArsenal_Order", Sort = "ID DESC")]
+    [DbTable("iArsenal_Order", Sort = "ID DESC")]
     public class Order : Entity<int>
     {
         public Order() : base() { }
@@ -240,67 +240,67 @@ namespace iArsenal.Service
 
         #region Members and Properties
 
-        [AttrDbColumn("MemberID")]
+        [DbColumn("MemberID")]
         public int MemberID
         { get; set; }
 
-        [AttrDbColumn("MemberName")]
+        [DbColumn("MemberName")]
         public string MemberName
         { get; set; }
 
-        [AttrDbColumn("Mobile")]
+        [DbColumn("Mobile")]
         public string Mobile
         { get; set; }
 
-        [AttrDbColumn("Address")]
+        [DbColumn("Address")]
         public string Address
         { get; set; }
 
-        [AttrDbColumn("Payment")]
+        [DbColumn("Payment")]
         public string Payment
         { get; set; }
 
-        [AttrDbColumn("Price")]
+        [DbColumn("Price")]
         public float Price
         { get; set; }
 
-        [AttrDbColumn("Sale")]
+        [DbColumn("Sale")]
         public float? Sale
         { get; set; }
 
-        [AttrDbColumn("Deposit")]
+        [DbColumn("Deposit")]
         public float? Deposit
         { get; set; }
 
-        [AttrDbColumn("Postage")]
+        [DbColumn("Postage")]
         public float Postage
         { get; set; }
 
-        [AttrDbColumn("Status")]
+        [DbColumn("Status")]
         public OrderStatusType Status
         { get; set; }
 
-        [AttrDbColumn("Rate")]
+        [DbColumn("Rate")]
         public int Rate
         { get; set; }
 
-        [AttrDbColumn("CreateTime")]
+        [DbColumn("CreateTime")]
         public DateTime CreateTime
         { get; set; }
 
-        [AttrDbColumn("UpdateTime")]
+        [DbColumn("UpdateTime")]
         public DateTime UpdateTime
         { get; set; }
 
-        [AttrDbColumn("IsActive")]
+        [DbColumn("IsActive")]
         public Boolean IsActive
         { get; set; }
 
-        [AttrDbColumn("Description")]
+        [DbColumn("Description")]
         public string Description
         { get; set; }
 
-        [AttrDbColumn("Remark")]
+        [DbColumn("Remark")]
         public string Remark
         { get; set; }
 
@@ -316,7 +316,7 @@ namespace iArsenal.Service
         public string[] StatusWorkflowInfo
         { get; set; }
 
-        [AttrDbColumn("OrderType")]
+        [DbColumn("OrderType")]
         public OrderBaseType? OrderType
         { get; set; }
 

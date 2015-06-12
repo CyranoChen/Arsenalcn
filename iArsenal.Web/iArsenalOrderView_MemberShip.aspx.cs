@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 
@@ -156,6 +155,8 @@ namespace iArsenal.Web
                         throw new Exception("无相关会籍可申请，请联系管理员");
                     }
 
+                    bool isUpgrade = oiMemberShip.AlterMethod.Equals("Upgrade", StringComparison.OrdinalIgnoreCase);
+                    bool isRenew = oiMemberShip.AlterMethod.Equals("Renew", StringComparison.OrdinalIgnoreCase); ;
 
                     // Set Order Price
 
@@ -163,7 +164,19 @@ namespace iArsenal.Web
                     priceInfo = string.Format("<合计> {2}：{0} × {1}", oiMemberShip.UnitPrice.ToString("f2"), oiMemberShip.Quantity.ToString(), Product.Cache.Load(oiMemberShip.ProductGuid).DisplayName);
 
                     tbOrderPrice.Text = price.ToString();
-                    lblOrderPrice.Text = string.Format("{0} = <em>{1}</em>元", priceInfo, price.ToString("f2"));
+
+                    if (isUpgrade)
+                    {
+                        lblOrderPrice.Text = string.Format("{0}：<em>【升级】{1}</em>元", priceInfo, price.ToString("f2"));
+                    }
+                    else if (isRenew)
+                    {
+                        lblOrderPrice.Text = string.Format("{0}：<em>【续期】{1}</em>元", priceInfo, price.ToString("f2"));
+                    }
+                    else
+                    {
+                        lblOrderPrice.Text = string.Format("{0} = <em>{1}</em>元", priceInfo, price.ToString("f2"));
+                    }
 
                     if (o.Status.Equals(OrderStatusType.Draft))
                     {
@@ -346,7 +359,7 @@ namespace iArsenal.Web
                                 }
                             }
 
-                            if (_updateFlag)
+                            if (_updateFlag && oiMemberShip.AlterMethod.Equals("Upgrade", StringComparison.OrdinalIgnoreCase))
                             {
                                 // Level up the core member to premier for current season
                                 MemberPeriod mpCore = list.SingleOrDefault(x =>
@@ -360,7 +373,7 @@ namespace iArsenal.Web
 
                                 mpCore.EndDate = oiMemberShip.EndDate;
 
-                                mpCore.Description = string.Format("Season {0} \\r\\n于 {1} 升级为【{2}】会籍，原会籍订单号：{3}", oiMemberShip.Season,
+                                mpCore.Description = string.Format("Season {0} 于 {1} 升级为【{2}】会籍，原会籍订单号：{3}", oiMemberShip.Season,
                                     DateTime.Now.ToString("yyyy-MM-dd HH:mm"), mpCore.MemberClass.ToString(), mpCore.OrderID.ToString());
 
                                 mpCore.OrderID = OrderID;

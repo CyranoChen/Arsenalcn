@@ -22,7 +22,7 @@ namespace Arsenalcn.Core
             {
                 Contract.Requires(dr != null);
 
-                var attr = (AttrDbTable)Attribute.GetCustomAttribute(this.GetType(), typeof(AttrDbTable));
+                var attr = (DbTable)Attribute.GetCustomAttribute(this.GetType(), typeof(DbTable));
 
                 this.ID = (TKey)dr[attr.Key];
 

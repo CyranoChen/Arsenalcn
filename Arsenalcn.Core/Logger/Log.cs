@@ -10,7 +10,7 @@ using Microsoft.ApplicationBlocks.Data;
 
 namespace Arsenalcn.Core.Logger
 {
-    [AttrDbTable("Arsenalcn_Log", Sort = "ID DESC")]
+    [DbTable("Arsenalcn_Log", Sort = "ID DESC")]
     public class Log
     {
         public Log() { }
@@ -78,51 +78,51 @@ namespace Arsenalcn.Core.Logger
 
         #region Members and Properties
 
-        [AttrDbColumn("ID", Key = true)]
+        [DbColumn("ID", Key = true)]
         public int ID
         { get; set; }
 
-        [AttrDbColumn("Logger")]
+        [DbColumn("Logger")]
         public string Logger
         { get; set; }
 
-        [AttrDbColumn("CreateTime")]
+        [DbColumn("CreateTime")]
         public DateTime CreateTime
         { get; set; }
 
-        [AttrDbColumn("LogLevel")]
+        [DbColumn("LogLevel")]
         public LogLevel Level
         { get; set; }
 
-        [AttrDbColumn("Message")]
+        [DbColumn("Message")]
         public string Message
         { get; set; }
 
-        [AttrDbColumn("StackTrace")]
+        [DbColumn("StackTrace")]
         public string StackTrace
         { get; set; }
 
-        [AttrDbColumn("Thread")]
+        [DbColumn("Thread")]
         public string Thread
         { get; set; }
 
-        [AttrDbColumn("Method")]
+        [DbColumn("Method")]
         public string Method
         { get; set; }
 
-        [AttrDbColumn("UserID")]
+        [DbColumn("UserID")]
         public int UserID
         { get; set; }
 
-        [AttrDbColumn("UserIP")]
+        [DbColumn("UserIP")]
         public string UserIP
         { get; set; }
 
-        [AttrDbColumn("UserBrowser")]
+        [DbColumn("UserBrowser")]
         public string UserBrowser
         { get; set; }
 
-        [AttrDbColumn("UserOS")]
+        [DbColumn("UserOS")]
         public string UserOS
         { get; set; }
 

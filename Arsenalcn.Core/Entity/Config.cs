@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Arsenalcn.Core
 {
-    [AttrDbTable("Arsenalcn_Config", Key = "", Sort = "ConfigSystem, ConfigKey")]
+    [DbTable("Arsenalcn_Config", Key = "", Sort = "ConfigSystem, ConfigKey")]
     public class Config
     {
         public Config() { }
@@ -157,15 +157,15 @@ namespace Arsenalcn.Core
 
         #region Members and Properties
 
-        [AttrDbColumn("ConfigSystem", Key = true)]
+        [DbColumn("ConfigSystem", Key = true)]
         public ConfigSystem ConfigSystem
         { get; set; }
 
-        [AttrDbColumn("ConfigKey", Key = true)]
+        [DbColumn("ConfigKey", Key = true)]
         public string ConfigKey
         { get; set; }
 
-        [AttrDbColumn("ConfigValue")]
+        [DbColumn("ConfigValue")]
         public string ConfigValue
         { get; set; }
 

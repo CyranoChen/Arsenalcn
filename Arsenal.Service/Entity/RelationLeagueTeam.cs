@@ -8,7 +8,7 @@ using Arsenalcn.Core;
 
 namespace Arsenal.Service
 {
-    [AttrDbTable("Arsenal_RelationLeagueTeam", Key = "", Sort = "")]
+    [DbTable("Arsenal_RelationLeagueTeam", Key = "", Sort = "")]
     public class RelationLeagueTeam
     {
         public RelationLeagueTeam() { }
@@ -193,11 +193,11 @@ namespace Arsenal.Service
 
         #region Members and Properties
 
-        [AttrDbColumn("TeamGuid", Key = true)]
+        [DbColumn("TeamGuid", Key = true)]
         public Guid TeamGuid
         { get; set; }
 
-        [AttrDbColumn("LeagueGuid", Key = true)]
+        [DbColumn("LeagueGuid", Key = true)]
         public Guid LeagueGuid
         { get; set; }
 

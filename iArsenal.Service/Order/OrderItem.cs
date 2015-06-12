@@ -7,7 +7,7 @@ using Arsenalcn.Core;
 
 namespace iArsenal.Service
 {
-    [AttrDbTable("iArsenal_OrderItem", Sort = "ID DESC")]
+    [DbTable("iArsenal_OrderItem", Sort = "ID DESC")]
     public class OrderItem : Entity<int>
     {
         public OrderItem() : base() { }
@@ -49,55 +49,55 @@ namespace iArsenal.Service
 
         #region Members and Properties
 
-        [AttrDbColumn("MemberID")]
+        [DbColumn("MemberID")]
         public int MemberID
         { get; set; }
         
-        [AttrDbColumn("MemberName")]
+        [DbColumn("MemberName")]
         public string MemberName
         { get; set; }
 
-        [AttrDbColumn("OrderID")]
+        [DbColumn("OrderID")]
         public int OrderID
         { get; set; }
 
-        [AttrDbColumn("ProductGuid")]
+        [DbColumn("ProductGuid")]
         public Guid ProductGuid
         { get; set; }
 
-        [AttrDbColumn("Code")]
+        [DbColumn("Code")]
         public string Code
         { get; set; }
 
-        [AttrDbColumn("ProductName")]
+        [DbColumn("ProductName")]
         public string ProductName
         { get; set; }
 
-        [AttrDbColumn("Size")]
+        [DbColumn("Size")]
         public string Size
         { get; set; }
 
-        [AttrDbColumn("UnitPrice")]
+        [DbColumn("UnitPrice")]
         public float UnitPrice
         { get; set; }
 
-        [AttrDbColumn("Quantity")]
+        [DbColumn("Quantity")]
         public int Quantity
         { get; set; }
 
-        [AttrDbColumn("Sale")]
+        [DbColumn("Sale")]
         public float? Sale
         { get; set; }
 
-        [AttrDbColumn("CreateTime")]
+        [DbColumn("CreateTime")]
         public DateTime CreateTime
         { get; set; }
 
-        [AttrDbColumn("IsActive")]
+        [DbColumn("IsActive")]
         public Boolean IsActive
         { get; set; }
 
-        [AttrDbColumn("Remark")]
+        [DbColumn("Remark")]
         public string Remark
         { get; set; }
 

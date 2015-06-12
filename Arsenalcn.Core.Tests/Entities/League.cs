@@ -7,7 +7,7 @@ using Arsenalcn.Core;
 
 namespace Arsenalcn.Core.Tests
 {
-    [AttrDbTable("Arsenal_League", Key = "LeagueGuid", Sort = "LeagueOrder")]
+    [DbTable("Arsenal_League", Key = "LeagueGuid", Sort = "LeagueOrder")]
     public class League : Entity<Guid>
     {
         public League() : base() { }
@@ -101,31 +101,31 @@ namespace Arsenalcn.Core.Tests
 
         #region Members and Properties
 
-        [AttrDbColumn("LeagueName")]
+        [DbColumn("LeagueName")]
         public string LeagueName
         { get; set; }
 
-        [AttrDbColumn("LeagueOrgName")]
+        [DbColumn("LeagueOrgName")]
         public string LeagueOrgName
         { get; set; }
 
-        [AttrDbColumn("LeagueSeason")]
+        [DbColumn("LeagueSeason")]
         public string LeagueSeason
         { get; set; }
 
-        [AttrDbColumn("LeagueTime")]
+        [DbColumn("LeagueTime")]
         public DateTime LeagueTime
         { get; set; }
 
-        [AttrDbColumn("LeagueLogo")]
+        [DbColumn("LeagueLogo")]
         public string LeagueLogo
         { get; set; }
 
-        [AttrDbColumn("LeagueOrder")]
+        [DbColumn("LeagueOrder")]
         public int LeagueOrder
         { get; set; }
 
-        [AttrDbColumn("IsActive")]
+        [DbColumn("IsActive")]
         public bool IsActive
         { get; set; }
 

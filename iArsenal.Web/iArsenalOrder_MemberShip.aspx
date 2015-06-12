@@ -7,7 +7,7 @@
     <link href="Scripts/jquery.ui/jquery-ui.min.css" type="text/css" rel="stylesheet" />
     <script type="text/javascript" src="Scripts/jquery-ui-1.10.4.min.js"></script>
     <style type="text/css">
-        input.MemberClass, input.Region1, input.Region2 {
+        input.MemberClass, input.Sale, input.Region1, input.Region2 {
             display: none;
         }
     </style>
@@ -129,6 +129,15 @@
                             <asp:Label ID="lblMemberClass" runat="server"></asp:Label>
                         </td>
                     </tr>
+                    <asp:PlaceHolder ID="phSaleInfo" runat="server" Visible="false">
+                        <tr class="Row">
+                            <td class="FieldHeader">补充说明：</td>
+                            <td class="FieldColumn" colspan="3">
+                                <asp:TextBox ID="tbSale" runat="server" CssClass="Sale"></asp:TextBox>
+                                <asp:Label ID="lblSaleInfo" runat="server"></asp:Label>
+                            </td>
+                        </tr>
+                    </asp:PlaceHolder>
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">专属卡号：
                         </td>

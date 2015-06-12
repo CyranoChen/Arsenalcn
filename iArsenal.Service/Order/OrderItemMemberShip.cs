@@ -11,7 +11,18 @@ namespace iArsenal.Service
 
         protected void Init()
         {
-            MemberCardNo = Remark;
+            String[] _para = Remark.Split('|');
+
+            MemberCardNo = !string.IsNullOrEmpty(_para[0]) ? _para[0] : string.Empty;
+
+            if (_para.Length > 1)
+            {
+                AlterMethod = !string.IsNullOrEmpty(_para[1]) ? _para[1] : string.Empty;
+            }
+            else
+            {
+                AlterMethod = string.Empty;
+            }
 
             DateTime _date;
             if (!string.IsNullOrEmpty(Size) && DateTime.TryParse(Size, out _date))
@@ -24,19 +35,19 @@ namespace iArsenal.Service
             }
 
             Season = string.Format("{0}/{1}", EndDate.AddYears(-1).Year.ToString(), EndDate.ToString("yy"));
-
-            //if (ProductGuid == null)
-            //    throw new Exception("Loading OrderItem failed.");
-
-            //Product p = Product.Cache.Load(ProductGuid);
-
-            //if (!p.ProductType.Equals(ProductType.MemberShipCore) && !p.ProductType.Equals(ProductType.MemberShipPremier))
-            //    throw new Exception("The OrderItem is not the type of MemberShip.");
         }
 
         public override void Place(Member m, Product p, System.Data.SqlClient.SqlTransaction trans = null)
         {
-            this.Remark = MemberCardNo;
+            if (!string.IsNullOrEmpty(AlterMethod))
+            {
+                this.Remark = string.Format("{0}|{1}", MemberCardNo, AlterMethod);
+            }
+            else
+            {
+                this.Remark = MemberCardNo;
+            }
+
             this.Size = EndDate.ToString("yyyy-MM-dd");
 
             base.Place(m, p, trans);
@@ -45,6 +56,8 @@ namespace iArsenal.Service
         #region Members and Properties
 
         public string MemberCardNo { get; set; }
+
+        public string AlterMethod { get; set; }
 
         public DateTime EndDate { get; set; }
 

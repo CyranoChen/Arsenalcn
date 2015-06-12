@@ -9,7 +9,7 @@ using Arsenalcn.Core;
 
 namespace iArsenal.Service
 {
-    [AttrDbTable("iArsenal_MatchTicket", Key = "MatchGuid", Sort = "Deadline DESC")]
+    [DbTable("iArsenal_MatchTicket", Key = "MatchGuid", Sort = "Deadline DESC")]
     public class MatchTicket
     {
         public MatchTicket() { }
@@ -323,7 +323,7 @@ namespace iArsenal.Service
         #region Members and Properties
 
         // Match Info Properties
-        [AttrDbColumn("MatchGuid", Key = true)]
+        [DbColumn("MatchGuid", Key = true)]
         public Guid ID
         { get; set; }
 
@@ -363,30 +363,30 @@ namespace iArsenal.Service
 
         // Ticket Info Properties
 
-        [AttrDbColumn("ProductCode")]
+        [DbColumn("ProductCode")]
         public string ProductCode
         { get; set; }
 
         public string ProductInfo
         { get; set; }
 
-        [AttrDbColumn("Deadline")]
+        [DbColumn("Deadline")]
         public DateTime Deadline
         { get; set; }
 
-        [AttrDbColumn("AllowMemberClass")]
+        [DbColumn("AllowMemberClass")]
         public int? AllowMemberClass
         { get; set; }
 
-        [AttrDbColumn("TicketCount")]
+        [DbColumn("TicketCount")]
         public int? TicketCount
         { get; set; }
 
-        [AttrDbColumn("IsActive")]
+        [DbColumn("IsActive")]
         public Boolean IsActive
         { get; set; }
 
-        [AttrDbColumn("Remark")]
+        [DbColumn("Remark")]
         public string Remark
         { get; set; }
 

@@ -661,7 +661,7 @@ namespace Arsenalcn.Core
         {
             Contract.Requires(instance != null);
 
-            var attr = (AttrDbTable)Attribute.GetCustomAttribute(typeof(T), typeof(AttrDbTable));
+            var attr = (DbTable)Attribute.GetCustomAttribute(typeof(T), typeof(DbTable));
 
             var key = instance.GetType().GetProperty("ID").GetValue(instance, null);
 
@@ -685,22 +685,22 @@ namespace Arsenalcn.Core
             }
         }
 
-        public static AttrDbTable GetTableAttr<T>() where T : class
+        public static DbTable GetTableAttr<T>() where T : class
         {
-            var attr = (AttrDbTable)Attribute.GetCustomAttribute(typeof(T), typeof(AttrDbTable));
+            var attr = (DbTable)Attribute.GetCustomAttribute(typeof(T), typeof(DbTable));
 
             if (attr != null)
             { return attr; }
             else
-            { return new AttrDbTable(typeof(T).Name); }
+            { return new DbTable(typeof(T).Name); }
         }
 
-        public static AttrDbColumn GetColumnAttr(PropertyInfo pi)
+        public static DbColumn GetColumnAttr(PropertyInfo pi)
         {
-            return (AttrDbColumn)Attribute.GetCustomAttribute(pi, typeof(AttrDbColumn));
+            return (DbColumn)Attribute.GetCustomAttribute(pi, typeof(DbColumn));
         }
 
-        public static AttrDbColumn GetColumnAttr<T>(string name) where T : class
+        public static DbColumn GetColumnAttr<T>(string name) where T : class
         {
             Contract.Requires(!string.IsNullOrEmpty(name));
 

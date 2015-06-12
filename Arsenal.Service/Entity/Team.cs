@@ -7,7 +7,7 @@ using Arsenalcn.Core;
 
 namespace Arsenal.Service
 {
-    [AttrDbTable("Arsenal_Team", Key = "TeamGuid", Sort = "TeamEnglishName")]
+    [DbTable("Arsenal_Team", Key = "TeamGuid", Sort = "TeamEnglishName")]
     public class Team : Entity<Guid>
     {
         public Team() : base() { }
@@ -54,43 +54,43 @@ namespace Arsenal.Service
 
         #region Members and Properties
 
-        [AttrDbColumn("TeamEnglishName")]
+        [DbColumn("TeamEnglishName")]
         public string TeamEnglishName
         { get; set; }
 
-        [AttrDbColumn("TeamDisplayName")]
+        [DbColumn("TeamDisplayName")]
         public string TeamDisplayName
         { get; set; }
 
-        [AttrDbColumn("TeamLogo")]
+        [DbColumn("TeamLogo")]
         public string TeamLogo
         { get; set; }
 
-        [AttrDbColumn("TeamNickName")]
+        [DbColumn("TeamNickName")]
         public string TeamNickName
         { get; set; }
 
-        [AttrDbColumn("Founded")]
+        [DbColumn("Founded")]
         public string Founded
         { get; set; }
 
-        [AttrDbColumn("Ground")]
+        [DbColumn("Ground")]
         public string Ground
         { get; set; }
 
-        [AttrDbColumn("Capacity")]
+        [DbColumn("Capacity")]
         public int? Capacity
         { get; set; }
 
-        [AttrDbColumn("Chairman")]
+        [DbColumn("Chairman")]
         public string Chairman
         { get; set; }
 
-        [AttrDbColumn("Manager")]
+        [DbColumn("Manager")]
         public string Manager
         { get; set; }
 
-        [AttrDbColumn("LeagueGuid")]
+        [DbColumn("LeagueGuid")]
         public Guid LeagueGuid
         { get; set; }
 

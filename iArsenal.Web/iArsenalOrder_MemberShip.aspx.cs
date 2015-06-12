@@ -107,6 +107,43 @@ namespace iArsenal.Web
             }
         }
 
+        private bool IsUpgrade
+        {
+            get
+            {
+                var mp = MemberPeriod.GetCurrentMemberPeriodByMemberID(MID);
+
+                if (mp == null) return false;
+
+                CurrentCardNo = mp.MemberCardNo;
+
+                return mp.MemberClass.Equals(MemberClassType.Core) &&
+                    CurrProductType.Equals(ProductType.MemberShipPremier);
+            }
+        }
+
+        private bool IsRenew
+        {
+            get
+            {
+                var mp = MemberPeriod.GetCurrentMemberPeriodByMemberID(MID, -1);
+
+                if (mp == null) return false;
+
+                CurrentCardNo = mp.MemberCardNo;
+
+                if (mp.MemberClass.Equals(MemberClassType.Core))
+                { return CurrProductType.Equals(ProductType.MemberShipCore); }
+                else if (mp.MemberClass.Equals(MemberClassType.Premier))
+                { return CurrProductType.Equals(ProductType.MemberShipPremier); }
+                else
+                { return false; }
+            }
+        }
+
+        private string CurrentCardNo
+        { get; set; }
+
         private void InitForm()
         {
             try
@@ -275,6 +312,35 @@ namespace iArsenal.Web
                     else
                     {
                         throw new Exception("无相关会籍可申请，请联系管理员");
+                    }
+
+                    Product pPremier = Product.Cache.Load("iMS2");
+                    Product pCore = Product.Cache.Load("iMS1");
+
+                    if (IsUpgrade)
+                    {
+                        float _sale = pPremier.PriceCNY - pCore.PriceCNY;
+
+                        tbMemberCardNo.Text = CurrentCardNo;
+
+                        tbSale.Text = _sale.ToString("f0");
+                        lblSaleInfo.Text = string.Format("您只需支付<em>￥{0}</em>，即可将您的会籍升级为<em>【{1}】</em>",
+                            _sale.ToString("f2"), pPremier.DisplayName);
+
+                        phSaleInfo.Visible = true;
+                    }
+                    else if (IsRenew)
+                    {
+                        float _sale = CurrProductType.Equals(ProductType.MemberShipPremier) ?
+                            Convert.ToSingle(Math.Floor(pPremier.PriceCNY * 0.88)) : pCore.PriceCNY;
+
+                        tbMemberCardNo.Text = CurrentCardNo;
+
+                        tbSale.Text = _sale.ToString("f0");
+                        lblSaleInfo.Text = string.Format("您只需支付<em>￥{0}</em>，即可完成本赛季<em>同等会籍续期</em>",
+                            _sale.ToString("f2"));
+
+                        phSaleInfo.Visible = true;
                     }
                 }
             }
@@ -446,11 +512,33 @@ namespace iArsenal.Web
                             throw new Exception("请正确填写会员卡号");
                         }
 
+                        // Set AlterMethod
+                        if (IsUpgrade)
+                        {
+                            oi.AlterMethod = "Upgrade";
+                        }
+                        else if (IsRenew)
+                        {
+                            oi.AlterMethod = "Renew";
+                        }
+                        else
+                        {
+                            oi.AlterMethod = string.Empty;
+                        }
+
                         oi.EndDate = CurrSeasonDeadline;
 
                         oi.OrderID = _newID;
                         oi.Quantity = 1;
-                        oi.Sale = null;
+
+                        if (IsUpgrade || IsRenew)
+                        {
+                            oi.Sale = Convert.ToSingle(tbSale.Text.Trim());
+                        }
+                        else
+                        {
+                            oi.Sale = null;
+                        }
 
                         oi.Place(m, pMembership, trans);
                     }

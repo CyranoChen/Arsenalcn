@@ -6,7 +6,7 @@ using System.Diagnostics.Contracts;
 
 namespace Arsenalcn.Core.Scheduler
 {
-    [AttrDbTable("Arsenalcn_Schedule", Key = "ScheduleKey", Sort = "IsSystem, ScheduleKey")]
+    [DbTable("Arsenalcn_Schedule", Key = "ScheduleKey", Sort = "IsSystem, ScheduleKey")]
     public class Schedule
     {
         public Schedule() { }
@@ -145,14 +145,14 @@ namespace Arsenalcn.Core.Scheduler
 
         #region Members and Properties
 
-        [AttrDbColumn("ScheduleKey", Key = true)]
+        [DbColumn("ScheduleKey", Key = true)]
         public string ScheduleKey
         { get; set; }
 
         /// <summary>
         /// The Type of class which implements IScheduler
         /// </summary>
-        [AttrDbColumn("ScheduleType")]
+        [DbColumn("ScheduleType")]
         public string ScheduleType
         { get; set; }
 
@@ -161,7 +161,7 @@ namespace Arsenalcn.Core.Scheduler
         /// executed once per-day and as close to the specified
         /// time as possible. Example times: 0 = midnight, 27 = 12:27 am, 720 = Noon
         /// </summary>
-        [AttrDbColumn("DailyTime")]
+        [DbColumn("DailyTime")]
         public int DailyTime
         { get; set; }
 
@@ -169,14 +169,14 @@ namespace Arsenalcn.Core.Scheduler
         /// The scheduled event interval time in minutes. If TimeOfDay has a value >= 0, Minutes will be ignored. 
         /// This values should not be less than the Timer interval.
         /// </summary>
-        [AttrDbColumn("Minutes")]
+        [DbColumn("Minutes")]
         public int Minutes
         { get; set; }
 
         /// <summary>
         /// Last Date and Time this scheduler was processed/completed.
         /// </summary>
-        [AttrDbColumn("LastCompletedTime")]
+        [DbColumn("LastCompletedTime")]
         public DateTime LastCompletedTime
         { get; set; }
 
@@ -193,15 +193,15 @@ namespace Arsenalcn.Core.Scheduler
         //internal testing variable
         //bool dateWasSet = false;
 
-        [AttrDbColumn("IsSystem")]
+        [DbColumn("IsSystem")]
         public bool IsSystem
         { get; set; }
 
-        [AttrDbColumn("IsActive")]
+        [DbColumn("IsActive")]
         public bool IsActive
         { get; set; }
 
-        [AttrDbColumn("Remark")]
+        [DbColumn("Remark")]
         public string Remark
         { get; set; }
 

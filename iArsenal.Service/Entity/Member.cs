@@ -7,7 +7,7 @@ using Arsenalcn.Core;
 
 namespace iArsenal.Service
 {
-    [AttrDbTable("iArsenal_Member", Sort = "ID DESC")]
+    [DbTable("iArsenal_Member", Sort = "ID DESC")]
     public class Member : Entity<int>
     {
         public Member() : base() { }
@@ -95,115 +95,115 @@ namespace iArsenal.Service
 
         #region Members and Properties
 
-        [AttrDbColumn("Name")]
+        [DbColumn("Name")]
         public string Name
         { get; set; }
 
-        [AttrDbColumn("Gender")]
+        [DbColumn("Gender")]
         public bool Gender
         { get; set; }
 
-        [AttrDbColumn("Birthday")]
+        [DbColumn("Birthday")]
         public DateTime? Birthday
         { get; set; }
 
-        [AttrDbColumn("Career")]
+        [DbColumn("Career")]
         public string Career
         { get; set; }
 
-        [AttrDbColumn("Nation")]
+        [DbColumn("Nation")]
         public string Nation
         { get; set; }
 
-        [AttrDbColumn("Region")]
+        [DbColumn("Region")]
         public string Region
         { get; set; }
 
-        [AttrDbColumn("Mobile")]
+        [DbColumn("Mobile")]
         public string Mobile
         { get; set; }
 
-        [AttrDbColumn("Telephone")]
+        [DbColumn("Telephone")]
         public string Telephone
         { get; set; }
 
-        [AttrDbColumn("Address")]
+        [DbColumn("Address")]
         public string Address
         { get; set; }
 
-        [AttrDbColumn("Email")]
+        [DbColumn("Email")]
         public string Email
         { get; set; }
 
-        [AttrDbColumn("Zipcode")]
+        [DbColumn("Zipcode")]
         public string Zipcode
         { get; set; }
 
-        [AttrDbColumn("MSN")]
+        [DbColumn("MSN")]
         public string MSN
         { get; set; }
 
-        [AttrDbColumn("QQ")]
+        [DbColumn("QQ")]
         public string QQ
         { get; set; }
 
-        [AttrDbColumn("IDCardNo")]
+        [DbColumn("IDCardNo")]
         public string IDCardNo
         { get; set; }
 
-        [AttrDbColumn("PassportNo")]
+        [DbColumn("PassportNo")]
         public string PassportNo
         { get; set; }
 
-        [AttrDbColumn("PassportName")]
+        [DbColumn("PassportName")]
         public string PassportName
         { get; set; }
 
-        [AttrDbColumn("AcnID")]
+        [DbColumn("AcnID")]
         public int AcnID
         { get; set; }
 
-        [AttrDbColumn("AcnName")]
+        [DbColumn("AcnName")]
         public string AcnName
         { get; set; }
 
-        [AttrDbColumn("IP")]
+        [DbColumn("IP")]
         public string IP
         { get; set; }
 
-        [AttrDbColumn("TaobaoName")]
+        [DbColumn("TaobaoName")]
         public string TaobaoName
         { get; set; }
 
-        [AttrDbColumn("Evalution")]
+        [DbColumn("Evalution")]
         public MemberEvalution Evalution
         { get; set; }
 
-        [AttrDbColumn("MemberType")]
+        [DbColumn("MemberType")]
         public MemberType MemberType
         { get; set; }
 
-        [AttrDbColumn("MemberCardNo")]
+        [DbColumn("MemberCardNo")]
         public string MemberCardNo
         { get; set; }
 
-        [AttrDbColumn("JoinDate")]
+        [DbColumn("JoinDate")]
         public DateTime JoinDate
         { get; set; }
         
-        [AttrDbColumn("LastLoginTime")]
+        [DbColumn("LastLoginTime")]
         public DateTime LastLoginTime
         { get; set; }
 
-        [AttrDbColumn("IsActive")]
+        [DbColumn("IsActive")]
         public bool IsActive
         { get; set; }
 
-        [AttrDbColumn("Description")]
+        [DbColumn("Description")]
         public string Description
         { get; set; }
 
-        [AttrDbColumn("Remark")]
+        [DbColumn("Remark")]
         public string Remark
         { get; set; }
 

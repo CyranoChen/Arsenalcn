@@ -52,6 +52,32 @@ namespace iArsenal.Web
             }
         }
 
+        protected void gvMemberPeriod_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                MemberPeriod mp = e.Row.DataItem as MemberPeriod;
+
+                HyperLink btnUpgrade = e.Row.FindControl("btnUpgrade") as HyperLink;
+                HyperLink btnRenew = e.Row.FindControl("btnRenew") as HyperLink;
+
+                if (btnUpgrade != null)
+                {
+                    btnUpgrade.Visible = mp.IsCurrentSeason() && mp.MemberClass.Equals(MemberClassType.Core);
+                }
+
+                if (btnRenew != null)
+                {
+                    btnRenew.Visible = mp.IsCurrentSeason(-1);
+                }
+
+                if (mp.IsCurrentSeason())
+                {
+                    e.Row.CssClass = "SelectedRow";
+                }
+            }
+        }
+
         protected void btnFilter_Click(object sender, EventArgs e)
         {
             if (!string.IsNullOrEmpty(tbMemberCardNo.Text.Trim()))

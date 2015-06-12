@@ -8,7 +8,7 @@ using Arsenalcn.Core;
 
 namespace Arsenal.Service
 {
-    [AttrDbTable("Arsenal_Player", Key = "PlayerGuid", Sort = "IsLegend, IsLoan, SquadNumber, LastName")]
+    [DbTable("Arsenal_Player", Key = "PlayerGuid", Sort = "IsLegend, IsLoan, SquadNumber, LastName")]
     public class Player : Entity<Guid>
     {
         public Player() : base() { }
@@ -78,99 +78,99 @@ namespace Arsenal.Service
 
         #region Members and Properties
 
-        [AttrDbColumn("FirstName")]
+        [DbColumn("FirstName")]
         public string FirstName
         { get; set; }
 
-        [AttrDbColumn("LastName")]
+        [DbColumn("LastName")]
         public string LastName
         { get; set; }
 
-        [AttrDbColumn("DisplayName")]
+        [DbColumn("DisplayName")]
         public string DisplayName
         { get; set; }
 
-        [AttrDbColumn("PrintingName")]
+        [DbColumn("PrintingName")]
         public string PrintingName
         { get; set; }
 
-        [AttrDbColumn("Position")]
+        [DbColumn("Position")]
         public PlayerPostionType? Position
         { get; set; }
 
-        [AttrDbColumn("SquadNumber")]
+        [DbColumn("SquadNumber")]
         public int SquadNumber
         { get; set; }
 
-        [AttrDbColumn("FaceURL")]
+        [DbColumn("FaceURL")]
         public string FaceURL
         { get; set; }
 
-        [AttrDbColumn("PhotoURL")]
+        [DbColumn("PhotoURL")]
         public string PhotoURL
         { get; set; }
 
-        [AttrDbColumn("Offset")]
+        [DbColumn("Offset")]
         public int Offset
         { get; set; }
 
-        [AttrDbColumn("IsLegend")]
+        [DbColumn("IsLegend")]
         public bool IsLegend
         { get; set; }
 
-        [AttrDbColumn("IsLoan")]
+        [DbColumn("IsLoan")]
         public bool IsLoan
         { get; set; }
 
-        [AttrDbColumn("Birthday")]
+        [DbColumn("Birthday")]
         public DateTime? Birthday
         { get; set; }
 
-        [AttrDbColumn("Born")]
+        [DbColumn("Born")]
         public string Born
         { get; set; }
 
-        [AttrDbColumn("Starts")]
+        [DbColumn("Starts")]
         public int Starts
         { get; set; }
 
-        [AttrDbColumn("Subs")]
+        [DbColumn("Subs")]
         public int Subs
         { get; set; }
 
-        [AttrDbColumn("Apps")]
+        [DbColumn("Apps")]
         public int Apps
         { get; set; }
 
-        [AttrDbColumn("Goals")]
+        [DbColumn("Goals")]
         public int Goals
         { get; set; }
 
-        [AttrDbColumn("JoinDate")]
+        [DbColumn("JoinDate")]
         public DateTime? JoinDate
         { get; set; }
 
-        [AttrDbColumn("Joined")]
+        [DbColumn("Joined")]
         public string Joined
         { get; set; }
 
-        [AttrDbColumn("LeftYear")]
+        [DbColumn("LeftYear")]
         public string LeftYear
         { get; set; }
 
-        [AttrDbColumn("Debut")]
+        [DbColumn("Debut")]
         public string Debut
         { get; set; }
 
-        [AttrDbColumn("FirstGoal")]
+        [DbColumn("FirstGoal")]
         public string FirstGoal
         { get; set; }
 
-        [AttrDbColumn("PreviousClubs")]
+        [DbColumn("PreviousClubs")]
         public string PreviousClubs
         { get; set; }
 
-        [AttrDbColumn("Profile")]
+        [DbColumn("Profile")]
         public string Profile
         { get; set; }
 

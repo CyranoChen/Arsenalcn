@@ -7,7 +7,7 @@ using Arsenalcn.Core;
 
 namespace Arsenal.Service
 {
-    [AttrDbTable("Arsenal_Match", Key = "MatchGuid", Sort = "PlayTime DESC")]
+    [DbTable("Arsenal_Match", Key = "MatchGuid", Sort = "PlayTime DESC")]
     public class Match : Entity<Guid>
     {
         public Match() : base() { }
@@ -61,70 +61,70 @@ namespace Arsenal.Service
 
         #region Members and Properties
 
-        [AttrDbColumn("TeamGuid")]
+        [DbColumn("TeamGuid")]
         public Guid TeamGuid
         { get; set; }
 
-        [AttrDbColumn("TeamName")]
+        [DbColumn("TeamName")]
         public string TeamName
         { get; set; }
 
-        [AttrDbColumn("IsHome")]
+        [DbColumn("IsHome")]
         public Boolean IsHome
         { get; set; }
 
-        [AttrDbColumn("ResultHome")]
+        [DbColumn("ResultHome")]
         public int? ResultHome
         { get; set; }
 
-        [AttrDbColumn("ResultAway")]
+        [DbColumn("ResultAway")]
         public int? ResultAway
         { get; set; }
 
         public string ResultInfo
         { get; set; }
 
-        [AttrDbColumn("PlayTime")]
+        [DbColumn("PlayTime")]
         public DateTime PlayTime
         { get; set; }
 
-        [AttrDbColumn("LeagueGuid")]
+        [DbColumn("LeagueGuid")]
         public Guid? LeagueGuid
         { get; set; }
 
-        [AttrDbColumn("LeagueName")]
+        [DbColumn("LeagueName")]
         public string LeagueName
         { get; set; }
 
-        [AttrDbColumn("Round")]
+        [DbColumn("Round")]
         public int? Round
         { get; set; }
 
-        [AttrDbColumn("GroupGuid")]
+        [DbColumn("GroupGuid")]
         public Guid? GroupGuid
         { get; set; }
 
-        [AttrDbColumn("CasinoMatchGuid")]
+        [DbColumn("CasinoMatchGuid")]
         public Guid? CasinoMatchGuid
         { get; set; }
 
-        [AttrDbColumn("ReportImageURL")]
+        [DbColumn("ReportImageURL")]
         public string ReportImageURL
         { get; set; }
 
-        [AttrDbColumn("ReportURL")]
+        [DbColumn("ReportURL")]
         public string ReportURL
         { get; set; }
 
-        [AttrDbColumn("TopicURL")]
+        [DbColumn("TopicURL")]
         public string TopicURL
         { get; set; }
 
-        [AttrDbColumn("IsActive")]
+        [DbColumn("IsActive")]
         public Boolean IsActive
         { get; set; }
 
-        [AttrDbColumn("Remark")]
+        [DbColumn("Remark")]
         public string Remark
         { get; set; }
 

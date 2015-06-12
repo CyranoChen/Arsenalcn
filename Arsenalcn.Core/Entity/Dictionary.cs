@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Arsenalcn.Core
 {
-    [AttrDbTable("Arsenalcn_Dictionary", Sort = "ID")]
+    [DbTable("Arsenalcn_Dictionary", Sort = "ID")]
     public class Dictionary : Entity<int>
     {
         public Dictionary() : base() { }
@@ -41,31 +41,31 @@ namespace Arsenalcn.Core
 
         #region Members and Properties
 
-        [AttrDbColumn("Name")]
+        [DbColumn("Name")]
         public string Name
         { get; set; }
 
-        [AttrDbColumn("DisplayName")]
+        [DbColumn("DisplayName")]
         public string DisplayName
         { get; set; }
 
-        [AttrDbColumn("StandardLevel")]
+        [DbColumn("StandardLevel")]
         public string StandardLevel
         { get; set; }
 
-        [AttrDbColumn("BusinessField")]
+        [DbColumn("BusinessField")]
         public string BusinessField
         { get; set; }
 
-        [AttrDbColumn("StandardCode")]
+        [DbColumn("StandardCode")]
         public string StandardCode
         { get; set; }
 
-        [AttrDbColumn("IsTreeDictionary")]
+        [DbColumn("IsTreeDictionary")]
         public Boolean IsTreeDictionary
         { get; set; }
 
-        [AttrDbColumn("Description")]
+        [DbColumn("Description")]
         public string Description
         { get; set; }
 

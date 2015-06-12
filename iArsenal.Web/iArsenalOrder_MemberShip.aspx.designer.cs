@@ -202,6 +202,33 @@ namespace iArsenal.Web {
         protected global::System.Web.UI.WebControls.Label lblMemberClass;
         
         /// <summary>
+        /// phSaleInfo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder phSaleInfo;
+        
+        /// <summary>
+        /// tbSale control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox tbSale;
+        
+        /// <summary>
+        /// lblSaleInfo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblSaleInfo;
+        
+        /// <summary>
         /// tbMemberCardNo control.
         /// </summary>
         /// <remarks>

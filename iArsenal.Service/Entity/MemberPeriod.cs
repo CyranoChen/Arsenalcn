@@ -7,16 +7,23 @@ using System.Collections;
 
 namespace iArsenal.Service
 {
-    [AttrDbTable("iArsenal_MemberPeriod", Sort = "ID DESC")]
+    [DbTable("iArsenal_MemberPeriod", Sort = "ID DESC")]
     public class MemberPeriod : Entity<int>
     {
         public MemberPeriod() : base() { }
 
         public MemberPeriod(DataRow dr) : base(dr) { }
 
-        public static MemberPeriod GetCurrentMemberPeriodByMemberID(int id)
+        public bool IsCurrentSeason(int year = 0)
+        {
+            var _date = DateTime.Now.AddYears(year);
+            return StartDate <= _date && EndDate >= _date;
+        }
+
+        public static MemberPeriod GetCurrentMemberPeriodByMemberID(int id, int year = 0)
         {
             var htWhere = new Hashtable();
+            var _date = DateTime.Now.AddYears(year);
 
             htWhere.Add("MemberID", id);
             htWhere.Add("IsActive", true);
@@ -24,48 +31,48 @@ namespace iArsenal.Service
             IRepository repo = new Repository();
 
             return repo.Query<MemberPeriod>(htWhere).FirstOrDefault(x =>
-                x.StartDate <= DateTime.Now && x.EndDate >= DateTime.Now);
+                x.StartDate <= _date && x.EndDate >= _date);
         }
 
         #region Members and Properties
 
-        [AttrDbColumn("MemberID")]
+        [DbColumn("MemberID")]
         public int MemberID
         { get; set; }
 
-        [AttrDbColumn("MemberName")]
+        [DbColumn("MemberName")]
         public string MemberName
         { get; set; }
 
-        [AttrDbColumn("MemberCardNo")]
+        [DbColumn("MemberCardNo")]
         public string MemberCardNo
         { get; set; }
 
-        [AttrDbColumn("MemberClass")]
+        [DbColumn("MemberClass")]
         public MemberClassType MemberClass
         { get; set; }
 
-        [AttrDbColumn("OrderID")]
+        [DbColumn("OrderID")]
         public int? OrderID
         { get; set; }
 
-        [AttrDbColumn("StartDate")]
+        [DbColumn("StartDate")]
         public DateTime StartDate
         { get; set; }
 
-        [AttrDbColumn("EndDate")]
+        [DbColumn("EndDate")]
         public DateTime EndDate
         { get; set; }
 
-        [AttrDbColumn("IsActive")]
+        [DbColumn("IsActive")]
         public bool IsActive
         { get; set; }
 
-        [AttrDbColumn("Description")]
+        [DbColumn("Description")]
         public string Description
         { get; set; }
 
-        [AttrDbColumn("Remark")]
+        [DbColumn("Remark")]
         public string Remark
         { get; set; }
 

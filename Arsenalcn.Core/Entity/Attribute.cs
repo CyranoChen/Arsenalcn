@@ -4,13 +4,13 @@ using System.ComponentModel.DataAnnotations;
 namespace Arsenalcn.Core
 {
     [AttributeUsage(AttributeTargets.Class)]
-    public class AttrDbTable : Attribute
+    public class DbTable : Attribute
     {
         public string Name;
         public string Key;
         public string Sort;
 
-        public AttrDbTable(string name)
+        public DbTable(string name)
         {
             Name = name;
             Key = "ID";
@@ -19,12 +19,12 @@ namespace Arsenalcn.Core
     }
 
     [AttributeUsage(AttributeTargets.Property)]
-    public class AttrDbColumn : Attribute
+    public class DbColumn : Attribute
     {
         public string Name;
         public bool Key;
 
-        public AttrDbColumn(string name)
+        public DbColumn(string name)
         {
             Name = name;
             Key = false;

@@ -7,7 +7,7 @@ using Arsenalcn.Core;
 
 namespace iArsenal.Service
 {
-    [AttrDbTable("iArsenal_Product", Key = "ProductGuid", Sort = "Code")]
+    [DbTable("iArsenal_Product", Key = "ProductGuid", Sort = "Code")]
     public class Product : Entity<Guid>
     {
         public Product() : base() { }
@@ -156,67 +156,67 @@ namespace iArsenal.Service
 
         #region Members and Properties
 
-        [AttrDbColumn("Code")]
+        [DbColumn("Code")]
         public string Code
         { get; set; }
 
-        [AttrDbColumn("Name")]
+        [DbColumn("Name")]
         public string Name
         { get; set; }
 
-        [AttrDbColumn("DisplayName")]
+        [DbColumn("DisplayName")]
         public string DisplayName
         { get; set; }
 
-        [AttrDbColumn("ProductType")]
+        [DbColumn("ProductType")]
         public ProductType ProductType
         { get; set; }
 
-        [AttrDbColumn("ImageURL")]
+        [DbColumn("ImageURL")]
         public string ImageURL
         { get; set; }
 
-        [AttrDbColumn("Material")]
+        [DbColumn("Material")]
         public string Material
         { get; set; }
 
-        [AttrDbColumn("Colour")]
+        [DbColumn("Colour")]
         public string Colour
         { get; set; }
 
-        [AttrDbColumn("Size")]
+        [DbColumn("Size")]
         public ProductSizeType? Size
         { get; set; }
 
-        [AttrDbColumn("Currency")]
+        [DbColumn("Currency")]
         public ProductCurrencyType Currency
         { get; set; }
 
-        [AttrDbColumn("Price")]
+        [DbColumn("Price")]
         public float Price
         { get; set; }
 
-        [AttrDbColumn("Sale")]
+        [DbColumn("Sale")]
         public float? Sale
         { get; set; }
 
-        [AttrDbColumn("CreateTime")]
+        [DbColumn("CreateTime")]
         public DateTime CreateTime
         { get; set; }
 
-        [AttrDbColumn("Stock")]
+        [DbColumn("Stock")]
         public int Stock
         { get; set; }
 
-        [AttrDbColumn("IsActive")]
+        [DbColumn("IsActive")]
         public Boolean IsActive
         { get; set; }
 
-        [AttrDbColumn("Description")]
+        [DbColumn("Description")]
         public string Description
         { get; set; }
 
-        [AttrDbColumn("Remark")]
+        [DbColumn("Remark")]
         public string Remark
         { get; set; }
 

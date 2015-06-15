@@ -1,0 +1,28 @@
+﻿@model List<Arsenal.MvcWeb.Models.CasinoMatch>
+
+@{
+    ViewBag.Title = "可投注比赛";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>可投注比赛</h2>
+<p>
+    Description
+</p>
+
+<ul data-role="listview" data-inset="true">
+    <li data-role="list-divider">可投注比赛</li>
+    @if (Model != null && Model.Count > 0)
+    {
+        foreach (var m in Model)
+        {
+            <li>
+                <a href="@Url.Action("Bet", "Casino", new { id = m.MatchGuid.ToString() })">
+                    @m.HomeTeamName vs @m.AwayTeamName
+                    <br /> @m.PlayTime.ToString("yyyy-MM-dd HH:mm")
+                    <span class="ui-li-count">112</span>
+                </a>
+            </li>
+        }
+    }
+</ul>

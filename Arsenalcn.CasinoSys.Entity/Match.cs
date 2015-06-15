@@ -21,7 +21,7 @@ namespace Arsenalcn.CasinoSys.Entity
                 InitMatch(dr);
         }
 
-        private Match(DataRow dr)
+        protected Match(DataRow dr)
         {
             InitMatch(dr);
         }
@@ -76,7 +76,7 @@ namespace Arsenalcn.CasinoSys.Entity
                 try
                 {
                     DataAccess.Match.InsertMatch(MatchGuid, Home, Away, PlayTime, LeagueGuid, LeagueName, Round, GroupGuid, trans);
-                        
+
                     //add matchResult
                     MatchResult itemMatchResult = (MatchResult)Entity.CasinoItem.CreateInstance(CasinoItem.CasinoType.MatchResult);
                     itemMatchResult.MatchGuid = MatchGuid;
@@ -116,7 +116,7 @@ namespace Arsenalcn.CasinoSys.Entity
                 {
                     trans.Rollback();
                 }
-                
+
                 //conn.Close();
             }
         }
@@ -192,7 +192,7 @@ namespace Arsenalcn.CasinoSys.Entity
                 {
                     trans.Rollback();
                 }
-                
+
                 //conn.Close();
             }
         }
@@ -338,7 +338,7 @@ namespace Arsenalcn.CasinoSys.Entity
                 {
                     trans.Rollback();
                 }
-                
+
                 //conn.Close();
             }
         }

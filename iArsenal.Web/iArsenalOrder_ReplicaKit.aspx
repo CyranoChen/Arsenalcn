@@ -17,12 +17,34 @@
             });
 
             var $ddlReplicaKit = $("#tdReplicaKit select");
-            $ddlReplicaKit.change(function () {
-                ProductCheckByID($(this).val());
-            });
-
             var $ddlPlayerDetail = $("#tdPrinting select");
             var $trCustomPrinting = $(".CustomPrinting");
+            var $trPatch = $(".Patch");
+            var $lblPricePlayerDetail = $("#tdPrinting span.PricePlayerDetail");
+            var $lblPricePlayerDetailSale = $("#tdPrinting span.PricePlayerDetailSale").hide();
+
+            if ($ddlReplicaKit.val() == "59cfbf39-a287-4194-8a19-fe933e4b41b7") {
+                $lblPricePlayerDetailSale.show();
+                $lblPricePlayerDetail.hide();
+                $trPatch.hide();
+            }
+
+            $ddlReplicaKit.change(function () {
+                ProductCheckByID($(this).val());
+
+                // Hard Code for Home kit of HongKong Version 59cfbf39-a287-4194-8a19-fe933e4b41b7
+                if ($(this).val() == "59cfbf39-a287-4194-8a19-fe933e4b41b7") {
+                    $lblPricePlayerDetailSale.show();
+                    $lblPricePlayerDetail.hide();
+                    $trPatch.hide();
+                } else {
+                    $lblPricePlayerDetailSale.hide();
+                    $lblPricePlayerDetail.show();
+                    $trPatch.show();
+                }
+            });
+
+
             $ddlPlayerDetail.change(function () {
                 if ($(this).val() == "custom")
                     $trCustomPrinting.show();
@@ -56,7 +78,7 @@
     </script>
 </asp:Content>
 <asp:Content ID="cphMain" ContentPlaceHolderID="cphMain" runat="server">
-    <div id="banner" style="height: 250px">
+    <div id="banner" style="height: 400px">
         <a href="http://bbs.arsenalcn.com/showtopic-107237.aspx" target="_blank">
             <asp:Literal ID="ltrlBannerImage" runat="server"></asp:Literal>
         </a>
@@ -136,10 +158,11 @@
                         <td class="FieldHeader">快递方式：
                         </td>
                         <td class="FieldColumn" colspan="3">
+                            <em>【第一批】2015年6月25日前预定全程包邮 - 顺丰速运</em>
                             <asp:RadioButtonList ID="rblOrderPostage" runat="server" RepeatDirection="Horizontal"
-                                RepeatLayout="Flow" CssClass="RadioButtonList">
-                                <asp:ListItem Text="12元（江浙沪 - 顺丰速运）" Value="12"></asp:ListItem>
-                                <asp:ListItem Text="18元（全国其他地区 - 顺丰速运）" Value="18" Selected="True"></asp:ListItem>
+                                RepeatLayout="Flow" CssClass="RadioButtonList" Visible="false">
+                                <asp:ListItem Text="12元（江浙沪 - 顺丰速运）" Value="0"></asp:ListItem>
+                                <asp:ListItem Text="18元（全国其他地区 - 顺丰速运）" Value="0" Selected="True"></asp:ListItem>
                             </asp:RadioButtonList>
                         </td>
                     </tr>
@@ -168,7 +191,7 @@
                             <asp:TextBox ID="tbOrderItemSize" runat="server" CssClass="TextBox" Width="40px" MaxLength="10"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="rfvOrderItemSize" runat="server" ControlToValidate="tbOrderItemSize"
                                 Display="Dynamic" ErrorMessage="*" CssClass="ValiSpan"></asp:RequiredFieldValidator>
-                            <a href="http://bbs.arsenalcn.com/showtopic.aspx?topicid=107237&postid=1794623#1794623" target="_blank">【欧版尺码表】</a>
+                            <a href="http://bbs.arsenalcn.com/showtopic.aspx?topicid=107237&postid=1794623#1794623" target="_blank">【尺码表】</a>
                         </td>
                         <td class="FieldHeader">印字印号：
                         </td>
@@ -176,6 +199,7 @@
                             <asp:DropDownList ID="ddlPlayerDetail" runat="server" OnDataBound="ddlPlayerDetail_DataBound" Width="140px">
                             </asp:DropDownList>
                             <asp:Label ID="lblPricePlayerDetail" runat="server" CssClass="PricePlayerDetail"></asp:Label>
+                            <asp:Label ID="lblPricePlayerDetailSale" runat="server" CssClass="PricePlayerDetailSale"></asp:Label>
                         </td>
                     </tr>
                     <tr class="Row CustomPrinting" id="trCustomPrinting" runat="server" style="display: none">
@@ -190,7 +214,7 @@
                             <asp:TextBox ID="tbPlayerName" runat="server" CssClass="TextBox" Width="150px" MaxLength="20"></asp:TextBox>
                         </td>
                     </tr>
-                    <tr class="AlternatingRow">
+                    <tr class="AlternatingRow" style="display: none">
                         <td class="FieldHeader">特殊字体：
                         </td>
                         <td class="FieldColumn" colspan="3" id="tdArsenalFont">
@@ -199,7 +223,7 @@
                             <asp:Label ID="lblPriceArsenalFont" runat="server" CssClass="PriceArsenalFont"></asp:Label>
                         </td>
                     </tr>
-                    <tr class="Row">
+                    <tr class="Row Patch" id="trPatch">
                         <td class="FieldHeader">英超袖标：
                         </td>
                         <td class="FieldColumn" colspan="3" id="tdPremierPatch">
@@ -212,7 +236,7 @@
                             <asp:Label ID="lblPricePremierPatch" runat="server"></asp:Label>
                         </td>
                     </tr>
-                    <tr class="AlternatingRow">
+                    <tr class="AlternatingRow" style="display: none">
                         <td class="FieldHeader">欧冠袖标：
                         </td>
                         <td class="FieldColumn" colspan="3" id="tdChampionPatch">

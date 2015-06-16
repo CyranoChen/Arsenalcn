@@ -185,6 +185,8 @@
     <Content Include="UploadFiles\Banner\banner20150410.png" />
     <Content Include="UploadFiles\Banner\banner20150503.png" />
     <Content Include="UploadFiles\Banner\banner20150601.png" />
+    <Content Include="UploadFiles\Banner\banner20150616.png" />
+    <Content Include="UploadFiles\Banner\banner20150617.png" />
     <Content Include="UploadFiles\logo_ArsenalChina.png" />
     <Content Include="App_Themes\iArsenal\images\menu_ahover.gif" />
     <Content Include="App_Themes\iArsenal\portal.css" />
@@ -1026,10 +1028,16 @@
     <Content Include="UploadFiles\Product\J46467N.jpg" />
     <Content Include="UploadFiles\Product\J46472B.jpg" />
     <Content Include="UploadFiles\Product\J46472W.jpg" />
+    <Content Include="UploadFiles\Product\J46890N.jpg" />
+    <Content Include="UploadFiles\Product\J74755201.jpg" />
+    <Content Include="UploadFiles\Product\J74757360.jpg" />
+    <Content Include="UploadFiles\Product\J74757460.jpg" />
     <Content Include="UploadFiles\Product\M46375B.jpg" />
     <Content Include="UploadFiles\Product\M46375R.jpg" />
     <Content Include="UploadFiles\Product\M46377B.jpg" />
     <Content Include="UploadFiles\Product\M46377G.jpg" />
+    <Content Include="UploadFiles\Product\M46381B.jpg" />
+    <Content Include="UploadFiles\Product\M46386R.jpg" />
     <Content Include="UploadFiles\Product\M46446R.jpg" />
     <Content Include="UploadFiles\Product\M46448R.jpg" />
     <Content Include="UploadFiles\Product\M46449Y.jpg" />
@@ -1039,6 +1047,11 @@
     <Content Include="UploadFiles\Product\M46461B.jpg" />
     <Content Include="UploadFiles\Product\M46461W.jpg" />
     <Content Include="UploadFiles\Product\M46890N.jpg" />
+    <Content Include="UploadFiles\Product\M74755201.jpg" />
+    <Content Include="UploadFiles\Product\M74756460.jpg" />
+    <Content Include="UploadFiles\Product\M74756660.jpg" />
+    <Content Include="UploadFiles\Product\M74756760.jpg" />
+    <Content Include="UploadFiles\Product\M74756HK.jpg" />
     <Content Include="UploadFiles\Product\n98navy.jpg" />
     <Content Include="UploadFiles\Product\n98red.jpg" />
     <Content Include="UploadFiles\Product\SC2295B.jpg" />
@@ -1048,9 +1061,11 @@
     <Content Include="UploadFiles\Product\T47703R.jpg" />
     <Content Include="UploadFiles\Product\T47704Y.jpg" />
     <Content Include="UploadFiles\Product\T47705N.jpg" />
+    <Content Include="UploadFiles\Product\T74802860.jpg" />
     <Content Include="UploadFiles\Product\W46470N.jpg" />
     <Content Include="UploadFiles\Product\W46473R.jpg" />
     <Content Include="UploadFiles\Product\W46475Y.jpg" />
+    <Content Include="UploadFiles\Product\W74758060.jpg" />
     <Content Include="UploadFiles\Product\Walcott.jpg" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

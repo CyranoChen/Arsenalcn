@@ -19,6 +19,7 @@
             var $ddlReplicaKit = $("#tdReplicaKit select");
             var $ddlPlayerDetail = $("#tdPrinting select");
             var $trCustomPrinting = $(".CustomPrinting");
+            var $trArsenalFont = $(".ArsenalFont");
             var $trPatch = $(".Patch");
             var $lblPricePlayerDetail = $("#tdPrinting span.PricePlayerDetail");
             var $lblPricePlayerDetailSale = $("#tdPrinting span.PricePlayerDetailSale").hide();
@@ -27,6 +28,7 @@
                 $lblPricePlayerDetailSale.show();
                 $lblPricePlayerDetail.hide();
                 $trPatch.hide();
+                $trArsenalFont.hide();
             }
 
             $ddlReplicaKit.change(function () {
@@ -37,10 +39,12 @@
                     $lblPricePlayerDetailSale.show();
                     $lblPricePlayerDetail.hide();
                     $trPatch.hide();
+                    $trArsenalFont.hide();
                 } else {
                     $lblPricePlayerDetailSale.hide();
                     $lblPricePlayerDetail.show();
                     $trPatch.show();
+                    $trArsenalFont.show();
                 }
             });
 
@@ -79,7 +83,7 @@
 </asp:Content>
 <asp:Content ID="cphMain" ContentPlaceHolderID="cphMain" runat="server">
     <div id="banner" style="height: 400px">
-        <a href="http://bbs.arsenalcn.com/showtopic-107237.aspx" target="_blank">
+        <a href="http://bbs.arsenalcn.com/showtopic-108081.aspx" target="_blank">
             <asp:Literal ID="ltrlBannerImage" runat="server"></asp:Literal>
         </a>
     </div>
@@ -214,7 +218,7 @@
                             <asp:TextBox ID="tbPlayerName" runat="server" CssClass="TextBox" Width="150px" MaxLength="20"></asp:TextBox>
                         </td>
                     </tr>
-                    <tr class="AlternatingRow" style="display: none">
+                    <tr class="AlternatingRow ArsenalFont" id="trArsenalFont">
                         <td class="FieldHeader">特殊字体：
                         </td>
                         <td class="FieldColumn" colspan="3" id="tdArsenalFont">

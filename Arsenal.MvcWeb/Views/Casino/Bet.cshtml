@@ -1,0 +1,20 @@
+﻿@model List<Arsenal.MvcWeb.Models.CasinoBet>
+@{
+    ViewBag.Title = "Bet";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Bet</h2>
+<p>
+    Description
+</p>
+<ul data-role="listview" data-inset="true">
+    <li data-role="list-divider">我的投注记录</li>
+    @if (Model != null && Model.Count > 0)
+    {
+        foreach (var m in Model)
+        {
+            <li></li>
+        }
+    }
+</ul>

@@ -1,0 +1,54 @@
+﻿@model Arsenal.MvcWeb.Models.CasinoMatch
+
+@{
+    ViewBag.Title = "GameBet";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Header {
+    @Html.ActionLink("Back", "Index", "Casino", null,
+            new { data_icon = "arrow-l", data_rel = "back", data_transition = "reverse" })
+    <h1>@ViewBag.Title</h1>
+}
+
+<div class="ui-grid-b" style="background: #fff8f0">
+    <div class="ui-block-a" style="height: 170px">
+        <a href="#" data-role="button">
+            <img src="http://bbs.arsenalcn.com/plugin/acncasino/UploadFiles/Team/England/Arsenal.gif" />
+            <h4>@Model.HomeTeamName</h4>
+        </a>
+    </div>
+    <div class="ui-block-b" style="height: 170px">
+        <a href="aboutPage" data-role="button" data-rel="dialog" data-transition="pop">
+            <h5>德国甲级联赛1415 第1轮</h5>
+            <span>1 VS 1</span>
+            <p>2015-06-07 02:45</p>
+        </a>
+    </div>
+    <div class="ui-block-c" style="height: 170px">
+        <a href="#" data-role="button">
+            <img src="http://bbs.arsenalcn.com/plugin/acncasino/UploadFiles/Team/England/Arsenal.gif" />
+            <h4>@Model.AwayTeamName</h4>
+        </a>
+    </div>
+    <div class="ui-block-a">
+        <a href="#" data-role="button"><span>主队胜：2.20</span></a>
+    </div>
+    <div class="ui-block-b">
+        <a href="#" data-role="button"><span>双方平：3.20</span></a>
+    </div>
+    <div class="ui-block-c">
+        <a href="#" data-role="button"><span>客队胜：3.20</span></a>
+    </div>
+</div>
+<div data-role="navbar">
+    <ul>
+        <li><a href="#anylink">投注记录</a></li>
+        <li><a href="#anylink">交战记录</a></li>
+        <li><a href="#anylink">留言记录</a></li>
+    </ul>
+</div>
+<ul data-role="listview" data-inset="true">
+    <li>可投注比赛</li>
+    <li></li>
+</ul>

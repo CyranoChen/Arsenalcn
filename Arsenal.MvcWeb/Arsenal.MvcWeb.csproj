@@ -425,6 +425,11 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\Casino\Index.cshtml" />
+    <Content Include="Views\Casino\GameBet.cshtml" />
+    <Content Include="Views\Casino\Bet.cshtml" />
+    <Content Include="Views\Casino\Result.cshtml" />
+    <Content Include="Views\Casino\Bonus.cshtml" />
+    <Content Include="Views\Casino\Detail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

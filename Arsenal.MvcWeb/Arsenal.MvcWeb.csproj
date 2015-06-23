@@ -430,6 +430,7 @@
     <Content Include="Views\Casino\Result.cshtml" />
     <Content Include="Views\Casino\Bonus.cshtml" />
     <Content Include="Views\Casino\Detail.cshtml" />
+    <Content Include="Views\Shared\Casino\MatchInfo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

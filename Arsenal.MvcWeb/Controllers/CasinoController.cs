@@ -87,6 +87,13 @@ namespace Arsenal.MvcWeb.Controllers
             return View(list.Skip(1).Take(20));
         }
 
+        public ActionResult PartialMatchInfo(Guid id)
+        {
+            var m = new CasinoMatch(id);
+
+            return PartialView("Casino/MatchInfo", m);
+        }
+
         // 中奖查询
         // GET: /Casino/Detail/5
 
@@ -94,7 +101,10 @@ namespace Arsenal.MvcWeb.Controllers
         {
             var list = Arsenalcn.CasinoSys.Entity.Bet.GetMatchAllBet(id);
 
-            return View(list);
+            ViewBag.MatchGuid = id;
+            ViewBag.Match = new CasinoMatch(id);
+
+            return View();
         }
 
         // 我要投注

@@ -1,0 +1,41 @@
+﻿@model Arsenal.MvcWeb.Models.CasinoMatch
+
+<fieldset data-role="controlgroup">
+    <div class="ui-grid-b">
+        <div class="ui-block-a" style="text-align: center">
+            <img src="http://bbs.arsenalcn.com/plugin/acncasino/@Model.TeamHome.TeamLogo" />
+            <h2>@Model.TeamHome.TeamDisplayName</h2>
+        </div>
+        <div class="ui-block-b" style="text-align: center">
+            <p>@Model.LeagueName</p>
+            @if (Model.ResultHome.HasValue && Model.ResultAway.HasValue)
+            {
+                <p>
+                    <span>@Model.ResultHome.Value</span>
+                    vs
+                    <span>@Model.ResultAway.Value</span>
+                </p>
+            }
+            else
+            {
+                <p>vs</p>
+            }
+            <p>@Model.PlayTime.ToString("yyyy-MM-dd HH:mm")</p>
+        </div>
+        <div class="ui-block-c" style="text-align: center">
+            <img src="http://bbs.arsenalcn.com/plugin/acncasino/@Model.TeamAway.TeamLogo" />
+            <h2>@Model.TeamAway.TeamDisplayName</h2>
+        </div>
+    </div>
+    <div class="ui-grid-b">
+        <div class="ui-block-a" style="text-align: center">
+            1.20
+        </div>
+        <div class="ui-block-b" style="text-align: center">
+            1.20
+        </div>
+        <div class="ui-block-c" style="text-align: center">
+            1.20
+        </div>
+    </div>
+</fieldset>

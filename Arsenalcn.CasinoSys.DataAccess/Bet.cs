@@ -254,7 +254,7 @@ namespace Arsenalcn.CasinoSys.DataAccess
             //                        WHERE UserID = @userid AND item.MatchGuid IS NOT NULL
             //                        ORDER BY BetTime desc";
 
-            string sql = @"SELECT Bet.*, match.*
+            string sql = @"SELECT bet.*, match.*, item.*
                         FROM dbo.AcnCasino_Bet bet
                         INNER JOIN dbo.AcnCasino_CasinoItem item
                         ON bet.CasinoItemGuid = item.CasinoItemGuid

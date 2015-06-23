@@ -15,9 +15,7 @@
         {
             <li>
                 <a data-transition="slide" href="@Url.Action("Detail", "Casino", new { id = m.MatchGuid.ToString() })">
-                    @m.HomeTeamName vs @m.AwayTeamName
-                    <br /> @m.PlayTime.ToString("yyyy-MM-dd HH:mm")
-                    <span class="ui-li-count">1|12.00</span>
+                    @Html.Partial("Casino/MatchInfo", m)
                 </a>
             </li>
         }

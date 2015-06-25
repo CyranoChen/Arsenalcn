@@ -1,23 +1,26 @@
-﻿@model IEnumerable<Arsenal.MvcWeb.Models.CasinoMatch>
+﻿@model IEnumerable<Arsenal.MvcWeb.Models.Casino.MatchDto>
 @{
     ViewBag.Title = "比赛结果";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<h2>比赛结果</h2>
-<p>
-    Description
-</p>
-<ul data-role="listview" data-inset="true">
-    <li data-role="list-divider">比赛结果</li>
-    @if (Model != null && Model.Count() > 0)
-    {
-        foreach (var m in Model)
+
+<div data-role="content">
+    <h2>比赛结果</h2>
+    <p>
+        Description
+    </p>
+    <ul data-role="listview" data-inset="true">
+        <li data-role="list-divider">比赛结果</li>
+        @if (Model != null && Model.Count() > 0)
         {
-            <li>
-                <a data-transition="slide" href="@Url.Action("Detail", "Casino", new { id = m.MatchGuid.ToString() })">
-                    @Html.Partial("Casino/MatchInfo", m)
-                </a>
-            </li>
+            foreach (var m in Model)
+            {
+                <li>
+                    <a data-transition="slide" href="@Url.Action("Detail", "Casino", new { id = m.MatchGuid.ToString() })">
+                        @Html.Partial("Casino/_MatchInfoPartial", m)
+                    </a>
+                </li>
+            }
         }
-    }
-</ul>
+    </ul>
+</div>

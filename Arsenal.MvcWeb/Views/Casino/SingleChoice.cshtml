@@ -1,0 +1,48 @@
+﻿@model Arsenal.MvcWeb.Models.Casino.MatchWithRateDto
+@{
+    ViewBag.Title = "SingleChoice";
+}
+
+@section Scripts {
+    <script type="text/javascript">
+        $(function () {
+            $("#btnSubmit").click(function () {
+                document.forms["formGameBet"].submit();
+            });
+        });
+    </script>
+}
+
+@section Header {
+    <div data-role="header">
+        <h1>
+            <span>@Model.TeamHome.TeamDisplayName</span>
+            <span> vs </span>
+            <span>@Model.TeamAway.TeamDisplayName</span>
+        </h1>
+    </div>
+}
+
+@section Footer {
+    <div data-role="footer" style="text-align: center">
+        <input type="button" id="btnSubmit" value="Submit" />
+    </div>
+}
+
+<div data-role="content">
+    @using (Html.BeginForm("SingleChoice", "Casino", FormMethod.Post, new { id = "formGameBet" }))
+    {
+
+        <fieldset data-role="controlgroup" data-type="horizontal">
+            <legend>Single Choice：</legend>
+            <label for="home">[主队胜] @Model.WinRate.ToString("f2")</label>
+            <input type="radio" name="option" id="home" value="@Model.WinRate">
+            <label for="draw">[双方平] @Model.DrawRate.ToString("f2")</label>
+            <input type="radio" name="option" id="draw" value="@Model.DrawRate">
+            <label for="away">[客队胜] @Model.LoseRate.ToString("f2")</label>
+            <input type="radio" name="option" id="away" value="@Model.LoseRate">
+        </fieldset>
+        <label for="betAmount">BetAmount: </label>
+        <input type="range" name="betAmount" id="betAmount" value="1000" min="0" max="10000" data-highlight="true">
+    }
+</div>

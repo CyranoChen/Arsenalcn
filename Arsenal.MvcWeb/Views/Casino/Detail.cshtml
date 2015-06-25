@@ -1,22 +1,21 @@
-﻿@model List<Arsenal.MvcWeb.Models.CasinoBet>
+﻿@model List<Arsenal.MvcWeb.Models.Casino.BetDto>
 
 @{
     ViewBag.Title = "Detail";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
-    var match = (Arsenal.MvcWeb.Models.CasinoMatch)ViewBag.Match;
+    var match = (Arsenal.MvcWeb.Models.Casino.MatchWithRateDto)ViewBag.MatchDto;
 
 }
 
 @section Header {
-    @Html.ActionLink("Back", "Index", "Casino", null,
+    <div data-role="header" data-position="fixed">
+        @Html.ActionLink("Back", "Index", "Casino", null,
             new { data_icon = "arrow-l", data_rel = "back", data_transition = "reverse", data_iconpos = "notext" })
-    <h1>@ViewBag.Title</h1>
+        <h1>@ViewBag.Title</h1>
+    </div>
 }
 
-@Html.Partial("Casino/MatchInfo", match);
-
-
-@{
-    Html.RenderAction("PartialMatchInfo", "Casino", new { id = @ViewBag.MatchGuid });
-}
+<div data-role="content">
+    @Html.Partial("Casino/_MatchInfoPartial", match);
+</div>

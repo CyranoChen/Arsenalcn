@@ -7,32 +7,39 @@
     <link href="http://www.arsenalcn.com/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     @Styles.Render("~/Content/mobileCss", "~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-</head>
-<body>
-    <div data-role="page" data-theme="a">
-        <div data-role="header">
-            @if (IsSectionDefined("Header"))
-            {
-                @RenderSection("Header")
-            }
-            else
-            {
-                <h1>@ViewBag.Title</h1>
-                @Html.Partial("_LoginPartial")
-            }
-        </div>
-        <div data-role="content">
-            @RenderBody()
-        </div>
-    </div>
 
     @Scripts.Render("~/bundles/jquery")
     <script type="text/javascript">
         $(document).on("mobileinit", function () {
-            //$.mobile.ajaxEnabled = true;
+            $.mobile.ajaxEnabled = true;
         });
     </script>
     @Scripts.Render("~/bundles/jquerymobile")
-    @RenderSection("scripts", required: false)
+</head>
+<body>
+    <div data-role="page" data-theme="a" @TempData["DataUrl"]>
+
+        @if (IsSectionDefined("Header"))
+        {
+            @RenderSection("Header")
+        }
+        else
+        {
+            <div data-role="header" data-position="fixed">
+                <h1>@ViewBag.Title</h1>
+                @Html.Partial("_LoginPartial")
+            </div>
+        }
+
+        @RenderBody()
+        @RenderSection("Scripts", required: false)
+
+        @if (IsSectionDefined("Footer"))
+        {
+            <div data-role="footer" data-position="fixed">
+                @RenderSection("Footer")
+            </div>
+        }
+    </div>
 </body>
 </html>

@@ -118,7 +118,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
-    <Compile Include="Models\CasinoModels.cs" />
+    <Compile Include="Models\Casino\BetModels.cs" />
+    <Compile Include="Models\Casino\MatchModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -430,7 +431,8 @@
     <Content Include="Views\Casino\Result.cshtml" />
     <Content Include="Views\Casino\Bonus.cshtml" />
     <Content Include="Views\Casino\Detail.cshtml" />
-    <Content Include="Views\Shared\Casino\MatchInfo.cshtml" />
+    <Content Include="Views\Shared\Casino\_MatchInfoPartial.cshtml" />
+    <Content Include="Views\Casino\SingleChoice.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

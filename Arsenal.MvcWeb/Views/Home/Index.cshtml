@@ -2,17 +2,18 @@
     ViewBag.Title = "Home Page";
 }
 
-<h2>@ViewBag.Message</h2>
-<p>
-    To learn more about ASP.NET MVC visit <a href="http://asp.net/mvc" title="ASP.NET MVC Website">http://asp.net/mvc</a>.
-</p>
-
-<ul data-role="listview" data-inset="true">
-    <li data-role="list-divider">Navigation</li>
-    <li>@Html.ActionLink("可投注比赛", "Index", "Casino", null, new { data_transition = "slide" })</li>
-    <li>@Html.ActionLink("比赛结果查询", "Result", "Casino", null, new { data_transition = "slide" })</li>
-    <li>@Html.ActionLink("我的投注记录", "Bet", "Casino", null, new { data_transition = "slide" })</li>
-    <li>@Html.ActionLink("我的盈亏记录", "Bonus", "Casino", null, new { data_transition = "slide" })</li>
-    <li>@Html.ActionLink("About", "About", "Home", null, new { data_transition = "slide" })</li>
-    <li>@Html.ActionLink("Contact", "Contact", "Home", null, new { data_transition = "slide" })</li>
-</ul>
+<div data-role="content">
+    <h2>@ViewBag.Message</h2>
+    <p>
+        To learn more about ASP.NET MVC visit <a href="http://asp.net/mvc" title="ASP.NET MVC Website">http://asp.net/mvc</a>.
+    </p>
+    <ul data-role="listview" data-inset="true">
+        <li data-role="list-divider">Navigation</li>
+        <li>@Html.ActionLink("可投注比赛", "Index", "Casino", null, new { data_transition = "slide" })</li>
+        <li>@Html.ActionLink("比赛结果查询", "Result", "Casino", null, new { data_transition = "slide" })</li>
+        <li>@Html.ActionLink("我的投注记录", "Bet", "Casino", null, new { data_transition = "slide" })</li>
+        <li>@Html.ActionLink("我的盈亏记录", "Bonus", "Casino", null, new { data_transition = "slide" })</li>
+        <li>@Html.ActionLink("About", "About", "Home", null, new { data_transition = "slide" })</li>
+        <li>@Html.ActionLink("Contact", "Contact", "Home", null, new { data_transition = "slide" })</li>
+    </ul>
+</div>

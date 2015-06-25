@@ -4,42 +4,17 @@ using System.Data;
 using Arsenalcn.CasinoSys.Entity;
 using ArsenalTeam = Arsenalcn.CasinoSys.Entity.Arsenal.Team;
 
-namespace Arsenal.MvcWeb.Models
+namespace Arsenal.MvcWeb.Models.Casino
 {
-    public class CasinoMatch : Match
+    public class BetDto : Bet
     {
-        public CasinoMatch(Guid matchGuid)
-            : base(matchGuid)
-        {
-            Init();
-        }
-
-        public CasinoMatch(DataRow dr)
-            : base(dr)
-        {
-            Init();
-        }
-
-        private void Init()
-        {
-            TeamHome = Arsenal_Team.Cache.Load(Home);
-            TeamAway = Arsenal_Team.Cache.Load(Away);
-        }
-
-        public ArsenalTeam TeamHome { get; set; }
-
-        public ArsenalTeam TeamAway { get; set; }
-    }
-
-    public class CasinoBet : Bet
-    {
-        public CasinoBet(DataRow dr)
+        public BetDto(DataRow dr)
             : base(dr)
         {
             Init(dr);
         }
 
-        private void Init(DataRow dr)
+        protected virtual void Init(DataRow dr)
         {
             TeamHome = Arsenal_Team.Cache.Load((Guid)dr["Home"]);
             TeamAway = Arsenal_Team.Cache.Load((Guid)dr["Away"]);

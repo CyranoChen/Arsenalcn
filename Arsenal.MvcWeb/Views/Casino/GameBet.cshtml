@@ -1,26 +1,67 @@
-﻿@model Arsenal.MvcWeb.Models.CasinoMatch
-
+﻿@model Arsenal.MvcWeb.Models.Casino.MatchWithRateDto
 @{
     ViewBag.Title = "GameBet";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    List<Arsenalcn.CasinoSys.Entity.Bet> bets = ViewBag.BetList;
+    List<Arsenal.MvcWeb.Models.Casino.MatchDto> matches = ViewBag.MatchDtoList;
 }
 
 @section Header {
-    @Html.ActionLink("Back", "Index", "Casino", null,
-            new { data_icon = "arrow-l", data_rel = "back", data_transition = "reverse", data_iconpos = "notext" })
-    <h1>@ViewBag.Title</h1>
+    <div data-role="header" data-position="fixed">
+        @Html.ActionLink("Back", "Index", "Casino", null,
+            new { data_icon = "arrow-l", data_transition = "slide", data_direction = "reverse", data_iconpos = "notext" })
+        <h1>@ViewBag.Title</h1>
+    </div>
 }
 
-@Html.Partial("Casino/MatchInfo", Model)
+@section Footer {
+    <div data-role="footer" data-position="fixed" class="ui-btn">
+        <div data-role="controlgroup" data-type="horizontal">
+            <a href="@Url.Action("SingleChoice", "Casino", new { id = Model.MatchGuid })" data-role="button" data-icon="plus" data-rel="dialog" data-transition="pop">投输赢</a>
+            <a href="#page-2" data-role="button" data-icon="plus" data-rel="dialog" data-transition="pop">猜比分</a>
+        </div>
+    </div>
+}
 
-<div data-role="navbar">
-    <ul>
-        <li><a href="#anylink">投注记录</a></li>
-        <li><a href="#anylink">交战记录</a></li>
-        <li><a href="#anylink">留言记录</a></li>
+<div data-role="content">
+    @Html.Partial("Casino/_MatchInfoPartial", Model)
+
+    <div data-role="navbar">
+        <ul>
+            <li>
+                <a href="#anylink" class="btn ui-btn-active ui-state-persist">
+                    <span>交战记录</span>
+                    <span class="ui-li-count">@matches.Count</span>
+                </a>
+            </li>
+            <li>
+                <a href="#anylink">
+                    <span>投注记录</span>
+                    <span class="ui-li-count">@bets.Count</span>
+                </a>
+            </li>
+            <li>
+                <a href="#anylink">
+                    <span>留言记录</span>
+                    <span class="ui-li-count">0</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <ul data-role="listview" data-inset="true">
+        <li data-role="list-divider">投注记录</li>
+        @if (bets != null && bets.Count > 0)
+        {
+            foreach (var b in bets)
+            {
+                <li>
+                    <a href="#" data-role="button">
+                        <h3 style="width: 310px; text-align:center"><b> 投注: (@b.BetRate.Value.ToString("f2")) @b.BetAmount.Value.ToString("N0")</b></h3>
+                        <p class="ui-li-aside"><em>@b.BetTime.ToString("yyyy-MM-dd HH:mm:ss")</em></p>
+                    </a>
+                </li>
+            }
+        }
     </ul>
 </div>
-<ul data-role="listview" data-inset="true">
-    <li>可投注比赛</li>
-    <li></li>
-</ul>

@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using System.Linq;
 
 using Arsenal.MvcWeb.Models;
+using Arsenal.MvcWeb.Models.Casino;
 using Arsenalcn.CasinoSys.Entity;
 
 namespace Arsenal.MvcWeb.Controllers
@@ -16,14 +17,14 @@ namespace Arsenal.MvcWeb.Controllers
 
         public ActionResult Index()
         {
-            var list = new List<CasinoMatch>();
+            var list = new List<MatchWithRateDto>();
             var dt = CasinoItem.GetMatchCasinoItemView(true);
 
             if (dt != null)
             {
                 foreach (DataRow dr in dt.Rows)
                 {
-                    list.Add(new CasinoMatch(dr));
+                    list.Add(new MatchWithRateDto(dr));
                 }
             }
 
@@ -35,14 +36,14 @@ namespace Arsenal.MvcWeb.Controllers
 
         public ActionResult Bet()
         {
-            var list = new List<CasinoBet>();
+            var list = new List<BetDto>();
             var dt = Arsenalcn.CasinoSys.Entity.Bet.GetUserBetHistoryView(443);
 
             if (dt != null)
             {
                 foreach (DataRow dr in dt.Rows)
                 {
-                    list.Add(new CasinoBet(dr));
+                    list.Add(new BetDto(dr));
                 }
             }
 
@@ -54,14 +55,14 @@ namespace Arsenal.MvcWeb.Controllers
 
         public ActionResult Bonus()
         {
-            var list = new List<CasinoBet>();
+            var list = new List<BetDto>();
             var dt = Arsenalcn.CasinoSys.Entity.Bet.GetUserBetHistoryView(443);
 
             if (dt != null)
             {
                 foreach (DataRow dr in dt.Rows)
                 {
-                    list.Add(new CasinoBet(dr));
+                    list.Add(new BetDto(dr));
                 }
             }
 
@@ -73,14 +74,14 @@ namespace Arsenal.MvcWeb.Controllers
 
         public ActionResult Result()
         {
-            var list = new List<CasinoMatch>();
+            var list = new List<MatchDto>();
             var dt = CasinoItem.GetEndViewByMatch();
 
             if (dt != null)
             {
                 foreach (DataRow dr in dt.Rows)
                 {
-                    list.Add(new CasinoMatch(dr));
+                    list.Add(new MatchDto(dr));
                 }
             }
 
@@ -89,9 +90,9 @@ namespace Arsenal.MvcWeb.Controllers
 
         public ActionResult PartialMatchInfo(Guid id)
         {
-            var m = new CasinoMatch(id);
+            var m = new MatchWithRateDto(id);
 
-            return PartialView("Casino/MatchInfo", m);
+            return PartialView("Casino/_MatchInfoPartial", m);
         }
 
         // 中奖查询
@@ -101,8 +102,7 @@ namespace Arsenal.MvcWeb.Controllers
         {
             var list = Arsenalcn.CasinoSys.Entity.Bet.GetMatchAllBet(id);
 
-            ViewBag.MatchGuid = id;
-            ViewBag.Match = new CasinoMatch(id);
+            ViewBag.MatchDto = new MatchWithRateDto(id);
 
             return View();
         }
@@ -112,9 +112,59 @@ namespace Arsenal.MvcWeb.Controllers
 
         public ActionResult GameBet(Guid id)
         {
-            CasinoMatch m = new CasinoMatch(id);
+            var m = new MatchWithRateDto(id);
+
+            List<Bet> bList = Arsenalcn.CasinoSys.Entity.Bet.GetUserMatchAllBet(443, id);
+
+            ViewBag.BetList = bList;
+
+            var mlist = new List<MatchDto>();
+            var dt = CasinoItem.GetHistoryViewByMatch(id);
+
+            if (dt != null)
+            {
+                foreach (DataRow dr in dt.Rows)
+                {
+                    mlist.Add(new MatchDto(dr));
+                }
+            }
+
+            ViewBag.MatchDtoList = mlist;
 
             return View(m);
+        }
+
+        // 投输赢
+        // GET: /Casino/SingleChoice/id
+
+        public ActionResult SingleChoice(Guid id)
+        {
+            var m = new MatchWithRateDto(id);
+
+            return View(m);
+        }
+
+        // 投输赢
+        // POST: /Casino/SingleChoice
+
+        [HttpPost]
+        public ActionResult SingleChoice(Guid id, float betAmount)
+        {
+            try
+            {
+                // TODO: Add insert logic here
+
+                var ba = betAmount;
+
+                TempData["DataUrl"] = string.Format("data-url=/Casino/GameBet/{0}", id.ToString());
+                return RedirectToAction("GameBet", new { id = id });
+            }
+            catch
+            {
+                var m = new MatchWithRateDto(id);
+
+                return View(m);
+            }
         }
 
         //

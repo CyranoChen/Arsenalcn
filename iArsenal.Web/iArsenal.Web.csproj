@@ -142,7 +142,6 @@
     <Content Include="iArsenalOrder_ArsenalDirect.aspx" />
     <Content Include="iArsenalMemberPeriod.aspx" />
     <Content Include="iArsenalOrderView_MatchTicket.aspx" />
-    <Content Include="iArsenalOrder_AsiaTrophy2015.aspx" />
     <Content Include="iArsenalOrder_LondonTravel.aspx" />
     <Content Include="iArsenalOrder_MemberShip.aspx" />
     <Content Include="iArsenalOrder_MatchTicket.aspx" />
@@ -355,13 +354,6 @@
     </Compile>
     <Compile Include="iArsenalMemberPeriod.aspx.designer.cs">
       <DependentUpon>iArsenalMemberPeriod.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="iArsenalOrder_AsiaTrophy2015.aspx.cs">
-      <DependentUpon>iArsenalOrder_AsiaTrophy2015.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="iArsenalOrder_AsiaTrophy2015.aspx.designer.cs">
-      <DependentUpon>iArsenalOrder_AsiaTrophy2015.aspx</DependentUpon>
     </Compile>
     <Compile Include="iArsenalOrder_LondonTravel.aspx.cs">
       <DependentUpon>iArsenalOrder_LondonTravel.aspx</DependentUpon>

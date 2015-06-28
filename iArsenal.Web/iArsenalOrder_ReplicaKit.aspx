@@ -162,11 +162,10 @@
                         <td class="FieldHeader">快递方式：
                         </td>
                         <td class="FieldColumn" colspan="3">
-                            <em>【第一批】2015年6月25日前预定全程包邮 - 顺丰速运</em>
                             <asp:RadioButtonList ID="rblOrderPostage" runat="server" RepeatDirection="Horizontal"
-                                RepeatLayout="Flow" CssClass="RadioButtonList" Visible="false">
-                                <asp:ListItem Text="12元（江浙沪 - 顺丰速运）" Value="0"></asp:ListItem>
-                                <asp:ListItem Text="18元（全国其他地区 - 顺丰速运）" Value="0" Selected="True"></asp:ListItem>
+                                RepeatLayout="Flow" CssClass="RadioButtonList">
+                                <asp:ListItem Text="12元（江浙沪 - 顺丰速运）" Value="12"></asp:ListItem>
+                                <asp:ListItem Text="18元（全国其他地区 - 顺丰速运）" Value="18" Selected="True"></asp:ListItem>
                             </asp:RadioButtonList>
                         </td>
                     </tr>

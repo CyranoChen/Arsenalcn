@@ -254,6 +254,11 @@ namespace Arsenalcn.CasinoSys.Entity
             return betList;
         }
 
+        public static DataTable GetUserMatchAllBetTable(int userid, Guid matchGuid)
+        {
+            return DataAccess.Bet.GetUserMatchAllBet(userid, matchGuid);
+        }
+
         public static List<Bet> GetUserCasinoItemAllBet(int userid, Guid casinoItemGuid)
         {
             DataTable dt = DataAccess.Bet.GetUserCasinoItemAllBet(userid, casinoItemGuid);
@@ -300,6 +305,11 @@ namespace Arsenalcn.CasinoSys.Entity
             }
 
             return betList;
+        }
+
+        public static DataTable GetMatchAllBetTable(Guid matchGuid)
+        {
+            return DataAccess.Bet.GetMatchAllBet(matchGuid);
         }
 
         public static List<Bet> GetAllBetByTimeDiff(int timeDiff)

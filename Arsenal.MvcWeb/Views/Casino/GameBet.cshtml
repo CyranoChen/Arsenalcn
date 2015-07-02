@@ -1,12 +1,10 @@
 ﻿@model Arsenal.MvcWeb.Models.Casino.MatchWithRateDto
 @{
     ViewBag.Title = "GameBet";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 
-    List<Arsenalcn.CasinoSys.Entity.Bet> bets = ViewBag.BetList;
+    List<Arsenal.MvcWeb.Models.Casino.BetDto> bets = ViewBag.BetList;
     List<Arsenal.MvcWeb.Models.Casino.MatchDto> matches = ViewBag.MatchDtoList;
 }
-
 @section Header {
     <div data-role="header" data-position="fixed">
         @Html.ActionLink("Back", "Index", "Casino", null,
@@ -14,7 +12,6 @@
         <h1>@ViewBag.Title</h1>
     </div>
 }
-
 @section Footer {
     <div data-role="footer" data-position="fixed" class="ui-btn">
         <div data-role="controlgroup" data-type="horizontal">
@@ -23,45 +20,73 @@
         </div>
     </div>
 }
-
 <div data-role="content">
     @Html.Partial("Casino/_MatchInfoPartial", Model)
-
     <div data-role="navbar">
         <ul>
             <li>
                 <a href="#anylink" class="btn ui-btn-active ui-state-persist">
-                    <span>交战记录</span>
+                    <span>历史交锋</span>
                     <span class="ui-li-count">@matches.Count</span>
                 </a>
             </li>
             <li>
                 <a href="#anylink">
-                    <span>投注记录</span>
+                    <span>我的投注</span>
                     <span class="ui-li-count">@bets.Count</span>
                 </a>
             </li>
             <li>
                 <a href="#anylink">
-                    <span>留言记录</span>
+                    <span>球迷留言</span>
                     <span class="ui-li-count">0</span>
                 </a>
             </li>
         </ul>
     </div>
-    <ul data-role="listview" data-inset="true">
-        <li data-role="list-divider">投注记录</li>
+    <ul id="pnlMatchList" data-role="listview" data-inset="true">
+        <li data-role="list-divider">
+            历史交锋
+            <span class="ui-li-count">@matches.Count</span>
+        </li>
+        @if (matches != null && matches.Count > 0)
+        {
+            foreach (var m in matches)
+            {
+                <li>
+                    <a data-transition="slide" data-role="button" href="@Url.Action("Detail", "Casino", new { id = m.MatchGuid.ToString() })">
+                        @Html.Partial("Casino/_MatchInfoLitePartial", m)
+                    </a>
+                </li>
+            }
+        }
+    </ul>
+    <ul id="pnlBetList" data-role="listview" data-inset="true">
+        <li data-role="list-divider">
+            我的投注
+            <span class="ui-li-count">@bets.Count</span>
+        </li>
         @if (bets != null && bets.Count > 0)
         {
             foreach (var b in bets)
             {
                 <li>
-                    <a href="#" data-role="button">
-                        <h3 style="width: 310px; text-align:center"><b> 投注: (@b.BetRate.Value.ToString("f2")) @b.BetAmount.Value.ToString("N0")</b></h3>
-                        <p class="ui-li-aside"><em>@b.BetTime.ToString("yyyy-MM-dd HH:mm:ss")</em></p>
+                    <a href="#" data-role="button" data-icon="@b.BetIconInfo" data-iconpos="left">
+                        <h3>投注：@b.BetDetailInfo</h3>
+                        <p>@b.BetTime.ToString("yyyy-MM-dd HH:mm:ss")</p>
+                        @if (b.IsWin.HasValue && b.IsWin.Value)
+                        {
+                            <span class="ui-li-count">+@b.EarningDesc</span>
+                        }
                     </a>
                 </li>
             }
         }
+    </ul>
+    <ul id="pnlMessageList" data-role="listview" data-inset="true">
+        <li data-role="list-divider">
+            球迷留言
+            <span class="ui-li-count">/</span>
+        </li>
     </ul>
 </div>

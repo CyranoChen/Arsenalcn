@@ -28,6 +28,8 @@ namespace Arsenal.MvcWeb.Controllers
                 }
             }
 
+            ViewBag.CasinoValidDays = 7;
+
             return View(list);
         }
 
@@ -85,6 +87,7 @@ namespace Arsenal.MvcWeb.Controllers
                 }
             }
 
+            // HARDCODE
             return View(list.Skip(1).Take(20));
         }
 
@@ -100,11 +103,20 @@ namespace Arsenal.MvcWeb.Controllers
 
         public ActionResult Detail(Guid id)
         {
-            var list = Arsenalcn.CasinoSys.Entity.Bet.GetMatchAllBet(id);
+            var list = new List<BetDto>();
+            var dt = Arsenalcn.CasinoSys.Entity.Bet.GetMatchAllBetTable(id);
+
+            if (dt != null)
+            {
+                foreach (DataRow dr in dt.Rows)
+                {
+                    list.Add(new BetDto(dr));
+                }
+            }
 
             ViewBag.MatchDto = new MatchWithRateDto(id);
 
-            return View();
+            return View(list);
         }
 
         // 我要投注
@@ -114,16 +126,25 @@ namespace Arsenal.MvcWeb.Controllers
         {
             var m = new MatchWithRateDto(id);
 
-            List<Bet> bList = Arsenalcn.CasinoSys.Entity.Bet.GetUserMatchAllBet(443, id);
+            var bList = new List<BetDto>();
+            var dtBet = Arsenalcn.CasinoSys.Entity.Bet.GetUserMatchAllBetTable(443, id);
+
+            if (dtBet != null)
+            {
+                foreach (DataRow dr in dtBet.Rows)
+                {
+                    bList.Add(new BetDto(dr));
+                }
+            }
 
             ViewBag.BetList = bList;
 
             var mlist = new List<MatchDto>();
-            var dt = CasinoItem.GetHistoryViewByMatch(id);
+            var dtMatch = CasinoItem.GetHistoryViewByMatch(id);
 
-            if (dt != null)
+            if (dtMatch != null)
             {
-                foreach (DataRow dr in dt.Rows)
+                foreach (DataRow dr in dtMatch.Rows)
                 {
                     mlist.Add(new MatchDto(dr));
                 }

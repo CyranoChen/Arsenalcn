@@ -1,21 +1,42 @@
-﻿@model List<Arsenal.MvcWeb.Models.Casino.BetDto>
+﻿@model IEnumerable<Arsenal.MvcWeb.Models.Casino.BetDto>
 
 @{
     ViewBag.Title = "Detail";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 
     var match = (Arsenal.MvcWeb.Models.Casino.MatchWithRateDto)ViewBag.MatchDto;
-
 }
 
 @section Header {
     <div data-role="header" data-position="fixed">
-        @Html.ActionLink("Back", "Index", "Casino", null,
+        @Html.ActionLink("Back", "Result", "Casino", null,
             new { data_icon = "arrow-l", data_rel = "back", data_transition = "reverse", data_iconpos = "notext" })
         <h1>@ViewBag.Title</h1>
     </div>
 }
 
 <div data-role="content">
-    @Html.Partial("Casino/_MatchInfoPartial", match);
+    @Html.Partial("Casino/_MatchInfoPartial", match)
+    <ul data-role="listview" data-inset="true">
+        <li data-role="list-divider">
+            比赛投注中奖查询
+            <span class="ui-li-count">@Model.Count()</span>
+        </li>
+        @if (Model != null && Model.Count() > 0)
+        {
+            foreach (var m in Model)
+            {
+                <li>
+                    <a href="#" data-role="button" data-icon="@m.BetIconInfo" data-iconpos="left">
+                        <h3>投注：@m.BetDetailInfo</h3>
+                        <p>@m.BetTime.ToString("yyyy-MM-dd HH:mm:ss")</p>
+                        <p class="ui-li-aside">@m.UserName</p>
+                        @if (m.IsWin.HasValue && m.IsWin.Value)
+                        {
+                            <span class="ui-li-count">+@m.EarningDesc</span>
+                        }
+                    </a>
+                </li>
+            }
+        }
+    </ul>
 </div>

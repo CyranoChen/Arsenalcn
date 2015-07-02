@@ -8,6 +8,8 @@ namespace Arsenal.MvcWeb.Models.Casino
 {
     public class BetDto : Bet
     {
+        public BetDto() : base() { }
+
         public BetDto(DataRow dr)
             : base(dr)
         {
@@ -16,18 +18,27 @@ namespace Arsenal.MvcWeb.Models.Casino
 
         protected virtual void Init(DataRow dr)
         {
-            TeamHome = Arsenal_Team.Cache.Load((Guid)dr["Home"]);
-            TeamAway = Arsenal_Team.Cache.Load((Guid)dr["Away"]);
+            if (dr.Table.Columns.Contains("Home") && dr.Table.Columns.Contains("Away"))
+            {
+                TeamHome = Arsenal_Team.Cache.Load((Guid)dr["Home"]);
+                TeamAway = Arsenal_Team.Cache.Load((Guid)dr["Away"]);
+            }
 
-            ItemType = (CasinoItem.CasinoType)Enum.Parse(typeof(CasinoItem.CasinoType), dr["ItemType"].ToString());
+            Item = CasinoItem.GetCasinoItem((Guid)dr["CasinoItemGuid"]);
 
+            InitBetIcon();
+            InitBetDetail();
+        }
+
+        private void InitBetIcon()
+        {
             if (IsWin.HasValue)
             {
                 if (IsWin.Value)
                 {
-                    if (ItemType.Equals(CasinoItem.CasinoType.SingleChoice))
+                    if (Item.ItemType.Equals(CasinoItem.CasinoType.SingleChoice))
                     { BetIconInfo = "star"; }
-                    else if (ItemType.Equals(CasinoItem.CasinoType.MatchResult))
+                    else if (Item.ItemType.Equals(CasinoItem.CasinoType.MatchResult))
                     { BetIconInfo = "check"; }
                 }
                 else
@@ -35,14 +46,17 @@ namespace Arsenal.MvcWeb.Models.Casino
             }
             else
             { BetIconInfo = "back"; }
+        }
 
+        private void InitBetDetail()
+        {
             DataTable dtBetDetail = BetDetail.GetBetDetailByBetID(ID);
 
             if (dtBetDetail != null)
             {
                 DataRow drBetDetail = dtBetDetail.Rows[0];
 
-                switch (ItemType)
+                switch (Item.ItemType)
                 {
                     case CasinoItem.CasinoType.SingleChoice:
                         if (drBetDetail["DetailName"].ToString() == MatchChoiceOption.HomeWinValue)
@@ -70,7 +84,7 @@ namespace Arsenal.MvcWeb.Models.Casino
 
         public ArsenalTeam TeamAway { get; set; }
 
-        public CasinoItem.CasinoType ItemType { get; set; }
+        public CasinoItem Item { get; set; }
 
         public string BetDetailInfo { get; set; }
 

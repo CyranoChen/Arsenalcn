@@ -1,43 +1,30 @@
-﻿@model List<Arsenal.MvcWeb.Models.Casino.BetDto>
+﻿@model IEnumerable<Arsenal.MvcWeb.Models.Casino.BetDto>
 @{
     ViewBag.Title = "我的中奖查询";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <div data-role="content">
     <ul data-role="listview" data-inset="true">
-        <li data-role="list-divider">我的中奖查询<span class="ui-li-count">@Model.Count</span></li>
-        @if (Model != null && Model.Count > 0)
+        <li data-role="list-divider">
+            我的中奖查询
+            <span class="ui-li-count">@Model.Count()</span>
+        </li>
+        @if (Model != null && Model.Count() > 0)
         {
             foreach (var m in Model)
             {
                 <li>
                     <a href="#" data-role="button" data-icon="@m.BetIconInfo" data-iconpos="left">
-                        <div class="ui-grid-d">
-                            <div class="ui-block-a" style="width:100px; text-align: right">
-                                <h2>
-                                    @m.TeamHome.TeamDisplayName
-                                </h2>
-                            </div>
-                            <div class="ui-block-b" style="width:40px; text-align: right;">
-                                <img src="http://bbs.arsenalcn.com/plugin/acncasino/@m.TeamHome.TeamLogo" style="width: 32px; height: 32px;" />
-                            </div>
-                            <div class="ui-block-c" style="width:30px; text-align: center">
-                                <p>vs</p>
-                            </div>
-                            <div class="ui-block-d" style="width:40px; text-align: left">
-                                <img src="http://bbs.arsenalcn.com/plugin/acncasino/@m.TeamAway.TeamLogo" style="width: 32px; height: 32px;" />
-                            </div>
-                            <div class="ui-block-e" style="width:100px; text-align: left">
-                                <h2>
-                                    @m.TeamAway.TeamDisplayName
-                                </h2>
-                            </div>
-                        </div>
-                        <h3 style="width: 310px; text-align:center"><b> 投注: @m.BetDetailInfo</b></h3>
-                        <p class="ui-li-aside"><em>@m.BetTime.ToString("yyyy-MM-dd HH:mm:ss")</em></p>
+                        <h3>
+                            @m.TeamHome.TeamDisplayName
+                            <span>vs</span>
+                            @m.TeamAway.TeamDisplayName
+                        </h3>
+                        <p>投注内容：@m.BetDetailInfo</p>
+                        <p>投注时间：@m.BetTime.ToString("yyyy-MM-dd HH:mm:ss")</p>
+                        <p class="ui-li-aside">@m.UserName</p>
                         @if (m.IsWin.HasValue && m.IsWin.Value)
                         {
-                            <span class="ui-li-count">@m.EarningDesc</span>
+                            <span class="ui-li-count">+@m.EarningDesc</span>
                         }
                     </a>
                 </li>

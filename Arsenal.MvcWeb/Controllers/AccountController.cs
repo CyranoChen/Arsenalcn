@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using System.Web.Routing;
 using System.Web.Security;
 
 using Arsenal.MvcWeb.Models;
 
 namespace Arsenal.MvcWeb.Controllers
 {
-
     [Authorize]
     public class AccountController : Controller
     {
@@ -41,9 +36,12 @@ namespace Arsenal.MvcWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (Membership.ValidateUser(model.UserName, model.Password))
+                object key = null;
+
+                if (MembershipDto.ValidateUser(model.UserName, model.Password, providerUserKey: out key))
                 {
-                    FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
+                    FormsAuthentication.SetAuthCookie(key.ToString(), model.RememberMe);
+
                     if (Url.IsLocalUrl(returnUrl))
                     {
                         return Redirect(returnUrl);
@@ -55,7 +53,7 @@ namespace Arsenal.MvcWeb.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("", "The user name or password provided is incorrect.");
+                    ModelState.AddModelError("Warn", "用户名或密码不正确");
                 }
             }
 
@@ -94,16 +92,16 @@ namespace Arsenal.MvcWeb.Controllers
             {
                 // Attempt to register the user
                 MembershipCreateStatus createStatus;
-                Membership.CreateUser(model.UserName, model.Password, model.Email, passwordQuestion: null, passwordAnswer: null, isApproved: true, providerUserKey: null, status: out createStatus);
+                var user = MembershipDto.CreateUser(model.UserName, model.Password, model.Mobile, model.Email, status: out createStatus);
 
                 if (createStatus == MembershipCreateStatus.Success)
                 {
-                    FormsAuthentication.SetAuthCookie(model.UserName, createPersistentCookie: false);
+                    FormsAuthentication.SetAuthCookie(user.ID.ToString(), createPersistentCookie: false);
                     return RedirectToAction("Index", "Home");
                 }
                 else
                 {
-                    ModelState.AddModelError("", ErrorCodeToString(createStatus));
+                    ModelState.AddModelError("Warn", ErrorCodeToString(createStatus));
                 }
             }
 
@@ -134,8 +132,16 @@ namespace Arsenal.MvcWeb.Controllers
                 bool changePasswordSucceeded;
                 try
                 {
-                    MembershipUser currentUser = Membership.GetUser(User.Identity.Name, userIsOnline: true);
-                    changePasswordSucceeded = currentUser.ChangePassword(model.OldPassword, model.NewPassword);
+                    var user = MembershipDto.GetUser(User.Identity.Name);
+
+                    if (user != null)
+                    {
+                        changePasswordSucceeded = user.ChangePassword(model.OldPassword, model.NewPassword);
+                    } 
+                    else
+                    {
+                        changePasswordSucceeded = false;
+                    }
                 }
                 catch (Exception)
                 {

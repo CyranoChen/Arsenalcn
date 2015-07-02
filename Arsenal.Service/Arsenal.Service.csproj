@@ -45,6 +45,7 @@
     <Compile Include="Entity\Player.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Membership.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Entity\RelationLeagueTeam.cs">
       <SubType>Code</SubType>

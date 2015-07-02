@@ -61,6 +61,7 @@
     <Compile Include="Utility\Browser.cs" />
     <Compile Include="Utility\Excel.cs" />
     <Compile Include="Utility\IP.cs" />
+    <Compile Include="Utility\MD5.cs" />
     <Compile Include="Utility\OS.cs" />
   </ItemGroup>
   <ItemGroup />

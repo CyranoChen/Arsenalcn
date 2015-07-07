@@ -45,7 +45,8 @@
     <Compile Include="Entity\Player.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Membership.cs" />
+    <Compile Include="Framework\Membership.cs" />
+    <Compile Include="Framework\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Entity\RelationLeagueTeam.cs">
       <SubType>Code</SubType>
@@ -56,6 +57,7 @@
     <Compile Include="Entity\Video.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Rest\DiscuzApiClient.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Arsenalcn.Core\Arsenalcn.Core.csproj">

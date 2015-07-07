@@ -5,7 +5,7 @@ using Arsenalcn.Core;
 
 namespace Arsenal.Service
 {
-    [DbTable("Arsenalcn_Membership", Key = "MembershipGuid", Sort = "CreateDate DESC")]
+    [DbTable("Arsenalcn_Membership", Key = "UserGuid", Sort = "CreateDate DESC")]
     public class Membership : Entity<Guid>
     {
         public Membership() : base() { }
@@ -14,8 +14,8 @@ namespace Arsenal.Service
 
         #region Members and Properties
 
-        [DbColumn("Username")]
-        public string Username
+        [DbColumn("UserName")]
+        public string UserName
         { get; set; }
 
         [DbColumn("Password")]

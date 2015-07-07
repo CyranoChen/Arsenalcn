@@ -1,20 +1,51 @@
 ﻿using System;
 using System.Collections;
 using System.ComponentModel.DataAnnotations;
-using System.Data.SqlTypes;
 using System.Data.SqlClient;
+using System.Data.SqlTypes;
+using System.Diagnostics.Contracts;
 using System.Web.Mvc;
 using System.Web.Security;
 
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
+using Arsenal.Service;
 using Arsenalcn.Core;
 using Arsenalcn.Core.Utility;
 using Membership = Arsenal.Service.Membership;
-using System.Diagnostics.Contracts;
 
 namespace Arsenal.MvcWeb.Models
 {
     public class MembershipDto : Membership
     {
+        public MembershipDto() : base() { }
+
+        private void Init()
+        {
+            var _defaultMinDate = Convert.ToDateTime(SqlDateTime.MinValue.ToString());
+
+            UserName = string.Empty;
+            Password = string.Empty;
+            PasswordFormat = 1;
+            PasswordSalt = string.Empty;
+            Mobile = string.Empty;
+            Email = string.Empty;
+            PasswordQuestion = string.Empty;
+            PasswordAnswer = string.Empty;
+            IsApproved = true;
+            IsLockedOut = false;
+            CreateDate = DateTime.Now;
+            LastLoginDate = DateTime.Now;
+            LastPasswordChangedDate = _defaultMinDate;
+            LastLockoutDate = _defaultMinDate;
+            FailedPasswordAttemptCount = 0;
+            FailedPasswordAttemptWindowStart = _defaultMinDate;
+            FailedPasswordAnswerAttemptCount = 0;
+            FailedPasswordAnswerAttemptWindowsStart = _defaultMinDate;
+            Remark = string.Empty;
+        }
+
         // Summary:
         //     Updates the password for the membership user in the membership data store.
         //
@@ -88,7 +119,7 @@ namespace Arsenal.MvcWeb.Models
         //
         // Returns:
         //     true if the supplied user name and password are valid; otherwise, false.
-        public static bool ValidateUser(string username, string password, out object providerUserKey)
+        public static bool ValidateUser(string username, string password)
         {
             Contract.Requires(!string.IsNullOrEmpty(username));
             Contract.Requires(!string.IsNullOrEmpty(password));
@@ -97,7 +128,7 @@ namespace Arsenal.MvcWeb.Models
 
             var ht = new Hashtable();
 
-            ht.Add("Username", username);
+            ht.Add("UserName", username);
             ht.Add("Password", Encrypt.getMd5Hash(password));
 
             var query = repo.Query<Membership>(ht);
@@ -108,15 +139,98 @@ namespace Arsenal.MvcWeb.Models
 
                 user.LastLoginDate = DateTime.Now;
                 repo.Update<Membership>(user);
-
-                providerUserKey = user.ID;
-            }
-            else
-            {
-                providerUserKey = null;
             }
 
             return query.Count > 0;
+        }
+
+        public static bool ValidateAcnUser(string username, string password)
+        {
+            if (!ConfigGlobal.AcnSync) { return false; }
+
+            var client = new DiscuzApiClient();
+
+            var uid = client.AuthValidate(username, Encrypt.getMd5Hash(password));
+
+            return Convert.ToInt32(uid.Replace("\"", "")) > 0;
+        }
+
+        public static int GetAcnID(string username)
+        {
+            var client = new DiscuzApiClient();
+
+            var uid = client.UsersGetID(username);
+
+            return Convert.ToInt32(uid.Replace("\"", ""));
+        }
+
+        public void AcnSyncRegister(int uid, out MembershipCreateStatus status)
+        {
+            status = MembershipCreateStatus.UserRejected;
+
+            if (!ConfigGlobal.AcnSync) { return; }
+
+            #region Get Acn UserInfo to init the intance of MembershipDto
+            var client = new DiscuzApiClient();
+
+            int[] uids = { uid };
+            string[] fields = { "user_name", "password", "email", "mobile", "join_date" };
+
+            var responseResult = client.UsersGetInfo(uids, fields);
+
+            if (string.IsNullOrEmpty(responseResult)) { return; }
+
+            JArray jlist = JArray.Parse(responseResult);
+            JToken json = jlist[0];
+
+            this.Init();
+
+            this.UserName = json["user_name"].ToString();
+            this.Password = json["password"].ToString();
+            this.Mobile = json["mobile"].ToString();
+            this.Email = json["email"].ToString();
+            this.CreateDate = Convert.ToDateTime(json["join_date"].ToString());
+            this.Remark = string.Format("{{\"AcnID\": {0}}}", uid);
+            #endregion
+
+            using (SqlConnection conn = new SqlConnection(DataAccess.ConnectString))
+            {
+                conn.Open();
+                SqlTransaction trans = conn.BeginTransaction();
+
+                try
+                {
+                    IRepository repo = new Repository();
+
+                    object userKey;
+                    repo.Insert<MembershipDto>(this, out userKey, trans);
+
+                    var user = new User();
+
+                    user.ID = (Guid)userKey;
+                    user.UserName = this.UserName;
+                    user.IsAnonymous = false;
+                    user.LastActivityDate = DateTime.Now;
+                    user.AcnID = uid;
+                    user.AcnUserName = this.UserName;
+                    user.MemberID = null;
+                    user.MemberName = string.Empty;
+                    user.WeChatOpenID = null;
+                    user.WeChatNickName = string.Empty;
+
+                    repo.Insert<User>(user, trans);
+
+                    trans.Commit();
+
+                    status = MembershipCreateStatus.Success;
+                }
+                catch
+                {
+                    trans.Rollback();
+
+                    status = MembershipCreateStatus.ProviderError;
+                }
+            }
         }
 
         // Summary:
@@ -136,7 +250,7 @@ namespace Arsenal.MvcWeb.Models
         //   System.Web.Security.MembershipCreateUserException:
         //     The user was not created. Check the System.Web.Security.MembershipCreateUserException.StatusCode
         //     property for a System.Web.Security.MembershipCreateStatus value.
-        public static MembershipDto CreateUser(string username, string password, string mobile, string email, out MembershipCreateStatus status)
+        public void CreateUser(string username, string password, string mobile, string email, out MembershipCreateStatus status)
         {
             using (SqlConnection conn = new SqlConnection(DataAccess.ConnectString))
             {
@@ -147,45 +261,58 @@ namespace Arsenal.MvcWeb.Models
                 {
                     IRepository repo = new Repository();
 
-                    var user = new MembershipDto();
+                    this.Init();
 
-                    var _defaultMinDate = Convert.ToDateTime(SqlDateTime.MinValue.ToString());
+                    this.UserName = username;
+                    this.Password = Encrypt.getMd5Hash(password);
+                    this.Mobile = mobile;
+                    this.Email = email;
 
-                    user.Username = username;
-                    user.Password = Encrypt.getMd5Hash(password);
-                    user.PasswordFormat = 1;
-                    user.PasswordSalt = string.Empty;
-                    user.Mobile = mobile;
-                    user.Email = email;
-                    user.PasswordQuestion = string.Empty;
-                    user.PasswordAnswer = string.Empty;
-                    user.IsApproved = true;
-                    user.IsLockedOut = false;
-                    user.CreateDate = DateTime.Now;
-                    user.LastLoginDate = DateTime.Now;
-                    user.LastPasswordChangedDate = _defaultMinDate;
-                    user.LastLockoutDate = _defaultMinDate;
-                    user.FailedPasswordAttemptCount = 0;
-                    user.FailedPasswordAttemptWindowStart = _defaultMinDate;
-                    user.FailedPasswordAnswerAttemptCount = 0;
-                    user.FailedPasswordAnswerAttemptWindowsStart = _defaultMinDate;
-                    user.Remark = string.Empty;
+                    object userKey;
+                    repo.Insert<MembershipDto>(this, out userKey, trans);
 
-                    repo.Insert<MembershipDto>(user, trans);
+                    var user = new User();
+
+                    user.ID = (Guid)userKey;
+                    user.UserName = this.UserName;
+                    user.IsAnonymous = false;
+                    user.LastActivityDate = DateTime.Now;
+
+                    #region Register Acn User
+                    if (ConfigGlobal.AcnSync)
+                    {
+                        var client = new DiscuzApiClient();
+
+                        var uid = client.AuthRegister(this.UserName, this.Password, this.Email);
+
+                        user.AcnID = Convert.ToInt32(uid.Replace("\"", ""));
+                        user.AcnUserName = this.UserName;
+                    }
+                    else
+                    {
+                        user.AcnID = null;
+                        user.AcnUserName = string.Empty;
+                    }
+                    #endregion
+
+                    user.MemberID = null;
+                    user.MemberName = string.Empty;
+                    user.WeChatOpenID = null;
+                    user.WeChatNickName = string.Empty;
+
+                    repo.Insert<User>(user, trans);
 
                     trans.Commit();
 
-                    status = MembershipCreateStatus.Success;
 
-                    return user;
+
+                    status = MembershipCreateStatus.Success;
                 }
                 catch
                 {
                     trans.Rollback();
 
                     status = MembershipCreateStatus.ProviderError;
-
-                    return null;
                 }
             }
         }

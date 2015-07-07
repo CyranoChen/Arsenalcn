@@ -36,11 +36,9 @@ namespace Arsenal.MvcWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                object key = null;
-
-                if (MembershipDto.ValidateUser(model.UserName, model.Password, providerUserKey: out key))
+                if (MembershipDto.ValidateUser(model.UserName, model.Password))
                 {
-                    FormsAuthentication.SetAuthCookie(key.ToString(), model.RememberMe);
+                    FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
 
                     if (Url.IsLocalUrl(returnUrl))
                     {
@@ -49,6 +47,34 @@ namespace Arsenal.MvcWeb.Controllers
                     else
                     {
                         return RedirectToAction("Index", "Home");
+                    }
+                }
+                else if (MembershipDto.ValidateAcnUser(model.UserName, model.Password))
+                {
+                    // not in SSO, but in Acn Users
+                    // Sync the user info, register SSO and then log in
+                    var acnUid = MembershipDto.GetAcnID(model.UserName);
+
+                    if (acnUid > 0)
+                    {
+                        var user = new MembershipDto();
+
+                        MembershipCreateStatus createStatus;
+                        user.AcnSyncRegister(acnUid, status: out createStatus);
+
+                        if (createStatus == MembershipCreateStatus.Success)
+                        {
+                            FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
+                            return RedirectToAction("Index", "Home");
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("Warn", ErrorCodeToString(createStatus));
+                        }
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("Warn", "用户名或密码不正确");
                     }
                 }
                 else
@@ -91,12 +117,14 @@ namespace Arsenal.MvcWeb.Controllers
             if (ModelState.IsValid)
             {
                 // Attempt to register the user
+                var user = new MembershipDto();
+
                 MembershipCreateStatus createStatus;
-                var user = MembershipDto.CreateUser(model.UserName, model.Password, model.Mobile, model.Email, status: out createStatus);
+                user.CreateUser(model.UserName, model.Password, model.Mobile, model.Email, status: out createStatus);
 
                 if (createStatus == MembershipCreateStatus.Success)
                 {
-                    FormsAuthentication.SetAuthCookie(user.ID.ToString(), createPersistentCookie: false);
+                    FormsAuthentication.SetAuthCookie(model.UserName, createPersistentCookie: false);
                     return RedirectToAction("Index", "Home");
                 }
                 else
@@ -137,7 +165,7 @@ namespace Arsenal.MvcWeb.Controllers
                     if (user != null)
                     {
                         changePasswordSucceeded = user.ChangePassword(model.OldPassword, model.NewPassword);
-                    } 
+                    }
                     else
                     {
                         changePasswordSucceeded = false;

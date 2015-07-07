@@ -88,14 +88,7 @@ namespace Arsenal.MvcWeb.Controllers
             }
 
             // HARDCODE
-            return View(list.Skip(1).Take(20));
-        }
-
-        public ActionResult PartialMatchInfo(Guid id)
-        {
-            var m = new MatchWithRateDto(id);
-
-            return PartialView("Casino/_MatchInfoPartial", m);
+            return View(list.Take(20));
         }
 
         // 中奖查询
@@ -205,57 +198,5 @@ namespace Arsenal.MvcWeb.Controllers
                 return View();
             }
         }
-
-        ////
-        //// GET: /Casino/Edit/5
-
-        //public ActionResult Edit(int id)
-        //{
-        //    return View();
-        //}
-
-        ////
-        //// POST: /Casino/Edit/5
-
-        //[HttpPost]
-        //public ActionResult Edit(int id, FormCollection collection)
-        //{
-        //    try
-        //    {
-        //        // TODO: Add update logic here
-
-        //        return RedirectToAction("Index");
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
-
-        ////
-        //// GET: /Casino/Delete/5
-
-        //public ActionResult Delete(int id)
-        //{
-        //    return View();
-        //}
-
-        ////
-        //// POST: /Casino/Delete/5
-
-        //[HttpPost]
-        //public ActionResult Delete(int id, FormCollection collection)
-        //{
-        //    try
-        //    {
-        //        // TODO: Add delete logic here
-
-        //        return RedirectToAction("Index");
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
     }
 }

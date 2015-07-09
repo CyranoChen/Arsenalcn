@@ -36,16 +36,22 @@ namespace Arsenal.MvcWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (MembershipDto.ValidateUser(model.UserName, model.Password))
+                object userKey;
+
+                if (MembershipDto.ValidateUser(model.UserName, model.Password, providerUserKey: out userKey))
                 {
                     FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
 
+                    Session["AuthorizedUser"] = MembershipDto.GetUser(userKey);
+
                     if (Url.IsLocalUrl(returnUrl))
                     {
+                        TempData["DataUrl"] = string.Format("data-url={0}", returnUrl);
                         return Redirect(returnUrl);
                     }
                     else
                     {
+                        TempData["DataUrl"] = "data-url=/";
                         return RedirectToAction("Index", "Home");
                     }
                 }
@@ -60,11 +66,15 @@ namespace Arsenal.MvcWeb.Controllers
                         var user = new MembershipDto();
 
                         MembershipCreateStatus createStatus;
-                        user.AcnSyncRegister(acnUid, status: out createStatus);
+                        user.AcnSyncRegister(acnUid, providerUserKey: out userKey, status: out createStatus);
 
                         if (createStatus == MembershipCreateStatus.Success)
                         {
                             FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
+
+                            Session["AuthorizedUser"] = MembershipDto.GetUser(userKey);
+
+                            TempData["DataUrl"] = "data-url=/";
                             return RedirectToAction("Index", "Home");
                         }
                         else
@@ -94,6 +104,9 @@ namespace Arsenal.MvcWeb.Controllers
         {
             FormsAuthentication.SignOut();
 
+            Session.Abandon();
+
+            TempData["DataUrl"] = "data-url=/";
             return RedirectToAction("Index", "Home");
         }
 
@@ -119,12 +132,19 @@ namespace Arsenal.MvcWeb.Controllers
                 // Attempt to register the user
                 var user = new MembershipDto();
 
+                object userKey;
                 MembershipCreateStatus createStatus;
-                user.CreateUser(model.UserName, model.Password, model.Mobile, model.Email, status: out createStatus);
+
+                user.CreateUser(model.UserName, model.Password, model.Mobile, model.Email,
+                    providerUserKey: out userKey, status: out createStatus);
 
                 if (createStatus == MembershipCreateStatus.Success)
                 {
                     FormsAuthentication.SetAuthCookie(model.UserName, createPersistentCookie: false);
+
+                    Session["AuthorizedUser"] = MembershipDto.GetUser(userKey);
+
+                    TempData["DataUrl"] = "data-url=/";
                     return RedirectToAction("Index", "Home");
                 }
                 else
@@ -160,11 +180,11 @@ namespace Arsenal.MvcWeb.Controllers
                 bool changePasswordSucceeded;
                 try
                 {
-                    var user = MembershipDto.GetUser(User.Identity.Name);
+                    var membership = MembershipDto.GetMembership(User.Identity.Name);
 
-                    if (user != null)
+                    if (membership != null)
                     {
-                        changePasswordSucceeded = user.ChangePassword(model.OldPassword, model.NewPassword);
+                        changePasswordSucceeded = membership.ChangePassword(model.OldPassword, model.NewPassword);
                     }
                     else
                     {
@@ -178,6 +198,7 @@ namespace Arsenal.MvcWeb.Controllers
 
                 if (changePasswordSucceeded)
                 {
+                    TempData["DataUrl"] = "data-url=/";
                     return RedirectToAction("ChangePasswordSuccess");
                 }
                 else

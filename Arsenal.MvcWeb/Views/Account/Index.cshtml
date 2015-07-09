@@ -6,7 +6,7 @@
 
 @section Header {
     <div data-role="header" data-position="fixed">
-        @Html.ActionLink("Back", "Index", "Home", null, new { data_icon = "arrow-l", data_rel = "back" })
+        @Html.ActionLink("Back", "Index", "Home", routeValues: null, htmlAttributes: new { data_icon = "arrow-l", data_rel = "back" })
         <h1>@ViewBag.Title</h1>
     </div>
 }
@@ -18,6 +18,6 @@
     <ul data-role="listview" data-inset="true">
         <li>@Html.ActionLink("用户信息", "Profile")</li>
         <li>@Html.ActionLink("密码修改", "ChangePassword")</li>
-        <li>@Html.ActionLink("退出登录", "LogOff")</li>
+        <li>@Html.ActionLink("退出登录", "LogOff", routeValues: null, htmlAttributes: new { data_ajax = "false" })</li>
     </ul>
 </div>

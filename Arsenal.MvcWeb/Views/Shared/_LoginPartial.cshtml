@@ -1,6 +1,13 @@
-﻿@if(Request.IsAuthenticated) {
-    @Html.ActionLink(User.Identity.Name, "Index", "Account", routeValues: null, htmlAttributes: new { data_icon = "gear" })
+﻿@{
+    var AuthorizedUser = Arsenal.MvcWeb.Models.MembershipDto.GetSession();
 }
-else {
-    @Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { data_icon = "gear" })
+
+@if (Request.IsAuthenticated && AuthorizedUser != null)
+{
+    @Html.ActionLink(User.Identity.Name, "Index", "Account", routeValues: null, htmlAttributes: new { data_icon = "gear", data_transition = "slideup" })
+    @AuthorizedUser.AcnID
+}
+else
+{
+    @Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { data_icon = "gear", data_transition = "slidedown" })
 }

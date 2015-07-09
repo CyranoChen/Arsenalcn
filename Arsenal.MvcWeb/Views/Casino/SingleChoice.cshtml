@@ -2,7 +2,6 @@
 @{
     ViewBag.Title = "SingleChoice";
 }
-
 @section Scripts {
     <script type="text/javascript">
         $(function () {
@@ -12,37 +11,33 @@
         });
     </script>
 }
-
 @section Header {
     <div data-role="header">
-        <h1>
+        <h1 style="overflow: visible">
             <span>@Model.TeamHome.TeamDisplayName</span>
             <span> vs </span>
             <span>@Model.TeamAway.TeamDisplayName</span>
         </h1>
     </div>
 }
-
 @section Footer {
     <div data-role="footer" style="text-align: center">
         <input type="button" id="btnSubmit" value="Submit" />
     </div>
 }
-
 <div data-role="content">
     @using (Html.BeginForm("SingleChoice", "Casino", FormMethod.Post, new { id = "formGameBet" }))
     {
-
         <fieldset data-role="controlgroup" data-type="horizontal">
-            <legend>Single Choice：</legend>
+            <legend>投注选项</legend>
             <label for="home">[主队胜] @Model.WinRate.ToString("f2")</label>
-            <input type="radio" name="option" id="home" value="@Model.WinRate">
+            <input type="radio" name="option" id="home" value="home">
             <label for="draw">[双方平] @Model.DrawRate.ToString("f2")</label>
-            <input type="radio" name="option" id="draw" value="@Model.DrawRate">
+            <input type="radio" name="option" id="draw" value="draw">
             <label for="away">[客队胜] @Model.LoseRate.ToString("f2")</label>
-            <input type="radio" name="option" id="away" value="@Model.LoseRate">
+            <input type="radio" name="option" id="away" value="away">
         </fieldset>
-        <label for="betAmount">BetAmount: </label>
+        <label for="betAmount">投注金额</label>
         <input type="range" name="betAmount" id="betAmount" value="1000" min="0" max="10000" data-highlight="true">
     }
 </div>

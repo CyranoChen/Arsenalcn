@@ -3,6 +3,7 @@ using System.Data;
 
 using Arsenalcn.CasinoSys.Entity;
 using ArsenalTeam = Arsenalcn.CasinoSys.Entity.Arsenal.Team;
+using System.ComponentModel.DataAnnotations;
 
 namespace Arsenal.MvcWeb.Models.Casino
 {
@@ -90,4 +91,16 @@ namespace Arsenal.MvcWeb.Models.Casino
 
         public string BetIconInfo { get; set; }
     }
+
+    //public class SingleChoiceModel
+    //{
+    //    [Required]
+    //    [Display(Name = "投注选项")]
+    //    public string SeletedOption { get; set; }
+
+    //    [Required]
+    //    [DataType(DataType.Currency)]
+    //    [Display(Name = "投注金额")]
+    //    public string BetAmount { get; set; }
+    //}
 }

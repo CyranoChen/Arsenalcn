@@ -45,7 +45,7 @@
             <div data-role="header" data-position="fixed">
                 @Html.Partial("_LoginPartial")
                 <h1>@ViewBag.Title</h1>
-                <a href="#" data-role="button" data-icon="grid" data-iconpos="notext"></a>
+                @Html.ActionLink("首页", "Index", "Home", routeValues: null, htmlAttributes: new { data_role = "button", data_icon = "grid", data_iconpos = "notext" })
             </div>
         }
 

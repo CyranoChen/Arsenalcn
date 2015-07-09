@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Data.SqlClient;
 using System.Data.SqlTypes;
 using System.Diagnostics.Contracts;
+using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 
@@ -73,6 +74,7 @@ namespace Arsenal.MvcWeb.Models
         //     Framework.
         public bool ChangePassword(string oldPassword, string newPassword)
         {
+            //TODO
             return false;
         }
 
@@ -92,7 +94,7 @@ namespace Arsenal.MvcWeb.Models
         // Exceptions:
         //   System.ArgumentNullException:
         //     providerUserKey is null.
-        public static MembershipDto GetUser(object providerUserKey)
+        public static MembershipDto GetMembership(object providerUserKey)
         {
             Contract.Requires(providerUserKey != null);
 
@@ -104,6 +106,27 @@ namespace Arsenal.MvcWeb.Models
             { return user as MembershipDto; }
             else
             { return null; }
+        }
+
+        public static User GetUser(object providerUserKey)
+        {
+            Contract.Requires(providerUserKey != null);
+
+            IRepository repo = new Repository();
+
+            return repo.Single<User>(providerUserKey);
+        }
+
+        public static User GetSession()
+        {
+            if (HttpContext.Current.Session["AuthorizedUser"] != null)
+            {
+                return HttpContext.Current.Session["AuthorizedUser"] as User;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         //
@@ -119,7 +142,7 @@ namespace Arsenal.MvcWeb.Models
         //
         // Returns:
         //     true if the supplied user name and password are valid; otherwise, false.
-        public static bool ValidateUser(string username, string password)
+        public static bool ValidateUser(string username, string password, out object providerUserKey)
         {
             Contract.Requires(!string.IsNullOrEmpty(username));
             Contract.Requires(!string.IsNullOrEmpty(password));
@@ -137,8 +160,14 @@ namespace Arsenal.MvcWeb.Models
             {
                 var user = query[0];
 
+                providerUserKey = user.ID;
+
                 user.LastLoginDate = DateTime.Now;
                 repo.Update<Membership>(user);
+            }
+            else
+            {
+                providerUserKey = null;
             }
 
             return query.Count > 0;
@@ -164,9 +193,10 @@ namespace Arsenal.MvcWeb.Models
             return Convert.ToInt32(uid.Replace("\"", ""));
         }
 
-        public void AcnSyncRegister(int uid, out MembershipCreateStatus status)
+        public void AcnSyncRegister(int uid, out object providerUserKey, out MembershipCreateStatus status)
         {
             status = MembershipCreateStatus.UserRejected;
+            providerUserKey = null;
 
             if (!ConfigGlobal.AcnSync) { return; }
 
@@ -202,12 +232,11 @@ namespace Arsenal.MvcWeb.Models
                 {
                     IRepository repo = new Repository();
 
-                    object userKey;
-                    repo.Insert<MembershipDto>(this, out userKey, trans);
+                    repo.Insert<MembershipDto>(this, out providerUserKey, trans);
 
                     var user = new User();
 
-                    user.ID = (Guid)userKey;
+                    user.ID = (Guid)providerUserKey;
                     user.UserName = this.UserName;
                     user.IsAnonymous = false;
                     user.LastActivityDate = DateTime.Now;
@@ -250,7 +279,7 @@ namespace Arsenal.MvcWeb.Models
         //   System.Web.Security.MembershipCreateUserException:
         //     The user was not created. Check the System.Web.Security.MembershipCreateUserException.StatusCode
         //     property for a System.Web.Security.MembershipCreateStatus value.
-        public void CreateUser(string username, string password, string mobile, string email, out MembershipCreateStatus status)
+        public void CreateUser(string username, string password, string mobile, string email, out object providerUserKey, out MembershipCreateStatus status)
         {
             using (SqlConnection conn = new SqlConnection(DataAccess.ConnectString))
             {
@@ -263,17 +292,18 @@ namespace Arsenal.MvcWeb.Models
 
                     this.Init();
 
+
+                    // TODO
                     this.UserName = username;
                     this.Password = Encrypt.getMd5Hash(password);
                     this.Mobile = mobile;
                     this.Email = email;
 
-                    object userKey;
-                    repo.Insert<MembershipDto>(this, out userKey, trans);
+                    repo.Insert<MembershipDto>(this, out providerUserKey, trans);
 
                     var user = new User();
 
-                    user.ID = (Guid)userKey;
+                    user.ID = (Guid)providerUserKey;
                     user.UserName = this.UserName;
                     user.IsAnonymous = false;
                     user.LastActivityDate = DateTime.Now;
@@ -304,13 +334,13 @@ namespace Arsenal.MvcWeb.Models
 
                     trans.Commit();
 
-
-
                     status = MembershipCreateStatus.Success;
                 }
                 catch
                 {
                     trans.Rollback();
+
+                    providerUserKey = null;
 
                     status = MembershipCreateStatus.ProviderError;
                 }

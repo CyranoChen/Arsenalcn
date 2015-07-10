@@ -7,6 +7,7 @@ using System.Linq;
 using Arsenal.MvcWeb.Models;
 using Arsenal.MvcWeb.Models.Casino;
 using Arsenalcn.CasinoSys.Entity;
+using Arsenalcn.Core;
 
 namespace Arsenal.MvcWeb.Controllers
 {
@@ -42,7 +43,7 @@ namespace Arsenal.MvcWeb.Controllers
         public ActionResult Bet()
         {
             var list = new List<BetDto>();
-            var dt = Arsenalcn.CasinoSys.Entity.Bet.GetUserBetHistoryView(acnID);
+            var dt = Arsenalcn.CasinoSys.Entity.Bet.GetUserBetHistoryView(this.acnID);
 
             if (dt != null)
             {
@@ -77,7 +78,7 @@ namespace Arsenal.MvcWeb.Controllers
         // 比赛结果
         // GET: /Casino/Result
         [AllowAnonymous]
-        public ActionResult Result()
+        public ActionResult Result(Criteria criteria)
         {
             var list = new List<MatchDto>();
             var dt = CasinoItem.GetEndViewByMatch();
@@ -90,8 +91,18 @@ namespace Arsenal.MvcWeb.Controllers
                 }
             }
 
-            // HARDCODE
-            return View(list.Take(20));
+            // Populate the view model
+            var model = new ResultDto();
+
+            model.Query(criteria, list.AsQueryable());
+
+            // Copy values from the criteria object to the view model
+            //AutoMapper.Mapper.DynamicMap(criteria, model);
+
+            // Map the matching Auctions to view models
+            //model.SearchResult = Mapper.DynamicMap<IEnumerable<AuctionViewModel>>(auctions);
+
+            return View(model);
         }
 
         // 中奖查询
@@ -178,9 +189,6 @@ namespace Arsenal.MvcWeb.Controllers
         {
             try
             {
-                var op = option;
-                float ba = betAmount;
-
                 Guid? guid = CasinoItem.GetCasinoItemGuidByMatch(id, CasinoItem.CasinoType.SingleChoice);
 
                 if (guid.HasValue)
@@ -205,16 +213,75 @@ namespace Arsenal.MvcWeb.Controllers
 
                     //get selected option
                     SingleChoice item = (SingleChoice)CasinoItem.GetCasinoItem(guid.Value);
-                    ChoiceOption seletedOption = item.Options.Find(x => x.OptionValue.Equals(op, StringComparison.OrdinalIgnoreCase));
+                    ChoiceOption seletedOption = item.Options.Find(x => x.OptionValue.Equals(option, StringComparison.OrdinalIgnoreCase));
 
                     Arsenalcn.CasinoSys.Entity.Bet bet = new Arsenalcn.CasinoSys.Entity.Bet();
-                    bet.BetAmount = ba;
+                    bet.BetAmount = betAmount;
                     bet.BetRate = seletedOption.OptionRate;
                     bet.CasinoItemGuid = guid.Value;
                     bet.UserID = this.acnID;
                     bet.UserName = User.Identity.Name;
 
                     bet.Insert(seletedOption.OptionValue);
+
+                    //投注成功
+                }
+
+                TempData["DataUrl"] = string.Format("data-url=/Casino/GameBet/{0}", id.ToString());
+                return RedirectToAction("GameBet", new { id = id });
+            }
+            catch
+            {
+                var m = new MatchWithRateDto(id);
+
+                return View(m);
+            }
+        }
+
+        // 猜比分
+        // GET: /Casino/MatchResult/id
+
+        public ActionResult MatchResult(Guid id)
+        {
+            var m = new MatchWithRateDto(id);
+
+            return View(m);
+        }
+
+        // 猜比分
+        // POST: /Casino/MatchResult
+
+        [HttpPost]
+        public ActionResult MatchResult(Guid id, short resultHome, short resultAway)
+        {
+            try
+            {
+                Guid? guid = CasinoItem.GetCasinoItemGuidByMatch(id, CasinoItem.CasinoType.MatchResult);
+
+                if (guid.HasValue)
+                {
+                    if (CasinoItem.GetCasinoItem(guid.Value).CloseTime < DateTime.Now)
+                    {
+                        throw new Exception("已超出投注截止时间");
+                    }
+
+                    if (Arsenalcn.CasinoSys.Entity.Bet.GetUserCasinoItemAllBet(this.acnID, guid.Value).Count > 0)
+                    {
+                        throw new Exception("已经投过此注，不能重复猜比分");
+                    }
+
+                    Bet bet = new Bet();
+                    bet.BetAmount = null;
+                    bet.BetRate = null;
+                    bet.CasinoItemGuid = guid.Value;
+                    bet.UserID = this.acnID;
+                    bet.UserName = User.Identity.Name;
+
+                    MatchResultBetDetail matchResult = new MatchResultBetDetail();
+                    matchResult.Home = resultHome;
+                    matchResult.Away = resultAway;
+
+                    bet.Insert(matchResult);
 
                     //投注成功
                 }

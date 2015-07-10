@@ -10,7 +10,7 @@ namespace Arsenalcn.Core
         public Pager()
         {
             Size = 10;
-            Index = 1;
+            Index = 0;
         }
 
         public Pager(int index)
@@ -19,4 +19,13 @@ namespace Arsenalcn.Core
             Index = index;
         }
     }
+
+    public interface IPager
+    {
+        short PagingSize { get; set; }
+        int CurrentPage { get; set; }
+        int MaxPage { get; set; }
+        int TotalCount { get; set; }
+    }
+
 }

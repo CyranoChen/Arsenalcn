@@ -16,7 +16,7 @@
     <div data-role="footer" data-position="fixed" class="ui-btn">
         <div data-role="controlgroup" data-type="horizontal">
             <a href="@Url.Action("SingleChoice", "Casino", new { id = Model.MatchGuid })" data-role="button" data-icon="plus" data-rel="dialog" data-transition="pop">投输赢</a>
-            <a href="#page-2" data-role="button" data-icon="plus" data-rel="dialog" data-transition="pop">猜比分</a>
+            <a href="@Url.Action("MatchResult", "Casino", new { id = Model.MatchGuid })" data-role="button" data-icon="plus" data-rel="dialog" data-transition="pop">猜比分</a>
         </div>
     </div>
 }
@@ -65,3 +65,4 @@
             <ul id="pnlMessageList" data-role="listview" data-inset="true"></ul>
         </div>
     </div>
+</div>

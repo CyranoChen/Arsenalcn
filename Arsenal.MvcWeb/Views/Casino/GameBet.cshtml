@@ -2,8 +2,8 @@
 @{
     ViewBag.Title = "比赛投注";
 
-    List<Arsenal.MvcWeb.Models.Casino.BetDto> bets = ViewBag.BetList;
-    List<Arsenal.MvcWeb.Models.Casino.MatchDto> matches = ViewBag.MatchDtoList;
+    var bets = ViewBag.BetList as IEnumerable<Arsenal.MvcWeb.Models.Casino.BetDto>;
+    var matches = ViewBag.MatchDtoList as IEnumerable<Arsenal.MvcWeb.Models.Casino.MatchDto>;
 }
 @section Header {
     <div data-role="header" data-position="fixed">
@@ -24,9 +24,9 @@
     @Html.Partial("Casino/_MatchInfoPartial", Model)
     <div data-role="collapsible-set">
         <div data-role="collapsible">
-            <h3>历史交锋<span class="ui-li-count">@matches.Count</span></h3>
+            <h3>历史交锋<span class="ui-li-count">@matches.Count()</span></h3>
             <ul id="pnlMatchList" data-role="listview" data-inset="true">
-                @if (matches != null && matches.Count > 0)
+                @if (matches != null && matches.Count() > 0)
                 {
                     foreach (var m in matches)
                     {
@@ -40,9 +40,9 @@
             </ul>
         </div>
         <div data-role="collapsible" @Html.Raw("data-collapsed=\"false\"")>
-            <h3>我的投注<span class="ui-li-count">@bets.Count</span></h3>
+            <h3>我的投注<span class="ui-li-count">@bets.Count()</span></h3>
             <ul id="pnlBetList" data-role="listview" data-inset="true">
-                @if (bets != null && bets.Count > 0)
+                @if (bets != null && bets.Count() > 0)
                 {
                     foreach (var b in bets)
                     {

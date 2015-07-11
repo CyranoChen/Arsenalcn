@@ -94,7 +94,8 @@ namespace Arsenal.MvcWeb.Controllers
             // Populate the view model
             var model = new ResultDto();
 
-            model.Query(criteria, list.AsQueryable());
+            model.Criteria = criteria;
+            model.Search(list);
 
             // Copy values from the criteria object to the view model
             //AutoMapper.Mapper.DynamicMap(criteria, model);

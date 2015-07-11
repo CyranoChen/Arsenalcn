@@ -1,28 +1,21 @@
 ﻿@model Arsenal.MvcWeb.Models.Casino.ResultDto
 @{
     ViewBag.Title = "比赛结果";
-
-    var criteria = new Arsenalcn.Core.Criteria();
-    AutoMapper.Mapper.DynamicMap(Model, criteria);
 }
 
-@if (criteria.MaxPage > 0)
+@if (Model.Criteria.MaxPage > 0)
 {
     @section Footer {
         <div data-role="footer" data-position="fixed" class="ui-btn pager">
-            @Html.Partial("_PagerPartial", criteria)
+            @Html.Partial("_PagerPartial", Model.Criteria)
         </div>
     }
 }
 <div data-role="content">
-    <h2>比赛结果</h2>
-    <p>
-        Description
-    </p>
     <ul data-role="listview" data-inset="true">
         <li data-role="list-divider">
             比赛结果
-            <span class="ui-li-count">@Model.TotalCount</span>
+            <span class="ui-li-count">@Model.Criteria.TotalCount</span>
         </li>
         @if (Model != null && Model.Data.Count() > 0)
         {

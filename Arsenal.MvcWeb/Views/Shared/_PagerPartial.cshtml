@@ -1,4 +1,8 @@
 ﻿@model Arsenalcn.Core.Criteria
+@{
+    string controllerName = ViewContext.RouteData.Values["controller"].ToString();
+    string actionName = ViewContext.RouteData.Values["action"].ToString();
+}
 
 <style type="text/css">
     .pager input {
@@ -53,8 +57,7 @@
         document.forms["formPager"].submit();
     }
 </script>
-
-@using (Html.BeginForm("Result", "Casino", FormMethod.Post, new { id = "formPager" }))
+@using (Html.BeginForm(actionName, controllerName, method: FormMethod.Post, htmlAttributes: new { id = "formPager" }))
 {
     if (Model.CurrentPage > 0)
     {

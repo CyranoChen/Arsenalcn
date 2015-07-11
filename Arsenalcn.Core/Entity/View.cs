@@ -1,25 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 
 namespace Arsenalcn.Core
 {
-    public abstract class View<T> : IPager
+    public abstract class View<T>
     {
-        public virtual void Query(Criteria criteria, IEnumerable<T> data)
+        public virtual void Search(IEnumerable<T> data)
         {
-            PagingSize = criteria.GetPageSize();
-            CurrentPage = criteria.CurrentPage;
-            TotalCount = data.Count();
+            Contract.Requires(Criteria != null);
 
-            if (TotalCount > PagingSize)
+            Criteria.PagingSize = Criteria.GetPageSize();
+            Criteria.TotalCount = data.Count();
+
+            if (Criteria.TotalCount > Criteria.PagingSize && Criteria.MaxPage >= 0)
             {
-                this.MaxPage = TotalCount / PagingSize;
+                Criteria.MaxPage = Criteria.TotalCount / Criteria.PagingSize;
 
-                if (CurrentPage > MaxPage)
-                { CurrentPage = MaxPage; }
+                if (Criteria.CurrentPage > Criteria.MaxPage)
+                { Criteria.CurrentPage = Criteria.MaxPage; }
 
-                this.Data = data.Page(criteria.CurrentPage, PagingSize);
+                this.Data = data.Page(Criteria.CurrentPage, Criteria.PagingSize);
             }
             else
             {
@@ -29,9 +31,6 @@ namespace Arsenalcn.Core
 
         public IEnumerable<T> Data { get; set; }
 
-        public short PagingSize { get; set; }
-        public int CurrentPage { get; set; }
-        public int MaxPage { get; set; }
-        public int TotalCount { get; set; }
+        public Criteria Criteria { get; set; }
     }
 }

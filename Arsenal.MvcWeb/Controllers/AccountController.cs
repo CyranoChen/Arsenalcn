@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using System.Web.Routing;
 using System.Web.Security;
 
 using Arsenal.MvcWeb.Models;
 
 namespace Arsenal.MvcWeb.Controllers
 {
-
     [Authorize]
     public class AccountController : Controller
     {
@@ -41,21 +36,58 @@ namespace Arsenal.MvcWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (Membership.ValidateUser(model.UserName, model.Password))
+                object userKey;
+
+                if (MembershipDto.ValidateUser(model.UserName, model.Password, providerUserKey: out userKey))
                 {
                     FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
+                    MembershipDto.SetSession(MembershipDto.GetUser(userKey));
+
                     if (Url.IsLocalUrl(returnUrl))
                     {
+                        TempData["DataUrl"] = string.Format("data-url={0}", returnUrl);
                         return Redirect(returnUrl);
                     }
                     else
                     {
+                        TempData["DataUrl"] = "data-url=/";
                         return RedirectToAction("Index", "Home");
+                    }
+                }
+                else if (MembershipDto.ValidateAcnUser(model.UserName, model.Password))
+                {
+                    // not in SSO, but in Acn Users
+                    // Sync the user info, register SSO and then log in
+                    var acnUid = MembershipDto.GetAcnID(model.UserName);
+
+                    if (acnUid > 0)
+                    {
+                        var user = new MembershipDto();
+
+                        MembershipCreateStatus createStatus;
+                        user.CreateAcnUser(acnUid, providerUserKey: out userKey, status: out createStatus);
+
+                        if (createStatus.Equals(MembershipCreateStatus.Success))
+                        {
+                            FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
+                            MembershipDto.SetSession(MembershipDto.GetUser(userKey));
+
+                            TempData["DataUrl"] = "data-url=/";
+                            return RedirectToAction("Index", "Home");
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("Warn", ErrorCodeToString(createStatus));
+                        }
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("Warn", ErrorCodeToString(MembershipCreateStatus.InvalidUserName));
                     }
                 }
                 else
                 {
-                    ModelState.AddModelError("", "The user name or password provided is incorrect.");
+                    ModelState.AddModelError("Warn", "用户名或密码不正确");
                 }
             }
 
@@ -69,7 +101,9 @@ namespace Arsenal.MvcWeb.Controllers
         public ActionResult LogOff()
         {
             FormsAuthentication.SignOut();
+            Session.Abandon();
 
+            TempData["DataUrl"] = "data-url=/";
             return RedirectToAction("Index", "Home");
         }
 
@@ -93,17 +127,25 @@ namespace Arsenal.MvcWeb.Controllers
             if (ModelState.IsValid)
             {
                 // Attempt to register the user
-                MembershipCreateStatus createStatus;
-                Membership.CreateUser(model.UserName, model.Password, model.Email, passwordQuestion: null, passwordAnswer: null, isApproved: true, providerUserKey: null, status: out createStatus);
+                var user = new MembershipDto();
 
-                if (createStatus == MembershipCreateStatus.Success)
+                object userKey;
+                MembershipCreateStatus createStatus;
+
+                user.CreateUser(model.UserName, model.Password, model.Mobile, model.Email,
+                    providerUserKey: out userKey, status: out createStatus);
+
+                if (createStatus.Equals(MembershipCreateStatus.Success))
                 {
                     FormsAuthentication.SetAuthCookie(model.UserName, createPersistentCookie: false);
+                    MembershipDto.SetSession(MembershipDto.GetUser(userKey));
+
+                    TempData["DataUrl"] = "data-url=/";
                     return RedirectToAction("Index", "Home");
                 }
                 else
                 {
-                    ModelState.AddModelError("", ErrorCodeToString(createStatus));
+                    ModelState.AddModelError("Warn", ErrorCodeToString(createStatus));
                 }
             }
 
@@ -128,14 +170,22 @@ namespace Arsenal.MvcWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-
                 // ChangePassword will throw an exception rather
                 // than return false in certain failure scenarios.
                 bool changePasswordSucceeded;
+
                 try
                 {
-                    MembershipUser currentUser = Membership.GetUser(User.Identity.Name, userIsOnline: true);
-                    changePasswordSucceeded = currentUser.ChangePassword(model.OldPassword, model.NewPassword);
+                    var membership = MembershipDto.GetMembership(username: User.Identity.Name);
+
+                    if (membership != null)
+                    {
+                        changePasswordSucceeded = membership.ChangePassword(model.OldPassword, model.NewPassword);
+                    }
+                    else
+                    {
+                        changePasswordSucceeded = false;
+                    }
                 }
                 catch (Exception)
                 {
@@ -144,11 +194,12 @@ namespace Arsenal.MvcWeb.Controllers
 
                 if (changePasswordSucceeded)
                 {
+                    TempData["DataUrl"] = "data-url=/";
                     return RedirectToAction("ChangePasswordSuccess");
                 }
                 else
                 {
-                    ModelState.AddModelError("", "The current password is incorrect or the new password is invalid.");
+                    ModelState.AddModelError("Warn", "旧密码不正确或新密码无效");
                 }
             }
 

@@ -43,14 +43,20 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="AutoMapper">
+      <HintPath>..\packages\AutoMapper.3.3.1\lib\net40\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="AutoMapper.Net4">
+      <HintPath>..\packages\AutoMapper.3.3.1\lib\net40\AutoMapper.Net4.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Web.Mvc.FixedDisplayModes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.Mvc.FixedDisplayModes.1.0.0\lib\net40\Microsoft.Web.Mvc.FixedDisplayModes.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -118,7 +124,9 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
-    <Compile Include="Models\CasinoModels.cs" />
+    <Compile Include="Models\Casino\BetModels.cs" />
+    <Compile Include="Models\Casino\CasinoModels.cs" />
+    <Compile Include="Models\Casino\MatchModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -382,6 +390,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\bootstrap.css.map" />
+    <None Include="Properties\PublishProfiles\Arsenal.MvcWeb.Deployment.pubxml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -425,6 +434,16 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\Casino\Index.cshtml" />
+    <Content Include="Views\Casino\GameBet.cshtml" />
+    <Content Include="Views\Casino\MyBet.cshtml" />
+    <Content Include="Views\Casino\Result.cshtml" />
+    <Content Include="Views\Casino\MyBonus.cshtml" />
+    <Content Include="Views\Casino\Detail.cshtml" />
+    <Content Include="Views\Shared\Casino\_MatchInfoPartial.cshtml" />
+    <Content Include="Views\Casino\SingleChoice.cshtml" />
+    <Content Include="Views\Shared\Casino\_MatchInfoLitePartial.cshtml" />
+    <Content Include="Views\Casino\MatchResult.cshtml" />
+    <Content Include="Views\Shared\_PagerPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -433,9 +452,17 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Arsenal.Service\Arsenal.Service.csproj">
+      <Project>{852e458a-6cbd-42d1-ba22-8f6eda353aa7}</Project>
+      <Name>Arsenal.Service</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Arsenalcn.CasinoSys.Entity\Arsenalcn.CasinoSys.Entity.csproj">
       <Project>{cd9a6bd8-88b6-45f4-b41d-7dc11e173b78}</Project>
       <Name>Arsenalcn.CasinoSys.Entity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Arsenalcn.Core\Arsenalcn.Core.csproj">
+      <Project>{c46f6af6-ebe1-4bac-bc17-0989fa6c9b8e}</Project>
+      <Name>Arsenalcn.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
@@ -466,6 +493,7 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <Import Project="..\packages\AutoMapper.3.3.1\tools\AutoMapper.targets" Condition="Exists('..\packages\AutoMapper.3.3.1\tools\AutoMapper.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

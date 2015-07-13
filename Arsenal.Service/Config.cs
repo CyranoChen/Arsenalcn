@@ -34,6 +34,21 @@ namespace Arsenal.Service
 
         #region Members and Properties
 
+        public static bool AcnSync
+        {
+            get
+            {
+                try
+                {
+                    return Convert.ToBoolean(ConfigDictionary["AcnSync"]);
+                }
+                catch
+                {
+                    return true;
+                }
+            }
+        }
+
         public static string APIAppKey
         {
             get

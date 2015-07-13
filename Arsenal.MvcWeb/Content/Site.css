@@ -39,6 +39,15 @@
 .ui-bar-c, .ui-body-c, .ui-btn-up-c, .ui-btn-hover-c, .ui-btn-down-c,
 .ui-bar-d, .ui-body-d, .ui-btn-up-d, .ui-btn-hover-d, .ui-btn-down-d,
 .ui-bar-e, .ui-body-e, .ui-btn-up-e, .ui-btn-hover-e, .ui-btn-down-e,
-.ui-btn-active  {
+.ui-btn-active {
     text-shadow: none;
+}
+
+/* Set default font */
+body, button, input, select, textarea, h1, h2, h3, h4, h5, h6, p, span, a {
+    font-family: Microsoft YaHei, Tahoma, Helvetica, Arial, sans-serif;
+}
+
+body, input, select, textarea, button, .ui-btn {
+    font-family: Microsoft YaHei, Tahoma, Helvetica, Arial, sans-serif;
 }

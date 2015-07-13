@@ -2,21 +2,32 @@
 
 namespace Arsenalcn.Core
 {
-    public class Pager
+    public class Pager : IPager
     {
-        public short Size;
-        public int Index;
+        public short PagingSize { get; set; }
+        public int CurrentPage { get; set; }
+        public int MaxPage { get; set; }
+        public int TotalCount { get; set; }
 
         public Pager()
         {
-            Size = 10;
-            Index = 1;
+            PagingSize = 10;
+            CurrentPage = 0;
         }
 
         public Pager(int index)
         {
-            Size = 10;
-            Index = index;
+            PagingSize = 10;
+            CurrentPage = index;
         }
     }
+
+    public interface IPager
+    {
+        short PagingSize { get; set; }
+        int CurrentPage { get; set; }
+        int MaxPage { get; set; }
+        int TotalCount { get; set; }
+    }
+
 }

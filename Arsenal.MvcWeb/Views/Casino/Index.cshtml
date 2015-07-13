@@ -1,28 +1,27 @@
-﻿@model List<Arsenal.MvcWeb.Models.CasinoMatch>
-
+﻿@model IEnumerable<Arsenal.MvcWeb.Models.Casino.MatchWithRateDto>
 @{
     ViewBag.Title = "可投注比赛";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<h2>可投注比赛</h2>
-<p>
-    Description
-</p>
-
-<ul data-role="listview" data-inset="true">
-    <li data-role="list-divider">可投注比赛</li>
-    @if (Model != null && Model.Count > 0)
-    {
-        foreach (var m in Model)
+<div data-role="content">
+    <h2>可投注比赛</h2>
+    <p>
+        Description
+    </p>
+    <ul data-role="listview" data-inset="true">
+        <li data-role="list-divider">
+            您可投注即将于 @ViewBag.CasinoValidDays 天内开始的比赛
+            <span class="ui-li-count">@Model.Count()</span>
+        </li>
+        @if (Model != null && Model.Count() > 0)
         {
-            <li>
-                <a href="@Url.Action("Bet", "Casino", new { id = m.MatchGuid.ToString() })">
-                    @m.HomeTeamName vs @m.AwayTeamName
-                    <br /> @m.PlayTime.ToString("yyyy-MM-dd HH:mm")
-                    <span class="ui-li-count">112</span>
-                </a>
-            </li>
+            foreach (var m in Model)
+            {
+                <li>
+                    <a data-transition="slide" href="@Url.Action("GameBet", "Casino", new { id = m.MatchGuid.ToString() })">
+                        @Html.Partial("Casino/_MatchInfoPartial", m)
+                    </a>
+                </li>
+            }
         }
-    }
-</ul>
+    </ul>
+</div>

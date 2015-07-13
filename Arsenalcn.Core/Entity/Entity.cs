@@ -81,7 +81,7 @@ namespace Arsenalcn.Core
 
                 return _id == null ? default(TKey) : (TKey)_id;
             }
-            protected set { _id = value; }
+            set { _id = value; }
         }
         private object _id;
 

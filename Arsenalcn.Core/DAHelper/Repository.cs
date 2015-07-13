@@ -8,10 +8,11 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 
 using Microsoft.ApplicationBlocks.Data;
+
 using Arsenalcn.Core.Logger;
-using System.Threading;
 
 namespace Arsenalcn.Core
 {
@@ -151,7 +152,7 @@ namespace Arsenalcn.Core
                 string innerSql = string.Format("(SELECT ROW_NUMBER() OVER(ORDER BY {1}) AS RowNo, * FROM {0})", attr.Name, _strOrderBy);
 
                 string sql = string.Format("SELECT * FROM {0} AS t WHERE t.RowNo BETWEEN {1} AND {2}",
-                    innerSql, ((pager.Index - 1) * pager.Size).ToString(), (pager.Index * pager.Size - 1).ToString());
+                    innerSql, (pager.CurrentPage * pager.PagingSize).ToString(), ((pager.CurrentPage + 1) * pager.PagingSize - 1).ToString());
 
                 DataSet ds = SqlHelper.ExecuteDataset(conn, CommandType.Text, sql);
 
@@ -336,7 +337,7 @@ namespace Arsenalcn.Core
                         attr.Name, _strOrderBy, string.Join(" AND ", listCol.ToArray()));
 
                     string sql = string.Format("SELECT * FROM {0} AS t WHERE t.RowNo BETWEEN {1} AND {2}",
-                        innerSql, ((pager.Index - 1) * pager.Size).ToString(), (pager.Index * pager.Size - 1).ToString());
+                        innerSql, (pager.CurrentPage * pager.PagingSize).ToString(), ((pager.CurrentPage + 1) * pager.PagingSize - 1).ToString());
 
                     DataSet ds = SqlHelper.ExecuteDataset(conn, CommandType.Text, sql, listPara.ToArray());
 
@@ -483,6 +484,7 @@ namespace Arsenalcn.Core
                 }
 
                 var attr = GetTableAttr<T>();
+                var sql = string.Empty;
 
                 if (listCol.Count > 0 && listColPara.Count > 0 && listPara.Count > 0)
                 {
@@ -493,19 +495,35 @@ namespace Arsenalcn.Core
                     {
                         listCol.Add(attr.Key);
                         listColPara.Add("@key");
-                        listPara.Add(new SqlParameter("@key", primary.GetValue(instance, null)));
-                    }
 
-                    string sql = string.Format("INSERT INTO {0} ({1}) VALUES ({2}); SELECT SCOPE_IDENTITY();",
-                        attr.Name, string.Join(", ", listCol.ToArray()), string.Join(", ", listColPara.ToArray()));
+                        key = primary.GetValue(instance, null);
+                        listPara.Add(new SqlParameter("@key", key));
 
-                    if (trans != null)
-                    {
-                        key = SqlHelper.ExecuteScalar(trans, CommandType.Text, sql, listPara.ToArray());
+                        sql = string.Format("INSERT INTO {0} ({1}) VALUES ({2})",
+                           attr.Name, string.Join(", ", listCol.ToArray()), string.Join(", ", listColPara.ToArray()));
+
+                        if (trans != null)
+                        {
+                            SqlHelper.ExecuteNonQuery(trans, CommandType.Text, sql, listPara.ToArray());
+                        }
+                        else
+                        {
+                            SqlHelper.ExecuteNonQuery(conn, CommandType.Text, sql, listPara.ToArray());
+                        }
                     }
                     else
                     {
-                        key = SqlHelper.ExecuteScalar(conn, CommandType.Text, sql, listPara.ToArray());
+                        sql = string.Format("INSERT INTO {0} ({1}) VALUES ({2}); SELECT SCOPE_IDENTITY();",
+                           attr.Name, string.Join(", ", listCol.ToArray()), string.Join(", ", listColPara.ToArray()));
+
+                        if (trans != null)
+                        {
+                            key = SqlHelper.ExecuteScalar(trans, CommandType.Text, sql, listPara.ToArray());
+                        }
+                        else
+                        {
+                            key = SqlHelper.ExecuteScalar(conn, CommandType.Text, sql, listPara.ToArray());
+                        }
                     }
 
                     log.Debug(sql, new LogInfo()

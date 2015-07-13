@@ -5,15 +5,19 @@
 }
 
 @section Header {
-    @Html.ActionLink("Back", "Index", "Home", null, new { data_icon = "arrow-l", data_rel = "back" })
-    <h1>@ViewBag.Title</h1>
+    <div data-role="header" data-position="fixed">
+        @Html.ActionLink("Back", "Index", "Home", routeValues: null, htmlAttributes: new { data_icon = "arrow-l", data_rel = "back" })
+        <h1>@ViewBag.Title</h1>
+    </div>
 }
 
-<p>
-    Logged in as <strong>@User.Identity.Name</strong>.
-</p>
-
-<ul data-role="listview" data-inset="true">
-    <li>@Html.ActionLink("Change password", "ChangePassword")</li>
-    <li>@Html.ActionLink("Log off", "LogOff")</li>
-</ul>
+<div data-role="content">
+    <p>
+        Logged in as <strong>@User.Identity.Name</strong>.
+    </p>
+    <ul data-role="listview" data-inset="true">
+        <li>@Html.ActionLink("用户信息", "Profile")</li>
+        <li>@Html.ActionLink("密码修改", "ChangePassword")</li>
+        <li>@Html.ActionLink("退出登录", "LogOff", routeValues: null, htmlAttributes: new { data_ajax = "false" })</li>
+    </ul>
+</div>

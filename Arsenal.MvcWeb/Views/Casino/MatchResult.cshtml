@@ -1,0 +1,68 @@
+﻿@model Arsenal.MvcWeb.Models.Casino.MatchWithRateDto
+@{
+    ViewBag.Title = "MatchResult";
+}
+@section Scripts {
+    <style type="text/css">
+        .match-versus {
+            text-align: center;
+        }
+
+            .match-versus div.ui-input-text {
+                width: 40px;
+                display: inline-block;
+                text-align: center;
+            }
+
+            .match-versus span {
+                padding: 5px;
+            }
+    </style>
+    <script type="text/javascript">
+        $(function () {
+            $("#btnSubmit").click(function () {
+                document.forms["formGameBet"].submit();
+            });
+        });
+    </script>
+}
+@section Header {
+    <div data-role="header">
+        <h1 style="overflow: visible">
+            <span>@Model.TeamHome.TeamDisplayName</span>
+            <span> vs </span>
+            <span>@Model.TeamAway.TeamDisplayName</span>
+        </h1>
+    </div>
+}
+@section Footer {
+    <div data-role="footer" style="text-align: center">
+        <input type="button" id="btnSubmit" value="提交投注" />
+    </div>
+}
+<div data-role="content">
+    @using (Html.BeginForm("MatchResult", "Casino", FormMethod.Post, new { id = "formGameBet" }))
+    {
+        <fieldset data-role="controlgroup">
+            <div class="ui-grid-b">
+                <div class="ui-block-a" style="text-align: center">
+                    <img src="http://bbs.arsenalcn.com/plugin/acncasino/@Model.TeamHome.TeamLogo" />
+                    <h2>@Model.TeamHome.TeamDisplayName</h2>
+                </div>
+                <div class="ui-block-b match-versus">
+                    <p>@Model.LeagueName</p>
+                    <p>
+                        @Html.TextBox("resultHome")
+                        <span>vs</span>
+                        @Html.TextBox("resultAway")
+                    </p>
+                    <p>@Model.PlayTime.ToString("yyyy-MM-dd HH:mm")</p>
+                </div>
+                <div class="ui-block-c" style="text-align: center">
+                    <img src="http://bbs.arsenalcn.com/plugin/acncasino/@Model.TeamAway.TeamLogo" />
+                    <h2>@Model.TeamAway.TeamDisplayName</h2>
+                </div>
+            </div>
+        </fieldset>
+    }
+</div>

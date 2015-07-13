@@ -1,0 +1,68 @@
+﻿@model Arsenal.MvcWeb.Models.Casino.MatchWithRateDto
+@{
+    ViewBag.Title = "比赛投注";
+
+    var bets = ViewBag.BetList as IEnumerable<Arsenal.MvcWeb.Models.Casino.BetDto>;
+    var matches = ViewBag.MatchDtoList as IEnumerable<Arsenal.MvcWeb.Models.Casino.MatchDto>;
+}
+@section Header {
+    <div data-role="header" data-position="fixed">
+        @Html.ActionLink("Back", "Index", "Casino", null,
+            new { data_icon = "arrow-l", data_transition = "slide", data_direction = "reverse", data_iconpos = "notext" })
+        <h1>@ViewBag.Title</h1>
+    </div>
+}
+@section Footer {
+    <div data-role="footer" data-position="fixed" class="ui-btn">
+        <div data-role="controlgroup" data-type="horizontal">
+            <a href="@Url.Action("SingleChoice", "Casino", new { id = Model.MatchGuid })" data-role="button" data-icon="plus" data-rel="dialog" data-transition="pop">投输赢</a>
+            <a href="@Url.Action("MatchResult", "Casino", new { id = Model.MatchGuid })" data-role="button" data-icon="plus" data-rel="dialog" data-transition="pop">猜比分</a>
+        </div>
+    </div>
+}
+<div data-role="content">
+    @Html.Partial("Casino/_MatchInfoPartial", Model)
+    <div data-role="collapsible-set">
+        <div data-role="collapsible">
+            <h3>历史交锋<span class="ui-li-count">@matches.Count()</span></h3>
+            <ul id="pnlMatchList" data-role="listview" data-inset="true">
+                @if (matches != null && matches.Count() > 0)
+                {
+                    foreach (var m in matches)
+                    {
+                        <li>
+                            <a data-transition="slide" data-role="button" href="@Url.Action("Detail", "Casino", new { id = m.MatchGuid.ToString() })">
+                                @Html.Partial("Casino/_MatchInfoLitePartial", m)
+                            </a>
+                        </li>
+                    }
+                }
+            </ul>
+        </div>
+        <div data-role="collapsible" @Html.Raw("data-collapsed=\"false\"")>
+            <h3>我的投注<span class="ui-li-count">@bets.Count()</span></h3>
+            <ul id="pnlBetList" data-role="listview" data-inset="true">
+                @if (bets != null && bets.Count() > 0)
+                {
+                    foreach (var b in bets)
+                    {
+                        <li>
+                            <a href="#" data-role="button" data-icon="@b.BetIconInfo" data-iconpos="left">
+                                <h3>投注：@b.BetDetailInfo</h3>
+                                <p>@b.BetTime.ToString("yyyy-MM-dd HH:mm:ss")</p>
+                                @if (b.IsWin.HasValue && b.IsWin.Value)
+                                {
+                                    <span class="ui-li-count">+@b.EarningDesc</span>
+                                }
+                            </a>
+                        </li>
+                    }
+                }
+            </ul>
+        </div>
+        <div data-role="collapsible">
+            <h3>互动留言<span class="ui-li-count">/</span></h3>
+            <ul id="pnlMessageList" data-role="listview" data-inset="true"></ul>
+        </div>
+    </div>
+</div>

@@ -41,8 +41,7 @@ namespace Arsenal.MvcWeb.Controllers
                 if (MembershipDto.ValidateUser(model.UserName, model.Password, providerUserKey: out userKey))
                 {
                     FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
-
-                    Session["AuthorizedUser"] = MembershipDto.GetUser(userKey);
+                    MembershipDto.SetSession(MembershipDto.GetUser(userKey));
 
                     if (Url.IsLocalUrl(returnUrl))
                     {
@@ -66,13 +65,12 @@ namespace Arsenal.MvcWeb.Controllers
                         var user = new MembershipDto();
 
                         MembershipCreateStatus createStatus;
-                        user.AcnSyncRegister(acnUid, providerUserKey: out userKey, status: out createStatus);
+                        user.CreateAcnUser(acnUid, providerUserKey: out userKey, status: out createStatus);
 
-                        if (createStatus == MembershipCreateStatus.Success)
+                        if (createStatus.Equals(MembershipCreateStatus.Success))
                         {
                             FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
-
-                            Session["AuthorizedUser"] = MembershipDto.GetUser(userKey);
+                            MembershipDto.SetSession(MembershipDto.GetUser(userKey));
 
                             TempData["DataUrl"] = "data-url=/";
                             return RedirectToAction("Index", "Home");
@@ -84,7 +82,7 @@ namespace Arsenal.MvcWeb.Controllers
                     }
                     else
                     {
-                        ModelState.AddModelError("Warn", "用户名或密码不正确");
+                        ModelState.AddModelError("Warn", ErrorCodeToString(MembershipCreateStatus.InvalidUserName));
                     }
                 }
                 else
@@ -103,7 +101,6 @@ namespace Arsenal.MvcWeb.Controllers
         public ActionResult LogOff()
         {
             FormsAuthentication.SignOut();
-
             Session.Abandon();
 
             TempData["DataUrl"] = "data-url=/";
@@ -138,11 +135,10 @@ namespace Arsenal.MvcWeb.Controllers
                 user.CreateUser(model.UserName, model.Password, model.Mobile, model.Email,
                     providerUserKey: out userKey, status: out createStatus);
 
-                if (createStatus == MembershipCreateStatus.Success)
+                if (createStatus.Equals(MembershipCreateStatus.Success))
                 {
                     FormsAuthentication.SetAuthCookie(model.UserName, createPersistentCookie: false);
-
-                    Session["AuthorizedUser"] = MembershipDto.GetUser(userKey);
+                    MembershipDto.SetSession(MembershipDto.GetUser(userKey));
 
                     TempData["DataUrl"] = "data-url=/";
                     return RedirectToAction("Index", "Home");
@@ -174,13 +170,13 @@ namespace Arsenal.MvcWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-
                 // ChangePassword will throw an exception rather
                 // than return false in certain failure scenarios.
                 bool changePasswordSucceeded;
+
                 try
                 {
-                    var membership = MembershipDto.GetMembership(User.Identity.Name);
+                    var membership = MembershipDto.GetMembership(username: User.Identity.Name);
 
                     if (membership != null)
                     {
@@ -203,7 +199,7 @@ namespace Arsenal.MvcWeb.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("", "The current password is incorrect or the new password is invalid.");
+                    ModelState.AddModelError("Warn", "旧密码不正确或新密码无效");
                 }
             }
 

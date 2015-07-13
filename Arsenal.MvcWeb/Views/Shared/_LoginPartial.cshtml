@@ -1,11 +1,11 @@
 ﻿@{
-    var AuthorizedUser = Arsenal.MvcWeb.Models.MembershipDto.GetSession();
+    var authorizedUser = Arsenal.MvcWeb.Models.MembershipDto.GetSession();
 }
 
-@if (Request.IsAuthenticated && AuthorizedUser != null)
+@if (Request.IsAuthenticated && authorizedUser != null)
 {
-    @Html.ActionLink(User.Identity.Name, "Index", "Account", routeValues: null, htmlAttributes: new { data_icon = "gear", data_transition = "slideup" })
-    @AuthorizedUser.AcnID
+    @Html.ActionLink(string.Format("{0} ({1})", User.Identity.Name, authorizedUser.AcnID.ToString()),
+    "Index", "Account", routeValues: null, htmlAttributes: new { data_icon = "gear", data_transition = "slideup" })
 }
 else
 {

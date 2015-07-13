@@ -1,6 +1,7 @@
-﻿using System.Web;
+﻿using System;
+using System.Web;
 
-namespace Ebuy
+namespace Arsenalcn.Core
 {
     public static class JsonRequestExtensions
     {

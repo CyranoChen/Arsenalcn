@@ -152,7 +152,7 @@ namespace Arsenalcn.Core
                 string innerSql = string.Format("(SELECT ROW_NUMBER() OVER(ORDER BY {1}) AS RowNo, * FROM {0})", attr.Name, _strOrderBy);
 
                 string sql = string.Format("SELECT * FROM {0} AS t WHERE t.RowNo BETWEEN {1} AND {2}",
-                    innerSql, (pager.Index * pager.Size).ToString(), ((pager.Index + 1) * pager.Size - 1).ToString());
+                    innerSql, (pager.CurrentPage * pager.PagingSize).ToString(), ((pager.CurrentPage + 1) * pager.PagingSize - 1).ToString());
 
                 DataSet ds = SqlHelper.ExecuteDataset(conn, CommandType.Text, sql);
 
@@ -337,7 +337,7 @@ namespace Arsenalcn.Core
                         attr.Name, _strOrderBy, string.Join(" AND ", listCol.ToArray()));
 
                     string sql = string.Format("SELECT * FROM {0} AS t WHERE t.RowNo BETWEEN {1} AND {2}",
-                        innerSql, (pager.Index * pager.Size).ToString(), ((pager.Index + 1) * pager.Size - 1).ToString());
+                        innerSql, (pager.CurrentPage * pager.PagingSize).ToString(), ((pager.CurrentPage + 1) * pager.PagingSize - 1).ToString());
 
                     DataSet ds = SqlHelper.ExecuteDataset(conn, CommandType.Text, sql, listPara.ToArray());
 

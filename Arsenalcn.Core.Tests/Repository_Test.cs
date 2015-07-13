@@ -39,7 +39,7 @@ namespace Arsenalcn.Core.Tests
 
             ht.Add("LeagueTime", "DESC");
 
-            var query = repo.All<League>(new Pager(2) { Size = 20 }, ht);
+            var query = repo.All<League>(new Pager(2) { PagingSize = 20 }, ht);
 
             Assert.IsNotNull(query);
         }
@@ -74,7 +74,7 @@ namespace Arsenalcn.Core.Tests
 
             whereBy.Add("IsActive", true);
 
-            var query = repo.Query<League>(new Pager(2) { Size = 5 }, whereBy, orderBy);
+            var query = repo.Query<League>(new Pager(2) { PagingSize = 5 }, whereBy, orderBy);
 
             Assert.IsNotNull(query);
         }

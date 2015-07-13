@@ -40,7 +40,7 @@ namespace Arsenal.MvcWeb.Controllers
         // 我的中奖查询
         // GET: /Casino/Bet
 
-        public ActionResult Bet()
+        public ActionResult MyBet(Criteria criteria)
         {
             var list = new List<BetDto>();
             var dt = Arsenalcn.CasinoSys.Entity.Bet.GetUserBetHistoryView(this.acnID);
@@ -53,26 +53,23 @@ namespace Arsenal.MvcWeb.Controllers
                 }
             }
 
-            return View(list);
+            // Populate the view model
+            var model = new MyBetDto();
+
+            model.Criteria = criteria;
+            model.Search(list);
+
+            return View(model);
         }
 
         // 我的盈亏情况
         // GET: /Casino/Bonus
 
-        public ActionResult Bonus()
+        public ActionResult MyBonus()
         {
-            var list = new List<BetDto>();
-            var dt = Arsenalcn.CasinoSys.Entity.Bet.GetUserBetHistoryView(acnID);
+            // TODO
 
-            if (dt != null)
-            {
-                foreach (DataRow dr in dt.Rows)
-                {
-                    list.Add(new BetDto(dr));
-                }
-            }
-
-            return View(list);
+            return View();
         }
 
         // 比赛结果
@@ -96,12 +93,6 @@ namespace Arsenal.MvcWeb.Controllers
 
             model.Criteria = criteria;
             model.Search(list);
-
-            // Copy values from the criteria object to the view model
-            //AutoMapper.Mapper.DynamicMap(criteria, model);
-
-            // Map the matching Auctions to view models
-            //model.SearchResult = Mapper.DynamicMap<IEnumerable<AuctionViewModel>>(auctions);
 
             return View(model);
         }

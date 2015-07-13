@@ -1,9 +1,9 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
 
 using Arsenalcn.CasinoSys.Entity;
 using ArsenalTeam = Arsenalcn.CasinoSys.Entity.Arsenal.Team;
-using System.ComponentModel.DataAnnotations;
 
 namespace Arsenal.MvcWeb.Models.Casino
 {
@@ -27,6 +27,7 @@ namespace Arsenal.MvcWeb.Models.Casino
 
             Item = CasinoItem.GetCasinoItem((Guid)dr["CasinoItemGuid"]);
 
+            // TODO: improve performance
             InitBetIcon();
             InitBetDetail();
         }

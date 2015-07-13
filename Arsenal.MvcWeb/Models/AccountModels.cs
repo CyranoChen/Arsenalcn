@@ -47,37 +47,6 @@ namespace Arsenal.MvcWeb.Models
             Remark = string.Empty;
         }
 
-        // Summary:
-        //     Updates the password for the membership user in the membership data store.
-        //
-        // Parameters:
-        //   oldPassword:
-        //     The current password for the membership user.
-        //
-        //   newPassword:
-        //     The new password for the membership user.
-        //
-        // Returns:
-        //     true if the update was successful; otherwise, false.
-        //
-        // Exceptions:
-        //   System.ArgumentException:
-        //     oldPassword is an empty string.-or-newPassword is an empty string.
-        //
-        //   System.ArgumentNullException:
-        //     oldPassword is null.-or-newPassword is null.
-        //
-        //   System.PlatformNotSupportedException:
-        //     This method is not available. This can occur if the application targets the
-        //     .NET Framework 4 Client Profile. To prevent this exception, override the
-        //     method, or change the application to target the full version of the .NET
-        //     Framework.
-        public bool ChangePassword(string oldPassword, string newPassword)
-        {
-            //TODO
-            return false;
-        }
-
         //
         // Summary:
         //     Gets the information from the data source for the membership user associated
@@ -108,6 +77,28 @@ namespace Arsenal.MvcWeb.Models
             { return null; }
         }
 
+        public static MembershipDto GetMembership(string username)
+        {
+            Contract.Requires(!string.IsNullOrEmpty(username));
+
+            IRepository repo = new Repository();
+
+            var ht = new Hashtable();
+
+            ht.Add("UserName", username);
+
+            var query = repo.Query<Membership>(ht);
+
+            if (query.Count > 0)
+            {
+                return query[0] as MembershipDto;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         public static User GetUser(object providerUserKey)
         {
             Contract.Requires(providerUserKey != null);
@@ -127,6 +118,13 @@ namespace Arsenal.MvcWeb.Models
             {
                 return null;
             }
+        }
+
+        public static void SetSession(User user)
+        {
+            Contract.Requires(user != null);
+
+            HttpContext.Current.Session["AuthorizedUser"] = user;
         }
 
         //
@@ -193,7 +191,10 @@ namespace Arsenal.MvcWeb.Models
             return Convert.ToInt32(uid.Replace("\"", ""));
         }
 
-        public void AcnSyncRegister(int uid, out object providerUserKey, out MembershipCreateStatus status)
+        // Summary:
+        //     Adds a new user to the data store by exist Acn user.
+        //
+        public void CreateAcnUser(int uid, out object providerUserKey, out MembershipCreateStatus status)
         {
             status = MembershipCreateStatus.UserRejected;
             providerUserKey = null;
@@ -289,17 +290,49 @@ namespace Arsenal.MvcWeb.Models
                 try
                 {
                     IRepository repo = new Repository();
+                    providerUserKey = null;
 
                     this.Init();
 
+                    #region Check username
 
-                    // TODO
+                    if (string.IsNullOrEmpty(username))
+                    {
+                        status = MembershipCreateStatus.InvalidUserName;
+                        return;
+                    }
+
+                    if (ConfigGlobal.AcnSync && GetAcnID(username) > 0)
+                    {
+                        status = MembershipCreateStatus.DuplicateUserName;
+                        return;
+                    }
+
+                    if (GetMembership(username: username) != null)
+                    {
+                        status = MembershipCreateStatus.DuplicateUserName;
+                        return;
+                    }
+
                     this.UserName = username;
+
+                    #endregion
+
                     this.Password = Encrypt.getMd5Hash(password);
                     this.Mobile = mobile;
                     this.Email = email;
 
                     repo.Insert<MembershipDto>(this, out providerUserKey, trans);
+
+                    #region Check user in the data store
+
+                    if (repo.Single<User>(providerUserKey) != null)
+                    {
+                        status = MembershipCreateStatus.DuplicateProviderUserKey;
+                        return;
+                    }
+
+                    #endregion
 
                     var user = new User();
 
@@ -308,7 +341,7 @@ namespace Arsenal.MvcWeb.Models
                     user.IsAnonymous = false;
                     user.LastActivityDate = DateTime.Now;
 
-                    #region Register Acn User
+                    #region Register new Acn User
                     if (ConfigGlobal.AcnSync)
                     {
                         var client = new DiscuzApiClient();
@@ -343,6 +376,87 @@ namespace Arsenal.MvcWeb.Models
                     providerUserKey = null;
 
                     status = MembershipCreateStatus.ProviderError;
+                }
+            }
+        }
+
+        // Summary:
+        //     Updates the password for the membership user in the membership data store.
+        //
+        // Parameters:
+        //   oldPassword:
+        //     The current password for the membership user.
+        //
+        //   newPassword:
+        //     The new password for the membership user.
+        //
+        // Returns:
+        //     true if the update was successful; otherwise, false.
+        //
+        // Exceptions:
+        //   System.ArgumentException:
+        //     oldPassword is an empty string.-or-newPassword is an empty string.
+        //
+        //   System.ArgumentNullException:
+        //     oldPassword is null.-or-newPassword is null.
+        //
+        //   System.PlatformNotSupportedException:
+        //     This method is not available. This can occur if the application targets the
+        //     .NET Framework 4 Client Profile. To prevent this exception, override the
+        //     method, or change the application to target the full version of the .NET
+        //     Framework.
+        public bool ChangePassword(string oldPassword, string newPassword)
+        {
+            Contract.Requires(!string.IsNullOrEmpty(oldPassword));
+            Contract.Requires(!string.IsNullOrEmpty(newPassword));
+
+            if (oldPassword.Equals(newPassword, StringComparison.OrdinalIgnoreCase))
+            { return false; }
+
+            if (!this.Password.Equals(Encrypt.getMd5Hash(oldPassword)))
+            { return false; }
+
+            using (SqlConnection conn = new SqlConnection(DataAccess.ConnectString))
+            {
+                conn.Open();
+                SqlTransaction trans = conn.BeginTransaction();
+
+                try
+                {
+                    IRepository repo = new Repository();
+
+                    this.Password = Encrypt.getMd5Hash(newPassword);
+
+                    repo.Update<MembershipDto>(this);
+
+                    #region Sync Acn User Password
+                    if (ConfigGlobal.AcnSync)
+                    {
+                        var user = repo.Single<User>(this.ID);
+
+                        if (user != null && user.AcnID.HasValue)
+                        {
+
+                            var client = new DiscuzApiClient();
+
+                            var result = client.UsersChangePassword(user.AcnID.Value,
+                                Encrypt.getMd5Hash(oldPassword), Encrypt.getMd5Hash(newPassword));
+
+                            if (!Convert.ToInt32(result.Replace("\"", "")).Equals(1))
+                            { throw new Exception(); }
+                        }
+                    }
+                    #endregion
+
+                    trans.Commit();
+
+                    return true;
+                }
+                catch
+                {
+                    trans.Rollback();
+
+                    return false;
                 }
             }
         }

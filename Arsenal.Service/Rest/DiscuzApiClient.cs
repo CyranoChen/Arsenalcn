@@ -59,6 +59,27 @@ namespace Arsenal.Service
             return GetReponse();
         }
 
+        public string UsersChangePassword(int uid, string oldPassword, string newPassword, string passwordFormat = "md5")
+        {
+            Contract.Requires(uid > 0);
+            Contract.Requires(!string.IsNullOrEmpty(oldPassword));
+            Contract.Requires(!string.IsNullOrEmpty(newPassword));
+
+            Method = "users.changepassword";
+            Format = ReponseType.JSON;
+
+            SetDefaultParameters();
+
+            Parameters.Add("uid", uid.ToString());
+            Parameters.Add("original_password", oldPassword);
+            Parameters.Add("new_password", newPassword);
+
+            if (!string.IsNullOrEmpty(passwordFormat))
+            { Parameters.Add("password_format", passwordFormat); }
+
+            return GetReponse();
+        }
+
         public string UsersGetID(string username)
         {
             Contract.Requires(!string.IsNullOrEmpty(username));

@@ -3,16 +3,15 @@
 <head>
     <meta charset="utf-8" />
     <title>@ViewBag.Title</title>
-    <meta name="viewport" content="target-densitydpi=device-dpi, width=480px, user-scalable=no">
+    <meta name="viewport" content="target-densitydpi=device-dpi, width=480, user-scalable=no">
     <link href="http://www.arsenalcn.com/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     @Styles.Render("~/Content/mobileCss", "~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jquerymobile")
     <script type="text/javascript">
         $(document).on("mobileinit", function () {
-            $.mobile.ajaxEnabled = true;
+            $.mobile.ajaxEnabled = false;
 
             var DEFAULT_WIDTH = 480, // 页面的默认宽度
                 ua = navigator.userAgent.toLowerCase(), // 根据 user agent 的信息获取浏览器信息
@@ -48,10 +47,8 @@
                 @Html.ActionLink("首页", "Index", "Home", routeValues: null, htmlAttributes: new { data_role = "button", data_icon = "grid", data_iconpos = "notext" })
             </div>
         }
-
         @RenderBody()
         @RenderSection("Scripts", required: false)
-
         @if (IsSectionDefined("Footer"))
         {
             @RenderSection("Footer")

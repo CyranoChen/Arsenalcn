@@ -34,6 +34,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -58,6 +59,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Rest\DiscuzApiClient.cs" />
+    <Compile Include="Rest\WeChatApiClient.cs" />
+    <Compile Include="Rest\WeChatApiServer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Arsenalcn.Core\Arsenalcn.Core.csproj">
@@ -65,7 +68,9 @@
       <Name>Arsenalcn.Core</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

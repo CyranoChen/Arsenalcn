@@ -200,6 +200,45 @@ namespace Arsenal.Service
             }
         }
 
+        public static bool WeChatActive
+        {
+            get
+            {
+                try
+                {
+                    return Convert.ToBoolean(ConfigDictionary["WeChatActive"]);
+                }
+                catch
+                {
+                    return true;
+                }
+            }
+        }
+
+        public static string WeChatAppKey
+        {
+            get
+            {
+                return ConfigDictionary["WeChatAppKey"];
+            }
+        }
+
+        public static string WeChatAppSecret
+        {
+            get
+            {
+                return ConfigDictionary["WeChatAppSecret"];
+            }
+        }
+
+        public static string WeChatServiceURL
+        {
+            get
+            {
+                return ConfigDictionary["WeChatServiceURL"];
+            }
+        }
+
         #endregion
     }
 }

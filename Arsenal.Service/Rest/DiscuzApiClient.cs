@@ -1,18 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
-using System.Text;
 
-using Arsenalcn.Core.Utility;
-using System.Net;
-using System.IO;
+using Arsenalcn.Core;
 
 namespace Arsenal.Service
 {
-    public class DiscuzApiClient
+    public class DiscuzApiClient : RestClient
     {
         public DiscuzApiClient()
+            : base()
         {
             ServiceUrl = ConfigGlobal.APIServiceURL;
             AppKey = ConfigGlobal.APIAppKey;
@@ -110,106 +107,11 @@ namespace Arsenal.Service
             return GetReponse();
         }
 
-        private string GetReponse()
-        {
-            //New HttpWebRequest for DiscuzNT Service API
-            HttpWebRequest req = (HttpWebRequest)WebRequest.Create(ServiceUrl);
-
-            req.Method = "POST";
-            req.ContentType = "application/x-www-form-urlencoded";
-
-            #region Set Signature & PostParas
-            StringBuilder sig = new StringBuilder();
-            StringBuilder postData = new StringBuilder();
-
-            foreach (var para in Parameters)
-            {
-                if (!string.IsNullOrEmpty(para.Value))
-                {
-                    sig.Append(string.Format("{0}={1}", para.Key, para.Value));
-                    postData.Append(string.Format("&{0}={1}", para.Key, para.Value));
-                }
-            }
-
-            sig.Append(CryptographicKey);
-
-            Signature = Encrypt.getMd5Hash(sig.ToString());
-            PostParameters = string.Format("sig={0}{1}", Signature, postData.ToString());
-
-            #endregion
-
-            byte[] encodedBytes = Encoding.UTF8.GetBytes(PostParameters);
-            req.ContentLength = encodedBytes.Length;
-
-            // Write encoded data into request stream
-            Stream requestStream = req.GetRequestStream();
-            requestStream.Write(encodedBytes, 0, encodedBytes.Length);
-            requestStream.Close();
-
-            var response = req.GetResponse();
-            var receiveStream = response.GetResponseStream();
-            StreamReader readStream = new StreamReader(receiveStream, Encoding.UTF8);
-
-            return readStream.ReadToEnd();
-        }
-
-        private void SetDefaultParameters()
-        {
-            Parameters = new SortedDictionary<string, string>();
-
-            if (!string.IsNullOrEmpty(AppKey))
-            { Parameters.Add("api_key", AppKey); }
-            else
-            { throw new Exception("AppKey is null"); }
-
-            if (!string.IsNullOrEmpty(Method))
-            { Parameters.Add("method", Method); }
-            else
-            { throw new Exception("Method is null"); }
-
-            if (!string.IsNullOrEmpty(Format.ToString()))
-            { Parameters.Add("format", Format.ToString()); }
-
-            if (!string.IsNullOrEmpty(AuthToken))
-            { Parameters.Add("auth_token", AuthToken); }
-        }
-
         #region Members and Properties
-
-        public string ServiceUrl
-        { get; set; }
-
-        public string AppKey
-        { get; set; }
-
-        public string CryptographicKey
-        { get; set; }
-
-        public string Method
-        { get; set; }
-
-        public ReponseType Format
-        { get; set; }
 
         public string AuthToken
         { get; set; }
 
-        public string Signature
-        { get; set; }
-
-        public SortedDictionary<string, string> Parameters
-        { get; set; }
-
-        public string PostParameters
-        { get; set; }
-
         #endregion
-
-    }
-
-    public enum ReponseType
-    {
-        XML,
-        JSON
     }
 }

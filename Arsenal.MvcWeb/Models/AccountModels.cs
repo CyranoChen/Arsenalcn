@@ -15,11 +15,16 @@ using Arsenal.Service;
 using Arsenalcn.Core;
 using Arsenalcn.Core.Utility;
 using Membership = Arsenal.Service.Membership;
+using Arsenalcn.Core.Logger;
+using System.Reflection;
+using System.Threading;
 
 namespace Arsenal.MvcWeb.Models
 {
     public class MembershipDto : Membership
     {
+        private readonly ILog log = new AppLog();
+
         public MembershipDto() : base() { }
 
         private void Init()
@@ -369,9 +374,15 @@ namespace Arsenal.MvcWeb.Models
 
                     status = MembershipCreateStatus.Success;
                 }
-                catch
+                catch (Exception ex)
                 {
                     trans.Rollback();
+
+                    log.Error(ex, new LogInfo()
+                    {
+                        MethodInstance = MethodBase.GetCurrentMethod(),
+                        ThreadInstance = Thread.CurrentThread
+                    });
 
                     providerUserKey = null;
 

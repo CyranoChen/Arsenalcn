@@ -7,6 +7,8 @@ using System.Xml;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Arsenal.Service;
+using Arsenalcn.Core;
+using System.Web;
 using Arsenalcn.Core.Utility;
 
 namespace Arsenalcn.Core.Tests
@@ -14,11 +16,17 @@ namespace Arsenalcn.Core.Tests
     [TestClass()]
     public class RestApi_Tests
     {
+        [TestInitialize]
+        public void MyTestInitialize()
+        {
+            HttpContext.Current = new HttpContext(new HttpRequest("", "http://localhost", ""), new HttpResponse(new StringWriter(new StringBuilder())));
+        }
+
         [TestMethod()]
         public void ApiValidate_Test()
         {
             string authToken = string.Empty;
-            string nextURL = "/default.aspx";
+            //string nextURL = "/default.aspx";
             string gotoURL = string.Empty;
 
             string _apiServiceUrl = "http://vm-win2008r2/services/restserver.aspx";
@@ -143,6 +151,20 @@ namespace Arsenalcn.Core.Tests
             var responseResult = client.UsersGetInfo(uids, fields);
 
             Assert.IsNotNull(responseResult);
+        }
+
+        [TestMethod()]
+        public void WeChatGetAccessToken()
+        {
+            var client1 = new WeChatApiClient();
+
+            var token1 = client1.AccessToken;
+
+            var client2 = new WeChatApiClient();
+
+            var token2 = client2.AccessToken;
+
+            Assert.AreSame(token1, token2);
         }
     }
 }

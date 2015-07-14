@@ -67,6 +67,7 @@
     <Compile Include="Utility\IP.cs" />
     <Compile Include="Utility\Encrypt.cs" />
     <Compile Include="Utility\OS.cs" />
+    <Compile Include="Entity\RestClient.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

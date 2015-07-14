@@ -115,19 +115,19 @@ namespace iArsenal.Web
                 {
                     Page.Title = "阿森纳2015/16赛季客场PUMA球衣许愿单";
                     hlReplicaKitPage.NavigateUrl = "http://arsenaldirect.arsenal.com/puma-kit/puma-away-kit/icat/pumaaway";
-                    ltrlBannerImage.Text = string.Format("<img src=\"uploadfiles/banner/banner20150617.png\" alt=\"{0}\" />", Page.Title);
+                    ltrlBannerImage.Text = string.Format("<img src=\"uploadfiles/banner/banner20150714.png\" alt=\"{0}\" />", Page.Title);
                 }
-                else if (_pt.Equals(ProductType.ReplicaKitCup))
-                {
-                    Page.Title = "阿森纳2015/16赛季杯赛PUMA球衣许愿单";
-                    hlReplicaKitPage.NavigateUrl = "http://arsenaldirect.arsenal.com/puma-kit/puma-cup-kit/icat/pumacup";
-                    ltrlBannerImage.Text = string.Format("<img src=\"uploadfiles/banner/banner20150617.png\" alt=\"{0}\" />", Page.Title);
-                }
+                //else if (_pt.Equals(ProductType.ReplicaKitCup))
+                //{
+                //    Page.Title = "阿森纳2015/16赛季杯赛PUMA球衣许愿单";
+                //    hlReplicaKitPage.NavigateUrl = "http://arsenaldirect.arsenal.com/puma-kit/puma-cup-kit/icat/pumacup";
+                //    ltrlBannerImage.Text = string.Format("<img src=\"uploadfiles/banner/banner20150714.png\" alt=\"{0}\" />", Page.Title);
+                //}
                 else
                 {
                     Page.Title = "阿森纳2015/16赛季主场PUMA球衣许愿单";
                     hlReplicaKitPage.NavigateUrl = "http://arsenaldirect.arsenal.com/puma-kit/puma-home-kit/icat/pumahome";
-                    ltrlBannerImage.Text = string.Format("<img src=\"uploadfiles/banner/banner20150617.png\" alt=\"{0}\" />", Page.Title);
+                    ltrlBannerImage.Text = string.Format("<img src=\"uploadfiles/banner/banner20150715.png\" alt=\"{0}\" />", Page.Title);
                 }
 
                 return _pt;
@@ -156,7 +156,7 @@ namespace iArsenal.Web
                     lblPricePlayerDetail.Text = string.Format("<em>{0}</em>元", pricePlayerDetail.ToString("f2"));
 
                     // HARD CODE FOR HONGKONG HOME KIT
-                    lblPricePlayerDetailSale.Text = string.Format("<em>{0}</em>元", "122.00");
+                    //lblPricePlayerDetailSale.Text = string.Format("<em>{0}</em>元", "122.00");
 
                     lblPriceArsenalFont.Text = string.Format("<em>{0}</em>元", pFont.PriceCNY.ToString("f2"));
                     lblPricePremierPatch.Text = string.Format("<em>{0}</em>元/个", pPremierPatch.PriceCNY.ToString("f2"));
@@ -467,8 +467,8 @@ namespace iArsenal.Web
                         throw new Exception("无相关纪念品或缺货，请联系管理员");
 
                     // HARD CORD for HongKong Home Kit
-                    bool isHongKongKit = pReplicaKit.Code.Equals("M74756HK", StringComparison.OrdinalIgnoreCase);
-                    float salePrinting = 61f;
+                    //bool isHongKongKit = pReplicaKit.Code.Equals("M74756HK", StringComparison.OrdinalIgnoreCase);
+                    //float salePrinting = 61f;
 
                     oi.OrderID = _newID;
                     oi.Size = tbOrderItemSize.Text.Trim().ToUpper();
@@ -534,20 +534,22 @@ namespace iArsenal.Web
                             {
                                 oiNumber.Size = tbPlayerNumber.Text.Trim();
 
-                                if (isHongKongKit)
-                                { oiNumber.Sale = salePrinting; }
-                                else
-                                { oiNumber.Sale = null; }
+                                //if (isHongKongKit)
+                                //{ oiNumber.Sale = salePrinting; }
+                                //else
+                                //{ oiNumber.Sale = null; }
+                                oiNumber.Sale = null;
 
                                 oiNumber.Remark = "custom";
                                 oiNumber.Place(m, trans);
 
                                 oiName.Size = tbPlayerName.Text.Trim();
 
-                                if (isHongKongKit)
-                                { oiName.Sale = salePrinting; }
-                                else
-                                { oiName.Sale = null; }
+                                //if (isHongKongKit)
+                                //{ oiName.Sale = salePrinting; }
+                                //else
+                                //{ oiName.Sale = null; }
+                                oiName.Sale = null;
 
                                 oiName.Remark = "custom";
                                 oiName.Place(m, trans);
@@ -587,20 +589,22 @@ namespace iArsenal.Web
                             {
                                 oiNumber.Size = player.SquadNumber.ToString();
 
-                                if (isHongKongKit)
-                                { oiNumber.Sale = salePrinting; }
-                                else
-                                { oiNumber.Sale = null; }
+                                //if (isHongKongKit)
+                                //{ oiNumber.Sale = salePrinting; }
+                                //else
+                                //{ oiNumber.Sale = null; }
+                                oiNumber.Sale = null;
 
                                 oiNumber.Remark = player.ID.ToString();
                                 oiNumber.Place(m, trans);
 
                                 oiName.Size = _printingName;
 
-                                if (isHongKongKit)
-                                { oiName.Sale = salePrinting; }
-                                else
-                                { oiName.Sale = null; }
+                                //if (isHongKongKit)
+                                //{ oiName.Sale = salePrinting; }
+                                //else
+                                //{ oiName.Sale = null; }
+                                oiName.Sale = null;
 
                                 oiName.Remark = player.ID.ToString();
                                 oiName.Place(m, trans);
@@ -609,46 +613,48 @@ namespace iArsenal.Web
                     }
 
                     // HARD CODE FOR HongKong Home Kit
-                    if (!isHongKongKit)
+                    //if (!isHongKongKit)
+                    //{
+
+                    // New Order Item for Premiership Patch
+                    if (Convert.ToInt32(rblPremierPatch.SelectedValue) > 0)
                     {
-                        // New Order Item for Premiership Patch
-                        if (Convert.ToInt32(rblPremierPatch.SelectedValue) > 0)
-                        {
-                            Product pPremierPatch = Product.Cache.Load(ProductType.PremiershipPatch).Find(p => p.IsActive);
+                        Product pPremierPatch = Product.Cache.Load(ProductType.PremiershipPatch).Find(p => p.IsActive);
 
-                            if (pPremierPatch == null)
-                                throw new Exception("无英超袖标信息，请联系管理员");
+                        if (pPremierPatch == null)
+                            throw new Exception("无英超袖标信息，请联系管理员");
 
-                            OrdrItmPremiershipPatch oiPremierPatch = new OrdrItmPremiershipPatch();
+                        OrdrItmPremiershipPatch oiPremierPatch = new OrdrItmPremiershipPatch();
 
-                            oiPremierPatch.OrderID = _newID;
-                            oiPremierPatch.Size = string.Empty;
-                            oiPremierPatch.Quantity = Convert.ToInt32(rblPremierPatch.SelectedValue);
-                            oiPremierPatch.Sale = null;
-                            oiPremierPatch.Remark = string.Empty;
+                        oiPremierPatch.OrderID = _newID;
+                        oiPremierPatch.Size = string.Empty;
+                        oiPremierPatch.Quantity = Convert.ToInt32(rblPremierPatch.SelectedValue);
+                        oiPremierPatch.Sale = null;
+                        oiPremierPatch.Remark = string.Empty;
 
-                            oiPremierPatch.Place(m, trans);
-                        }
-
-                        // New Order Item for Championship Patch
-                        if (Convert.ToInt32(rblChampionPatch.SelectedValue) > 0)
-                        {
-                            Product pChampionPatch = Product.Cache.Load(ProductType.ChampionshipPatch).Find(p => p.IsActive);
-
-                            if (pChampionPatch == null)
-                                throw new Exception("无欧冠袖标信息，请联系管理员");
-
-                            OrdrItmChampionshipPatch oiChampionShipPatch = new OrdrItmChampionshipPatch();
-
-                            oiChampionShipPatch.OrderID = _newID;
-                            oiChampionShipPatch.Size = string.Empty;
-                            oiChampionShipPatch.Quantity = Convert.ToInt32(rblChampionPatch.SelectedValue);
-                            oiChampionShipPatch.Sale = null;
-                            oiChampionShipPatch.Remark = string.Empty;
-
-                            oiChampionShipPatch.Place(m, trans);
-                        }
+                        oiPremierPatch.Place(m, trans);
                     }
+
+                    // New Order Item for Championship Patch
+                    if (Convert.ToInt32(rblChampionPatch.SelectedValue) > 0)
+                    {
+                        Product pChampionPatch = Product.Cache.Load(ProductType.ChampionshipPatch).Find(p => p.IsActive);
+
+                        if (pChampionPatch == null)
+                            throw new Exception("无欧冠袖标信息，请联系管理员");
+
+                        OrdrItmChampionshipPatch oiChampionShipPatch = new OrdrItmChampionshipPatch();
+
+                        oiChampionShipPatch.OrderID = _newID;
+                        oiChampionShipPatch.Size = string.Empty;
+                        oiChampionShipPatch.Quantity = Convert.ToInt32(rblChampionPatch.SelectedValue);
+                        oiChampionShipPatch.Sale = null;
+                        oiChampionShipPatch.Remark = string.Empty;
+
+                        oiChampionShipPatch.Place(m, trans);
+                    }
+
+                    //}
 
                     trans.Commit();
 

@@ -24,28 +24,28 @@
             var $lblPricePlayerDetail = $("#tdPrinting span.PricePlayerDetail");
             var $lblPricePlayerDetailSale = $("#tdPrinting span.PricePlayerDetailSale").hide();
 
-            if ($ddlReplicaKit.val() == "59cfbf39-a287-4194-8a19-fe933e4b41b7") {
-                $lblPricePlayerDetailSale.show();
-                $lblPricePlayerDetail.hide();
-                $trPatch.hide();
-                $trArsenalFont.hide();
-            }
+            //if ($ddlReplicaKit.val() == "59cfbf39-a287-4194-8a19-fe933e4b41b7") {
+            //    $lblPricePlayerDetailSale.show();
+            //    $lblPricePlayerDetail.hide();
+            //    $trPatch.hide();
+            //    $trArsenalFont.hide();
+            //}
 
             $ddlReplicaKit.change(function () {
                 ProductCheckByID($(this).val());
 
                 // Hard Code for Home kit of HongKong Version 59cfbf39-a287-4194-8a19-fe933e4b41b7
-                if ($(this).val() == "59cfbf39-a287-4194-8a19-fe933e4b41b7") {
-                    $lblPricePlayerDetailSale.show();
-                    $lblPricePlayerDetail.hide();
-                    $trPatch.hide();
-                    $trArsenalFont.hide();
-                } else {
+                //if ($(this).val() == "59cfbf39-a287-4194-8a19-fe933e4b41b7") {
+                //    $lblPricePlayerDetailSale.show();
+                //    $lblPricePlayerDetail.hide();
+                //    $trPatch.hide();
+                //    $trArsenalFont.hide();
+                //} else {
                     $lblPricePlayerDetailSale.hide();
                     $lblPricePlayerDetail.show();
                     $trPatch.show();
                     $trArsenalFont.show();
-                }
+                //}
             });
 
 
@@ -82,7 +82,7 @@
     </script>
 </asp:Content>
 <asp:Content ID="cphMain" ContentPlaceHolderID="cphMain" runat="server">
-    <div id="banner" style="height: 400px">
+    <div id="banner" style="height: 270px">
         <a href="http://bbs.arsenalcn.com/showtopic-108081.aspx" target="_blank">
             <asp:Literal ID="ltrlBannerImage" runat="server"></asp:Literal>
         </a>

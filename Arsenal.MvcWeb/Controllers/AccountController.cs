@@ -41,7 +41,7 @@ namespace Arsenal.MvcWeb.Controllers
                 if (MembershipDto.ValidateUser(model.UserName, model.Password, providerUserKey: out userKey))
                 {
                     FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
-                    MembershipDto.SetSession(MembershipDto.GetUser(userKey));
+                    UserDto.SetSession(userKey);
 
                     if (Url.IsLocalUrl(returnUrl))
                     {
@@ -70,7 +70,7 @@ namespace Arsenal.MvcWeb.Controllers
                         if (createStatus.Equals(MembershipCreateStatus.Success))
                         {
                             FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
-                            MembershipDto.SetSession(MembershipDto.GetUser(userKey));
+                            UserDto.SetSession(userKey);
 
                             TempData["DataUrl"] = "data-url=/";
                             return RedirectToAction("Index", "Home");
@@ -138,7 +138,7 @@ namespace Arsenal.MvcWeb.Controllers
                 if (createStatus.Equals(MembershipCreateStatus.Success))
                 {
                     FormsAuthentication.SetAuthCookie(model.UserName, createPersistentCookie: false);
-                    MembershipDto.SetSession(MembershipDto.GetUser(userKey));
+                    UserDto.SetSession(userKey);
 
                     TempData["DataUrl"] = "data-url=/";
                     return RedirectToAction("Index", "Home");
@@ -180,7 +180,7 @@ namespace Arsenal.MvcWeb.Controllers
 
                     if (membership != null)
                     {
-                        changePasswordSucceeded = membership.ChangePassword(model.OldPassword, model.NewPassword);
+                        changePasswordSucceeded = MembershipDto.ChangePassword(membership, model.OldPassword, model.NewPassword);
                     }
                     else
                     {
@@ -223,34 +223,34 @@ namespace Arsenal.MvcWeb.Controllers
             switch (createStatus)
             {
                 case MembershipCreateStatus.DuplicateUserName:
-                    return "User name already exists. Please enter a different user name.";
+                    return "此用户名已存在";
 
                 case MembershipCreateStatus.DuplicateEmail:
-                    return "A user name for that e-mail address already exists. Please enter a different e-mail address.";
+                    return "此邮箱已被其他用户注册使用";
 
                 case MembershipCreateStatus.InvalidPassword:
-                    return "The password provided is invalid. Please enter a valid password value.";
+                    return "此密码不符合密码规则";
 
                 case MembershipCreateStatus.InvalidEmail:
-                    return "The e-mail address provided is invalid. Please check the value and try again.";
+                    return "此邮箱地址无效";
 
                 case MembershipCreateStatus.InvalidAnswer:
-                    return "The password retrieval answer provided is invalid. Please check the value and try again.";
+                    return "此密码问题答案无效";
 
                 case MembershipCreateStatus.InvalidQuestion:
-                    return "The password retrieval question provided is invalid. Please check the value and try again.";
+                    return "此密码问题无效";
 
                 case MembershipCreateStatus.InvalidUserName:
-                    return "The user name provided is invalid. Please check the value and try again.";
+                    return "此用户名无效";
 
                 case MembershipCreateStatus.ProviderError:
-                    return "The authentication provider returned an error. Please verify your entry and try again. If the problem persists, please contact your system administrator.";
+                    return "注册过程出错，请联系管理员";
 
                 case MembershipCreateStatus.UserRejected:
-                    return "The user creation request has been canceled. Please verify your entry and try again. If the problem persists, please contact your system administrator.";
+                    return "此申请被取消";
 
                 default:
-                    return "An unknown error occurred. Please verify your entry and try again. If the problem persists, please contact your system administrator.";
+                    return "发生未知错误，请联系管理员";
             }
         }
         #endregion

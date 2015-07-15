@@ -4,6 +4,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Data.SqlClient;
 using System.Data.SqlTypes;
 using System.Diagnostics.Contracts;
+using System.Reflection;
+using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
@@ -13,11 +15,10 @@ using Newtonsoft.Json.Linq;
 
 using Arsenal.Service;
 using Arsenalcn.Core;
-using Arsenalcn.Core.Utility;
-using Membership = Arsenal.Service.Membership;
 using Arsenalcn.Core.Logger;
-using System.Reflection;
-using System.Threading;
+using Arsenalcn.Core.Utility;
+
+using Membership = Arsenal.Service.Membership;
 
 namespace Arsenal.MvcWeb.Models
 {
@@ -68,21 +69,21 @@ namespace Arsenal.MvcWeb.Models
         // Exceptions:
         //   System.ArgumentNullException:
         //     providerUserKey is null.
-        public static MembershipDto GetMembership(object providerUserKey)
+        public static Membership GetMembership(object providerUserKey)
         {
             Contract.Requires(providerUserKey != null);
 
             IRepository repo = new Repository();
 
-            var user = repo.Single<Membership>(providerUserKey);
+            var membership = repo.Single<Membership>(providerUserKey);
 
-            if (user != null)
-            { return user as MembershipDto; }
+            if (membership != null)
+            { return membership; }
             else
             { return null; }
         }
 
-        public static MembershipDto GetMembership(string username)
+        public static Membership GetMembership(string username)
         {
             Contract.Requires(!string.IsNullOrEmpty(username));
 
@@ -96,40 +97,12 @@ namespace Arsenal.MvcWeb.Models
 
             if (query.Count > 0)
             {
-                return query[0] as MembershipDto;
+                return query[0];
             }
             else
             {
                 return null;
             }
-        }
-
-        public static User GetUser(object providerUserKey)
-        {
-            Contract.Requires(providerUserKey != null);
-
-            IRepository repo = new Repository();
-
-            return repo.Single<User>(providerUserKey);
-        }
-
-        public static User GetSession()
-        {
-            if (HttpContext.Current.Session["AuthorizedUser"] != null)
-            {
-                return HttpContext.Current.Session["AuthorizedUser"] as User;
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        public static void SetSession(User user)
-        {
-            Contract.Requires(user != null);
-
-            HttpContext.Current.Session["AuthorizedUser"] = user;
         }
 
         //
@@ -161,12 +134,12 @@ namespace Arsenal.MvcWeb.Models
 
             if (query.Count > 0)
             {
-                var user = query[0];
+                var membership = query[0];
 
-                providerUserKey = user.ID;
+                providerUserKey = membership.ID;
 
-                user.LastLoginDate = DateTime.Now;
-                repo.Update<Membership>(user);
+                membership.LastLoginDate = DateTime.Now;
+                repo.Update<Membership>(membership);
             }
             else
             {
@@ -238,7 +211,7 @@ namespace Arsenal.MvcWeb.Models
                 {
                     IRepository repo = new Repository();
 
-                    repo.Insert<MembershipDto>(this, out providerUserKey, trans);
+                    repo.Insert<Membership>(this, out providerUserKey, trans);
 
                     var user = new User();
 
@@ -327,7 +300,7 @@ namespace Arsenal.MvcWeb.Models
                     this.Mobile = mobile;
                     this.Email = email;
 
-                    repo.Insert<MembershipDto>(this, out providerUserKey, trans);
+                    repo.Insert<Membership>(this, out providerUserKey, trans);
 
                     #region Check user in the data store
 
@@ -416,7 +389,7 @@ namespace Arsenal.MvcWeb.Models
         //     .NET Framework 4 Client Profile. To prevent this exception, override the
         //     method, or change the application to target the full version of the .NET
         //     Framework.
-        public bool ChangePassword(string oldPassword, string newPassword)
+        public static bool ChangePassword(Membership instance, string oldPassword, string newPassword)
         {
             Contract.Requires(!string.IsNullOrEmpty(oldPassword));
             Contract.Requires(!string.IsNullOrEmpty(newPassword));
@@ -424,7 +397,7 @@ namespace Arsenal.MvcWeb.Models
             if (oldPassword.Equals(newPassword, StringComparison.OrdinalIgnoreCase))
             { return false; }
 
-            if (!this.Password.Equals(Encrypt.getMd5Hash(oldPassword)))
+            if (!instance.Password.Equals(Encrypt.getMd5Hash(oldPassword)))
             { return false; }
 
             using (SqlConnection conn = new SqlConnection(DataAccess.ConnectString))
@@ -436,14 +409,14 @@ namespace Arsenal.MvcWeb.Models
                 {
                     IRepository repo = new Repository();
 
-                    this.Password = Encrypt.getMd5Hash(newPassword);
+                    instance.Password = Encrypt.getMd5Hash(newPassword);
 
-                    repo.Update<MembershipDto>(this);
+                    repo.Update<Membership>(instance, trans);
 
                     #region Sync Acn User Password
                     if (ConfigGlobal.AcnSync)
                     {
-                        var user = repo.Single<User>(this.ID);
+                        var user = repo.Single<User>(instance.ID);
 
                         if (user != null && user.AcnID.HasValue)
                         {
@@ -473,65 +446,105 @@ namespace Arsenal.MvcWeb.Models
         }
     }
 
+    public class UserDto : User
+    {
+        public UserDto() : base() { }
+
+        public static User GetUser(object providerUserKey)
+        {
+            Contract.Requires(providerUserKey != null);
+
+            IRepository repo = new Repository();
+
+            var user = repo.Single<User>(providerUserKey);
+
+            if (user != null)
+            { return user; }
+            else
+            { return null; }
+        }
+
+        public static User GetSession()
+        {
+            if (HttpContext.Current.Session["AuthorizedUser"] != null)
+            {
+                return HttpContext.Current.Session["AuthorizedUser"] as User;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public static void SetSession(object providerUserKey)
+        {
+            Contract.Requires(providerUserKey != null);
+
+            var user = GetUser(providerUserKey);
+
+            HttpContext.Current.Session["AuthorizedUser"] = user;
+        }
+    }
+
     public class ChangePasswordModel
     {
         [Required]
         [DataType(DataType.Password)]
-        [Display(Name = "Current password")]
+        [Display(Name = "当前密码")]
         public string OldPassword { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [StringLength(100, ErrorMessage = "{0}长度至少需要{2}位", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "New password")]
+        [Display(Name = "新密码")]
         public string NewPassword { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm new password")]
-        [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
+        [Display(Name = "确认密码")]
+        [Compare("NewPassword", ErrorMessage = "新密码与确认密码不一致")]
         public string ConfirmPassword { get; set; }
     }
 
     public class LoginModel
     {
         [Required]
-        [Display(Name = "User name")]
+        [Display(Name = "用户名")]
         public string UserName { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        [Display(Name = "密码")]
         public string Password { get; set; }
 
-        [Display(Name = "Remember me?")]
+        [Display(Name = "记住密码")]
         public bool RememberMe { get; set; }
     }
 
     public class RegisterModel
     {
         [Required]
-        [Display(Name = "User name")]
+        [Display(Name = "用户名")]
         public string UserName { get; set; }
 
         [Required]
         [DataType(DataType.PhoneNumber)]
-        [Display(Name = "Mobile")]
+        [Display(Name = "手机")]
         public string Mobile { get; set; }
 
         [Required]
         [DataType(DataType.EmailAddress)]
-        [Display(Name = "Email address")]
+        [Display(Name = "邮箱")]
         public string Email { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [StringLength(100, ErrorMessage = "{0}长度至少需要{2}位", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        [Display(Name = "密码")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [Display(Name = "密码确认")]
+        [Compare("Password", ErrorMessage = "新密码与确认密码不一致")]
         public string ConfirmPassword { get; set; }
     }
 }

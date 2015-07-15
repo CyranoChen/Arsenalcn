@@ -3,28 +3,30 @@
 <head>
     <meta charset="utf-8" />
     <title>@ViewBag.Title</title>
-    <meta name="viewport" content="target-densitydpi=device-dpi, width=480, user-scalable=no">
+    <meta name="viewport" content="width=480, user-scalable=no">
+    <!--meta name="viewport" content="target-densitydpi=device-dpi, width=480, user-scalable=no"-->
     <link href="http://www.arsenalcn.com/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     @Styles.Render("~/Content/mobileCss", "~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jquerymobile")
+
     <script type="text/javascript">
         $(document).on("mobileinit", function () {
-            $.mobile.ajaxEnabled = false;
+            $.mobile.ajaxEnabled = true;
 
-            var DEFAULT_WIDTH = 480, // 页面的默认宽度
-                ua = navigator.userAgent.toLowerCase(), // 根据 user agent 的信息获取浏览器信息
-                deviceWidth = window.screen.width, // 设备的宽度
-                devicePixelRatio = window.devicePixelRatio || 1, // 物理像素和设备独立像素的比例，默认为1
-                targetDensitydpi;
+            //var DEFAULT_WIDTH = 480, // 页面的默认宽度
+            //    ua = navigator.userAgent.toLowerCase(), // 根据 user agent 的信息获取浏览器信息
+            //    deviceWidth = window.screen.width, // 设备的宽度
+            //    devicePixelRatio = window.devicePixelRatio || 1, // 物理像素和设备独立像素的比例，默认为1
+            //    targetDensitydpi;
 
-            // Android4.0以下手机不支持viewport的width，需要设置target-densitydpi
-            if (ua.indexOf("android") !== -1 && parseFloat(ua.slice(ua.indexOf("android") + 8)) < 4) {
-                targetDensitydpi = DEFAULT_WIDTH / deviceWidth * devicePixelRatio * 160;
-                $('meta[name="viewport"]').attr('content', 'target-densitydpi=' + targetDensitydpi +
-                        ', width=device-width, user-scalable=no');
-            }
+            //// Android4.0以下手机不支持viewport的width，需要设置target-densitydpi
+            //if (ua.indexOf("android") !== -1 && parseFloat(ua.slice(ua.indexOf("android") + 8)) < 4) {
+            //    targetDensitydpi = DEFAULT_WIDTH / deviceWidth * devicePixelRatio * 160;
+            //    $('meta[name="viewport"]').attr('content', 'target-densitydpi=' + targetDensitydpi +
+            //            ', width=device-width, user-scalable=no');
+            //}
         });
 
         $(document).on("click", "div[data-role='header']>h1", function () {

@@ -14,7 +14,7 @@ namespace Arsenal.MvcWeb.Controllers
     [Authorize]
     public class CasinoController : Controller
     {
-        private readonly int acnID = MembershipDto.GetSession() != null ? MembershipDto.GetSession().AcnID.Value : 0;
+        private readonly int acnID = UserDto.GetSession() != null ? UserDto.GetSession().AcnID.Value : 0;
 
         // 可投注比赛
         // GET: /Casino

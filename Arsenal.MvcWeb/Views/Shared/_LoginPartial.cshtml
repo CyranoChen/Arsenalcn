@@ -1,5 +1,5 @@
 ﻿@{
-    var authorizedUser = Arsenal.MvcWeb.Models.MembershipDto.GetSession();
+    var authorizedUser = Arsenal.MvcWeb.Models.UserDto.GetSession();
 }
 
 @if (Request.IsAuthenticated && authorizedUser != null)
@@ -9,5 +9,5 @@
 }
 else
 {
-    @Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { data_icon = "gear", data_transition = "slidedown" })
+    @Html.ActionLink("登录", "Login", "Account", routeValues: null, htmlAttributes: new { data_icon = "gear", data_transition = "slidedown" })
 }

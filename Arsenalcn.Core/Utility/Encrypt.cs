@@ -11,8 +11,10 @@ namespace Arsenalcn.Core.Utility
             // Create a new instance of the MD5CryptoServiceProvider object.
             MD5 md5Hasher = MD5.Create();
 
-            // Convert the input string to a byte array and compute the hash.
-            byte[] data = md5Hasher.ComputeHash(Encoding.Default.GetBytes(input));
+            // Convert the input string to a byte array and compute the hash. 
+            // Edit By Cyrano
+            //byte[] data = md5Hasher.ComputeHash(Encoding.Default.GetBytes(input));
+            byte[] data = md5Hasher.ComputeHash(Encoding.UTF8.GetBytes(input));
 
             // Create a new Stringbuilder to collect the bytes
             // and create a string.

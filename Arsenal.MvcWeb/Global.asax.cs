@@ -1,11 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using System.Reflection;
+using System.Threading;
+
+using Arsenalcn.Core.Logger;
+using Arsenalcn.Core.Scheduler;
+using Arsenal.Service;
 
 namespace Arsenal.MvcWeb
 {
@@ -14,6 +16,7 @@ namespace Arsenal.MvcWeb
 
     public class MvcApplication : System.Web.HttpApplication
     {
+        static Timer eventTimer;
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
@@ -21,6 +24,33 @@ namespace Arsenal.MvcWeb
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            if (eventTimer == null && ConfigGlobal.SchedulerActive)
+            {
+                eventTimer = new Timer(new TimerCallback(SchedulerCallback), null, 60 * 1000, ScheduleManager.TimerMinutesInterval * 60 * 1000);
+            }
         }
+
+        private void SchedulerCallback(object sender)
+        {
+            try
+            {
+                if (ConfigGlobal.SchedulerActive)
+                {
+                    ScheduleManager.Execute();
+                }
+            }
+            catch (Exception ex)
+            {
+                ILog log = new AppLog();
+
+                log.Warn(ex, new LogInfo()
+                {
+                    MethodInstance = MethodBase.GetCurrentMethod(),
+                    ThreadInstance = Thread.CurrentThread
+                });
+            }
+        }
+
     }
 }

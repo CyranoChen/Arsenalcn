@@ -29,14 +29,14 @@ namespace Arsenalcn.Core.Tests
             //string nextURL = "/default.aspx";
             string gotoURL = string.Empty;
 
-            string _apiServiceUrl = "http://vm-win2008r2/services/restserver.aspx";
+            string _apiServiceUrl = "http://localhost:3186/services/restserver.aspx";
             string _apiAppKey = "e5b551b11b65fd03bf8e9afe14a092c5";
             string _apiCryptographicKey = "68a9b3a904bc09ce89a62310e9ebbd3c";
             string _method = "auth.validate";
             //string _strAuthToken = !string.IsNullOrEmpty(authToken) ? string.Format("authToken={0}", authToken) : string.Empty;
 
-            string _username = "cyrano";
-            string _password = "linfeng";
+            string _username = "小胖妞";
+            string _password = "vickie1204";
 
             try
             {
@@ -78,7 +78,7 @@ namespace Arsenalcn.Core.Tests
 
                     if (!string.IsNullOrEmpty(responseResult))
                     {
-                        Assert.AreEqual("\"443\"", responseResult);
+                        Assert.AreEqual("\"57405\"", responseResult);
 
                         //XmlDocument xml = new XmlDocument();
                         //StringReader sr = new StringReader(responseResult);

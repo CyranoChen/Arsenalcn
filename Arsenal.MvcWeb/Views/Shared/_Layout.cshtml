@@ -9,9 +9,9 @@
     @Styles.Render("~/Content/mobileCss", "~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/jquerymobile")
 
     <script type="text/javascript">
+        // must run before bundles/jquerymobile
         $(document).on("mobileinit", function () {
             $.mobile.ajaxEnabled = true;
 
@@ -34,6 +34,8 @@
             return false;
         });
     </script>
+
+    @Scripts.Render("~/bundles/jquerymobile")
 </head>
 <body>
     <div data-role="page" data-theme="a" @TempData["DataUrl"]>

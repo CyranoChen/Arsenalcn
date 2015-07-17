@@ -1,41 +1,28 @@
-﻿@model IEnumerable<Arsenal.MvcWeb.Models.Casino.BetDto>
-
+﻿@model Arsenal.MvcWeb.Models.Casino.DetailDto
 @{
-    ViewBag.Title = "Detail";
-
-    var match = (Arsenal.MvcWeb.Models.Casino.MatchWithRateDto)ViewBag.MatchDto;
+    ViewBag.Title = "比赛详情";
 }
 
 @section Header {
     <div data-role="header" data-position="fixed">
-        @Html.ActionLink("Back", "Result", "Casino", null,
+        @Html.ActionLink("返回", "Result", "Casino", null,
             new { data_icon = "arrow-l", data_rel = "back", data_transition = "reverse", data_iconpos = "notext" })
         <h1>@ViewBag.Title</h1>
     </div>
 }
 
 <div data-role="content">
-    @Html.Partial("Casino/_MatchInfoPartial", match)
+    @Html.Partial("Casino/_MatchInfoPartial", Model.Match)
     <ul data-role="listview" data-inset="true">
         <li data-role="list-divider">
             比赛投注中奖查询
-            <span class="ui-li-count">@Model.Count()</span>
+            <span class="ui-li-count">@Model.Bets.Count()</span>
         </li>
-        @if (Model != null && Model.Count() > 0)
+        @if (Model.Bets != null && Model.Bets.Count() > 0)
         {
-            foreach (var m in Model)
+            foreach (var m in Model.Bets)
             {
-                <li>
-                    <a href="#" data-role="button" data-icon="@m.BetIconInfo" data-iconpos="left">
-                        <h3>投注：@m.BetDetailInfo</h3>
-                        <p>@m.BetTime.ToString("yyyy-MM-dd HH:mm:ss")</p>
-                        <p class="ui-li-aside">@m.UserName</p>
-                        @if (m.IsWin.HasValue && m.IsWin.Value)
-                        {
-                            <span class="ui-li-count">+@m.EarningDesc</span>
-                        }
-                    </a>
-                </li>
+                @Html.Partial("Casino/_BetInfoLitePartial", m)
             }
         }
     </ul>

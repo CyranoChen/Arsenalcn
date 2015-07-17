@@ -472,7 +472,20 @@ namespace Arsenal.MvcWeb.Models
             }
             else
             {
-                return null;
+                if (!string.IsNullOrEmpty(HttpContext.Current.User.Identity.Name))
+                {
+                    // Get username from User.Indentity.Name
+                    var membership = MembershipDto.GetMembership(HttpContext.Current.User.Identity.Name);
+
+                    if (membership == null) { return null; }
+
+                    SetSession(membership.ID);
+                    return HttpContext.Current.Session["AuthorizedUser"] as User;
+                }
+                else
+                {
+                    return null;
+                }
             }
         }
 

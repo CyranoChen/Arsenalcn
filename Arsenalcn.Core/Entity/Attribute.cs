@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace Arsenalcn.Core
 {
@@ -31,6 +33,37 @@ namespace Arsenalcn.Core
         }
     }
 
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
+    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
     public class UniqueAttribute : RequiredAttribute { }
+
+    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
+    public class DomainAttribute : ValidationAttribute
+    {
+        public IEnumerable<string> Values { get; private set; }
+
+        public DomainAttribute(string value)
+        {
+            this.Values = new string[] { value };
+        }
+
+        public DomainAttribute(params string[] values)
+        {
+            this.Values = values;
+        }
+
+        public override bool IsValid(object value)
+        {
+            if (null == value)
+            {
+                return true;
+            }
+            return this.Values.Any(item => value.ToString() == item);
+        }
+
+        public override string FormatErrorMessage(string name)
+        {
+            string[] values = this.Values.Select(value => string.Format("'{0}'", value)).ToArray();
+            return string.Format(base.ErrorMessageString, name, string.Join(",", values));
+        }
+    }
 }

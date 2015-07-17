@@ -1,34 +1,36 @@
-﻿@model Arsenal.MvcWeb.Models.Casino.MatchWithRateDto
+﻿@model Arsenal.MvcWeb.Models.Casino.GameBetDto
 @{
     ViewBag.Title = "比赛投注";
-
-    var bets = ViewBag.BetList as IEnumerable<Arsenal.MvcWeb.Models.Casino.BetDto>;
-    var matches = ViewBag.MatchDtoList as IEnumerable<Arsenal.MvcWeb.Models.Casino.MatchDto>;
 }
 @section Header {
     <div data-role="header" data-position="fixed">
-        @Html.ActionLink("Back", "Index", "Casino", null,
+        @Html.ActionLink("返回", "Index", "Casino", null,
             new { data_icon = "arrow-l", data_transition = "slide", data_direction = "reverse", data_iconpos = "notext" })
         <h1>@ViewBag.Title</h1>
     </div>
 }
-@section Footer {
-    <div data-role="footer" data-position="fixed" class="ui-btn">
-        <div data-role="controlgroup" data-type="horizontal">
-            <a href="@Url.Action("SingleChoice", "Casino", new { id = Model.MatchGuid })" data-role="button" data-icon="plus" data-rel="dialog" data-transition="pop">投输赢</a>
-            <a href="@Url.Action("MatchResult", "Casino", new { id = Model.MatchGuid })" data-role="button" data-icon="plus" data-rel="dialog" data-transition="pop">猜比分</a>
+
+@if (Model.Match.PlayTime > DateTime.Now)
+{
+    @section Footer {
+        <div data-role="footer" data-position="fixed" class="ui-btn">
+            <div data-role="controlgroup" data-type="horizontal">
+                <a href="@Url.Action("SingleChoice", "Casino", new { id = Model.Match.MatchGuid })" data-role="button" data-icon="plus" data-rel="dialog" data-transition="pop">投输赢</a>
+                <a href="@Url.Action("MatchResult", "Casino", new { id = Model.Match.MatchGuid })" data-role="button" data-icon="plus" data-rel="dialog" data-transition="pop">猜比分</a>
+            </div>
         </div>
-    </div>
+    }
 }
+
 <div data-role="content">
-    @Html.Partial("Casino/_MatchInfoPartial", Model)
+    @Html.Partial("Casino/_MatchInfoPartial", Model.Match)
     <div data-role="collapsible-set">
         <div data-role="collapsible">
-            <h3>历史交锋<span class="ui-li-count">@matches.Count()</span></h3>
+            <h3>历史交锋<span class="ui-li-count">@Model.HistoryMatches.Count()</span></h3>
             <ul id="pnlMatchList" data-role="listview" data-inset="true">
-                @if (matches != null && matches.Count() > 0)
+                @if (Model.HistoryMatches != null && Model.HistoryMatches.Count() > 0)
                 {
-                    foreach (var m in matches)
+                    foreach (var m in Model.HistoryMatches)
                     {
                         <li>
                             <a data-transition="slide" data-role="button" href="@Url.Action("Detail", "Casino", new { id = m.MatchGuid.ToString() })">
@@ -39,23 +41,14 @@
                 }
             </ul>
         </div>
-        <div data-role="collapsible" @Html.Raw("data-collapsed=\"false\"")>
-            <h3>我的投注<span class="ui-li-count">@bets.Count()</span></h3>
+        <div data-role="collapsible">
+            <h3>我的投注<span class="ui-li-count">@Model.MyBets.Count()</span></h3>
             <ul id="pnlBetList" data-role="listview" data-inset="true">
-                @if (bets != null && bets.Count() > 0)
+                @if (Model.MyBets != null && Model.MyBets.Count() > 0)
                 {
-                    foreach (var b in bets)
+                    foreach (var m in Model.MyBets)
                     {
-                        <li>
-                            <a href="#" data-role="button" data-icon="@b.BetIconInfo" data-iconpos="left">
-                                <h3>投注：@b.BetDetailInfo</h3>
-                                <p>@b.BetTime.ToString("yyyy-MM-dd HH:mm:ss")</p>
-                                @if (b.IsWin.HasValue && b.IsWin.Value)
-                                {
-                                    <span class="ui-li-count">+@b.EarningDesc</span>
-                                }
-                            </a>
-                        </li>
+                        @Html.Partial("Casino/_BetInfoLitePartial", m)
                     }
                 }
             </ul>

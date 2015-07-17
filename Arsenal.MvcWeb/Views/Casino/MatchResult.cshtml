@@ -1,6 +1,6 @@
-﻿@model Arsenal.MvcWeb.Models.Casino.MatchWithRateDto
+﻿@model Arsenal.MvcWeb.Models.Casino.MatchResultDto
 @{
-    ViewBag.Title = "MatchResult";
+    ViewBag.Title = "猜比分";
 }
 @section Scripts {
     <style type="text/css">
@@ -18,10 +18,13 @@
                 padding: 5px;
             }
     </style>
+    @Scripts.Render("~/bundles/jqueryval")
     <script type="text/javascript">
         $(function () {
             $("#btnSubmit").click(function () {
-                document.forms["formGameBet"].submit();
+                if ($("#formGameBet").valid()) {
+                    document.forms["formGameBet"].submit();
+                }
             });
         });
     </script>
@@ -29,9 +32,9 @@
 @section Header {
     <div data-role="header">
         <h1 style="overflow: visible">
-            <span>@Model.TeamHome.TeamDisplayName</span>
+            <span>@Model.Match.TeamHome.TeamDisplayName</span>
             <span> vs </span>
-            <span>@Model.TeamAway.TeamDisplayName</span>
+            <span>@Model.Match.TeamAway.TeamDisplayName</span>
         </h1>
     </div>
 }
@@ -46,23 +49,27 @@
         <fieldset data-role="controlgroup">
             <div class="ui-grid-b">
                 <div class="ui-block-a" style="text-align: center">
-                    <img src="http://bbs.arsenalcn.com/plugin/acncasino/@Model.TeamHome.TeamLogo" />
-                    <h2>@Model.TeamHome.TeamDisplayName</h2>
+                    <img src="http://bbs.arsenalcn.com/plugin/acncasino/@Model.Match.TeamHome.TeamLogo" />
+                    <h2>@Model.Match.TeamHome.TeamDisplayName</h2>
                 </div>
                 <div class="ui-block-b match-versus">
-                    <p>@Model.LeagueName</p>
+                    <p>@Model.Match.LeagueName</p>
                     <p>
-                        @Html.TextBox("resultHome")
+                        @Html.TextBoxFor(m => m.ResultHome)
                         <span>vs</span>
-                        @Html.TextBox("resultAway")
+                        @Html.TextBoxFor(m => m.ResultAway)
                     </p>
-                    <p>@Model.PlayTime.ToString("yyyy-MM-dd HH:mm")</p>
+                    <p>@Model.Match.PlayTime.ToString("yyyy-MM-dd HH:mm")</p>
                 </div>
                 <div class="ui-block-c" style="text-align: center">
-                    <img src="http://bbs.arsenalcn.com/plugin/acncasino/@Model.TeamAway.TeamLogo" />
-                    <h2>@Model.TeamAway.TeamDisplayName</h2>
+                    <img src="http://bbs.arsenalcn.com/plugin/acncasino/@Model.Match.TeamAway.TeamLogo" />
+                    <h2>@Model.Match.TeamAway.TeamDisplayName</h2>
                 </div>
             </div>
         </fieldset>
+
+        @Html.HiddenFor(m => m.MatchGuid)
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary()
     }
 </div>

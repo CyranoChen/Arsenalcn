@@ -2,6 +2,7 @@
 @{
     ViewBag.Title = "我的中奖查询";
 }
+
 @if (Model.Criteria.MaxPage > 0)
 {
     @section Footer {
@@ -10,6 +11,7 @@
         </div>
     }
 }
+
 <div data-role="content">
     <ul data-role="listview" data-inset="true">
         <li data-role="list-divider">
@@ -18,23 +20,9 @@
         </li>
         @if (Model != null && Model.Data.Count() > 0)
         {
-            foreach (var b in Model.Data)
+            foreach (var m in Model.Data)
             {
-                <li>
-                    <a href="#" data-role="button" data-icon="@b.BetIconInfo" data-iconpos="left">
-                        <h3>
-                            @b.TeamHome.TeamDisplayName
-                            <span>vs</span>
-                            @b.TeamAway.TeamDisplayName
-                        </h3>
-                        <p>投注内容：@b.BetDetailInfo</p>
-                        <p>投注时间：@b.BetTime.ToString("yyyy-MM-dd HH:mm:ss")</p>
-                        @if (b.IsWin.HasValue && b.IsWin.Value)
-                        {
-                            <span class="ui-li-count">+@b.EarningDesc</span>
-                        }
-                    </a>
-                </li>
+                @Html.Partial("Casino/_BetInfoPartial", m)
             }
         }
     </ul>

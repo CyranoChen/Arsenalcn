@@ -10,8 +10,8 @@ namespace Arsenalcn.Core
         // Load All Records
         public static IEnumerable<T> Page<T>(this IEnumerable<T> source, int pageIndex, int pageSize)
         {
-            Contract.Requires(pageIndex >= 0, "Page index cannot be negative");
-            Contract.Requires(pageSize >= 0, "Page size cannot be negative");
+            Contract.Requires(pageIndex >= 0);
+            Contract.Requires(pageSize >= 0);
 
             int skip = pageIndex * pageSize;
 
@@ -26,8 +26,8 @@ namespace Arsenalcn.Core
         // Load on Demand
         public static IQueryable<T> Page<T>(this IQueryable<T> source, int pageIndex, int pageSize)
         {
-            Contract.Requires(pageIndex >= 0, "Page index cannot be negative");
-            Contract.Requires(pageSize >= 0, "Page size cannot be negative");
+            Contract.Requires(pageIndex >= 0);
+            Contract.Requires(pageSize >= 0);
 
             int skip = pageIndex * pageSize;
 

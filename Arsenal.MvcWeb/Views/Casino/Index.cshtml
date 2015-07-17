@@ -1,20 +1,17 @@
-﻿@model IEnumerable<Arsenal.MvcWeb.Models.Casino.MatchWithRateDto>
+﻿@model Arsenal.MvcWeb.Models.Casino.IndexDto
 @{
     ViewBag.Title = "可投注比赛";
 }
+
 <div data-role="content">
-    <h2>可投注比赛</h2>
-    <p>
-        Description
-    </p>
     <ul data-role="listview" data-inset="true">
         <li data-role="list-divider">
-            您可投注即将于 @ViewBag.CasinoValidDays 天内开始的比赛
-            <span class="ui-li-count">@Model.Count()</span>
+            您可投注即将于 @Model.CasinoValidDays 天内开始的比赛
+            <span class="ui-li-count">@Model.Matches.Count()</span>
         </li>
-        @if (Model != null && Model.Count() > 0)
+        @if (Model.Matches != null && Model.Matches.Count() > 0)
         {
-            foreach (var m in Model)
+            foreach (var m in Model.Matches)
             {
                 <li>
                     <a data-transition="slide" href="@Url.Action("GameBet", "Casino", new { id = m.MatchGuid.ToString() })">

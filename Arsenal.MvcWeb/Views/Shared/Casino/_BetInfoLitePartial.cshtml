@@ -1,0 +1,13 @@
+﻿@model Arsenal.MvcWeb.Models.Casino.BetDto
+
+<li>
+    <a href="#" data-role="button" data-icon="@Model.BetIconInfo" data-iconpos="left">
+        <h3>投注：@Model.BetDetailInfo</h3>
+        <p>@Model.BetTime.ToString("yyyy-MM-dd HH:mm:ss")</p>
+        <p class="ui-li-aside">@Model.UserName</p>
+        @if (Model.IsWin.HasValue && Model.IsWin.Value)
+        {
+            <span class="ui-li-count">+@Model.EarningDesc</span>
+        }
+    </a>
+</li>

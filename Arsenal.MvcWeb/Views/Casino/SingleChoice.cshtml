@@ -1,12 +1,15 @@
-﻿@model Arsenal.MvcWeb.Models.Casino.MatchWithRateDto
+﻿@model Arsenal.MvcWeb.Models.Casino.SingleChoiceDto
 @{
-    ViewBag.Title = "SingleChoice";
+    ViewBag.Title = "猜输赢";
 }
 @section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
     <script type="text/javascript">
         $(function () {
             $("#btnSubmit").click(function () {
-                document.forms["formGameBet"].submit();
+                if ($("#formGameBet").valid()) {
+                    document.forms["formGameBet"].submit();
+                }
             });
         });
     </script>
@@ -14,9 +17,9 @@
 @section Header {
     <div data-role="header">
         <h1 style="overflow: visible">
-            <span>@Model.TeamHome.TeamDisplayName</span>
+            <span>@Model.Match.TeamHome.TeamDisplayName</span>
             <span> vs </span>
-            <span>@Model.TeamAway.TeamDisplayName</span>
+            <span>@Model.Match.TeamAway.TeamDisplayName</span>
         </h1>
     </div>
 }
@@ -30,14 +33,18 @@
     {
         <fieldset data-role="controlgroup" data-type="horizontal">
             <legend>投注选项</legend>
-            <label for="home">[主队胜] @Model.WinRate.ToString("f2")</label>
-            <input type="radio" name="option" id="home" value="home">
-            <label for="draw">[双方平] @Model.DrawRate.ToString("f2")</label>
-            <input type="radio" name="option" id="draw" value="draw">
-            <label for="away">[客队胜] @Model.LoseRate.ToString("f2")</label>
-            <input type="radio" name="option" id="away" value="away">
+            <label for="home">[主队胜] @Model.Match.WinRate.ToString("f2")</label>
+            <input type="radio" name="SelectedOption" id="home" value="home">
+            <label for="draw">[双方平] @Model.Match.DrawRate.ToString("f2")</label>
+            <input type="radio" name="SelectedOption" id="draw" value="draw">
+            <label for="away">[客队胜] @Model.Match.LoseRate.ToString("f2")</label>
+            <input type="radio" name="SelectedOption" id="away" value="away">
         </fieldset>
-        <label for="betAmount">投注金额</label>
-        <input type="range" name="betAmount" id="betAmount" value="1000" min="0" max="10000" data-highlight="true">
+        @Html.LabelFor(m => m.BetAmount)
+        <input type="range" name="BetAmount" id="BetAmount" value="1000" min="10" max="10000" data-highlight="true">
+
+        @Html.HiddenFor(m => m.MatchGuid)
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary()
     }
 </div>

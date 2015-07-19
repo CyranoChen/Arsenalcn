@@ -5,7 +5,7 @@ using Arsenalcn.Core;
 
 namespace Arsenal.Service
 {
-    [DbTable("Arsenalcn_User", Key = "UserGuid", Sort = "LastActivityDate DESC")]
+    [DbSchema("Arsenalcn_User", Key = "UserGuid", Sort = "LastActivityDate DESC")]
     public class User : Entity<Guid>
     {
         public User() : base() { }

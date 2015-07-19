@@ -8,7 +8,7 @@ using Arsenalcn.Core;
 
 namespace iArsenal.Service
 {
-    [DbTable("iArsenal_Order", Sort = "ID DESC")]
+    [DbSchema("iArsenal_Order", Sort = "ID DESC")]
     public class Order : Entity<int>
     {
         public Order() : base() { }

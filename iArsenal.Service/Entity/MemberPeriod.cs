@@ -7,7 +7,7 @@ using System.Collections;
 
 namespace iArsenal.Service
 {
-    [DbTable("iArsenal_MemberPeriod", Sort = "ID DESC")]
+    [DbSchema("iArsenal_MemberPeriod", Sort = "ID DESC")]
     public class MemberPeriod : Entity<int>
     {
         public MemberPeriod() : base() { }

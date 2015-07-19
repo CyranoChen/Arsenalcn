@@ -7,7 +7,7 @@ using Arsenalcn.Core;
 
 namespace Arsenal.Service
 {
-    [DbTable("Arsenal_Match", Key = "MatchGuid", Sort = "PlayTime DESC")]
+    [DbSchema("Arsenal_Match", Key = "MatchGuid", Sort = "PlayTime DESC")]
     public class Match : Entity<Guid>
     {
         public Match() : base() { }

@@ -7,7 +7,7 @@ using Arsenalcn.Core;
 
 namespace Arsenal.Service
 {
-    [DbTable("Arsenal_Video", Key = "VideoGuid", Sort = "GoalYear DESC, GoalRank DESC, TeamworkRank DESC")]
+    [DbSchema("Arsenal_Video", Key = "VideoGuid", Sort = "GoalYear DESC, GoalRank DESC, TeamworkRank DESC")]
     public class Video : Entity<Guid>
     {
         public Video() : base() { }
@@ -45,7 +45,7 @@ namespace Arsenal.Service
                 VideoList_Legend = VideoList.FindAll(x =>
                     x.GoalPlayerGuid.HasValue ? Player.Cache.Load(x.GoalPlayerGuid.Value).IsLegend : false);
 
-                ColList_GoalYear = Repository.DistinctOrderBy(repo.Query<Video>(x => !string.IsNullOrEmpty(x.GoalYear)), x => x.GoalYear);
+                ColList_GoalYear = repo.Query<Video>(x => !string.IsNullOrEmpty(x.GoalYear)).DistinctOrderBy(x => x.GoalYear);
             }
 
             public static Video Load(Guid guid)

@@ -6,7 +6,7 @@ using System.Diagnostics.Contracts;
 
 namespace Arsenalcn.Core.Scheduler
 {
-    [DbTable("Arsenalcn_Schedule", Key = "ScheduleKey", Sort = "IsSystem, ScheduleKey")]
+    [DbSchema("Arsenalcn_Schedule", Key = "ScheduleKey", Sort = "IsSystem, ScheduleKey")]
     public class Schedule
     {
         public Schedule() { }

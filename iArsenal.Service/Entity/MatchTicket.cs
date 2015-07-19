@@ -9,7 +9,7 @@ using Arsenalcn.Core;
 
 namespace iArsenal.Service
 {
-    [DbTable("iArsenal_MatchTicket", Key = "MatchGuid", Sort = "Deadline DESC")]
+    [DbSchema("iArsenal_MatchTicket", Key = "MatchGuid", Sort = "Deadline DESC")]
     public class MatchTicket
     {
         public MatchTicket() { }

@@ -27,7 +27,7 @@ namespace Arsenalcn.Core
             log = new DaoLog();
         }
 
-        public T Single<T>(object key) where T : class, IEntity
+        public T Single<T>(object key) where T : class, IViewer, new()
         {
             try
             {
@@ -65,7 +65,7 @@ namespace Arsenalcn.Core
             }
         }
 
-        public List<T> All<T>() where T : class, IEntity
+        public List<T> All<T>() where T : class, IViewer, new()
         {
             try
             {
@@ -113,7 +113,7 @@ namespace Arsenalcn.Core
             }
         }
 
-        public List<T> All<T>(Pager pager, Hashtable htOrder = null) where T : class, IEntity
+        public List<T> All<T>(Pager pager, Hashtable htOrder = null) where T : class, IViewer, new()
         {
             try
             {
@@ -186,7 +186,7 @@ namespace Arsenalcn.Core
             }
         }
 
-        public List<T> Query<T>(Hashtable htWhere) where T : class, IEntity
+        public List<T> Query<T>(Hashtable htWhere) where T : class, IViewer, new()
         {
             try
             {
@@ -265,7 +265,7 @@ namespace Arsenalcn.Core
             }
         }
 
-        public List<T> Query<T>(Pager pager, Hashtable htWhere, Hashtable htOrder = null) where T : class, IEntity
+        public List<T> Query<T>(Pager pager, Hashtable htWhere, Hashtable htOrder = null) where T : class, IViewer, new()
         {
             try
             {
@@ -372,7 +372,7 @@ namespace Arsenalcn.Core
             }
         }
 
-        public IQueryable<T> Query<T>(Expression<Func<T, bool>> predicate) where T : class, IEntity
+        public IQueryable<T> Query<T>(Expression<Func<T, bool>> predicate) where T : class, IViewer, new()
         {
             Contract.Requires(predicate != null);
 
@@ -679,7 +679,7 @@ namespace Arsenalcn.Core
         {
             Contract.Requires(instance != null);
 
-            var attr = (DbTable)Attribute.GetCustomAttribute(typeof(T), typeof(DbTable));
+            var attr = (DbSchema)Attribute.GetCustomAttribute(typeof(T), typeof(DbSchema));
 
             var key = instance.GetType().GetProperty("ID").GetValue(instance, null);
 
@@ -690,7 +690,31 @@ namespace Arsenalcn.Core
         {
             Contract.Requires(predicate != null);
 
-            var instances = Query<T>(predicate);
+            var list = new List<T>();
+
+            var attr = GetTableAttr<T>();
+
+            StringBuilder sql = new StringBuilder();
+            sql.AppendFormat("SELECT * FROM {0}  ", attr.Name);
+
+            if (!string.IsNullOrEmpty(attr.Sort))
+            {
+                sql.AppendFormat("ORDER BY {0}", attr.Sort);
+            }
+
+            DataSet ds = SqlHelper.ExecuteDataset(conn, CommandType.Text, sql.ToString());
+
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    ConstructorInfo ci = typeof(T).GetConstructor(new Type[] { typeof(DataRow) });
+
+                    list.Add((T)ci.Invoke(new Object[] { dr }));
+                }
+            }
+
+            var instances = list.AsQueryable().Where(predicate);
 
             count = instances.Count();
 
@@ -703,14 +727,10 @@ namespace Arsenalcn.Core
             }
         }
 
-        public static DbTable GetTableAttr<T>() where T : class
+        public static DbSchema GetTableAttr<T>() where T : class
         {
-            var attr = (DbTable)Attribute.GetCustomAttribute(typeof(T), typeof(DbTable));
-
-            if (attr != null)
-            { return attr; }
-            else
-            { return new DbTable(typeof(T).Name); }
+            var attr = Attribute.GetCustomAttribute(typeof(T), typeof(DbSchema)) as DbSchema;
+            return attr ?? new DbSchema(typeof(T).Name);
         }
 
         public static DbColumn GetColumnAttr(PropertyInfo pi)
@@ -723,26 +743,6 @@ namespace Arsenalcn.Core
             Contract.Requires(!string.IsNullOrEmpty(name));
 
             return GetColumnAttr(typeof(T).GetProperty(name));
-        }
-
-        public static IEnumerable<T> DistinctBy<T, TKey>(IEnumerable<T> instances, Func<T, TKey> keySelector) where T : class
-        {
-            Contract.Requires(instances != null);
-
-            HashSet<TKey> seenKeys = new HashSet<TKey>();
-
-            foreach (T instance in instances)
-            {
-                if (seenKeys.Add(keySelector(instance)))
-                {
-                    yield return instance;
-                }
-            }
-        }
-
-        public static IEnumerable<TKey> DistinctOrderBy<T, TKey>(IEnumerable<T> instances, Func<T, TKey> keySelector) where T : class
-        {
-            return DistinctBy(instances, keySelector).OrderBy(keySelector).Select(keySelector);
         }
     }
 }

@@ -29,7 +29,7 @@ namespace Arsenalcn.Core.Tests
             //string nextURL = "/default.aspx";
             string gotoURL = string.Empty;
 
-            string _apiServiceUrl = "http://localhost:3186/services/restserver.aspx";
+            string _apiServiceUrl = "http://vm-win2008r2/services/restserver.aspx";
             string _apiAppKey = "e5b551b11b65fd03bf8e9afe14a092c5";
             string _apiCryptographicKey = "68a9b3a904bc09ce89a62310e9ebbd3c";
             string _method = "auth.validate";

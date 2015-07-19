@@ -7,7 +7,7 @@ using Arsenalcn.Core;
 
 namespace Arsenalcn.Core.Tests
 {
-    [DbTable("Arsenal_League", Key = "LeagueGuid", Sort = "LeagueOrder")]
+    [DbSchema("Arsenal_League", Key = "LeagueGuid", Sort = "LeagueOrder")]
     public class League : Entity<Guid>
     {
         public League() : base() { }

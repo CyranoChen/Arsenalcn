@@ -10,7 +10,7 @@ using Microsoft.ApplicationBlocks.Data;
 
 namespace Arsenalcn.Core.Logger
 {
-    [DbTable("Arsenalcn_Log", Sort = "ID DESC")]
+    [DbSchema("Arsenalcn_Log", Sort = "ID DESC")]
     public class Log
     {
         public Log() { }

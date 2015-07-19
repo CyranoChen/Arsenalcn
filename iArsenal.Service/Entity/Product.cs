@@ -7,7 +7,7 @@ using Arsenalcn.Core;
 
 namespace iArsenal.Service
 {
-    [DbTable("iArsenal_Product", Key = "ProductGuid", Sort = "Code")]
+    [DbSchema("iArsenal_Product", Key = "ProductGuid", Sort = "Code")]
     public class Product : Entity<Guid>
     {
         public Product() : base() { }

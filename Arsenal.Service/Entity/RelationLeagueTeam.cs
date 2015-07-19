@@ -8,7 +8,7 @@ using Arsenalcn.Core;
 
 namespace Arsenal.Service
 {
-    [DbTable("Arsenal_RelationLeagueTeam", Key = "", Sort = "")]
+    [DbSchema("Arsenal_RelationLeagueTeam", Key = "", Sort = "")]
     public class RelationLeagueTeam
     {
         public RelationLeagueTeam() { }

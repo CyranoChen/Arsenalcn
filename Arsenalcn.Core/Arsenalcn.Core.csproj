@@ -43,13 +43,15 @@
     <Compile Include="Entity\Config.cs" />
     <Compile Include="DAHelper\DataAccess.cs" />
     <Compile Include="Entity\Criteria.cs" />
-    <Compile Include="Entity\Dictionary.cs" />
-    <Compile Include="Entity\DictionaryItem.cs" />
+    <Compile Include="Entity\Dictionary.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Entity\Entity.cs" />
     <Compile Include="DAHelper\IRepository.cs" />
     <Compile Include="DAHelper\SQLHelper.cs" />
     <Compile Include="Entity\Pager.cs" />
     <Compile Include="Entity\View.cs" />
+    <Compile Include="Entity\Viewer.cs" />
     <Compile Include="Extension\CollectionExtensions.cs" />
     <Compile Include="Extension\JsonRequestExtensions.cs" />
     <Compile Include="Logger\AppLog.cs" />

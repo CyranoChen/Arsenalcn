@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Arsenalcn.Core
 {
-    [DbTable("Arsenalcn_Config", Key = "", Sort = "ConfigSystem, ConfigKey")]
+    [DbSchema("Arsenalcn_Config", Key = "", Sort = "ConfigSystem, ConfigKey")]
     public class Config
     {
         public Config() { }

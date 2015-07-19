@@ -6,13 +6,13 @@ using System.Linq;
 namespace Arsenalcn.Core
 {
     [AttributeUsage(AttributeTargets.Class)]
-    public class DbTable : Attribute
+    public class DbSchema : Attribute
     {
         public string Name;
         public string Key;
         public string Sort;
 
-        public DbTable(string name)
+        public DbSchema(string name)
         {
             Name = name;
             Key = "ID";

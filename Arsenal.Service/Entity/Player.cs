@@ -8,7 +8,7 @@ using Arsenalcn.Core;
 
 namespace Arsenal.Service
 {
-    [DbTable("Arsenal_Player", Key = "PlayerGuid", Sort = "IsLegend, IsLoan, SquadNumber, LastName")]
+    [DbSchema("Arsenal_Player", Key = "PlayerGuid", Sort = "IsLegend, IsLoan, SquadNumber, LastName")]
     public class Player : Entity<Guid>
     {
         public Player() : base() { }
@@ -40,9 +40,9 @@ namespace Arsenal.Service
                 //    .Select(g => g.First()).OrderBy(x => x.SquadNumber)
                 //    .Select(x => x.SquadNumber).AsEnumerable();
 
-                ColList_SquadNumber = Repository.DistinctOrderBy(repo.All<Player>(), x => x.SquadNumber);
+                ColList_SquadNumber = repo.All<Player>().DistinctOrderBy(x => x.SquadNumber);
 
-                ColList_Position = Repository.DistinctOrderBy(repo.Query<Player>(x => x.Position.HasValue), x => x.Position.Value.ToString());
+                ColList_Position = repo.Query<Player>(x => x.Position.HasValue).DistinctOrderBy(x => x.Position.Value.ToString());
             }
 
             public static Player Load(Guid guid)

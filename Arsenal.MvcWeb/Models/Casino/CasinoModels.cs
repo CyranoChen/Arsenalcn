@@ -24,9 +24,9 @@ namespace Arsenal.MvcWeb.Models.Casino
         public MatchWithRateDto Match { get; set; }
     }
 
-    public class MyBetDto : View<BetDto> { }
-    public class MyBonusDto : View<BetDto> { }
-    public class ResultDto : View<MatchDto> { }
+    public class MyBetDto : SearchModel<BetDto> { }
+    public class MyBonusDto : SearchModel<BetDto> { }
+    public class ResultDto : SearchModel<MatchDto> { }
 
     public class DetailDto
     {

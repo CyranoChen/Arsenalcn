@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Arsenalcn.Core
 {
-    public abstract class View<T>
+    public abstract class SearchModel<T>
     {
         public virtual void Search(IEnumerable<T> data)
         {

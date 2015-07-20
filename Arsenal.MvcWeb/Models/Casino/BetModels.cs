@@ -2,30 +2,29 @@
 using System.ComponentModel.DataAnnotations;
 using System.Data;
 
+using Arsenalcn.Core;
 using Arsenalcn.CasinoSys.Entity;
 using ArsenalTeam = Arsenalcn.CasinoSys.Entity.Arsenal.Team;
 
 namespace Arsenal.MvcWeb.Models.Casino
 {
-    public class BetDto : Bet
+    public class BetDto : Viewer
     {
         public BetDto() : base() { }
 
         public BetDto(DataRow dr)
             : base(dr)
-        {
-            Init(dr);
-        }
+        { }
 
         protected virtual void Init(DataRow dr)
         {
-            if (dr.Table.Columns.Contains("Home") && dr.Table.Columns.Contains("Away"))
-            {
-                TeamHome = Arsenal_Team.Cache.Load((Guid)dr["Home"]);
-                TeamAway = Arsenal_Team.Cache.Load((Guid)dr["Away"]);
-            }
+            //if (dr.Table.Columns.Contains("Home") && dr.Table.Columns.Contains("Away"))
+            //{
+            //    TeamHome = Arsenal_Team.Cache.Load((Guid)dr["Home"]);
+            //    TeamAway = Arsenal_Team.Cache.Load((Guid)dr["Away"]);
+            //}
 
-            Item = CasinoItem.GetCasinoItem((Guid)dr["CasinoItemGuid"]);
+            //Item = CasinoItem.GetCasinoItem((Guid)dr["CasinoItemGuid"]);
 
             // TODO: improve performance
             InitBetIcon();
@@ -38,58 +37,68 @@ namespace Arsenal.MvcWeb.Models.Casino
             {
                 if (IsWin.Value)
                 {
-                    if (Item.ItemType.Equals(CasinoItem.CasinoType.SingleChoice))
-                    { BetIconInfo = "star"; }
-                    else if (Item.ItemType.Equals(CasinoItem.CasinoType.MatchResult))
-                    { BetIconInfo = "check"; }
+                    if (ItemType.Equals(CasinoType.SingleChoice))
+                    { BetIcon = "star"; }
+                    else if (ItemType.Equals(CasinoType.MatchResult))
+                    { BetIcon = "check"; }
                 }
                 else
-                { BetIconInfo = "delete"; }
+                { BetIcon = "delete"; }
             }
             else
-            { BetIconInfo = "back"; }
+            { BetIcon = "back"; }
         }
 
         private void InitBetDetail()
         {
-            DataTable dtBetDetail = BetDetail.GetBetDetailByBetID(ID);
+            DataTable dtBetDetail = Arsenalcn.CasinoSys.Entity.BetDetail.GetBetDetailByBetID(ID);
 
-            if (dtBetDetail != null)
-            {
-                DataRow drBetDetail = dtBetDetail.Rows[0];
+            //if (dtBetDetail != null)
+            //{
+            //    DataRow drBetDetail = dtBetDetail.Rows[0];
 
-                switch (Item.ItemType)
-                {
-                    case CasinoItem.CasinoType.SingleChoice:
-                        if (drBetDetail["DetailName"].ToString() == MatchChoiceOption.HomeWinValue)
-                            BetDetailInfo = "主队胜";
-                        else if (drBetDetail["DetailName"].ToString() == MatchChoiceOption.DrawValue)
-                            BetDetailInfo = "双方平";
-                        else if (drBetDetail["DetailName"].ToString() == MatchChoiceOption.AwayWinValue)
-                            BetDetailInfo = "客队胜";
+            //    switch (ItemType)
+            //    {
+            //        case CasinoType.SingleChoice:
+            //            if (drBetDetail["DetailName"].ToString() == MatchChoiceOption.HomeWinValue)
+            //                BetDetailInfo = "主队胜";
+            //            else if (drBetDetail["DetailName"].ToString() == MatchChoiceOption.DrawValue)
+            //                BetDetailInfo = "双方平";
+            //            else if (drBetDetail["DetailName"].ToString() == MatchChoiceOption.AwayWinValue)
+            //                BetDetailInfo = "客队胜";
 
-                        if (BetRate.HasValue && BetAmount.HasValue)
-                        {
-                            BetDetailInfo += string.Format("[{0}] {1}",
-                                    BetRate.Value.ToString("f2"), BetAmount.Value.ToString("N0"));
-                        }
-                        break;
-                    case CasinoItem.CasinoType.MatchResult:
-                        MatchResultBetDetail bd = new MatchResultBetDetail(dtBetDetail);
-                        BetDetailInfo = string.Format("{0}：{1}", bd.Home, bd.Away);
-                        break;
-                }
-            }
+            //            if (BetRate.HasValue && BetAmount.HasValue)
+            //            {
+            //                BetDetailInfo += string.Format("[{0}] {1}",
+            //                        BetRate.Value.ToString("f2"), BetAmount.Value.ToString("N0"));
+            //            }
+            //            break;
+            //        case CasinoItem.CasinoType.MatchResult:
+            //            MatchResultBetDetail bd = new MatchResultBetDetail(dtBetDetail);
+            //            BetDetailInfo = string.Format("{0}：{1}", bd.Home, bd.Away);
+            //            break;
+            //    }
+            //}
         }
 
-        public ArsenalTeam TeamHome { get; set; }
+        public int ID { get; set; }
 
-        public ArsenalTeam TeamAway { get; set; }
+        public string TeamHomeDisplayName { get; set; }
 
-        public CasinoItem Item { get; set; }
+        public string TeamAwayDisplayName { get; set; }
 
-        public string BetDetailInfo { get; set; }
+        public string BetIcon { get; set; }
 
-        public string BetIconInfo { get; set; }
+        public CasinoType ItemType { get; set; }
+
+        public string UserName { get; set; }
+
+        public DateTime BetTime { get; set; }
+
+        public bool? IsWin { get; set; }
+
+        public string BetDetail { get; set; }
+
+        public float BetRate { get; set; } 
     }
 }

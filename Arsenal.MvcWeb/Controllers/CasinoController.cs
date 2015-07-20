@@ -186,7 +186,7 @@ namespace Arsenal.MvcWeb.Controllers
             {
                 var id = model.MatchGuid;
 
-                Guid? guid = CasinoItem.GetCasinoItemGuidByMatch(id, CasinoItem.CasinoType.SingleChoice);
+                Guid? guid = CasinoItem.GetCasinoItemGuidByMatch(id, CasinoType.SingleChoice);
 
                 if (guid.HasValue)
                 {
@@ -263,7 +263,7 @@ namespace Arsenal.MvcWeb.Controllers
             if (ModelState.IsValid)
             {
                 var id = model.MatchGuid;
-                Guid? guid = CasinoItem.GetCasinoItemGuidByMatch(id, CasinoItem.CasinoType.MatchResult);
+                Guid? guid = CasinoItem.GetCasinoItemGuidByMatch(id, CasinoType.MatchResult);
 
                 if (guid.HasValue)
                 {

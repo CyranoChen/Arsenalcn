@@ -38,6 +38,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Casino\BetView.cs" />
     <Compile Include="Entity\League.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Entity\Match.cs">

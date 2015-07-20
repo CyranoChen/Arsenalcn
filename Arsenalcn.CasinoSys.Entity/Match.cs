@@ -78,7 +78,7 @@ namespace Arsenalcn.CasinoSys.Entity
                     DataAccess.Match.InsertMatch(MatchGuid, Home, Away, PlayTime, LeagueGuid, LeagueName, Round, GroupGuid, trans);
 
                     //add matchResult
-                    MatchResult itemMatchResult = (MatchResult)Entity.CasinoItem.CreateInstance(CasinoItem.CasinoType.MatchResult);
+                    MatchResult itemMatchResult = (MatchResult)Entity.CasinoItem.CreateInstance(CasinoType.MatchResult);
                     itemMatchResult.MatchGuid = MatchGuid;
                     itemMatchResult.CreateTime = DateTime.Now;
                     itemMatchResult.PublishTime = DateTime.Now;
@@ -92,7 +92,7 @@ namespace Arsenalcn.CasinoSys.Entity
                     itemMatchResult.Save(trans);
 
                     //add singleChoice
-                    SingleChoice itemSingleChoice = (SingleChoice)Entity.CasinoItem.CreateInstance(CasinoItem.CasinoType.SingleChoice);
+                    SingleChoice itemSingleChoice = (SingleChoice)Entity.CasinoItem.CreateInstance(CasinoType.SingleChoice);
                     itemSingleChoice.MatchGuid = MatchGuid;
                     itemSingleChoice.CreateTime = DateTime.Now;
                     itemSingleChoice.PublishTime = DateTime.Now;
@@ -156,7 +156,7 @@ namespace Arsenalcn.CasinoSys.Entity
                 SqlTransaction trans = conn.BeginTransaction();
                 try
                 {
-                    Guid? casinoItemGuid = DataAccess.CasinoItem.GetCasinoItemGuidByMatch(MatchGuid, CasinoItem.CasinoType.SingleChoice.ToString(), trans);
+                    Guid? casinoItemGuid = DataAccess.CasinoItem.GetCasinoItemGuidByMatch(MatchGuid, CasinoType.SingleChoice.ToString(), trans);
                     if (casinoItemGuid.HasValue)
                     {
                         CasinoItem item = CasinoItem.GetCasinoItem(casinoItemGuid.Value);
@@ -211,7 +211,7 @@ namespace Arsenalcn.CasinoSys.Entity
 
                 try
                 {
-                    Guid? itemGuid = DataAccess.CasinoItem.GetCasinoItemGuidByMatch(MatchGuid, CasinoItem.CasinoType.SingleChoice.ToString(), trans);
+                    Guid? itemGuid = DataAccess.CasinoItem.GetCasinoItemGuidByMatch(MatchGuid, CasinoType.SingleChoice.ToString(), trans);
 
                     if (itemGuid.HasValue)
                     {
@@ -282,7 +282,7 @@ namespace Arsenalcn.CasinoSys.Entity
                         item.Save(trans);
                     }
 
-                    itemGuid = DataAccess.CasinoItem.GetCasinoItemGuidByMatch(MatchGuid, CasinoItem.CasinoType.MatchResult.ToString(), trans);
+                    itemGuid = DataAccess.CasinoItem.GetCasinoItemGuidByMatch(MatchGuid, CasinoType.MatchResult.ToString(), trans);
 
                     if (itemGuid.HasValue)
                     {

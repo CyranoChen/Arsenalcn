@@ -35,7 +35,7 @@ namespace Arsenalcn.CasinoSys.Web.Control
 
                 ltrlPlayTime.Text = m.PlayTime.ToString("yyyy-MM-dd HH:mm");
 
-                Guid? guid = Entity.CasinoItem.GetCasinoItemGuidByMatch(MatchGuid, CasinoItem.CasinoType.SingleChoice);
+                Guid? guid = Entity.CasinoItem.GetCasinoItemGuidByMatch(MatchGuid, CasinoType.SingleChoice);
 
                 float matchTotalBet = 0f;
 
@@ -96,7 +96,7 @@ namespace Arsenalcn.CasinoSys.Web.Control
                         ltrlTopBet.Text = Entity.Bet.GetMatchTopBet(MatchGuid).ToString("N0");
                         ltrlTopEarning.Text = Entity.Bet.GetMatchTopEarning(MatchGuid).ToString("N2");
 
-                        Guid? matchResultGuid = Entity.CasinoItem.GetCasinoItemGuidByMatch(MatchGuid, CasinoItem.CasinoType.MatchResult);
+                        Guid? matchResultGuid = Entity.CasinoItem.GetCasinoItemGuidByMatch(MatchGuid, CasinoType.MatchResult);
 
                         if (matchResultGuid.HasValue)
                         {

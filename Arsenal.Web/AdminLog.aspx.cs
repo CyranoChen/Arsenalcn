@@ -17,10 +17,10 @@ namespace Arsenal.Web
 
             if (!IsPostBack)
             {
-                if (!string.IsNullOrEmpty(ddlLogger.SelectedValue))
-                    ViewState["Logger"] = ddlLogger.SelectedValue;
+                if (!string.IsNullOrEmpty(ddlException.SelectedValue))
+                    ViewState["Exception"] = ddlException.SelectedValue;
                 else
-                    ViewState["Logger"] = string.Empty;
+                    ViewState["Exception"] = string.Empty;
 
                 BindData();
             }

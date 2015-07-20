@@ -24,7 +24,7 @@
             <div class="DivFloatLeft">
                 <asp:DropDownList ID="ddlLogger" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlLogger_SelectedIndexChanged">
                     <asp:ListItem Value="" Text="--类型--"></asp:ListItem>
-                    <asp:ListItem Value="UserLog" Text="用户" Selected="True"></asp:ListItem>
+                    <asp:ListItem Value="UserLog" Text="用户"></asp:ListItem>
                     <asp:ListItem Value="AppLog" Text="应用"></asp:ListItem>
                     <asp:ListItem Value="DaoLog" Text="数据"></asp:ListItem>
                 </asp:DropDownList>
@@ -38,7 +38,7 @@
                 </asp:DropDownList>
                 <asp:DropDownList ID="ddlException" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlException_SelectedIndexChanged">
                     <asp:ListItem Value="" Text="--是否出错--"></asp:ListItem>
-                    <asp:ListItem Value="true" Text="异常"></asp:ListItem>
+                    <asp:ListItem Value="true" Text="异常" Selected="True"></asp:ListItem>
                     <asp:ListItem Value="false" Text="正常"></asp:ListItem>
                 </asp:DropDownList>
                 <asp:TextBox ID="tbMethod" runat="server" Text="--方法名称--" CssClass="TextBox"

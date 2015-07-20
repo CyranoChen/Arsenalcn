@@ -52,7 +52,7 @@ namespace Arsenalcn.CasinoSys.Web
                     pnlClose.Visible = false;
                 }
 
-                Guid? guid = Entity.CasinoItem.GetCasinoItemGuidByMatch(CurrentMatch, CasinoItem.CasinoType.SingleChoice);
+                Guid? guid = Entity.CasinoItem.GetCasinoItemGuidByMatch(CurrentMatch, CasinoType.SingleChoice);
 
                 if (!IsPostBack)
                 {
@@ -123,7 +123,7 @@ namespace Arsenalcn.CasinoSys.Web
         {
             List<Bet> betList = Entity.Bet.GetUserMatchAllBet(userid, CurrentMatch);
 
-            Guid? matchResultGuid = Entity.CasinoItem.GetCasinoItemGuidByMatch(CurrentMatch, CasinoItem.CasinoType.MatchResult);
+            Guid? matchResultGuid = Entity.CasinoItem.GetCasinoItemGuidByMatch(CurrentMatch, CasinoType.MatchResult);
 
             if (matchResultGuid.HasValue && betList.Exists(delegate(Bet bet) { return bet.CasinoItemGuid == matchResultGuid.Value; }))
             {
@@ -176,7 +176,7 @@ namespace Arsenalcn.CasinoSys.Web
         {
             try
             {
-                Guid? guid = Entity.CasinoItem.GetCasinoItemGuidByMatch(CurrentMatch, CasinoItem.CasinoType.MatchResult);
+                Guid? guid = Entity.CasinoItem.GetCasinoItemGuidByMatch(CurrentMatch, CasinoType.MatchResult);
 
                 if (guid.HasValue)
                 {
@@ -217,7 +217,7 @@ namespace Arsenalcn.CasinoSys.Web
         {
             try
             {
-                Guid? guid = Entity.CasinoItem.GetCasinoItemGuidByMatch(CurrentMatch, CasinoItem.CasinoType.SingleChoice);
+                Guid? guid = Entity.CasinoItem.GetCasinoItemGuidByMatch(CurrentMatch, CasinoType.SingleChoice);
 
                 if (guid.HasValue)
                 {
@@ -281,7 +281,7 @@ namespace Arsenalcn.CasinoSys.Web
 
                     switch (item.ItemType)
                     {
-                        case CasinoItem.CasinoType.SingleChoice:
+                        case CasinoType.SingleChoice:
                             DataTable dt = Entity.BetDetail.GetBetDetailByBetID(bet.ID);
                             foreach (DataRow dr in dt.Rows)
                             {
@@ -293,7 +293,7 @@ namespace Arsenalcn.CasinoSys.Web
                                     ltrlResult.Text = "客队胜";
                             }
                             break;
-                        case CasinoItem.CasinoType.MatchResult:
+                        case CasinoType.MatchResult:
                             MatchResultBetDetail matchResult = new MatchResultBetDetail(Entity.BetDetail.GetBetDetailByBetID(bet.ID));
                             ltrlResult.Text = string.Format("{0} : {1}", matchResult.Home, matchResult.Away);
                             break;

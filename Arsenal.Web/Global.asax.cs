@@ -25,7 +25,9 @@ namespace Arsenal.Web
             {
                 if (ConfigGlobal.SchedulerActive)
                 {
-                    ScheduleManager.Execute();
+                    var assembly = MethodBase.GetCurrentMethod().DeclaringType.Assembly.GetName().Name;
+
+                    ScheduleManager.Execute(assembly);
                 }
             }
             catch (Exception ex)

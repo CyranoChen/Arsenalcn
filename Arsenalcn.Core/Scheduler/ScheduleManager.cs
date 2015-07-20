@@ -1,6 +1,7 @@
 using Arsenalcn.Core.Logger;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Threading;
 
@@ -15,7 +16,7 @@ namespace Arsenalcn.Core.Scheduler
     {
         public static readonly int TimerMinutesInterval = 5;
 
-        public static void Execute()
+        public static void Execute(string assembly = null)
         {
             ILog log = new AppLog();
             var logInfo = new LogInfo()
@@ -26,7 +27,16 @@ namespace Arsenalcn.Core.Scheduler
 
             try
             {
-                var list = Schedule.All().FindAll(x => x.IsActive);
+                var list = new List<Schedule>();
+
+                if (!string.IsNullOrEmpty(assembly))
+                {
+                    list = Schedule.All().FindAll(x => x.IsActive && x.ScheduleType.Contains(assembly));
+                }
+                else
+                { 
+                    list = Schedule.All().FindAll(x => x.IsActive); 
+                }
 
                 if (list != null && list.Count > 0)
                 {

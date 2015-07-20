@@ -87,7 +87,7 @@ namespace Arsenalcn.CasinoSys.Web
                     betList.ForEach(delegate(Entity.Bet bet) { totalBetCount += bet.BetAmount.GetValueOrDefault(0f); });
                     ltrlTotalBetCount.Text = totalBetCount.ToString("N0");
 
-                    Guid? itemGuid = Entity.CasinoItem.GetCasinoItemGuidByMatch(CurrentMatch, CasinoItem.CasinoType.MatchResult);
+                    Guid? itemGuid = Entity.CasinoItem.GetCasinoItemGuidByMatch(CurrentMatch, CasinoType.MatchResult);
 
                     if (itemGuid.HasValue)
                         betList = Entity.Bet.GetBetByCasinoItemGuid(itemGuid.Value, null);
@@ -163,7 +163,7 @@ namespace Arsenalcn.CasinoSys.Web
 
                     switch (item.ItemType)
                     {
-                        case CasinoItem.CasinoType.SingleChoice:
+                        case CasinoType.SingleChoice:
                             if (dr["DetailName"].ToString() == MatchChoiceOption.HomeWinValue)
                                 ltrlResult.Text = "主队胜";
                             else if (dr["DetailName"].ToString() == MatchChoiceOption.DrawValue)
@@ -172,7 +172,7 @@ namespace Arsenalcn.CasinoSys.Web
                                 ltrlResult.Text = "客队胜";
 
                             break;
-                        case CasinoItem.CasinoType.MatchResult:
+                        case CasinoType.MatchResult:
                             Entity.MatchResultBetDetail betDetail = new MatchResultBetDetail(dt);
                             ltrlResult.Text = string.Format("{0}：{1}", betDetail.Home, betDetail.Away);
                             break;
@@ -189,9 +189,9 @@ namespace Arsenalcn.CasinoSys.Web
                 {
                     if (bet.IsWin.Value)
                     {
-                        if (item.ItemType == CasinoItem.CasinoType.SingleChoice)
+                        if (item.ItemType == CasinoType.SingleChoice)
                             ltrlBetResult.Text = "<span class=\"CasinoSys_True\" title=\"猜对输赢\"></span>";
-                        else if (item.ItemType == CasinoItem.CasinoType.MatchResult)
+                        else if (item.ItemType == CasinoType.MatchResult)
                             ltrlBetResult.Text = "<span class=\"CasinoSys_Good\" title=\"猜对比分\"></span>";
 
                         e.Row.CssClass = "RowCasinoSys_True";

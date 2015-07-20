@@ -111,7 +111,7 @@ namespace Arsenalcn.CasinoSys.Web
                         tHome.Capacity.HasValue ? ("(" + tHome.Capacity.Value.ToString() + ")") : string.Empty);
                 }
 
-                Guid? guid = Entity.CasinoItem.GetCasinoItemGuidByMatch(m.MatchGuid, CasinoItem.CasinoType.SingleChoice);
+                Guid? guid = Entity.CasinoItem.GetCasinoItemGuidByMatch(m.MatchGuid, CasinoType.SingleChoice);
 
                 if (guid.HasValue)
                 {
@@ -140,7 +140,7 @@ namespace Arsenalcn.CasinoSys.Web
 
                 //bet for match result
 
-                guid = Entity.CasinoItem.GetCasinoItemGuidByMatch(m.MatchGuid, CasinoItem.CasinoType.MatchResult);
+                guid = Entity.CasinoItem.GetCasinoItemGuidByMatch(m.MatchGuid, CasinoType.MatchResult);
 
                 if (guid.HasValue)
                 {
@@ -191,7 +191,7 @@ namespace Arsenalcn.CasinoSys.Web
                 {
                     Guid matchGuid = (Guid)gvMatch.DataKeys[row.RowIndex].Value;
 
-                    Guid? guid = Entity.CasinoItem.GetCasinoItemGuidByMatch(matchGuid, CasinoItem.CasinoType.MatchResult);
+                    Guid? guid = Entity.CasinoItem.GetCasinoItemGuidByMatch(matchGuid, CasinoType.MatchResult);
 
                     if (guid.HasValue)
                     {

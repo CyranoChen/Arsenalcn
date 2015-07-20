@@ -311,11 +311,11 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public string OwnerUserName
         { get; set; }
+    }
 
-        public enum CasinoType
-        {
-            SingleChoice,
-            MatchResult
-        }
+    public enum CasinoType
+    {
+        SingleChoice,
+        MatchResult
     }
 }

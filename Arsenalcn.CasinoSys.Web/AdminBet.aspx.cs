@@ -73,7 +73,7 @@ namespace Arsenalcn.CasinoSys.Web
 
                     switch (item.ItemType)
                     {
-                        case CasinoItem.CasinoType.SingleChoice:
+                        case CasinoType.SingleChoice:
                             if (dr["DetailName"].ToString() == MatchChoiceOption.HomeWinValue)
                                 ltrlResult.Text = "主队胜";
                             else if (dr["DetailName"].ToString() == MatchChoiceOption.DrawValue)
@@ -82,7 +82,7 @@ namespace Arsenalcn.CasinoSys.Web
                                 ltrlResult.Text = "客队胜";
 
                             break;
-                        case CasinoItem.CasinoType.MatchResult:
+                        case CasinoType.MatchResult:
                             Entity.MatchResultBetDetail betDetail = new MatchResultBetDetail(dt);
                             ltrlResult.Text = string.Format("{0}：{1}", betDetail.Home, betDetail.Away);
                             break;

@@ -50,7 +50,7 @@ namespace Arsenal.MvcWeb.Models.Casino
             TeamHome = Arsenal_Team.Cache.Load(Home);
             TeamAway = Arsenal_Team.Cache.Load(Away);
 
-            Guid? guid = CasinoItem.GetCasinoItemGuidByMatch(MatchGuid, CasinoItem.CasinoType.SingleChoice);
+            Guid? guid = CasinoItem.GetCasinoItemGuidByMatch(MatchGuid, CasinoType.SingleChoice);
 
             if (guid.HasValue)
             {

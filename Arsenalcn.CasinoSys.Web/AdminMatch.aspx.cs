@@ -73,7 +73,7 @@ namespace Arsenalcn.CasinoSys.Web
 
                     Guid matchGuid = m.MatchGuid;
 
-                    Guid? itemGuid = Entity.CasinoItem.GetCasinoItemGuidByMatch(matchGuid, CasinoItem.CasinoType.SingleChoice);
+                    Guid? itemGuid = Entity.CasinoItem.GetCasinoItemGuidByMatch(matchGuid, CasinoType.SingleChoice);
 
                     if (itemGuid.HasValue)
                     {
@@ -160,7 +160,7 @@ namespace Arsenalcn.CasinoSys.Web
 
                     m.Update();
 
-                    Guid? casinoItemGuid = Entity.CasinoItem.GetCasinoItemGuidByMatch(guid, CasinoItem.CasinoType.MatchResult);
+                    Guid? casinoItemGuid = Entity.CasinoItem.GetCasinoItemGuidByMatch(guid, CasinoType.MatchResult);
 
                     if (casinoItemGuid.HasValue && m.ResultHome.HasValue && m.ResultAway.HasValue)
                     {

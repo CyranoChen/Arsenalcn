@@ -323,7 +323,7 @@ namespace iArsenal.Service
         #region Members and Properties
 
         // Match Info Properties
-        [DbColumn("MatchGuid", Key = true)]
+        [DbColumn("MatchGuid", IsKey = true)]
         public Guid ID
         { get; set; }
 

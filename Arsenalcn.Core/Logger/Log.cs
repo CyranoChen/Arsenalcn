@@ -78,7 +78,7 @@ namespace Arsenalcn.Core.Logger
 
         #region Members and Properties
 
-        [DbColumn("ID", Key = true)]
+        [DbColumn("ID", IsKey = true)]
         public int ID
         { get; set; }
 

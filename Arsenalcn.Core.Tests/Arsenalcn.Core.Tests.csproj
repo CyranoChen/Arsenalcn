@@ -59,6 +59,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository_Test.cs" />
     <Compile Include="RestApi_Tests.cs" />
+    <Compile Include="UnitTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Arsenal.Service\Arsenal.Service.csproj">

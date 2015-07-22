@@ -20,16 +20,19 @@ namespace Arsenalcn.Core
         }
     }
 
-    [AttributeUsage(AttributeTargets.Property)]
+    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
     public class DbColumn : Attribute
     {
         public string Name;
-        public bool Key;
+        public bool IsKey;
+        public string Key;
+
 
         public DbColumn(string name)
         {
             Name = name;
-            Key = false;
+            IsKey = false;
+            Key = string.Empty;
         }
     }
 

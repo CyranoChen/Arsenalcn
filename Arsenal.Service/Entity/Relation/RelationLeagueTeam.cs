@@ -193,11 +193,11 @@ namespace Arsenal.Service
 
         #region Members and Properties
 
-        [DbColumn("TeamGuid", Key = true)]
+        [DbColumn("TeamGuid", IsKey = true)]
         public Guid TeamGuid
         { get; set; }
 
-        [DbColumn("LeagueGuid", Key = true)]
+        [DbColumn("LeagueGuid", IsKey = true)]
         public Guid LeagueGuid
         { get; set; }
 

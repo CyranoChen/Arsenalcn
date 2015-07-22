@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Diagnostics.Contracts;
+using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Web;
@@ -22,34 +23,55 @@ namespace Arsenalcn.Core
             {
                 Contract.Requires(dr != null);
 
-                var attr = (DbSchema)Attribute.GetCustomAttribute(this.GetType(), typeof(DbSchema));
-
-                //this.ID = (TKey)dr[attr.Key];
-
                 foreach (var pi in this.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
                 {
                     var attrCol = Repository.GetColumnAttr(pi);
+
+                    // skip not db column
+                    if (attrCol == null) { continue; }
+
                     var type = Nullable.GetUnderlyingType(pi.PropertyType) ?? pi.PropertyType;
 
-                    if (attrCol != null)
+                    if (type.BaseType.Equals(typeof(Entity<Guid>)) || type.BaseType.Equals(typeof(Entity<int>)))
                     {
-                        if (!Convert.IsDBNull(dr[attrCol.Name]))
+                        // skip inner object not be included
+                        if (dr.Table.Columns.Contains("@include"))
                         {
-                            // SetValue for EnumType
-                            if (type.BaseType.Equals(typeof(Enum)))
-                            {
-                                object value = Enum.Parse(type, dr[attrCol.Name].ToString(), true);
+                            var includeTypes = dr["@include"].ToString().Split('|');
 
-                                pi.SetValue(this, Convert.ChangeType(value, type), null);
-                            }
-                            else
+                            if (!includeTypes.Any(x => x.Equals(type.FullName))) { continue; }
+                        }
+
+                        if (!Convert.IsDBNull(dr[attrCol.Key]))
+                        {
+                            // new inner object instance
+                            object instance = Activator.CreateInstance(type);
+
+                            // set the primary key of inner object
+                            var piKey = instance.GetType().GetProperty("ID");
+
+                            piKey.SetValue(instance, Convert.ChangeType(dr[attrCol.Key],
+                                Nullable.GetUnderlyingType(piKey.PropertyType) ?? piKey.PropertyType), null);
+
+                            foreach (var piInner in instance.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
                             {
-                                pi.SetValue(this, Convert.ChangeType(dr[attrCol.Name], type), null);
+                                var attrColInner = Repository.GetColumnAttr(piInner);
+
+                                // skip not db column
+                                if (attrColInner == null) { continue; }
+
+                                var columnName = string.Format("{0}_{1}", attrCol.Name, attrColInner.Name);
+
+                                this.SetPropertyValue(instance, piInner, dr[columnName]);
                             }
+
+                            pi.SetValue(this, Convert.ChangeType(instance, type), null);
                         }
                     }
                     else
-                    { continue; }
+                    {
+                        this.SetPropertyValue(this, pi, dr[attrCol.Name]);
+                    }
                 }
             }
             catch (Exception ex)
@@ -61,6 +83,26 @@ namespace Arsenalcn.Core
                 });
 
                 throw;
+            }
+        }
+
+        private void SetPropertyValue(object instance, PropertyInfo property, object value)
+        {
+            if (!Convert.IsDBNull(value))
+            {
+                var type = Nullable.GetUnderlyingType(property.PropertyType) ?? property.PropertyType;
+
+                // SetValue for EnumType
+                if (type.BaseType.Equals(typeof(Enum)))
+                {
+                    object valEnum = Enum.Parse(type, value.ToString(), true);
+
+                    property.SetValue(instance, Convert.ChangeType(valEnum, type), null);
+                }
+                else
+                {
+                    property.SetValue(instance, Convert.ChangeType(value, type), null);
+                }
             }
         }
 

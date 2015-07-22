@@ -145,7 +145,7 @@ namespace Arsenalcn.Core.Scheduler
 
         #region Members and Properties
 
-        [DbColumn("ScheduleKey", Key = true)]
+        [DbColumn("ScheduleKey", IsKey = true)]
         public string ScheduleKey
         { get; set; }
 

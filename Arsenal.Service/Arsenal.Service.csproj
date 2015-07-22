@@ -38,7 +38,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Casino\BetView.cs" />
+    <Compile Include="Casino\Bet.cs" />
+    <Compile Include="Casino\CasinoItem.cs" />
+    <Compile Include="Casino\Group.cs" />
+    <Compile Include="Casino\Viewer\BetView.cs" />
+    <Compile Include="Casino\Gambler.cs" />
+    <Compile Include="Casino\Match.cs" />
+    <Compile Include="Casino\Viewer\MatchView.cs" />
     <Compile Include="Entity\League.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Entity\Match.cs">
@@ -50,7 +56,7 @@
     <Compile Include="Framework\Membership.cs" />
     <Compile Include="Framework\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Entity\RelationLeagueTeam.cs">
+    <Compile Include="Entity\Relation\RelationLeagueTeam.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Entity\Team.cs">

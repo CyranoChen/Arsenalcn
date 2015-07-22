@@ -27,7 +27,7 @@ namespace Arsenalcn.Core
             log = new DaoLog();
         }
 
-        public T Single<T>(object key) where T : class, IViewer, new()
+        public T Single<T>(object key, Type[] include = null) where T : class, IViewer, new()
         {
             try
             {
@@ -49,6 +49,13 @@ namespace Arsenalcn.Core
 
                 if (ds.Tables[0].Rows.Count == 0) { return null; }
 
+                var includeTypes = string.Empty;
+                if (include != null)
+                {
+                    ds.Tables[0].Columns.Add("@Include");
+                    ds.Tables[0].Rows[0]["@Include"] = string.Join("|", include.ToList());
+                }
+
                 ConstructorInfo ci = typeof(T).GetConstructor(new Type[] { typeof(DataRow) });
 
                 return (T)ci.Invoke(new Object[] { ds.Tables[0].Rows[0] });
@@ -65,7 +72,7 @@ namespace Arsenalcn.Core
             }
         }
 
-        public List<T> All<T>() where T : class, IViewer, new()
+        public List<T> All<T>(Type[] include = null) where T : class, IViewer, new()
         {
             try
             {
@@ -91,11 +98,23 @@ namespace Arsenalcn.Core
 
                 if (ds.Tables[0].Rows.Count > 0)
                 {
+                    var includeTypes = string.Empty;
+                    if (include != null)
+                    {
+                        ds.Tables[0].Columns.Add("@Include");
+                        includeTypes = string.Join("|", include.ToList());
+                    }
+
                     foreach (DataRow dr in ds.Tables[0].Rows)
                     {
                         ConstructorInfo ci = typeof(T).GetConstructor(new Type[] { typeof(DataRow) });
 
+                        if (include != null && !string.IsNullOrEmpty(includeTypes))
+                        { dr["@Include"] = includeTypes; }
+
                         list.Add((T)ci.Invoke(new Object[] { dr }));
+
+                        //list.Add((T)typeof(T).GetConstructor(new Type[] { }).Invoke(new object[] { }));
                     }
                 }
 

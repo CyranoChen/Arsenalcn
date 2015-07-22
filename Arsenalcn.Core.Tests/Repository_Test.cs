@@ -2,6 +2,8 @@
 using System.Collections;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Arsenal.Service.Casino;
+using Arsenal.Service;
 
 namespace Arsenalcn.Core.Tests
 {
@@ -13,9 +15,21 @@ namespace Arsenalcn.Core.Tests
         {
             IRepository repo = new Repository();
 
-            var key = new Guid("066edf53-f823-4020-b740-f4c9fff98ec8");
+            var key = new Guid("12236a72-f35b-4a0f-90e6-67b11c3364bc");
 
-            var instance = repo.Single<League>(key);
+            var instance = repo.Single<MatchView>(key);
+
+            Assert.IsNotNull(instance);
+        }
+
+        [TestMethod()]
+        public void Single_Viewer_Test()
+        {
+            IRepository repo = new Repository();
+
+            var key = new Guid("12236a72-f35b-4a0f-90e6-67b11c3364bc");
+
+            var instance = repo.Single<MatchView>(key);
 
             Assert.IsNotNull(instance);
         }
@@ -25,7 +39,17 @@ namespace Arsenalcn.Core.Tests
         {
             IRepository repo = new Repository();
 
-            var query = repo.All<League>();
+            var query = repo.All<Bet>(include: new Type[] { });
+
+            Assert.IsNotNull(query);
+        }
+
+        [TestMethod()]
+        public void All_Viewer_Test()
+        {
+            IRepository repo = new Repository();
+
+            var query = repo.All<BetView>();
 
             Assert.IsNotNull(query);
         }
@@ -40,6 +64,20 @@ namespace Arsenalcn.Core.Tests
             ht.Add("LeagueTime", "DESC");
 
             var query = repo.All<League>(new Pager(2) { PagingSize = 20 }, ht);
+
+            Assert.IsNotNull(query);
+        }
+
+        [TestMethod()]
+        public void AllByPager_Viewer_Test()
+        {
+            IRepository repo = new Repository();
+
+            var ht = new Hashtable();
+
+            ht.Add("BetTime", "DESC");
+
+            var query = repo.All<BetView>(new Pager(2) { PagingSize = 20 }, ht);
 
             Assert.IsNotNull(query);
         }

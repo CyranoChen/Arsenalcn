@@ -157,11 +157,11 @@ namespace Arsenalcn.Core
 
         #region Members and Properties
 
-        [DbColumn("ConfigSystem", Key = true)]
+        [DbColumn("ConfigSystem", IsKey = true)]
         public ConfigSystem ConfigSystem
         { get; set; }
 
-        [DbColumn("ConfigKey", Key = true)]
+        [DbColumn("ConfigKey", IsKey = true)]
         public string ConfigKey
         { get; set; }
 

@@ -9,9 +9,9 @@ namespace Arsenalcn.Core
 {
     public interface IRepository
     {
-        T Single<T>(object key) where T : class, IViewer, new();
+        T Single<T>(object key, Type[] include = null) where T : class, IViewer, new();
 
-        List<T> All<T>() where T : class, IViewer, new();
+        List<T> All<T>(Type[] include = null) where T : class, IViewer, new();
         List<T> All<T>(Pager pager, Hashtable htOrder = null) where T : class, IViewer, new();
 
         List<T> Query<T>(Hashtable htWhere) where T : class, IViewer, new();

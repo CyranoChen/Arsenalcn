@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Linq;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Arsenal.Service.Casino;
@@ -17,7 +18,7 @@ namespace Arsenalcn.Core.Tests
 
             var key = new Guid("12236a72-f35b-4a0f-90e6-67b11c3364bc");
 
-            var instance = repo.Single<MatchView>(key);
+            var instance = repo.Single<Arsenal.Service.Casino.Match>(key);
 
             Assert.IsNotNull(instance);
         }
@@ -35,11 +36,25 @@ namespace Arsenalcn.Core.Tests
         }
 
         [TestMethod()]
+        public void Single_Viewer_Many_Test()
+        {
+            IRepository repo = new Repository();
+
+            var key = new Guid("12236a72-f35b-4a0f-90e6-67b11c3364bc");
+
+            var instance = repo.Single<MatchView>(key);
+
+            instance.Many<ChoiceOption>(instance.CasinoItem.ID);
+
+            Assert.IsNotNull(instance);
+        }
+
+        [TestMethod()]
         public void All_Test()
         {
             IRepository repo = new Repository();
 
-            var query = repo.All<Bet>(include: new Type[] { });
+            var query = repo.All<MatchView>();
 
             Assert.IsNotNull(query);
         }
@@ -49,7 +64,20 @@ namespace Arsenalcn.Core.Tests
         {
             IRepository repo = new Repository();
 
-            var query = repo.All<BetView>();
+            var query = repo.All<MatchView>();
+
+            Assert.IsNotNull(query);
+        }
+
+        [TestMethod()]
+        public void All_Viewer_Many_Test()
+        {
+            IRepository repo = new Repository();
+
+            var query = repo.All<MatchView>().Take(10);
+
+            query.Many<MatchView, ChoiceOption>(
+                (tSource, t) => tSource.CasinoItem.ID.Equals(t.CasinoItemGuid));
 
             Assert.IsNotNull(query);
         }

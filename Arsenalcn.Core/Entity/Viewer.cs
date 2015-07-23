@@ -8,6 +8,9 @@ using System.Threading;
 using System.Web;
 
 using Arsenalcn.Core.Logger;
+using System.Collections.Generic;
+using System.Collections;
+using System.Linq.Expressions;
 
 namespace Arsenalcn.Core
 {
@@ -31,6 +34,9 @@ namespace Arsenalcn.Core
                     if (attrCol == null) { continue; }
 
                     var type = Nullable.GetUnderlyingType(pi.PropertyType) ?? pi.PropertyType;
+
+                    // skip IEnumerable property
+                    if (type.BaseType == null) { continue; }
 
                     if (type.BaseType.Equals(typeof(Entity<Guid>)) || type.BaseType.Equals(typeof(Entity<int>)))
                     {
@@ -62,7 +68,10 @@ namespace Arsenalcn.Core
 
                                 var columnName = string.Format("{0}_{1}", attrCol.Name, attrColInner.Name);
 
-                                this.SetPropertyValue(instance, piInner, dr[columnName]);
+                                if (dr.Table.Columns.Contains(columnName))
+                                {
+                                    this.SetPropertyValue(instance, piInner, dr[columnName]);
+                                }
                             }
 
                             pi.SetValue(this, Convert.ChangeType(instance, type), null);
@@ -70,7 +79,10 @@ namespace Arsenalcn.Core
                     }
                     else
                     {
-                        this.SetPropertyValue(this, pi, dr[attrCol.Name]);
+                        if (dr.Table.Columns.Contains(attrCol.Name))
+                        {
+                            this.SetPropertyValue(this, pi, dr[attrCol.Name]);
+                        }
                     }
                 }
             }
@@ -139,6 +151,30 @@ namespace Arsenalcn.Core
             {
                 Contract.Requires(!string.IsNullOrWhiteSpace(input));
                 return HttpUtility.UrlEncode(input.Replace(" ", "_").Replace("-", "_").Replace("&", "and"));
+            }
+        }
+
+        public virtual void Many<T>(object fKeyValue) where T : class, IViewer, new()
+        {
+            var propertyName = string.Format("List{0}", typeof(T).Name);
+            var property = this.GetType().GetProperty(propertyName, typeof(IEnumerable<T>));
+
+            var attrCol = Repository.GetColumnAttr(property);
+
+            if (attrCol != null && !string.IsNullOrEmpty(attrCol.ForeignKey))
+            {
+                IRepository repo = new Repository();
+
+                var whereBy = new Hashtable();
+
+                whereBy.Add(attrCol.ForeignKey, fKeyValue);
+
+                var list = repo.Query<T>(whereBy);
+
+                if (list != null && list.Count > 0)
+                {
+                    property.SetValue(this, list, null);
+                }
             }
         }
 

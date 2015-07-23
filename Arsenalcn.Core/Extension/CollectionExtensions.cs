@@ -1,12 +1,52 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace Arsenalcn.Core
 {
     public static class CollectionExtensions
     {
+        public static IEnumerable<TSource> Many<TSource, T>(this IEnumerable<TSource> source, Func<TSource, T, bool> func)
+            where T : class, IViewer, new()
+            where TSource : class, IViewer, new()
+        {
+            var propertyName = string.Format("List{0}", typeof(T).Name);
+            var property = typeof(TSource).GetProperty(propertyName, typeof(IEnumerable<T>));
+
+            var attrCol = Repository.GetColumnAttr(property);
+
+            if (attrCol != null && !string.IsNullOrEmpty(attrCol.ForeignKey))
+            {
+                IRepository repo = new Repository();
+
+                // Get All T instances
+                var query = repo.All<T>();
+
+                if (query != null && query.Count > 0)
+                {
+                    foreach (var instance in source)
+                    {
+                        var pi = instance.GetType().GetProperty(propertyName, typeof(IEnumerable<T>));
+                        if (pi == null) { continue; }
+
+                        var predicate = new Predicate<T>(t => func(instance, t));
+
+                        var list = query.FindAll(predicate);
+
+                        if (list != null && list.Count > 0)
+                        {
+                            pi.SetValue(instance, list, null);
+                        }
+                    }
+                }
+            }
+
+            return source;
+        }
+
         // Load All Records
         public static IEnumerable<T> Page<T>(this IEnumerable<T> source, int pageIndex, int pageSize)
         {

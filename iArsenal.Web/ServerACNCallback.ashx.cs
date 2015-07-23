@@ -74,7 +74,7 @@ namespace iArsenal.Web
                             throw new Exception(string.Format("({0}) {1}", error_code, error_msg));
                         }
 
-                        gotoURL = nextURL;
+                        gotoURL = nextURL.Contains("default.aspx?method=logout") ? "/default.aspx" : nextURL;
                     }
                     else
                     {

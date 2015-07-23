@@ -26,13 +26,14 @@ namespace Arsenalcn.Core
         public string Name;
         public bool IsKey;
         public string Key;
-
+        public string ForeignKey;
 
         public DbColumn(string name)
         {
             Name = name;
             IsKey = false;
-            Key = string.Empty;
+            Key = "ID";
+            ForeignKey = string.Empty;
         }
     }
 

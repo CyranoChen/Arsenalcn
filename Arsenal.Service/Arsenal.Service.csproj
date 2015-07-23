@@ -40,6 +40,7 @@
   <ItemGroup>
     <Compile Include="Casino\Bet.cs" />
     <Compile Include="Casino\CasinoItem.cs" />
+    <Compile Include="Casino\ChoiceOption.cs" />
     <Compile Include="Casino\Group.cs" />
     <Compile Include="Casino\Viewer\BetView.cs" />
     <Compile Include="Casino\Gambler.cs" />

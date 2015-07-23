@@ -132,7 +132,7 @@ namespace Arsenalcn.Core
             }
         }
 
-        public List<T> All<T>(Pager pager, Hashtable htOrder = null) where T : class, IViewer, new()
+        public List<T> All<T>(Pager pager, Hashtable htOrder = null, Type[] include = null) where T : class, IViewer, new()
         {
             try
             {
@@ -183,9 +183,19 @@ namespace Arsenalcn.Core
 
                 if (ds.Tables[0].Rows.Count > 0)
                 {
+                    var includeTypes = string.Empty;
+                    if (include != null)
+                    {
+                        ds.Tables[0].Columns.Add("@Include");
+                        includeTypes = string.Join("|", include.ToList());
+                    }
+
                     foreach (DataRow dr in ds.Tables[0].Rows)
                     {
                         ConstructorInfo ci = typeof(T).GetConstructor(new Type[] { typeof(DataRow) });
+
+                        if (include != null && !string.IsNullOrEmpty(includeTypes))
+                        { dr["@Include"] = includeTypes; }
 
                         list.Add((T)ci.Invoke(new Object[] { dr }));
                     }
@@ -205,7 +215,7 @@ namespace Arsenalcn.Core
             }
         }
 
-        public List<T> Query<T>(Hashtable htWhere) where T : class, IViewer, new()
+        public List<T> Query<T>(Hashtable htWhere, Type[] include = null) where T : class, IViewer, new()
         {
             try
             {
@@ -261,9 +271,19 @@ namespace Arsenalcn.Core
 
                     if (ds.Tables[0].Rows.Count > 0)
                     {
+                        var includeTypes = string.Empty;
+                        if (include != null)
+                        {
+                            ds.Tables[0].Columns.Add("@Include");
+                            includeTypes = string.Join("|", include.ToList());
+                        }
+
                         foreach (DataRow dr in ds.Tables[0].Rows)
                         {
                             ConstructorInfo ci = typeof(T).GetConstructor(new Type[] { typeof(DataRow) });
+
+                            if (include != null && !string.IsNullOrEmpty(includeTypes))
+                            { dr["@Include"] = includeTypes; }
 
                             list.Add((T)ci.Invoke(new Object[] { dr }));
                         }
@@ -284,7 +304,7 @@ namespace Arsenalcn.Core
             }
         }
 
-        public List<T> Query<T>(Pager pager, Hashtable htWhere, Hashtable htOrder = null) where T : class, IViewer, new()
+        public List<T> Query<T>(Pager pager, Hashtable htWhere, Hashtable htOrder = null, Type[] include = null) where T : class, IViewer, new()
         {
             try
             {
@@ -368,9 +388,19 @@ namespace Arsenalcn.Core
 
                     if (ds.Tables[0].Rows.Count > 0)
                     {
+                        var includeTypes = string.Empty;
+                        if (include != null)
+                        {
+                            ds.Tables[0].Columns.Add("@Include");
+                            includeTypes = string.Join("|", include.ToList());
+                        }
+
                         foreach (DataRow dr in ds.Tables[0].Rows)
                         {
                             ConstructorInfo ci = typeof(T).GetConstructor(new Type[] { typeof(DataRow) });
+
+                            if (include != null && !string.IsNullOrEmpty(includeTypes))
+                            { dr["@Include"] = includeTypes; }
 
                             list.Add((T)ci.Invoke(new Object[] { dr }));
                         }
@@ -391,11 +421,11 @@ namespace Arsenalcn.Core
             }
         }
 
-        public IQueryable<T> Query<T>(Expression<Func<T, bool>> predicate) where T : class, IViewer, new()
+        public IQueryable<T> Query<T>(Expression<Func<T, bool>> predicate, Type[] include = null) where T : class, IViewer, new()
         {
             Contract.Requires(predicate != null);
 
-            return All<T>().AsQueryable().Where(predicate);
+            return All<T>(include).AsQueryable().Where(predicate);
         }
 
         public void Insert<T>(T instance, SqlTransaction trans = null) where T : class, IEntity

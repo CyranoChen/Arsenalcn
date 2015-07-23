@@ -12,7 +12,7 @@
             <a href="http://bbs.arsenalcn.com/usercpinbox.aspx" target="_blank">短消息</a> - 
             <a href="iArsenalMemberRegister.aspx">会员中心</a> - 
             <asp:Literal ID="ltrlAdminConfig" runat="server"></asp:Literal>
-            <asp:LinkButton ID="btnLogout" runat="server" OnClick="btnLogout_Click">退出</asp:LinkButton>
+            <a href="default.aspx?method=logout">退出</a>
         </asp:Panel>
         <asp:Panel ID="pnlAnonymousUser" CssClass="UserInfo" runat="server">
             <asp:HyperLink ID="hlLogin" runat="server">登录</asp:HyperLink>

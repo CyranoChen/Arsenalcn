@@ -130,6 +130,10 @@ namespace Arsenal.Web
                 {
                     v = repo.Single<Video>(VideoGuid);
                 }
+                else
+                {
+                    v.ID = new Guid(tbVideoGuid.Text.Trim());
+                }
 
                 v.FileName = tbFileName.Text.Trim();
 

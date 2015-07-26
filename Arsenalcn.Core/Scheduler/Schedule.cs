@@ -38,12 +38,12 @@ namespace Arsenalcn.Core.Scheduler
 
                 if (DailyTime >= 0)
                 {
-                    ExecuteTimeInfo = string.Format("定时执行：{0}时{1}分",
+                    ExecuteTimeInfo = string.Format("Run at {0}:{1}",
                         (DailyTime / 60).ToString(), (DailyTime % 60).ToString());
                 }
                 else
                 {
-                    ExecuteTimeInfo = string.Format("轮询执行：{0}分钟", Minutes.ToString());
+                    ExecuteTimeInfo = string.Format("Run By {0} mins", Minutes.ToString());
                 }
 
                 #endregion

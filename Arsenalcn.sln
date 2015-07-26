@@ -1,21 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arsenalcn.Common", "Arsenalcn.Common\Arsenalcn.Common.csproj", "{8258A2E1-6821-4BAE-9111-3FBB65703FE0}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{D7061262-BFE2-4747-AFA8-94022986F024}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AcnClub", "AcnClub", "{45694A9F-40E6-4D5C-BA44-D0081A8884E7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AcnCasino", "AcnCasino", "{7913F715-C2C7-496A-86CE-6A11B2AC3E7D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arsenalcn.CasinoSys.DataAccess", "Arsenalcn.CasinoSys.DataAccess\Arsenalcn.CasinoSys.DataAccess.csproj", "{F7122A3E-CCFB-496D-89D1-09D54AF11135}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arsenalcn.CasinoSys.Entity", "Arsenalcn.CasinoSys.Entity\Arsenalcn.CasinoSys.Entity.csproj", "{CD9A6BD8-88B6-45F4-B41D-7DC11E173B78}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arsenalcn.CasinoSys.Web", "Arsenalcn.CasinoSys.Web\Arsenalcn.CasinoSys.Web.csproj", "{06DDCDDF-F83F-4153-8F74-947EECF2C40B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "iArsenal", "iArsenal", "{4EAE12C9-616A-41FE-93CC-6412617289F7}"
 EndProject
@@ -23,16 +15,27 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Arsenal", "Arsenal", "{EE6F
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A7778B83-AB25-42E8-B643-CBE5698BE929}"
 	ProjectSection(SolutionItems) = preProject
+		WE-Markdown.css = WE-Markdown.css
+		WE-Palette.css = WE-Palette.css
 		WebEssentials-Settings.json = WebEssentials-Settings.json
+		WebEssentials2015-Settings.json = WebEssentials2015-Settings.json
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{241E66C7-AD38-4990-860E-CF6F7D613A64}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arsenalcn.Common", "Arsenalcn.Common\Arsenalcn.Common.csproj", "{8258A2E1-6821-4BAE-9111-3FBB65703FE0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arsenalcn.CasinoSys.DataAccess", "Arsenalcn.CasinoSys.DataAccess\Arsenalcn.CasinoSys.DataAccess.csproj", "{F7122A3E-CCFB-496D-89D1-09D54AF11135}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arsenalcn.CasinoSys.Entity", "Arsenalcn.CasinoSys.Entity\Arsenalcn.CasinoSys.Entity.csproj", "{CD9A6BD8-88B6-45F4-B41D-7DC11E173B78}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arsenalcn.CasinoSys.Web", "Arsenalcn.CasinoSys.Web\Arsenalcn.CasinoSys.Web.csproj", "{06DDCDDF-F83F-4153-8F74-947EECF2C40B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arsenalcn.Core", "Arsenalcn.Core\Arsenalcn.Core.csproj", "{C46F6AF6-EBE1-4BAC-BC17-0989FA6C9B8E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arsenalcn.ClubSys.Service", "Arsenalcn.ClubSys.Service\Arsenalcn.ClubSys.Service.csproj", "{75829613-19BE-4D73-967E-19D3B5F7CB84}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arsenalcn.ClubSys.Web", "Arsenalcn.ClubSys.Web\Arsenalcn.ClubSys.Web.csproj", "{32CF12A8-B988-43D9-9934-265A13A7DF82}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{241E66C7-AD38-4990-860E-CF6F7D613A64}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arsenalcn.Core.Tests", "Arsenalcn.Core.Tests\Arsenalcn.Core.Tests.csproj", "{F9E70403-E5AA-42AD-BBEC-B338038B9306}"
 EndProject

@@ -1,17 +1,17 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
-using System.Web.Mvc;
 using System.Linq;
+using System.Web.Mvc;
 
 using AutoMapper;
 
 using Arsenal.MvcWeb.Models;
 using Arsenal.MvcWeb.Models.Casino;
-using Arsenalcn.Core;
-using Arsenal.Service.Casino;
 using Arsenal.Service;
-using System.Collections;
+using Arsenal.Service.Casino;
+using Arsenalcn.Core;
 
 namespace Arsenal.MvcWeb.Controllers
 {
@@ -48,19 +48,18 @@ namespace Arsenal.MvcWeb.Controllers
 
         public ActionResult MyBet(Criteria criteria)
         {
-            var list = new List<BetDto>();
-            //var dt = Arsenalcn.CasinoSys.Entity.Bet.GetUserBetHistoryView(this.acnID);
-
-            //if (dt != null)
-            //{
-            //    foreach (DataRow dr in dt.Rows)
-            //    {
-            //        list.Add(new BetDto(dr));
-            //    }
-            //}
-
-            // Populate the view model
             var model = new MyBetDto();
+
+            var whereBy = new Hashtable();
+
+            whereBy.Add("UserID", this.acnID);
+
+            var query = repo.Query<BetView>(whereBy, new Type[] { typeof(CasinoItem), typeof(Team) })
+                .Many<BetView, BetDetail>((tOne, tMany) => tOne.ID.Equals(tMany.BetID));
+
+            BetDto.CreateMap();
+
+            var list = Mapper.Map<IEnumerable<BetDto>>(source: query.AsEnumerable());
 
             model.Criteria = criteria;
             model.Search(list);
@@ -92,7 +91,7 @@ namespace Arsenal.MvcWeb.Controllers
 
             map.ConstructUsing(s => new MatchDto
             {
-                MatchGuid = s.ID,
+                ID = s.ID,
                 TeamHomeName = s.Home.TeamDisplayName,
                 TeamHomeLogo = s.Home.TeamLogo,
                 TeamAwayName = s.Away.TeamDisplayName,
@@ -114,21 +113,18 @@ namespace Arsenal.MvcWeb.Controllers
         {
             var model = new DetailDto();
 
-            var list = new List<BetDto>();
-            //var dt = Arsenalcn.CasinoSys.Entity.Bet.GetMatchAllBetTable(id);
+            var query = repo.Query<BetView>(
+                x => x.CasinoItem.MatchGuid.Equals(id),
+                new Type[] { typeof(CasinoItem) })
+                .Many<BetView, BetDetail>((tOne, tMany) => tOne.ID.Equals(tMany.BetID));
 
-            //if (dt != null)
-            //{
-            //    foreach (DataRow dr in dt.Rows)
-            //    {
-            //        list.Add(new BetDto(dr));
-            //    }
-            //}
+            BetDto.CreateMap();
+
+            var list = Mapper.Map<IEnumerable<BetDto>>(source: query.AsEnumerable());
 
             model.Bets = list;
 
-            // id
-            model.Match = new MatchDto();
+            model.Match = MatchDto.Single(id);
 
             return View(model);
         }

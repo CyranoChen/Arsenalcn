@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Linq;
 
+using AutoMapper;
+
 using Arsenal.Service.Casino;
 using Arsenalcn.Core;
-using AutoMapper;
 
 namespace Arsenal.MvcWeb.Models.Casino
 {
@@ -11,44 +12,37 @@ namespace Arsenal.MvcWeb.Models.Casino
     {
         public MatchDto() { }
 
-        public MatchDto(object key)
-        {
-            this.MatchGuid = (Guid)key;
-            this.Init();
-        }
-
         public static void CreateMap()
         {
             var map = Mapper.CreateMap<MatchView, MatchDto>();
 
             map.ConstructUsing(s => new MatchDto
             {
-                MatchGuid = s.ID,
                 TeamHomeName = s.Home.TeamDisplayName,
                 TeamHomeLogo = s.Home.TeamLogo,
                 TeamAwayName = s.Away.TeamDisplayName,
                 TeamAwayLogo = s.Away.TeamLogo,
-                HomeRate = s.ListChoiceOption.Single(x => x.OptionName.Equals("home", StringComparison.OrdinalIgnoreCase)).OptionRate,
-                DrawRate = s.ListChoiceOption.Single(x => x.OptionName.Equals("draw", StringComparison.OrdinalIgnoreCase)).OptionRate,
-                AwayRate = s.ListChoiceOption.Single(x => x.OptionName.Equals("away", StringComparison.OrdinalIgnoreCase)).OptionRate,
+                HomeRate = s.ListChoiceOption.SingleOrDefault(x => x.OptionName.Equals("home", StringComparison.OrdinalIgnoreCase)).OptionRate,
+                DrawRate = s.ListChoiceOption.SingleOrDefault(x => x.OptionName.Equals("draw", StringComparison.OrdinalIgnoreCase)).OptionRate,
+                AwayRate = s.ListChoiceOption.SingleOrDefault(x => x.OptionName.Equals("away", StringComparison.OrdinalIgnoreCase)).OptionRate,
             });
         }
 
-        private void Init()
+        public static MatchDto Single(object key)
         {
             IRepository repo = new Repository();
 
-            var instance = repo.Single<MatchView>(this.MatchGuid);
+            var instance = repo.Single<MatchView>(key);
             instance.Many<ChoiceOption>(instance.CasinoItem.ID);
 
             CreateMap();
 
-            Mapper.Map<MatchView, MatchDto>(instance, this);
+            return Mapper.DynamicMap<MatchDto>(instance);
         }
 
         #region Members and Properties
 
-        public Guid MatchGuid { get; set; }
+        public Guid ID { get; set; }
 
         public string TeamHomeName { get; set; }
 
@@ -66,11 +60,11 @@ namespace Arsenal.MvcWeb.Models.Casino
 
         public DateTime PlayTime { get; set; }
 
-        public float HomeRate { get; set; }
+        public double HomeRate { get; set; }
 
-        public float DrawRate { get; set; }
+        public double DrawRate { get; set; }
 
-        public float AwayRate { get; set; }
+        public double AwayRate { get; set; }
 
         #endregion
     }

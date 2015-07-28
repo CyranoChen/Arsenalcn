@@ -62,7 +62,7 @@ namespace Arsenal.MvcWeb.Models.Casino
         [DataType(DataType.Currency)]
         [Range(10f, float.MaxValue)]
         [Display(Name = "投注金额")]
-        public float BetAmount { get; set; }
+        public double BetAmount { get; set; }
 
         [Required]
         public Guid MatchGuid { get; set; }

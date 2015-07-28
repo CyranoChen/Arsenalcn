@@ -127,6 +127,21 @@ namespace Arsenalcn.Core.Tests
             Assert.IsNotNull(query2);
         }
 
+        [TestMethod]
+        public void Query_Viewer_Many_Test()
+        {
+            IRepository repo = new Repository();
+
+            var whereBy = new Hashtable();
+
+            whereBy.Add("UserID", 443);
+
+            var query = repo.Query<BetView>(whereBy, new Type[] { typeof(CasinoItem), typeof(Team) })
+                .Many<BetView, BetDetail>((tOne, tMany) => tOne.ID.Equals(tMany.BetID));
+
+            Assert.IsNotNull(query);
+        }
+
         [TestMethod()]
         public void QueryByPager_Test()
         {

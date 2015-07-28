@@ -1,103 +1,135 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.Data;
+using System.Linq;
+
+using AutoMapper;
 
 using Arsenalcn.Core;
 using Arsenal.Service.Casino;
 
 namespace Arsenal.MvcWeb.Models.Casino
 {
-    public class BetDto : Viewer
+    public class BetDto
     {
-        public BetDto() : base() { }
+        public BetDto() { }
 
-        public BetDto(DataRow dr)
-            : base(dr)
-        { }
-
-        protected virtual void Init(DataRow dr)
+        public static void CreateMap()
         {
-            //if (dr.Table.Columns.Contains("Home") && dr.Table.Columns.Contains("Away"))
-            //{
-            //    TeamHome = Arsenal_Team.Cache.Load((Guid)dr["Home"]);
-            //    TeamAway = Arsenal_Team.Cache.Load((Guid)dr["Away"]);
-            //}
+            var map = Mapper.CreateMap<BetView, BetDto>();
 
-            //Item = CasinoItem.GetCasinoItem((Guid)dr["CasinoItemGuid"]);
-
-            // TODO: improve performance
-            InitBetIcon();
-            InitBetDetail();
-        }
-
-        private void InitBetIcon()
-        {
-            if (IsWin.HasValue)
+            map.ConstructUsing(s => new BetDto
             {
-                if (IsWin.Value)
+                ItemType = s.CasinoItem.ItemType
+            });
+
+            map.ForMember(d => d.TeamHomeName, opt => opt.MapFrom(s => s.Home.TeamDisplayName));
+            map.ForMember(d => d.TeamAwayName, opt => opt.MapFrom(s => s.Away.TeamDisplayName));
+
+            map.ForMember(d => d.BetResultHome, opt =>
+            {
+                opt.Condition(s => s.CasinoItem.ItemType.Equals(CasinoType.MatchResult));
+                opt.MapFrom(s => Convert.ToInt16(s.ListBetDetail.SingleOrDefault(x => x.DetailName.Equals("home", StringComparison.OrdinalIgnoreCase)).DetailValue));
+            });
+
+            map.ForMember(d => d.BetResultAway, opt =>
+            {
+                opt.Condition(s => s.CasinoItem.ItemType.Equals(CasinoType.MatchResult));
+                opt.MapFrom(s => Convert.ToInt16(s.ListBetDetail.SingleOrDefault(x => x.DetailName.Equals("away", StringComparison.OrdinalIgnoreCase)).DetailValue));
+            });
+
+            map.ForMember(d => d.BetResult, opt =>
+            {
+                opt.Condition(s => s.CasinoItem.ItemType.Equals(CasinoType.SingleChoice));
+                opt.MapFrom(s => Enum.Parse(typeof(BetResultType), s.ListBetDetail.FirstOrDefault().DetailName));
+            });
+
+            map.ForMember(d => d.BetIcon, opt => opt.ResolveUsing(s =>
+            {
+                BetIconType _icon = BetIconType.none;
+
+                if (s.IsWin.HasValue)
                 {
-                    if (ItemType.Equals(CasinoType.SingleChoice))
-                    { BetIcon = "star"; }
-                    else if (ItemType.Equals(CasinoType.MatchResult))
-                    { BetIcon = "check"; }
+                    if (s.IsWin.Value)
+                    {
+                        if (s.CasinoItem.ItemType.Equals(CasinoType.SingleChoice))
+                        { _icon = BetIconType.star; }
+                        else
+                        { _icon = BetIconType.check; }
+                    }
+                    else
+                    {
+                        _icon = BetIconType.delete;
+                    }
                 }
                 else
-                { BetIcon = "delete"; }
-            }
-            else
-            { BetIcon = "back"; }
+                {
+                    _icon = BetIconType.back;
+                }
+
+                return _icon;
+            }));
         }
 
-        private void InitBetDetail()
+        public static BetDto Single(object key)
         {
-            //DataTable dtBetDetail = Arsenalcn.CasinoSys.Entity.BetDetail.GetBetDetailByBetID(ID);
+            IRepository repo = new Repository();
 
-            //if (dtBetDetail != null)
-            //{
-            //    DataRow drBetDetail = dtBetDetail.Rows[0];
+            var instance = repo.Single<BetView>(key);
 
-            //    switch (ItemType)
-            //    {
-            //        case CasinoType.SingleChoice:
-            //            if (drBetDetail["DetailName"].ToString() == MatchChoiceOption.HomeWinValue)
-            //                BetDetailInfo = "主队胜";
-            //            else if (drBetDetail["DetailName"].ToString() == MatchChoiceOption.DrawValue)
-            //                BetDetailInfo = "双方平";
-            //            else if (drBetDetail["DetailName"].ToString() == MatchChoiceOption.AwayWinValue)
-            //                BetDetailInfo = "客队胜";
+            instance.Many<BetDetail>(instance.ID);
 
-            //            if (BetRate.HasValue && BetAmount.HasValue)
-            //            {
-            //                BetDetailInfo += string.Format("[{0}] {1}",
-            //                        BetRate.Value.ToString("f2"), BetAmount.Value.ToString("N0"));
-            //            }
-            //            break;
-            //        case CasinoItem.CasinoType.MatchResult:
-            //            MatchResultBetDetail bd = new MatchResultBetDetail(dtBetDetail);
-            //            BetDetailInfo = string.Format("{0}：{1}", bd.Home, bd.Away);
-            //            break;
-            //    }
-            //}
+            CreateMap();
+
+            return Mapper.DynamicMap<BetDto>(instance);
         }
+
+        #region Members and Properties
 
         public int ID { get; set; }
 
-        public string TeamHomeDisplayName { get; set; }
-
-        public string TeamAwayDisplayName { get; set; }
-
-        public string BetIcon { get; set; }
-
-        public CasinoType ItemType { get; set; }
+        public int UserID { get; set; }
 
         public string UserName { get; set; }
 
+        public CasinoType ItemType { get; set; }
+
+        public string TeamHomeName { get; set; }
+
+        public string TeamAwayName { get; set; }
+
+        public BetIconType BetIcon { get; set; }
+
         public DateTime BetTime { get; set; }
+
+        public double? BetAmount { get; set; }
+
+        public BetResultType BetResult { get; set; }
+
+        public double? BetRate { get; set; }
+
+        public string EarningDesc { get; set; }
 
         public bool? IsWin { get; set; }
 
-        public string BetDetail { get; set; }
+        public short? BetResultHome { get; set; }
 
-        public float BetRate { get; set; } 
+        public short? BetResultAway { get; set; }
+
+        #endregion
+    }
+
+    public enum BetResultType
+    {
+        Home,
+        Away,
+        Draw
+    }
+
+    public enum BetIconType
+    {
+        none,
+        star,
+        check,
+        delete,
+        back
     }
 }

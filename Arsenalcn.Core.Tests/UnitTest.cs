@@ -49,22 +49,9 @@ namespace Arsenalcn.Core.Tests
 
             instance.Many<ChoiceOption>(instance.CasinoItem.ID);
 
-            var map = Mapper.CreateMap<MatchView, MatchDto>();
+            MatchDto.CreateMap();
 
-            map.ConstructUsing(s => new MatchDto
-            {
-                MatchGuid = s.ID,
-                TeamHomeName = s.Home.TeamDisplayName,
-                TeamHomeLogo = s.Home.TeamLogo,
-                TeamAwayName = s.Away.TeamDisplayName,
-                TeamAwayLogo = s.Away.TeamLogo,
-                HomeRate = s.ListChoiceOption.Single(x => x.OptionName.Equals("home", StringComparison.OrdinalIgnoreCase)).OptionRate,
-                DrawRate = s.ListChoiceOption.Single(x => x.OptionName.Equals("draw", StringComparison.OrdinalIgnoreCase)).OptionRate,
-                AwayRate = s.ListChoiceOption.Single(x => x.OptionName.Equals("away", StringComparison.OrdinalIgnoreCase)).OptionRate,
-            });
-
-
-            match = Mapper.Map<MatchDto>(instance);
+            match = Mapper.DynamicMap<MatchDto>(instance);
 
             Assert.IsNotNull(match);
         }

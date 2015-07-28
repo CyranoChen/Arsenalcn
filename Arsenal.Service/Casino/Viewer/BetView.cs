@@ -28,7 +28,7 @@ namespace Arsenal.Service.Casino
         { get; set; }
 
         [DbColumn("b_Bet")]
-        public float? BetAmount
+        public double? BetAmount
         { get; set; }
 
         [DbColumn("b_BetTime")]
@@ -36,7 +36,7 @@ namespace Arsenal.Service.Casino
         { get; private set; }
 
         [DbColumn("b_BetRate")]
-        public float? BetRate
+        public double? BetRate
         { get; set; }
 
         [DbColumn("b_IsWin")]
@@ -44,7 +44,7 @@ namespace Arsenal.Service.Casino
         { get; set; }
 
         [DbColumn("b_Earning")]
-        public float? Earning
+        public double? Earning
         { get; set; }
 
         [DbColumn("b_EarningDesc")]

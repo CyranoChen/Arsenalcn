@@ -3,8 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Data;
 
 using Arsenalcn.Core;
-using Arsenalcn.CasinoSys.Entity;
-using ArsenalTeam = Arsenalcn.CasinoSys.Entity.Arsenal.Team;
+using Arsenal.Service.Casino;
 
 namespace Arsenal.MvcWeb.Models.Casino
 {
@@ -51,7 +50,7 @@ namespace Arsenal.MvcWeb.Models.Casino
 
         private void InitBetDetail()
         {
-            DataTable dtBetDetail = Arsenalcn.CasinoSys.Entity.BetDetail.GetBetDetailByBetID(ID);
+            //DataTable dtBetDetail = Arsenalcn.CasinoSys.Entity.BetDetail.GetBetDetailByBetID(ID);
 
             //if (dtBetDetail != null)
             //{

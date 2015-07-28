@@ -32,10 +32,10 @@ namespace Arsenal.Service.Casino
 
         [DbColumn("BetTime")]
         public DateTime BetTime
-        { get; private set; }
+        { get; set; }
 
         [DbColumn("BetRate")]
-        public float? BetRate
+        public double? BetRate
         { get; set; }
 
         [DbColumn("IsWin")]
@@ -43,7 +43,7 @@ namespace Arsenal.Service.Casino
         { get; set; }
 
         [DbColumn("Earning")]
-        public float? Earning
+        public double? Earning
         { get; set; }
 
         [DbColumn("EarningDesc")]

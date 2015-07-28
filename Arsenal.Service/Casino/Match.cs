@@ -43,7 +43,7 @@ namespace Arsenal.Service.Casino
         { get; set; }
 
         [DbColumn("Round")]
-        public int? Round
+        public short? Round
         { get; set; }
 
         [DbColumn("GroupGuid")]

@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Linq;
+using System.Collections.Generic;
 
 using Arsenal.Service.Casino;
-using Arsenalcn.Core;
 using AutoMapper;
+using System.Linq;
 
-namespace Arsenal.MvcWeb.Models.Casino
+namespace Arsenalcn.Core.Tests
 {
     public class MatchDto
     {
@@ -34,7 +34,7 @@ namespace Arsenal.MvcWeb.Models.Casino
             });
         }
 
-        private void Init()
+        public void Init()
         {
             IRepository repo = new Repository();
 
@@ -44,6 +44,30 @@ namespace Arsenal.MvcWeb.Models.Casino
             CreateMap();
 
             Mapper.Map<MatchView, MatchDto>(instance, this);
+        }
+
+        public static IEnumerable<MatchDto> All()
+        {
+            IRepository repo = new Repository();
+
+            var query = repo.All<MatchView>().FindAll(x => x.ResultHome.HasValue && x.ResultAway.HasValue)
+                .Many<MatchView, ChoiceOption>((tSource, t) => tSource.CasinoItem.ID.Equals(t.CasinoItemGuid));
+
+            var map = Mapper.CreateMap<MatchView, MatchDto>();
+
+            map.ConstructUsing(s => new MatchDto
+            {
+                MatchGuid = s.ID,
+                TeamHomeName = s.Home.TeamDisplayName,
+                TeamHomeLogo = s.Home.TeamLogo,
+                TeamAwayName = s.Away.TeamDisplayName,
+                TeamAwayLogo = s.Away.TeamLogo,
+                HomeRate = s.ListChoiceOption.Single(x => x.OptionName.Equals("home", StringComparison.OrdinalIgnoreCase)).OptionRate,
+                DrawRate = s.ListChoiceOption.Single(x => x.OptionName.Equals("draw", StringComparison.OrdinalIgnoreCase)).OptionRate,
+                AwayRate = s.ListChoiceOption.Single(x => x.OptionName.Equals("away", StringComparison.OrdinalIgnoreCase)).OptionRate,
+            });
+
+            return Mapper.Map<IEnumerable<MatchDto>>(source: query.AsEnumerable());
         }
 
         #region Members and Properties

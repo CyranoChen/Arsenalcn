@@ -9,6 +9,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 using System.Threading;
+using AutoMapper;
 
 using Microsoft.ApplicationBlocks.Data;
 
@@ -47,18 +48,20 @@ namespace Arsenalcn.Core
                     ThreadInstance = Thread.CurrentThread
                 });
 
-                if (ds.Tables[0].Rows.Count == 0) { return null; }
+                var dt = ds.Tables[0];
+
+                if (dt.Rows.Count == 0) { return null; }
 
                 var includeTypes = string.Empty;
                 if (include != null)
                 {
-                    ds.Tables[0].Columns.Add("@Include");
-                    ds.Tables[0].Rows[0]["@Include"] = string.Join("|", include.ToList());
+                    dt.Columns.Add("@Include");
+                    dt.Rows[0]["@Include"] = string.Join("|", include.ToList());
                 }
 
                 ConstructorInfo ci = typeof(T).GetConstructor(new Type[] { typeof(DataRow) });
 
-                return (T)ci.Invoke(new Object[] { ds.Tables[0].Rows[0] });
+                return (T)ci.Invoke(new Object[] { dt.Rows[0] });
             }
             catch (Exception ex)
             {
@@ -96,12 +99,14 @@ namespace Arsenalcn.Core
                     ThreadInstance = Thread.CurrentThread
                 });
 
-                if (ds.Tables[0].Rows.Count > 0)
+                var dt = ds.Tables[0];
+
+                if (dt.Rows.Count > 0)
                 {
                     var includeTypes = string.Empty;
                     if (include != null)
                     {
-                        ds.Tables[0].Columns.Add("@Include");
+                        dt.Columns.Add("@Include");
                         includeTypes = string.Join("|", include.ToList());
                     }
 
@@ -116,6 +121,8 @@ namespace Arsenalcn.Core
 
                         //list.Add((T)typeof(T).GetConstructor(new Type[] { }).Invoke(new object[] { }));
                     }
+
+                    //list = Mapper.DynamicMap<IDataReader, List<T>>(dt.CreateDataReader());
                 }
 
                 return list;

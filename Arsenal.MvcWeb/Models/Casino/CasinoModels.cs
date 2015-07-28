@@ -10,7 +10,7 @@ namespace Arsenal.MvcWeb.Models.Casino
     {
         public int CasinoValidDays { get; set; }
 
-        public IEnumerable<MatchWithRateDto> Matches { get; set; }
+        public IEnumerable<MatchDto> Matches { get; set; }
     }
 
     public class GameBetDto
@@ -21,7 +21,7 @@ namespace Arsenal.MvcWeb.Models.Casino
 
         public IEnumerable<object> Messages { get; set; }
 
-        public MatchWithRateDto Match { get; set; }
+        public MatchDto Match { get; set; }
     }
 
     public class MyBetDto : SearchModel<BetDto> { }
@@ -32,7 +32,7 @@ namespace Arsenal.MvcWeb.Models.Casino
     {
         public IEnumerable<BetDto> Bets { get; set; }
 
-        public MatchWithRateDto Match { get; set; }
+        public MatchDto Match { get; set; }
     }
 
     public class MatchResultDto
@@ -48,7 +48,7 @@ namespace Arsenal.MvcWeb.Models.Casino
         [Required]
         public Guid MatchGuid { get; set; }
 
-        public MatchWithRateDto Match { get; set; }
+        public MatchDto Match { get; set; }
     }
 
     public class SingleChoiceDto
@@ -67,6 +67,6 @@ namespace Arsenal.MvcWeb.Models.Casino
         [Required]
         public Guid MatchGuid { get; set; }
 
-        public MatchWithRateDto Match { get; set; }
+        public MatchDto Match { get; set; }
     }
 }

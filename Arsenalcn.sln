@@ -15,9 +15,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Arsenal", "Arsenal", "{EE6F
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A7778B83-AB25-42E8-B643-CBE5698BE929}"
 	ProjectSection(SolutionItems) = preProject
-		WE-Markdown.css = WE-Markdown.css
-		WE-Palette.css = WE-Palette.css
-		WebEssentials-Settings.json = WebEssentials-Settings.json
 		WebEssentials2015-Settings.json = WebEssentials2015-Settings.json
 	EndProjectSection
 EndProject

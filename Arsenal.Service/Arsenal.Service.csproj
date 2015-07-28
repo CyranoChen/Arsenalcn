@@ -39,6 +39,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Casino\Bet.cs" />
+    <Compile Include="Casino\BetDetail.cs" />
     <Compile Include="Casino\CasinoItem.cs" />
     <Compile Include="Casino\ChoiceOption.cs" />
     <Compile Include="Casino\Group.cs" />

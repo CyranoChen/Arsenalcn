@@ -60,7 +60,7 @@ namespace Arsenal.Service.Casino
         public Group Group
         { get; set; }
 
-        [DbColumn("@co", ForeignKey = "CasinoItemGuid")]
+        [DbColumn("@ChoiceOption", ForeignKey = "CasinoItemGuid")]
         public IEnumerable<ChoiceOption> ListChoiceOption
         { get; set; }
 

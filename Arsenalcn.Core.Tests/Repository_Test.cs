@@ -54,7 +54,7 @@ namespace Arsenalcn.Core.Tests
         {
             IRepository repo = new Repository();
 
-            var query = repo.All<MatchView>();
+            var query = repo.All<League>();
 
             Assert.IsNotNull(query);
         }

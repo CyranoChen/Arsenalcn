@@ -2,6 +2,7 @@
 using System.Data;
 
 using Arsenalcn.Core;
+using System.Collections.Generic;
 
 namespace Arsenal.Service.Casino
 {
@@ -14,7 +15,7 @@ namespace Arsenal.Service.Casino
 
         #region Members and Properties
 
-        [DbColumn("ID", IsKey=true)]
+        [DbColumn("ID", IsKey = true)]
         public int ID
         { get; set; }
 
@@ -69,6 +70,10 @@ namespace Arsenal.Service.Casino
 
         [DbColumn("l", Key = "l_LeagueGuid")]
         public League League
+        { get; set; }
+
+        [DbColumn("@BetDetail", ForeignKey = "BetID")]
+        public IEnumerable<BetDetail> ListBetDetail
         { get; set; }
 
         #endregion

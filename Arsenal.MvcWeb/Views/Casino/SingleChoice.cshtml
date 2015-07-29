@@ -17,9 +17,9 @@
 @section Header {
     <div data-role="header">
         <h1 style="overflow: visible">
-            <span>@Model.Match.TeamHome.TeamDisplayName</span>
+            <span>@Model.Match.TeamHomeName</span>
             <span> vs </span>
-            <span>@Model.Match.TeamAway.TeamDisplayName</span>
+            <span>@Model.Match.TeamAwayName</span>
         </h1>
     </div>
 }
@@ -33,11 +33,11 @@
     {
         <fieldset data-role="controlgroup" data-type="horizontal">
             <legend>投注选项</legend>
-            <label for="home">[主队胜] @Model.Match.WinRate.ToString("f2")</label>
+            <label for="home">[主队胜] @Model.Match.HomeRate.ToString("f2")</label>
             <input type="radio" name="SelectedOption" id="home" value="home">
             <label for="draw">[双方平] @Model.Match.DrawRate.ToString("f2")</label>
             <input type="radio" name="SelectedOption" id="draw" value="draw">
-            <label for="away">[客队胜] @Model.Match.LoseRate.ToString("f2")</label>
+            <label for="away">[客队胜] @Model.Match.AwayRate.ToString("f2")</label>
             <input type="radio" name="SelectedOption" id="away" value="away">
         </fieldset>
         @Html.LabelFor(m => m.BetAmount)

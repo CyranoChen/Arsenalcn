@@ -51,7 +51,6 @@ namespace Arsenal.MvcWeb.Controllers
             var model = new MyBetDto();
 
             var whereBy = new Hashtable();
-
             whereBy.Add("UserID", this.acnID);
 
             var query = repo.Query<BetView>(whereBy, new Type[] { typeof(CasinoItem), typeof(Team) })
@@ -113,9 +112,9 @@ namespace Arsenal.MvcWeb.Controllers
         {
             var model = new DetailDto();
 
-            var query = repo.Query<BetView>(
-                x => x.CasinoItem.MatchGuid.Equals(id),
-                new Type[] { typeof(CasinoItem) })
+            model.Match = MatchDto.Single(id);
+
+            var query = repo.Query<BetView>(x => x.CasinoItem.MatchGuid.Equals(id), new Type[] { typeof(CasinoItem) })
                 .Many<BetView, BetDetail>((tOne, tMany) => tOne.ID.Equals(tMany.BetID));
 
             BetDto.CreateMap();
@@ -123,8 +122,6 @@ namespace Arsenal.MvcWeb.Controllers
             var list = Mapper.Map<IEnumerable<BetDto>>(source: query.AsEnumerable());
 
             model.Bets = list;
-
-            model.Match = MatchDto.Single(id);
 
             return View(model);
         }
@@ -136,32 +133,42 @@ namespace Arsenal.MvcWeb.Controllers
         {
             var model = new GameBetDto();
 
-            // id
-            model.Match = new MatchDto();
+            model.Match = MatchDto.Single(id);
 
-            var bList = new List<BetDto>();
-            //var dtBet = Arsenalcn.CasinoSys.Entity.Bet.GetUserMatchAllBetTable(acnID, id);
+            // model.MyBets
+            var whereBy = new Hashtable();
+            whereBy.Add("UserID", this.acnID);
 
-            //if (dtBet != null)
-            //{
-            //    foreach (DataRow dr in dtBet.Rows)
-            //    {
-            //        bList.Add(new BetDto(dr));
-            //    }
-            //}
+            var betsQuery = repo.Query<BetView>(whereBy, new Type[] { typeof(CasinoItem) })
+                .FindAll(x => x.CasinoItem.MatchGuid.Equals(id))
+                .Many<BetView, BetDetail>((tOne, tMany) => tOne.ID.Equals(tMany.BetID));
+
+            BetDto.CreateMap();
+
+            var bList = Mapper.Map<IEnumerable<BetDto>>(source: betsQuery.AsEnumerable());
 
             model.MyBets = bList;
 
-            var mlist = new List<MatchDto>();
-            //var dtMatch = CasinoItem.GetHistoryViewByMatch(id);
+            // model.HistoryMatches
+            var match = repo.Single<Arsenal.Service.Casino.Match>(id);
 
-            //if (dtMatch != null)
-            //{
-            //    foreach (DataRow dr in dtMatch.Rows)
-            //    {
-            //        mlist.Add(new MatchDto(dr));
-            //    }
-            //}
+            var matchesQuery = repo.All<MatchView>(include: new Type[] { typeof(Team) })
+                .FindAll(x => x.ResultHome.HasValue && x.ResultAway.HasValue &&
+                (x.Home.ID.Equals(match.Home) && x.Away.ID.Equals(match.Away) ||
+                x.Home.ID.Equals(match.Away) && x.Away.ID.Equals(match.Home)));
+
+            var map = Mapper.CreateMap<MatchView, MatchDto>();
+
+            map.ConstructUsing(s => new MatchDto
+            {
+                ID = s.ID,
+                TeamHomeName = s.Home.TeamDisplayName,
+                TeamHomeLogo = s.Home.TeamLogo,
+                TeamAwayName = s.Away.TeamDisplayName,
+                TeamAwayLogo = s.Away.TeamLogo,
+            });
+
+            var mlist = Mapper.Map<IEnumerable<MatchDto>>(source: matchesQuery.AsEnumerable());
 
             model.HistoryMatches = mlist;
 
@@ -174,8 +181,8 @@ namespace Arsenal.MvcWeb.Controllers
         public ActionResult SingleChoice(Guid id)
         {
             var model = new SingleChoiceDto();
-            // id
-            model.Match = new MatchDto();
+
+            model.Match = MatchDto.Single(id);
             model.MatchGuid = id;
 
             return View(model);
@@ -240,8 +247,8 @@ namespace Arsenal.MvcWeb.Controllers
             }
             else
             {
-                // id
-                model.Match = new MatchDto();
+                model.Match = MatchDto.Single(model.MatchGuid);
+                //model.MatchGuid = model.MatchGuid;
 
                 return View(model);
             }
@@ -254,8 +261,7 @@ namespace Arsenal.MvcWeb.Controllers
         {
             var model = new MatchResultDto();
 
-            // id
-            model.Match = new MatchDto();
+            model.Match = MatchDto.Single(id);
             model.MatchGuid = id;
 
             return View(model);
@@ -310,8 +316,8 @@ namespace Arsenal.MvcWeb.Controllers
                 ModelState.AddModelError("Warn", "请正确填写比赛结果比分");
             }
 
-            // id
-            model.Match = new MatchDto();
+            model.Match = MatchDto.Single(model.MatchGuid);
+            //model.MatchGuid = model.MatchGuid;
 
             return View(model);
         }

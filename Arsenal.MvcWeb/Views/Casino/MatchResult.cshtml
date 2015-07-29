@@ -2,6 +2,7 @@
 @{
     ViewBag.Title = "猜比分";
 }
+
 @section Scripts {
     <style type="text/css">
         .match-versus {
@@ -32,9 +33,9 @@
 @section Header {
     <div data-role="header">
         <h1 style="overflow: visible">
-            <span>@Model.Match.TeamHome.TeamDisplayName</span>
+            <span>@Model.Match.TeamHomeName</span>
             <span> vs </span>
-            <span>@Model.Match.TeamAway.TeamDisplayName</span>
+            <span>@Model.Match.TeamAwayName</span>
         </h1>
     </div>
 }
@@ -49,8 +50,8 @@
         <fieldset data-role="controlgroup">
             <div class="ui-grid-b">
                 <div class="ui-block-a" style="text-align: center">
-                    <img src="http://bbs.arsenalcn.com/plugin/acncasino/@Model.Match.TeamHome.TeamLogo" />
-                    <h2>@Model.Match.TeamHome.TeamDisplayName</h2>
+                    <img src="http://bbs.arsenalcn.com/plugin/acncasino/@Model.Match.TeamHomeLogo" />
+                    <h2>@Model.Match.TeamHomeName</h2>
                 </div>
                 <div class="ui-block-b match-versus">
                     <p>@Model.Match.LeagueName</p>
@@ -62,8 +63,8 @@
                     <p>@Model.Match.PlayTime.ToString("yyyy-MM-dd HH:mm")</p>
                 </div>
                 <div class="ui-block-c" style="text-align: center">
-                    <img src="http://bbs.arsenalcn.com/plugin/acncasino/@Model.Match.TeamAway.TeamLogo" />
-                    <h2>@Model.Match.TeamAway.TeamDisplayName</h2>
+                    <img src="http://bbs.arsenalcn.com/plugin/acncasino/@Model.Match.TeamAwayLogo" />
+                    <h2>@Model.Match.TeamAwayName</h2>
                 </div>
             </div>
         </fieldset>

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Diagnostics.Contracts;
@@ -7,10 +9,7 @@ using System.Reflection;
 using System.Threading;
 using System.Web;
 
-using AutoMapper;
 using Arsenalcn.Core.Logger;
-using System.Collections.Generic;
-using System.Collections;
 
 namespace Arsenalcn.Core
 {

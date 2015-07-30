@@ -16,7 +16,7 @@ namespace Arsenalcn.Core.Tests
         {
             IRepository repo = new Repository();
 
-            var key = new Guid("12236a72-f35b-4a0f-90e6-67b11c3364bc");
+            var key = new Guid("6510818c-d824-4a91-99d0-001ad099d4fa");
 
             var instance = repo.Single<Arsenal.Service.Casino.Match>(key);
 
@@ -54,7 +54,7 @@ namespace Arsenalcn.Core.Tests
         {
             IRepository repo = new Repository();
 
-            var query = repo.All<League>();
+            var query = repo.All<ChoiceOption>();
 
             Assert.IsNotNull(query);
         }
@@ -136,7 +136,7 @@ namespace Arsenalcn.Core.Tests
 
             whereBy.Add("UserID", 443);
 
-            var query = repo.Query<BetView>(whereBy, new Type[] { typeof(CasinoItem), typeof(Team) })
+            var query = repo.Query<BetView>(whereBy)
                 .Many<BetView, BetDetail>((tOne, tMany) => tOne.ID.Equals(tMany.BetID));
 
             Assert.IsNotNull(query);

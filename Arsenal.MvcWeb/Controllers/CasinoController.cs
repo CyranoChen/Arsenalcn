@@ -29,8 +29,8 @@ namespace Arsenal.MvcWeb.Controllers
             var model = new IndexDto();
 
             var query = repo.Query<MatchView>(
-                predicate: x => !x.ResultHome.HasValue && !x.ResultAway.HasValue && x.PlayTime > DateTime.Now,
-                include: new Type[] { typeof(Team), typeof(CasinoItem) }).OrderBy(x => x.PlayTime)
+                predicate: x => !x.ResultHome.HasValue && !x.ResultAway.HasValue && x.PlayTime > DateTime.Now)
+                .OrderBy(x => x.PlayTime)
                 .Many<MatchView, ChoiceOption>((tOne, tMany) => tOne.CasinoItem.ID.Equals(tMany.CasinoItemGuid));
 
             MatchDto.CreateMap();
@@ -53,7 +53,7 @@ namespace Arsenal.MvcWeb.Controllers
             var whereBy = new Hashtable();
             whereBy.Add("UserID", this.acnID);
 
-            var query = repo.Query<BetView>(whereBy, new Type[] { typeof(CasinoItem), typeof(Team) })
+            var query = repo.Query<BetView>(whereBy)
                 .Many<BetView, BetDetail>((tOne, tMany) => tOne.ID.Equals(tMany.BetID));
 
             BetDto.CreateMap();
@@ -83,7 +83,7 @@ namespace Arsenal.MvcWeb.Controllers
         {
             var model = new ResultDto();
 
-            var query = repo.All<MatchView>(include: new Type[] { typeof(Team) })
+            var query = repo.All<MatchView>()
                 .FindAll(x => x.ResultHome.HasValue && x.ResultAway.HasValue);
 
             var map = Mapper.CreateMap<MatchView, MatchDto>();
@@ -114,7 +114,7 @@ namespace Arsenal.MvcWeb.Controllers
 
             model.Match = MatchDto.Single(id);
 
-            var query = repo.Query<BetView>(x => x.CasinoItem.MatchGuid.Equals(id), new Type[] { typeof(CasinoItem) })
+            var query = repo.Query<BetView>(x => x.CasinoItem.MatchGuid.Equals(id))
                 .Many<BetView, BetDetail>((tOne, tMany) => tOne.ID.Equals(tMany.BetID));
 
             BetDto.CreateMap();
@@ -139,7 +139,7 @@ namespace Arsenal.MvcWeb.Controllers
             var whereBy = new Hashtable();
             whereBy.Add("UserID", this.acnID);
 
-            var betsQuery = repo.Query<BetView>(whereBy, new Type[] { typeof(CasinoItem) })
+            var betsQuery = repo.Query<BetView>(whereBy)
                 .FindAll(x => x.CasinoItem.MatchGuid.Equals(id))
                 .Many<BetView, BetDetail>((tOne, tMany) => tOne.ID.Equals(tMany.BetID));
 
@@ -152,7 +152,7 @@ namespace Arsenal.MvcWeb.Controllers
             // model.HistoryMatches
             var match = repo.Single<Arsenal.Service.Casino.Match>(id);
 
-            var matchesQuery = repo.All<MatchView>(include: new Type[] { typeof(Team) })
+            var matchesQuery = repo.All<MatchView>()
                 .FindAll(x => x.ResultHome.HasValue && x.ResultAway.HasValue &&
                 (x.Home.ID.Equals(match.Home) && x.Away.ID.Equals(match.Away) ||
                 x.Home.ID.Equals(match.Away) && x.Away.ID.Equals(match.Home)));

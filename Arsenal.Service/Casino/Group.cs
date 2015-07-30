@@ -10,7 +10,12 @@ namespace Arsenal.Service.Casino
     {
         public Group() : base() { }
 
-        public Group(DataRow dr) : base(dr) { }
+        public static void CreateMap()
+        {
+            var map = AutoMapper.Mapper.CreateMap<IDataReader, Group>();
+
+            map.ForMember(d => d.ID, opt => opt.MapFrom(s => (Guid)s.GetValue("GroupGuid")));
+        }
 
         #region Members and Properties
 

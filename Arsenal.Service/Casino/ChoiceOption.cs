@@ -10,7 +10,16 @@ namespace Arsenal.Service.Casino
     {
         public ChoiceOption() : base() { }
 
-        public ChoiceOption(DataRow dr) : base(dr) { }
+        public static void CreateMap()
+        {
+            var map = AutoMapper.Mapper.CreateMap<IDataReader, ChoiceOption>();
+
+            map.ForMember(d => d.OptionName,
+                opt => opt.MapFrom(s => s.GetValue("OptionValue")));
+
+            map.ForMember(d => d.OptionOrder,
+                opt => opt.MapFrom(s => s.GetValue("OrderID")));
+        }
 
         #region Members and Properties
 

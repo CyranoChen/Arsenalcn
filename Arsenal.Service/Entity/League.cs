@@ -12,14 +12,18 @@ namespace Arsenal.Service
     {
         public League() : base() { }
 
-        public League(DataRow dr)
-            : base(dr)
+        public static void CreateMap()
         {
-            // Generate League Count Info
-            TeamCountInfo = RelationLeagueTeam.Cache.RelationLeagueTeamList.Count(x => x.LeagueGuid.Equals(this.ID));
+            var map = AutoMapper.Mapper.CreateMap<IDataReader, League>();
 
-            // Generate League Name Info
-            LeagueNameInfo = LeagueName + LeagueSeason;
+            map.ForMember(d => d.ID, opt => opt.MapFrom(s => (Guid)s.GetValue("LeagueGuid")));
+
+            map.ForMember(d => d.LeagueNameInfo, opt => opt.MapFrom(s =>
+                string.Format("{0}{1}", s.GetValue("LeagueName").ToString(), s.GetValue("LeagueSeason").ToString())));
+
+            map.ForMember(d => d.TeamCountInfo, opt => opt.MapFrom(s =>
+                RelationLeagueTeam.Cache.RelationLeagueTeamList.Count(x =>
+                x.LeagueGuid.Equals((Guid)s.GetValue("LeagueGuid")))));
         }
 
         public static class Cache

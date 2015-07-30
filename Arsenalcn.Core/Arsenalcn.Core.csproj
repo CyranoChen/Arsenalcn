@@ -62,6 +62,7 @@
     <Compile Include="Entity\Pager.cs" />
     <Compile Include="Entity\SearchModel.cs" />
     <Compile Include="Entity\Viewer.cs" />
+    <Compile Include="Extension\AutoMapperHelper.cs" />
     <Compile Include="Extension\CollectionExtensions.cs" />
     <Compile Include="Logger\AppLog.cs" />
     <Compile Include="Logger\DaoLog.cs" />

@@ -9,15 +9,15 @@ namespace Arsenalcn.Core
 {
     public interface IRepository
     {
-        T Single<T>(object key, Type[] include = null) where T : class, IViewer, new();
+        T Single<T>(object key) where T : class, IViewer, new();
 
-        List<T> All<T>(Type[] include = null) where T : class, IViewer, new();
-        List<T> All<T>(Pager pager, Hashtable htOrder = null, Type[] include = null) where T : class, IViewer, new();
+        List<T> All<T>() where T : class, IViewer, new();
+        List<T> All<T>(Pager pager, Hashtable htOrder = null) where T : class, IViewer, new();
 
-        List<T> Query<T>(Hashtable htWhere, Type[] include = null) where T : class, IViewer, new();
-        List<T> Query<T>(Pager pager, Hashtable htWhere, Hashtable htOrder = null, Type[] include = null) where T : class, IViewer, new();
+        List<T> Query<T>(Hashtable htWhere) where T : class, IViewer, new();
+        List<T> Query<T>(Pager pager, Hashtable htWhere, Hashtable htOrder = null) where T : class, IViewer, new();
 
-        IQueryable<T> Query<T>(Expression<Func<T, bool>> predicate, Type[] include = null) where T : class, IViewer, new();
+        IQueryable<T> Query<T>(Expression<Func<T, bool>> predicate) where T : class, IViewer, new();
 
         void Insert<T>(T instance, SqlTransaction trans = null) where T : class, IEntity;
         void Insert<T>(T instance, out object key, SqlTransaction trans = null) where T : class, IEntity;

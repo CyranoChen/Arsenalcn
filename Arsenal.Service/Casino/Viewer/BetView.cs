@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 
 using Arsenalcn.Core;
-using System.Collections.Generic;
 
 namespace Arsenal.Service.Casino
 {
@@ -10,6 +10,23 @@ namespace Arsenal.Service.Casino
     public class BetView : Viewer
     {
         public BetView() : base() { }
+
+        public static void CreateMap()
+        {
+            var map = AutoMapper.Mapper.CreateMap<IDataReader, BetView>();
+
+            map.ConstructUsing(s => new BetView()
+            {
+                ID = (int)s.GetValue("ID"),
+                UserID = (int)s.GetValue("b_UserID"),
+                CasinoItem = new CasinoItem()
+                {
+                    ItemType = (CasinoType)s.GetValue("c_ItemType")
+
+                }
+            });
+        }
+
 
         public BetView(DataRow dr) : base(dr) { }
 
@@ -77,6 +94,5 @@ namespace Arsenal.Service.Casino
         { get; set; }
 
         #endregion
-
     }
 }

@@ -11,7 +11,15 @@ namespace Arsenal.Service.Casino
     {
         public MatchView() : base() { }
 
-        public MatchView(DataRow dr) : base(dr) { }
+        public static void CreateMap()
+        {
+            var map = AutoMapper.Mapper.CreateMap<IDataReader, MatchView>();
+
+            map.ForMember(d => d.ResultHome, opt => opt.MapFrom(s => s.GetValue("m_ResultHome")));
+            map.ForMember(d => d.ResultAway, opt => opt.MapFrom(s => s.GetValue("m_ResultAway")));
+            map.ForMember(d => d.PlayTime, opt => opt.MapFrom(s => s.GetValue("m_PlayTime")));
+            map.ForMember(d => d.CasinoItem, opt => opt.MapFrom(s => AutoMapper.Mapper.DynamicMap<CasinoItem>(s)));
+        }
 
         #region Members and Properties
 

@@ -9,7 +9,6 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 using System.Threading;
-using AutoMapper;
 
 using Microsoft.ApplicationBlocks.Data;
 
@@ -28,7 +27,7 @@ namespace Arsenalcn.Core
             log = new DaoLog();
         }
 
-        public T Single<T>(object key, Type[] include = null) where T : class, IViewer, new()
+        public T Single<T>(object key) where T : class, IViewer, new()
         {
             try
             {
@@ -52,16 +51,21 @@ namespace Arsenalcn.Core
 
                 if (dt.Rows.Count == 0) { return null; }
 
-                var includeTypes = string.Empty;
-                if (include != null)
+                //var includeTypes = string.Empty;
+                //if (include != null)
+                //{
+                //    dt.Columns.Add("@Include");
+                //    dt.Rows[0]["@Include"] = string.Join("|", include.ToList());
+                //}
+
+                //ConstructorInfo ci = typeof(T).GetConstructor(new Type[] { typeof(DataRow) });
+
+                //return (T)ci.Invoke(new Object[] { dt.Rows[0] });
+
+                using (var reader = dt.CreateDataReader())
                 {
-                    dt.Columns.Add("@Include");
-                    dt.Rows[0]["@Include"] = string.Join("|", include.ToList());
+                    return reader.DataReaderMapTo<T>().FirstOrDefault();
                 }
-
-                ConstructorInfo ci = typeof(T).GetConstructor(new Type[] { typeof(DataRow) });
-
-                return (T)ci.Invoke(new Object[] { dt.Rows[0] });
             }
             catch (Exception ex)
             {
@@ -75,7 +79,7 @@ namespace Arsenalcn.Core
             }
         }
 
-        public List<T> All<T>(Type[] include = null) where T : class, IViewer, new()
+        public List<T> All<T>() where T : class, IViewer, new()
         {
             try
             {
@@ -103,26 +107,27 @@ namespace Arsenalcn.Core
 
                 if (dt.Rows.Count > 0)
                 {
-                    var includeTypes = string.Empty;
-                    if (include != null)
+                    //var includeTypes = string.Empty;
+                    //if (include != null)
+                    //{
+                    //    dt.Columns.Add("@Include");
+                    //    includeTypes = string.Join("|", include.ToList());
+                    //}
+
+                    //foreach (DataRow dr in ds.Tables[0].Rows)
+                    //{
+                    //    ConstructorInfo ci = typeof(T).GetConstructor(new Type[] { typeof(DataRow) });
+
+                    //    if (include != null && !string.IsNullOrEmpty(includeTypes))
+                    //    { dr["@Include"] = includeTypes; }
+
+                    //    list.Add((T)ci.Invoke(new Object[] { dr }));
+                    //}
+
+                    using (var reader = dt.CreateDataReader())
                     {
-                        dt.Columns.Add("@Include");
-                        includeTypes = string.Join("|", include.ToList());
+                        list = reader.DataReaderMapTo<T>().ToList();
                     }
-
-                    foreach (DataRow dr in ds.Tables[0].Rows)
-                    {
-                        ConstructorInfo ci = typeof(T).GetConstructor(new Type[] { typeof(DataRow) });
-
-                        if (include != null && !string.IsNullOrEmpty(includeTypes))
-                        { dr["@Include"] = includeTypes; }
-
-                        list.Add((T)ci.Invoke(new Object[] { dr }));
-
-                        //list.Add((T)typeof(T).GetConstructor(new Type[] { }).Invoke(new object[] { }));
-                    }
-
-                    //list = Mapper.DynamicMap<IDataReader, List<T>>(dt.CreateDataReader());
                 }
 
                 return list;
@@ -139,7 +144,7 @@ namespace Arsenalcn.Core
             }
         }
 
-        public List<T> All<T>(Pager pager, Hashtable htOrder = null, Type[] include = null) where T : class, IViewer, new()
+        public List<T> All<T>(Pager pager, Hashtable htOrder = null) where T : class, IViewer, new()
         {
             try
             {
@@ -188,23 +193,30 @@ namespace Arsenalcn.Core
                     ThreadInstance = Thread.CurrentThread
                 });
 
-                if (ds.Tables[0].Rows.Count > 0)
+                var dt = ds.Tables[0];
+
+                if (dt.Rows.Count > 0)
                 {
-                    var includeTypes = string.Empty;
-                    if (include != null)
+                    //var includeTypes = string.Empty;
+                    //if (include != null)
+                    //{
+                    //    ds.Tables[0].Columns.Add("@Include");
+                    //    includeTypes = string.Join("|", include.ToList());
+                    //}
+
+                    //foreach (DataRow dr in ds.Tables[0].Rows)
+                    //{
+                    //    ConstructorInfo ci = typeof(T).GetConstructor(new Type[] { typeof(DataRow) });
+
+                    //    if (include != null && !string.IsNullOrEmpty(includeTypes))
+                    //    { dr["@Include"] = includeTypes; }
+
+                    //    list.Add((T)ci.Invoke(new Object[] { dr }));
+                    //}
+
+                    using (var reader = dt.CreateDataReader())
                     {
-                        ds.Tables[0].Columns.Add("@Include");
-                        includeTypes = string.Join("|", include.ToList());
-                    }
-
-                    foreach (DataRow dr in ds.Tables[0].Rows)
-                    {
-                        ConstructorInfo ci = typeof(T).GetConstructor(new Type[] { typeof(DataRow) });
-
-                        if (include != null && !string.IsNullOrEmpty(includeTypes))
-                        { dr["@Include"] = includeTypes; }
-
-                        list.Add((T)ci.Invoke(new Object[] { dr }));
+                        list = reader.DataReaderMapTo<T>().ToList();
                     }
                 }
 
@@ -222,7 +234,7 @@ namespace Arsenalcn.Core
             }
         }
 
-        public List<T> Query<T>(Hashtable htWhere, Type[] include = null) where T : class, IViewer, new()
+        public List<T> Query<T>(Hashtable htWhere) where T : class, IViewer, new()
         {
             try
             {
@@ -276,23 +288,30 @@ namespace Arsenalcn.Core
                         ThreadInstance = Thread.CurrentThread
                     });
 
-                    if (ds.Tables[0].Rows.Count > 0)
+                    var dt = ds.Tables[0];
+
+                    if (dt.Rows.Count > 0)
                     {
-                        var includeTypes = string.Empty;
-                        if (include != null)
+                        //var includeTypes = string.Empty;
+                        //if (include != null)
+                        //{
+                        //    ds.Tables[0].Columns.Add("@Include");
+                        //    includeTypes = string.Join("|", include.ToList());
+                        //}
+
+                        //foreach (DataRow dr in ds.Tables[0].Rows)
+                        //{
+                        //    ConstructorInfo ci = typeof(T).GetConstructor(new Type[] { typeof(DataRow) });
+
+                        //    if (include != null && !string.IsNullOrEmpty(includeTypes))
+                        //    { dr["@Include"] = includeTypes; }
+
+                        //    list.Add((T)ci.Invoke(new Object[] { dr }));
+                        //}
+
+                        using (var reader = dt.CreateDataReader())
                         {
-                            ds.Tables[0].Columns.Add("@Include");
-                            includeTypes = string.Join("|", include.ToList());
-                        }
-
-                        foreach (DataRow dr in ds.Tables[0].Rows)
-                        {
-                            ConstructorInfo ci = typeof(T).GetConstructor(new Type[] { typeof(DataRow) });
-
-                            if (include != null && !string.IsNullOrEmpty(includeTypes))
-                            { dr["@Include"] = includeTypes; }
-
-                            list.Add((T)ci.Invoke(new Object[] { dr }));
+                            list = reader.DataReaderMapTo<T>().ToList();
                         }
                     }
                 }
@@ -311,7 +330,7 @@ namespace Arsenalcn.Core
             }
         }
 
-        public List<T> Query<T>(Pager pager, Hashtable htWhere, Hashtable htOrder = null, Type[] include = null) where T : class, IViewer, new()
+        public List<T> Query<T>(Pager pager, Hashtable htWhere, Hashtable htOrder = null) where T : class, IViewer, new()
         {
             try
             {
@@ -393,23 +412,30 @@ namespace Arsenalcn.Core
                         ThreadInstance = Thread.CurrentThread
                     });
 
+                    var dt = ds.Tables[0];
+
                     if (ds.Tables[0].Rows.Count > 0)
                     {
-                        var includeTypes = string.Empty;
-                        if (include != null)
+                        //var includeTypes = string.Empty;
+                        //if (include != null)
+                        //{
+                        //    ds.Tables[0].Columns.Add("@Include");
+                        //    includeTypes = string.Join("|", include.ToList());
+                        //}
+
+                        //foreach (DataRow dr in ds.Tables[0].Rows)
+                        //{
+                        //    ConstructorInfo ci = typeof(T).GetConstructor(new Type[] { typeof(DataRow) });
+
+                        //    if (include != null && !string.IsNullOrEmpty(includeTypes))
+                        //    { dr["@Include"] = includeTypes; }
+
+                        //    list.Add((T)ci.Invoke(new Object[] { dr }));
+                        //}
+
+                        using (var reader = dt.CreateDataReader())
                         {
-                            ds.Tables[0].Columns.Add("@Include");
-                            includeTypes = string.Join("|", include.ToList());
-                        }
-
-                        foreach (DataRow dr in ds.Tables[0].Rows)
-                        {
-                            ConstructorInfo ci = typeof(T).GetConstructor(new Type[] { typeof(DataRow) });
-
-                            if (include != null && !string.IsNullOrEmpty(includeTypes))
-                            { dr["@Include"] = includeTypes; }
-
-                            list.Add((T)ci.Invoke(new Object[] { dr }));
+                            list = reader.DataReaderMapTo<T>().ToList();
                         }
                     }
                 }
@@ -428,11 +454,11 @@ namespace Arsenalcn.Core
             }
         }
 
-        public IQueryable<T> Query<T>(Expression<Func<T, bool>> predicate, Type[] include = null) where T : class, IViewer, new()
+        public IQueryable<T> Query<T>(Expression<Func<T, bool>> predicate) where T : class, IViewer, new()
         {
             Contract.Requires(predicate != null);
 
-            return All<T>(include).AsQueryable().Where(predicate);
+            return All<T>().AsQueryable().Where(predicate);
         }
 
         public void Insert<T>(T instance, SqlTransaction trans = null) where T : class, IEntity

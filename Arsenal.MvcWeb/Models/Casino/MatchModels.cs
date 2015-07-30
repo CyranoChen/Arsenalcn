@@ -37,7 +37,7 @@ namespace Arsenal.MvcWeb.Models.Casino
 
             CreateMap();
 
-            return Mapper.DynamicMap<MatchDto>(instance);
+            return Mapper.Map<MatchDto>(instance);
         }
 
         #region Members and Properties

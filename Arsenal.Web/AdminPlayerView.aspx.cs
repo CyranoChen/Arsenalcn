@@ -58,7 +58,7 @@ namespace Arsenal.Web
                 else
                     tbPrintingName.Text = string.Empty;
 
-                ddlPosition.SelectedValue = p.Position.HasValue ? p.Position.ToString() : string.Empty;
+                ddlPosition.SelectedValue = !p.Position.Equals(PlayerPostionType.None) ? p.Position.ToString() : string.Empty;
                 tbSquadNumber.Text = p.SquadNumber.ToString();
                 tbFaceURL.Text = p.FaceURL;
                 tbPhotoURL.Text = p.PhotoURL;
@@ -137,7 +137,7 @@ namespace Arsenal.Web
                 }
                 else
                 {
-                    p.Position = null;
+                    p.Position = PlayerPostionType.None;
                 }
 
                 p.SquadNumber = Convert.ToInt16(tbSquadNumber.Text.Trim());

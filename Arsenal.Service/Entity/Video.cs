@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 
 using Arsenalcn.Core;
 
@@ -12,16 +11,15 @@ namespace Arsenal.Service
     {
         public Video() : base() { }
 
-        public Video(DataRow dr)
-            : base(dr)
+        public static void CreateMap()
         {
-            // Generate Video File Path
-            VideoFilePath = string.Format("{0}{1}.{2}",
-                ConfigGlobal.ArsenalVideoUrl, this.ID.ToString(), VideoType.ToString()).ToLower();
+            var map = AutoMapper.Mapper.CreateMap<IDataReader, Video>();
 
-            // TEMP: Fix the video width & height equal 0
-            VideoWidth = VideoWidth > 0 ? VideoWidth : 480;
-            VideoHeight = VideoHeight > 0 ? VideoHeight : 270;
+            map.ForMember(d => d.ID, opt => opt.MapFrom(s => (Guid)s.GetValue("VideoGuid")));
+
+            map.ForMember(d => d.VideoFilePath, opt => opt.MapFrom(s =>
+                string.Format("{0}{1}.{2}", ConfigGlobal.ArsenalVideoUrl,
+                s.GetValue("VideoGuid").ToString(), s.GetValue("VideoType").ToString().ToLower())));
         }
 
         public static class Cache

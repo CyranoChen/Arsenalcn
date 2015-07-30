@@ -10,7 +10,12 @@ namespace Arsenal.Service
     {
         public User() : base() { }
 
-        public User(DataRow dr) : base(dr) { }
+        public static void CreateMap()
+        {
+            var map = AutoMapper.Mapper.CreateMap<IDataReader, User>();
+
+            map.ForMember(d => d.ID, opt => opt.MapFrom(s => (Guid)s.GetValue("UserGuid")));
+        }
 
         #region Members and Properties
 

@@ -10,7 +10,12 @@ namespace Arsenal.Service.Casino
     {
         public Match() : base() { }
 
-        public Match(DataRow dr) : base(dr) { }
+        public static void CreateMap()
+        {
+            var map = AutoMapper.Mapper.CreateMap<IDataReader, Match>();
+
+            map.ForMember(d => d.ID, opt => opt.MapFrom(s => (Guid)s.GetValue("MatchGuid")));
+        }
 
         #region Members and Properties
 

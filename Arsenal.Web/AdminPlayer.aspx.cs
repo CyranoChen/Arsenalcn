@@ -71,7 +71,7 @@ namespace Arsenal.Web
                     {
                         tmpString = ViewState["Position"].ToString();
                         if (!string.IsNullOrEmpty(tmpString))
-                            returnValue = returnValue && x.Position.HasValue && x.Position.Value.ToString().Equals(tmpString, StringComparison.OrdinalIgnoreCase);
+                            returnValue = returnValue && x.Position.ToString().Equals(tmpString, StringComparison.OrdinalIgnoreCase);
                     }
 
                     if (ViewState["IsLegend"] != null)

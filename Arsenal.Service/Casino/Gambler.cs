@@ -10,8 +10,6 @@ namespace Arsenal.Service.Casino
     {
         public Gambler() : base() { }
 
-        public Gambler(DataRow dr) : base(dr) { }
-
         #region Members and Properties
 
         [DbColumn("UserID")]

@@ -66,8 +66,6 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="Entities\League.cs" />
-    <Compile Include="Entities\MatchModel.cs" />
     <Compile Include="Logger_Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository_Test.cs" />
@@ -75,6 +73,10 @@
     <Compile Include="UnitTest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Arsenal.MvcWeb\Arsenal.MvcWeb.csproj">
+      <Project>{dbfabb35-a675-4a03-93fc-12fbade3e916}</Project>
+      <Name>Arsenal.MvcWeb</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Arsenal.Service\Arsenal.Service.csproj">
       <Project>{852e458a-6cbd-42d1-ba22-8f6eda353aa7}</Project>
       <Name>Arsenal.Service</Name>

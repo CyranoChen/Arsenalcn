@@ -12,24 +12,30 @@ namespace Arsenal.Service
     {
         public Match() : base() { }
 
-        public Match(DataRow dr)
-            : base(dr)
+        public static void CreateMap()
         {
-            #region Generate Match ResultInfo
+            var map = AutoMapper.Mapper.CreateMap<IDataReader, Match>();
 
-            if (ResultHome.HasValue && ResultAway.HasValue)
+            map.ForMember(d => d.ID, opt => opt.MapFrom(s => (Guid)s.GetValue("MatchGuid")));
+
+            map.ForMember(d => d.ResultInfo, opt => opt.ResolveUsing(s =>
             {
-                var _strResult = "{0} : {1}";
+                short? resultHome = (short?)s.GetValue("ResultHome");
+                short? resultAway = (short?)s.GetValue("ResultAway");
+                bool IsHome = (bool)s.GetValue("IsHome");
 
-                if (IsHome)
-                    ResultInfo = string.Format(_strResult, ResultHome.Value.ToString(), ResultAway.Value.ToString());
+                if (resultHome.HasValue && resultAway.HasValue)
+                {
+                    var _strResult = "{0} : {1}";
+
+                    if (IsHome)
+                        return string.Format(_strResult, resultHome.Value.ToString(), resultAway.Value.ToString());
+                    else
+                        return string.Format(_strResult, resultAway.Value.ToString(), resultHome.Value.ToString());
+                }
                 else
-                    ResultInfo = string.Format(_strResult, ResultAway.Value.ToString(), ResultHome.Value.ToString());
-            }
-            else
-            { ResultInfo = string.Empty; }
-
-            #endregion
+                { return string.Empty; }
+            }));
         }
 
         public static class Cache
@@ -74,11 +80,11 @@ namespace Arsenal.Service
         { get; set; }
 
         [DbColumn("ResultHome")]
-        public int? ResultHome
+        public short? ResultHome
         { get; set; }
 
         [DbColumn("ResultAway")]
-        public int? ResultAway
+        public short? ResultAway
         { get; set; }
 
         public string ResultInfo
@@ -97,7 +103,7 @@ namespace Arsenal.Service
         { get; set; }
 
         [DbColumn("Round")]
-        public int? Round
+        public short? Round
         { get; set; }
 
         [DbColumn("GroupGuid")]

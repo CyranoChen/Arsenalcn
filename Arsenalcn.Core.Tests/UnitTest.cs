@@ -7,6 +7,7 @@ using Arsenal.Service.Casino;
 using AutoMapper;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Arsenal.Service;
+using Arsenal.MvcWeb.Models.Casino;
 
 namespace Arsenalcn.Core.Tests
 {
@@ -41,17 +42,17 @@ namespace Arsenalcn.Core.Tests
         {
             var match = new MatchDto();
 
-            match.MatchGuid = new Guid("12236a72-f35b-4a0f-90e6-67b11c3364bc");
+            match.ID = new Guid("12236a72-f35b-4a0f-90e6-67b11c3364bc");
 
             IRepository repo = new Repository();
 
-            var instance = repo.Single<MatchView>(match.MatchGuid);
+            var instance = repo.Single<MatchView>(match.ID);
 
             instance.Many<ChoiceOption>(instance.CasinoItem.ID);
 
             MatchDto.CreateMap();
 
-            match = Mapper.DynamicMap<MatchDto>(instance);
+            match = Mapper.Map<MatchDto>(instance);
 
             Assert.IsNotNull(match);
         }
@@ -86,7 +87,19 @@ namespace Arsenalcn.Core.Tests
             {
                 // db float? -> c# double?
                 // Error on Enum?
-                list = Mapper.DynamicMap<IDataReader, List<Bet>>(dt.CreateDataReader());
+                var mapper = typeof(Bet).GetMethod("CreateMap",
+                    System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
+
+                if (mapper != null)
+                {
+                    mapper.Invoke(null, null);
+                }
+                else
+                {
+                    Mapper.CreateMap<IDataReader, Bet>();
+                }
+
+                list = Mapper.Map<IDataReader, IEnumerable<Bet>>(dt.CreateDataReader()).ToList();
             }
 
             Assert.IsTrue(list.Count > 0);

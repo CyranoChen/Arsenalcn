@@ -13,7 +13,12 @@ namespace Arsenal.Service
     {
         public Player() : base() { }
 
-        public Player(DataRow dr) : base(dr) { }
+        public static void CreateMap()
+        {
+            var map = AutoMapper.Mapper.CreateMap<IDataReader, Player>();
+
+            map.ForMember(d => d.ID, opt => opt.MapFrom(s => (Guid)s.GetValue("PlayerGuid")));
+        }
 
         public static class Cache
         {
@@ -36,13 +41,9 @@ namespace Arsenal.Service
                 PlayerList_HasSquadNumber = PlayerList.FindAll(x => x.SquadNumber > 0)
                     .OrderBy(x => x.SquadNumber).ThenBy(x => x.DisplayName).ToList();
 
-                //ColList_SquadNumber = repo.All<Player>().GroupBy(x => x.SquadNumber)
-                //    .Select(g => g.First()).OrderBy(x => x.SquadNumber)
-                //    .Select(x => x.SquadNumber).AsEnumerable();
-
                 ColList_SquadNumber = repo.All<Player>().DistinctOrderBy(x => x.SquadNumber);
 
-                ColList_Position = repo.Query<Player>(x => x.Position.HasValue).DistinctOrderBy(x => x.Position.Value.ToString());
+                ColList_Position = repo.All<Player>().DistinctOrderBy(x => x.Position.ToString());
             }
 
             public static Player Load(Guid guid)
@@ -95,7 +96,7 @@ namespace Arsenal.Service
         { get; set; }
 
         [DbColumn("Position")]
-        public PlayerPostionType? Position
+        public PlayerPostionType Position
         { get; set; }
 
         [DbColumn("SquadNumber")]
@@ -179,6 +180,7 @@ namespace Arsenal.Service
 
     public enum PlayerPostionType
     {
+        None,
         Goalkeeper,
         Defender,
         Midfielder,

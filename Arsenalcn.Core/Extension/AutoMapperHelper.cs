@@ -105,7 +105,7 @@ namespace Arsenalcn.Core
             {
                 var index = reader.GetOrdinal(colName);
 
-                if (index > 0)
+                if (index >= 0)
                 {
                     return !reader.IsDBNull(index) ? reader.GetValue(index) : null;
                 }

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace Arsenal.Service.Casino
 {
-    [DbSchema("AcnCasino_MatchView", Sort = "m_PlayTime DESC")]
+    [DbSchema("AcnCasino_MatchView", Sort = "PlayTime DESC")]
     public class MatchView : Viewer
     {
         public MatchView() : base() { }
@@ -15,10 +15,66 @@ namespace Arsenal.Service.Casino
         {
             var map = AutoMapper.Mapper.CreateMap<IDataReader, MatchView>();
 
-            map.ForMember(d => d.ResultHome, opt => opt.MapFrom(s => s.GetValue("m_ResultHome")));
-            map.ForMember(d => d.ResultAway, opt => opt.MapFrom(s => s.GetValue("m_ResultAway")));
-            map.ForMember(d => d.PlayTime, opt => opt.MapFrom(s => s.GetValue("m_PlayTime")));
+            #region MatchView.CasinoItem
+            var cMap = AutoMapper.Mapper.CreateMap<IDataReader, CasinoItem>();
+            cMap.ForMember(d => d.ID, opt => opt.MapFrom(s => s.GetValue("CasinoItemGuid")));
+            cMap.ForMember(d => d.ItemType, opt => opt.MapFrom(s =>
+                (CasinoType)Enum.Parse(typeof(CasinoType), s.GetValue("ItemType").ToString())));
+
             map.ForMember(d => d.CasinoItem, opt => opt.MapFrom(s => AutoMapper.Mapper.DynamicMap<CasinoItem>(s)));
+            #endregion
+
+            #region MatchView.League
+            var lMap = AutoMapper.Mapper.CreateMap<IDataReader, League>();
+            lMap.ForMember(d => d.ID, opt => opt.MapFrom(s => s.GetValue("LeagueGuid")));
+
+            map.ForMember(d => d.League, opt => opt.MapFrom(s => AutoMapper.Mapper.DynamicMap<League>(s)));
+            #endregion
+
+            #region MatchView.Group
+            var gMap = AutoMapper.Mapper.CreateMap<IDataReader, Group>();
+            gMap.ForMember(d => d.ID, opt =>
+            {
+                opt.Condition(s => s.GetValue("GroupGuid") != null);
+                opt.MapFrom(s => s.GetValue("GroupGuid"));
+            });
+
+            map.ForMember(d => d.Group, opt =>
+            {
+                opt.Condition(s => s.GetValue("GroupGuid") != null);
+                opt.MapFrom(s => AutoMapper.Mapper.DynamicMap<Group>(s));
+            });
+            #endregion
+
+            #region MatchView.Team
+            var tMap = AutoMapper.Mapper.CreateMap<IDataReader, Team>();
+
+            map.ForMember(d => d.Home, opt => opt.ResolveUsing(s =>
+            {
+                var home = new Team()
+                {
+                    ID = (Guid)s.GetValue("h_TeamGuid"),
+                    TeamEnglishName = s.GetValue("h_TeamEnglishName").ToString(),
+                    TeamDisplayName = s.GetValue("h_TeamDisplayName").ToString(),
+                    TeamLogo = s.GetValue("h_TeamLogo").ToString()
+                };
+
+                return home;
+            }));
+
+            map.ForMember(d => d.Away, opt => opt.ResolveUsing(s =>
+            {
+                var away = new Team()
+                {
+                    ID = (Guid)s.GetValue("a_TeamGuid"),
+                    TeamEnglishName = s.GetValue("a_TeamEnglishName").ToString(),
+                    TeamDisplayName = s.GetValue("a_TeamDisplayName").ToString(),
+                    TeamLogo = s.GetValue("a_TeamLogo").ToString()
+                };
+
+                return away;
+            }));
+            #endregion
         }
 
         #region Members and Properties
@@ -27,44 +83,44 @@ namespace Arsenal.Service.Casino
         public Guid ID
         { get; set; }
 
-        [DbColumn("m_ResultHome")]
+        [DbColumn("ResultHome")]
         public short? ResultHome
         { get; set; }
 
-        [DbColumn("m_ResultAway")]
+        [DbColumn("ResultAway")]
         public short? ResultAway
         { get; set; }
 
-        [DbColumn("m_PlayTime")]
+        [DbColumn("PlayTime")]
         public DateTime PlayTime
         { get; set; }
 
-        [DbColumn("m_LeagueName")]
+        [DbColumn("LeagueName")]
         public string LeagueName
         { get; set; }
 
-        [DbColumn("m_Round")]
-        public int? Round
+        [DbColumn("Round")]
+        public short? Round
         { get; set; }
 
         // Complex Object
-        [DbColumn("c", Key = "c_CasinoItemGuid")]
+        [DbColumn("c", Key = "CasinoItemGuid")]
         public CasinoItem CasinoItem
         { get; set; }
 
-        [DbColumn("h", Key = "h_TeamGuid")]
+        [DbColumn("h", Key = "TeamGuid")]
         public Team Home
         { get; set; }
 
-        [DbColumn("a", Key = "a_TeamGuid")]
+        [DbColumn("a", Key = "TeamGuid")]
         public Team Away
         { get; set; }
 
-        [DbColumn("l", Key = "l_LeagueGuid")]
+        [DbColumn("l", Key = "LeagueGuid")]
         public League League
         { get; set; }
 
-        [DbColumn("g", Key = "g_GroupGuid")]
+        [DbColumn("g", Key = "GroupGuid")]
         public Group Group
         { get; set; }
 

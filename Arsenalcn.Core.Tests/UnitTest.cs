@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 
+using Arsenal.MvcWeb.Models.Casino;
 using Arsenal.Service.Casino;
 using AutoMapper;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Arsenal.Service;
-using Arsenal.MvcWeb.Models.Casino;
 
 namespace Arsenalcn.Core.Tests
 {
@@ -75,19 +74,19 @@ namespace Arsenalcn.Core.Tests
         [TestMethod]
         public void AutoMapper_DataReader_Test()
         {
-            var sql = @"SELECT * FROM [AcnCasino_Bet]";
+            var sql = @"SELECT * FROM [AcnCasino_CasinoItem]";
 
             DataSet ds = DataAccess.ExecuteDataset(sql);
 
             DataTable dt = ds.Tables[0];
 
-            var list = new List<Bet>();
+            var list = new List<CasinoItem>();
 
             if (dt.Rows.Count > 0)
             {
                 // db float? -> c# double?
                 // Error on Enum?
-                var mapper = typeof(Bet).GetMethod("CreateMap",
+                var mapper = typeof(CasinoItem).GetMethod("CreateMap",
                     System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
 
                 if (mapper != null)
@@ -96,10 +95,10 @@ namespace Arsenalcn.Core.Tests
                 }
                 else
                 {
-                    Mapper.CreateMap<IDataReader, Bet>();
+                    Mapper.CreateMap<IDataReader, CasinoItem>();
                 }
 
-                list = Mapper.Map<IDataReader, IEnumerable<Bet>>(dt.CreateDataReader()).ToList();
+                list = Mapper.Map<IDataReader, IEnumerable<CasinoItem>>(dt.CreateDataReader()).ToList();
             }
 
             Assert.IsTrue(list.Count > 0);

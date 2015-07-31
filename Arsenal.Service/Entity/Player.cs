@@ -18,6 +18,8 @@ namespace Arsenal.Service
             var map = AutoMapper.Mapper.CreateMap<IDataReader, Player>();
 
             map.ForMember(d => d.ID, opt => opt.MapFrom(s => (Guid)s.GetValue("PlayerGuid")));
+            map.ForMember(d => d.Position, opt => opt.MapFrom(s => 
+                (PlayerPostionType)Enum.Parse(typeof(PlayerPostionType), s.GetValue("Position").ToString())));
         }
 
         public static class Cache

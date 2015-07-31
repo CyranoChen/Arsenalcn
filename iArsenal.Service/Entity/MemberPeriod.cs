@@ -12,8 +12,6 @@ namespace iArsenal.Service
     {
         public MemberPeriod() : base() { }
 
-        public MemberPeriod(DataRow dr) : base(dr) { }
-
         public bool IsCurrentSeason(int year = 0)
         {
             var _date = DateTime.Now.AddYears(year);

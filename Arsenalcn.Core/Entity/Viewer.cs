@@ -19,103 +19,103 @@ namespace Arsenalcn.Core
 
         protected Viewer() { }
 
-        protected Viewer(DataRow dr)
-        {
-            try
-            {
-                Contract.Requires(dr != null);
+        //protected Viewer(DataRow dr)
+        //{
+        //    try
+        //    {
+        //        Contract.Requires(dr != null);
 
-                foreach (var pi in this.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
-                {
-                    var attrCol = Repository.GetColumnAttr(pi);
+        //        foreach (var pi in this.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
+        //        {
+        //            var attrCol = Repository.GetColumnAttr(pi);
 
-                    // skip not db column
-                    if (attrCol == null) { continue; }
+        //            // skip not db column
+        //            if (attrCol == null) { continue; }
 
-                    var type = Nullable.GetUnderlyingType(pi.PropertyType) ?? pi.PropertyType;
+        //            var type = Nullable.GetUnderlyingType(pi.PropertyType) ?? pi.PropertyType;
 
-                    // skip IEnumerable property
-                    if (type.BaseType == null) { continue; }
+        //            // skip IEnumerable property
+        //            if (type.BaseType == null) { continue; }
 
-                    if (type.BaseType.Equals(typeof(Entity<Guid>)) || type.BaseType.Equals(typeof(Entity<int>)))
-                    {
-                        // skip inner object not be included
-                        if (dr.Table.Columns.Contains("@include"))
-                        {
-                            var includeTypes = dr["@include"].ToString().Split('|');
+        //            if (type.BaseType.Equals(typeof(Entity<Guid>)) || type.BaseType.Equals(typeof(Entity<int>)))
+        //            {
+        //                // skip inner object not be included
+        //                if (dr.Table.Columns.Contains("@include"))
+        //                {
+        //                    var includeTypes = dr["@include"].ToString().Split('|');
 
-                            if (!includeTypes.Any(x => x.Equals(type.FullName))) { continue; }
-                        }
+        //                    if (!includeTypes.Any(x => x.Equals(type.FullName))) { continue; }
+        //                }
 
-                        if (!Convert.IsDBNull(dr[attrCol.Key]))
-                        {
-                            // new inner object instance
-                            object instance = Activator.CreateInstance(type);
+        //                if (!Convert.IsDBNull(dr[attrCol.Key]))
+        //                {
+        //                    // new inner object instance
+        //                    object instance = Activator.CreateInstance(type);
 
-                            // set the primary key of inner object
-                            var piKey = instance.GetType().GetProperty("ID");
+        //                    // set the primary key of inner object
+        //                    var piKey = instance.GetType().GetProperty("ID");
 
-                            piKey.SetValue(instance, Convert.ChangeType(dr[attrCol.Key],
-                                Nullable.GetUnderlyingType(piKey.PropertyType) ?? piKey.PropertyType), null);
+        //                    piKey.SetValue(instance, Convert.ChangeType(dr[attrCol.Key],
+        //                        Nullable.GetUnderlyingType(piKey.PropertyType) ?? piKey.PropertyType), null);
 
-                            foreach (var piInner in instance.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
-                            {
-                                var attrColInner = Repository.GetColumnAttr(piInner);
+        //                    foreach (var piInner in instance.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
+        //                    {
+        //                        var attrColInner = Repository.GetColumnAttr(piInner);
 
-                                // skip not db column
-                                if (attrColInner == null) { continue; }
+        //                        // skip not db column
+        //                        if (attrColInner == null) { continue; }
 
-                                var columnName = string.Format("{0}_{1}", attrCol.Name, attrColInner.Name);
+        //                        var columnName = string.Format("{0}_{1}", attrCol.Name, attrColInner.Name);
 
-                                if (dr.Table.Columns.Contains(columnName))
-                                {
-                                    this.SetPropertyValue(instance, piInner, dr[columnName]);
-                                }
-                            }
+        //                        if (dr.Table.Columns.Contains(columnName))
+        //                        {
+        //                            this.SetPropertyValue(instance, piInner, dr[columnName]);
+        //                        }
+        //                    }
 
-                            pi.SetValue(this, Convert.ChangeType(instance, type), null);
-                        }
-                    }
-                    else
-                    {
-                        if (dr.Table.Columns.Contains(attrCol.Name))
-                        {
-                            this.SetPropertyValue(this, pi, dr[attrCol.Name]);
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                log.Debug(ex, new LogInfo()
-                {
-                    MethodInstance = MethodBase.GetCurrentMethod(),
-                    ThreadInstance = Thread.CurrentThread
-                });
+        //                    pi.SetValue(this, Convert.ChangeType(instance, type), null);
+        //                }
+        //            }
+        //            else
+        //            {
+        //                if (dr.Table.Columns.Contains(attrCol.Name))
+        //                {
+        //                    this.SetPropertyValue(this, pi, dr[attrCol.Name]);
+        //                }
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        log.Debug(ex, new LogInfo()
+        //        {
+        //            MethodInstance = MethodBase.GetCurrentMethod(),
+        //            ThreadInstance = Thread.CurrentThread
+        //        });
 
-                throw;
-            }
-        }
+        //        throw;
+        //    }
+        //}
 
-        private void SetPropertyValue(object instance, PropertyInfo property, object value)
-        {
-            if (!Convert.IsDBNull(value))
-            {
-                var type = Nullable.GetUnderlyingType(property.PropertyType) ?? property.PropertyType;
+        //private void SetPropertyValue(object instance, PropertyInfo property, object value)
+        //{
+        //    if (!Convert.IsDBNull(value))
+        //    {
+        //        var type = Nullable.GetUnderlyingType(property.PropertyType) ?? property.PropertyType;
 
-                // SetValue for EnumType
-                if (type.BaseType.Equals(typeof(Enum)))
-                {
-                    object valEnum = Enum.Parse(type, value.ToString(), true);
+        //        // SetValue for EnumType
+        //        if (type.BaseType.Equals(typeof(Enum)))
+        //        {
+        //            object valEnum = Enum.Parse(type, value.ToString(), true);
 
-                    property.SetValue(instance, Convert.ChangeType(valEnum, type), null);
-                }
-                else
-                {
-                    property.SetValue(instance, Convert.ChangeType(value, type), null);
-                }
-            }
-        }
+        //            property.SetValue(instance, Convert.ChangeType(valEnum, type), null);
+        //        }
+        //        else
+        //        {
+        //            property.SetValue(instance, Convert.ChangeType(value, type), null);
+        //        }
+        //    }
+        //}
 
         #region Members and Properties
 

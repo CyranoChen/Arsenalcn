@@ -14,7 +14,6 @@ namespace iArsenal.Service
         public Order() : base() { }
 
         public Order(DataRow dr)
-            : base(dr)
         {
             #region Generate Order URLOrderView
 

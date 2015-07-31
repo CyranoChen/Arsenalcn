@@ -13,7 +13,6 @@ namespace iArsenal.Service
         public Product() : base() { }
 
         public Product(DataRow dr)
-            : base(dr)
         {
             #region Generate Product Type Info
 

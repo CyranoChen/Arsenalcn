@@ -27,9 +27,11 @@ namespace Arsenal.MvcWeb.Controllers
         public ActionResult Index()
         {
             var model = new IndexDto();
+            var days = 7;
 
             var query = repo.Query<MatchView>(
-                predicate: x => !x.ResultHome.HasValue && !x.ResultAway.HasValue && x.PlayTime > DateTime.Now)
+                predicate: x => !x.ResultHome.HasValue && !x.ResultAway.HasValue
+                && x.PlayTime > DateTime.Now && x.PlayTime < DateTime.Now.AddDays(days))
                 .OrderBy(x => x.PlayTime)
                 .Many<MatchView, ChoiceOption>((tOne, tMany) => tOne.CasinoItem.ID.Equals(tMany.CasinoItemGuid));
 
@@ -38,7 +40,7 @@ namespace Arsenal.MvcWeb.Controllers
             var list = Mapper.Map<IEnumerable<MatchDto>>(source: query.AsEnumerable());
 
             model.Matches = list;
-            model.CasinoValidDays = 7;
+            model.CasinoValidDays = days;
 
             return View(model);
         }

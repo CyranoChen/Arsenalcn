@@ -16,9 +16,9 @@ namespace Arsenalcn.Core.Tests
         {
             IRepository repo = new Repository();
 
-            var key = new Guid("6510818c-d824-4a91-99d0-001ad099d4fa");
+            var key = new Guid("731D5AEB-252A-4779-A0F4-000F9D9B1ABB");
 
-            var instance = repo.Single<Arsenal.Service.Casino.Match>(key);
+            var instance = repo.Single<Arsenal.Service.Casino.CasinoItem>(key);
 
             Assert.IsNotNull(instance);
         }

@@ -6,7 +6,7 @@ using Arsenalcn.Core;
 
 namespace Arsenal.Service.Casino
 {
-    [DbSchema("AcnCasino_BetView", Sort = "b_BetTime DESC")]
+    [DbSchema("AcnCasino_BetView", Sort = "BetTime DESC")]
     public class BetView : Viewer
     {
         public BetView() : base() { }
@@ -15,20 +15,60 @@ namespace Arsenal.Service.Casino
         {
             var map = AutoMapper.Mapper.CreateMap<IDataReader, BetView>();
 
-            map.ConstructUsing(s => new BetView()
+            #region BetView.CasinoItem
+            var cMap = AutoMapper.Mapper.CreateMap<IDataReader, CasinoItem>();
+            cMap.ForMember(d => d.ID, opt => opt.MapFrom(s => s.GetValue("CasinoItemGuid")));
+            cMap.ForMember(d => d.ItemType, opt => opt.MapFrom(s =>
+                (CasinoType)Enum.Parse(typeof(CasinoType), s.GetValue("ItemType").ToString())));
+            cMap.ForMember(d => d.Earning, opt => opt.MapFrom(s => s.GetValue("c_Earning")));
+
+            map.ForMember(d => d.CasinoItem, opt => opt.MapFrom(s => AutoMapper.Mapper.DynamicMap<CasinoItem>(s)));
+            #endregion
+
+            #region BetView.League
+            var lMap = AutoMapper.Mapper.CreateMap<IDataReader, League>();
+            lMap.ForMember(d => d.ID, opt => opt.MapFrom(s => s.GetValue("LeagueGuid")));
+
+            map.ForMember(d => d.League, opt => opt.MapFrom(s => AutoMapper.Mapper.DynamicMap<League>(s)));
+            #endregion
+
+            #region BetView.Match
+            var mMap = AutoMapper.Mapper.CreateMap<IDataReader, Match>();
+            mMap.ForMember(d => d.ID, opt => opt.MapFrom(s => s.GetValue("MatchGuid")));
+
+            map.ForMember(d => d.Match, opt => opt.MapFrom(s => AutoMapper.Mapper.DynamicMap<Match>(s)));
+            #endregion
+
+            #region BetView.Team
+            var tMap = AutoMapper.Mapper.CreateMap<IDataReader, Team>();
+
+            map.ForMember(d => d.Home, opt => opt.ResolveUsing(s =>
             {
-                ID = (int)s.GetValue("ID"),
-                UserID = (int)s.GetValue("b_UserID"),
-                CasinoItem = new CasinoItem()
+                var home = new Team()
                 {
-                    ItemType = (CasinoType)s.GetValue("c_ItemType")
+                    ID = (Guid)s.GetValue("h_TeamGuid"),
+                    TeamEnglishName = s.GetValue("h_TeamEnglishName").ToString(),
+                    TeamDisplayName = s.GetValue("h_TeamDisplayName").ToString(),
+                    TeamLogo = s.GetValue("h_TeamLogo").ToString()
+                };
 
-                }
-            });
+                return home;
+            }));
+
+            map.ForMember(d => d.Away, opt => opt.ResolveUsing(s =>
+            {
+                var away = new Team()
+                {
+                    ID = (Guid)s.GetValue("a_TeamGuid"),
+                    TeamEnglishName = s.GetValue("a_TeamEnglishName").ToString(),
+                    TeamDisplayName = s.GetValue("a_TeamDisplayName").ToString(),
+                    TeamLogo = s.GetValue("a_TeamLogo").ToString()
+                };
+
+                return away;
+            }));
+            #endregion
         }
-
-
-        public BetView(DataRow dr) : base(dr) { }
 
         #region Members and Properties
 
@@ -36,56 +76,56 @@ namespace Arsenal.Service.Casino
         public int ID
         { get; set; }
 
-        [DbColumn("b_UserID")]
+        [DbColumn("UserID")]
         public int UserID
         { get; set; }
 
-        [DbColumn("b_UserName")]
+        [DbColumn("UserName")]
         public string UserName
         { get; set; }
 
-        [DbColumn("b_Bet")]
+        [DbColumn("BetAmount")]
         public double? BetAmount
         { get; set; }
 
-        [DbColumn("b_BetTime")]
+        [DbColumn("BetTime")]
         public DateTime BetTime
         { get; private set; }
 
-        [DbColumn("b_BetRate")]
+        [DbColumn("BetRate")]
         public double? BetRate
         { get; set; }
 
-        [DbColumn("b_IsWin")]
+        [DbColumn("IsWin")]
         public bool? IsWin
         { get; set; }
 
-        [DbColumn("b_Earning")]
+        [DbColumn("Earning")]
         public double? Earning
         { get; set; }
 
-        [DbColumn("b_EarningDesc")]
+        [DbColumn("EarningDesc")]
         public string EarningDesc
         { get; set; }
 
         // Complex Object
-        [DbColumn("c", Key = "c_CasinoItemGuid")]
+        [DbColumn("c", Key = "CasinoItemGuid")]
         public CasinoItem CasinoItem
         { get; set; }
 
-        [DbColumn("m", Key = "m_MatchGuid")]
+        [DbColumn("m", Key = "MatchGuid")]
         public Match Match
         { get; set; }
 
-        [DbColumn("h", Key = "h_TeamGuid")]
+        [DbColumn("h", Key = "TeamGuid")]
         public Team Home
         { get; set; }
 
-        [DbColumn("a", Key = "a_TeamGuid")]
+        [DbColumn("a", Key = "TeamGuid")]
         public Team Away
         { get; set; }
 
-        [DbColumn("l", Key = "l_LeagueGuid")]
+        [DbColumn("l", Key = "LeagueGuid")]
         public League League
         { get; set; }
 

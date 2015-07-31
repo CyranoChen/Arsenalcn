@@ -13,7 +13,6 @@ namespace iArsenal.Service
         public OrderItem() : base() { }
 
         public OrderItem(DataRow dr)
-            : base(dr)
         {
             #region Generate OrderItem TotalPrice
 
@@ -52,7 +51,7 @@ namespace iArsenal.Service
         [DbColumn("MemberID")]
         public int MemberID
         { get; set; }
-        
+
         [DbColumn("MemberName")]
         public string MemberName
         { get; set; }

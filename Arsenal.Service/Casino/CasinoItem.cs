@@ -15,6 +15,8 @@ namespace Arsenal.Service.Casino
             var map = AutoMapper.Mapper.CreateMap<IDataReader, CasinoItem>();
 
             map.ForMember(d => d.ID, opt => opt.MapFrom(s => (Guid)s.GetValue("CasinoItemGuid")));
+            map.ForMember(d => d.ItemType, opt => opt.MapFrom(s =>
+                (CasinoType)Enum.Parse(typeof(CasinoType), s.GetValue("ItemType").ToString())));
         }
 
         #region Members and Properties

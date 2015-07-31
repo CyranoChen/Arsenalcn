@@ -10,7 +10,7 @@ namespace Arsenalcn.Core
     {
         public Dictionary() : base() { }
 
-        public Dictionary(DataRow dr) : base(dr) { }
+        //public Dictionary(DataRow dr) : base(dr) { }
 
         public static class Cache
         {
@@ -77,7 +77,7 @@ namespace Arsenalcn.Core
     {
         public DictionaryItem() : base() { }
 
-        public DictionaryItem(DataRow dr) : base(dr) { }
+        //public DictionaryItem(DataRow dr) : base(dr) { }
 
         public static class Cache
         {

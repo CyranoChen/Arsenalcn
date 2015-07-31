@@ -13,7 +13,6 @@ namespace iArsenal.Service
         public Member() : base() { }
 
         public Member(DataRow dr)
-            : base(dr)
         {
             #region Generate Member RegionInfo
             if (Nation.Equals("中国"))

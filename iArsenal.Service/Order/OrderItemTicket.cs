@@ -7,9 +7,7 @@ namespace iArsenal.Service
     {
         public OrdrItmMatchTicket() { }
 
-        public OrdrItmMatchTicket(DataRow dr) : base(dr) { this.Init(); }
-
-        private void Init()
+        public void Init()
         {
             try { MatchGuid = !string.IsNullOrEmpty(Remark) ? new Guid(Remark) : Guid.Empty; }
             catch { throw new Exception("Can't get the Partner of OrderItem_MatchTicket.Remark."); }
@@ -31,12 +29,6 @@ namespace iArsenal.Service
 
             if (!p.ProductType.Equals(ProductType.MatchTicket))
                 throw new Exception("The OrderItem is not the type of MatchTicket.");
-        }
-
-        public override void Mapper(object obj)
-        {
-            base.Mapper(obj);
-            this.Init();
         }
 
         public override void Place(Member m, Product p, System.Data.SqlClient.SqlTransaction trans = null)
@@ -63,9 +55,7 @@ namespace iArsenal.Service
     {
         public OrdrItm2012TicketBeijing() { }
 
-        public OrdrItm2012TicketBeijing(DataRow dr) : base(dr) { this.Init(); }
-
-        private void Init()
+        public void Init()
         {
             this.SeatLevel = Size;
 
@@ -76,12 +66,6 @@ namespace iArsenal.Service
 
             if (!p.ProductType.Equals(ProductType.TicketBeijing))
                 throw new Exception("The OrderItem is not the type of TicketBeijing.");
-        }
-
-        public override void Mapper(object obj)
-        {
-            base.Mapper(obj);
-            this.Init();
         }
 
         public void Place(Member m, System.Data.SqlClient.SqlTransaction trans = null)

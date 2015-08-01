@@ -58,8 +58,7 @@ namespace iArsenal.Web
                     {
                         tmpString = ViewState["ProductType"].ToString();
                         if (!string.IsNullOrEmpty(tmpString))
-                            returnValue = returnValue &&
-                                x.OrderType.HasValue ? x.OrderType.Value.ToString().Equals(tmpString) : false;
+                            returnValue = returnValue && x.OrderType.ToString().Equals(tmpString);
                     }
 
                     // Find all Orders which belong to Current Member & Active
@@ -177,9 +176,9 @@ namespace iArsenal.Web
                 Label lblOrderStatus = e.Row.FindControl("lblOrderStatus") as Label;
                 Label lblPriceInfo = e.Row.FindControl("lblPriceInfo") as Label;
 
-                if (lblProductType != null && o.OrderType.HasValue)
+                if (lblProductType != null)
                 {
-                    lblProductType.Text = string.Format("<em>{0}</em>", ddlProductType.Items.FindByValue(o.OrderType.Value.ToString()).Text);
+                    lblProductType.Text = string.Format("<em>{0}</em>", ddlProductType.Items.FindByValue(o.OrderType.ToString()).Text);
                 }
                 else
                 {

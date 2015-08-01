@@ -152,7 +152,7 @@ namespace iArsenal.Web
                 o.MemberName = tbMemberName.Text.Trim();
                 o.IsActive = cbIsActive.Checked;
                 o.Status = (OrderStatusType)Enum.Parse(typeof(OrderStatusType), ddlStatus.SelectedValue);
-                o.Rate = Convert.ToInt32(tbRate.Text.Trim());
+                o.Rate = Convert.ToInt16(tbRate.Text.Trim());
                 o.CreateTime = DateTime.Parse(tbCreateTime.Text.Trim());
                 o.UpdateTime = DateTime.Parse(tbUpdateTime.Text.Trim());
                 o.Mobile = tbMobile.Text.Trim();

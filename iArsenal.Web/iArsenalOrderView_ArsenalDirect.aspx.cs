@@ -142,7 +142,7 @@ namespace iArsenal.Web
             OrdrWish o = repo.Single<OrdrWish>(OrderID);
 
             // Should be Calculator in this Page
-            float price = 0f;
+            double price = default(double);
             string priceInfo = string.Empty;
             List<string> _lstPriceInfo = new List<string>();
 

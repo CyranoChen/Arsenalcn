@@ -12,16 +12,21 @@ namespace iArsenal.Service
     {
         public OrderItem() : base() { }
 
-        public OrderItem(DataRow dr)
+        public static void CreateMap()
         {
-            #region Generate OrderItem TotalPrice
+            var map = AutoMapper.Mapper.CreateMap<IDataReader, OrderItem>();
 
-            if (Sale.HasValue)
-                TotalPrice = Sale.Value;
-            else
-                TotalPrice = UnitPrice * Quantity;
+            map.ForMember(d => d.TotalPrice, opt => opt.ResolveUsing(s => 
+            {
+                #region Generate OrderItem TotalPrice
+                double? sale = (double?)s.GetValue("Sale");
 
-            #endregion
+                if (sale.HasValue)
+                    return sale.Value;
+                else
+                    return (double)s.GetValue("UnitPrice") * (int)s.GetValue("Quantity");
+                #endregion
+            }));
         }
 
         public virtual void Place(Member m, Product p, SqlTransaction trans = null)
@@ -85,7 +90,7 @@ namespace iArsenal.Service
         { get; set; }
 
         [DbColumn("Sale")]
-        public float? Sale
+        public double? Sale
         { get; set; }
 
         [DbColumn("CreateTime")]
@@ -100,7 +105,7 @@ namespace iArsenal.Service
         public string Remark
         { get; set; }
 
-        public float TotalPrice
+        public double TotalPrice
         { get; set; }
 
         #endregion

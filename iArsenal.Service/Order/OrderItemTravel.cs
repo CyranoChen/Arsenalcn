@@ -8,9 +8,7 @@ namespace iArsenal.Service
     {
         public OrdrItmTravelPlan() { }
 
-        public OrdrItmTravelPlan(DataRow dr) : base(dr) { this.Init(); }
-
-        protected void Init()
+        public void Init()
         {
             if (ProductGuid == null)
                 throw new Exception("Loading OrderItem failed.");
@@ -20,21 +18,13 @@ namespace iArsenal.Service
             if (!p.ProductType.Equals(ProductType.TravelPlan))
                 throw new Exception("The OrderItem is not the type of TravelPlan.");
         }
-
-        public override void Mapper(object obj)
-        {
-            base.Mapper(obj);
-            this.Init();
-        }
     }
 
     public class OrdrItmTravelPlanLondon : OrdrItmTravelPlan
     {
         public OrdrItmTravelPlanLondon() { }
 
-        public OrdrItmTravelPlanLondon(DataRow dr) : base(dr) { this.Init(); }
-
-        private new void Init()
+        public new void Init()
         {
             base.Init();
 
@@ -67,12 +57,6 @@ namespace iArsenal.Service
             {
                 TravelOption = null;
             }
-        }
-
-        public override void Mapper(object obj)
-        {
-            base.Mapper(obj);
-            this.Init();
         }
 
         public void Place(Member m, System.Data.SqlClient.SqlTransaction trans = null)
@@ -108,9 +92,7 @@ namespace iArsenal.Service
     {
         public OrdrItmTravelPlan2015AsiaTrophy() { }
 
-        public OrdrItmTravelPlan2015AsiaTrophy(DataRow dr) : base(dr) { this.Init(); }
-
-        private new void Init()
+        public new void Init()
         {
             base.Init();
 
@@ -138,12 +120,6 @@ namespace iArsenal.Service
             {
                 TravelOption = null;
             }
-        }
-
-        public override void Mapper(object obj)
-        {
-            base.Mapper(obj);
-            this.Init();
         }
 
         public void Place(Member m, System.Data.SqlClient.SqlTransaction trans = null)
@@ -178,9 +154,7 @@ namespace iArsenal.Service
     {
         public OrdrItmTravelPartner() { }
 
-        public OrdrItmTravelPartner(DataRow dr) : base(dr) { this.Init(); }
-
-        private void Init()
+        public void Init()
         {
             if (!string.IsNullOrEmpty(Remark))
             {
@@ -204,12 +178,6 @@ namespace iArsenal.Service
 
             if (!p.ProductType.Equals(ProductType.TravelPartner))
                 throw new Exception("The OrderItem is not the type of TravelPartner.");
-        }
-
-        public override void Mapper(object obj)
-        {
-            base.Mapper(obj);
-            this.Init();
         }
 
         public override void Place(Member m, Product p, System.Data.SqlClient.SqlTransaction trans = null)

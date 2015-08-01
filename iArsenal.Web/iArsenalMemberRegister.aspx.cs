@@ -73,7 +73,7 @@ namespace iArsenal.Web
                 else
                 {
                     m.IsActive = true;
-                    m.Evalution = MemberEvalution.Null;
+                    m.Evalution = MemberEvalution.None;
                     m.MemberType = MemberType.Buyer;
                     m.MemberCardNo = string.Empty;
                     m.AcnID = this.UID;

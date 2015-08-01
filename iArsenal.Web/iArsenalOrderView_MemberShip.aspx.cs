@@ -40,7 +40,7 @@ namespace iArsenal.Web
 
                 if (OrderID > 0)
                 {
-                    Order_MemberShip o = repo.Single<Order_MemberShip>(OrderID);
+                    OrdrMembership o = repo.Single<OrdrMembership>(OrderID);
 
                     if (ConfigGlobal.IsPluginAdmin(UID) && o != null)
                     {
@@ -122,7 +122,7 @@ namespace iArsenal.Web
                     }
 
                     // Should be Calculator in this Page
-                    float price = 0f;
+                    double price = default(double);
                     string priceInfo = string.Empty;
 
                     // Whether Core or Premier MemberShip
@@ -303,7 +303,7 @@ namespace iArsenal.Web
                 {
                     if (OrderID > 0)
                     {
-                        Order_MemberShip o = repo.Single<Order_MemberShip>(OrderID);
+                        OrdrMembership o = repo.Single<OrdrMembership>(OrderID);
 
                         if (ConfigGlobal.IsPluginAdmin(UID) && o != null && o.Status.Equals(OrderStatusType.Confirmed))
                         {

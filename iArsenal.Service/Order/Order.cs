@@ -13,87 +13,96 @@ namespace iArsenal.Service
     {
         public Order() : base() { }
 
-        public Order(DataRow dr)
+        public static void CreateMap()
         {
-            #region Generate Order URLOrderView
+            var map = AutoMapper.Mapper.CreateMap<IDataReader, Order>();
 
-            UrlOrderView = string.Empty;
+            map.ForMember(d => d.UrlOrderView, opt => opt.UseValue(string.Empty));
 
-            #endregion
+            map.ForMember(d => d.OrderType, opt => opt.MapFrom(s =>
+                (OrderBaseType)Enum.Parse(typeof(OrderBaseType), s.GetValue("OrderType").ToString())));
 
-            #region Generate Order TotalPrice
-
-            if (Sale.HasValue)
-                PriceInfo = Sale.Value.ToString("f2");
-            else
-                PriceInfo = Price.ToString("f2");
-
-            #endregion
-
-            #region Generate Order Payment Info
-
-            if (!string.IsNullOrEmpty(Payment))
+            map.ForMember(d => d.PaymentInfo, opt => opt.ResolveUsing(s =>
             {
-                string[] _strPayment = Payment.Substring(1, Payment.Length - 2).Split('|');
-                if (_strPayment[0].Equals(OrderPaymentType.Alipay.ToString(), StringComparison.OrdinalIgnoreCase))
-                    PaymentInfo = string.Format("【支付宝】{0}", _strPayment[1]);
-                else if (_strPayment[0].Equals(OrderPaymentType.Bank.ToString(), StringComparison.OrdinalIgnoreCase))
+                #region Generate Order Payment Info
+                var retValue = string.Empty;
+                var payment = s.GetValue("Payment").ToString();
+
+                if (!string.IsNullOrEmpty(payment))
                 {
-                    if (_strPayment.Length >= 3)
-                        PaymentInfo = string.Format("【{0}】{1}", _strPayment[1], _strPayment[2]);
+                    string[] _strPayment = payment.Substring(1, payment.Length - 2).Split('|');
+                    if (_strPayment[0].Equals(OrderPaymentType.Alipay.ToString(), StringComparison.OrdinalIgnoreCase))
+                        retValue = string.Format("【支付宝】{0}", _strPayment[1]);
+                    else if (_strPayment[0].Equals(OrderPaymentType.Bank.ToString(), StringComparison.OrdinalIgnoreCase))
+                    {
+                        if (_strPayment.Length >= 3)
+                            retValue = string.Format("【{0}】{1}", _strPayment[1], _strPayment[2]);
+                        else
+                            retValue = _strPayment[1];
+                    }
                     else
-                        PaymentInfo = _strPayment[1];
+                        retValue = string.Empty;
                 }
                 else
-                    PaymentInfo = string.Empty;
-            }
-            else
+                {
+                    retValue = string.Empty;
+                }
+
+                return retValue;
+                #endregion
+            }));
+
+            map.ForMember(d => d.PriceInfo, opt => opt.ResolveUsing(s =>
             {
-                PaymentInfo = string.Empty;
-            }
+                #region Generate Order Price Info
+                double? sale = (double?)s.GetValue("Sale");
+                double price = (double)s.GetValue("Price");
 
-            #endregion
+                return sale.HasValue ? sale.Value.ToString("f2") : price.ToString("f2");
+                #endregion
+            }));
 
-            #region Generate Order Status Info
-
-            string _strStatus = string.Empty;
-
-            switch (Status)
+            map.ForMember(d => d.StatusInfo, opt => opt.ResolveUsing(s =>
             {
-                case OrderStatusType.Draft:
-                    _strStatus = "未提交";
-                    break;
-                case OrderStatusType.Submitted:
-                    _strStatus = "审核中";
-                    break;
-                case OrderStatusType.Confirmed:
-                    _strStatus = "已确认";
-                    break;
-                case OrderStatusType.Ordered:
-                    _strStatus = "已下单";
-                    break;
-                case OrderStatusType.Delivered:
-                    _strStatus = "已发货";
-                    break;
-                case OrderStatusType.Error:
-                    _strStatus = "未知";
-                    break;
-                case OrderStatusType.Approved:
-                    _strStatus = "已审核";
-                    break;
-                default:
-                    _strStatus = string.Empty;
-                    break;
-            }
+                #region Generate Order Status Info
+                var retValue = string.Empty;
 
-            StatusInfo = _strStatus;
+                switch ((OrderStatusType)((short)s.GetValue("Status")))
+                {
+                    case OrderStatusType.Draft:
+                        retValue = "未提交";
+                        break;
+                    case OrderStatusType.Submitted:
+                        retValue = "审核中";
+                        break;
+                    case OrderStatusType.Confirmed:
+                        retValue = "已确认";
+                        break;
+                    case OrderStatusType.Ordered:
+                        retValue = "已下单";
+                        break;
+                    case OrderStatusType.Delivered:
+                        retValue = "已发货";
+                        break;
+                    case OrderStatusType.Error:
+                        retValue = "未知";
+                        break;
+                    case OrderStatusType.Approved:
+                        retValue = "已审核";
+                        break;
+                    default:
+                        retValue = string.Empty;
+                        break;
+                }
 
-            #endregion
+                return retValue;
+                #endregion
+            }));
         }
 
         public void CalcOrderPrice(SqlTransaction trans = null)
         {
-            float price = 0f;
+            double price = default(double);
 
             IRepository repo = new Repository();
 
@@ -120,27 +129,30 @@ namespace iArsenal.Service
 
             if (o != null)
             {
-                if (!o.OrderType.HasValue)
+                switch (o.OrderType)
                 {
-                    return o;
-                }
-                else
-                {
-                    switch (o.OrderType.Value)
-                    {
-                        case OrderBaseType.ReplicaKit:
-                            return repo.Single<OrdrReplicaKit>(id);
-                        case OrderBaseType.Ticket:
-                            return repo.Single<OrdrTicket>(id);
-                        case OrderBaseType.Travel:
-                            return repo.Single<OrdrTravel>(id);
-                        case OrderBaseType.Wish:
-                            return repo.Single<OrdrWish>(id);
-                        case OrderBaseType.MemberShip:
-                            return repo.Single<Order_MemberShip>(id);
-                        default:
-                            return o;
-                    }
+                    case OrderBaseType.ReplicaKit:
+                        AutoMapper.Mapper.CreateMap<Order, OrdrReplicaKit>()
+                            .AfterMap((s, d) => d.Init());
+                        return AutoMapper.Mapper.Map<OrdrReplicaKit>(o);
+                    case OrderBaseType.Ticket:
+                        AutoMapper.Mapper.CreateMap<Order, OrdrTicket>()
+                            .AfterMap((s, d) => d.Init());
+                        return AutoMapper.Mapper.Map<OrdrTicket>(o);
+                    case OrderBaseType.Travel:
+                        AutoMapper.Mapper.CreateMap<Order, OrdrTravel>()
+                            .AfterMap((s, d) => d.Init());
+                        return AutoMapper.Mapper.Map<OrdrTravel>(o);
+                    case OrderBaseType.Wish:
+                        AutoMapper.Mapper.CreateMap<Order, OrdrWish>()
+                            .AfterMap((s, d) => d.Init());
+                        return AutoMapper.Mapper.Map<OrdrWish>(o);
+                    case OrderBaseType.MemberShip:
+                        AutoMapper.Mapper.CreateMap<Order, OrdrMembership>()
+                            .AfterMap((s, d) => d.Init());
+                        return AutoMapper.Mapper.Map<OrdrMembership>(o);
+                    default:
+                        return o;
                 }
             }
             else { return null; }
@@ -157,9 +169,9 @@ namespace iArsenal.Service
             }
         }
 
-        private static OrderBaseType? SetOrderType(List<OrderItem> list)
+        private static OrderBaseType SetOrderType(List<OrderItem> list)
         {
-            if (list.Any(delegate(OrderItem x)
+            if (list.Any(delegate (OrderItem x)
             {
                 var _type = Product.Cache.Load(x.ProductGuid).ProductType;
                 return _type.Equals(ProductType.ReplicaKitHome) || _type.Equals(ProductType.ReplicaKitAway) || _type.Equals(ProductType.ReplicaKitCup);
@@ -167,7 +179,7 @@ namespace iArsenal.Service
             {
                 return OrderBaseType.ReplicaKit;
             }
-            else if (list.Any(delegate(OrderItem x)
+            else if (list.Any(delegate (OrderItem x)
             {
                 var _type = Product.Cache.Load(x.ProductGuid).ProductType;
                 return _type.Equals(ProductType.MatchTicket) || _type.Equals(ProductType.TicketBeijing);
@@ -179,7 +191,7 @@ namespace iArsenal.Service
             {
                 return OrderBaseType.Travel;
             }
-            else if (list.Any(delegate(OrderItem x)
+            else if (list.Any(delegate (OrderItem x)
             {
                 if (!x.ProductGuid.Equals(Guid.Empty))
                 {
@@ -193,7 +205,7 @@ namespace iArsenal.Service
             {
                 return OrderBaseType.Wish;
             }
-            else if (list.Any(delegate(OrderItem x)
+            else if (list.Any(delegate (OrderItem x)
             {
                 var _type = Product.Cache.Load(x.ProductGuid).ProductType;
                 return _type.Equals(ProductType.MemberShipCore) || _type.Equals(ProductType.MemberShipPremier);
@@ -203,7 +215,7 @@ namespace iArsenal.Service
             }
             else
             {
-                return null;
+                return OrderBaseType.None;
             }
         }
 
@@ -260,15 +272,15 @@ namespace iArsenal.Service
         { get; set; }
 
         [DbColumn("Price")]
-        public float Price
+        public double Price
         { get; set; }
 
         [DbColumn("Sale")]
-        public float? Sale
+        public double? Sale
         { get; set; }
 
         [DbColumn("Deposit")]
-        public float? Deposit
+        public double? Deposit
         { get; set; }
 
         [DbColumn("Postage")]
@@ -280,7 +292,7 @@ namespace iArsenal.Service
         { get; set; }
 
         [DbColumn("Rate")]
-        public int Rate
+        public short Rate
         { get; set; }
 
         [DbColumn("CreateTime")]
@@ -316,7 +328,7 @@ namespace iArsenal.Service
         { get; set; }
 
         [DbColumn("OrderType")]
-        public OrderBaseType? OrderType
+        public OrderBaseType OrderType
         { get; set; }
 
         public string UrlOrderView
@@ -345,6 +357,7 @@ namespace iArsenal.Service
 
     public enum OrderBaseType
     {
+        None,
         ReplicaKit,
         Ticket,
         Travel,

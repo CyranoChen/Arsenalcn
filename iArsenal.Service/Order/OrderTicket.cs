@@ -10,9 +10,7 @@ namespace iArsenal.Service
     {
         public OrdrTicket() { }
 
-        public OrdrTicket(DataRow dr) : base(dr) { Init(); }
-
-        private void Init()
+        public void Init()
         {
             IRepository repo = new Repository();
 
@@ -25,15 +23,15 @@ namespace iArsenal.Service
                 oiBase = list.Find(x => Product.Cache.Load(x.ProductGuid).ProductType.Equals(ProductType.MatchTicket));
                 if (oiBase != null)
                 {
-                    OIMatchTicket = new OrdrItmMatchTicket();
-                    OIMatchTicket.Mapper(oiBase);
+                    AutoMapper.Mapper.CreateMap<OrderItem, OrdrItmMatchTicket>().AfterMap((s, d) => d.Init());
+                    OIMatchTicket = AutoMapper.Mapper.Map<OrdrItmMatchTicket>(oiBase);
                 }
 
                 oiBase = list.Find(x => Product.Cache.Load(x.ProductGuid).ProductType.Equals(ProductType.TicketBeijing));
                 if (oiBase != null)
                 {
-                    OITicketBeijing = new OrdrItm2012TicketBeijing();
-                    OITicketBeijing.Mapper(oiBase);
+                    AutoMapper.Mapper.CreateMap<OrderItem, OrdrItm2012TicketBeijing>().AfterMap((s, d) => d.Init());
+                    OITicketBeijing = AutoMapper.Mapper.Map<OrdrItm2012TicketBeijing>(oiBase);
                 }
 
                 // Set the value of URLOrderView;

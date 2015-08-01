@@ -50,12 +50,7 @@ namespace iArsenal.Web
                 tbImageURL.Text = p.ImageURL;
                 tbMaterial.Text = p.Material;
                 tbColour.Text = p.Colour;
-
-                if (p.Size.HasValue)
-                    ddlSize.SelectedValue = p.Size.ToString();
-                else
-                    ddlSize.SelectedValue = string.Empty;
-
+                ddlSize.SelectedValue = p.Size.ToString();
                 ddlCurrency.SelectedValue = p.Currency.ToString();
                 tbPrice.Text = p.Price.ToString("f2");
 
@@ -177,7 +172,7 @@ namespace iArsenal.Web
                 if (!string.IsNullOrEmpty(ddlSize.SelectedValue))
                     p.Size = (ProductSizeType)Enum.Parse(typeof(ProductSizeType), ddlSize.SelectedValue);
                 else
-                    p.Size = null;
+                    p.Size = ProductSizeType.None;
 
                 p.Currency = (ProductCurrencyType)Enum.Parse(typeof(ProductCurrencyType), ddlCurrency.SelectedValue);
                 p.Price = Convert.ToSingle(tbPrice.Text.Trim());

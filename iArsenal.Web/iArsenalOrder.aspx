@@ -22,7 +22,7 @@
         <div id="mainPanel">
             <div class="FunctionBar">
                 <div class="DivFloatLeft">
-                    订单查询：
+                    订单查询：           
                     <asp:TextBox ID="tbOrderID" runat="server" CssClass="TextBox" Width="200px"></asp:TextBox>
                     <asp:DropDownList ID="ddlProductType" runat="server">
                         <asp:ListItem Value="" Text="--类型--" Selected="True"></asp:ListItem>
@@ -31,6 +31,7 @@
                         <asp:ListItem Value="Ticket" Text="球票"></asp:ListItem>
                         <asp:ListItem Value="Travel" Text="观赛"></asp:ListItem>
                         <asp:ListItem Value="MemberShip" Text="会费"></asp:ListItem>
+                        <asp:ListItem Value="None" Text="无" Enabled="false"></asp:ListItem>
                     </asp:DropDownList>
                     <asp:LinkButton ID="btnFilter" runat="server" Text="搜索订单" CssClass="LinkBtn" OnClick="btnFilter_Click"></asp:LinkButton>
                 </div>

@@ -21,14 +21,14 @@ namespace Arsenal.Service.Casino
             cMap.ForMember(d => d.ItemType, opt => opt.MapFrom(s =>
                 (CasinoType)Enum.Parse(typeof(CasinoType), s.GetValue("ItemType").ToString())));
 
-            map.ForMember(d => d.CasinoItem, opt => opt.MapFrom(s => AutoMapper.Mapper.DynamicMap<CasinoItem>(s)));
+            map.ForMember(d => d.CasinoItem, opt => opt.MapFrom(s => AutoMapper.Mapper.Map<CasinoItem>(s)));
             #endregion
 
             #region MatchView.League
             var lMap = AutoMapper.Mapper.CreateMap<IDataReader, League>();
             lMap.ForMember(d => d.ID, opt => opt.MapFrom(s => s.GetValue("LeagueGuid")));
 
-            map.ForMember(d => d.League, opt => opt.MapFrom(s => AutoMapper.Mapper.DynamicMap<League>(s)));
+            map.ForMember(d => d.League, opt => opt.MapFrom(s => AutoMapper.Mapper.Map<League>(s)));
             #endregion
 
             #region MatchView.Group
@@ -42,7 +42,7 @@ namespace Arsenal.Service.Casino
             map.ForMember(d => d.Group, opt =>
             {
                 opt.Condition(s => s.GetValue("GroupGuid") != null);
-                opt.MapFrom(s => AutoMapper.Mapper.DynamicMap<Group>(s));
+                opt.MapFrom(s => AutoMapper.Mapper.Map<Group>(s));
             });
             #endregion
 

@@ -116,8 +116,7 @@ namespace iArsenal.Web
                         throw new Exception("此订单非当前用户订单");
                     }
 
-                    OrdrItmTravelPlanLondon oiTP = new OrdrItmTravelPlanLondon();
-                    oiTP.Mapper(o.OITravelPlan);
+                    var oiTP = o.OITravelPlan.MapTo<OrdrItmTravelPlanLondon>();
 
                     List<OrdrItmTravelPartner> listPartner = o.OITravelPartnerList.FindAll(oi =>
                         oi.IsActive && !string.IsNullOrEmpty(oi.Remark));

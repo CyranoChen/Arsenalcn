@@ -6,17 +6,13 @@ namespace iArsenal.Service
     public class OrdrItmReplicaKit : OrderItem
     {
         public OrdrItmReplicaKit() { }
-
-        public OrdrItmReplicaKit(DataRow dr) : base(dr) { }
     }
 
     public class OrdrItmReplicaKitHome : OrdrItmReplicaKit
     {
         public OrdrItmReplicaKitHome() { }
 
-        public OrdrItmReplicaKitHome(DataRow dr) : base(dr) { this.Init(); }
-
-        private void Init()
+        public void Init()
         {
             if (ProductGuid == null)
                 throw new Exception("Loading OrderItem failed.");
@@ -25,12 +21,6 @@ namespace iArsenal.Service
 
             if (!p.ProductType.Equals(ProductType.ReplicaKitHome))
                 throw new Exception("The OrderItem is not the type of ReplicaKitHome.");
-        }
-
-        public override void Mapper(object obj)
-        {
-            base.Mapper(obj);
-            this.Init();
         }
 
         public void Place(Member m, System.Data.SqlClient.SqlTransaction trans = null)
@@ -46,9 +36,7 @@ namespace iArsenal.Service
     {
         public OrdrItmReplicaKitAway() { }
 
-        public OrdrItmReplicaKitAway(DataRow dr) : base(dr) { this.Init(); }
-
-        private void Init()
+        public void Init()
         {
             if (ProductGuid == null)
                 throw new Exception("Loading OrderItem failed.");
@@ -57,12 +45,6 @@ namespace iArsenal.Service
 
             if (!p.ProductType.Equals(ProductType.ReplicaKitAway))
                 throw new Exception("The OrderItem is not the type of ReplicaKitAway.");
-        }
-
-        public override void Mapper(object obj)
-        {
-            base.Mapper(obj);
-            this.Init();
         }
 
         public void Place(Member m, System.Data.SqlClient.SqlTransaction trans = null)
@@ -78,9 +60,7 @@ namespace iArsenal.Service
     {
         public OrdrItmReplicaKitCup() { }
 
-        public OrdrItmReplicaKitCup(DataRow dr) : base(dr) { this.Init(); }
-
-        private void Init()
+        public void Init()
         {
             if (ProductGuid == null)
                 throw new Exception("Loading OrderItem failed.");
@@ -89,12 +69,6 @@ namespace iArsenal.Service
 
             if (!p.ProductType.Equals(ProductType.ReplicaKitCup))
                 throw new Exception("The OrderItem is not the type of ReplicaKitCup.");
-        }
-
-        public override void Mapper(object obj)
-        {
-            base.Mapper(obj);
-            this.Init();
         }
 
         public void Place(Member m, System.Data.SqlClient.SqlTransaction trans = null)
@@ -110,9 +84,7 @@ namespace iArsenal.Service
     {
         public OrdrItmPlayerNumber() { }
 
-        public OrdrItmPlayerNumber(DataRow dr) : base(dr) { this.Init(); }
-
-        private void Init()
+        public void Init()
         {
             if (ProductGuid == null)
                 throw new Exception("Loading OrderItem failed.");
@@ -121,12 +93,6 @@ namespace iArsenal.Service
 
             if (!p.ProductType.Equals(ProductType.PlayerNumber))
                 throw new Exception("The OrderItem is not the type of PlayerNumber.");
-        }
-
-        public override void Mapper(object obj)
-        {
-            base.Mapper(obj);
-            this.Init();
         }
 
         public void Place(Member m, System.Data.SqlClient.SqlTransaction trans = null)
@@ -167,9 +133,7 @@ namespace iArsenal.Service
     {
         public OrdrItmPlayerName() { }
 
-        public OrdrItmPlayerName(DataRow dr) : base(dr) { this.Init(); }
-
-        private void Init()
+        public void Init()
         {
             if (ProductGuid == null)
                 throw new Exception("Loading OrderItem failed.");
@@ -178,12 +142,6 @@ namespace iArsenal.Service
 
             if (!p.ProductType.Equals(ProductType.PlayerName))
                 throw new Exception("The OrderItem is not the type of PlayerName.");
-        }
-
-        public override void Mapper(object obj)
-        {
-            base.Mapper(obj);
-            this.Init();
         }
 
         public void Place(Member m, System.Data.SqlClient.SqlTransaction trans = null)
@@ -224,9 +182,7 @@ namespace iArsenal.Service
     {
         public OrdrItmArsenalFont() { }
 
-        public OrdrItmArsenalFont(DataRow dr) : base(dr) { this.Init(); }
-
-        private void Init()
+        public void Init()
         {
             if (ProductGuid == null)
                 throw new Exception("Loading OrderItem failed.");
@@ -235,12 +191,6 @@ namespace iArsenal.Service
 
             if (!p.ProductType.Equals(ProductType.ArsenalFont))
                 throw new Exception("The OrderItem is not the type of ArsenalFont.");
-        }
-
-        public override void Mapper(object obj)
-        {
-            base.Mapper(obj);
-            this.Init();
         }
 
         public void Place(Member m, System.Data.SqlClient.SqlTransaction trans = null)
@@ -256,9 +206,7 @@ namespace iArsenal.Service
     {
         public OrdrItmPremiershipPatch() { }
 
-        public OrdrItmPremiershipPatch(DataRow dr) : base(dr) { this.Init(); }
-
-        private void Init()
+        public void Init()
         {
             if (ProductGuid == null)
                 throw new Exception("Loading OrderItem failed.");
@@ -267,12 +215,6 @@ namespace iArsenal.Service
 
             if (!p.ProductType.Equals(ProductType.PremiershipPatch))
                 throw new Exception("The OrderItem is not the type of PremiershipPatch.");
-        }
-
-        public override void Mapper(object obj)
-        {
-            base.Mapper(obj);
-            this.Init();
         }
 
         public void Place(Member m, System.Data.SqlClient.SqlTransaction trans = null)
@@ -288,9 +230,7 @@ namespace iArsenal.Service
     {
         public OrdrItmChampionshipPatch() { }
 
-        public OrdrItmChampionshipPatch(DataRow dr) : base(dr) { this.Init(); }
-
-        private void Init()
+        public void Init()
         {
             if (ProductGuid == null)
                 throw new Exception("Loading OrderItem failed.");
@@ -299,12 +239,6 @@ namespace iArsenal.Service
 
             if (!p.ProductType.Equals(ProductType.ChampionshipPatch))
                 throw new Exception("The OrderItem is not the type of ChampionshipPatch.");
-        }
-
-        public override void Mapper(object obj)
-        {
-            base.Mapper(obj);
-            this.Init();
         }
 
         public void Place(Member m, System.Data.SqlClient.SqlTransaction trans = null)

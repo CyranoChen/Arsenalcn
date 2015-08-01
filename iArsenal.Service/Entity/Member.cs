@@ -12,52 +12,71 @@ namespace iArsenal.Service
     {
         public Member() : base() { }
 
-        public Member(DataRow dr)
+        public static void CreateMap()
         {
-            #region Generate Member RegionInfo
-            if (Nation.Equals("中国"))
-            {
-                string[] region = Region.Split('|');
-                int itemID = int.MinValue;
-                if (region.Length > 1)
-                {
-                    foreach (string s in region)
-                    {
-                        if (int.TryParse(s, out itemID))
-                            RegionInfo += DictionaryItem.Cache.Load(itemID).Name;
-                    }
-                }
-                else if (region.Length == 1 && int.TryParse(region[0], out itemID))
-                    RegionInfo = DictionaryItem.Cache.Load(itemID).Name;
-                else
-                    RegionInfo = region[0];
-            }
-            else
-            {
-                RegionInfo = Nation;
-            }
-            #endregion
+            var map = AutoMapper.Mapper.CreateMap<IDataReader, Member>();
 
-            #region Generate Member MemberTypeInfo
-            switch (MemberType)
+            map.ForMember(d => d.MemberTypeInfo, opt => opt.ResolveUsing(s =>
             {
-                case MemberType.Match:
-                    MemberTypeInfo = "观赛";
-                    break;
-                case MemberType.VIP:
-                    MemberTypeInfo = "VIP";
-                    break;
-                case MemberType.Secretary:
-                    MemberTypeInfo = "干事";
-                    break;
-                case MemberType.Buyer:
-                    MemberTypeInfo = "团购";
-                    break;
-                default:
-                    MemberTypeInfo = string.Empty;
-                    break;
-            }
-            #endregion
+                #region Generate Member MemberTypeInfo
+                var retValue = string.Empty;
+
+                switch ((MemberType)((short)s.GetValue("MemberType")))
+                {
+                    case MemberType.Match:
+                        retValue = "观赛";
+                        break;
+                    case MemberType.VIP:
+                        retValue = "VIP";
+                        break;
+                    case MemberType.Secretary:
+                        retValue = "干事";
+                        break;
+                    case MemberType.Buyer:
+                        retValue = "团购";
+                        break;
+                    default:
+                        retValue = string.Empty;
+                        break;
+                }
+
+                return retValue;
+
+                #endregion
+            }));
+
+            map.ForMember(d => d.RegionInfo, opt => opt.ResolveUsing(s =>
+            {
+                #region Generate Member RegionInfo
+                var nation = s.GetValue("Nation").ToString();
+                var region = s.GetValue("Region").ToString();
+                var retValue = string.Empty;
+
+                if (nation.Equals("中国"))
+                {
+                    string[] regions = region.Split('|');
+                    int itemID = int.MinValue;
+                    if (regions.Length > 1)
+                    {
+                        foreach (string r in regions)
+                        {
+                            if (int.TryParse(r, out itemID))
+                                retValue += DictionaryItem.Cache.Load(itemID).Name;
+                        }
+                    }
+                    else if (regions.Length == 1 && int.TryParse(regions[0], out itemID))
+                    { retValue = DictionaryItem.Cache.Load(itemID).Name; }
+                    else
+                    { retValue = regions[0]; }
+                }
+                else
+                {
+                    retValue = nation;
+                }
+
+                return retValue;
+                #endregion
+            }));
         }
 
         public static class Cache
@@ -189,7 +208,7 @@ namespace iArsenal.Service
         [DbColumn("JoinDate")]
         public DateTime JoinDate
         { get; set; }
-        
+
         [DbColumn("LastLoginTime")]
         public DateTime LastLoginTime
         { get; set; }
@@ -217,7 +236,7 @@ namespace iArsenal.Service
 
     public enum MemberType
     {
-        Null = 0,
+        None = 0,
         Match = 1,
         VIP = 2,
         Secretary = 3,
@@ -226,7 +245,7 @@ namespace iArsenal.Service
 
     public enum MemberEvalution
     {
-        Null = 0,
+        None = 0,
         BlackList = 1,
         WhiteList = 2
     }

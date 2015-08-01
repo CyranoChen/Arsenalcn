@@ -16,9 +16,9 @@ namespace Arsenalcn.Core.Tests
         {
             IRepository repo = new Repository();
 
-            var key = new Guid("731D5AEB-252A-4779-A0F4-000F9D9B1ABB");
+            var key = new Guid("FD32F77D-47A7-4D5F-B7CE-068E3E1A0833");
 
-            var instance = repo.Single<Arsenal.Service.Casino.CasinoItem>(key);
+            var instance = repo.Single<League>(key);
 
             Assert.IsNotNull(instance);
         }
@@ -54,7 +54,7 @@ namespace Arsenalcn.Core.Tests
         {
             IRepository repo = new Repository();
 
-            var query = repo.All<ChoiceOption>();
+            var query = repo.All<MatchView>();
 
             Assert.IsNotNull(query);
         }

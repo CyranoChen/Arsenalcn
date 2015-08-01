@@ -117,11 +117,10 @@ namespace iArsenal.Web
                     }
 
                     // Should be Calculator in this Page
-                    float price = 0f;
+                    double price = default(double);
                     string priceInfo = string.Empty;
 
-                    OrdrItmTravelPlanLondon oiLondon = new OrdrItmTravelPlanLondon();
-                    oiLondon.Mapper(o.OITravelPlan);
+                    var oiLondon = o.OITravelPlan.MapTo<OrdrItmTravelPlanLondon>();
 
                     if (oiLondon.IsActive)
                     {
@@ -259,7 +258,7 @@ namespace iArsenal.Web
                     o.Status = OrderStatusType.Submitted;
                     o.UpdateTime = DateTime.Now;
                     o.Price = Convert.ToSingle(tbOrderPrice.Text.Trim());
-                    
+
                     repo.Update(o);
 
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", string.Format("alert('谢谢您的预订报名，您的订单已经提交成功。\\r\\n请耐心等待审核，并由观赛组织人会与您联系。\\r\\n订单号为：{0}'); window.location.href = window.location.href", o.ID.ToString()), true);
@@ -313,7 +312,7 @@ namespace iArsenal.Web
                     o.IsActive = false;
                     o.UpdateTime = DateTime.Now;
                     o.Price = Convert.ToSingle(tbOrderPrice.Text.Trim());
-                    
+
                     repo.Update(o);
 
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", string.Format("alert('此订单({0})已经取消');window.location.href = 'iArsenalOrder.aspx'", o.ID.ToString()), true);

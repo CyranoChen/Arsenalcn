@@ -10,9 +10,7 @@ namespace iArsenal.Service
     {
         public OrdrReplicaKit() { }
 
-        public OrdrReplicaKit(DataRow dr) : base(dr) { Init(); }
-
-        private void Init()
+        public void Init()
         {
             IRepository repo = new Repository();
 
@@ -25,22 +23,22 @@ namespace iArsenal.Service
                 oiBase = list.Find(x => Product.Cache.Load(x.ProductGuid).ProductType.Equals(ProductType.ReplicaKitHome));
                 if (oiBase != null)
                 {
-                    OIReplicaKitHome = new OrdrItmReplicaKitHome();
-                    OIReplicaKitHome.Mapper(oiBase);
+                    AutoMapper.Mapper.CreateMap<OrderItem, OrdrItmReplicaKitHome>().AfterMap((s, d) => d.Init());
+                    OIReplicaKitHome = AutoMapper.Mapper.Map<OrdrItmReplicaKitHome>(oiBase);
                 }
 
                 oiBase = list.Find(x => Product.Cache.Load(x.ProductGuid).ProductType.Equals(ProductType.ReplicaKitAway));
                 if (oiBase != null)
                 {
-                    OIReplicaKitAway = new OrdrItmReplicaKitAway();
-                    OIReplicaKitAway.Mapper(oiBase);
+                    AutoMapper.Mapper.CreateMap<OrderItem, OrdrItmReplicaKitAway>().AfterMap((s, d) => d.Init());
+                    OIReplicaKitAway = AutoMapper.Mapper.Map<OrdrItmReplicaKitAway>(oiBase);
                 }
 
                 oiBase = list.Find(x => Product.Cache.Load(x.ProductGuid).ProductType.Equals(ProductType.ReplicaKitCup));
                 if (oiBase != null)
                 {
-                    OIReplicaKitCup = new OrdrItmReplicaKitCup();
-                    OIReplicaKitCup.Mapper(oiBase);
+                    AutoMapper.Mapper.CreateMap<OrderItem, OrdrItmReplicaKitCup>().AfterMap((s, d) => d.Init());
+                    OIReplicaKitCup = AutoMapper.Mapper.Map<OrdrItmReplicaKitCup>(oiBase);
                 }
 
                 if (OIReplicaKitHome != null || OIReplicaKitAway != null || OIReplicaKitCup != null)
@@ -50,36 +48,36 @@ namespace iArsenal.Service
                     oiBase = list.Find(x => Product.Cache.Load(x.ProductGuid).ProductType.Equals(ProductType.PlayerNumber));
                     if (oiBase != null)
                     {
-                        OIPlayerNumber = new OrdrItmPlayerNumber();
-                        OIPlayerNumber.Mapper(oiBase);
+                        AutoMapper.Mapper.CreateMap<OrderItem, OrdrItmPlayerNumber>().AfterMap((s, d) => d.Init());
+                        OIPlayerNumber = AutoMapper.Mapper.Map<OrdrItmPlayerNumber>(oiBase);
                     }
 
                     oiBase = list.Find(x => Product.Cache.Load(x.ProductGuid).ProductType.Equals(ProductType.PlayerName));
                     if (oiBase != null)
                     {
-                        OIPlayerName = new OrdrItmPlayerName();
-                        OIPlayerName.Mapper(oiBase);
+                        AutoMapper.Mapper.CreateMap<OrderItem, OrdrItmPlayerName>().AfterMap((s, d) => d.Init());
+                        OIPlayerName = AutoMapper.Mapper.Map<OrdrItmPlayerName>(oiBase);
                     }
 
                     oiBase = list.Find(x => Product.Cache.Load(x.ProductGuid).ProductType.Equals(ProductType.ArsenalFont));
                     if (oiBase != null)
                     {
-                        OIArsenalFont = new OrdrItmArsenalFont();
-                        OIArsenalFont.Mapper(oiBase);
+                        AutoMapper.Mapper.CreateMap<OrderItem, OrdrItmArsenalFont>().AfterMap((s, d) => d.Init());
+                        OIArsenalFont = AutoMapper.Mapper.Map<OrdrItmArsenalFont>(oiBase);
                     }
 
                     oiBase = list.Find(x => Product.Cache.Load(x.ProductGuid).ProductType.Equals(ProductType.PremiershipPatch));
                     if (oiBase != null)
                     {
-                        OIPremiershipPatch = new OrdrItmPremiershipPatch();
-                        OIPremiershipPatch.Mapper(oiBase);
+                        AutoMapper.Mapper.CreateMap<OrderItem, OrdrItmPremiershipPatch>().AfterMap((s, d) => d.Init());
+                        OIPremiershipPatch = AutoMapper.Mapper.Map<OrdrItmPremiershipPatch>(oiBase);
                     }
 
                     oiBase = list.Find(x => Product.Cache.Load(x.ProductGuid).ProductType.Equals(ProductType.ChampionshipPatch));
                     if (oiBase != null)
                     {
-                        OIChampionshipPatch = new OrdrItmChampionshipPatch();
-                        OIChampionshipPatch.Mapper(oiBase);
+                        AutoMapper.Mapper.CreateMap<OrderItem, OrdrItmChampionshipPatch>().AfterMap((s, d) => d.Init());
+                        OIChampionshipPatch = AutoMapper.Mapper.Map<OrdrItmChampionshipPatch>(oiBase);
                     }
                 }
                 else

@@ -11,9 +11,7 @@ namespace iArsenal.Service
     {
         public OrdrTravel() { }
 
-        public OrdrTravel(DataRow dr) : base(dr) { Init(); }
-
-        private void Init()
+        public void Init()
         {
             IRepository repo = new Repository();
 
@@ -26,22 +24,15 @@ namespace iArsenal.Service
                 oiBase = list.Find(x => Product.Cache.Load(x.ProductGuid).ProductType.Equals(ProductType.TravelPlan));
                 if (oiBase != null)
                 {
-                    OITravelPlan = new OrdrItmTravelPlan();
-                    OITravelPlan.Mapper(oiBase);
+                    AutoMapper.Mapper.CreateMap<OrderItem, OrdrItmTravelPlan>().AfterMap((s, d) => d.Init());
+                    OITravelPlan = AutoMapper.Mapper.Map<OrdrItmTravelPlan>(oiBase);
                 }
 
                 if (OITravelPlan != null)
                 {
                     var oiPartnerList = list.FindAll(x => Product.Cache.Load(x.ProductGuid).ProductType.Equals(ProductType.TravelPartner));
-                    OITravelPartnerList = new List<OrdrItmTravelPartner>();
-
-                    foreach (var oi in oiPartnerList)
-                    {
-                        var oiPartner = new OrdrItmTravelPartner();
-                        oiPartner.Mapper(oi);
-
-                        OITravelPartnerList.Add(oiPartner);
-                    }
+                    AutoMapper.Mapper.CreateMap<OrderItem, OrdrItmTravelPartner>().AfterMap((s, d) => d.Init());
+                    OITravelPartnerList = AutoMapper.Mapper.Map<List<OrdrItmTravelPartner>>(oiPartnerList);
 
                     #region Generate UrlOrderView by Product Code
                     Product p = Product.Cache.Load(OITravelPlan.ProductGuid);

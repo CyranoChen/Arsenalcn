@@ -1,18 +1,15 @@
 ﻿using System;
-using System.Data;
 using System.Linq;
 
 using Arsenalcn.Core;
 
 namespace iArsenal.Service
 {
-    public class Order_MemberShip : Order
+    public class OrdrMembership : Order
     {
-        public Order_MemberShip() { }
+        public OrdrMembership() { }
 
-        public Order_MemberShip(DataRow dr) : base(dr) { Init(); }
-
-        private void Init()
+        public void Init()
         {
             IRepository repo = new Repository();
 
@@ -25,15 +22,15 @@ namespace iArsenal.Service
                 oiBase = list.Find(x => Product.Cache.Load(x.ProductGuid).ProductType.Equals(ProductType.MemberShipCore));
                 if (oiBase != null)
                 {
-                    OIMemberShipCore = new OrdrItmMemShipCore();
-                    OIMemberShipCore.Mapper(oiBase);
+                    AutoMapper.Mapper.CreateMap<OrderItem, OrdrItmMemShipCore>().AfterMap((s, d) => d.Init());
+                    OIMemberShipCore = AutoMapper.Mapper.Map<OrdrItmMemShipCore>(oiBase);
                 }
 
                 oiBase = list.Find(x => Product.Cache.Load(x.ProductGuid).ProductType.Equals(ProductType.MemberShipPremier));
                 if (oiBase != null)
                 {
-                    OIMemberShipPremier = new OrdrItmMemShipPremier();
-                    OIMemberShipPremier.Mapper(oiBase);
+                    AutoMapper.Mapper.CreateMap<OrderItem, OrdrItmMemShipPremier>().AfterMap((s, d) => d.Init());
+                    OIMemberShipPremier = AutoMapper.Mapper.Map<OrdrItmMemShipPremier>(oiBase);
                 }
 
                 if (OIMemberShipCore != null || OIMemberShipPremier != null)
@@ -59,7 +56,6 @@ namespace iArsenal.Service
             base.StatusWorkflowInfo = _workflowInfo;
 
             #endregion
-
         }
 
         #region Members and Properties

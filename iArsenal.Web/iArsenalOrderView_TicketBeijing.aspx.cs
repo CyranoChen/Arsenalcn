@@ -85,7 +85,7 @@ namespace iArsenal.Web
                     }
 
                     // Should be Calculator in this Page
-                    float price = 0f;
+                    double price = default(double);
                     string priceInfo = string.Empty;
 
                     OrdrItm2012TicketBeijing oiTicket = o.OITicketBeijing;

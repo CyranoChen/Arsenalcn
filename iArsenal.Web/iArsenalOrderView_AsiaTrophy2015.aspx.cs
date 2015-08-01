@@ -117,11 +117,10 @@ namespace iArsenal.Web
                     }
 
                     // Should be Calculator in this Page
-                    float price = 0f;
+                    double price = default(double);
                     string priceInfo = string.Empty;
 
-                    OrdrItmTravelPlan2015AsiaTrophy oiAsiaTrophy = new OrdrItmTravelPlan2015AsiaTrophy();
-                    oiAsiaTrophy.Mapper(o.OITravelPlan);
+                    var oiAsiaTrophy = o.OITravelPlan.MapTo<OrdrItmTravelPlan2015AsiaTrophy>();
 
                     if (oiAsiaTrophy.IsActive)
                     {

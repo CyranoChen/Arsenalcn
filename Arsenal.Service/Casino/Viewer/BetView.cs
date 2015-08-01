@@ -22,21 +22,21 @@ namespace Arsenal.Service.Casino
                 (CasinoType)Enum.Parse(typeof(CasinoType), s.GetValue("ItemType").ToString())));
             cMap.ForMember(d => d.Earning, opt => opt.MapFrom(s => s.GetValue("c_Earning")));
 
-            map.ForMember(d => d.CasinoItem, opt => opt.MapFrom(s => AutoMapper.Mapper.DynamicMap<CasinoItem>(s)));
+            map.ForMember(d => d.CasinoItem, opt => opt.MapFrom(s => AutoMapper.Mapper.Map<CasinoItem>(s)));
             #endregion
 
             #region BetView.League
             var lMap = AutoMapper.Mapper.CreateMap<IDataReader, League>();
             lMap.ForMember(d => d.ID, opt => opt.MapFrom(s => s.GetValue("LeagueGuid")));
 
-            map.ForMember(d => d.League, opt => opt.MapFrom(s => AutoMapper.Mapper.DynamicMap<League>(s)));
+            map.ForMember(d => d.League, opt => opt.MapFrom(s => AutoMapper.Mapper.Map<League>(s)));
             #endregion
 
             #region BetView.Match
             var mMap = AutoMapper.Mapper.CreateMap<IDataReader, Match>();
             mMap.ForMember(d => d.ID, opt => opt.MapFrom(s => s.GetValue("MatchGuid")));
 
-            map.ForMember(d => d.Match, opt => opt.MapFrom(s => AutoMapper.Mapper.DynamicMap<Match>(s)));
+            map.ForMember(d => d.Match, opt => opt.MapFrom(s => AutoMapper.Mapper.Map<Match>(s)));
             #endregion
 
             #region BetView.Team

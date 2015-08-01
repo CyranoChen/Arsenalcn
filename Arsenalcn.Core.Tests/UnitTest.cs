@@ -7,6 +7,7 @@ using Arsenal.MvcWeb.Models.Casino;
 using Arsenal.Service.Casino;
 using AutoMapper;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Arsenal.Service;
 
 namespace Arsenalcn.Core.Tests
 {
@@ -39,21 +40,35 @@ namespace Arsenalcn.Core.Tests
         [TestMethod]
         public void AutoMapper_Test()
         {
-            var match = new MatchDto();
+            //DataTable dt = new DataTable();
+            //dt.Columns.Add("LeagueGuid", typeof(Guid));
+            //dt.Columns.Add("LeagueName", typeof(string));
+            //dt.Columns.Add("LeagueSeason", typeof(string));
 
-            match.ID = new Guid("12236a72-f35b-4a0f-90e6-67b11c3364bc");
+            //DataRow dr = dt.NewRow();
+            //dr["LeagueGuid"] = Guid.Empty;
+            //dr["LeagueName"] = "cyrano";
+            //dr["LeagueSeason"] = "good";
+            //dt.Rows.Add(dr);
 
-            IRepository repo = new Repository();
+            var list = new List<Person>();
+            list.Add(new Person { LeagueGuid = Guid.Empty, LeagueName = "cyrano", LeagueSeason = "good" });
 
-            var instance = repo.Single<MatchView>(match.ID);
+            var map = AutoMapper.Mapper.CreateMap<Person, League>()
+                .AfterMap((s, d) => d.LeagueNameInfo = "test");
 
-            instance.Many<ChoiceOption>(instance.CasinoItem.ID);
+            map.ForMember(d => d.ID, opt => opt.MapFrom(s => s.LeagueGuid));
 
-            MatchDto.CreateMap();
+            var instance = Mapper.Map<List<League>>(list).FirstOrDefault();
 
-            match = Mapper.Map<MatchDto>(instance);
+            Assert.AreEqual(instance.LeagueNameInfo, "test");
+        }
 
-            Assert.IsNotNull(match);
+        public class Person
+        {
+            public Guid LeagueGuid { get; set; }
+            public string LeagueName { get; set; }
+            public string LeagueSeason { get; set; }
         }
 
         [TestMethod]

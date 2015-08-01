@@ -177,31 +177,31 @@ namespace Arsenalcn.Core
             }
         }
 
-        public virtual void Mapper(Object obj)
-        {
-            try
-            {
-                foreach (var properInfo in this.GetType()
-                    .GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance))
-                {
-                    var properInfoOrgin = obj.GetType().GetProperty(properInfo.Name);
-                    if (properInfoOrgin != null)
-                    {
-                        properInfo.SetValue(this, properInfoOrgin.GetValue(obj, null), null);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                log.Debug(ex, new LogInfo()
-                {
-                    MethodInstance = MethodBase.GetCurrentMethod(),
-                    ThreadInstance = Thread.CurrentThread
-                });
+        //public virtual void Mapper(Object obj)
+        //{
+        //    try
+        //    {
+        //        foreach (var properInfo in this.GetType()
+        //            .GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance))
+        //        {
+        //            var properInfoOrgin = obj.GetType().GetProperty(properInfo.Name);
+        //            if (properInfoOrgin != null)
+        //            {
+        //                properInfo.SetValue(this, properInfoOrgin.GetValue(obj, null), null);
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        log.Debug(ex, new LogInfo()
+        //        {
+        //            MethodInstance = MethodBase.GetCurrentMethod(),
+        //            ThreadInstance = Thread.CurrentThread
+        //        });
 
-                throw;
-            }
-        }
+        //        throw;
+        //    }
+        //}
     }
 
     public interface IViewer

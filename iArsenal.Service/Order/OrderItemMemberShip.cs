@@ -7,9 +7,7 @@ namespace iArsenal.Service
     {
         public OrdrItmMemberShip() { }
 
-        public OrdrItmMemberShip(DataRow dr) : base(dr) { this.Init(); }
-
-        protected void Init()
+        public void Init()
         {
             String[] _para = Remark.Split('|');
 
@@ -70,9 +68,7 @@ namespace iArsenal.Service
     {
         public OrdrItmMemShipCore() { }
 
-        public OrdrItmMemShipCore(DataRow dr) : base(dr) { this.Init(); }
-
-        private new void Init()
+        public new void Init()
         {
             base.Init();
 
@@ -83,12 +79,6 @@ namespace iArsenal.Service
 
             if (!p.ProductType.Equals(ProductType.MemberShipCore))
                 throw new Exception("The OrderItem is not the type of MemberShipCore.");
-        }
-
-        public override void Mapper(object obj)
-        {
-            base.Mapper(obj);
-            this.Init();
         }
 
         public void Place(Member m, System.Data.SqlClient.SqlTransaction trans = null)
@@ -104,9 +94,7 @@ namespace iArsenal.Service
     {
         public OrdrItmMemShipPremier() { }
 
-        public OrdrItmMemShipPremier(DataRow dr) : base(dr) { this.Init(); }
-
-        private new void Init()
+        public new void Init()
         {
             base.Init();
 
@@ -117,12 +105,6 @@ namespace iArsenal.Service
 
             if (!p.ProductType.Equals(ProductType.MemberShipPremier))
                 throw new Exception("The OrderItem is not the type of MemberShipPremier.");
-        }
-
-        public override void Mapper(object obj)
-        {
-            base.Mapper(obj);
-            this.Init();
         }
 
         public void Place(Member m, System.Data.SqlClient.SqlTransaction trans = null)

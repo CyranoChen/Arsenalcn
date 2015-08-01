@@ -11,9 +11,7 @@ namespace iArsenal.Service
     {
         public OrdrWish() { }
 
-        public OrdrWish(DataRow dr) : base(dr) { Init(); }
-
-        private void Init()
+        public void Init()
         {
             IRepository repo = new Repository();
 

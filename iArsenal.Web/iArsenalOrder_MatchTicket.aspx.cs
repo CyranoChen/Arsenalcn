@@ -43,7 +43,7 @@ namespace iArsenal.Web
             {
                 if (OrderID > 0)
                 {
-                    OrdrTicket o = repo.Single<OrdrTicket>(OrderID);
+                    var o = (OrdrTicket)Order.Select(OrderID);
 
                     if (o.OIMatchTicket != null)
                     { return o.OIMatchTicket.MatchGuid; }
@@ -126,7 +126,7 @@ namespace iArsenal.Web
 
                 if (OrderID > 0)
                 {
-                    OrdrTicket o = repo.Single<OrdrTicket>(OrderID);
+                    var o = (OrdrTicket)Order.Select(OrderID);
 
                     if (o == null || !o.IsActive) { throw new Exception("此订单无效"); }
 

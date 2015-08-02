@@ -71,7 +71,7 @@ namespace iArsenal.Web
 
                 if (OrderID > 0)
                 {
-                    OrdrReplicaKit o = repo.Single<OrdrReplicaKit>(OrderID);
+                    var o = (OrdrReplicaKit)Order.Select(OrderID);
 
                     OrderItem oi_ReplicaKit = null;
 
@@ -169,7 +169,7 @@ namespace iArsenal.Web
 
                 if (OrderID > 0)
                 {
-                    OrdrReplicaKit o = repo.Single<OrdrReplicaKit>(OrderID);
+                    var o = (OrdrReplicaKit)Order.Select(OrderID);
 
                     if (o == null || !o.IsActive) { throw new Exception("此订单无效"); }
 

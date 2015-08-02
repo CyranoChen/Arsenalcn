@@ -347,7 +347,7 @@ namespace iArsenal.Web
 
                                 #region Convert ReplicaKit Order to DataRow
 
-                                OrdrReplicaKit oReplicaKit = repo.Single<OrdrReplicaKit>(o.ID);
+                                var oReplicaKit = (OrdrReplicaKit)Order.Select(o.ID);
 
                                 // Whether Home or Away or Cup ReplicaKit
                                 OrderItem oiReplicaKit = null;
@@ -564,7 +564,7 @@ namespace iArsenal.Web
 
                                 #region Convert Wish Order to DataRow
 
-                                OrdrWish oWish = repo.Single<OrdrWish>(o.ID);
+                                var oWish = (OrdrWish)Order.Select(o.ID);
 
                                 // get Member Info By Order
                                 m = repo.Single<Member>(o.MemberID);

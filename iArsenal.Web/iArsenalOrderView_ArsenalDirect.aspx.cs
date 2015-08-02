@@ -41,7 +41,7 @@ namespace iArsenal.Web
 
                 if (OrderID > 0)
                 {
-                    OrdrWish o = repo.Single<OrdrWish>(OrderID);
+                    var o = (OrdrWish)Order.Select(OrderID);
 
                     if (ConfigGlobal.IsPluginAdmin(UID) && o != null)
                     {
@@ -139,7 +139,7 @@ namespace iArsenal.Web
 
         private void BindItemData()
         {
-            OrdrWish o = repo.Single<OrdrWish>(OrderID);
+            var o = (OrdrWish)Order.Select(OrderID);
 
             // Should be Calculator in this Page
             double price = default(double);

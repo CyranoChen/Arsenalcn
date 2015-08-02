@@ -40,7 +40,7 @@ namespace iArsenal.Web
 
                 if (OrderID > 0)
                 {
-                    OrdrMembership o = repo.Single<OrdrMembership>(OrderID);
+                    var o = (OrdrMembership)Order.Select(OrderID);
 
                     if (ConfigGlobal.IsPluginAdmin(UID) && o != null)
                     {
@@ -303,7 +303,7 @@ namespace iArsenal.Web
                 {
                     if (OrderID > 0)
                     {
-                        OrdrMembership o = repo.Single<OrdrMembership>(OrderID);
+                        var o = (OrdrMembership)Order.Select(OrderID);
 
                         if (ConfigGlobal.IsPluginAdmin(UID) && o != null && o.Status.Equals(OrderStatusType.Confirmed))
                         {

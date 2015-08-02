@@ -40,7 +40,7 @@ namespace iArsenal.Web
 
                 if (OrderID > 0)
                 {
-                    OrdrTicket o = repo.Single<OrdrTicket>(OrderID);
+                    var o = (OrdrTicket)Order.Select(OrderID);
 
                     // For Vincent Song to View the MatchTickets Confirmation Page
                     if (ConfigGlobal.IsPluginAdmin(UID) || (UID.Equals(33067) && (int)o.Status >= 3) && o != null)

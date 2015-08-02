@@ -40,7 +40,7 @@ namespace iArsenal.Web
                 # region Check whether core or premier membership
                 if (OrderID > 0)
                 {
-                    OrdrMembership o = repo.Single<OrdrMembership>(OrderID);
+                    var o = (OrdrMembership)Order.Select(OrderID);
 
                     OrdrItmMemberShip oiMemberShip = null;
 
@@ -153,7 +153,7 @@ namespace iArsenal.Web
 
                 if (OrderID > 0)
                 {
-                    OrdrMembership o = repo.Single<OrdrMembership>(OrderID);
+                    var o = (OrdrMembership)Order.Select(OrderID);
 
                     if (o == null || !o.IsActive) { throw new Exception("此订单无效"); }
 

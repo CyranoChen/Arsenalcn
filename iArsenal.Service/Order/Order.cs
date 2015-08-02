@@ -121,11 +121,11 @@ namespace iArsenal.Service
             repo.Update(this, trans);
         }
 
-        public static Order SelectByID(int id)
+        public static Order Select(int key)
         {
             IRepository repo = new Repository();
 
-            Order o = repo.Single<Order>(id);
+            Order o = repo.Single<Order>(key);
 
             if (o != null)
             {

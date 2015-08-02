@@ -49,7 +49,7 @@ namespace iArsenal.Web
 
                 if (OrderID > 0)
                 {
-                    OrdrTravel o = repo.Single<OrdrTravel>(OrderID);
+                    var o = (OrdrTravel)Order.Select(OrderID);
 
                     if (o == null || !o.IsActive) { throw new Exception("此订单无效"); }
 
@@ -117,6 +117,7 @@ namespace iArsenal.Web
                     }
 
                     var oiTP = o.OITravelPlan.MapTo<OrdrItmTravelPlanLondon>();
+                    oiTP.Init();
 
                     List<OrdrItmTravelPartner> listPartner = o.OITravelPartnerList.FindAll(oi =>
                         oi.IsActive && !string.IsNullOrEmpty(oi.Remark));

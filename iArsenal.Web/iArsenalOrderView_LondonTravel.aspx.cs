@@ -39,7 +39,7 @@ namespace iArsenal.Web
 
                 if (OrderID > 0)
                 {
-                    OrdrTravel o = repo.Single<OrdrTravel>(OrderID);
+                    var o = (OrdrTravel)Order.Select(OrderID);
 
                     if (ConfigGlobal.IsPluginAdmin(UID) && o != null)
                     {
@@ -121,6 +121,7 @@ namespace iArsenal.Web
                     string priceInfo = string.Empty;
 
                     var oiLondon = o.OITravelPlan.MapTo<OrdrItmTravelPlanLondon>();
+                    oiLondon.Init();
 
                     if (oiLondon.IsActive)
                     {

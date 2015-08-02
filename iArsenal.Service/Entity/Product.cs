@@ -16,6 +16,8 @@ namespace iArsenal.Service
         {
             var map = AutoMapper.Mapper.CreateMap<IDataReader, Product>();
 
+            map.ForMember(d => d.ID, opt => opt.MapFrom(s => (Guid)s.GetValue("ProductGuid")));
+
             map.ForMember(d => d.Size, opt => opt.MapFrom(s =>
                 (ProductSizeType)Enum.Parse(typeof(ProductSizeType), s.GetValue("Size").ToString())));
 

@@ -16,7 +16,7 @@ namespace iArsenal.Web
 
                 if (!string.IsNullOrEmpty(_strOrderID) && int.TryParse(_strOrderID, out _orderID))
                 {
-                    var o = Order.SelectByID(_orderID);
+                    var o = Order.Select(_orderID);
 
                     if (o != null)
                     {

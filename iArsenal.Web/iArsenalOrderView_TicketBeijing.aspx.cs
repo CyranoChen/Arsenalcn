@@ -38,7 +38,7 @@ namespace iArsenal.Web
 
                 if (OrderID > 0)
                 {
-                    OrdrTicket o = repo.Single<OrdrTicket>(OrderID);
+                    var o = (OrdrTicket)Order.Select(OrderID);
 
                     if (ConfigGlobal.IsPluginAdmin(UID) && o != null)
                     {

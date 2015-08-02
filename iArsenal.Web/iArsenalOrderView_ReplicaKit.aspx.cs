@@ -38,7 +38,7 @@ namespace iArsenal.Web
 
                 if (OrderID > 0)
                 {
-                    OrdrReplicaKit o = repo.Single<OrdrReplicaKit>(OrderID);
+                    var o = (OrdrReplicaKit)Order.Select(OrderID);
 
                     // Whether Home or Away ReplicaKit
                     OrderItem oiReplicaKit = null;

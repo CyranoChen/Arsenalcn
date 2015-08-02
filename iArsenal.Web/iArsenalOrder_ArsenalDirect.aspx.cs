@@ -43,7 +43,7 @@ namespace iArsenal.Web
 
                 if (OrderID > 0)
                 {
-                    OrdrWish o = repo.Single<OrdrWish>(OrderID);
+                    var o = (OrdrWish)Order.Select(OrderID);
 
                     if (o == null || !o.IsActive) { throw new Exception("此订单无效"); }
 

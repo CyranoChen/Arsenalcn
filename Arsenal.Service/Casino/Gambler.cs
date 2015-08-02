@@ -21,11 +21,11 @@ namespace Arsenal.Service.Casino
         { get; set; }
 
         [DbColumn("Cash")]
-        public float Cash
+        public double Cash
         { get; set; }
 
         [DbColumn("TotalBet")]
-        public float TotalBet
+        public double TotalBet
         { get; set; }
 
         [DbColumn("Win")]
@@ -49,7 +49,7 @@ namespace Arsenal.Service.Casino
         { get; set; }
 
         [DbColumn("Banker")]
-        public int? Banker
+        public double? Banker
         { get; set; }
 
         [DbColumn("JoinDate")]

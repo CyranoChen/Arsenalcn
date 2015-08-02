@@ -8,7 +8,7 @@
         }
         else if (Model.ItemType.Equals(CasinoType.MatchResult))
         {
-            <h3>投注：@Model.BetResultHome.Value : @Model.BetResultAway.Value</h3>
+            <h3>投注：[Home] @Model.BetResultHome.Value : @Model.BetResultAway.Value [Away]</h3>
         }
         <p>@Model.BetTime.ToString("yyyy-MM-dd HH:mm:ss")</p>
         <p class="ui-li-aside">@Model.UserName</p>

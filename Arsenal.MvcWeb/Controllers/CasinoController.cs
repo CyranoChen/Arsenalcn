@@ -9,7 +9,6 @@ using AutoMapper;
 
 using Arsenal.MvcWeb.Models;
 using Arsenal.MvcWeb.Models.Casino;
-using Arsenal.Service;
 using Arsenal.Service.Casino;
 using Arsenalcn.Core;
 
@@ -199,61 +198,51 @@ namespace Arsenal.MvcWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                var id = model.MatchGuid;
+                try
+                {
+                    var id = model.MatchGuid;
 
-                //Guid? guid = CasinoItem.GetCasinoItemGuidByMatch(id, CasinoType.SingleChoice);
+                    //Gambler in Lower could not bet above the SingleBetLimit of DefaultLeague (Contest)
 
-                //if (guid.HasValue)
-                //{
-                //    if (CasinoItem.GetCasinoItem(guid.Value).CloseTime < DateTime.Now)
-                //    {
-                //        ModelState.AddModelError("Warn", "已超出投注截止时间");
-                //    }
-                //    else
-                //    {
+                    // TODO
+                    //if (m.LeagueGuid.Equals(Arsenalcn.CasinoSys.Entity.ConfigGlobal.DefaultLeagueID))
+                    //{
+                    //    if (Gambler.GetGamblerTotalBetByUserID(this.acnID, m.LeagueGuid) < ConfigGlobal.TotalBetStandard)
+                    //    {
+                    //        float _alreadyMatchBet = Arsenalcn.CasinoSys.Entity.Bet.GetUserMatchTotalBet(this.acnID, id);
 
-                //        //Gambler in Lower could not bet above the SingleBetLimit of DefaultLeague (Contest)
+                    //        if (_alreadyMatchBet + ba > ConfigGlobal.SingleBetLimit)
+                    //        { throw new Exception(string.Format("下半赛区博彩玩家单场投注不能超过{0}博彩币", ConfigGlobal.SingleBetLimit.ToString("f2"))); }
+                    //    }
+                    //}
 
-                //        // TODO
-                //        //if (m.LeagueGuid.Equals(Arsenalcn.CasinoSys.Entity.ConfigGlobal.DefaultLeagueID))
-                //        //{
-                //        //    if (Gambler.GetGamblerTotalBetByUserID(this.acnID, m.LeagueGuid) < ConfigGlobal.TotalBetStandard)
-                //        //    {
-                //        //        float _alreadyMatchBet = Arsenalcn.CasinoSys.Entity.Bet.GetUserMatchTotalBet(this.acnID, id);
+                    var bet = new Bet();
+                    bet.UserID = this.acnID;
+                    bet.UserName = User.Identity.Name;
+                    //bet.CasinoItemGuid = item.ID;
+                    bet.BetAmount = model.BetAmount;
 
-                //        //        if (_alreadyMatchBet + ba > ConfigGlobal.SingleBetLimit)
-                //        //        { throw new Exception(string.Format("下半赛区博彩玩家单场投注不能超过{0}博彩币", ConfigGlobal.SingleBetLimit.ToString("f2"))); }
-                //        //    }
-                //        //}
+                    bet.Place(id, model.SelectedOption);
 
-                //        //get selected option
-                //        SingleChoice item = (SingleChoice)CasinoItem.GetCasinoItem(guid.Value);
-                //        ChoiceOption seletedOption = item.Options.Find(x =>
-                //            x.OptionValue.Equals(model.SelectedOption, StringComparison.OrdinalIgnoreCase));
+                    //投注成功
 
-                //        Arsenalcn.CasinoSys.Entity.Bet bet = new Arsenalcn.CasinoSys.Entity.Bet();
-                //        bet.BetAmount = model.BetAmount;
-                //        bet.BetRate = seletedOption.OptionRate;
-                //        bet.CasinoItemGuid = guid.Value;
-                //        bet.UserID = this.acnID;
-                //        bet.UserName = User.Identity.Name;
-
-                //        bet.Insert(seletedOption.OptionValue);
-
-                //        //投注成功
-                //    }
-                //}
-
-                TempData["DataUrl"] = string.Format("data-url=/Casino/GameBet/{0}", id.ToString());
-                return RedirectToAction("GameBet", new { id = id });
+                    TempData["DataUrl"] = string.Format("data-url=/Casino/GameBet/{0}", id.ToString());
+                    return RedirectToAction("GameBet", new { id = id });
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("Warn", ex.Message);
+                }
             }
             else
             {
-                model.Match = MatchDto.Single(model.MatchGuid);
-                //model.MatchGuid = model.MatchGuid;
-
-                return View(model);
+                ModelState.AddModelError("Warn", "请正确填写投注单");
             }
+
+            model.Match = MatchDto.Single(model.MatchGuid);
+            //model.MatchGuid = model.MatchGuid;
+
+            return View(model);
         }
 
         // 猜比分
@@ -278,40 +267,54 @@ namespace Arsenal.MvcWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                //    var id = model.MatchGuid;
-                //    Guid? guid = CasinoItem.GetCasinoItemGuidByMatch(id, CasinoType.MatchResult);
+                try
+                {
+                    var id = model.MatchGuid;
 
-                //    if (guid.HasValue)
-                //    {
-                //        if (CasinoItem.GetCasinoItem(guid.Value).CloseTime < DateTime.Now)
-                //        {
-                //            ModelState.AddModelError("Warn", "已超出投注截止时间");
-                //        }
-                //        else if (Arsenalcn.CasinoSys.Entity.Bet.GetUserCasinoItemAllBet(this.acnID, guid.Value).Count > 0)
-                //        {
-                //            ModelState.AddModelError("Warn", "已经投过此注，不能重复猜比分");
-                //        }
-                //        else
-                //        {
-                //            Bet bet = new Bet();
-                //            bet.BetAmount = null;
-                //            bet.BetRate = null;
-                //            bet.CasinoItemGuid = guid.Value;
-                //            bet.UserID = this.acnID;
-                //            bet.UserName = User.Identity.Name;
+                    //    Guid? guid = CasinoItem.GetCasinoItemGuidByMatch(id, CasinoType.MatchResult);
 
-                //            MatchResultBetDetail matchResult = new MatchResultBetDetail();
-                //            matchResult.Home = model.ResultHome;
-                //            matchResult.Away = model.ResultAway;
+                    //    if (guid.HasValue)
+                    //    {
+                    //        if (CasinoItem.GetCasinoItem(guid.Value).CloseTime < DateTime.Now)
+                    //        {
+                    //            ModelState.AddModelError("Warn", "已超出投注截止时间");
+                    //        }
+                    //        else if (Arsenalcn.CasinoSys.Entity.Bet.GetUserCasinoItemAllBet(this.acnID, guid.Value).Count > 0)
+                    //        {
+                    //            ModelState.AddModelError("Warn", "已经投过此注，不能重复猜比分");
+                    //        }
+                    //        else
+                    //        {
+                    //            Bet bet = new Bet();
+                    //            bet.BetAmount = null;
+                    //            bet.BetRate = null;
+                    //            bet.CasinoItemGuid = guid.Value;
+                    //            bet.UserID = this.acnID;
+                    //            bet.UserName = User.Identity.Name;
 
-                //            bet.Insert(matchResult);
+                    //            MatchResultBetDetail matchResult = new MatchResultBetDetail();
+                    //            matchResult.Home = model.ResultHome;
+                    //            matchResult.Away = model.ResultAway;
 
-                //            //投注成功
+                    //            bet.Insert(matchResult);
 
-                //            TempData["DataUrl"] = string.Format("data-url=/Casino/GameBet/{0}", id.ToString());
-                //            return RedirectToAction("GameBet", new { id = id });
-                //        }
-                //    }
+
+                    var bet = new Bet();
+                    bet.UserID = this.acnID;
+                    bet.UserName = User.Identity.Name;
+                    //bet.CasinoItemGuid = item.ID;
+
+                    bet.Place(id, model.ResultHome, model.ResultAway);
+
+                    //投注成功
+
+                    TempData["DataUrl"] = string.Format("data-url=/Casino/GameBet/{0}", id.ToString());
+                    return RedirectToAction("GameBet", new { id = id });
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("Warn", ex.Message);
+                }
             }
             else
             {

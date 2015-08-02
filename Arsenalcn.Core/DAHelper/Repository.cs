@@ -768,7 +768,8 @@ namespace Arsenalcn.Core
             Delete<T>(key, trans);
         }
 
-        public void Delete<T>(Expression<Func<T, bool>> predicate, out int count, SqlTransaction trans = null) where T : class, IEntity
+        // Todo remove T where IViewer
+        public void Delete<T>(Expression<Func<T, bool>> predicate, out int count, SqlTransaction trans = null) where T : class, IEntity, IViewer, new()
         {
             Contract.Requires(predicate != null);
 
@@ -786,13 +787,20 @@ namespace Arsenalcn.Core
 
             DataSet ds = SqlHelper.ExecuteDataset(conn, CommandType.Text, sql.ToString());
 
-            if (ds.Tables[0].Rows.Count > 0)
-            {
-                foreach (DataRow dr in ds.Tables[0].Rows)
-                {
-                    ConstructorInfo ci = typeof(T).GetConstructor(new Type[] { typeof(DataRow) });
+            var dt = ds.Tables[0];
 
-                    list.Add((T)ci.Invoke(new Object[] { dr }));
+            if (dt.Rows.Count > 0)
+            {
+                //foreach (DataRow dr in ds.Tables[0].Rows)
+                //{
+                //    ConstructorInfo ci = typeof(T).GetConstructor(new Type[] { typeof(DataRow) });
+
+                //    list.Add((T)ci.Invoke(new Object[] { dr }));
+                //}
+
+                using (var reader = dt.CreateDataReader())
+                {
+                    list = reader.DataReaderMapTo<T>().ToList();
                 }
             }
 

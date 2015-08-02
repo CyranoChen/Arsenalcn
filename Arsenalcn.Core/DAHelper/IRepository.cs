@@ -28,6 +28,6 @@ namespace Arsenalcn.Core
 
         void Delete<T>(object key, SqlTransaction trans = null) where T : class, IEntity;
         void Delete<T>(T instance, SqlTransaction trans = null) where T : class, IEntity;
-        void Delete<T>(Expression<Func<T, bool>> predicate, out int count, SqlTransaction trans = null) where T : class, IEntity;
+        void Delete<T>(Expression<Func<T, bool>> predicate, out int count, SqlTransaction trans = null) where T : class, IEntity, IViewer, new();
     }
 }

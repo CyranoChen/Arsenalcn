@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Data;
+using System.Data.SqlClient;
+using System.Diagnostics.Contracts;
 
 using Arsenalcn.Core;
 
@@ -17,6 +19,39 @@ namespace Arsenal.Service.Casino
             map.ForMember(d => d.ID, opt => opt.MapFrom(s => (Guid)s.GetValue("CasinoItemGuid")));
             map.ForMember(d => d.ItemType, opt => opt.MapFrom(s =>
                 (CasinoType)Enum.Parse(typeof(CasinoType), s.GetValue("ItemType").ToString())));
+        }
+
+        public void Statistics()
+        {
+            Contract.Requires(this.ID != null && !this.ID.Equals(Guid.Empty));
+
+            string sql = string.Format(@"SELECT ISNULL(SUM(Bet), 0) - ISNULL(SUM(Earning), 0) AS TotalEarning 
+                   FROM {0} WHERE CasinoItemGuid = @key",
+                   Repository.GetTableAttr<Bet>().Name);
+
+            SqlParameter[] para = { new SqlParameter("@key", this.ID) };
+
+            DataSet ds = DataAccess.ExecuteDataset(sql, para);
+
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                this.Earning = (double)ds.Tables[0].Rows[0]["TotalEarning"];
+
+                IRepository repo = new Repository();
+                repo.Update<CasinoItem>(this);
+            }
+        }
+
+        public static void Clean(SqlTransaction trans = null)
+        {
+            //DELETE FROM AcnCasino_CasinoItem WHERE (MatchGuid NOT IN(SELECT MatchGuid FROM AcnCasino_Match))
+            string sql = string.Format(@"DELETE FROM {0} WHERE (MatchGuid NOT IN (SELECT MatchGuid FROM {1}));
+                   DELETE FROM AcnCasino_MatchResult WHERE (CasinoItemGuid NOT IN (SELECT CasinoItemGuid FROM {0}));
+                   DELETE FROM AcnCasino_SingleChoice WHERE (CasinoItemGuid NOT IN (SELECT CasinoItemGuid FROM {0}))",
+                   Repository.GetTableAttr<CasinoItem>().Name,
+                   Repository.GetTableAttr<Match>().Name);
+
+            DataAccess.ExecuteNonQuery(sql, null, trans);
         }
 
         #region Members and Properties

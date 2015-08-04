@@ -12,7 +12,7 @@ using Arsenal.Service;
 namespace Arsenalcn.Core.Tests
 {
     [TestClass]
-    public class UnitTest
+    public class AutoMapper_Test
     {
         [TestMethod]
         public void DataColumn_DefautValue_Test()
@@ -38,7 +38,7 @@ namespace Arsenalcn.Core.Tests
         }
 
         [TestMethod]
-        public void AutoMapper_Test()
+        public void AutoMapper_Single_Test()
         {
             //DataTable dt = new DataTable();
             //dt.Columns.Add("LeagueGuid", typeof(Guid));

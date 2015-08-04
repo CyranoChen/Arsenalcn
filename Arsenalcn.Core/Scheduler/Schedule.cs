@@ -27,7 +27,11 @@ namespace Arsenalcn.Core.Scheduler
                 DailyTime = Convert.ToInt32(dr["DailyTime"]);
 
                 Minutes = Convert.ToInt32(dr["Minutes"]);
-                Minutes = Minutes < ScheduleManager.TimerMinutesInterval ? ScheduleManager.TimerMinutesInterval : Minutes;
+
+                if (Minutes > 0 & Minutes < ScheduleManager.TimerMinutesInterval)
+                {
+                    Minutes = ScheduleManager.TimerMinutesInterval;
+                }
 
                 LastCompletedTime = Convert.ToDateTime(dr["LastCompletedTime"]);
                 IsSystem = Convert.ToBoolean(dr["IsSystem"]);
@@ -105,14 +109,14 @@ namespace Arsenalcn.Core.Scheduler
                              LastCompletedTime = @lastCompletedTime, IsSystem = @isSystem, IsActive = @isActive, Remark = @remark 
                              WHERE ScheduleKey = @key", Repository.GetTableAttr<Schedule>().Name);
 
-            SqlParameter[] para = { 
-                                      new SqlParameter("@scheduleType", ScheduleType), 
-                                      new SqlParameter("@dailyTime", DailyTime), 
-                                      new SqlParameter("@minutes", Minutes), 
-                                      new SqlParameter("@lastCompletedTime", LastCompletedTime), 
-                                      new SqlParameter("@isSystem", IsSystem), 
-                                      new SqlParameter("@isActive", IsActive), 
-                                      new SqlParameter("@remark", Remark), 
+            SqlParameter[] para = {
+                                      new SqlParameter("@scheduleType", ScheduleType),
+                                      new SqlParameter("@dailyTime", DailyTime),
+                                      new SqlParameter("@minutes", Minutes),
+                                      new SqlParameter("@lastCompletedTime", LastCompletedTime),
+                                      new SqlParameter("@isSystem", IsSystem),
+                                      new SqlParameter("@isActive", IsActive),
+                                      new SqlParameter("@remark", Remark),
                                       new SqlParameter("@key", ScheduleKey) };
 
             DataAccess.ExecuteNonQuery(sql, para, trans);

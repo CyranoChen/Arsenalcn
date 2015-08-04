@@ -14,7 +14,7 @@ namespace Arsenalcn.Core.Scheduler
     /// </summary>
     public static class ScheduleManager
     {
-        public static readonly int TimerMinutesInterval = 5;
+        public static readonly int TimerMinutesInterval = 10;
 
         public static void Execute(string assembly = null)
         {

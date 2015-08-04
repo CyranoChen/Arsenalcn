@@ -1,7 +1,8 @@
 ﻿using System;
-using System.Data;
+using System.Data.SqlClient;
 
 using Arsenalcn.Core;
+
 
 namespace Arsenal.Service.Casino
 {
@@ -9,6 +10,16 @@ namespace Arsenal.Service.Casino
     public class BetDetail : Entity<int>
     {
         public BetDetail() : base() { }
+
+        public static void Clean(SqlTransaction trans = null)
+        {
+            //DELETE FROM AcnCasino_BetDetail WHERE (BetID NOT IN (SELECT ID FROM AcnCasino_Bet))
+            string sql = string.Format(@"DELETE FROM {0} WHERE (BetID NOT IN (SELECT ID FROM {1}))",
+                   Repository.GetTableAttr<BetDetail>().Name,
+                   Repository.GetTableAttr<Bet>().Name);
+
+            DataAccess.ExecuteNonQuery(sql, null, trans);
+        }
 
         #region Members and Properties
 

@@ -1,32 +1,18 @@
 ﻿using System;
-using System.Reflection;
-using System.Threading;
-
-using Arsenal.Service;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Arsenalcn.Core;
-using Arsenalcn.Core.Logger;
-using Arsenalcn.Core.Scheduler;
+using Arsenal.Service;
 
-namespace Arsenal.Scheduler
+namespace Arsenalcn.Scheduler.Tests
 {
-    class RefreshCache : ISchedule
+    [TestClass]
+    public class RefreshCache
     {
-        private readonly ILog log = new AppLog();
-
-        public void Execute(object state)
+        [TestMethod]
+        public void ArsenalServiceRefreshCache_Test()
         {
-            var logInfo = new LogInfo()
-            {
-                MethodInstance = MethodBase.GetCurrentMethod(),
-                ThreadInstance = Thread.CurrentThread
-            };
-
-            //string _scheduleType = this.GetType().DeclaringType.FullName;
-
             try
             {
-                log.Info("Scheduler Start: (RefreshCache)", logInfo);
-
                 Config.Cache.RefreshCache();
 
                 RelationLeagueTeam.Clean();
@@ -43,12 +29,10 @@ namespace Arsenal.Scheduler
                 Arsenal.Service.Casino.ChoiceOption.Clean();
                 Arsenal.Service.Casino.Bet.Clean();
                 Arsenal.Service.Casino.BetDetail.Clean();
-
-                log.Info("Scheduler End: (RefreshCache)", logInfo);
             }
             catch (Exception ex)
             {
-                log.Warn(ex, logInfo);
+                Assert.Fail(ex.Message);
             }
         }
     }

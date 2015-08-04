@@ -25,6 +25,7 @@
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <TargetFrameworkProfile />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -313,6 +314,9 @@
       <DependentUpon>DefaultMaster.master</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scheduler\AutoUpdateActiveCasinoItemEarning.cs" />
+    <Compile Include="Scheduler\AutoUpdateActiveBankerCash.cs" />
+    <Compile Include="Scheduler\AutoUpdateArsenalMatchResult.cs" />
     <Compile Include="Scheduler\RefreshCache.cs" />
     <Compile Include="ServerACNCallback.ashx.cs">
       <DependentUpon>ServerACNCallback.ashx</DependentUpon>

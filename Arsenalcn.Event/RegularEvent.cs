@@ -18,7 +18,7 @@ namespace Arsenalcn.Event
             #region User Club Statistics
             try
             {
-                Arsenalcn.ClubSys.Service.UserClubLogic.UserClubStatistics();
+                //Arsenalcn.ClubSys.Service.UserClubLogic.UserClubStatistics();
             }
             catch (Exception ex)
             {
@@ -30,7 +30,7 @@ namespace Arsenalcn.Event
             #region Active Banker Statistics
             try
             {
-                Arsenalcn.CasinoSys.Entity.Banker.ActiveBankerStatistics();
+                //Arsenalcn.CasinoSys.Entity.Banker.ActiveBankerStatistics();
             }
             catch (Exception ex)
             {
@@ -41,8 +41,8 @@ namespace Arsenalcn.Event
             #region Clean Object
             try
             {
-                Arsenalcn.CasinoSys.Entity.ChoiceOption.CleanNoCasinoItemChoiceOption();
-                Arsenalcn.CasinoSys.Entity.Bet.CleanNoCasinoItemBet();
+                //Arsenalcn.CasinoSys.Entity.ChoiceOption.CleanNoCasinoItemChoiceOption();
+                //Arsenalcn.CasinoSys.Entity.Bet.CleanNoCasinoItemBet();
             }
             catch (Exception ex)
             {
@@ -50,7 +50,7 @@ namespace Arsenalcn.Event
             }
             #endregion
 
-            //#region ConfigGlobal Cache
+            #region ConfigGlobal Cache
             //try
             //{
             //    Arsenal.Entity.ConfigGlobal.Cache.RefreshCache();
@@ -59,7 +59,7 @@ namespace Arsenalcn.Event
             //{
             //    LogEvent.Logging(LogEventType.Error, "刷新全局配置缓存", ex.StackTrace, ex.Message);
             //}
-            //#endregion
+            #endregion
 
             LogEvent.Logging(LogEventType.Success, "Regular Event End!", string.Empty, string.Empty);
         }

@@ -1,12 +1,10 @@
 ﻿using System;
+using System.Collections;
 using System.Data;
-
-using Arsenalcn.Core;
 using System.Data.SqlClient;
 using System.Diagnostics.Contracts;
-using System.Collections;
-using System.Threading;
-using System.Globalization;
+
+using Arsenalcn.Core;
 
 namespace Arsenal.Service.Casino
 {
@@ -22,6 +20,7 @@ namespace Arsenal.Service.Casino
             map.ForMember(d => d.BetAmount, opt => opt.MapFrom(s => s.GetValue("Bet")));
         }
 
+        // Place Bet of SingleChoice
         public void Place(Guid matchGuid, string selectedOption)
         {
             using (SqlConnection conn = new SqlConnection(DataAccess.ConnectString))
@@ -135,6 +134,7 @@ namespace Arsenal.Service.Casino
             }
         }
 
+        // Place Bet of MatchResult
         public void Place(Guid matchGuid, short resultHome, short resultAway)
         {
             using (SqlConnection conn = new SqlConnection(DataAccess.ConnectString))
@@ -225,6 +225,17 @@ namespace Arsenal.Service.Casino
                 }
             }
         }
+
+        public static void Clean(SqlTransaction trans = null)
+        {
+            //DELETE FROM dbo.AcnCasino_Bet WHERE (CasinoItemGuid NOT IN(SELECT CasinoItemGuid FROM dbo.AcnCasino_CasinoItem))
+            string sql = string.Format(@"DELETE FROM {0} WHERE (CasinoItemGuid NOT IN (SELECT CasinoItemGuid FROM {1}))",
+                   Repository.GetTableAttr<Bet>().Name,
+                   Repository.GetTableAttr<CasinoItem>().Name);
+
+            DataAccess.ExecuteNonQuery(sql, null, trans);
+        }
+
 
         #region Members and Properties
 

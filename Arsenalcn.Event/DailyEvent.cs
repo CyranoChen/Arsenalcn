@@ -18,7 +18,7 @@ namespace Arsenalcn.Event
             #region Calculator Club Fortune
             try
             {
-                Arsenalcn.ClubSys.Service.UserClubLogic.CalcClubFortuneIncrement();
+                //Arsenalcn.ClubSys.Service.UserClubLogic.CalcClubFortuneIncrement();
             }
             catch (Exception ex)
             {
@@ -29,7 +29,7 @@ namespace Arsenalcn.Event
             #region Generate LuckyPlayer
             try
             {
-                Arsenalcn.ClubSys.Service.LuckyPlayer.GenerateLuckyPlayer();
+                //Arsenalcn.ClubSys.Service.LuckyPlayer.GenerateLuckyPlayer();
             }
             catch (Exception ex)
             {
@@ -38,25 +38,25 @@ namespace Arsenalcn.Event
             #endregion
 
             #region Generate Video on LeftPanel
-            try
-            {
-                Guid? guid = Arsenalcn.ClubSys.Service.UserVideo.SetDailyVideo();
+            //try
+            //{
+            //    Guid? guid = Arsenalcn.ClubSys.Service.UserVideo.SetDailyVideo();
 
-                if (guid.HasValue)
-                {
-                    Config c = new Config();
-                    c.ConfigSystem = ConfigSystem.AcnClub;
-                    c.ConfigKey = "DailyVideoGuid";
-                    c.ConfigValue = guid.Value.ToString();
+            //    if (guid.HasValue)
+            //    {
+            //        Config c = new Config();
+            //        c.ConfigSystem = ConfigSystem.AcnClub;
+            //        c.ConfigKey = "DailyVideoGuid";
+            //        c.ConfigValue = guid.Value.ToString();
 
-                    c.Update();
-                    Config.Cache.RefreshCache();
-                }
-            }
-            catch (Exception ex)
-            {
-                LogEvent.Logging(LogEventType.Error, "(AcnClub)集锦随机生成出错", ex.StackTrace, ex.Message);
-            }
+            //        c.Update();
+            //        Config.Cache.RefreshCache();
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    LogEvent.Logging(LogEventType.Error, "(AcnClub)集锦随机生成出错", ex.StackTrace, ex.Message);
+            //}
             #endregion
 
             // AcnCasinoSys Event
@@ -74,7 +74,7 @@ namespace Arsenalcn.Event
             #region CasinoItem Statistics
             try
             {
-                Arsenalcn.CasinoSys.Entity.CasinoItem.ActiveCasinoItemStatistics();
+                //Arsenalcn.CasinoSys.Entity.CasinoItem.ActiveCasinoItemStatistics();
             }
             catch (Exception ex)
             {

@@ -48,6 +48,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arsenal.Web", "Arsenal.Web\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arsenal.MvcWeb", "Arsenal.MvcWeb\Arsenal.MvcWeb.csproj", "{DBFABB35-A675-4A03-93FC-12FBADE3E916}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arsenalcn.Scheduler.Tests", "Arsenalcn.Scheduler.Tests\Arsenalcn.Scheduler.Tests.csproj", "{A89390ED-8634-4526-89F5-D438B0A2246F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -110,6 +112,10 @@ Global
 		{DBFABB35-A675-4A03-93FC-12FBADE3E916}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DBFABB35-A675-4A03-93FC-12FBADE3E916}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DBFABB35-A675-4A03-93FC-12FBADE3E916}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A89390ED-8634-4526-89F5-D438B0A2246F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A89390ED-8634-4526-89F5-D438B0A2246F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A89390ED-8634-4526-89F5-D438B0A2246F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A89390ED-8634-4526-89F5-D438B0A2246F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -129,5 +135,6 @@ Global
 		{852E458A-6CBD-42D1-BA22-8F6EDA353AA7} = {EE6F6FBA-A4CE-4D74-9734-CC6D1FFEB58D}
 		{2F427066-57F9-495F-B91A-F4D0D097C949} = {EE6F6FBA-A4CE-4D74-9734-CC6D1FFEB58D}
 		{DBFABB35-A675-4A03-93FC-12FBADE3E916} = {EE6F6FBA-A4CE-4D74-9734-CC6D1FFEB58D}
+		{A89390ED-8634-4526-89F5-D438B0A2246F} = {241E66C7-AD38-4990-860E-CF6F7D613A64}
 	EndGlobalSection
 EndGlobal

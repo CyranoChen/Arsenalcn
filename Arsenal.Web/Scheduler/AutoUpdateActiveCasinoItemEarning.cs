@@ -2,14 +2,15 @@
 using System.Reflection;
 using System.Threading;
 
-using Arsenal.Service;
 using Arsenalcn.Core;
 using Arsenalcn.Core.Logger;
 using Arsenalcn.Core.Scheduler;
 
+using Arsenal.Service.Casino;
+
 namespace Arsenal.Scheduler
 {
-    class RefreshCache : ISchedule
+    class AutoUpdateActiveCasinoItemEarning : ISchedule
     {
         private readonly ILog log = new AppLog();
 
@@ -21,24 +22,21 @@ namespace Arsenal.Scheduler
                 ThreadInstance = Thread.CurrentThread
             };
 
-            //string _scheduleType = this.GetType().DeclaringType.FullName;
-
             try
             {
-                log.Info("Scheduler Start: (RefreshCache)", logInfo);
+                log.Info("Scheduler Start: (AutoUpdateActiveCasinoItemEarning)", logInfo);
 
-                Config.Cache.RefreshCache();
+                IRepository repo = new Repository();
 
-                RelationLeagueTeam.Clean();
-                RelationLeagueTeam.Cache.RefreshCache();
+                var list = repo.All<CasinoItem>().FindAll(x =>
+                    x.ItemType.Equals(CasinoType.SingleChoice) && x.Earning.HasValue);
 
-                League.Cache.RefreshCache();
-                Match.Cache.RefreshCache();
-                Player.Cache.RefreshCache();
-                Team.Cache.RefreshCache();
-                Video.Cache.RefreshCache();
+                foreach (var c in list)
+                {
+                    c.Statistics();
+                }
 
-                log.Info("Scheduler End: (RefreshCache)", logInfo);
+                log.Info("Scheduler End: (AutoUpdateActiveCasinoItemEarning)", logInfo);
             }
             catch (Exception ex)
             {

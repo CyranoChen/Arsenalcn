@@ -106,7 +106,7 @@ namespace iArsenal.Web
                 {
                     tmpString = ViewState["ProductType"].ToString();
                     if (!string.IsNullOrEmpty(tmpString))
-                        returnValue = returnValue && x.OrderType.ToString().Equals(tmpString);
+                        returnValue = returnValue && x.OrderType.ToString().Equals(tmpString, StringComparison.OrdinalIgnoreCase);
                 }
 
                 if (ViewState["Status"] != null)
@@ -217,8 +217,8 @@ namespace iArsenal.Web
             else
                 ViewState["OrderDate"] = string.Empty;
 
-            if (!string.IsNullOrEmpty(ddlProductType.SelectedValue))
-                ViewState["ProductType"] = ddlProductType.SelectedValue;
+            if (!string.IsNullOrEmpty(ddlOrderType.SelectedValue))
+                ViewState["ProductType"] = ddlOrderType.SelectedValue;
             else
                 ViewState["ProductType"] = string.Empty;
 
@@ -341,7 +341,7 @@ namespace iArsenal.Web
                         Product p = new Product();
                         Product pFont = new Product();
 
-                        switch (ddlProductType.SelectedValue)
+                        switch (ddlOrderType.SelectedValue)
                         {
                             case "ReplicaKit":
 
@@ -681,7 +681,7 @@ namespace iArsenal.Web
                 CheckBox cbOrderID = e.Row.FindControl("cbOrderID") as CheckBox;
                 HyperLink hlOrderID = e.Row.FindControl("hlOrderID") as HyperLink;
                 HyperLink hlName = e.Row.FindControl("hlName") as HyperLink;
-                Label lblProductType = e.Row.FindControl("lblProductType") as Label;
+                Label lblOrderType = e.Row.FindControl("lblOrderType") as Label;
                 Label lblOrderStatus = e.Row.FindControl("lblOrderStatus") as Label;
 
                 if (cbOrderID != null)
@@ -714,13 +714,14 @@ namespace iArsenal.Web
                     hlName.NavigateUrl = string.Format("AdminOrder.aspx?MemberID={0}", o.MemberID);
                 }
 
-                if (lblProductType != null)
+                if (lblOrderType != null && !o.OrderType.Equals(OrderBaseType.None))
                 {
-                    lblProductType.Text = string.Format("<em>{0}</em>", ddlProductType.Items.FindByValue(o.OrderType.ToString()).Text);
+                    lblOrderType.Text = string.Format("<em>{0}</em>",
+                        ddlOrderType.Items.FindByValue(o.OrderType.ToString()).Text);
                 }
                 else
                 {
-                    lblProductType.Visible = false;
+                    lblOrderType.Visible = false;
                 }
 
                 if (lblOrderStatus != null)

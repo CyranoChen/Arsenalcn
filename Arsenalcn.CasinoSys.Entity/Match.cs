@@ -156,7 +156,7 @@ namespace Arsenalcn.CasinoSys.Entity
                 SqlTransaction trans = conn.BeginTransaction();
                 try
                 {
-                    Guid? casinoItemGuid = DataAccess.CasinoItem.GetCasinoItemGuidByMatch(MatchGuid, CasinoType.SingleChoice.ToString(), trans);
+                    Guid? casinoItemGuid = DataAccess.CasinoItem.GetCasinoItemGuidByMatch(MatchGuid, (int)CasinoType.SingleChoice, trans);
                     if (casinoItemGuid.HasValue)
                     {
                         CasinoItem item = CasinoItem.GetCasinoItem(casinoItemGuid.Value);
@@ -211,7 +211,7 @@ namespace Arsenalcn.CasinoSys.Entity
 
                 try
                 {
-                    Guid? itemGuid = DataAccess.CasinoItem.GetCasinoItemGuidByMatch(MatchGuid, CasinoType.SingleChoice.ToString(), trans);
+                    Guid? itemGuid = DataAccess.CasinoItem.GetCasinoItemGuidByMatch(MatchGuid, (int)CasinoType.SingleChoice, trans);
 
                     if (itemGuid.HasValue)
                     {
@@ -282,7 +282,7 @@ namespace Arsenalcn.CasinoSys.Entity
                         item.Save(trans);
                     }
 
-                    itemGuid = DataAccess.CasinoItem.GetCasinoItemGuidByMatch(MatchGuid, CasinoType.MatchResult.ToString(), trans);
+                    itemGuid = DataAccess.CasinoItem.GetCasinoItemGuidByMatch(MatchGuid, (int)CasinoType.MatchResult, trans);
 
                     if (itemGuid.HasValue)
                     {

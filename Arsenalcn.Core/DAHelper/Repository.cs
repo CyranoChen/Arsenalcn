@@ -234,6 +234,60 @@ namespace Arsenalcn.Core
             }
         }
 
+        public List<T> QueryCondition<T>(Expression<Func<T, bool>> predicate) where T : class, IViewer, new()
+        {
+            try
+            {
+                Contract.Requires(predicate != null);
+
+                var list = new List<T>();
+
+                var attr = GetTableAttr<T>();
+
+                StringBuilder sql = new StringBuilder();
+                sql.Append("SELECT * FROM " + attr.Name);
+
+                var condition = new ConditionBuilder();
+                condition.Build(predicate.Body);
+
+                if (!string.IsNullOrEmpty(condition.Condition))
+                {
+                    var where = string.Format(condition.Condition, condition.Arguments);
+
+                    sql.Append(" WHERE " + where);
+                }
+
+                if (!string.IsNullOrEmpty(attr.Sort))
+                {
+                    sql.Append(" ORDER BY " + attr.Sort);
+                }
+
+                DataSet ds = DataAccess.ExecuteDataset(sql.ToString());
+
+                var dt = ds.Tables[0];
+
+                if (dt.Rows.Count > 0)
+                {
+                    using (var reader = dt.CreateDataReader())
+                    {
+                        list = reader.DataReaderMapTo<T>().ToList();
+                    }
+                }
+
+                return list;
+            }
+            catch (Exception ex)
+            {
+                log.Debug(ex, new LogInfo()
+                {
+                    MethodInstance = MethodBase.GetCurrentMethod(),
+                    ThreadInstance = Thread.CurrentThread
+                });
+
+                throw;
+            }
+        }
+
         public List<T> Query<T>(Hashtable htWhere) where T : class, IViewer, new()
         {
             try

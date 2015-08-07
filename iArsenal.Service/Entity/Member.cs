@@ -21,7 +21,7 @@ namespace iArsenal.Service
                 #region Generate Member MemberTypeInfo
                 var retValue = string.Empty;
 
-                switch ((MemberType)((short)s.GetValue("MemberType")))
+                switch ((MemberType)((int)s.GetValue("MemberType")))
                 {
                     case MemberType.Match:
                         retValue = "观赛";

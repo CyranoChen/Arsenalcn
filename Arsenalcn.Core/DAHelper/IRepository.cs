@@ -14,6 +14,8 @@ namespace Arsenalcn.Core
         List<T> All<T>() where T : class, IViewer, new();
         List<T> All<T>(Pager pager, Hashtable htOrder = null) where T : class, IViewer, new();
 
+        List<T> QueryCondition<T>(Expression<Func<T, bool>> predicate) where T : class, IViewer, new();
+
         List<T> Query<T>(Hashtable htWhere) where T : class, IViewer, new();
         List<T> Query<T>(Pager pager, Hashtable htWhere, Hashtable htOrder = null) where T : class, IViewer, new();
 

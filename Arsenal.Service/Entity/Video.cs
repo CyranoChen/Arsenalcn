@@ -16,11 +16,13 @@ namespace Arsenal.Service
             var map = AutoMapper.Mapper.CreateMap<IDataReader, Video>();
 
             map.ForMember(d => d.ID, opt => opt.MapFrom(s => (Guid)s.GetValue("VideoGuid")));
-            map.ForMember(d => d.VideoType, opt => opt.MapFrom(s =>
-                (VideoFileType)Enum.Parse(typeof(VideoFileType), s.GetValue("VideoType").ToString())));
+            //map.ForMember(d => d.VideoType, opt => opt.MapFrom(s =>
+            //    (VideoFileType)Enum.Parse(typeof(VideoFileType), s.GetValue("VideoType").ToString())));
+
             map.ForMember(d => d.VideoFilePath, opt => opt.MapFrom(s =>
                 string.Format("{0}{1}.{2}", ConfigGlobal.ArsenalVideoUrl,
-                s.GetValue("VideoGuid").ToString(), s.GetValue("VideoType").ToString().ToLower())));
+                s.GetValue("VideoGuid").ToString(),
+                ((VideoFileType)Enum.Parse(typeof(VideoFileType), s.GetValue("VideoType").ToString())).ToString())));
         }
 
         public static class Cache
@@ -124,7 +126,7 @@ namespace Arsenal.Service
 
     public enum VideoFileType
     {
-        flv,
-        mp4
+        flv = 0,
+        mp4 = 1
     }
 }

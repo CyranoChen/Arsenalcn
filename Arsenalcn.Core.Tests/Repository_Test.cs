@@ -5,6 +5,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Arsenal.Service.Casino;
 using Arsenal.Service;
+using System.Linq.Expressions;
 
 namespace Arsenalcn.Core.Tests
 {
@@ -156,6 +157,17 @@ namespace Arsenalcn.Core.Tests
             whereBy.Add("IsActive", true);
 
             var query = repo.Query<League>(new Pager(2) { PagingSize = 5 }, whereBy, orderBy);
+
+            Assert.IsNotNull(query);
+        }
+
+        [TestMethod]
+        public void Query_Condition_Test()
+        {
+            IRepository repo = new Repository();
+
+            var query = repo.QueryCondition<MatchView>(x =>
+                x.ResultHome >= 0 && x.ResultAway >= 0 && x.PlayTime < DateTime.Now);
 
             Assert.IsNotNull(query);
         }

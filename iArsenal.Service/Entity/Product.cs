@@ -18,18 +18,18 @@ namespace iArsenal.Service
 
             map.ForMember(d => d.ID, opt => opt.MapFrom(s => (Guid)s.GetValue("ProductGuid")));
 
-            map.ForMember(d => d.Size, opt => opt.MapFrom(s =>
-                (ProductSizeType)Enum.Parse(typeof(ProductSizeType), s.GetValue("Size").ToString())));
+            //map.ForMember(d => d.Size, opt => opt.MapFrom(s =>
+            //    (ProductSizeType)Enum.Parse(typeof(ProductSizeType), s.GetValue("Size").ToString())));
 
-            map.ForMember(d => d.Currency, opt => opt.MapFrom(s =>
-                (ProductCurrencyType)Enum.Parse(typeof(ProductCurrencyType), s.GetValue("Currency").ToString())));
+            //map.ForMember(d => d.Currency, opt => opt.MapFrom(s =>
+            //    (ProductCurrencyType)Enum.Parse(typeof(ProductCurrencyType), s.GetValue("Currency").ToString())));
 
             map.ForMember(d => d.ProductTypeInfo, opt => opt.ResolveUsing(s =>
             {
                 #region Generate Product Type Info
                 var retValue = string.Empty;
 
-                switch ((ProductType)((short)s.GetValue("ProductType")))
+                switch ((ProductType)((int)s.GetValue("ProductType")))
                 {
                     case ProductType.ReplicaKitHome:
                         retValue = "主场球衣";
@@ -90,7 +90,7 @@ namespace iArsenal.Service
                 #region Generate CurrencyInfo
                 var retValue = string.Empty;
 
-                switch ((ProductCurrencyType)Enum.Parse(typeof(ProductCurrencyType), s.GetValue("Currency").ToString()))
+                switch ((ProductCurrencyType)((int)s.GetValue("Currency")))
                 {
                     case ProductCurrencyType.GBP:
                         retValue = "￡";
@@ -125,7 +125,7 @@ namespace iArsenal.Service
                     _unitPrice = price;
                 }
 
-                switch ((ProductCurrencyType)Enum.Parse(typeof(ProductCurrencyType), s.GetValue("Currency").ToString()))
+                switch ((ProductCurrencyType)((int)s.GetValue("Currency")))
                 {
                     case ProductCurrencyType.GBP:
                         retValue = _unitPrice * ConfigGlobal.ExchangeRateGBP;
@@ -149,7 +149,7 @@ namespace iArsenal.Service
                 double price = (double)s.GetValue("Price");
                 var currencyIcon = string.Empty;
 
-                switch ((ProductCurrencyType)Enum.Parse(typeof(ProductCurrencyType), s.GetValue("Currency").ToString()))
+                switch ((ProductCurrencyType)((int)s.GetValue("Currency")))
                 {
                     case ProductCurrencyType.GBP:
                         currencyIcon = "￡";
@@ -180,7 +180,7 @@ namespace iArsenal.Service
                 double? sale = (double?)s.GetValue("Sale");
                 var currencyIcon = string.Empty;
 
-                switch ((ProductCurrencyType)Enum.Parse(typeof(ProductCurrencyType), s.GetValue("Currency").ToString()))
+                switch ((ProductCurrencyType)((int)s.GetValue("Currency")))
                 {
                     case ProductCurrencyType.GBP:
                         currencyIcon = "￡";
@@ -347,18 +347,18 @@ namespace iArsenal.Service
 
     public enum ProductSizeType
     {
-        None,
-        Childrens,
-        Adults,
-        Infants,
-        MiniKit,
-        Ladies
+        None = 0,
+        Childrens = 2,
+        Adults = 1,
+        Infants = 3,
+        MiniKit = 4,
+        Ladies = 5
     }
 
     public enum ProductCurrencyType
     {
-        GBP,
-        CNY,
-        USD
+        GBP = 0,
+        CNY = 1,
+        USD = 2
     }
 }

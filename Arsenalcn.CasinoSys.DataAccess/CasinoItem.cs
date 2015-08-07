@@ -21,7 +21,7 @@ namespace Arsenalcn.CasinoSys.DataAccess
                 return ds.Tables[0].Rows[0];
         }
 
-        public static Guid InsertCasinoItem(string itemType, Guid? matchGuid, string itemTitle, string itemBody, DateTime publishTime, DateTime closeTime, Guid bankerID, string bankerName, int ownerID, string ownerName, SqlTransaction trans)
+        public static Guid InsertCasinoItem(int itemType, Guid? matchGuid, string itemTitle, string itemBody, DateTime publishTime, DateTime closeTime, Guid bankerID, string bankerName, int ownerID, string ownerName, SqlTransaction trans)
         {
             Guid casinoItemGuid = Guid.NewGuid();
 
@@ -289,21 +289,10 @@ namespace Arsenalcn.CasinoSys.DataAccess
                 DateTime monthStart = iDay.AddDays(1 - iDay.Day);
                 DateTime nextStart = iDay.AddMonths(1);
 
-                //                string sql = string.Format(@"SELECT TOP 5 dbo.AcnCasino_CasinoItem.MatchGuid, TeamH.TeamDisplayName AS HomeDisplay, TeamA.TeamDisplayName AS AwayDisplay, 
-                //                      TeamH.TeamEnglishName AS HomeEng, TeamA.TeamEnglishName AS AwayEng, dbo.AcnCasino_Match.PlayTime, 
-                //                      dbo.AcnCasino_CasinoItem.Earning, dbo.AcnCasino_Match.Round, dbo.Arsenal_League.LeagueName
-                //                      FROM dbo.AcnCasino_CasinoItem INNER JOIN
-                //                      dbo.AcnCasino_Match ON dbo.AcnCasino_CasinoItem.MatchGuid = dbo.AcnCasino_Match.MatchGuid INNER JOIN
-                //                      dbo.Arsenal_League ON dbo.AcnCasino_Match.LeagueGuid = dbo.Arsenal_League.LeagueGuid INNER JOIN
-                //                      dbo.Arsenal_Team AS TeamH ON dbo.AcnCasino_Match.Home = TeamH.TeamGuid INNER JOIN
-                //                      dbo.Arsenal_Team AS TeamA ON dbo.AcnCasino_Match.Away = TeamA.TeamGuid
-                //                      WHERE (dbo.AcnCasino_CasinoItem.Earning IS NOT NULL) AND (dbo.AcnCasino_CasinoItem.ItemType = 'SingleChoice') AND (dbo.AcnCasino_Match.PlayTime >= '{0}') AND (dbo.AcnCasino_Match.PlayTime < '{1}')
-                //                      ORDER BY dbo.AcnCasino_CasinoItem.Earning DESC", monthStart, nextStart);
-
                 string sql = string.Format(@"SELECT TOP 5 dbo.AcnCasino_CasinoItem.MatchGuid, dbo.AcnCasino_Match.PlayTime, 
                                       dbo.AcnCasino_CasinoItem.Earning, dbo.AcnCasino_Match.Round 
                                       FROM dbo.AcnCasino_CasinoItem INNER JOIN dbo.AcnCasino_Match ON dbo.AcnCasino_CasinoItem.MatchGuid = dbo.AcnCasino_Match.MatchGuid
-                                      WHERE (dbo.AcnCasino_CasinoItem.Earning IS NOT NULL) AND (dbo.AcnCasino_CasinoItem.ItemType = 'SingleChoice') AND (dbo.AcnCasino_Match.PlayTime >= '{0}') AND (dbo.AcnCasino_Match.PlayTime < '{1}')
+                                      WHERE (dbo.AcnCasino_CasinoItem.Earning IS NOT NULL) AND (dbo.AcnCasino_CasinoItem.ItemType = 2) AND (dbo.AcnCasino_Match.PlayTime >= '{0}') AND (dbo.AcnCasino_Match.PlayTime < '{1}')
                                       ORDER BY dbo.AcnCasino_CasinoItem.Earning DESC", monthStart, nextStart);
 
                 DataSet ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql);
@@ -329,21 +318,10 @@ namespace Arsenalcn.CasinoSys.DataAccess
                 DateTime monthStart = iDay.AddDays(1 - iDay.Day);
                 DateTime nextStart = iDay.AddMonths(1);
 
-                //                string sql = string.Format(@"SELECT TOP 5 dbo.AcnCasino_CasinoItem.MatchGuid, TeamH.TeamDisplayName AS HomeDisplay, TeamA.TeamDisplayName AS AwayDisplay, 
-                //                      TeamH.TeamEnglishName AS HomeEng, TeamA.TeamEnglishName AS AwayEng, dbo.AcnCasino_Match.PlayTime, 
-                //                      dbo.AcnCasino_CasinoItem.Earning, dbo.AcnCasino_Match.Round, dbo.Arsenal_League.LeagueName
-                //                      FROM dbo.AcnCasino_CasinoItem INNER JOIN
-                //                      dbo.AcnCasino_Match ON dbo.AcnCasino_CasinoItem.MatchGuid = dbo.AcnCasino_Match.MatchGuid INNER JOIN
-                //                      dbo.Arsenal_League ON dbo.AcnCasino_Match.LeagueGuid = dbo.Arsenal_League.LeagueGuid INNER JOIN
-                //                      dbo.Arsenal_Team AS TeamH ON dbo.AcnCasino_Match.Home = TeamH.TeamGuid INNER JOIN
-                //                      dbo.Arsenal_Team AS TeamA ON dbo.AcnCasino_Match.Away = TeamA.TeamGuid
-                //                      WHERE (dbo.AcnCasino_CasinoItem.Earning IS NOT NULL) AND (dbo.AcnCasino_CasinoItem.ItemType = 'SingleChoice') AND (dbo.AcnCasino_Match.PlayTime >= '{0}') AND (dbo.AcnCasino_Match.PlayTime < '{1}')
-                //                      ORDER BY dbo.AcnCasino_CasinoItem.Earning", monthStart, nextStart);
-
                 string sql = string.Format(@"SELECT TOP 5 dbo.AcnCasino_CasinoItem.MatchGuid, dbo.AcnCasino_Match.PlayTime, 
                       dbo.AcnCasino_CasinoItem.Earning, dbo.AcnCasino_Match.Round
                       FROM dbo.AcnCasino_CasinoItem INNER JOIN dbo.AcnCasino_Match ON dbo.AcnCasino_CasinoItem.MatchGuid = dbo.AcnCasino_Match.MatchGuid
-                      WHERE (dbo.AcnCasino_CasinoItem.Earning IS NOT NULL) AND (dbo.AcnCasino_CasinoItem.ItemType = 'SingleChoice') AND (dbo.AcnCasino_Match.PlayTime >= '{0}') AND (dbo.AcnCasino_Match.PlayTime < '{1}')
+                      WHERE (dbo.AcnCasino_CasinoItem.Earning IS NOT NULL) AND (dbo.AcnCasino_CasinoItem.ItemType = 2) AND (dbo.AcnCasino_Match.PlayTime >= '{0}') AND (dbo.AcnCasino_Match.PlayTime < '{1}')
                       ORDER BY dbo.AcnCasino_CasinoItem.Earning", monthStart, nextStart);
 
                 DataSet ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql);
@@ -359,15 +337,15 @@ namespace Arsenalcn.CasinoSys.DataAccess
             while (true);
         }
 
-        public static Guid? GetCasinoItemGuidByMatch(Guid matchGuid, string type, SqlTransaction trans)
+        public static Guid? GetCasinoItemGuidByMatch(Guid matchGuid, int type, SqlTransaction trans)
         {
             string sql = "SELECT CasinoItemGuid FROM AcnCasino_CasinoItem WHERE MatchGuid = @guid AND ItemType = @type";
 
             Object obj;
             if (trans == null)
-                obj = SqlHelper.ExecuteScalar(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@guid", matchGuid), new SqlParameter("@type", type.ToString()));
+                obj = SqlHelper.ExecuteScalar(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@guid", matchGuid), new SqlParameter("@type", type));
             else
-                obj = SqlHelper.ExecuteScalar(trans, CommandType.Text, sql, new SqlParameter("@guid", matchGuid), new SqlParameter("@type", type.ToString()));
+                obj = SqlHelper.ExecuteScalar(trans, CommandType.Text, sql, new SqlParameter("@guid", matchGuid), new SqlParameter("@type", type));
 
             if (Convert.IsDBNull(obj) || obj == null)
                 return null;
@@ -380,7 +358,7 @@ namespace Arsenalcn.CasinoSys.DataAccess
             string sql = @"SELECT CasinoItemGuid FROM dbo.AcnCasino_CasinoItem INNER JOIN
                           dbo.AcnCasino_Match ON dbo.AcnCasino_CasinoItem.MatchGuid = dbo.AcnCasino_Match.MatchGuid
                           WHERE (dbo.AcnCasino_Match.ResultHome IS NOT NULL) AND (dbo.AcnCasino_Match.ResultAway IS NOT NULL) AND 
-                          (AcnCasino_CasinoItem.ItemType = 'SingleChoice') AND (dbo.AcnCasino_CasinoItem.Earning IS NOT NULL)";
+                          (AcnCasino_CasinoItem.ItemType = 2) AND (dbo.AcnCasino_CasinoItem.Earning IS NOT NULL)";
 
             DataSet ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql);
 

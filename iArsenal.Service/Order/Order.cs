@@ -19,8 +19,8 @@ namespace iArsenal.Service
 
             map.ForMember(d => d.UrlOrderView, opt => opt.UseValue(string.Empty));
 
-            map.ForMember(d => d.OrderType, opt => opt.MapFrom(s =>
-                (OrderBaseType)Enum.Parse(typeof(OrderBaseType), s.GetValue("OrderType").ToString())));
+            //map.ForMember(d => d.OrderType, opt => opt.MapFrom(s =>
+            //    (OrderBaseType)Enum.Parse(typeof(OrderBaseType), s.GetValue("OrderType").ToString())));
 
             map.ForMember(d => d.PaymentInfo, opt => opt.ResolveUsing(s =>
             {
@@ -67,7 +67,7 @@ namespace iArsenal.Service
                 #region Generate Order Status Info
                 var retValue = string.Empty;
 
-                switch ((OrderStatusType)((short)s.GetValue("Status")))
+                switch ((OrderStatusType)((int)s.GetValue("Status")))
                 {
                     case OrderStatusType.Draft:
                         retValue = "未提交";
@@ -357,11 +357,11 @@ namespace iArsenal.Service
 
     public enum OrderBaseType
     {
-        None,
-        ReplicaKit,
-        Ticket,
-        Travel,
-        Wish,
-        MemberShip
+        None = 0,
+        ReplicaKit = 1,
+        Ticket = 2,
+        Travel = 3,
+        Wish = 4,
+        MemberShip = 5
     }
 }

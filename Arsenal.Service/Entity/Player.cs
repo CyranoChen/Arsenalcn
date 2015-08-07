@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Linq.Expressions;
 
 using Arsenalcn.Core;
 
@@ -18,8 +17,7 @@ namespace Arsenal.Service
             var map = AutoMapper.Mapper.CreateMap<IDataReader, Player>();
 
             map.ForMember(d => d.ID, opt => opt.MapFrom(s => (Guid)s.GetValue("PlayerGuid")));
-            map.ForMember(d => d.Position, opt => opt.MapFrom(s => 
-                (PlayerPostionType)Enum.Parse(typeof(PlayerPostionType), s.GetValue("Position").ToString())));
+            map.ForMember(d => d.Position, opt => opt.MapFrom(s => (int)s.GetValue("PlayerPosition")));
         }
 
         public static class Cache
@@ -97,7 +95,7 @@ namespace Arsenal.Service
         public string PrintingName
         { get; set; }
 
-        [DbColumn("Position")]
+        [DbColumn("PlayerPostion")]
         public PlayerPostionType Position
         { get; set; }
 
@@ -182,11 +180,11 @@ namespace Arsenal.Service
 
     public enum PlayerPostionType
     {
-        None,
-        Goalkeeper,
-        Defender,
-        Midfielder,
-        Forward,
-        Coach
+        None = 0,
+        Goalkeeper = 1,
+        Defender = 2,
+        Midfielder = 3,
+        Forward = 4,
+        Coach = 9
     }
 }

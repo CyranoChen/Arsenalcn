@@ -101,7 +101,7 @@ namespace Arsenalcn.CasinoSys.Entity
             else
             {
                 //insert
-                Guid newGuid = DataAccess.CasinoItem.InsertCasinoItem(ItemType.ToString(), MatchGuid, ItemTitle, ItemBody, PublishTime, CloseTime, BankerID, BankerName, OwnerID, OwnerUserName, trans);
+                Guid newGuid = DataAccess.CasinoItem.InsertCasinoItem((int)ItemType, MatchGuid, ItemTitle, ItemBody, PublishTime, CloseTime, BankerID, BankerName, OwnerID, OwnerUserName, trans);
 
                 return newGuid;
             }
@@ -114,7 +114,7 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public static Guid? GetCasinoItemGuidByMatch(Guid matchGuid, CasinoType type)
         {
-            return DataAccess.CasinoItem.GetCasinoItemGuidByMatch(matchGuid, type.ToString(), null);
+            return DataAccess.CasinoItem.GetCasinoItemGuidByMatch(matchGuid, (int)type, null);
         }
 
         public static void ActiveCasinoItemStatistics()
@@ -138,7 +138,7 @@ namespace Arsenalcn.CasinoSys.Entity
             DataTable dt = null;
 
             if (isOpen)
-            {     
+            {
                 //OpenMatchView
                 dt = DataAccess.CasinoItem.GetOpenMatchView(ConfigGlobal.CasinoValidDays);
             }
@@ -315,7 +315,7 @@ namespace Arsenalcn.CasinoSys.Entity
 
     public enum CasinoType
     {
-        SingleChoice,
-        MatchResult
+        SingleChoice = 2,
+        MatchResult = 1
     }
 }

@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entity\Attribute.cs" />
+    <Compile Include="Entity\Condition.cs" />
     <Compile Include="Entity\Config.cs" />
     <Compile Include="DAHelper\DataAccess.cs" />
     <Compile Include="Entity\Criteria.cs" />

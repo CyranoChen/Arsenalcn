@@ -35,7 +35,7 @@
                     Width="100px"></asp:TextBox>
                 <asp:TextBox ID="tbMobile" runat="server" Text="--手机--" CssClass="TextBox" Width="100px"></asp:TextBox>
                 <asp:TextBox ID="tbOrderDate" runat="server" Text="--下单时间--" CssClass="TextBox OrderDate" Width="100px"></asp:TextBox>
-                <asp:DropDownList ID="ddlProductType" runat="server">
+                <asp:DropDownList ID="ddlOrderType" runat="server">
                     <asp:ListItem Value="" Text="--类型--" Selected="True"></asp:ListItem>
                     <asp:ListItem Value="ReplicaKit" Text="球衣"></asp:ListItem>
                     <asp:ListItem Value="Wish" Text="团购"></asp:ListItem>
@@ -93,7 +93,7 @@
                     HtmlEncode="false" ItemStyle-HorizontalAlign="Right" />
                 <asp:TemplateField HeaderText="类型">
                     <ItemTemplate>
-                        <asp:Label ID="lblProductType" runat="server"></asp:Label>
+                        <asp:Label ID="lblOrderType" runat="server"></asp:Label>
                     </ItemTemplate>
                 </asp:TemplateField>
                 <asp:BoundField HeaderText="优惠" DataField="Sale" NullDisplayText="/" DataFormatString="<em>{0:f2}</em>"

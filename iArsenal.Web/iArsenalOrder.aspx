@@ -24,7 +24,7 @@
                 <div class="DivFloatLeft">
                     订单查询：           
                     <asp:TextBox ID="tbOrderID" runat="server" CssClass="TextBox" Width="200px"></asp:TextBox>
-                    <asp:DropDownList ID="ddlProductType" runat="server">
+                    <asp:DropDownList ID="ddlOrderType" runat="server">
                         <asp:ListItem Value="" Text="--类型--" Selected="True"></asp:ListItem>
                         <asp:ListItem Value="ReplicaKit" Text="球衣"></asp:ListItem>
                         <asp:ListItem Value="Wish" Text="团购"></asp:ListItem>
@@ -50,7 +50,7 @@
                         ItemStyle-HorizontalAlign="Right" Visible="false" />
                     <asp:TemplateField HeaderText="类型">
                         <ItemTemplate>
-                            <asp:Label ID="lblProductType" runat="server"></asp:Label>
+                            <asp:Label ID="lblOrderType" runat="server"></asp:Label>
                         </ItemTemplate>
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="价格" ItemStyle-HorizontalAlign="Right">

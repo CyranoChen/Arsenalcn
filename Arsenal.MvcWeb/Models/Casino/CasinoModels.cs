@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
 
 using Arsenalcn.Core;
+using Arsenal.Service.Casino;
 
 namespace Arsenal.MvcWeb.Models.Casino
 {
@@ -15,6 +16,8 @@ namespace Arsenal.MvcWeb.Models.Casino
 
     public class GameBetDto
     {
+        public double MyCash { get; set; }
+
         public IEnumerable<BetDto> MyBets { get; set; }
 
         public IEnumerable<MatchDto> HistoryMatches { get; set; }
@@ -48,6 +51,8 @@ namespace Arsenal.MvcWeb.Models.Casino
         [Required]
         public Guid MatchGuid { get; set; }
 
+        public double MyCash { get; set; }
+
         public MatchDto Match { get; set; }
     }
 
@@ -66,6 +71,8 @@ namespace Arsenal.MvcWeb.Models.Casino
 
         [Required]
         public Guid MatchGuid { get; set; }
+
+        public double MyCash { get; set; }
 
         public MatchDto Match { get; set; }
     }

@@ -7,7 +7,7 @@
     <div data-role="header" data-position="fixed">
         @Html.ActionLink("返回", "Index", "Casino", null,
             new { data_icon = "arrow-l", data_transition = "slide", data_direction = "reverse", data_iconpos = "notext" })
-        <h1>@ViewBag.Title</h1>
+        <h1>博彩币：@Model.MyCash.ToString("N2")</h1>
     </div>
 }
 

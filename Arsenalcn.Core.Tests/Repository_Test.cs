@@ -167,7 +167,7 @@ namespace Arsenalcn.Core.Tests
             IRepository repo = new Repository();
 
             var query = repo.QueryCondition<MatchView>(x =>
-                x.ResultHome >= 0 && x.ResultAway >= 0 && x.PlayTime < DateTime.Now);
+                x.ResultHome.HasValue && x.ResultAway >= 0 && x.PlayTime < DateTime.Now);
 
             Assert.IsNotNull(query);
         }

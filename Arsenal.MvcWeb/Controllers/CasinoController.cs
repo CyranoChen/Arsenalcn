@@ -134,12 +134,15 @@ namespace Arsenal.MvcWeb.Controllers
         {
             var model = new GameBetDto();
 
-            model.Match = MatchDto.Single(id);
-
-            // model.MyBets
             var whereBy = new Hashtable();
             whereBy.Add("UserID", this.acnID);
 
+            var gambler = repo.Query<Gambler>(whereBy).FirstOrDefault();
+            model.MyCash = gambler != null ? gambler.Cash : 0f;
+
+            model.Match = MatchDto.Single(id);
+
+            // model.MyBets
             var betsQuery = repo.Query<BetView>(whereBy)
                 .FindAll(x => x.CasinoItem.MatchGuid.Equals(id))
                 .Many<BetView, BetDetail>((tOne, tMany) => tOne.ID.Equals(tMany.BetID));
@@ -182,6 +185,12 @@ namespace Arsenal.MvcWeb.Controllers
         public ActionResult SingleChoice(Guid id)
         {
             var model = new SingleChoiceDto();
+
+            var whereBy = new Hashtable();
+            whereBy.Add("UserID", this.acnID);
+
+            var gambler = repo.Query<Gambler>(whereBy).FirstOrDefault();
+            model.MyCash = gambler != null ? gambler.Cash : 0f;
 
             model.Match = MatchDto.Single(id);
             model.MatchGuid = id;
@@ -251,6 +260,12 @@ namespace Arsenal.MvcWeb.Controllers
         public ActionResult MatchResult(Guid id)
         {
             var model = new MatchResultDto();
+
+            var whereBy = new Hashtable();
+            whereBy.Add("UserID", this.acnID);
+
+            var gambler = repo.Query<Gambler>(whereBy).FirstOrDefault();
+            model.MyCash = gambler != null ? gambler.Cash : 0f;
 
             model.Match = MatchDto.Single(id);
             model.MatchGuid = id;

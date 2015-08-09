@@ -30,8 +30,8 @@ namespace Arsenalcn.CasinoSys.Web
             {
                 Match m = new Match((Guid)dr["MatchGuid"]);
 
-                dr["HomeDisplay"] = Arsenal_Team.Cache.Load((Guid)m.Home).TeamDisplayName;
-                dr["AwayDisplay"] = Arsenal_Team.Cache.Load((Guid)m.Away).TeamDisplayName;
+                dr["HomeDisplay"] = Team.Cache.Load((Guid)m.Home).TeamDisplayName;
+                dr["AwayDisplay"] = Team.Cache.Load((Guid)m.Away).TeamDisplayName;
             }
 
             gvMatch.DataSource = dt;

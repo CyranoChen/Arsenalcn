@@ -3,7 +3,6 @@ using System.Data;
 using System.Web.UI.WebControls;
 
 using Arsenalcn.CasinoSys.Entity;
-using ArsenalTeam = Arsenalcn.CasinoSys.Entity.Arsenal.Team;
 
 using Discuz.Entity;
 using Discuz.Forum;
@@ -58,8 +57,8 @@ namespace Arsenalcn.CasinoSys.Web
 
                 if (hlHome != null && hlAway != null && hlVersus != null)
                 {
-                    ArsenalTeam tHome = Arsenal_Team.Cache.Load(m.Home);
-                    ArsenalTeam tAway = Arsenal_Team.Cache.Load(m.Away);
+                    Team tHome = Team.Cache.Load(m.Home);
+                    Team tAway = Team.Cache.Load(m.Away);
 
                     hlHome.Text = tHome.TeamDisplayName;
                     hlHome.NavigateUrl = string.Format("CasinoTeam.aspx?Team={0}", m.Home);

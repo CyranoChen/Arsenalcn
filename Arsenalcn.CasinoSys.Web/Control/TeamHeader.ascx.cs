@@ -2,7 +2,6 @@
 using System.Data;
 
 using Arsenalcn.CasinoSys.Entity;
-using ArsenalTeam = Arsenalcn.CasinoSys.Entity.Arsenal.Team;
 
 namespace Arsenalcn.CasinoSys.Web.Control
 {
@@ -10,7 +9,7 @@ namespace Arsenalcn.CasinoSys.Web.Control
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            ArsenalTeam t = Arsenal_Team.Cache.Load(TeamGuid);
+            Team t = Team.Cache.Load(TeamGuid);
 
             if (t != null)
             {
@@ -55,7 +54,7 @@ namespace Arsenalcn.CasinoSys.Web.Control
                     pnlHistoryResult.Visible = false;
 
                 ltrlTeamDisplayName.Text = string.Format("<em>{0}({1})</em>", t.TeamDisplayName, t.TeamEnglishName);
-                ltrlTeamLogo.Text = string.Format("<img src=\"{0}\" alt=\"{1}\" title=\"{1}\" />", t.TeamLogo, t.TeamNickName);
+                ltrlTeamLogo.Text = string.Format("<img src=\"{0}\" alt=\"{1}\" title=\"{1}\" />", t.TeamLogo, t.TeamDisplayName);
                 ltrlTeamCoach.Text = "<em>" + t.Manager + "</em>";
                 ltrlGround.Text = "<em>" + t.Ground + "</em>";
                 ltrlCapacity.Text = "<em>" + t.Capacity.ToString() + "</em>";

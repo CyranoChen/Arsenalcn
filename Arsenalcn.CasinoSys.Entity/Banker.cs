@@ -28,7 +28,7 @@ namespace Arsenalcn.CasinoSys.Entity
                 if (Convert.IsDBNull(dr["ClubID"]))
                     ClubID = null;
                 else
-                    Convert.ToInt32(dr["ClubID"]);
+                    ClubID = Convert.ToInt32(dr["ClubID"]);
 
                 Cash = Convert.ToSingle(dr["Cash"]);
                 IsActive = Convert.ToBoolean(dr["IsActive"]);

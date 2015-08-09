@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Web.UI.WebControls;
 
 using Arsenalcn.CasinoSys.Entity;
-using ArsenalLeauge = Arsenalcn.CasinoSys.Entity.Arsenal.League;
 
 namespace Arsenalcn.CasinoSys.Web
 {
@@ -85,7 +84,7 @@ namespace Arsenalcn.CasinoSys.Web
 
         private void BindData()
         {
-            ArsenalLeauge l = Arsenal_League.Cache.Load(ContestLeague);
+            League l = League.Cache.Load(ContestLeague);
 
             if (l != null)
             {

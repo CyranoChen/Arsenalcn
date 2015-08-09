@@ -4,8 +4,6 @@ using System.Data;
 using System.Web.UI.WebControls;
 
 using Arsenalcn.CasinoSys.Entity;
-using ArsenalLeauge = Arsenalcn.CasinoSys.Entity.Arsenal.League;
-using ArsenalTeam = Arsenalcn.CasinoSys.Entity.Arsenal.Team;
 
 namespace Arsenalcn.CasinoSys.Web
 {
@@ -17,7 +15,7 @@ namespace Arsenalcn.CasinoSys.Web
 
             if (!IsPostBack)
             {
-                List<ArsenalLeauge> list = Entity.Arsenal_League.Cache.LeagueList_Active;
+                List<League> list = Entity.League.Cache.LeagueList_Active;
 
                 ListItem item = new ListItem("--请选择分类--", Guid.Empty.ToString());
 
@@ -59,7 +57,7 @@ namespace Arsenalcn.CasinoSys.Web
 
                 foreach (DataRow dr in dtGroup.Rows)
                 {
-                    ArsenalLeauge l = Arsenal_League.Cache.Load((Guid)dr["LeagueGuid"]);
+                    League l = League.Cache.Load((Guid)dr["LeagueGuid"]);
 
                     dr["LeagueName"] = l.LeagueName;
                     dr["LeagueSeason"] = l.LeagueSeason;
@@ -71,7 +69,7 @@ namespace Arsenalcn.CasinoSys.Web
                     {
                         foreach (DataRow drTeam in dtGroupTeam.Rows)
                         {
-                            dr["GroupTeamList"] += string.Format("{0},", Arsenal_Team.Cache.Load((Guid)drTeam["TeamGuid"]).TeamDisplayName.ToString());
+                            dr["GroupTeamList"] += string.Format("{0},", Team.Cache.Load((Guid)drTeam["TeamGuid"]).TeamDisplayName.ToString());
                             groupTeamCount++;
                         }
                         dr["GroupTeamCount"] = groupTeamCount;
@@ -109,7 +107,7 @@ namespace Arsenalcn.CasinoSys.Web
 
         private void BindGroupTeam()
         {
-            List<ArsenalTeam> list = Entity.Arsenal_Team.Cache.GetTeamsByLeagueGuid(new Guid(ddlGroupLeague.SelectedValue));
+            List<Team> list = Entity.Team.Cache.GetTeamsByLeagueGuid(new Guid(ddlGroupLeague.SelectedValue));
 
             lbLeagueTeam.DataSource = list;
             lbLeagueTeam.DataTextField = "TeamDisplayName";

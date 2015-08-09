@@ -41,7 +41,7 @@
             <input type="radio" name="SelectedOption" id="away" value="away">
         </fieldset>
         @Html.LabelFor(m => m.BetAmount)
-        <input type="range" name="BetAmount" id="BetAmount" value="1000" min="100" max="@Model.MyCash" data-highlight="true">
+        <input type="range" name="BetAmount" id="BetAmount" value="1000" min="100" max="@Model.BetLimit" data-highlight="true">
 
         @Html.HiddenFor(m => m.MatchGuid)
         @Html.AntiForgeryToken()

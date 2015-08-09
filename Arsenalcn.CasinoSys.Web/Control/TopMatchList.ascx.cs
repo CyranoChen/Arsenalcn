@@ -3,7 +3,6 @@ using System.Data;
 using System.Web.UI.WebControls;
 
 using Arsenalcn.CasinoSys.Entity;
-using ArsenalTeam = Arsenalcn.CasinoSys.Entity.Arsenal.Team;
 
 namespace Arsenalcn.CasinoSys.Web.Control
 {
@@ -66,8 +65,8 @@ namespace Arsenalcn.CasinoSys.Web.Control
 
                 if (ltrlMatchInfo != null && m != null)
                 {
-                    ArsenalTeam tHome = Arsenal_Team.Cache.Load(m.Home);
-                    ArsenalTeam tAway = Arsenal_Team.Cache.Load(m.Away);
+                    Team tHome = Team.Cache.Load(m.Home);
+                    Team tAway = Team.Cache.Load(m.Away);
 
                     string _strMatchInfo = "<li class=\"IconTop{0}\"><a href=\"CasinoBetLog.aspx?Match={1}\" title=\"{2} {3}\">{4} <em>vs</em> {5}</a><em title=\"比赛盈余\"  class=\"CasinoSys_TopRankEM\">{6}</em></li>";
 
@@ -90,8 +89,8 @@ namespace Arsenalcn.CasinoSys.Web.Control
 
                 if (ltrlMatchInfo != null && m != null)
                 {
-                    ArsenalTeam tHome = Arsenal_Team.Cache.Load(m.Home);
-                    ArsenalTeam tAway = Arsenal_Team.Cache.Load(m.Away);
+                    Team tHome = Team.Cache.Load(m.Home);
+                    Team tAway = Team.Cache.Load(m.Away);
 
                     string _strMatchInfo = "<li class=\"IconTop{0}\"><a href=\"CasinoBetLog.aspx?Match={1}\" title=\"{2} {3}\">{4} <em>vs</em> {5}</a><em title=\"比赛亏损\"  class=\"CasinoSys_TopRankEM\">{6}</em></li>";
 

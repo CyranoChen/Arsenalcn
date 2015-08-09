@@ -74,6 +74,8 @@ namespace Arsenal.MvcWeb.Models.Casino
 
         public double MyCash { get; set; }
 
+        public double BetLimit { get; set; }
+
         public MatchDto Match { get; set; }
     }
 }

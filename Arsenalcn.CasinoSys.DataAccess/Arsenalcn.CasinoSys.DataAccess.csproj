@@ -66,11 +66,13 @@
     <Compile Include="ChoiceOption.cs" />
     <Compile Include="Gambler.cs" />
     <Compile Include="Group.cs" />
+    <Compile Include="League.cs" />
     <Compile Include="Match.cs" />
     <Compile Include="MatchResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rank.cs" />
     <Compile Include="SingleChoice.cs" />
+    <Compile Include="Team.cs" />
     <Compile Include="UserClub.cs" />
   </ItemGroup>
   <ItemGroup>

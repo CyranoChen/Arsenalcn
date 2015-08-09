@@ -4,8 +4,6 @@ using System.Data;
 using System.Web.UI.WebControls;
 
 using Arsenalcn.CasinoSys.Entity;
-using ArsenalLeauge = Arsenalcn.CasinoSys.Entity.Arsenal.League;
-using ArsenalTeam = Arsenalcn.CasinoSys.Entity.Arsenal.Team;
 
 namespace Arsenalcn.CasinoSys.Web
 {
@@ -118,7 +116,7 @@ namespace Arsenalcn.CasinoSys.Web
                         string.Format(" 第{0}轮", m.Round.ToString()) : string.Empty);
 
                     ltrlLeagueInfo.Text = string.Format(_strLeague, m.LeagueGuid.ToString(), _strLeagueName,
-                        Arsenal_League.Cache.Load(m.LeagueGuid).LeagueLogo);
+                        League.Cache.Load(m.LeagueGuid).LeagueLogo);
                 }
 
                 Label lblHome = e.Row.FindControl("lblHome") as Label;
@@ -128,8 +126,8 @@ namespace Arsenalcn.CasinoSys.Web
 
                 if (lblHome != null && lblAway != null && hlVersus != null)
                 {
-                    ArsenalTeam tHome = Arsenal_Team.Cache.Load(m.Home);
-                    ArsenalTeam tAway = Arsenal_Team.Cache.Load(m.Away);
+                    Team tHome = Team.Cache.Load(m.Home);
+                    Team tAway = Team.Cache.Load(m.Away);
 
                     string _strTeamName = "<a class=\"StrongLink\" href=\"CasinoTeam.aspx?Team={0}\"  title=\"{1}\">{2}</a> ";
                     string _strTeamLogo = "<img src=\"{3}\" alt=\"{1}\" /> ";

@@ -180,6 +180,8 @@ namespace Arsenal.MvcWeb.Controllers
             var gambler = repo.Query<Gambler>(x => x.UserID == this.acnID).FirstOrDefault();
             model.MyCash = gambler != null ? gambler.Cash : 0f;
 
+            model.BetLimit = model.MyCash < 50000f ? model.MyCash : 50000f;
+
             model.Match = MatchDto.Single(id);
             model.MatchGuid = id;
 

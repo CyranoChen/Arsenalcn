@@ -3,16 +3,15 @@ using System.Data;
 using System.Collections.Generic;
 
 using Arsenalcn.CasinoSys.Entity;
-using ArsenalTeam = Arsenalcn.CasinoSys.Entity.Arsenal.Team;
 
 namespace Arsenalcn.CasinoSys.Web.Control
 {
     public partial class CasinoHeader : System.Web.UI.UserControl
     {
-        public ArsenalTeam HomeTeam
+        public Team HomeTeam
         { get; set; }
 
-        public ArsenalTeam AwayTeam
+        public Team AwayTeam
         { get; set; }
 
         protected void Page_Load(object sender, EventArgs e)
@@ -30,8 +29,8 @@ namespace Arsenalcn.CasinoSys.Web.Control
                 Guid homeGuid = m.Home;
                 Guid awayGuid = m.Away;
 
-                HomeTeam = Arsenal_Team.Cache.Load(homeGuid);
-                AwayTeam = Arsenal_Team.Cache.Load(awayGuid);
+                HomeTeam = Team.Cache.Load(homeGuid);
+                AwayTeam = Team.Cache.Load(awayGuid);
 
                 ltrlPlayTime.Text = m.PlayTime.ToString("yyyy-MM-dd HH:mm");
 

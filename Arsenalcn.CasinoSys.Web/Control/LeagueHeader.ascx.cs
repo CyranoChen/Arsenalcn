@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Web.UI.WebControls;
 
 using Arsenalcn.CasinoSys.Entity;
-using ArsenalLeauge = Arsenalcn.CasinoSys.Entity.Arsenal.League;
 
 namespace Arsenalcn.CasinoSys.Web.Control
 {
@@ -12,7 +10,7 @@ namespace Arsenalcn.CasinoSys.Web.Control
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            List<ArsenalLeauge> list = Entity.Arsenal_League.Cache.LeagueList_Active;
+            List<League> list = Entity.League.Cache.LeagueList_Active;
 
             rptLeague.DataSource = list;
             rptLeague.DataBind();
@@ -44,7 +42,7 @@ namespace Arsenalcn.CasinoSys.Web.Control
         {
             if ((e.Item.ItemType == ListItemType.Item) || (e.Item.ItemType == ListItemType.AlternatingItem))
             {
-                ArsenalLeauge l = e.Item.DataItem as ArsenalLeauge;
+                League l = e.Item.DataItem as League;
                 Literal ltrlLeagueInfo = e.Item.FindControl("ltrlLeagueInfo") as Literal;
 
                 string href = string.Format("{0}?League={1}", pageURL, l.ID.ToString());

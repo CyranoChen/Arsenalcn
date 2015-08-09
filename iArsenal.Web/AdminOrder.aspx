@@ -34,7 +34,6 @@
                 <asp:TextBox ID="tbMemberName" runat="server" Text="--会员姓名--" CssClass="TextBox"
                     Width="100px"></asp:TextBox>
                 <asp:TextBox ID="tbMobile" runat="server" Text="--手机--" CssClass="TextBox" Width="100px"></asp:TextBox>
-                <asp:TextBox ID="tbOrderDate" runat="server" Text="--下单时间--" CssClass="TextBox OrderDate" Width="100px"></asp:TextBox>
                 <asp:DropDownList ID="ddlOrderType" runat="server">
                     <asp:ListItem Value="" Text="--类型--" Selected="True"></asp:ListItem>
                     <asp:ListItem Value="ReplicaKit" Text="球衣"></asp:ListItem>

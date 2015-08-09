@@ -146,9 +146,10 @@ namespace iArsenal.Web
             string priceInfo = string.Empty;
             List<string> _lstPriceInfo = new List<string>();
 
-            var list = repo.Query<OrderItem>(x => x.OrderID.Equals(o.ID) && x.IsActive).OrderBy(x => x.ID).ToList();
+            var list = repo.Query<OrderItem>(x =>
+                x.OrderID == o.ID && x.IsActive == true).OrderBy(x => x.ID).ToList();
 
-            if (list != null && list.Count() > 0)
+            if (list != null && list.Count > 0)
             {
                 foreach (OrderItem oi in list)
                 {
@@ -325,7 +326,7 @@ namespace iArsenal.Web
                     o.IsActive = false;
                     o.UpdateTime = DateTime.Now;
                     o.Price = Convert.ToSingle(tbOrderPrice.Text.Trim());
-                    
+
                     repo.Update(o);
 
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", string.Format("alert('此订单({0})已经取消');window.location.href = 'iArsenalOrder.aspx'", o.ID.ToString()), true);

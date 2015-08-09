@@ -94,7 +94,7 @@ namespace iArsenal.Service
                 Repository.GetTableAttr<MatchTicket>().Name);
 
             SqlParameter[] para = {
-                                      new SqlParameter("@key", ID), 
+                                      new SqlParameter("@key", ID),
                                   };
 
             DataSet ds = DataAccess.ExecuteDataset(sql, para);
@@ -225,13 +225,15 @@ namespace iArsenal.Service
             {
                 IRepository repo = new Repository();
 
-                var oQuery = repo.Query<Order>(o => o.IsActive && o.OrderType.Equals(OrderBaseType.Ticket) && !o.Status.Equals(OrderStatusType.Error));
-                var oiQuery = repo.Query<OrderItem>(oi => oi.IsActive & !string.IsNullOrEmpty(oi.Remark));
+                var oQuery = repo.Query<Order>(o =>
+                    o.IsActive == true && o.OrderType == OrderBaseType.Ticket).FindAll(o => !o.Status.Equals(OrderStatusType.Error));
+                var oiQuery = repo.Query<OrderItem>(oi =>
+                    oi.IsActive == true & oi.Remark != string.Empty);
 
                 foreach (MatchTicket mt in query)
                 {
-                    var _list = oiQuery.Where(oi => oi.Remark.Equals(mt.ID.ToString())).ToList();
-                    var _count = oQuery.Count(o => _list.Any(oi => oi.OrderID.Equals(o.ID)));
+                    var _list = oiQuery.FindAll(oi => oi.Remark.Equals(mt.ID.ToString()));
+                    var _count = oQuery.FindAll(o => _list.Any(oi => oi.OrderID.Equals(o.ID))).Count;
 
                     if (_count > 0 && !mt.TicketCount.Equals(_count))
                     {

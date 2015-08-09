@@ -39,28 +39,11 @@ namespace Arsenalcn.Core
 
                 SqlParameter[] para = { new SqlParameter("@key", key) };
 
-                DataSet ds = SqlHelper.ExecuteDataset(conn, CommandType.Text, sql, para);
-
-                log.Debug(sql, new LogInfo()
-                {
-                    MethodInstance = MethodBase.GetCurrentMethod(),
-                    ThreadInstance = Thread.CurrentThread
-                });
+                DataSet ds = DataAccess.ExecuteDataset(sql, para);
 
                 var dt = ds.Tables[0];
 
                 if (dt.Rows.Count == 0) { return null; }
-
-                //var includeTypes = string.Empty;
-                //if (include != null)
-                //{
-                //    dt.Columns.Add("@Include");
-                //    dt.Rows[0]["@Include"] = string.Join("|", include.ToList());
-                //}
-
-                //ConstructorInfo ci = typeof(T).GetConstructor(new Type[] { typeof(DataRow) });
-
-                //return (T)ci.Invoke(new Object[] { dt.Rows[0] });
 
                 using (var reader = dt.CreateDataReader())
                 {
@@ -88,174 +71,7 @@ namespace Arsenalcn.Core
                 var attr = GetTableAttr<T>();
 
                 StringBuilder sql = new StringBuilder();
-                sql.AppendFormat("SELECT * FROM {0}  ", attr.Name);
-
-                if (!string.IsNullOrEmpty(attr.Sort))
-                {
-                    sql.AppendFormat("ORDER BY {0}", attr.Sort);
-                }
-
-                DataSet ds = SqlHelper.ExecuteDataset(conn, CommandType.Text, sql.ToString());
-
-                log.Debug(sql.ToString(), new LogInfo()
-                {
-                    MethodInstance = MethodBase.GetCurrentMethod(),
-                    ThreadInstance = Thread.CurrentThread
-                });
-
-                var dt = ds.Tables[0];
-
-                if (dt.Rows.Count > 0)
-                {
-                    //var includeTypes = string.Empty;
-                    //if (include != null)
-                    //{
-                    //    dt.Columns.Add("@Include");
-                    //    includeTypes = string.Join("|", include.ToList());
-                    //}
-
-                    //foreach (DataRow dr in ds.Tables[0].Rows)
-                    //{
-                    //    ConstructorInfo ci = typeof(T).GetConstructor(new Type[] { typeof(DataRow) });
-
-                    //    if (include != null && !string.IsNullOrEmpty(includeTypes))
-                    //    { dr["@Include"] = includeTypes; }
-
-                    //    list.Add((T)ci.Invoke(new Object[] { dr }));
-                    //}
-
-                    using (var reader = dt.CreateDataReader())
-                    {
-                        list = reader.DataReaderMapTo<T>().ToList();
-                    }
-                }
-
-                return list;
-            }
-            catch (Exception ex)
-            {
-                log.Debug(ex, new LogInfo()
-                {
-                    MethodInstance = MethodBase.GetCurrentMethod(),
-                    ThreadInstance = Thread.CurrentThread
-                });
-
-                throw;
-            }
-        }
-
-        public List<T> All<T>(Pager pager, Hashtable htOrder = null) where T : class, IViewer, new()
-        {
-            try
-            {
-                Contract.Requires(pager != null);
-
-                var list = new List<T>();
-
-                var attr = GetTableAttr<T>();
-
-                string _strOrderBy = !string.IsNullOrEmpty(attr.Sort) ? attr.Sort : attr.Key;
-
-                if (htOrder != null)
-                {
-                    var listOrder = new List<string>();
-
-                    foreach (var de in htOrder.Keys)
-                    {
-                        var attrCol = GetColumnAttr<T>(de.ToString());
-                        string _value = htOrder[de].ToString().ToUpper();
-
-                        if (attrCol != null)
-                        {
-                            listOrder.Add(string.Format("{0} {1}", attrCol.Name, _value.Equals("DESC") ? _value : string.Empty));
-                        }
-                        else if (de.ToString().Equals("ID"))
-                        {
-                            listOrder.Add(string.Format("{0} {1}", attr.Key, _value.Equals("DESC") ? _value : string.Empty));
-                        }
-                        else
-                        { continue; }
-                    }
-
-                    _strOrderBy = string.Join(", ", listOrder.ToArray());
-                }
-
-                string innerSql = string.Format("(SELECT ROW_NUMBER() OVER(ORDER BY {1}) AS RowNo, * FROM {0})", attr.Name, _strOrderBy);
-
-                string sql = string.Format("SELECT * FROM {0} AS t WHERE t.RowNo BETWEEN {1} AND {2}",
-                    innerSql, (pager.CurrentPage * pager.PagingSize).ToString(), ((pager.CurrentPage + 1) * pager.PagingSize - 1).ToString());
-
-                DataSet ds = SqlHelper.ExecuteDataset(conn, CommandType.Text, sql);
-
-                log.Debug(sql, new LogInfo()
-                {
-                    MethodInstance = MethodBase.GetCurrentMethod(),
-                    ThreadInstance = Thread.CurrentThread
-                });
-
-                var dt = ds.Tables[0];
-
-                if (dt.Rows.Count > 0)
-                {
-                    //var includeTypes = string.Empty;
-                    //if (include != null)
-                    //{
-                    //    ds.Tables[0].Columns.Add("@Include");
-                    //    includeTypes = string.Join("|", include.ToList());
-                    //}
-
-                    //foreach (DataRow dr in ds.Tables[0].Rows)
-                    //{
-                    //    ConstructorInfo ci = typeof(T).GetConstructor(new Type[] { typeof(DataRow) });
-
-                    //    if (include != null && !string.IsNullOrEmpty(includeTypes))
-                    //    { dr["@Include"] = includeTypes; }
-
-                    //    list.Add((T)ci.Invoke(new Object[] { dr }));
-                    //}
-
-                    using (var reader = dt.CreateDataReader())
-                    {
-                        list = reader.DataReaderMapTo<T>().ToList();
-                    }
-                }
-
-                return list;
-            }
-            catch (Exception ex)
-            {
-                log.Debug(ex, new LogInfo()
-                {
-                    MethodInstance = MethodBase.GetCurrentMethod(),
-                    ThreadInstance = Thread.CurrentThread
-                });
-
-                throw;
-            }
-        }
-
-        public List<T> QueryCondition<T>(Expression<Func<T, bool>> predicate) where T : class, IViewer, new()
-        {
-            try
-            {
-                Contract.Requires(predicate != null);
-
-                var list = new List<T>();
-
-                var attr = GetTableAttr<T>();
-
-                StringBuilder sql = new StringBuilder();
                 sql.Append("SELECT * FROM " + attr.Name);
-
-                var condition = new ConditionBuilder();
-                condition.Build(predicate.Body);
-
-                if (!string.IsNullOrEmpty(condition.Condition))
-                {
-                    var where = string.Format(condition.Condition, condition.Arguments);
-
-                    sql.Append(" WHERE " + where);
-                }
 
                 if (!string.IsNullOrEmpty(attr.Sort))
                 {
@@ -288,85 +104,37 @@ namespace Arsenalcn.Core
             }
         }
 
-        public List<T> Query<T>(Hashtable htWhere) where T : class, IViewer, new()
+        public List<T> All<T>(Pager pager, string orderBy = null) where T : class, IViewer, new()
         {
             try
             {
-                Contract.Requires(htWhere != null);
+                Contract.Requires(pager != null);
 
                 var list = new List<T>();
 
-                List<string> listCol = new List<string>();
-                List<SqlParameter> listPara = new List<SqlParameter>();
-
                 var attr = GetTableAttr<T>();
 
-                foreach (var de in htWhere.Keys)
+                string _strOrderBy = !string.IsNullOrEmpty(attr.Sort) ? attr.Sort : attr.Key;
+
+                if (!string.IsNullOrEmpty(orderBy))
                 {
-                    var attrCol = GetColumnAttr<T>(de.ToString());
-
-                    if (attrCol != null)
-                    {
-                        object _value = htWhere[de];
-
-                        listCol.Add(string.Format("{0} = @{0}", attrCol.Name));
-
-                        SqlParameter _para = new SqlParameter("@" + attrCol.Name,
-                            _value != null ? _value : (object)DBNull.Value);
-                        listPara.Add(_para);
-                    }
-                    else if (de.ToString().Equals("ID"))
-                    {
-                        listCol.Add(string.Format("{0} = @key", attr.Key));
-                        listPara.Add(new SqlParameter("@key", htWhere[de]));
-                    }
-                    else
-                    { continue; }
+                    _strOrderBy = orderBy;
                 }
 
-                if (listCol.Count > 0 && listPara.Count > 0)
+                string innerSql = string.Format("(SELECT ROW_NUMBER() OVER(ORDER BY {1}) AS RowNo, * FROM {0})", attr.Name, _strOrderBy);
+
+                string sql = string.Format("SELECT * FROM {0} AS t WHERE t.RowNo BETWEEN {1} AND {2}",
+                    innerSql, (pager.CurrentPage * pager.PagingSize).ToString(), ((pager.CurrentPage + 1) * pager.PagingSize - 1).ToString());
+
+                DataSet ds = DataAccess.ExecuteDataset(sql);
+
+                var dt = ds.Tables[0];
+
+                if (dt.Rows.Count > 0)
                 {
-                    StringBuilder sql = new StringBuilder();
-                    sql.AppendFormat("SELECT * FROM {0} WHERE {1} ", attr.Name, string.Join(" AND ", listCol.ToArray()));
-
-                    if (!string.IsNullOrEmpty(attr.Sort))
+                    using (var reader = dt.CreateDataReader())
                     {
-                        sql.AppendFormat("ORDER BY {0}", attr.Sort);
-                    }
-
-                    DataSet ds = SqlHelper.ExecuteDataset(conn, CommandType.Text, sql.ToString(), listPara.ToArray());
-
-                    log.Debug(sql.ToString(), new LogInfo()
-                    {
-                        MethodInstance = MethodBase.GetCurrentMethod(),
-                        ThreadInstance = Thread.CurrentThread
-                    });
-
-                    var dt = ds.Tables[0];
-
-                    if (dt.Rows.Count > 0)
-                    {
-                        //var includeTypes = string.Empty;
-                        //if (include != null)
-                        //{
-                        //    ds.Tables[0].Columns.Add("@Include");
-                        //    includeTypes = string.Join("|", include.ToList());
-                        //}
-
-                        //foreach (DataRow dr in ds.Tables[0].Rows)
-                        //{
-                        //    ConstructorInfo ci = typeof(T).GetConstructor(new Type[] { typeof(DataRow) });
-
-                        //    if (include != null && !string.IsNullOrEmpty(includeTypes))
-                        //    { dr["@Include"] = includeTypes; }
-
-                        //    list.Add((T)ci.Invoke(new Object[] { dr }));
-                        //}
-
-                        using (var reader = dt.CreateDataReader())
-                        {
-                            list = reader.DataReaderMapTo<T>().ToList();
-                        }
+                        list = reader.DataReaderMapTo<T>().ToList();
                     }
                 }
 
@@ -384,113 +152,107 @@ namespace Arsenalcn.Core
             }
         }
 
-        public List<T> Query<T>(Pager pager, Hashtable htWhere, Hashtable htOrder = null) where T : class, IViewer, new()
+        public List<T> Query<T>(Expression<Func<T, bool>> whereBy) where T : class, IViewer, new()
+        {
+            try
+            {
+                Contract.Requires(whereBy != null);
+
+                var list = new List<T>();
+
+                var attr = GetTableAttr<T>();
+
+                StringBuilder sql = new StringBuilder();
+                sql.Append("SELECT * FROM " + attr.Name);
+
+                var condition = new ConditionBuilder();
+                condition.Build(whereBy.Body);
+
+                if (!string.IsNullOrEmpty(condition.Condition))
+                {
+                    //var where = string.Format(condition.Condition, condition.Arguments);
+                    sql.Append(" WHERE " + condition.Condition);
+                }
+
+                if (!string.IsNullOrEmpty(attr.Sort))
+                {
+                    sql.Append(" ORDER BY " + attr.Sort);
+                }
+
+                DataSet ds = null;
+
+                if (condition.SqlArguments != null && condition.SqlArguments.Count > 0)
+                {
+                    ds = DataAccess.ExecuteDataset(sql.ToString(), condition.SqlArguments.ToArray());
+                }
+                else
+                {
+                    ds = DataAccess.ExecuteDataset(sql.ToString());
+                }
+
+                var dt = ds.Tables[0];
+
+                if (dt.Rows.Count > 0)
+                {
+                    using (var reader = dt.CreateDataReader())
+                    {
+                        list = reader.DataReaderMapTo<T>().ToList();
+                    }
+                }
+
+                return list;
+            }
+            catch (Exception ex)
+            {
+                log.Debug(ex, new LogInfo()
+                {
+                    MethodInstance = MethodBase.GetCurrentMethod(),
+                    ThreadInstance = Thread.CurrentThread
+                });
+
+                throw;
+            }
+        }
+
+        public List<T> Query<T>(Pager pager, Expression<Func<T, bool>> whereBy, string orderBy = null) where T : class, IViewer, new()
         {
             try
             {
                 Contract.Requires(pager != null);
-                Contract.Requires(htWhere != null);
+                Contract.Requires(whereBy != null);
 
                 var list = new List<T>();
 
                 var attr = GetTableAttr<T>();
 
                 // Generate WhereBy Clause
-                List<string> listCol = new List<string>();
-                List<SqlParameter> listPara = new List<SqlParameter>();
-
-                foreach (var de in htWhere.Keys)
-                {
-                    var attrCol = GetColumnAttr<T>(de.ToString());
-
-                    if (attrCol != null)
-                    {
-                        object _value = htWhere[de];
-
-                        listCol.Add(string.Format("{0} = @{0}", attrCol.Name));
-
-                        SqlParameter _para = new SqlParameter("@" + attrCol.Name,
-                            _value != null ? _value : (object)DBNull.Value);
-                        listPara.Add(_para);
-                    }
-                    else if (de.ToString().Equals("ID"))
-                    {
-                        listCol.Add(string.Format("{0} = @key", attr.Key));
-                        listPara.Add(new SqlParameter("@key", htWhere[de]));
-                    }
-                    else
-                    { continue; }
-                }
+                var condition = new ConditionBuilder();
+                condition.Build(whereBy.Body);
 
                 // Generate OrderBy Clause
                 string _strOrderBy = !string.IsNullOrEmpty(attr.Sort) ? attr.Sort : attr.Key;
 
-                if (htOrder != null)
+                if (!string.IsNullOrEmpty(orderBy))
                 {
-                    var listOrder = new List<string>();
-
-                    foreach (var de in htOrder.Keys)
-                    {
-                        var attrCol = GetColumnAttr<T>(de.ToString());
-                        string _value = htOrder[de].ToString().ToUpper();
-
-                        if (attrCol != null)
-                        {
-                            listOrder.Add(string.Format("{0} {1}", attrCol.Name, _value.Equals("DESC") ? _value : string.Empty));
-                        }
-                        else if (de.ToString().Equals("ID"))
-                        {
-                            listOrder.Add(string.Format("{0} {1}", attr.Key, _value.Equals("DESC") ? _value : string.Empty));
-                        }
-                        else
-                        { continue; }
-                    }
-
-                    _strOrderBy = string.Join(", ", listOrder.ToArray());
+                    _strOrderBy = orderBy;
                 }
 
                 // Build Sql and Execute
-                if (listCol.Count > 0 && listPara.Count > 0)
+                string innerSql = string.Format("(SELECT ROW_NUMBER() OVER(ORDER BY {1}) AS RowNo, * FROM {0} WHERE {2})",
+                    attr.Name, _strOrderBy, condition.Condition);
+
+                string sql = string.Format("SELECT * FROM {0} AS t WHERE t.RowNo BETWEEN {1} AND {2}",
+                    innerSql, (pager.CurrentPage * pager.PagingSize).ToString(), ((pager.CurrentPage + 1) * pager.PagingSize - 1).ToString());
+
+                DataSet ds = DataAccess.ExecuteDataset(sql, condition.SqlArguments.ToArray());
+
+                var dt = ds.Tables[0];
+
+                if (ds.Tables[0].Rows.Count > 0)
                 {
-                    string innerSql = string.Format("(SELECT ROW_NUMBER() OVER(ORDER BY {1}) AS RowNo, * FROM {0} WHERE {2})",
-                        attr.Name, _strOrderBy, string.Join(" AND ", listCol.ToArray()));
-
-                    string sql = string.Format("SELECT * FROM {0} AS t WHERE t.RowNo BETWEEN {1} AND {2}",
-                        innerSql, (pager.CurrentPage * pager.PagingSize).ToString(), ((pager.CurrentPage + 1) * pager.PagingSize - 1).ToString());
-
-                    DataSet ds = SqlHelper.ExecuteDataset(conn, CommandType.Text, sql, listPara.ToArray());
-
-                    log.Debug(sql, new LogInfo()
+                    using (var reader = dt.CreateDataReader())
                     {
-                        MethodInstance = MethodBase.GetCurrentMethod(),
-                        ThreadInstance = Thread.CurrentThread
-                    });
-
-                    var dt = ds.Tables[0];
-
-                    if (ds.Tables[0].Rows.Count > 0)
-                    {
-                        //var includeTypes = string.Empty;
-                        //if (include != null)
-                        //{
-                        //    ds.Tables[0].Columns.Add("@Include");
-                        //    includeTypes = string.Join("|", include.ToList());
-                        //}
-
-                        //foreach (DataRow dr in ds.Tables[0].Rows)
-                        //{
-                        //    ConstructorInfo ci = typeof(T).GetConstructor(new Type[] { typeof(DataRow) });
-
-                        //    if (include != null && !string.IsNullOrEmpty(includeTypes))
-                        //    { dr["@Include"] = includeTypes; }
-
-                        //    list.Add((T)ci.Invoke(new Object[] { dr }));
-                        //}
-
-                        using (var reader = dt.CreateDataReader())
-                        {
-                            list = reader.DataReaderMapTo<T>().ToList();
-                        }
+                        list = reader.DataReaderMapTo<T>().ToList();
                     }
                 }
 
@@ -506,13 +268,6 @@ namespace Arsenalcn.Core
 
                 throw;
             }
-        }
-
-        public IQueryable<T> Query<T>(Expression<Func<T, bool>> predicate) where T : class, IViewer, new()
-        {
-            Contract.Requires(predicate != null);
-
-            return All<T>().AsQueryable().Where(predicate);
         }
 
         public void Insert<T>(T instance, SqlTransaction trans = null) where T : class, IEntity
@@ -563,18 +318,12 @@ namespace Arsenalcn.Core
 
                     if (trans != null)
                     {
-                        SqlHelper.ExecuteNonQuery(trans, CommandType.Text, sql, listPara.ToArray());
+                        DataAccess.ExecuteNonQuery(sql, listPara.ToArray(), trans);
                     }
                     else
                     {
-                        SqlHelper.ExecuteNonQuery(conn, CommandType.Text, sql, listPara.ToArray());
+                        DataAccess.ExecuteNonQuery(sql, listPara.ToArray());
                     }
-
-                    log.Debug(sql, new LogInfo()
-                    {
-                        MethodInstance = MethodBase.GetCurrentMethod(),
-                        ThreadInstance = Thread.CurrentThread
-                    });
                 }
                 else { throw new Exception("Unable to find any valid DB columns"); }
             }
@@ -640,11 +389,11 @@ namespace Arsenalcn.Core
 
                         if (trans != null)
                         {
-                            SqlHelper.ExecuteNonQuery(trans, CommandType.Text, sql, listPara.ToArray());
+                            DataAccess.ExecuteNonQuery(sql, listPara.ToArray(), trans);
                         }
                         else
                         {
-                            SqlHelper.ExecuteNonQuery(conn, CommandType.Text, sql, listPara.ToArray());
+                            DataAccess.ExecuteNonQuery(sql, listPara.ToArray());
                         }
                     }
                     else
@@ -654,19 +403,13 @@ namespace Arsenalcn.Core
 
                         if (trans != null)
                         {
-                            key = SqlHelper.ExecuteScalar(trans, CommandType.Text, sql, listPara.ToArray());
+                            key = DataAccess.ExecuteScalar(sql, listPara.ToArray(), trans);
                         }
                         else
                         {
-                            key = SqlHelper.ExecuteScalar(conn, CommandType.Text, sql, listPara.ToArray());
+                            key = DataAccess.ExecuteScalar(sql, listPara.ToArray());
                         }
                     }
-
-                    log.Debug(sql, new LogInfo()
-                    {
-                        MethodInstance = MethodBase.GetCurrentMethod(),
-                        ThreadInstance = Thread.CurrentThread
-                    });
                 }
                 else
                 {
@@ -682,16 +425,6 @@ namespace Arsenalcn.Core
                 });
 
                 throw;
-            }
-        }
-
-        public void Insert<T>(IEnumerable<T> instances, SqlTransaction trans = null) where T : class, IEntity
-        {
-            Contract.Requires(instances != null);
-
-            foreach (var instance in instances)
-            {
-                Insert<T>(instance, trans);
             }
         }
 
@@ -735,18 +468,12 @@ namespace Arsenalcn.Core
 
                     if (trans != null)
                     {
-                        SqlHelper.ExecuteNonQuery(trans, CommandType.Text, sql, listPara.ToArray());
+                        DataAccess.ExecuteNonQuery(sql, listPara.ToArray(), trans);
                     }
                     else
                     {
-                        SqlHelper.ExecuteNonQuery(conn, CommandType.Text, sql, listPara.ToArray());
+                        DataAccess.ExecuteNonQuery(sql, listPara.ToArray());
                     }
-
-                    log.Debug(sql, new LogInfo()
-                    {
-                        MethodInstance = MethodBase.GetCurrentMethod(),
-                        ThreadInstance = Thread.CurrentThread
-                    });
                 }
                 else { throw new Exception("Unable to find any valid DB columns"); }
             }
@@ -759,16 +486,6 @@ namespace Arsenalcn.Core
                 });
 
                 throw;
-            }
-        }
-
-        public void Update<T>(IEnumerable<T> instances, SqlTransaction trans = null) where T : class, IEntity
-        {
-            Contract.Requires(instances != null);
-
-            foreach (var instance in instances)
-            {
-                Update<T>(instance, trans);
             }
         }
 
@@ -786,18 +503,12 @@ namespace Arsenalcn.Core
 
                 if (trans != null)
                 {
-                    SqlHelper.ExecuteNonQuery(trans, CommandType.Text, sql, para);
+                    DataAccess.ExecuteNonQuery(sql, para, trans);
                 }
                 else
                 {
-                    SqlHelper.ExecuteNonQuery(conn, CommandType.Text, sql, para);
+                    DataAccess.ExecuteNonQuery(sql, para);
                 }
-
-                log.Debug(sql, new LogInfo()
-                {
-                    MethodInstance = MethodBase.GetCurrentMethod(),
-                    ThreadInstance = Thread.CurrentThread
-                });
             }
             catch (Exception ex)
             {
@@ -820,55 +531,6 @@ namespace Arsenalcn.Core
             var key = instance.GetType().GetProperty("ID").GetValue(instance, null);
 
             Delete<T>(key, trans);
-        }
-
-        // Todo remove T where IViewer
-        public void Delete<T>(Expression<Func<T, bool>> predicate, out int count, SqlTransaction trans = null) where T : class, IEntity, IViewer, new()
-        {
-            Contract.Requires(predicate != null);
-
-            var list = new List<T>();
-
-            var attr = GetTableAttr<T>();
-
-            StringBuilder sql = new StringBuilder();
-            sql.AppendFormat("SELECT * FROM {0}  ", attr.Name);
-
-            if (!string.IsNullOrEmpty(attr.Sort))
-            {
-                sql.AppendFormat("ORDER BY {0}", attr.Sort);
-            }
-
-            DataSet ds = SqlHelper.ExecuteDataset(conn, CommandType.Text, sql.ToString());
-
-            var dt = ds.Tables[0];
-
-            if (dt.Rows.Count > 0)
-            {
-                //foreach (DataRow dr in ds.Tables[0].Rows)
-                //{
-                //    ConstructorInfo ci = typeof(T).GetConstructor(new Type[] { typeof(DataRow) });
-
-                //    list.Add((T)ci.Invoke(new Object[] { dr }));
-                //}
-
-                using (var reader = dt.CreateDataReader())
-                {
-                    list = reader.DataReaderMapTo<T>().ToList();
-                }
-            }
-
-            var instances = list.AsQueryable().Where(predicate);
-
-            count = instances.Count();
-
-            if (instances != null && count > 0)
-            {
-                foreach (var instance in instances)
-                {
-                    Delete<T>(instance, trans);
-                }
-            }
         }
 
         public static DbSchema GetTableAttr<T>() where T : class

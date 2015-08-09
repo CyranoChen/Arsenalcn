@@ -25,7 +25,7 @@ namespace iArsenal.Web
         {
             try
             {
-                var list = repo.Query<MemberPeriod>(x => x.MemberID.Equals(this.MID)).ToList().FindAll(x =>
+                var list = repo.Query<MemberPeriod>(x => x.MemberID == this.MID).FindAll(x =>
                 {
                     Boolean returnValue = true;
                     string tmpString = string.Empty;

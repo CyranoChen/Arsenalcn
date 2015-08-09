@@ -106,9 +106,9 @@ namespace iArsenal.Service
 
             IRepository repo = new Repository();
 
-            var query = repo.Query<OrderItem>(x => x.OrderID.Equals(this.ID) && x.IsActive);
+            var query = repo.Query<OrderItem>(x => x.OrderID == this.ID && x.IsActive == true);
 
-            if (query != null && query.Count() > 0)
+            if (query != null && query.Count > 0)
             {
                 foreach (var oi in query)
                 {
@@ -161,7 +161,8 @@ namespace iArsenal.Service
         public void RefreshOrderType()
         {
             IRepository repo = new Repository();
-            var query = repo.Query<OrderItem>(x => Product.Cache.Load(x.ProductGuid) != null && x.OrderID.Equals(ID));
+            var query = repo.Query<OrderItem>(x => x.OrderID == ID)
+                .FindAll(x => Product.Cache.Load(x.ProductGuid) != null);
 
             if (query.Count() > 0)
             {
@@ -224,7 +225,7 @@ namespace iArsenal.Service
         {
             IRepository repo = new Repository();
             var oList = repo.All<Order>();
-            var oiList = repo.Query<OrderItem>(x => Product.Cache.Load(x.ProductGuid) != null).ToList();
+            var oiList = repo.All<OrderItem>().FindAll(x => Product.Cache.Load(x.ProductGuid) != null);
 
             if (oList.Count > 0 && oiList.Count > 0)
             {

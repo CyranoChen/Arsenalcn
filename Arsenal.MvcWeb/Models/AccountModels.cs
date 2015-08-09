@@ -89,11 +89,7 @@ namespace Arsenal.MvcWeb.Models
 
             IRepository repo = new Repository();
 
-            var ht = new Hashtable();
-
-            ht.Add("UserName", username);
-
-            var query = repo.Query<Membership>(ht);
+            var query = repo.Query<Membership>(x => x.UserName == username);
 
             if (query.Count > 0)
             {
@@ -125,12 +121,8 @@ namespace Arsenal.MvcWeb.Models
 
             IRepository repo = new Repository();
 
-            var ht = new Hashtable();
-
-            ht.Add("UserName", username);
-            ht.Add("Password", Encrypt.getMd5Hash(password));
-
-            var query = repo.Query<Membership>(ht);
+            var query = repo.Query<Membership>(x =>
+                x.UserName == username && x.Password == Encrypt.getMd5Hash(password));
 
             if (query.Count > 0)
             {

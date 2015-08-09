@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -29,8 +28,8 @@ namespace Arsenal.MvcWeb.Controllers
             var days = 7;
 
             var query = repo.Query<MatchView>(
-                predicate: x => !x.ResultHome.HasValue && !x.ResultAway.HasValue
-                && x.PlayTime > DateTime.Now && x.PlayTime < DateTime.Now.AddDays(days))
+                x => x.PlayTime > DateTime.Now && x.PlayTime < DateTime.Now.AddDays(days))
+                .FindAll(x => !x.ResultHome.HasValue && !x.ResultHome.HasValue)
                 .OrderBy(x => x.PlayTime)
                 .Many<MatchView, ChoiceOption>((tOne, tMany) => tOne.CasinoItem.ID.Equals(tMany.CasinoItemGuid));
 
@@ -51,10 +50,7 @@ namespace Arsenal.MvcWeb.Controllers
         {
             var model = new MyBetDto();
 
-            var whereBy = new Hashtable();
-            whereBy.Add("UserID", this.acnID);
-
-            var query = repo.Query<BetView>(whereBy)
+            var query = repo.Query<BetView>(x => x.UserID == this.acnID)
                 .Many<BetView, BetDetail>((tOne, tMany) => tOne.ID.Equals(tMany.BetID));
 
             BetDto.CreateMap();
@@ -84,8 +80,7 @@ namespace Arsenal.MvcWeb.Controllers
         {
             var model = new ResultDto();
 
-            var query = repo.All<MatchView>()
-                .FindAll(x => x.ResultHome.HasValue && x.ResultAway.HasValue);
+            var query = repo.Query<MatchView>(x => x.ResultHome.HasValue && x.ResultAway.HasValue);
 
             var map = Mapper.CreateMap<MatchView, MatchDto>();
 
@@ -115,7 +110,7 @@ namespace Arsenal.MvcWeb.Controllers
 
             model.Match = MatchDto.Single(id);
 
-            var query = repo.Query<BetView>(x => x.CasinoItem.MatchGuid.Equals(id))
+            var query = repo.Query<BetView>(x => x.CasinoItem.MatchGuid == id)
                 .Many<BetView, BetDetail>((tOne, tMany) => tOne.ID.Equals(tMany.BetID));
 
             BetDto.CreateMap();
@@ -134,17 +129,14 @@ namespace Arsenal.MvcWeb.Controllers
         {
             var model = new GameBetDto();
 
-            var whereBy = new Hashtable();
-            whereBy.Add("UserID", this.acnID);
-
-            var gambler = repo.Query<Gambler>(whereBy).FirstOrDefault();
+            var gambler = repo.Query<Gambler>(x => x.UserID == this.acnID).FirstOrDefault();
             model.MyCash = gambler != null ? gambler.Cash : 0f;
 
             model.Match = MatchDto.Single(id);
 
             // model.MyBets
-            var betsQuery = repo.Query<BetView>(whereBy)
-                .FindAll(x => x.CasinoItem.MatchGuid.Equals(id))
+            var betsQuery = repo.Query<BetView>(x =>
+                x.UserID == this.acnID && x.CasinoItem.MatchGuid == id)
                 .Many<BetView, BetDetail>((tOne, tMany) => tOne.ID.Equals(tMany.BetID));
 
             BetDto.CreateMap();
@@ -156,10 +148,9 @@ namespace Arsenal.MvcWeb.Controllers
             // model.HistoryMatches
             var match = repo.Single<Arsenal.Service.Casino.Match>(id);
 
-            var matchesQuery = repo.All<MatchView>()
-                .FindAll(x => x.ResultHome.HasValue && x.ResultAway.HasValue &&
-                (x.Home.ID.Equals(match.Home) && x.Away.ID.Equals(match.Away) ||
-                x.Home.ID.Equals(match.Away) && x.Away.ID.Equals(match.Home)));
+            var matchesQuery = repo.Query<MatchView>(x => x.ResultHome.HasValue && x.ResultAway.HasValue)
+                .FindAll(x => x.Home.ID.Equals(match.Home) && x.Away.ID.Equals(match.Away) ||
+                x.Home.ID.Equals(match.Away) && x.Away.ID.Equals(match.Home));
 
             var map = Mapper.CreateMap<MatchView, MatchDto>();
 
@@ -186,10 +177,7 @@ namespace Arsenal.MvcWeb.Controllers
         {
             var model = new SingleChoiceDto();
 
-            var whereBy = new Hashtable();
-            whereBy.Add("UserID", this.acnID);
-
-            var gambler = repo.Query<Gambler>(whereBy).FirstOrDefault();
+            var gambler = repo.Query<Gambler>(x => x.UserID == this.acnID).FirstOrDefault();
             model.MyCash = gambler != null ? gambler.Cash : 0f;
 
             model.Match = MatchDto.Single(id);
@@ -261,10 +249,7 @@ namespace Arsenal.MvcWeb.Controllers
         {
             var model = new MatchResultDto();
 
-            var whereBy = new Hashtable();
-            whereBy.Add("UserID", this.acnID);
-
-            var gambler = repo.Query<Gambler>(whereBy).FirstOrDefault();
+            var gambler = repo.Query<Gambler>(x => x.UserID == this.acnID).FirstOrDefault();
             model.MyCash = gambler != null ? gambler.Cash : 0f;
 
             model.Match = MatchDto.Single(id);

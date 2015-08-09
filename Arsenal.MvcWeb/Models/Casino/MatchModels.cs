@@ -33,7 +33,7 @@ namespace Arsenal.MvcWeb.Models.Casino
             IRepository repo = new Repository();
 
             var instance = repo.Single<MatchView>(key);
-            instance.Many<ChoiceOption>(instance.CasinoItem.ID);
+            instance.Many<ChoiceOption>(x => x.CasinoItemGuid == instance.CasinoItem.ID);
 
             CreateMap();
 

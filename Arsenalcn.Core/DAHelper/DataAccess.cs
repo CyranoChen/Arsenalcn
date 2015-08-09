@@ -84,5 +84,43 @@ namespace Arsenalcn.Core
                 throw;
             }
         }
+
+        public static object ExecuteScalar(string sql, SqlParameter[] para = null, SqlTransaction trans = null)
+        {
+            ILog log = new DaoLog();
+            object key;
+
+            try
+            {
+                Contract.Requires(!string.IsNullOrEmpty(sql));
+
+                if (trans != null)
+                {
+                    key = SqlHelper.ExecuteScalar(trans, CommandType.Text, sql, para);
+                }
+                else
+                {
+                    key = SqlHelper.ExecuteScalar(ConnectString, CommandType.Text, sql, para);
+                }
+
+                log.Debug(sql, new LogInfo()
+                {
+                    MethodInstance = MethodBase.GetCurrentMethod(),
+                    ThreadInstance = Thread.CurrentThread
+                });
+
+                return key;
+            }
+            catch (Exception ex)
+            {
+                log.Debug(ex, new LogInfo()
+                {
+                    MethodInstance = MethodBase.GetCurrentMethod(),
+                    ThreadInstance = Thread.CurrentThread
+                });
+
+                throw;
+            }
+        }
     }
 }

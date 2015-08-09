@@ -30,11 +30,11 @@ namespace iArsenal.Web
                 //                LeagueName = l.Key.LeagueName
                 //            };
 
-                var query = mtList.GroupBy(mt => new { mt.LeagueGuid, mt.LeagueName })
+                var list = mtList.GroupBy(mt => new { mt.LeagueGuid, mt.LeagueName })
                     .Select(l => new { l.Key.LeagueGuid, l.Key.LeagueName })
-                    .OrderByDescending(l => l.LeagueName);
+                    .OrderByDescending(l => l.LeagueName).ToList();
 
-                ddlLeague.DataSource = query;
+                ddlLeague.DataSource = list;
                 ddlLeague.DataTextField = "LeagueName";
                 ddlLeague.DataValueField = "LeagueGuid";
                 ddlLeague.DataBind();

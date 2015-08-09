@@ -122,7 +122,7 @@ namespace iArsenal.Web
                 else
                 {
                     // Whether this MemberPeriod Exists
-                    var list = repo.Query<MemberPeriod>(x => x.MemberID.Equals(mp.MemberID)).ToList();
+                    var list = repo.Query<MemberPeriod>(x => x.MemberID == mp.MemberID);
 
                     if (list.Any(x => x.StartDate <= mp.StartDate && x.EndDate >= mp.EndDate))
                         throw new Exception(string.Format("The Member Period in active for this Member(No.{0})", mp.MemberID.ToString()));

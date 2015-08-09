@@ -65,6 +65,7 @@
     <Compile Include="Entity\Viewer.cs" />
     <Compile Include="Extension\AutoMapperHelper.cs" />
     <Compile Include="Extension\CollectionExtensions.cs" />
+    <Compile Include="Extension\RepositoryExtensions.cs" />
     <Compile Include="Logger\AppLog.cs" />
     <Compile Include="Logger\DaoLog.cs" />
     <Compile Include="Logger\ILog.cs" />

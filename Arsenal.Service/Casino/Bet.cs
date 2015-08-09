@@ -38,10 +38,8 @@ namespace Arsenal.Service.Casino
                     IRepository repo = new Repository();
 
                     #region Get CasinoItem & Check
-                    var whereBy = new Hashtable();
-                    whereBy.Add("MatchGuid", matchGuid);
-
-                    var item = repo.Query<CasinoItem>(whereBy).Find(x => x.ItemType.Equals(CasinoType.SingleChoice));
+                    var item = repo.Query<CasinoItem>(x =>
+                        x.MatchGuid == matchGuid && x.ItemType == CasinoType.SingleChoice)[0];
 
                     if (item == null)
                     {
@@ -55,10 +53,7 @@ namespace Arsenal.Service.Casino
                     #endregion
 
                     #region Get Gambler & Check
-                    whereBy.Clear();
-                    whereBy.Add("UserID", this.UserID);
-
-                    var gambler = repo.Query<Gambler>(whereBy)[0];
+                    var gambler = repo.Query<Gambler>(x => x.UserID == this.UserID)[0];
 
                     if (gambler == null)
                     {
@@ -72,11 +67,8 @@ namespace Arsenal.Service.Casino
                     #endregion
 
                     #region Get ChoiceOption & Check
-                    whereBy.Clear();
-                    whereBy.Add("CasinoItemGuid", item.ID);
-
-                    var choiceOption = repo.Query<ChoiceOption>(whereBy).Find(x =>
-                        x.OptionName.Equals(selectedOption, StringComparison.OrdinalIgnoreCase));
+                    var choiceOption = repo.Query<ChoiceOption>(x => x.CasinoItemGuid == item.ID)
+                        .Find(x => x.OptionName.Equals(selectedOption, StringComparison.OrdinalIgnoreCase));
 
                     if (choiceOption == null)
                     {
@@ -151,10 +143,8 @@ namespace Arsenal.Service.Casino
                     IRepository repo = new Repository();
 
                     #region Get CasinoItem & Check
-                    var whereBy = new Hashtable();
-                    whereBy.Add("MatchGuid", matchGuid);
-
-                    var item = repo.Query<CasinoItem>(whereBy).Find(x => x.ItemType.Equals(CasinoType.MatchResult));
+                    var item = repo.Query<CasinoItem>(x =>
+                        x.MatchGuid == matchGuid && x.ItemType == CasinoType.MatchResult)[0];
 
                     if (item == null)
                     {
@@ -168,10 +158,7 @@ namespace Arsenal.Service.Casino
                     #endregion
 
                     #region Get Gambler & Check
-                    whereBy.Clear();
-                    whereBy.Add("UserID", this.UserID);
-
-                    var gambler = repo.Query<Gambler>(whereBy)[0];
+                    var gambler = repo.Query<Gambler>(x => x.UserID == this.UserID)[0];
 
                     if (gambler == null)
                     {
@@ -180,11 +167,8 @@ namespace Arsenal.Service.Casino
                     #endregion
 
                     #region Get RepeatBet & Check
-                    whereBy.Clear();
-                    whereBy.Add("CasinoItemGuid", item.ID);
-                    whereBy.Add("UserID", this.UserID);
-
-                    var historyBets = repo.Query<Bet>(whereBy);
+                    var historyBets = repo.Query<Bet>(x =>
+                        x.CasinoItemGuid == item.ID && x.UserID == this.UserID);
 
                     if (historyBets.Count > 0)
                     {

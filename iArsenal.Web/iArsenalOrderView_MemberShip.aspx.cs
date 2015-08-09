@@ -331,20 +331,21 @@ namespace iArsenal.Web
                             }
 
                             // Get all Member Period of current season
-                            var list = repo.Query<MemberPeriod>(x => x.IsActive && x.StartDate <= DateTime.Now && x.EndDate >= DateTime.Now).ToList();
+                            var list = repo.Query<MemberPeriod>(x => 
+                                x.IsActive == true && x.StartDate <= DateTime.Now && x.EndDate >= DateTime.Now);
 
                             bool _updateFlag = false;
 
                             // Valiate the Member Period Information
-                            if (list != null && list.Count() > 0)
+                            if (list != null && list.Count > 0)
                             {
-                                if (list.Any(x =>
+                                if (list.Exists(x =>
                                     x.MemberID.Equals(o.MemberID) && x.MemberName.Equals(o.MemberName)
                                     && p.ProductType.Equals(ProductType.MemberShipCore)))
                                 {
                                     throw new Exception("此会员当前赛季已经有会籍信息");
                                 }
-                                else if (list.Any(x =>
+                                else if (list.Exists(x =>
                                                 x.MemberID.Equals(o.MemberID) && x.MemberName.Equals(o.MemberName)
                                                 && x.MemberClass.Equals(MemberClassType.Core))
                                             && p.ProductType.Equals(ProductType.MemberShipPremier))
@@ -352,7 +353,7 @@ namespace iArsenal.Web
                                     _updateFlag = true;
                                 }
 
-                                if (!_updateFlag && list.Any(x => !x.MemberID.Equals(o.MemberID)
+                                if (!_updateFlag && list.Exists(x => !x.MemberID.Equals(o.MemberID)
                                     && x.MemberCardNo.Equals(oiMemberShip.MemberCardNo, StringComparison.OrdinalIgnoreCase)))
                                 {
                                     throw new Exception("此会员卡号已被其他会员占用");

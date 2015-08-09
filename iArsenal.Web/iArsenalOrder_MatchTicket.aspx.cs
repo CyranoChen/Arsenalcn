@@ -416,8 +416,7 @@ namespace iArsenal.Web
                     //Remove Order Item of this Order
                     if (OrderID > 0 && o.ID.Equals(OrderID))
                     {
-                        int _count = 0;
-                        repo.Delete<OrderItem>(x => x.OrderID.Equals(OrderID), out _count, trans);
+                        int count = repo.Query<OrderItem>(x => x.OrderID == OrderID).Delete(trans);
                     }
 
                     // Genernate Travel Date

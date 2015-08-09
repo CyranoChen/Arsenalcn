@@ -84,7 +84,7 @@ namespace iArsenal.Web
 
         private void BindItemData()
         {
-            var list = repo.Query<OrderItem>(x => x.OrderID.Equals(OrderID)).ToList();
+            var list = repo.Query<OrderItem>(x => x.OrderID == OrderID);
 
             gvOrderItem.DataSource = list;
             gvOrderItem.DataBind();
@@ -237,9 +237,7 @@ namespace iArsenal.Web
             {
                 if (OrderID > 0)
                 {
-                    int count = 0;
-
-                    repo.Delete<OrderItem>(x => x.OrderID.Equals(OrderID), out count);
+                    int count = repo.Query<OrderItem>(x => x.OrderID == OrderID).Delete();
 
                     repo.Delete<Order>(OrderID);
 

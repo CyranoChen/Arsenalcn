@@ -14,7 +14,8 @@ namespace iArsenal.Service
         {
             IRepository repo = new Repository();
 
-            var list = repo.Query<OrderItem>(x => x.OrderID.Equals(ID) && x.IsActive && Product.Cache.Load(x.ProductGuid) != null).ToList();
+            var list = repo.Query<OrderItem>(x => x.OrderID == ID && x.IsActive == true)
+                .FindAll(x => Product.Cache.Load(x.ProductGuid) != null);
 
             if (list != null && list.Count > 0)
             {
@@ -92,9 +93,9 @@ namespace iArsenal.Service
 
             string[] _workflowInfo = {
                                       string.Format(_strWorkflow, ((int)OrderStatusType.Draft).ToString(), "未提交"),
-                                      string.Format(_strWorkflow, ((int)OrderStatusType.Submitted).ToString(), "审核中"), 
-                                      string.Format(_strWorkflow, ((int)OrderStatusType.Confirmed).ToString(), "已确认"), 
-                                      string.Format(_strWorkflow, ((int)OrderStatusType.Ordered).ToString(), "已下单"), 
+                                      string.Format(_strWorkflow, ((int)OrderStatusType.Submitted).ToString(), "审核中"),
+                                      string.Format(_strWorkflow, ((int)OrderStatusType.Confirmed).ToString(), "已确认"),
+                                      string.Format(_strWorkflow, ((int)OrderStatusType.Ordered).ToString(), "已下单"),
                                       string.Format(_strWorkflow, ((int)OrderStatusType.Delivered).ToString(), "已发货")
                                   };
 

@@ -46,7 +46,8 @@ namespace Arsenal.Service
                 VideoList_Legend = VideoList.FindAll(x =>
                     x.GoalPlayerGuid.HasValue ? Player.Cache.Load(x.GoalPlayerGuid.Value).IsLegend : false);
 
-                ColList_GoalYear = repo.Query<Video>(x => !string.IsNullOrEmpty(x.GoalYear)).DistinctOrderBy(x => x.GoalYear);
+                ColList_GoalYear = repo.All<Video>().FindAll(x =>
+                    !string.IsNullOrEmpty(x.GoalYear)).DistinctOrderBy(x => x.GoalYear);
             }
 
             public static Video Load(Guid guid)

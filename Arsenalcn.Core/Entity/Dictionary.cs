@@ -95,7 +95,7 @@ namespace Arsenalcn.Core
             {
                 IRepository repo = new Repository();
 
-                DictionaryItemList_Region = repo.Query<DictionaryItem>(x => x.DictionaryID.Equals(108)).ToList();
+                DictionaryItemList_Region = repo.Query<DictionaryItem>(x => x.DictionaryID == 108);
             }
 
             public static DictionaryItem Load(int id)

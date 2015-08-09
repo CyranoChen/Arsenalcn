@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data.SqlClient;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -13,7 +14,9 @@ namespace Arsenalcn.Core
 
         public string Condition { get; private set; }
 
-        public object[] Arguments { get; private set; }
+        private object[] Arguments { get; set; }
+
+        public List<SqlParameter> SqlArguments { get; set; }
 
         public void Build(Expression expression)
         {
@@ -27,6 +30,17 @@ namespace Arsenalcn.Core
 
             this.Arguments = this.m_arguments.ToArray();
             this.Condition = this.m_conditionParts.Count > 0 ? this.m_conditionParts.Pop() : null;
+
+            // Convert Arguments from List<object> to List<SqlParameter>
+            if (this.m_arguments.Count > 0)
+            {
+                this.SqlArguments = new List<SqlParameter>();
+
+                for (var i = 0; i < this.m_arguments.Count; i++)
+                {
+                    this.SqlArguments.Add(new SqlParameter("@para" + i, this.m_arguments[i]));
+                }
+            }
         }
 
         protected override Expression VisitBinary(BinaryExpression b)
@@ -93,7 +107,10 @@ namespace Arsenalcn.Core
             if (c == null) return c;
 
             this.m_arguments.Add(c.Value);
-            this.m_conditionParts.Push(String.Format("{{{0}}}", this.m_arguments.Count - 1));
+
+            //this.m_conditionParts.Push(String.Format("{{{0}}}", this.m_arguments.Count - 1));
+            //use @para{0} instead of {0}
+            this.m_conditionParts.Push(string.Format("@para{0}", this.m_arguments.Count - 1));
 
             return c;
         }
@@ -102,10 +119,29 @@ namespace Arsenalcn.Core
         {
             if (m == null) return m;
 
-            PropertyInfo propertyInfo = m.Member as PropertyInfo;
-            if (propertyInfo == null) return m;
+            // Except for property HasValue
+            if (m.Member.Name.Equals("HasValue"))
+            {
+                PropertyInfo propertyInfo = ((MemberExpression)m.Expression).Member as PropertyInfo;
+                if (propertyInfo == null) return m;
 
-            this.m_conditionParts.Push(String.Format("[{0}]", propertyInfo.Name));
+                // Whether this property is DB Column by Meta Attribute
+                var attrCol = Repository.GetColumnAttr(propertyInfo);
+                if (attrCol == null) return m;
+
+                this.m_conditionParts.Push(String.Format("[{0}] IS NOT NULL", attrCol.Name));
+            }
+            else
+            {
+                PropertyInfo propertyInfo = m.Member as PropertyInfo;
+                if (propertyInfo == null) return m;
+
+                // Whether this property is DB Column by Meta Attribute
+                var attrCol = Repository.GetColumnAttr(propertyInfo);
+                if (attrCol == null) return m;
+
+                this.m_conditionParts.Push(String.Format("[{0}]", attrCol.Name));
+            }
 
             return m;
         }

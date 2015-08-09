@@ -45,7 +45,7 @@ namespace Arsenalcn.Core.Tests
 
             var instance = repo.Single<MatchView>(key);
 
-            instance.Many<ChoiceOption>(instance.CasinoItem.ID);
+            instance.Many<ChoiceOption>(x => x.CasinoItemGuid == instance.CasinoItem.ID);
 
             Assert.IsNotNull(instance);
         }
@@ -88,11 +88,7 @@ namespace Arsenalcn.Core.Tests
         {
             IRepository repo = new Repository();
 
-            var ht = new Hashtable();
-
-            ht.Add("LeagueTime", "DESC");
-
-            var query = repo.All<League>(new Pager(2) { PagingSize = 20 }, ht);
+            var query = repo.All<League>(new Pager(2) { PagingSize = 20 }, "LeagueTime DESC");
 
             Assert.IsNotNull(query);
         }
@@ -102,11 +98,7 @@ namespace Arsenalcn.Core.Tests
         {
             IRepository repo = new Repository();
 
-            var ht = new Hashtable();
-
-            ht.Add("BetTime", "DESC");
-
-            var query = repo.All<BetView>(new Pager(2) { PagingSize = 20 }, ht);
+            var query = repo.All<BetView>(new Pager(2) { PagingSize = 20 }, "BetTime DESC");
 
             Assert.IsNotNull(query);
         }
@@ -116,16 +108,9 @@ namespace Arsenalcn.Core.Tests
         {
             IRepository repo = new Repository();
 
-            var query1 = repo.Query<League>(x => x.IsActive);
+            var query = repo.Query<League>(x => x.IsActive == true);
 
-            var ht = new Hashtable();
-
-            ht.Add("IsActive", true);
-
-            var query2 = repo.Query<League>(ht);
-
-            Assert.IsNotNull(query1);
-            Assert.IsNotNull(query2);
+            Assert.IsNotNull(query);
         }
 
         [TestMethod]
@@ -133,11 +118,7 @@ namespace Arsenalcn.Core.Tests
         {
             IRepository repo = new Repository();
 
-            var whereBy = new Hashtable();
-
-            whereBy.Add("UserID", 443);
-
-            var query = repo.Query<BetView>(whereBy)
+            var query = repo.Query<BetView>(x => x.UserID == 443)
                 .Many<BetView, BetDetail>((tOne, tMany) => tOne.ID.Equals(tMany.BetID));
 
             Assert.IsNotNull(query);
@@ -156,7 +137,8 @@ namespace Arsenalcn.Core.Tests
 
             whereBy.Add("IsActive", true);
 
-            var query = repo.Query<League>(new Pager(2) { PagingSize = 5 }, whereBy, orderBy);
+            var query = repo.Query<League>(new Pager(2) { PagingSize = 5 },
+                x => x.IsActive == true, "LeagueTime DESC");
 
             Assert.IsNotNull(query);
         }
@@ -166,8 +148,8 @@ namespace Arsenalcn.Core.Tests
         {
             IRepository repo = new Repository();
 
-            var query = repo.QueryCondition<MatchView>(x =>
-                x.ResultHome.HasValue && x.ResultAway >= 0 && x.PlayTime < DateTime.Now);
+            var query = repo.Query<MatchView>(x => x.ResultHome.HasValue && x.ResultAway.HasValue &&
+                x.ResultHome >= 0 && x.ResultAway >= 0 && x.PlayTime < DateTime.Now);
 
             Assert.IsNotNull(query);
         }

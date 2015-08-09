@@ -362,11 +362,11 @@ namespace iArsenal.Web
                     tbAlipay.Text = m.TaobaoName;
                     tbOrderAddress.Text = m.Address;
 
-                    var query = Product.Cache.Load(CurrProductType).FindAll(x => x.IsActive).OrderBy(x => x.Code);
+                    var list = Product.Cache.Load(CurrProductType).FindAll(x => x.IsActive).OrderBy(x => x.Code).ToList();
 
-                    if (query != null && query.Count() > 0)
+                    if (list != null && list.Count() > 0)
                     {
-                        ddlReplicaKit.DataSource = query;
+                        ddlReplicaKit.DataSource = list;
                         ddlReplicaKit.DataValueField = "ID";
                         ddlReplicaKit.DataBind();
 
@@ -454,8 +454,7 @@ namespace iArsenal.Web
                     //Remove Order Item of this Order
                     if (OrderID > 0 && o.ID.Equals(OrderID))
                     {
-                        int _count = 0;
-                        repo.Delete<OrderItem>(x => x.OrderID.Equals(OrderID), out _count, trans);
+                        int count = repo.Query<OrderItem>(x => x.OrderID == OrderID).Delete(trans);
                     }
 
                     //New Order Item for ReplicaKit

@@ -10,6 +10,7 @@ using System.Threading;
 using System.Web;
 
 using Arsenalcn.Core.Logger;
+using System.Linq.Expressions;
 
 namespace Arsenalcn.Core
 {
@@ -153,55 +154,20 @@ namespace Arsenalcn.Core
             }
         }
 
-        public virtual void Many<T>(object fKeyValue) where T : class, IViewer, new()
+        public virtual void Many<T>(Expression<Func<T, bool>> whereBy) where T : class, IViewer, new()
         {
             var propertyName = string.Format("List{0}", typeof(T).Name);
             var property = this.GetType().GetProperty(propertyName, typeof(IEnumerable<T>));
 
-            var attrCol = Repository.GetColumnAttr(property);
+            IRepository repo = new Repository();
 
-            if (attrCol != null && !string.IsNullOrEmpty(attrCol.ForeignKey))
+            var list = repo.Query<T>(whereBy);
+
+            if (list != null && list.Count > 0)
             {
-                IRepository repo = new Repository();
-
-                var whereBy = new Hashtable();
-
-                whereBy.Add(attrCol.ForeignKey, fKeyValue);
-
-                var list = repo.Query<T>(whereBy);
-
-                if (list != null && list.Count > 0)
-                {
-                    property.SetValue(this, list, null);
-                }
+                property.SetValue(this, list, null);
             }
         }
-
-        //public virtual void Mapper(Object obj)
-        //{
-        //    try
-        //    {
-        //        foreach (var properInfo in this.GetType()
-        //            .GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance))
-        //        {
-        //            var properInfoOrgin = obj.GetType().GetProperty(properInfo.Name);
-        //            if (properInfoOrgin != null)
-        //            {
-        //                properInfo.SetValue(this, properInfoOrgin.GetValue(obj, null), null);
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        log.Debug(ex, new LogInfo()
-        //        {
-        //            MethodInstance = MethodBase.GetCurrentMethod(),
-        //            ThreadInstance = Thread.CurrentThread
-        //        });
-
-        //        throw;
-        //    }
-        //}
     }
 
     public interface IViewer

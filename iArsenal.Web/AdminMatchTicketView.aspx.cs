@@ -111,8 +111,8 @@ namespace iArsenal.Web
 
         private void BindItemData()
         {
-            var list = repo.Query<OrderItem>(x => x.Remark.Equals(MatchGuid.ToString())).ToList();
-            var query = repo.Query<Order>(o => list.Any(x => x.OrderID.Equals(o.ID)));
+            var list = repo.Query<OrderItem>(x => x.Remark == MatchGuid.ToString());
+            var query = repo.All<Order>().FindAll(o => list.Exists(x => x.OrderID.Equals(o.ID)));
 
             gvMatchOrder.DataSource = query.ToList();
             gvMatchOrder.DataBind();

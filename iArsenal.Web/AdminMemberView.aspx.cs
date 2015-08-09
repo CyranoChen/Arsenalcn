@@ -128,7 +128,7 @@ namespace iArsenal.Web
 
         private void BindItemData()
         {
-            var list = repo.Query<MemberPeriod>(x => x.MemberID.Equals(MemberID)).ToList();
+            var list = repo.Query<MemberPeriod>(x => x.MemberID == MemberID);
 
             gvMemberPeriod.DataSource = list;
             gvMemberPeriod.DataBind();
@@ -242,11 +242,7 @@ namespace iArsenal.Web
                 #region Filter Member By AcnID
                 int tmpMID = int.MinValue;
 
-                var htWhere = new Hashtable();
-
-                htWhere.Add("AcnID", m.AcnID);
-
-                Member tmpMem = repo.Query<Member>(htWhere).FirstOrDefault();
+                Member tmpMem = repo.Query<Member>(x => x.AcnID == m.AcnID).FirstOrDefault();
 
                 if (tmpMem != null)
                 {

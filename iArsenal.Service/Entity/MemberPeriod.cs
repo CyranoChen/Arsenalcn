@@ -28,8 +28,9 @@ namespace iArsenal.Service
 
             IRepository repo = new Repository();
 
-            return repo.Query<MemberPeriod>(htWhere).FirstOrDefault(x =>
-                x.StartDate <= _date && x.EndDate >= _date);
+            return repo.Query<MemberPeriod>(x =>
+                x.MemberID == id && x.IsActive == true && x.StartDate <= _date && x.EndDate >= _date)
+                .FirstOrDefault();
         }
 
         #region Members and Properties

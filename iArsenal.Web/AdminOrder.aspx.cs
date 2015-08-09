@@ -95,13 +95,6 @@ namespace iArsenal.Web
                         returnValue = returnValue && x.Mobile.Equals(tmpString);
                 }
 
-                if (ViewState["OrderDate"] != null)
-                {
-                    tmpString = ViewState["OrderDate"].ToString();
-                    if (!string.IsNullOrEmpty(tmpString) && !tmpString.Equals("--下单时间--"))
-                        returnValue = returnValue && x.CreateTime.CompareTo(Convert.ToDateTime(tmpString)) > 0;
-                }
-
                 if (ViewState["ProductType"] != null)
                 {
                     tmpString = ViewState["ProductType"].ToString();
@@ -212,11 +205,6 @@ namespace iArsenal.Web
             else
                 ViewState["Mobile"] = string.Empty;
 
-            if (!string.IsNullOrEmpty(tbOrderDate.Text.Trim()))
-                ViewState["OrderDate"] = tbOrderDate.Text.Trim();
-            else
-                ViewState["OrderDate"] = string.Empty;
-
             if (!string.IsNullOrEmpty(ddlOrderType.SelectedValue))
                 ViewState["ProductType"] = ddlOrderType.SelectedValue;
             else
@@ -267,13 +255,6 @@ namespace iArsenal.Web
                         tmpString = ViewState["Mobile"].ToString();
                         if (!string.IsNullOrEmpty(tmpString) && !tmpString.Equals("--手机--"))
                             returnValue = returnValue && x.Mobile.Equals(tmpString);
-                    }
-
-                    if (ViewState["OrderDate"] != null)
-                    {
-                        tmpString = ViewState["OrderDate"].ToString();
-                        if (!string.IsNullOrEmpty(tmpString) && !tmpString.Equals("--下单时间--"))
-                            returnValue = returnValue && x.CreateTime.CompareTo(Convert.ToDateTime(tmpString)) > 0;
                     }
 
                     if (ViewState["ProductType"] != null)
@@ -569,7 +550,8 @@ namespace iArsenal.Web
                                 // get Member Info By Order
                                 m = repo.Single<Member>(o.MemberID);
 
-                                var query = repo.Query<OrderItem>(x => x.OrderID.Equals(o.ID) && x.IsActive).OrderBy(x => x.ID);
+                                var query = repo.Query<OrderItem>(x =>
+                                    x.OrderID == o.ID && x.IsActive == true).OrderBy(x => x.ID);
 
                                 if (query != null && query.Count() > 0)
                                 {

@@ -72,7 +72,8 @@ namespace iArsenal.Web
                     tbOrderAddress.Text = o.Address;
                     tbOrderDescription.Text = o.Description;
 
-                    var query = repo.Query<OrderItem>(x => x.OrderID.Equals(o.ID) && x.IsActive).OrderBy(x => x.ID);
+                    var query = repo.Query<OrderItem>(x =>
+                        x.OrderID == o.ID && x.IsActive == true).OrderBy(x => x.ID);
 
                     if (query != null && query.Count() > 0)
                     {
@@ -206,8 +207,7 @@ namespace iArsenal.Web
                         //Remove Order Item of this Order
                         if (OrderID > 0 && o.ID.Equals(OrderID))
                         {
-                            int _count = 0;
-                            repo.Delete<OrderItem>(x => x.OrderID.Equals(OrderID), out _count, trans);
+                            int count = repo.Query<OrderItem>(x => x.OrderID == OrderID).Delete(trans);
                         }
 
                         //New Order Item for each WishOrderItem

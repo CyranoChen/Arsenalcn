@@ -76,8 +76,8 @@ namespace iArsenal.Web
 
         private void BindItemData()
         {
-            var list = repo.Query<OrderItem>(x => x.ProductGuid.Equals(ProductGuid)).ToList();
-            var query = repo.Query<Order>(o => list.Any(x => x.OrderID.Equals(o.ID)));
+            var list = repo.Query<OrderItem>(x => x.ProductGuid == ProductGuid);
+            var query = repo.All<Order>().FindAll(o => list.Exists(x => x.OrderID.Equals(o.ID)));
 
             gvProductOrder.DataSource = query.ToList();
             gvProductOrder.DataBind();

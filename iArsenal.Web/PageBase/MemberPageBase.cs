@@ -52,11 +52,7 @@ namespace iArsenal.Web
                 // TODO: change to cache mode, LOGOUT
                 if (this.MID <= 0)
                 {
-                    var htWhere = new Hashtable();
-
-                    htWhere.Add("AcnID", this.UID);
-
-                    Member m = repo.Query<Member>(htWhere).FirstOrDefault();
+                    Member m = repo.Query<Member>(x => x.AcnID == this.UID).FirstOrDefault();
 
                     if (m != null && m.ID > 0)
                     {

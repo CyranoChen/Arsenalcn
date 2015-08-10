@@ -1,5 +1,5 @@
 ﻿/* CSS Version DataView */
-/* Version: 1.4.2 || Date: 2015-06-05 || Author: Cyrano */
+/* Version: 1.4.3 || Date: 2015-08-09 || Author: Cyrano */
 /* Cascading Style Sheets Level 2 Revision 1 */
 
 /* DataView */
@@ -111,6 +111,11 @@
         text-align: left;
     }
 
+    .DataView td.FieldColspan {
+        text-align: left;
+        white-space: normal;
+    }
+
     .DataView .CommandRow td {
         background: #E2DED6;
         text-align: center;
@@ -124,7 +129,7 @@
         text-decoration: underline;
     }
 
-    .DataView a:hover.StrongLink {
+    .DataView a.StrongLink:hover {
         font-size: 14px;
         font-weight: bold;
     }
@@ -356,7 +361,7 @@
 
             .InfoPanel .Block ul li em {
                 color: #aa0000;
-                padding: 0 5px 0px 1px;
+                padding: 0 5px 0 1px;
                 font-weight: bold;
                 font-size: 11px;
             }

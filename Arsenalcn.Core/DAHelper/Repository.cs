@@ -550,5 +550,25 @@ namespace Arsenalcn.Core
 
             return GetColumnAttr(typeof(T).GetProperty(name));
         }
+
+        public static DbColumn GetColumnAttr<T>(Expression<Func<T, object>> expr) where T : class
+        {
+            var name = string.Empty;
+
+            if (expr.Body is UnaryExpression)
+            {
+                name = ((MemberExpression)((UnaryExpression)expr.Body).Operand).Member.Name;
+            }
+            else if (expr.Body is MemberExpression)
+            {
+                name = ((MemberExpression)expr.Body).Member.Name;
+            }
+            else if (expr.Body is ParameterExpression)
+            {
+                name = ((ParameterExpression)expr.Body).Type.Name;
+            }
+
+            return GetColumnAttr<T>(name);
+        }
     }
 }

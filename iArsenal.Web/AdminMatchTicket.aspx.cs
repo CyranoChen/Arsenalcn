@@ -22,14 +22,6 @@ namespace iArsenal.Web
 
                 List<MatchTicket> mtList = MatchTicket.Cache.MatchTicketList;
 
-                //var query = from mt in mtList
-                //            group mt by new { mt.LeagueGuid, mt.LeagueName } into l
-                //            select new
-                //            {
-                //                LeagueGuid = l.Key.LeagueGuid,
-                //                LeagueName = l.Key.LeagueName
-                //            };
-
                 var list = mtList.GroupBy(mt => new { mt.LeagueGuid, mt.LeagueName })
                     .Select(l => new { l.Key.LeagueGuid, l.Key.LeagueName })
                     .OrderByDescending(l => l.LeagueName).ToList();

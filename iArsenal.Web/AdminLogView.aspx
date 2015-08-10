@@ -46,14 +46,14 @@
                     <tr class="Row">
                         <td class="FieldHeader">方法信息:
                         </td>
-                        <td class="FieldColumn" colspan="3">
+                        <td class="FieldColspan" colspan="3">
                             <asp:TextBox ID="tbMethod" runat="server" CssClass="TextBox" Width="400px"></asp:TextBox>
                         </td>
                     </tr>
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">日志消息:
                         </td>
-                        <td class="FieldColumn" colspan="3">
+                        <td class="FieldColspan" colspan="3">
                             <asp:TextBox ID="tbMessage" runat="server" CssClass="TextBox" Width="400px" TextMode="MultiLine"
                                 Rows="4"></asp:TextBox>
                         </td>
@@ -85,7 +85,7 @@
                     <tr class="Row">
                         <td class="FieldHeader">出错信息:
                         </td>
-                        <td class="FieldColumn" colspan="3">
+                        <td class="FieldColspan" colspan="3">
                             <asp:TextBox ID="tbStackTrace" runat="server" CssClass="TextBox" Width="400px" TextMode="MultiLine"
                                 Rows="8"></asp:TextBox>
                         </td>

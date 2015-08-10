@@ -49,7 +49,7 @@
     <div id="ACN_Main">
         <uc1:PortalSitePath ID="ucPortalSitePath" runat="server" />
         <div id="mainPanel">
-            <table class="DataView">
+            <table class="DataView FormView">
                 <thead>
                     <tr class="Header">
                         <th colspan="4" class="FieldColumn">
@@ -77,14 +77,14 @@
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">手机：
                         </td>
-                        <td style="text-align: left; white-space: nowrap;">
+                        <td class="FieldColumn">
                             <asp:TextBox ID="tbOrderMobile" runat="server" CssClass="TextBox" Width="150px" MaxLength="20"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="rfvOrderMobile" runat="server" ControlToValidate="tbOrderMobile"
                                 Display="Dynamic" ErrorMessage="*" CssClass="ValiSpan"></asp:RequiredFieldValidator>
                         </td>
                         <td class="FieldHeader">邮箱：
                         </td>
-                        <td style="text-align: left; white-space: nowrap;">
+                        <td class="FieldColumn">
                             <asp:TextBox ID="tbEmail" runat="server" CssClass="TextBox" Width="150px" MaxLength="40"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="rfvEmail" runat="server" ControlToValidate="tbEmail"
                                 Display="Dynamic" ErrorMessage="*" CssClass="ValiSpan"></asp:RequiredFieldValidator>
@@ -93,7 +93,7 @@
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">收货地址：
                         </td>
-                        <td class="FieldColumn" colspan="3">
+                        <td class="FieldColspan" colspan="3">
                             <asp:TextBox ID="tbOrderAddress" runat="server" CssClass="TextBox" Width="300px"
                                 TextMode="MultiLine" Rows="3" MaxLength="200"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="rfvOrderAddress" runat="server" ControlToValidate="tbOrderAddress"
@@ -135,7 +135,7 @@
                     <tr class="AlternatingRow WishRemark">
                         <td class="FieldHeader">备注：
                         </td>
-                        <td class="FieldColumn" colspan="3">
+                        <td class="FieldColspan" colspan="3">
                             <asp:TextBox ID="tbOrderDescription" runat="server" CssClass="TextBox" Width="300px"
                                 TextMode="MultiLine" Rows="4"></asp:TextBox>
                         </td>

@@ -59,7 +59,7 @@
     <div id="ACN_Main">
         <uc1:PortalSitePath ID="ucPortalSitePath" runat="server" />
         <div id="mainPanel">
-            <table class="DataView">
+            <table class="DataView FormView">
                 <thead>
                     <tr class="Header">
                         <th colspan="4" class="FieldColumn">
@@ -105,7 +105,7 @@
                     <tr class="Row">
                         <td class="FieldHeader">身份证号：
                         </td>
-                        <td class="FieldColumn" colspan="3">
+                        <td class="FieldColspan" colspan="3">
                             <asp:TextBox ID="tbIDCardNo" runat="server" CssClass="TextBox" Width="400px" MaxLength="20"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="rfvIDCardNo" runat="server" ControlToValidate="tbIDCardNo"
                                 Display="Dynamic" ErrorMessage="*" CssClass="ValiSpan"></asp:RequiredFieldValidator>
@@ -114,7 +114,7 @@
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">护照编号：
                         </td>
-                        <td style="text-align: left; white-space: nowrap;">
+                        <td class="FieldColumn">
                             <asp:TextBox ID="tbPassportNo" runat="server" CssClass="TextBox" Width="150px" MaxLength="20"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="rfvPassportNo" runat="server" ControlToValidate="tbPassportNo"
                                 Display="Dynamic" ErrorMessage="*" CssClass="ValiSpan"></asp:RequiredFieldValidator>
@@ -146,7 +146,7 @@
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">邮箱：
                         </td>
-                        <td class="FieldColumn" colspan="3">
+                        <td class="FieldColspan" colspan="3">
                             <asp:TextBox ID="tbEmail" runat="server" CssClass="TextBox" Width="300px" MaxLength="40"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="rfvEmail" runat="server" ControlToValidate="tbEmail"
                                 Display="Dynamic" ErrorMessage="*" CssClass="ValiSpan"></asp:RequiredFieldValidator>
@@ -159,7 +159,7 @@
                     <tr class="Row">
                         <td class="FieldHeader">推荐出行时间：
                         </td>
-                        <td style="text-align: left; white-space: nowrap;" colspan="3" id="tdTravelDate">
+                        <td class="FieldColspan" colspan="3" id="tdTravelDate">
                             <asp:TextBox ID="tbFromDate" runat="server" CssClass="TextBoxRead FromDate" Width="150px" Text="2013-10-21" MaxLength="10"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="rfvFromDate" runat="server" ControlToValidate="tbFromDate"
                                 Display="Dynamic" ErrorMessage="*" CssClass="ValiSpan"></asp:RequiredFieldValidator>
@@ -172,7 +172,7 @@
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">同行信息：
                         </td>
-                        <td style="text-align: left; font-weight: bold;" id="tdPartner">
+                        <td class="FieldColumn" style="font-weight: bold;" id="tdPartner">
                             <asp:CheckBox ID="cbPartner" runat="server" Text="限定登记1名出行同伴" ToolTip="如需更多人数出行，请重新注册登记。" />
                         </td>
                         <td class="FieldHeader">
@@ -186,7 +186,7 @@
                     <tr class="Row Partner">
                         <td class="FieldHeader">同伴关系：
                         </td>
-                        <td style="text-align: left;">
+                        <td class="FieldColumn">
                             <asp:DropDownList ID="ddlPartnerRelation" runat="server">
                                 <asp:ListItem Text="--请选择同伴关系--" Value="0" Selected="True"></asp:ListItem>
                                 <asp:ListItem Text="亲属" Value="1"></asp:ListItem>
@@ -207,7 +207,7 @@
                     <tr class="AlternatingRow Partner">
                         <td class="FieldHeader">同伴身份证：
                         </td>
-                        <td class="FieldColumn" colspan="3">
+                        <td class="FieldColspan" colspan="3">
                             <asp:TextBox ID="tbPartnerIDCardNo" runat="server" CssClass="TextBox" Width="400px" MaxLength="20"></asp:TextBox>
                             <span class="ValiSpan">*</span>
                         </td>
@@ -215,7 +215,7 @@
                     <tr class="Row Partner">
                         <td class="FieldHeader">同伴护照号码：
                         </td>
-                        <td style="text-align: left;">
+                        <td class="FieldColumn">
                             <asp:TextBox ID="tbPartnerPassportNo" runat="server" CssClass="TextBox" Width="150px" MaxLength="20"></asp:TextBox>
                             <span class="ValiSpan">*</span>
                         </td>
@@ -229,7 +229,7 @@
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">出行选项：
                         </td>
-                        <td style="text-align: left; line-height: 2;" colspan="3">
+                        <td class="FieldColspan" style="line-height: 2;" colspan="3">
                             <asp:CheckBoxList ID="cblTravelOption" runat="server" RepeatDirection="Vertical" RepeatLayout="Flow">
                                 <asp:ListItem Text="统一购买机票前往伦敦" Value="FLIGHT"></asp:ListItem>
                                 <asp:ListItem Text="统一预订宾馆并入住" Value="HOTEL"></asp:ListItem>
@@ -242,7 +242,7 @@
                     <tr class="Row">
                         <td class="FieldHeader">备注：
                         </td>
-                        <td class="FieldColumn" colspan="3">
+                        <td class="FieldColspan" colspan="3">
                             <asp:TextBox ID="tbOrderDescription" runat="server" CssClass="TextBox" Width="300px"
                                 TextMode="MultiLine" Rows="4"></asp:TextBox>
                         </td>
@@ -261,15 +261,19 @@
                 <div class="Block">
                     <p>
                         (1). 第一轮报名截止时间至新赛季阿森纳联赛赛程公布之日，约在新赛季开始前7月中下旬。
+                   
                     </p>
                     <p>
                         (2). 请完整填写出行会员的个人信息，每位会员可以有一个同伴，同伴信息也请填写完整。我们会为会员的个人信息进行保密。
+                   
                     </p>
                     <p>
                         (3). 请填写希望出行的时间段，并勾选相关出行选项，如有特殊需求，请填写在备注栏中。
+                   
                     </p>
                     <p>
                         (4). 我们会在收到预订报名表后，核对身份信息，并与您取得联系。
+                   
                     </p>
                     <p>
                         (5). 如有问题，可与ACN负责人Cyrano联系。QQ：<em>22287842</em>，<a href="http://bbs.arsenalcn.com/usercppostpm.aspx" target="_blank">ACN论坛短消息</a>，Email：<a href="mailto:cyrano@arsenalcn.com"><em>cyrano@arsenalcn.com</em>。</a>

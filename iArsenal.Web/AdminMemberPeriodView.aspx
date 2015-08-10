@@ -101,7 +101,7 @@
                     <tr class="Row">
                         <td class="FieldHeader">简介:
                         </td>
-                        <td class="FieldColumn" colspan="3">
+                        <td class="FieldColspan" colspan="3">
                             <asp:TextBox ID="tbDescription" runat="server" CssClass="TextBox" Rows="5" Width="500px"
                                 TextMode="MultiLine"></asp:TextBox>
                         </td>
@@ -109,7 +109,7 @@
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">备注:
                         </td>
-                        <td class="FieldColumn" colspan="3">
+                        <td class="FieldColspan" colspan="3">
                             <asp:TextBox ID="tbRemark" runat="server" CssClass="TextBox" Rows="5" Width="500px"
                                 TextMode="MultiLine"></asp:TextBox>
                         </td>

@@ -26,7 +26,7 @@
         <uc1:PortalSitePath ID="ucPortalSitePath" runat="server" />
         <div id="mainPanel">
             <uc2:PortalWorkflowInfo ID="ucPortalWorkflowInfo" runat="server" />
-            <table class="DataView">
+            <table class="DataView FormView">
                 <thead>
                     <tr class="Header">
                         <th colspan="4" class="FieldColumn">
@@ -68,7 +68,7 @@
                     <tr class="Row">
                         <td class="FieldHeader">收货地址：
                         </td>
-                        <td class="FieldColumn" colspan="3">
+                        <td class="FieldColspan" colspan="3">
                             <asp:Label ID="lblOrderAddress" runat="server"></asp:Label>
                         </td>
                     </tr>
@@ -118,7 +118,7 @@
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">备注：
                         </td>
-                        <td class="FieldColumn" colspan="3">
+                        <td class="FieldColspan" colspan="3">
                             <asp:Label ID="lblOrderDescription" runat="server"></asp:Label>
                         </td>
                     </tr>
@@ -130,7 +130,7 @@
                         <tr class="AlternatingRow">
                             <td class="FieldHeader">订单反馈：
                             </td>
-                            <td class="FieldColumn" colspan="3">
+                            <td class="FieldColspan" colspan="3">
                                 <asp:Label ID="lblOrderRemark" runat="server"></asp:Label>
                             </td>
                         </tr>

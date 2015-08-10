@@ -124,14 +124,14 @@
                     <tr class="Row">
                         <td class="FieldHeader">图片:
                         </td>
-                        <td class="FieldColumn" colspan="3">
+                        <td class="FieldColspan" colspan="3">
                             <asp:TextBox ID="tbImageURL" runat="server" CssClass="TextBox" Width="400px" Text="UploadFiles/Product/"></asp:TextBox>
                         </td>
                     </tr>
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">描述:
                         </td>
-                        <td class="FieldColumn" colspan="3">
+                        <td class="FieldColspan" colspan="3">
                             <asp:TextBox ID="tbDescription" runat="server" CssClass="TextBox" Width="400px" TextMode="MultiLine"
                                 Rows="4"></asp:TextBox>
                         </td>
@@ -139,7 +139,7 @@
                     <tr class="Row">
                         <td class="FieldHeader">备注:
                         </td>
-                        <td class="FieldColumn" colspan="3">
+                        <td class="FieldColspan" colspan="3">
                             <asp:TextBox ID="tbRemark" runat="server" CssClass="TextBox" Width="400px" TextMode="MultiLine"
                                 Rows="4"></asp:TextBox>
                         </td>

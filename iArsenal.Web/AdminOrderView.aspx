@@ -83,7 +83,7 @@
                     <tr class="Row">
                         <td class="FieldHeader">收货地址:
                         </td>
-                        <td class="FieldColumn" colspan="3">
+                        <td class="FieldColspan" colspan="3">
                             <asp:TextBox ID="tbAddress" runat="server" CssClass="TextBox" Width="400px" TextMode="MultiLine"
                                 Rows="3"></asp:TextBox>
                         </td>
@@ -115,7 +115,7 @@
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">描述:
                         </td>
-                        <td class="FieldColumn" colspan="3">
+                        <td class="FieldColspan" colspan="3">
                             <asp:TextBox ID="tbDescription" runat="server" CssClass="TextBox" Width="400px" TextMode="MultiLine"
                                 Rows="3"></asp:TextBox>
                         </td>
@@ -123,7 +123,7 @@
                     <tr class="Row">
                         <td class="FieldHeader">备注:
                         </td>
-                        <td class="FieldColumn" colspan="3">
+                        <td class="FieldColspan" colspan="3">
                             <asp:TextBox ID="tbRemark" runat="server" CssClass="TextBox" Width="400px" TextMode="MultiLine"
                                 Rows="3"></asp:TextBox>
                         </td>

@@ -171,7 +171,7 @@ namespace iArsenal.Web
                     }
                     else if (isRenew)
                     {
-                        lblOrderPrice.Text = string.Format("{0}：<em>【续期】{1}</em>元", priceInfo, price.ToString("f2"));
+                        lblOrderPrice.Text = string.Format("{0}<em>【续期】{1}</em>元", priceInfo, price.ToString("f2"));
                     }
                     else
                     {

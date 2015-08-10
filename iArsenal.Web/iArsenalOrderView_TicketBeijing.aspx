@@ -17,10 +17,10 @@
         <uc1:PortalSitePath ID="ucPortalSitePath" runat="server" />
         <div id="mainPanel">
             <uc2:PortalWorkflowInfo ID="ucPortalWorkflowInfo" runat="server" />
-            <table class="DataView">
+            <table class="DataView FormView">
                 <thead>
                     <tr class="Header">
-                        <th colspan="4" class="FieldColumn">
+                        <th colspan="4" class="FieldColspan">
                             <a name="anchorBack" id="anchorBack">感谢预订“阿森纳2012亚洲行北京圣殿杯比赛球票”，请仔细确认并提交订单信息：</a>
                         </th>
                     </tr>
@@ -57,14 +57,14 @@
                     <tr class="Row">
                         <td class="FieldHeader">来自于：
                         </td>
-                        <td class="FieldColumn" colspan="3">
+                        <td class="FieldColspan" colspan="3">
                             <asp:Label ID="lblMemberRegion" runat="server"></asp:Label>
                         </td>
                     </tr>
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">付款方式：
                         </td>
-                        <td class="FieldColumn" colspan="3">
+                        <td class="FieldColspan" colspan="3">
                             <asp:Label ID="lblOrderPayment" runat="server"></asp:Label>
                         </td>
                     </tr>
@@ -87,7 +87,7 @@
                     <tr class="Row">
                         <td class="FieldHeader">购买球票：
                         </td>
-                        <td class="FieldColumn" colspan="3">
+                        <td class="FieldColspan" colspan="3">
                             <asp:Label ID="lblOrderItem_TicketBeijing" runat="server"></asp:Label>
                             <asp:TextBox ID="tbOrderItem_TicketBeijing" runat="server" CssClass="OrderProductGuid"></asp:TextBox>
                         </td>
@@ -107,14 +107,14 @@
                     <tr class="Row">
                         <td class="FieldHeader">活动情况：
                         </td>
-                        <td class="FieldColumn" colspan="3">
+                        <td class="FieldColspan" colspan="3">
                             <asp:Label ID="lblOrderItemRemak" runat="server"></asp:Label>
                         </td>
                     </tr>
                     <tr class="Row">
                         <td class="FieldHeader">备注：
                         </td>
-                        <td class="FieldColumn" colspan="3">
+                        <td class="FieldColspan" colspan="3">
                             <asp:Label ID="lblOrderDescription" runat="server"></asp:Label>
                         </td>
                     </tr>
@@ -126,13 +126,13 @@
                         <tr class="AlternatingRow">
                             <td class="FieldHeader">订单反馈：
                             </td>
-                            <td class="FieldColumn" colspan="3">
+                            <td class="FieldColspan" colspan="3">
                                 <asp:Label ID="lblOrderRemark" runat="server"></asp:Label>
                             </td>
                         </tr>
                     </asp:PlaceHolder>
                     <tr class="CommandRow">
-                        <td colspan="4" style="text-align: right; white-space: nowrap; line-height: 1.8;">
+                        <td colspan="4" style="text-align: right; line-height: 1.8;">
                             <asp:Label ID="lblOrderPrice" runat="server" CssClass="OrderTotalPrice" Text="? 元 (CNY)"></asp:Label>
                             <asp:TextBox ID="tbOrderPrice" runat="server" CssClass="OrderPrice"></asp:TextBox>
                         </td>

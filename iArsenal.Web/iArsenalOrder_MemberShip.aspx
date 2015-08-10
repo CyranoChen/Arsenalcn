@@ -25,7 +25,7 @@
     <div id="ACN_Main">
         <uc1:PortalSitePath ID="ucPortalSitePath" runat="server" />
         <div id="mainPanel">
-            <table class="DataView">
+            <table class="DataView FormView">
                 <thead>
                     <tr class="Header">
                         <th colspan="4" class="FieldColumn">
@@ -71,7 +71,7 @@
                     <tr class="Row">
                         <td class="FieldHeader">身份证号：
                         </td>
-                        <td class="FieldColumn" colspan="3">
+                        <td class="FieldColspan" colspan="3">
                             <asp:TextBox ID="tbIDCardNo" runat="server" CssClass="TextBox" Width="400px" MaxLength="20"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="rfvIDCardNo" runat="server" ControlToValidate="tbIDCardNo"
                                 Display="Dynamic" ErrorMessage="*" CssClass="ValiSpan"></asp:RequiredFieldValidator>
@@ -80,7 +80,7 @@
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">护照编号：
                         </td>
-                        <td style="text-align: left; white-space: nowrap;">
+                        <td class="FieldColumn">
                             <asp:TextBox ID="tbPassportNo" runat="server" CssClass="TextBox" Width="150px" MaxLength="20"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="rfvPassportNo" runat="server" ControlToValidate="tbPassportNo"
                                 Display="Dynamic" ErrorMessage="*" CssClass="ValiSpan"></asp:RequiredFieldValidator>
@@ -112,7 +112,7 @@
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">邮箱：
                         </td>
-                        <td class="FieldColumn" colspan="3">
+                        <td class="FieldColspan" colspan="3">
                             <asp:TextBox ID="tbEmail" runat="server" CssClass="TextBox" Width="300px" MaxLength="40"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="rfvEmail" runat="server" ControlToValidate="tbEmail"
                                 Display="Dynamic" ErrorMessage="*" CssClass="ValiSpan"></asp:RequiredFieldValidator>
@@ -124,7 +124,7 @@
                     </tr>
                     <tr class="Row">
                         <td class="FieldHeader">会籍等级：</td>
-                        <td class="FieldColumn" colspan="3">
+                        <td class="FieldColspan" colspan="3">
                             <asp:TextBox ID="tbMemberClass" runat="server" CssClass="MemberClass"></asp:TextBox>
                             <asp:Label ID="lblMemberClass" runat="server"></asp:Label>
                         </td>
@@ -132,7 +132,7 @@
                     <asp:PlaceHolder ID="phSaleInfo" runat="server" Visible="false">
                         <tr class="Row">
                             <td class="FieldHeader">补充说明：</td>
-                            <td class="FieldColumn" colspan="3">
+                            <td class="FieldColspan" colspan="3">
                                 <asp:TextBox ID="tbSale" runat="server" CssClass="Sale"></asp:TextBox>
                                 <asp:Label ID="lblSaleInfo" runat="server"></asp:Label>
                             </td>
@@ -158,7 +158,7 @@
                     <tr class="Row">
                         <td class="FieldHeader">备注：
                         </td>
-                        <td class="FieldColumn" colspan="3">
+                        <td class="FieldColspan" colspan="3">
                             <asp:TextBox ID="tbOrderDescription" runat="server" CssClass="TextBox" Width="300px"
                                 TextMode="MultiLine" Rows="4"></asp:TextBox>
                         </td>

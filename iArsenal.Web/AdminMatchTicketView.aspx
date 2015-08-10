@@ -39,7 +39,7 @@
                     <tr class="Row">
                         <td class="FieldHeader">比赛GUID:
                         </td>
-                        <td class="FieldColumn" colspan="3">
+                        <td class="FieldColspan" colspan="3">
                             <asp:Label ID="lblMatchGuid" runat="server"></asp:Label>
                         </td>
                     </tr>
@@ -115,7 +115,7 @@
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">备注:
                         </td>
-                        <td class="FieldColumn" colspan="3">
+                        <td class="FieldColspan" colspan="3">
                             <asp:TextBox ID="tbRemark" runat="server" CssClass="TextBox" Width="400px" TextMode="MultiLine"
                                 Rows="4"></asp:TextBox>
                         </td>

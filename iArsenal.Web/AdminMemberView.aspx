@@ -109,7 +109,7 @@
                     <tr class="Row">
                         <td class="FieldHeader">身份证号:
                         </td>
-                        <td class="FieldColumn" colspan="3">
+                        <td class="FieldColspan" colspan="3">
                             <asp:TextBox ID="tbIDCardNo" runat="server" CssClass="TextBox" Width="200px"></asp:TextBox>
                         </td>
                     </tr>
@@ -189,7 +189,7 @@
                     <tr class="Row">
                         <td class="FieldHeader">职业:
                         </td>
-                        <td class="FieldColumn" colspan="3">
+                        <td class="FieldColspan" colspan="3">
                             <asp:TextBox ID="tbCareer" runat="server" CssClass="TextBox" Width="200px"></asp:TextBox>
                         </td>
                     </tr>
@@ -213,14 +213,14 @@
                         </td>
                         <td class="FieldHeader">邮编:
                         </td>
-                        <td class="FieldColumn" colspan="3">
+                        <td class="FieldColspan" colspan="3">
                             <asp:TextBox ID="tbZipCode" runat="server" CssClass="TextBox" Width="200px"></asp:TextBox>
                         </td>
                     </tr>
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">地址:
                         </td>
-                        <td class="FieldColumn" colspan="3">
+                        <td class="FieldColspan" colspan="3">
                             <asp:TextBox ID="tbAddress" runat="server" CssClass="TextBox" Rows="4" Width="500px"
                                 TextMode="MultiLine"></asp:TextBox>
                         </td>
@@ -232,7 +232,7 @@
                     <tr class="Row">
                         <td class="FieldHeader">简介:
                         </td>
-                        <td class="FieldColumn" colspan="3">
+                        <td class="FieldColspan" colspan="3">
                             <asp:TextBox ID="tbDescription" runat="server" CssClass="TextBox" Rows="5" Width="500px"
                                 TextMode="MultiLine"></asp:TextBox>
                         </td>
@@ -240,7 +240,7 @@
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">备注:
                         </td>
-                        <td class="FieldColumn" colspan="3">
+                        <td class="FieldColspan" colspan="3">
                             <asp:TextBox ID="tbRemark" runat="server" CssClass="TextBox" Rows="5" Width="500px"
                                 TextMode="MultiLine"></asp:TextBox>
                         </td>

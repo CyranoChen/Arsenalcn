@@ -219,18 +219,18 @@ namespace iArsenal.Service
 
         public static void MatchTicketCountStatistics()
         {
-            var query = MatchTicket.Cache.MatchTicketList.FindAll(mt => mt.IsActive);
+            var list = MatchTicket.Cache.MatchTicketList.FindAll(mt => mt.IsActive);
 
-            if (query != null && query.Count > 0)
+            if (list != null && list.Count > 0)
             {
                 IRepository repo = new Repository();
 
                 var oQuery = repo.Query<Order>(o =>
                     o.IsActive == true && o.OrderType == OrderBaseType.Ticket).FindAll(o => !o.Status.Equals(OrderStatusType.Error));
                 var oiQuery = repo.Query<OrderItem>(oi =>
-                    oi.IsActive == true & oi.Remark != string.Empty);
+                    oi.IsActive == true && oi.Remark != string.Empty);
 
-                foreach (MatchTicket mt in query)
+                foreach (MatchTicket mt in list)
                 {
                     var _list = oiQuery.FindAll(oi => oi.Remark.Equals(mt.ID.ToString()));
                     var _count = oQuery.FindAll(o => _list.Any(oi => oi.OrderID.Equals(o.ID))).Count;

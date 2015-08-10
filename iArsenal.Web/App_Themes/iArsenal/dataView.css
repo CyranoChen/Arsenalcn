@@ -1,5 +1,5 @@
 ﻿/* CSS Version DataView for Portal */
-/* Version: 1.1.3 || Date: 2015-06-05 || Author: Cyrano */
+/* Version: 1.1.4 || Date: 2015-08-10 || Author: Cyrano */
 /* Cascading Style Sheets Level 2 Revision 1 */
 
 /* DataView */
@@ -104,6 +104,13 @@
 
     .DataView td.FieldColumn {
         text-align: left;
+        white-space: nowrap;
+    }
+
+    .DataView td.FieldColspan {
+        text-align: left;
+        white-space: normal;       
+        font-size: 14px; /* support font size exception on mobile browser */
     }
 
     .DataView .CommandRow td {
@@ -119,10 +126,27 @@
         text-decoration: underline;
     }
 
-    .DataView a:hover.StrongLink {
-        font-size: 14px;
-        font-weight: bold;
+        .DataView a.StrongLink:hover {
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+.FormView {
+    width: 665px;
+    overflow: hidden;
+    max-width: 665px;
+}
+
+    .FormView .Header th {
+        text-align: left;
     }
+
+        .FormView .Header th a {
+            font-weight: bold;
+            color: #9c824a;
+            font-size: 14px;
+            white-space: normal;
+        }
 
 /* DataPager */
 #DataPagerInfo {
@@ -289,7 +313,7 @@
 
             .InfoPanel .Block ul li em {
                 color: #aa0000;
-                padding: 0 5px 0px 1px;
+                padding: 0 5px 0 1px;
                 font-weight: bold;
                 font-size: 11px;
             }

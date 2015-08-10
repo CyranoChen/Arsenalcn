@@ -90,7 +90,7 @@
     <div id="ACN_Main">
         <uc1:PortalSitePath ID="ucPortalSitePath" runat="server" />
         <div id="mainPanel">
-            <table class="DataView">
+            <table class="DataView FormView">
                 <thead>
                     <tr class="Header">
                         <th colspan="4" class="FieldColumn">
@@ -118,7 +118,7 @@
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">手机：
                         </td>
-                        <td style="text-align: left; white-space: nowrap;">
+                        <td class="FieldColumn">
                             <asp:TextBox ID="tbOrderMobile" runat="server" CssClass="TextBox" Width="150px" MaxLength="20"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="rfvOrderMobile" runat="server" ControlToValidate="tbOrderMobile"
                                 Display="Dynamic" ErrorMessage="*" CssClass="ValiSpan"></asp:RequiredFieldValidator>
@@ -136,14 +136,14 @@
                     <tr class="Row PaymentInfo Alipay" id="trAlipay" runat="server">
                         <td class="FieldHeader">支付宝帐号：
                         </td>
-                        <td class="FieldColumn" colspan="3">
+                        <td class="FieldColspan" colspan="3">
                             <asp:TextBox ID="tbAlipay" runat="server" CssClass="TextBox" Width="300px" ToolTip="请输入支付宝帐号" MaxLength="40"></asp:TextBox>
                         </td>
                     </tr>
                     <tr class="Row PaymentInfo Bank" id="trBank" runat="server" style="display: none">
                         <td class="FieldHeader">银行账户：
                         </td>
-                        <td class="FieldColumn" colspan="3">
+                        <td class="FieldColspan" colspan="3">
                             <asp:TextBox ID="tbBankName" runat="server" CssClass="TextBox" Width="100px" ToolTip="请输入银行名称" Text="-银行名称-" MaxLength="10"></asp:TextBox>
                             <asp:TextBox ID="tbBankAccount" runat="server" CssClass="TextBox" Width="250px" ToolTip="请输入银行帐号" Text="-银行帐号-" MaxLength="30"></asp:TextBox>
                         </td>
@@ -151,7 +151,7 @@
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">收货地址：
                         </td>
-                        <td class="FieldColumn" colspan="3">
+                        <td class="FieldColspan" colspan="3">
                             <asp:TextBox ID="tbOrderAddress" runat="server" CssClass="TextBox" Width="300px"
                                 TextMode="MultiLine" Rows="3" MaxLength="200"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="rfvOrderAddress" runat="server" ControlToValidate="tbOrderAddress"
@@ -161,7 +161,7 @@
                     <tr class="Row">
                         <td class="FieldHeader">快递方式：
                         </td>
-                        <td class="FieldColumn" colspan="3">
+                        <td class="FieldColspan" colspan="3">
                             <asp:RadioButtonList ID="rblOrderPostage" runat="server" RepeatDirection="Horizontal"
                                 RepeatLayout="Flow" CssClass="RadioButtonList">
                                 <asp:ListItem Text="12元（江浙沪 - 顺丰速运）" Value="12"></asp:ListItem>
@@ -176,7 +176,7 @@
                     <tr class="Row">
                         <td class="FieldHeader">球衣类型：
                         </td>
-                        <td class="FieldColumn" colspan="3" id="tdReplicaKit">
+                        <td class="FieldColspan" colspan="3" id="tdReplicaKit">
                             <asp:DropDownList ID="ddlReplicaKit" runat="server" OnDataBound="ddlReplicaKit_DataBound">
                             </asp:DropDownList>
                             <asp:HyperLink ID="hlReplicaKitPage" runat="server" Text="【官网链接】" Target="_blank"></asp:HyperLink>
@@ -220,7 +220,7 @@
                     <tr class="AlternatingRow ArsenalFont" id="trArsenalFont">
                         <td class="FieldHeader">特殊字体：
                         </td>
-                        <td class="FieldColumn" colspan="3" id="tdArsenalFont">
+                        <td class="FieldColspan" colspan="3" id="tdArsenalFont">
                             <asp:CheckBox ID="cbArsenalFont" runat="server" Text="阿森纳杯赛字体" ToolTip="只限部分现役球员" />
                             <a href="http://arsenaldirect.arsenal.com/icat/kitbuilder/" target="_blank">【效果体验】</a>
                             <asp:Label ID="lblPriceArsenalFont" runat="server" CssClass="PriceArsenalFont"></asp:Label>
@@ -229,7 +229,7 @@
                     <tr class="Row Patch" id="trPatch">
                         <td class="FieldHeader">英超袖标：
                         </td>
-                        <td class="FieldColumn" colspan="3" id="tdPremierPatch">
+                        <td class="FieldColspan" colspan="3" id="tdPremierPatch">
                             <asp:RadioButtonList ID="rblPremierPatch" runat="server" RepeatDirection="Horizontal"
                                 RepeatLayout="Flow" CssClass="RadioButtonList">
                                 <asp:ListItem Text="无需" Value="0" Selected="True"></asp:ListItem>
@@ -242,7 +242,7 @@
                     <tr class="AlternatingRow" style="display: none">
                         <td class="FieldHeader">欧冠袖标：
                         </td>
-                        <td class="FieldColumn" colspan="3" id="tdChampionPatch">
+                        <td class="FieldColspan" colspan="3" id="tdChampionPatch">
                             <asp:RadioButtonList ID="rblChampionPatch" runat="server" RepeatDirection="Horizontal"
                                 RepeatLayout="Flow" CssClass="RadioButtonList">
                                 <asp:ListItem Text="无需" Value="0" Selected="True"></asp:ListItem>
@@ -255,7 +255,7 @@
                     <tr class="Row">
                         <td class="FieldHeader">备注：
                         </td>
-                        <td class="FieldColumn" colspan="3">
+                        <td class="FieldColspan" colspan="3">
                             <asp:TextBox ID="tbOrderDescription" runat="server" CssClass="TextBox" Width="300px"
                                 TextMode="MultiLine" Rows="4"></asp:TextBox>
                         </td>

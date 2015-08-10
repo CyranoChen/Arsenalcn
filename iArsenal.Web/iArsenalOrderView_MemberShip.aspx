@@ -17,7 +17,7 @@
         <uc1:PortalSitePath ID="ucPortalSitePath" runat="server" />
         <div id="mainPanel">
             <uc2:PortalWorkflowInfo ID="ucPortalWorkflowInfo" runat="server" />
-            <table class="DataView">
+            <table class="DataView FormView">
                 <thead>
                     <tr class="Header">
                         <th colspan="4" class="FieldColumn">
@@ -45,14 +45,14 @@
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">现居住地：
                         </td>
-                        <td class="FieldColumn" colspan="3">
+                        <td class="FieldColspan" colspan="3">
                             <asp:Label ID="lblMemberRegion" runat="server"></asp:Label>
                         </td>
                     </tr>
                     <tr class="Row">
                         <td class="FieldHeader">身份证号：
                         </td>
-                        <td class="FieldColumn" colspan="3">
+                        <td class="FieldColspan" colspan="3">
                             <asp:Label ID="lblMemberIDCardNo" runat="server"></asp:Label>
                         </td>
                     </tr>
@@ -98,7 +98,7 @@
                     </tr>
                     <tr class="Row">
                         <td class="FieldHeader">会籍等级：</td>
-                        <td class="FieldColumn" colspan="3">
+                        <td class="FieldColspan" colspan="3">
                             <asp:Label ID="lblMemberClass" runat="server"></asp:Label>
                         </td>
                     </tr>
@@ -117,7 +117,7 @@
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">备注：
                         </td>
-                        <td class="FieldColumn" colspan="3">
+                        <td class="FieldColspan" colspan="3">
                             <asp:Label ID="lblOrderDescription" runat="server"></asp:Label>
                         </td>
                     </tr>
@@ -129,13 +129,13 @@
                         <tr class="AlternatingRow">
                             <td class="FieldHeader">订单反馈：
                             </td>
-                            <td class="FieldColumn" colspan="3">
+                            <td class="FieldColspan" colspan="3">
                                 <asp:Label ID="lblOrderRemark" runat="server"></asp:Label>
                             </td>
                         </tr>
                     </asp:PlaceHolder>
                     <tr class="CommandRow">
-                        <td colspan="4" style="text-align: right; white-space: nowrap; line-height: 1.8;">
+                        <td colspan="4" style="text-align: right; line-height: 1.8;">
                             <asp:Label ID="lblOrderPrice" runat="server" CssClass="OrderTotalPrice" Text="? 元 (CNY)"></asp:Label>
                             <asp:TextBox ID="tbOrderPrice" runat="server" CssClass="OrderPrice"></asp:TextBox>
                         </td>

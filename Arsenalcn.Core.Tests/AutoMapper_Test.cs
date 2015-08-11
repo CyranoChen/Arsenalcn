@@ -77,7 +77,7 @@ namespace Arsenalcn.Core.Tests
             IRepository repo = new Repository();
 
             var query = repo.All<MatchView>().FindAll(x => x.ResultHome.HasValue && x.ResultAway.HasValue)
-                .Many<MatchView, ChoiceOption>((tSource, t) => tSource.CasinoItem.ID.Equals(t.CasinoItemGuid)).AsEnumerable();
+                .Many<MatchView, ChoiceOption>((tSource, t) => tSource.CasinoItem.ID.Equals(t.CasinoItemGuid));
 
             MatchDto.CreateMap();
 

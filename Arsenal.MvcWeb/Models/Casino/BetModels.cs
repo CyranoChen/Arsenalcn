@@ -75,7 +75,7 @@ namespace Arsenal.MvcWeb.Models.Casino
 
             var instance = repo.Single<BetView>(key);
 
-            instance.Many<BetDetail>(x => x.BetID.Equals(instance.ID));
+            instance.Many<BetDetail>(x => x.BetID == instance.ID);
 
             CreateMap();
 

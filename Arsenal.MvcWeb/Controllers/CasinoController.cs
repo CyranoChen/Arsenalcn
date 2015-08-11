@@ -31,7 +31,7 @@ namespace Arsenal.MvcWeb.Controllers
                 x => x.PlayTime > DateTime.Now && x.PlayTime < DateTime.Now.AddDays(days))
                 .FindAll(x => !x.ResultHome.HasValue && !x.ResultHome.HasValue)
                 .OrderBy(x => x.PlayTime)
-                .Many<MatchView, ChoiceOption>((tOne, tMany) => tOne.CasinoItem.ID.Equals(tMany.CasinoItemGuid));
+                .Many<MatchView, ChoiceOption, Guid>(t => t.CasinoItem.ID);
 
             MatchDto.CreateMap();
 
@@ -50,15 +50,15 @@ namespace Arsenal.MvcWeb.Controllers
         {
             var model = new MyBetDto();
 
-            var query = repo.Query<BetView>(x => x.UserID == this.acnID)
-                .Many<BetView, BetDetail>((tOne, tMany) => tOne.ID.Equals(tMany.BetID));
+            var query = repo.Query<BetView>(criteria, x => x.UserID == this.acnID)
+                .Many<BetView, BetDetail, int>(t => t.ID);
 
             BetDto.CreateMap();
 
             var list = Mapper.Map<IEnumerable<BetDto>>(source: query.AsEnumerable());
 
             model.Criteria = criteria;
-            model.Search(list);
+            model.Data = list;
 
             return View(model);
         }
@@ -80,7 +80,7 @@ namespace Arsenal.MvcWeb.Controllers
         {
             var model = new ResultDto();
 
-            var query = repo.Query<MatchView>(x => x.ResultHome.HasValue && x.ResultAway.HasValue);
+            var query = repo.Query<MatchView>(criteria, x => x.ResultHome.HasValue && x.ResultAway.HasValue);
 
             var map = Mapper.CreateMap<MatchView, MatchDto>();
 
@@ -96,7 +96,7 @@ namespace Arsenal.MvcWeb.Controllers
             var list = Mapper.Map<IEnumerable<MatchDto>>(source: query.AsEnumerable());
 
             model.Criteria = criteria;
-            model.Search(list);
+            model.Data = list;
 
             return View(model);
         }
@@ -111,7 +111,7 @@ namespace Arsenal.MvcWeb.Controllers
             model.Match = MatchDto.Single(id);
 
             var query = repo.Query<BetView>(x => x.CasinoItem.MatchGuid == id)
-                .Many<BetView, BetDetail>((tOne, tMany) => tOne.ID.Equals(tMany.BetID));
+                .Many<BetView, BetDetail, int>(t => t.ID);
 
             BetDto.CreateMap();
 
@@ -137,7 +137,7 @@ namespace Arsenal.MvcWeb.Controllers
             // model.MyBets
             var betsQuery = repo.Query<BetView>(x =>
                 x.UserID == this.acnID && x.CasinoItem.MatchGuid == id)
-                .Many<BetView, BetDetail>((tOne, tMany) => tOne.ID.Equals(tMany.BetID));
+                .Many<BetView, BetDetail, int>(t => t.ID);
 
             BetDto.CreateMap();
 

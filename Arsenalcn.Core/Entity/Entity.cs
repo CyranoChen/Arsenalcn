@@ -1,23 +1,11 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.Data;
 
 namespace Arsenalcn.Core
 {
     public abstract class Entity<TKey> : Viewer, IEntity where TKey : struct
     {
         protected Entity() : base() { }
-
-        //protected Entity(DataRow dr)
-        //    : base(dr)
-        //{
-        //    var attr = (DbSchema)Attribute.GetCustomAttribute(this.GetType(), typeof(DbSchema));
-
-        //    if (attr != null)
-        //    {
-        //        this.ID = (TKey)dr[attr.Key];
-        //    }
-        //}
 
         #region Members and Properties
 

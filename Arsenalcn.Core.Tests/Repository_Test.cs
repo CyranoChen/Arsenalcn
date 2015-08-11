@@ -5,7 +5,6 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Arsenal.Service.Casino;
 using Arsenal.Service;
-using System.Linq.Expressions;
 
 namespace Arsenalcn.Core.Tests
 {
@@ -77,8 +76,7 @@ namespace Arsenalcn.Core.Tests
 
             var query = repo.All<MatchView>().Take(10);
 
-            query.Many<MatchView, ChoiceOption>(
-                (tSource, t) => tSource.CasinoItem.ID.Equals(t.CasinoItemGuid));
+            query.Many<MatchView, ChoiceOption>((tOne, tMany) => tOne.CasinoItem.ID.Equals(tMany.CasinoItemGuid));
 
             Assert.IsNotNull(query);
         }
@@ -88,9 +86,12 @@ namespace Arsenalcn.Core.Tests
         {
             IRepository repo = new Repository();
 
-            var query = repo.All<League>(new Pager(2) { PagingSize = 20 }, "LeagueTime DESC");
+            IPager pager = new Pager(2) { PagingSize = 20 };
+
+            var query = repo.All<League>(pager, "LeagueTime DESC");
 
             Assert.IsNotNull(query);
+            Assert.IsTrue(pager.TotalCount > 0);
         }
 
         [TestMethod()]
@@ -98,9 +99,12 @@ namespace Arsenalcn.Core.Tests
         {
             IRepository repo = new Repository();
 
-            var query = repo.All<BetView>(new Pager(2) { PagingSize = 20 }, "BetTime DESC");
+            IPager criteria = new Criteria() { PagingSize = 20 };
+
+            var query = repo.All<BetView>(criteria, "BetTime DESC");
 
             Assert.IsNotNull(query);
+            Assert.IsTrue(criteria.TotalCount > 0);
         }
 
         [TestMethod()]
@@ -119,7 +123,7 @@ namespace Arsenalcn.Core.Tests
             IRepository repo = new Repository();
 
             var query = repo.Query<BetView>(x => x.UserID == 443)
-                .Many<BetView, BetDetail>((tOne, tMany) => tOne.ID.Equals(tMany.BetID));
+                .Many<BetView, BetDetail, int>(t => t.ID);
 
             Assert.IsNotNull(query);
         }
@@ -137,10 +141,12 @@ namespace Arsenalcn.Core.Tests
 
             whereBy.Add("IsActive", true);
 
-            var query = repo.Query<League>(new Pager(2) { PagingSize = 5 },
-                x => x.IsActive == true, "LeagueTime DESC");
+            IPager criteria = new Criteria() { CurrentPage = 2, PagingSize = 5 };
+
+            var query = repo.Query<League>(criteria, x => x.IsActive == true, "LeagueTime DESC");
 
             Assert.IsNotNull(query);
+            Assert.IsNotNull(criteria.TotalCount >= 0);
         }
 
         [TestMethod]
@@ -182,6 +188,25 @@ namespace Arsenalcn.Core.Tests
             repo.Delete(l);
 
             Assert.IsNotNull(l);
+        }
+
+        [TestMethod()]
+        public void SQL_Test()
+        {
+            var attr = Repository.GetTableAttr<MatchView>();
+            var pager = new Pager { CurrentPage = 0, PagingSize = 10 };
+
+            string innerSql = string.Format("(SELECT ROW_NUMBER() OVER(ORDER BY {1}) AS RowNo, * FROM {0})", attr.Name, attr.Sort);
+
+            string sql = string.Format("SELECT * FROM {0} AS t WHERE t.RowNo BETWEEN {1} AND {2} AND 1=2;",
+                innerSql, (pager.CurrentPage * pager.PagingSize).ToString(), ((pager.CurrentPage + 1) * pager.PagingSize - 1).ToString());
+
+            sql += string.Format("SELECT COUNT(*) AS TotalCount FROM {0} WHERE 1=2", attr.Name);
+
+            var ds = DataAccess.ExecuteDataset(sql);
+
+            Assert.IsNotNull(ds);
+            Assert.IsTrue((int)ds.Tables[1].Rows[0]["TotalCount"] >= 0);
         }
     }
 }

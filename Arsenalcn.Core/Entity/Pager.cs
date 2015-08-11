@@ -6,8 +6,9 @@ namespace Arsenalcn.Core
     {
         public short PagingSize { get; set; }
         public int CurrentPage { get; set; }
-        public int MaxPage { get; set; }
-        public int TotalCount { get; set; }
+
+        public int MaxPage { get; private set; }
+        public int TotalCount { get; private set; }
 
         public Pager()
         {
@@ -20,14 +21,35 @@ namespace Arsenalcn.Core
             PagingSize = 10;
             CurrentPage = index;
         }
+
+        public void GetPageSize()
+        {
+            if (PagingSize <= 0) { PagingSize = 10; }
+        }
+
+        public void SetTotalCount(int value)
+        {
+            TotalCount = value;
+
+            GetPageSize();
+
+            MaxPage = TotalCount / PagingSize;
+
+            if (CurrentPage > MaxPage)
+            { CurrentPage = MaxPage; }
+        }
     }
 
     public interface IPager
     {
         short PagingSize { get; set; }
         int CurrentPage { get; set; }
-        int MaxPage { get; set; }
-        int TotalCount { get; set; }
+
+        int MaxPage { get; }
+        int TotalCount { get; }
+
+        void GetPageSize();
+        void SetTotalCount(int value);
     }
 
 }

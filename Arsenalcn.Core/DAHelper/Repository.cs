@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -9,8 +8,6 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 using System.Threading;
-
-using Microsoft.ApplicationBlocks.Data;
 
 using Arsenalcn.Core.Logger;
 
@@ -104,7 +101,7 @@ namespace Arsenalcn.Core
             }
         }
 
-        public List<T> All<T>(Pager pager, string orderBy = null) where T : class, IViewer, new()
+        public List<T> All<T>(IPager pager, string orderBy = null) where T : class, IViewer, new()
         {
             try
             {
@@ -123,8 +120,10 @@ namespace Arsenalcn.Core
 
                 string innerSql = string.Format("(SELECT ROW_NUMBER() OVER(ORDER BY {1}) AS RowNo, * FROM {0})", attr.Name, _strOrderBy);
 
-                string sql = string.Format("SELECT * FROM {0} AS t WHERE t.RowNo BETWEEN {1} AND {2}",
+                string sql = string.Format("SELECT * FROM {0} AS t WHERE t.RowNo BETWEEN {1} AND {2};",
                     innerSql, (pager.CurrentPage * pager.PagingSize).ToString(), ((pager.CurrentPage + 1) * pager.PagingSize - 1).ToString());
+
+                sql += string.Format("SELECT COUNT({1}) AS TotalCount FROM {0}", attr.Name, attr.Key);
 
                 DataSet ds = DataAccess.ExecuteDataset(sql);
 
@@ -137,6 +136,8 @@ namespace Arsenalcn.Core
                         list = reader.DataReaderMapTo<T>().ToList();
                     }
                 }
+
+                pager.SetTotalCount((int)ds.Tables[1].Rows[0]["TotalCount"]);
 
                 return list;
             }
@@ -214,7 +215,7 @@ namespace Arsenalcn.Core
             }
         }
 
-        public List<T> Query<T>(Pager pager, Expression<Func<T, bool>> whereBy, string orderBy = null) where T : class, IViewer, new()
+        public List<T> Query<T>(IPager pager, Expression<Func<T, bool>> whereBy, string orderBy = null) where T : class, IViewer, new()
         {
             try
             {
@@ -244,7 +245,18 @@ namespace Arsenalcn.Core
                 string sql = string.Format("SELECT * FROM {0} AS t WHERE t.RowNo BETWEEN {1} AND {2}",
                     innerSql, (pager.CurrentPage * pager.PagingSize).ToString(), ((pager.CurrentPage + 1) * pager.PagingSize - 1).ToString());
 
-                DataSet ds = DataAccess.ExecuteDataset(sql, condition.SqlArguments.ToArray());
+                sql += string.Format("SELECT COUNT({1}) AS TotalCount FROM {0} WHERE {2}", attr.Name, attr.Key, condition.Condition);
+
+                DataSet ds = null;
+
+                if (condition.SqlArguments != null && condition.SqlArguments.Count > 0)
+                {
+                    ds = DataAccess.ExecuteDataset(sql.ToString(), condition.SqlArguments.ToArray());
+                }
+                else
+                {
+                    ds = DataAccess.ExecuteDataset(sql.ToString());
+                }
 
                 var dt = ds.Tables[0];
 
@@ -255,6 +267,8 @@ namespace Arsenalcn.Core
                         list = reader.DataReaderMapTo<T>().ToList();
                     }
                 }
+
+                pager.SetTotalCount((int)ds.Tables[1].Rows[0]["TotalCount"]);
 
                 return list;
             }

@@ -15,36 +15,39 @@ namespace Arsenalcn.Core
         {
             Contract.Requires(func != null);
 
-            var propertyName = string.Format("List{0}", typeof(TMany).Name);
-            var property = typeof(TOne).GetProperty(propertyName, typeof(IEnumerable<TMany>));
-
-            var attrCol = Repository.GetColumnAttr(property);
-
-            if (attrCol != null && !string.IsNullOrEmpty(attrCol.ForeignKey))
+            if (source != null && source.Count() > 0)
             {
-                IRepository repo = new Repository();
+                var propertyName = string.Format("List{0}", typeof(TMany).Name);
+                var property = typeof(TOne).GetProperty(propertyName, typeof(IEnumerable<TMany>));
 
-                var list = repo.All<TMany>();
+                var attrCol = Repository.GetColumnAttr(property);
 
-                #region Package each property Ts in TSource
-                if (list != null && list.Count > 0)
+                if (attrCol != null && !string.IsNullOrEmpty(attrCol.ForeignKey))
                 {
-                    foreach (var instance in source)
+                    IRepository repo = new Repository();
+
+                    var list = repo.All<TMany>();
+
+                    #region Package each property Ts in TSource
+                    if (list != null && list.Count > 0)
                     {
-                        var pi = instance.GetType().GetProperty(propertyName, typeof(IEnumerable<TMany>));
-                        if (pi == null) { continue; }
-
-                        var predicate = new Predicate<TMany>(t => func(instance, t));
-
-                        var result = list.FindAll(predicate);
-
-                        if (result != null && result.Count > 0)
+                        foreach (var instance in source)
                         {
-                            pi.SetValue(instance, result, null);
+                            var pi = instance.GetType().GetProperty(propertyName, typeof(IEnumerable<TMany>));
+                            if (pi == null) { continue; }
+
+                            var predicate = new Predicate<TMany>(t => func(instance, t));
+
+                            var result = list.FindAll(predicate);
+
+                            if (result != null && result.Count > 0)
+                            {
+                                pi.SetValue(instance, result, null);
+                            }
                         }
                     }
+                    #endregion
                 }
-                #endregion
             }
 
             return source;
@@ -57,70 +60,73 @@ namespace Arsenalcn.Core
         {
             Contract.Requires(keySelector != null);
 
-            var propertyName = string.Format("List{0}", typeof(TMany).Name);
-            var property = typeof(TOne).GetProperty(propertyName, typeof(IEnumerable<TMany>));
-
-            var attr = Repository.GetTableAttr<TMany>();
-            var attrCol = Repository.GetColumnAttr(property);
-
-            if (attr != null && attrCol != null && !string.IsNullOrEmpty(attrCol.ForeignKey))
+            if (source != null && source.Count() > 0)
             {
-                IRepository repo = new Repository();
-                var list = new List<TMany>();
+                var propertyName = string.Format("List{0}", typeof(TMany).Name);
+                var property = typeof(TOne).GetProperty(propertyName, typeof(IEnumerable<TMany>));
 
-                #region Get All T instances where ForeignKey in T.PrimaryKeys
-                var keys = source.Select(t => keySelector(t)).ToArray();
-                List<string> _names = new List<string>();
-                List<SqlParameter> _paras = new List<SqlParameter>();
+                var attr = Repository.GetTableAttr<TMany>();
+                var attrCol = Repository.GetColumnAttr(property);
 
-                for (var i = 0; i < keys.Length; i++)
+                if (attr != null && attrCol != null && !string.IsNullOrEmpty(attrCol.ForeignKey))
                 {
-                    _names.Add("@" + i.ToString());
-                    _paras.Add(new SqlParameter("@" + i.ToString(), keys[i]));
-                }
+                    IRepository repo = new Repository();
+                    var list = new List<TMany>();
 
-                var sql = string.Format("SELECT * FROM {0} WHERE {1} IN ({2})",
-                        attr.Name, attrCol.ForeignKey, string.Join(", ", _names));
+                    #region Get All T instances where ForeignKey in T.PrimaryKeys
+                    var keys = source.Select(t => keySelector(t)).ToArray();
+                    List<string> _names = new List<string>();
+                    List<SqlParameter> _paras = new List<SqlParameter>();
 
-                var ds = DataAccess.ExecuteDataset(sql, _paras.ToArray());
-
-                var dt = ds.Tables[0];
-
-                if (dt.Rows.Count > 0)
-                {
-                    using (var reader = dt.CreateDataReader())
+                    for (var i = 0; i < keys.Length; i++)
                     {
-                        list = reader.DataReaderMapTo<TMany>().ToList();
+                        _names.Add("@" + i.ToString());
+                        _paras.Add(new SqlParameter("@" + i.ToString(), keys[i]));
                     }
-                }
-                #endregion
 
-                #region Package each property Ts in TSource
-                if (list != null && list.Count > 0)
-                {
-                    foreach (var instance in source)
+                    var sql = string.Format("SELECT * FROM {0} WHERE {1} IN ({2})",
+                            attr.Name, attrCol.ForeignKey, string.Join(", ", _names));
+
+                    var ds = DataAccess.ExecuteDataset(sql, _paras.ToArray());
+
+                    var dt = ds.Tables[0];
+
+                    if (dt.Rows.Count > 0)
                     {
-                        var pi = instance.GetType().GetProperty(propertyName, typeof(IEnumerable<TMany>));
-                        if (pi == null) { continue; }
-
-                        // TODO Find foreignKey by Attribute
-                        var _fKey = typeof(TMany).GetProperty(attrCol.ForeignKey);
-                        if (_fKey == null) { break; }
-
-                        var _keyValue = keySelector(instance);
-
-                        var predicate = new Predicate<TMany>(many =>
-                            _fKey.GetValue(many, null).Equals(_keyValue));
-
-                        var result = list.FindAll(predicate);
-
-                        if (result != null && result.Count > 0)
+                        using (var reader = dt.CreateDataReader())
                         {
-                            pi.SetValue(instance, result, null);
+                            list = reader.DataReaderMapTo<TMany>().ToList();
                         }
                     }
+                    #endregion
+
+                    #region Package each property Ts in TSource
+                    if (list != null && list.Count > 0)
+                    {
+                        foreach (var instance in source)
+                        {
+                            var pi = instance.GetType().GetProperty(propertyName, typeof(IEnumerable<TMany>));
+                            if (pi == null) { continue; }
+
+                            // TODO Find foreignKey by Attribute
+                            var _fKey = typeof(TMany).GetProperty(attrCol.ForeignKey);
+                            if (_fKey == null) { break; }
+
+                            var _keyValue = keySelector(instance);
+
+                            var predicate = new Predicate<TMany>(many =>
+                                _fKey.GetValue(many, null).Equals(_keyValue));
+
+                            var result = list.FindAll(predicate);
+
+                            if (result != null && result.Count > 0)
+                            {
+                                pi.SetValue(instance, result, null);
+                            }
+                        }
+                    }
+                    #endregion
                 }
-                #endregion
             }
 
             return source;

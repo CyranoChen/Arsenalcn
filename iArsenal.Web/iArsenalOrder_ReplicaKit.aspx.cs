@@ -117,12 +117,12 @@ namespace iArsenal.Web
                     hlReplicaKitPage.NavigateUrl = "http://arsenaldirect.arsenal.com/puma-kit/puma-away-kit/icat/pumaaway";
                     ltrlBannerImage.Text = string.Format("<img src=\"uploadfiles/banner/banner20150714.png\" alt=\"{0}\" />", Page.Title);
                 }
-                //else if (_pt.Equals(ProductType.ReplicaKitCup))
-                //{
-                //    Page.Title = "阿森纳2015/16赛季杯赛PUMA球衣许愿单";
-                //    hlReplicaKitPage.NavigateUrl = "http://arsenaldirect.arsenal.com/puma-kit/puma-cup-kit/icat/pumacup";
-                //    ltrlBannerImage.Text = string.Format("<img src=\"uploadfiles/banner/banner20150714.png\" alt=\"{0}\" />", Page.Title);
-                //}
+                else if (_pt.Equals(ProductType.ReplicaKitCup))
+                {
+                    Page.Title = "阿森纳2015/16赛季杯赛PUMA球衣许愿单";
+                    hlReplicaKitPage.NavigateUrl = "http://arsenaldirect.arsenal.com/puma-kit/puma-cup-kit/icat/pumacup";
+                    ltrlBannerImage.Text = string.Format("<img src=\"uploadfiles/banner/banner20150813.png\" alt=\"{0}\" />", Page.Title);
+                }
                 else
                 {
                     Page.Title = "阿森纳2015/16赛季主场PUMA球衣许愿单";

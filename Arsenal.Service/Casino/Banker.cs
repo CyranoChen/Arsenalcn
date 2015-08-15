@@ -31,7 +31,7 @@ namespace Arsenal.Service.Casino
                 this.Cash = (double)ds.Tables[0].Rows[0]["BankerCash"];
 
                 IRepository repo = new Repository();
-                repo.Update<Banker>(this);
+                repo.Update(this);
             }
         }
 

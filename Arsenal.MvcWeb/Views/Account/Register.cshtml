@@ -1,7 +1,7 @@
 ﻿@model Arsenal.MvcWeb.Models.RegisterModel
 
 @{
-    ViewBag.Title = "Register";
+    ViewBag.Title = "用户注册";
 }
 
 @section Scripts {
@@ -9,28 +9,13 @@
 }
 
 <div data-role="content">
-    <p>
-        Passwords must be at least @Membership.MinRequiredPasswordLength characters long.
-    </p>
-
     @using (Html.BeginForm())
     {
-        @Html.AntiForgeryToken()
-        @Html.ValidationSummary()
-
         <ul data-role="listview" data-inset="true">
-            <li data-role="list-divider">Details</li>
+            <li data-role="list-divider">密码至少 7 位</li>
             <li data-role="fieldcontain">
                 @Html.LabelFor(m => m.UserName)
                 @Html.TextBoxFor(m => m.UserName)
-            </li>
-            <li data-role="fieldcontain">
-                @Html.LabelFor(m => m.Email)
-                @Html.TextBoxFor(m => m.Email)
-            </li>
-            <li data-role="fieldcontain">
-                @Html.LabelFor(m => m.Mobile)
-                @Html.TextBoxFor(m => m.Mobile)
             </li>
             <li data-role="fieldcontain">
                 @Html.LabelFor(m => m.Password)
@@ -40,9 +25,11 @@
                 @Html.LabelFor(m => m.ConfirmPassword)
                 @Html.PasswordFor(m => m.ConfirmPassword)
             </li>
-            <li data-role="fieldcontain">
-                <input type="submit" value="Register" />
+            <li>
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary()
             </li>
         </ul>
+        <input type="submit" id="btnSubmit" value="注册" />
     }
 </div>

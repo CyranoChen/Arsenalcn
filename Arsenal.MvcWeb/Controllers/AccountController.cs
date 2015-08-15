@@ -3,12 +3,16 @@ using System.Web.Mvc;
 using System.Web.Security;
 
 using Arsenal.MvcWeb.Models;
+using Arsenalcn.Core;
+using Arsenal.Service;
 
 namespace Arsenal.MvcWeb.Controllers
 {
     [Authorize]
     public class AccountController : Controller
     {
+        private IRepository repo = new Repository();
+
         //
         // GET: /Account/Index
 
@@ -132,8 +136,7 @@ namespace Arsenal.MvcWeb.Controllers
                 object userKey;
                 MembershipCreateStatus createStatus;
 
-                user.CreateUser(model.UserName, model.Password, model.Mobile, model.Email,
-                    providerUserKey: out userKey, status: out createStatus);
+                user.CreateUser(model.UserName, model.Password, providerUserKey: out userKey, status: out createStatus);
 
                 if (createStatus.Equals(MembershipCreateStatus.Success))
                 {
@@ -146,6 +149,64 @@ namespace Arsenal.MvcWeb.Controllers
                 else
                 {
                     ModelState.AddModelError("Warn", ErrorCodeToString(createStatus));
+                }
+            }
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+
+        //
+        // GET: /Account/UserProfile
+
+        public ActionResult UserProfile()
+        {
+            var model = new UserProfileDto();
+
+            var membership = MembershipDto.GetMembership(User.Identity.Name);
+            var user = UserDto.GetSession();
+
+            model.RealName = user.MemberName;
+            model.Mobile = membership.Mobile;
+            model.Email = membership.Email;
+
+            return View(model);
+        }
+
+        //
+        // POST: /Account/UserProfile
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult UserProfile(UserProfileDto model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var membership = MembershipDto.GetMembership(username: User.Identity.Name);
+                    var user = UserDto.GetSession();
+
+                    if (membership != null && user != null)
+                    {
+                        user.MemberName = model.RealName;
+                        membership.Email = model.Email;
+                        membership.Mobile = model.Mobile;
+
+                        repo.Update(user);
+                        repo.Update(membership);
+
+                        TempData["DataUrl"] = "data-url=/";
+                        return RedirectToAction("Index", "Account");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("Warn", "当前用户不存在");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("Warn", ex.Message);
                 }
             }
 
@@ -181,25 +242,25 @@ namespace Arsenal.MvcWeb.Controllers
                     if (membership != null)
                     {
                         changePasswordSucceeded = MembershipDto.ChangePassword(membership, model.OldPassword, model.NewPassword);
+
+                        if (changePasswordSucceeded)
+                        {
+                            TempData["DataUrl"] = "data-url=/";
+                            return RedirectToAction("ChangePasswordSuccess");
+                        }
                     }
                     else
                     {
                         changePasswordSucceeded = false;
+
+                        ModelState.AddModelError("Warn", "当前用户不存在");
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     changePasswordSucceeded = false;
-                }
 
-                if (changePasswordSucceeded)
-                {
-                    TempData["DataUrl"] = "data-url=/";
-                    return RedirectToAction("ChangePasswordSuccess");
-                }
-                else
-                {
-                    ModelState.AddModelError("Warn", "旧密码不正确或新密码无效");
+                    ModelState.AddModelError("Warn", ex.Message);
                 }
             }
 

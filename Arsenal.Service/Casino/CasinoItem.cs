@@ -36,7 +36,7 @@ namespace Arsenal.Service.Casino
                 this.Earning = (double)ds.Tables[0].Rows[0]["TotalEarning"];
 
                 IRepository repo = new Repository();
-                repo.Update<CasinoItem>(this);
+                repo.Update(this);
             }
         }
 

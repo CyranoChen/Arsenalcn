@@ -447,7 +447,7 @@ namespace iArsenal.Web
 
                         //Get the Order ID after Insert new one
                         object _key = null;
-                        repo.Insert<Order>(o, out _key, trans);
+                        repo.Insert(o, out _key, trans);
                         _newID = Convert.ToInt32(_key);
                     }
 

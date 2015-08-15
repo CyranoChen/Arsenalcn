@@ -251,8 +251,8 @@ namespace Arsenal.MvcWeb.Controllers
         {
             var model = new MatchResultDto();
 
-            var gambler = repo.Query<Gambler>(x => x.UserID == this.acnID).FirstOrDefault();
-            model.MyCash = gambler != null ? gambler.Cash : 0f;
+            //var gambler = repo.Query<Gambler>(x => x.UserID == this.acnID).FirstOrDefault();
+            //model.MyCash = gambler != null ? gambler.Cash : 0f;
 
             model.Match = MatchDto.Single(id);
             model.MatchGuid = id;

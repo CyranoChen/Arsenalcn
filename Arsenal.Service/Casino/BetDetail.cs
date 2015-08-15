@@ -3,7 +3,6 @@ using System.Data.SqlClient;
 
 using Arsenalcn.Core;
 
-
 namespace Arsenal.Service.Casino
 {
     [DbSchema("AcnCasino_BetDetail", Sort = "ID DESC")]

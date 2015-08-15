@@ -1,0 +1,49 @@
+﻿@model Arsenal.MvcWeb.Models.UserProfileDto
+
+@{
+    ViewBag.Title = "用户信息";
+
+    var authorizedUser = Arsenal.MvcWeb.Models.UserDto.GetSession();
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+@section Header {
+    <div data-role="header" data-position="fixed">
+        @Html.ActionLink("返回", "Index", "Account", null, new { data_icon = "arrow-l", data_rel = "back" })
+        <h1>@ViewBag.Title</h1>
+    </div>
+}
+
+<div data-role="content">
+    @using (Html.BeginForm())
+    {
+        <ul data-role="listview" data-inset="true">
+            <li data-role="list-divider">
+                请完善您的实名信息，即可享受球迷会实名会员服务
+            </li>
+            <li data-role="fieldcontain">
+                @User.Identity.Name (@authorizedUser.AcnID)
+            </li>
+            <li data-role="fieldcontain">
+                @Html.LabelFor(m => m.RealName)
+                @Html.TextBoxFor(m => m.RealName)
+            </li>
+            <li data-role="fieldcontain">
+                @Html.LabelFor(m => m.Mobile)
+                @Html.TextBoxFor(m => m.Mobile)
+            </li>
+            <li data-role="fieldcontain">
+                @Html.LabelFor(m => m.Email)
+                @Html.TextBoxFor(m => m.Email)
+            </li>
+            <li>
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary()
+            </li>
+        </ul>
+        <input type="submit" id="btnSubmit" value="保存信息" />
+    }
+</div>

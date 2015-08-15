@@ -70,6 +70,7 @@ namespace Arsenal.Service
             Parameters.Add("uid", uid.ToString());
             Parameters.Add("original_password", oldPassword);
             Parameters.Add("new_password", newPassword);
+            Parameters.Add("confirm_new_password", newPassword);
 
             if (!string.IsNullOrEmpty(passwordFormat))
             { Parameters.Add("password_format", passwordFormat); }

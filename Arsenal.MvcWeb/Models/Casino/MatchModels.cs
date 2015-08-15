@@ -60,6 +60,8 @@ namespace Arsenal.MvcWeb.Models.Casino
 
         public DateTime PlayTime { get; set; }
 
+        public short? Round { get; set; }
+
         public double HomeRate { get; set; }
 
         public double DrawRate { get; set; }

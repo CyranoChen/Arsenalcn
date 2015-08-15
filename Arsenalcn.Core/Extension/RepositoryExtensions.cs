@@ -16,7 +16,7 @@ namespace Arsenalcn.Core
 
             foreach (var instance in source)
             {
-                repo.Insert<T>(instance, trans);
+                repo.Insert(instance, trans);
             }
 
             return source.Count();
@@ -31,7 +31,7 @@ namespace Arsenalcn.Core
 
             foreach (var instance in source)
             {
-                repo.Update<T>(instance, trans);
+                repo.Update(instance, trans);
             }
 
             return source.Count();
@@ -45,7 +45,7 @@ namespace Arsenalcn.Core
 
             foreach (var instance in source)
             {
-                repo.Delete<T>(instance, trans);
+                repo.Delete(instance, trans);
             }
 
             return source.Count();

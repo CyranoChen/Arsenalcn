@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics.Contracts;
@@ -88,17 +87,17 @@ namespace Arsenal.Service.Casino
                     //update gambler statistics
                     gambler.TotalBet += BetAmount.Value;
                     gambler.Cash -= BetAmount.Value;
-                    repo.Update<Gambler>(gambler, trans);
+                    repo.Update(gambler, trans);
 
                     banker.Cash += BetAmount.Value;
-                    repo.Update<Banker>(banker, trans);
+                    repo.Update(banker, trans);
 
                     this.CasinoItemGuid = item.ID;
                     this.BetTime = DateTime.Now;
                     this.BetRate = (double)choiceOption.OptionRate;
 
                     object _key = null;
-                    repo.Insert<Bet>(this, out _key, trans);
+                    repo.Insert(this, out _key, trans);
                     this.ID = Convert.ToInt32(_key);
 
                     var betDetail = new BetDetail();
@@ -112,7 +111,7 @@ namespace Arsenal.Service.Casino
                     else if (selectedOption.ToLower() == "draw")
                         betDetail.DetailName = "Draw";
 
-                    repo.Insert<BetDetail>(betDetail, trans);
+                    repo.Insert(betDetail, trans);
 
                     trans.Commit();
 
@@ -180,7 +179,7 @@ namespace Arsenal.Service.Casino
                     this.BetTime = DateTime.Now;
 
                     object _key = null;
-                    repo.Insert<Bet>(this, out _key, trans);
+                    repo.Insert(this, out _key, trans);
                     this.ID = Convert.ToInt32(_key);
 
                     var betDetailHome = new BetDetail();
@@ -189,7 +188,7 @@ namespace Arsenal.Service.Casino
                     betDetailHome.DetailName = "Home";
                     betDetailHome.DetailValue = resultHome.ToString();
 
-                    repo.Insert<BetDetail>(betDetailHome, trans);
+                    repo.Insert(betDetailHome, trans);
 
                     var betDetailAway = new BetDetail();
 
@@ -197,7 +196,7 @@ namespace Arsenal.Service.Casino
                     betDetailAway.DetailName = "Away";
                     betDetailAway.DetailValue = resultAway.ToString();
 
-                    repo.Insert<BetDetail>(betDetailAway, trans);
+                    repo.Insert(betDetailAway, trans);
 
                     trans.Commit();
                 }

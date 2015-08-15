@@ -4,7 +4,7 @@
 
 @if (Request.IsAuthenticated && authorizedUser != null)
 {
-    @Html.ActionLink(string.Format("{0} ({1})", User.Identity.Name, authorizedUser.AcnID.ToString()),
+    @Html.ActionLink(string.Format("{0} ({1})", User.Identity.Name, authorizedUser.AcnID),
     "Index", "Account", routeValues: null, htmlAttributes: new { data_icon = "gear", data_transition = "slideup" })
 }
 else

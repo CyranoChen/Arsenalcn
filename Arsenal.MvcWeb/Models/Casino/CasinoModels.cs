@@ -3,7 +3,6 @@ using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
 
 using Arsenalcn.Core;
-using Arsenal.Service.Casino;
 
 namespace Arsenal.MvcWeb.Models.Casino
 {
@@ -40,32 +39,34 @@ namespace Arsenal.MvcWeb.Models.Casino
 
     public class MatchResultDto
     {
-        [Required]
-        [Range(0, 10)]
+        [Required(ErrorMessage = "请填写{0}")]
+        [Range(0, 10, ErrorMessage = "请正确填写{0}")]
+        [Display(Name = "主队比分")]
         public short ResultHome { get; set; }
 
-        [Required]
-        [Range(0, 10)]
+        [Required(ErrorMessage = "请填写{0}")]
+        [Range(0, 10, ErrorMessage = "请正确填写{0}")]
+        [Display(Name = "客队比分")]
         public short ResultAway { get; set; }
 
         [Required]
         public Guid MatchGuid { get; set; }
 
-        public double MyCash { get; set; }
+        //public double MyCash { get; set; }
 
         public MatchDto Match { get; set; }
     }
 
     public class SingleChoiceDto
     {
-        [Required]
+        [Required(ErrorMessage = "请选择{0}")]
         [Domain("home", "away", "draw")]
         [Display(Name = "投注选项")]
         public string SelectedOption { get; set; }
 
-        [Required]
-        [DataType(DataType.Currency)]
-        [Range(10f, float.MaxValue)]
+        [Required(ErrorMessage = "请填写{0}")]
+        [DataType(DataType.Currency, ErrorMessage = "请正确填写{0}")]
+        [Range(10f, float.MaxValue, ErrorMessage = "请正确填写{0}")]
         [Display(Name = "投注金额")]
         public double BetAmount { get; set; }
 

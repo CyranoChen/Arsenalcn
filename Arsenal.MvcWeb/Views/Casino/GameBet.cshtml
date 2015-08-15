@@ -14,7 +14,7 @@
 @if (Model.Match.PlayTime > DateTime.Now)
 {
     @section Footer {
-        <div data-role="footer" data-position="fixed" class="ui-btn">
+        <div data-role="footer" data-position="fixed">
             <div data-role="controlgroup" data-type="horizontal">
                 <a href="@Url.Action("SingleChoice", "Casino", new { id = Model.Match.ID })" data-role="button" data-icon="plus" data-rel="dialog" data-transition="pop">投输赢</a>
                 <a href="@Url.Action("MatchResult", "Casino", new { id = Model.Match.ID })" data-role="button" data-icon="plus" data-rel="dialog" data-transition="pop">猜比分</a>

@@ -62,7 +62,7 @@ namespace Arsenalcn.Scheduler.Tests
                             m.PlayTime = cm.PlayTime;
                             m.CasinoMatchGuid = cm.ID;
 
-                            repo.Update<ArsenalMatch>(m);
+                            repo.Update(m);
                         }
                         else
                         {

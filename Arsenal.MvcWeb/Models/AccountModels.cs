@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.ComponentModel.DataAnnotations;
 using System.Data.SqlClient;
 using System.Data.SqlTypes;
@@ -14,6 +13,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 using Arsenal.Service;
+using Arsenal.Service.Casino;
 using Arsenalcn.Core;
 using Arsenalcn.Core.Logger;
 using Arsenalcn.Core.Utility;
@@ -131,7 +131,7 @@ namespace Arsenal.MvcWeb.Models
                 providerUserKey = membership.ID;
 
                 membership.LastLoginDate = DateTime.Now;
-                repo.Update<Membership>(membership);
+                repo.Update(membership);
             }
             else
             {
@@ -218,7 +218,7 @@ namespace Arsenal.MvcWeb.Models
                     user.WeChatOpenID = null;
                     user.WeChatNickName = string.Empty;
 
-                    repo.Insert<User>(user, trans);
+                    repo.Insert(user, trans);
 
                     trans.Commit();
 
@@ -250,7 +250,7 @@ namespace Arsenal.MvcWeb.Models
         //   System.Web.Security.MembershipCreateUserException:
         //     The user was not created. Check the System.Web.Security.MembershipCreateUserException.StatusCode
         //     property for a System.Web.Security.MembershipCreateStatus value.
-        public void CreateUser(string username, string password, string mobile, string email, out object providerUserKey, out MembershipCreateStatus status)
+        public void CreateUser(string username, string password, out object providerUserKey, out MembershipCreateStatus status)
         {
             using (SqlConnection conn = new SqlConnection(DataAccess.ConnectString))
             {
@@ -289,8 +289,8 @@ namespace Arsenal.MvcWeb.Models
                     #endregion
 
                     this.Password = Encrypt.getMd5Hash(password);
-                    this.Mobile = mobile;
-                    this.Email = email;
+                    this.Mobile = string.Empty;
+                    this.Email = string.Empty;
 
                     repo.Insert<Membership>(this, out providerUserKey, trans);
 
@@ -333,7 +333,7 @@ namespace Arsenal.MvcWeb.Models
                     user.WeChatOpenID = null;
                     user.WeChatNickName = string.Empty;
 
-                    repo.Insert<User>(user, trans);
+                    repo.Insert(user, trans);
 
                     trans.Commit();
 
@@ -387,10 +387,10 @@ namespace Arsenal.MvcWeb.Models
             Contract.Requires(!string.IsNullOrEmpty(newPassword));
 
             if (oldPassword.Equals(newPassword, StringComparison.OrdinalIgnoreCase))
-            { return false; }
+            { throw new Exception("新密码应与旧密码不同"); }
 
             if (!instance.Password.Equals(Encrypt.getMd5Hash(oldPassword)))
-            { return false; }
+            { throw new Exception("用户旧密码验证不正确"); }
 
             using (SqlConnection conn = new SqlConnection(DataAccess.ConnectString))
             {
@@ -403,7 +403,7 @@ namespace Arsenal.MvcWeb.Models
 
                     instance.Password = Encrypt.getMd5Hash(newPassword);
 
-                    repo.Update<Membership>(instance, trans);
+                    repo.Update(instance, trans);
 
                     #region Sync Acn User Password
                     if (ConfigGlobal.AcnSync)
@@ -418,8 +418,8 @@ namespace Arsenal.MvcWeb.Models
                             var result = client.UsersChangePassword(user.AcnID.Value,
                                 Encrypt.getMd5Hash(oldPassword), Encrypt.getMd5Hash(newPassword));
 
-                            if (!Convert.ToInt32(result.Replace("\"", "")).Equals(1))
-                            { throw new Exception(); }
+                            if (!Convert.ToBoolean(result.Replace("\"", "")))
+                            { throw new Exception("ACN同步失败"); }
                         }
                     }
                     #endregion
@@ -428,11 +428,11 @@ namespace Arsenal.MvcWeb.Models
 
                     return true;
                 }
-                catch
+                catch (Exception ex)
                 {
                     trans.Rollback();
 
-                    return false;
+                    throw ex;
                 }
             }
         }
@@ -488,35 +488,102 @@ namespace Arsenal.MvcWeb.Models
             var user = GetUser(providerUserKey);
 
             HttpContext.Current.Session["AuthorizedUser"] = user;
+
+            UserGamblerSync(providerUserKey);
         }
+
+        #region Casino Gambler Sync
+        private static int UserGamblerSync(object providerUserKey)
+        {
+            Contract.Requires(providerUserKey != null);
+            object gamblerKey = null;
+
+            var user = GetUser(providerUserKey);
+
+            if (user.AcnID > 0 && !string.IsNullOrEmpty(user.AcnUserName))
+            {
+                IRepository repo = new Repository();
+
+                var query = repo.Query<Gambler>(x => x.UserID == user.AcnID);
+
+                if (query != null && query.Count > 0)
+                {
+                    HttpContext.Current.Session["Gambler"] = query[0];
+
+                    gamblerKey = query[0].ID;
+                }
+                else
+                {
+                    // Create new gambler instance
+                    var gambler = new Gambler();
+                    gambler.UserID = user.AcnID.Value;
+                    gambler.UserName = user.AcnUserName.Trim();
+                    gambler.Cash = 1000f;
+                    gambler.TotalBet = 0f;
+                    gambler.Win = 0;
+                    gambler.Lose = 0;
+                    gambler.RPBonus = null;
+                    gambler.ContestRank = null;
+                    gambler.TotalRank = 0;
+                    gambler.Banker = null;
+                    gambler.JoinDate = DateTime.Now;
+                    gambler.IsActive = true;
+                    gambler.Description = string.Empty;
+                    gambler.Remark = "Mobile Sync";
+
+                    repo.Insert(gambler, out gamblerKey);
+                }
+            }
+
+            return gamblerKey != null ? Convert.ToInt32(gamblerKey) : 0;
+        }
+        #endregion
+    }
+
+    public class UserProfileDto
+    {
+        [Required(ErrorMessage = "请填写{0}")]
+        [StringLength(20, ErrorMessage = "请正确填写{0}")]
+        [Display(Name = "真实姓名")]
+        public string RealName { get; set; }
+
+        [Required(ErrorMessage = "请填写{0}")]
+        [DataType(DataType.PhoneNumber, ErrorMessage = "请正确填写{0}")]
+        [Display(Name = "手机")]
+        public string Mobile { get; set; }
+
+        [Required(ErrorMessage = "请填写{0}")]
+        [DataType(DataType.EmailAddress, ErrorMessage = "请正确填写{0}")]
+        [Display(Name = "邮箱")]
+        public string Email { get; set; }
     }
 
     public class ChangePasswordModel
     {
-        [Required]
-        [DataType(DataType.Password)]
+        [Required(ErrorMessage = "请填写{0}")]
+        [DataType(DataType.Password, ErrorMessage = "请正确填写{0}")]
         [Display(Name = "当前密码")]
         public string OldPassword { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "请填写{0}")]
         [StringLength(100, ErrorMessage = "{0}长度至少需要{2}位", MinimumLength = 6)]
-        [DataType(DataType.Password)]
+        [DataType(DataType.Password, ErrorMessage = "请正确填写{0}")]
         [Display(Name = "新密码")]
         public string NewPassword { get; set; }
 
-        [DataType(DataType.Password)]
-        [Display(Name = "确认密码")]
         [Compare("NewPassword", ErrorMessage = "新密码与确认密码不一致")]
+        [DataType(DataType.Password, ErrorMessage = "请正确填写{0}")]
+        [Display(Name = "确认密码")]
         public string ConfirmPassword { get; set; }
     }
 
     public class LoginModel
     {
-        [Required]
+        [Required(ErrorMessage = "请填写{0}")]
         [Display(Name = "用户名")]
         public string UserName { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "请填写{0}")]
         [DataType(DataType.Password)]
         [Display(Name = "密码")]
         public string Password { get; set; }
@@ -527,29 +594,19 @@ namespace Arsenal.MvcWeb.Models
 
     public class RegisterModel
     {
-        [Required]
+        [Required(ErrorMessage = "请填写{0}")]
         [Display(Name = "用户名")]
         public string UserName { get; set; }
 
-        [Required]
-        [DataType(DataType.PhoneNumber)]
-        [Display(Name = "手机")]
-        public string Mobile { get; set; }
-
-        [Required]
-        [DataType(DataType.EmailAddress)]
-        [Display(Name = "邮箱")]
-        public string Email { get; set; }
-
-        [Required]
-        [StringLength(100, ErrorMessage = "{0}长度至少需要{2}位", MinimumLength = 6)]
-        [DataType(DataType.Password)]
+        [Required(ErrorMessage = "请填写{0}")]
+        [StringLength(100, ErrorMessage = "{0}长度至少需要{2}位", MinimumLength = 7)]
+        [DataType(DataType.Password, ErrorMessage = "请正确填写{0}")]
         [Display(Name = "密码")]
         public string Password { get; set; }
 
-        [DataType(DataType.Password)]
-        [Display(Name = "密码确认")]
         [Compare("Password", ErrorMessage = "新密码与确认密码不一致")]
+        [DataType(DataType.Password, ErrorMessage = "请正确填写{0}")]
+        [Display(Name = "密码确认")]
         public string ConfirmPassword { get; set; }
     }
 }

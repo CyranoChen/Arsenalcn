@@ -16,7 +16,7 @@
         Logged in as <strong>@User.Identity.Name</strong>.
     </p>
     <ul data-role="listview" data-inset="true">
-        <li>@Html.ActionLink("用户信息", "Profile")</li>
+        <li>@Html.ActionLink("用户信息", "UserProfile")</li>
         <li>@Html.ActionLink("密码修改", "ChangePassword")</li>
         <li>@Html.ActionLink("退出登录", "LogOff", routeValues: null, htmlAttributes: new { data_ajax = "false" })</li>
     </ul>

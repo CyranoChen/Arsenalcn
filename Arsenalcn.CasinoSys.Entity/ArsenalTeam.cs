@@ -33,7 +33,7 @@ namespace Arsenalcn.CasinoSys.Entity
                 //LeagueGuid = (Guid)dr["LeagueGuid"];
             }
             else
-                throw new Exception("Unable to init League.");
+                throw new Exception("Unable to init Team.");
         }
 
         public static List<Team> GetTeams()

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Web.UI.WebControls;
 
 using Arsenalcn.ClubSys.Service;
-using ArsenalVideo = Arsenalcn.ClubSys.Service.Arsenal.Video;
+
 
 namespace Arsenalcn.ClubSys.Web.Control
 {
@@ -21,7 +21,7 @@ namespace Arsenalcn.ClubSys.Web.Control
             if (clubID > 0)
             {
                 int haveVideoCount = 0;
-                int totalVideoCount = Arsenal_Video.Cache.GetAvailableVideosByRank(GRank, TRank).Count;
+                int totalVideoCount = Video.Cache.GetAvailableVideosByRank(GRank, TRank).Count;
 
                 //load data
                 //DataTable dt = UserVideo.GetUserVideoByClubID(clubID);
@@ -36,14 +36,14 @@ namespace Arsenalcn.ClubSys.Web.Control
                     {
                         //expression = string.Format("GoalRank = {0}", GRank.ToString());
                         list = list.FindAll(delegate(Entity.UserVideo uv)
-                        { return Arsenal_Video.Cache.Load(uv.VideoGuid).GoalRank.Equals(GRank.ToString()); });
+                        { return Video.Cache.Load(uv.VideoGuid).GoalRank.Equals(GRank.ToString()); });
                     }
                     else if (GRank > 0 && TRank > 0)
                     {
                         //expression = string.Format("GoalRank = {0} AND TeamworkRank = {1}", GRank.ToString(), TRank.ToString());
                         list = list.FindAll(delegate(Entity.UserVideo uv)
                         {
-                            ArsenalVideo v = Arsenal_Video.Cache.Load(uv.VideoGuid);
+                            var v = Video.Cache.Load(uv.VideoGuid);
                             return v.GoalRank.Equals(GRank.ToString()) && v.TeamworkRank.Equals(TRank.ToString());
                         });
                     }
@@ -51,7 +51,7 @@ namespace Arsenalcn.ClubSys.Web.Control
                     {
                         //expression = string.Format("TeamworkRank = {0}", TRank.ToString());
                         list = list.FindAll(delegate(Entity.UserVideo uv)
-                        { return Arsenal_Video.Cache.Load(uv.VideoGuid).TeamworkRank.Equals(TRank.ToString()); });
+                        { return Video.Cache.Load(uv.VideoGuid).TeamworkRank.Equals(TRank.ToString()); });
                     }
 
                     //DataRow[] dr = dt.Select(expression, "ActiveDate DESC");

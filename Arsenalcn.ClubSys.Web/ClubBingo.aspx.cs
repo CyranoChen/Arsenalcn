@@ -145,7 +145,7 @@ namespace Arsenalcn.ClubSys.Web
 
         private void BindGetStrip()
         {
-            Player player = PlayerStrip.GetPlayerInfo(UserID);
+            Gamer player = PlayerStrip.GetPlayerInfo(UserID);
 
             if (ConfigGlobal.GoogleAdvActive && player != null)
             {

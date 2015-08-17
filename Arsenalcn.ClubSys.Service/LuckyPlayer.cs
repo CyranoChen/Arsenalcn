@@ -92,8 +92,8 @@ namespace Arsenalcn.ClubSys.Service
                 //con.Close();
             }
            
-            Player player = PlayerStrip.GetPlayerInfoByPlayerID(playerID);
-            Player lPlayer = PlayerStrip.GetPlayerInfoByPlayerID(luckyPlayerID);
+            Gamer player = PlayerStrip.GetPlayerInfoByPlayerID(playerID);
+            Gamer lPlayer = PlayerStrip.GetPlayerInfoByPlayerID(luckyPlayerID);
     
             if (player != null && clubID > 0)
             {

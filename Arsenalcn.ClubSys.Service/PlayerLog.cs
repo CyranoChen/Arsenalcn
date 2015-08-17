@@ -34,9 +34,9 @@ namespace Arsenalcn.ClubSys.Service
             }
         }
 
-        public static List<PlayerHistory> GetUserPlayerHistory(int userID)
+        public static List<GamerHistory> GetUserPlayerHistory(int userID)
         {
-            List<PlayerHistory> list = new List<PlayerHistory>();
+            List<GamerHistory> list = new List<GamerHistory>();
 
             string sql = "SELECT * FROM dbo.AcnClub_LogPlayer WHERE UserID = @userID ORDER BY ActionDate DESC";
 
@@ -56,7 +56,7 @@ namespace Arsenalcn.ClubSys.Service
 
                 foreach (DataRow dr in dt.Rows)
                 {
-                    PlayerHistory ph = new PlayerHistory(dr);
+                    GamerHistory ph = new GamerHistory(dr);
 
                     list.Add(ph);
                 }
@@ -91,7 +91,7 @@ namespace Arsenalcn.ClubSys.Service
 
         public string Generate()
         {
-            string _pName = Arsenal_Player.Cache.Load(_un.ArsenalPlayerGuid.Value).DisplayName;
+            string _pName = Player.Cache.Load(_un.ArsenalPlayerGuid.Value).DisplayName;
 
             return string.Format("激活卡片{0}({1})", _pName, _un.ID.ToString());
         }
@@ -131,8 +131,8 @@ namespace Arsenalcn.ClubSys.Service
         #region PlayerHistoryDescGenerator Members
         public string Generate()
         {
-            string _pName1 = Arsenal_Player.Cache.Load(_un1.ArsenalPlayerGuid.Value).DisplayName;
-            string _pName2 = Arsenal_Player.Cache.Load(_un2.ArsenalPlayerGuid.Value).DisplayName;
+            string _pName1 = Player.Cache.Load(_un1.ArsenalPlayerGuid.Value).DisplayName;
+            string _pName2 = Player.Cache.Load(_un2.ArsenalPlayerGuid.Value).DisplayName;
 
             return string.Format("融合卡片{0}({1})和卡片{2}({3})", _pName1, _un1.ID.ToString(), _pName2, _un2.ID.ToString());
         }

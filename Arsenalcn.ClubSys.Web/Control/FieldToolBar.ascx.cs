@@ -72,7 +72,7 @@ namespace Arsenalcn.ClubSys.Web.Control
 
                 int luckyPlayerID = ConfigGlobal.LuckyPlayerID;
 
-                Player player = PlayerStrip.GetPlayerInfoByPlayerID(luckyPlayerID);
+                Gamer player = PlayerStrip.GetPlayerInfoByPlayerID(luckyPlayerID);
                 List<Club> clubs = ClubLogic.GetActiveUserClubs(player.UserID);
                 bool IsLuckyPlayerLeader = clubs.Exists(delegate(Club club) { return ClubLogic.GetClubLeads(club.ID.Value).Exists(delegate(UserClub uc) { return uc.Userid == this.userid; }); });
 
@@ -125,8 +125,8 @@ namespace Arsenalcn.ClubSys.Web.Control
         {
             int luckyPlayerID = ConfigGlobal.LuckyPlayerID;
 
-            Player player = PlayerStrip.GetPlayerInfoByPlayerID(luckyPlayerID);
-            Player gPlayer = PlayerStrip.GetPlayerInfo(this.userid);
+            Gamer player = PlayerStrip.GetPlayerInfoByPlayerID(luckyPlayerID);
+            Gamer gPlayer = PlayerStrip.GetPlayerInfo(this.userid);
 
             List<Club> clubs = ClubLogic.GetActiveUserClubs(player.UserID);
             bool isLuckyPlayerLeader = clubs.Exists(delegate(Club club) { return ClubLogic.GetClubLeads(club.ID.Value).Exists(delegate(UserClub uc) { return uc.Userid == this.userid; }); });

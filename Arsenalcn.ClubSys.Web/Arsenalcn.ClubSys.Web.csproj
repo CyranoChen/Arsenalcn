@@ -112,7 +112,9 @@
     <Content Include="UploadFiles\StripFace\%2401.jpg" />
     <Content Include="UploadFiles\StripFace\%2422.jpg" />
     <Content Include="UploadFiles\StripFace\%2425.jpg" />
-    <Content Include="UploadFiles\StripFace\%2428.jpg" />
+    <Content Include="UploadFiles\StripFace\%2426.jpg" />
+    <Content Include="UploadFiles\StripFace\%2427.jpg" />
+    <Content Include="UploadFiles\StripFace\%2432.jpg" />
     <Content Include="UploadFiles\StripFace\00.jpg" />
     <Content Include="UploadFiles\StripFace\02.jpg" />
     <Content Include="UploadFiles\StripFace\03.jpg" />
@@ -135,9 +137,7 @@
     <Content Include="UploadFiles\StripFace\21.jpg" />
     <Content Include="UploadFiles\StripFace\23.jpg" />
     <Content Include="UploadFiles\StripFace\24.jpg" />
-    <Content Include="UploadFiles\StripFace\26.jpg" />
-    <Content Include="UploadFiles\StripFace\27.jpg" />
-    <Content Include="UploadFiles\StripFace\32.jpg" />
+    <Content Include="UploadFiles\StripFace\28.jpg" />
     <Content Include="UploadFiles\StripFace\33.jpg" />
     <Content Include="UploadFiles\StripFace\34.jpg" />
     <Content Include="UploadFiles\StripFace\35.jpg" />
@@ -236,7 +236,9 @@
     <Content Include="UploadFiles\StripPhoto\%2401.jpg" />
     <Content Include="UploadFiles\StripPhoto\%2422.jpg" />
     <Content Include="UploadFiles\StripPhoto\%2425.jpg" />
-    <Content Include="UploadFiles\StripPhoto\%2428.jpg" />
+    <Content Include="UploadFiles\StripPhoto\%2426.jpg" />
+    <Content Include="UploadFiles\StripPhoto\%2427.jpg" />
+    <Content Include="UploadFiles\StripPhoto\%2432.jpg" />
     <Content Include="UploadFiles\StripPhoto\00.jpg" />
     <Content Include="UploadFiles\StripPhoto\02.jpg" />
     <Content Include="UploadFiles\StripPhoto\03.jpg" />
@@ -259,9 +261,7 @@
     <Content Include="UploadFiles\StripPhoto\21.jpg" />
     <Content Include="UploadFiles\StripPhoto\23.jpg" />
     <Content Include="UploadFiles\StripPhoto\24.jpg" />
-    <Content Include="UploadFiles\StripPhoto\26.jpg" />
-    <Content Include="UploadFiles\StripPhoto\27.jpg" />
-    <Content Include="UploadFiles\StripPhoto\32.jpg" />
+    <Content Include="UploadFiles\StripPhoto\28.jpg" />
     <Content Include="UploadFiles\StripPhoto\33.jpg" />
     <Content Include="UploadFiles\StripPhoto\34.jpg" />
     <Content Include="UploadFiles\StripPhoto\35.jpg" />

@@ -50,6 +50,10 @@
     <Compile Include="ArsenalMatch.cs" />
     <Compile Include="ArsenalVideo.cs" />
     <Compile Include="ClubLogic.cs" />
+    <Compile Include="DataAccess\Video.cs" />
+    <Compile Include="DataAccess\Player.cs" />
+    <Compile Include="DataAccess\Match.cs" />
+    <Compile Include="DataAccess\Team.cs" />
     <Compile Include="Entity\Administrator.cs" />
     <Compile Include="Entity\AdvHistory.cs" />
     <Compile Include="Entity\ApplyHistory.cs" />
@@ -58,8 +62,8 @@
     <Compile Include="Entity\ClubHistory.cs" />
     <Compile Include="Entity\ClubSysObject.cs" />
     <Compile Include="Entity\Config.cs" />
-    <Compile Include="Entity\Player.cs" />
-    <Compile Include="Entity\PlayerHistory.cs" />
+    <Compile Include="Entity\Gamer.cs" />
+    <Compile Include="Entity\GamerHistory.cs" />
     <Compile Include="Entity\Rank.cs" />
     <Compile Include="Entity\UserClub.cs" />
     <Compile Include="Entity\Card.cs" />
@@ -72,74 +76,18 @@
     <Compile Include="PlayerStrip.cs" />
     <Compile Include="PrivateMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
     <Compile Include="RankAlgorithm.cs" />
     <Compile Include="RankLevel.cs" />
-    <Compile Include="ServiceProvider\RemoteServiceProvider.cs" />
+    <Compile Include="RelationLeagueTeam.cs" />
     <Compile Include="ArsenalTeam.cs" />
     <Compile Include="UserClubLogic.cs" />
     <Compile Include="UserVideo.cs" />
-    <Compile Include="Web References\Arsenal\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.map</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Arsenalcn.Common\Arsenalcn.Common.csproj">
       <Project>{8258a2e1-6821-4bae-9111-3fbb65703fe0}</Project>
       <Name>Arsenalcn.Common</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <WebReferences Include="Web References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <WebReferenceUrl Include="http://localhost:6421/WebService/ArsenalService.asmx">
-      <UrlBehavior>Dynamic</UrlBehavior>
-      <RelPath>Web References\Arsenal\</RelPath>
-      <UpdateFromURL>http://localhost:6421/WebService/ArsenalService.asmx</UpdateFromURL>
-      <ServiceLocationURL>
-      </ServiceLocationURL>
-      <CachedDynamicPropName>
-      </CachedDynamicPropName>
-      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
-      <CachedSettingsPropName>Arsenalcn_ClubSys_Service_Arsenal_ServiceArsenal</CachedSettingsPropName>
-    </WebReferenceUrl>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="Web References\Arsenal\ArsenalService.wsdl" />
-    <None Include="Web References\Arsenal\League.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\Arsenal\Match.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\Arsenal\Player.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\Arsenal\Reference.map">
-      <Generator>MSDiscoCodeGenerator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-    <None Include="Web References\Arsenal\Team.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\Arsenal\Video.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Web References\Arsenal\ArsenalService.disco" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

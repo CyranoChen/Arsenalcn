@@ -6,7 +6,7 @@ using System.Data;
 
 namespace Arsenalcn.ClubSys.Entity
 {
-    public class PlayerHistory : ClubSysObject
+    public class GamerHistory : ClubSysObject
     {
         #region Members and Properties
 
@@ -114,11 +114,11 @@ namespace Arsenalcn.ClubSys.Entity
 
         #endregion
 
-        public PlayerHistory()
+        public GamerHistory()
         {
         }
 
-        public PlayerHistory(DataRow dr)
+        public GamerHistory(DataRow dr)
             : base(dr)
         {
         }

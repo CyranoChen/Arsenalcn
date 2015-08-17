@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Data;
 
-namespace Arsenalcn.CasinoSys.Entity
+namespace Arsenalcn.ClubSys.Service
 {
     public class RelationLeagueTeam
     {

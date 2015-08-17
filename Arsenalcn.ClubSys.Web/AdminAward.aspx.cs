@@ -3,7 +3,6 @@ using System.Web.UI.WebControls;
 using System.Collections.Generic;
 
 using Arsenalcn.ClubSys.Service;
-using ArsenalPlayer = Arsenalcn.ClubSys.Service.Arsenal.Player;
 
 using Discuz.Forum;
 using Discuz.Entity;
@@ -25,8 +24,8 @@ namespace Arsenalcn.ClubSys.Web
 
         private void InitDropDownList()
         {
-            List<ArsenalPlayer> list = Arsenal_Player.Cache.PlayerList.FindAll(delegate(ArsenalPlayer p) { return !string.IsNullOrEmpty(p.PhotoURL); });
-            list.Sort(delegate(ArsenalPlayer p1, ArsenalPlayer p2)
+            var list = Player.Cache.PlayerList.FindAll(p => !string.IsNullOrEmpty(p.PhotoURL));
+            list.Sort((p1, p2) =>
             {
                 if (p1.SquadNumber == p2.SquadNumber)
                     return Comparer<string>.Default.Compare(p1.DisplayName, p2.DisplayName);
@@ -212,7 +211,7 @@ namespace Arsenalcn.ClubSys.Web
         {
             foreach (ListItem li in (sender as DropDownList).Items)
             {
-                ArsenalPlayer p = Arsenal_Player.Cache.Load(new Guid(li.Value));
+                var p = Player.Cache.Load(new Guid(li.Value));
 
                 li.Text = string.Format("(NO.{0}) - {1} - {2}", p.SquadNumber.ToString(), p.DisplayName, !p.IsLegend ? "在队" : "离队");
             }

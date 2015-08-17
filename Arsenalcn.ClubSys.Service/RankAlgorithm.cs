@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 using Arsenalcn.ClubSys.Entity;
-using ArsenalVideo = Arsenalcn.ClubSys.Service.Arsenal.Video;
 
 namespace Arsenalcn.ClubSys.Service
 {
@@ -115,10 +113,10 @@ namespace Arsenalcn.ClubSys.Service
         {
             get
             {
-                List<ArsenalVideo> list = Arsenal_Video.Cache.VideoList_Legend.FindAll(delegate(ArsenalVideo v)
+                List<Video> list = Video.Cache.VideoList_Legend.FindAll(x =>
                 {
                     int _gRank = int.MinValue;
-                    if (int.TryParse(v.GoalRank, out _gRank))
+                    if (int.TryParse(x.GoalRank, out _gRank))
                         return (_gRank >= 1) && (_gRank <= 3);
                     else
                         return false;

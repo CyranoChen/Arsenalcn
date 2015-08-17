@@ -69,8 +69,8 @@ namespace Arsenalcn.ClubSys.Web
 
                                             PlayerStrip.ActiveVideoCost(this.userid, unID);
 
-                                            returnURL = Arsenal_Player.Cache.Load(
-                                                Arsenal_Video.Cache.Load(guid.Value).GoalPlayerGuid.Value).PhotoURL;
+                                            returnURL = Player.Cache.Load(
+                                                Video.Cache.Load(guid.Value).GoalPlayerGuid.Value).PhotoURL;
 
                                             PlayerLog.LogHistory(this.userid, this.username, PlayerHistoryType.ActivateVideo, new ActivateVideoDesc(un).Generate());
 

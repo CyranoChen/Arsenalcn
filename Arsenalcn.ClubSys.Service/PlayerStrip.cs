@@ -27,7 +27,7 @@ namespace Arsenalcn.ClubSys.Service
             if (un.UserID != userid)
                 return false;
 
-            Player player = PlayerStrip.GetPlayerInfo(userid);
+            Gamer player = PlayerStrip.GetPlayerInfo(userid);
 
             if (player == null)
                 return false;
@@ -48,7 +48,7 @@ namespace Arsenalcn.ClubSys.Service
 
             foreach (UserClub uc in ucs)
             {
-                Player player = PlayerStrip.GetPlayerInfo(uc.Userid.Value);
+                Gamer player = PlayerStrip.GetPlayerInfo(uc.Userid.Value);
                 List<Card> numbers = PlayerStrip.GetMyNumbers(uc.Userid.Value);
 
                 if (player != null)
@@ -75,7 +75,7 @@ namespace Arsenalcn.ClubSys.Service
 
             foreach (UserClub uc in ucs)
             {
-                Player player = PlayerStrip.GetPlayerInfo(uc.Userid.Value);
+                Gamer player = PlayerStrip.GetPlayerInfo(uc.Userid.Value);
                 List<Card> numbers = PlayerStrip.GetMyNumbers(uc.Userid.Value);
 
                 if (player != null)
@@ -93,7 +93,7 @@ namespace Arsenalcn.ClubSys.Service
 
             foreach (UserClub uc in ucs)
             {
-                Player player = PlayerStrip.GetPlayerInfo(uc.Userid.Value);
+                Gamer player = PlayerStrip.GetPlayerInfo(uc.Userid.Value);
                 //DataTable dt = UserVideo.GetUserVideo(uc.Userid.Value);
 
                 if (player != null)
@@ -105,7 +105,7 @@ namespace Arsenalcn.ClubSys.Service
 
         public static float CalcPlayerContributionBonusRate(int userID)
         {
-            Player player = GetPlayerInfo(userID);
+            Gamer player = GetPlayerInfo(userID);
 
             if (player != null)
             {
@@ -395,7 +395,7 @@ namespace Arsenalcn.ClubSys.Service
 
                         UpdateBingoResultLog(userID, result);
 
-                        return ("a card of " + Arsenal_Player.Cache.Load(new Guid(guid)).DisplayName);
+                        return ("a card of " + Player.Cache.Load(new Guid(guid)).DisplayName);
                     }
                     catch
                     {
@@ -473,7 +473,7 @@ namespace Arsenalcn.ClubSys.Service
 
                         string finalResult = string.Empty;
 
-                        Player player = GetPlayerInfo(userID);
+                        Gamer player = GetPlayerInfo(userID);
 
                         if ((result.Result == BingoResultType.Strip) || (result.Result == BingoResultType.Both))
                         {
@@ -776,9 +776,9 @@ namespace Arsenalcn.ClubSys.Service
                 return 0;
         }
 
-        public static List<Player> GetPlayers()
+        public static List<Gamer> GetPlayers()
         {
-            List<Player> list = new List<Player>();
+            List<Gamer> list = new List<Gamer>();
 
             string sql = "SELECT * FROM AcnClub_Player ORDER BY ID DESC";
 
@@ -798,7 +798,7 @@ namespace Arsenalcn.ClubSys.Service
 
                 foreach (DataRow dr in dt.Rows)
                 {
-                    Player bh = new Player(dr);
+                    Gamer bh = new Gamer(dr);
 
                     list.Add(bh);
                 }
@@ -807,9 +807,9 @@ namespace Arsenalcn.ClubSys.Service
             return list;
         }
 
-        public static List<Player> GetClubPlayers(int clubID)
+        public static List<Gamer> GetClubPlayers(int clubID)
         {
-            List<Player> list = new List<Player>();
+            List<Gamer> list = new List<Gamer>();
 
             string sql = "SELECT p.* FROM AcnClub_Player p INNER JOIN AcnClub_RelationUserClub uc ON p.UserID = uc.UserID WHERE uc.ClubUID = @clubID AND uc.IsActive = 1 ORDER BY Shirt+Shorts+Sock DESC";
 
@@ -829,7 +829,7 @@ namespace Arsenalcn.ClubSys.Service
 
                 foreach (DataRow dr in dt.Rows)
                 {
-                    Player p = new Player(dr);
+                    Gamer p = new Gamer(dr);
 
                     list.Add(p);
                 }
@@ -858,9 +858,9 @@ namespace Arsenalcn.ClubSys.Service
             }
         }
 
-        public static Player GetPlayerInfo(int userId)
+        public static Gamer GetPlayerInfo(int userId)
         {
-            Player player = null;
+            Gamer player = null;
 
             string sql = "SELECT * FROM dbo.AcnClub_Player WHERE UserID = @userId";
 
@@ -880,16 +880,16 @@ namespace Arsenalcn.ClubSys.Service
 
                 if (dt.Rows.Count != 0)
                 {
-                    player = new Player(dt.Rows[0]);
+                    player = new Gamer(dt.Rows[0]);
                 }
             }
 
             return player;
         }
 
-        public static Player GetPlayerInfoByPlayerID(int playerID)
+        public static Gamer GetPlayerInfoByPlayerID(int playerID)
         {
-            Player player = null;
+            Gamer player = null;
 
             string sql = "SELECT * FROM dbo.AcnClub_Player WHERE [ID] = @playerID";
 
@@ -909,7 +909,7 @@ namespace Arsenalcn.ClubSys.Service
 
                 if (dt.Rows.Count != 0)
                 {
-                    player = new Player(dt.Rows[0]);
+                    player = new Gamer(dt.Rows[0]);
                 }
 
             }
@@ -942,7 +942,7 @@ namespace Arsenalcn.ClubSys.Service
 
         public static void UpdatePlayerGoogleAdvActive(int userID, bool isActive)
         {
-            Player player = GetPlayerInfo(userID);
+            Gamer player = GetPlayerInfo(userID);
 
             if (player != null)
             {

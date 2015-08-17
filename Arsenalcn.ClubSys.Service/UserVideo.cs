@@ -7,7 +7,6 @@ using Microsoft.ApplicationBlocks.Data;
 
 using Arsenalcn.ClubSys.Entity;
 using Arsenalcn.Common;
-using ArsenalVideo = Arsenalcn.ClubSys.Service.Arsenal.Video;
 
 namespace Arsenalcn.ClubSys.Service
 {
@@ -30,14 +29,14 @@ namespace Arsenalcn.ClubSys.Service
             string sql = @"UPDATE dbo.AcnClub_RelationUserVideo SET UserID = @userID, UserName = @userName, VideoGuid = @videoGuid, 
                                   ActiveDate = @activeDate, UserDesc = @userDesc, IsPublic = @isPublic WHERE ID = @uvID";
 
-            SqlParameter[] para = { 
-                                      new SqlParameter("@uvID", uvID), 
-                                      new SqlParameter("@userID", userID), 
-                                      new SqlParameter("@userName", userName), 
-                                      new SqlParameter("@videoGuid", videoGuid), 
-                                      new SqlParameter("@activeDate", activeDate), 
-                                      new SqlParameter("@userDesc", userDesc), 
-                                      new SqlParameter("@isPublic", isPublic), 
+            SqlParameter[] para = {
+                                      new SqlParameter("@uvID", uvID),
+                                      new SqlParameter("@userID", userID),
+                                      new SqlParameter("@userName", userName),
+                                      new SqlParameter("@videoGuid", videoGuid),
+                                      new SqlParameter("@activeDate", activeDate),
+                                      new SqlParameter("@userDesc", userDesc),
+                                      new SqlParameter("@isPublic", isPublic),
                                   };
 
             if (trans == null)
@@ -51,14 +50,14 @@ namespace Arsenalcn.ClubSys.Service
             string sql = @"INSERT INTO dbo.AcnClub_RelationUserVideo (UserID, UserName, VideoGuid, ActiveDate, UserDesc, IsPublic)  
                                  VALUES (@userID, @userName, @videoGuid, @activeDate, @userDesc, @isPublic)";
 
-            SqlParameter[] para = { 
-                                      new SqlParameter(), 
-                                      new SqlParameter("@userID", userID), 
-                                      new SqlParameter("@userName", userName), 
-                                      new SqlParameter("@videoGuid", videoGuid), 
-                                      new SqlParameter("@activeDate", activeDate), 
-                                      new SqlParameter("@userDesc", userDesc), 
-                                      new SqlParameter("@isPublic", isPublic), 
+            SqlParameter[] para = {
+                                      new SqlParameter(),
+                                      new SqlParameter("@userID", userID),
+                                      new SqlParameter("@userName", userName),
+                                      new SqlParameter("@videoGuid", videoGuid),
+                                      new SqlParameter("@activeDate", activeDate),
+                                      new SqlParameter("@userDesc", userDesc),
+                                      new SqlParameter("@isPublic", isPublic),
                                   };
 
             if (trans == null)
@@ -246,26 +245,21 @@ namespace Arsenalcn.ClubSys.Service
             //    return guid;
             //}
 
-            List<ArsenalVideo> list = new List<ArsenalVideo>();
+            List<Video> list = new List<Video>();
 
             if (!isLegend.HasValue)
             {
-                list = Arsenal_Video.Cache.VideoList;
+                list = Video.Cache.VideoList;
             }
             else
             {
-                list = Arsenal_Video.Cache.VideoList.FindAll(delegate(ArsenalVideo v)
-                {
-                    return Arsenal_Player.Cache.Load(v.GoalPlayerGuid.Value).IsLegend.Equals(isLegend.Value);
-                });
+                list = Video.Cache.VideoList.FindAll(x =>
+                    Player.Cache.Load(x.GoalPlayerGuid.Value).IsLegend.Equals(isLegend.Value));
             }
 
             if (minLv > 0 && maxLv > 0 && minLv <= maxLv)
             {
-                list = list.FindAll(delegate(ArsenalVideo v)
-                {
-                    return Convert.ToInt16(v.GoalRank) >= minLv && Convert.ToInt16(v.GoalRank) <= maxLv;
-                });
+                list = list.FindAll(x => Convert.ToInt16(x.GoalRank) >= minLv && Convert.ToInt16(x.GoalRank) <= maxLv);
             }
 
             if (userID > 0)
@@ -274,10 +268,7 @@ namespace Arsenalcn.ClubSys.Service
 
                 if (userList != null && userList.Count > 0)
                 {
-                    list.RemoveAll(delegate(ArsenalVideo v)
-                    {
-                        return userList.Exists((delegate(Entity.UserVideo uv) { return uv.VideoGuid.Equals(v.ID); }));
-                    });
+                    list.RemoveAll(x => userList.Exists(uv => uv.VideoGuid.Equals(x.ID)));
                 }
             }
 

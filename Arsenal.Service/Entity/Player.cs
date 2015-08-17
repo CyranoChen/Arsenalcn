@@ -95,8 +95,8 @@ namespace Arsenal.Service
         public string PrintingName
         { get; set; }
 
-        [DbColumn("PlayerPostion")]
-        public PlayerPostionType Position
+        [DbColumn("PlayerPosition")]
+        public PlayerPositionType Position
         { get; set; }
 
         [DbColumn("SquadNumber")]
@@ -178,7 +178,7 @@ namespace Arsenal.Service
         #endregion
     }
 
-    public enum PlayerPostionType
+    public enum PlayerPositionType
     {
         None = 0,
         Goalkeeper = 1,

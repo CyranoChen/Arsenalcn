@@ -83,10 +83,10 @@ namespace Arsenalcn.ClubSys.Web
             {
                 Config.Cache.RefreshCache();
 
-                Service.Arsenal_Match.Cache.RefreshCache();
-                Service.Arsenal_Player.Cache.RefreshCache();
-                Service.Arsenal_Team.Cache.RefreshCache();
-                Service.Arsenal_Video.Cache.RefreshCache();
+                Service.Match.Cache.RefreshCache();
+                Service.Player.Cache.RefreshCache();
+                Service.Team.Cache.RefreshCache();
+                Service.Video.Cache.RefreshCache();
 
                 ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('更新全部缓存成功');window.location.href=window.location.href", true);
             }

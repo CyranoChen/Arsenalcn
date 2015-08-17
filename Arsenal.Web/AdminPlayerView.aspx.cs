@@ -8,6 +8,7 @@ namespace Arsenal.Web
     public partial class AdminPlayerView : AdminPageBase
     {
         private readonly IRepository repo = new Repository();
+
         protected void Page_Load(object sender, EventArgs e)
         {
             ctrlAdminFieldToolBar.AdminUserName = this.Username;
@@ -58,7 +59,7 @@ namespace Arsenal.Web
                 else
                     tbPrintingName.Text = string.Empty;
 
-                ddlPosition.SelectedValue = !p.Position.Equals(PlayerPostionType.None) ? p.Position.ToString() : string.Empty;
+                ddlPosition.SelectedValue = !p.Position.Equals(PlayerPositionType.None) ? p.Position.ToString() : string.Empty;
                 tbSquadNumber.Text = p.SquadNumber.ToString();
                 tbFaceURL.Text = p.FaceURL;
                 tbPhotoURL.Text = p.PhotoURL;
@@ -133,11 +134,11 @@ namespace Arsenal.Web
 
                 if (!string.IsNullOrEmpty(ddlPosition.SelectedValue))
                 {
-                    p.Position = (PlayerPostionType)Enum.Parse(typeof(PlayerPostionType), ddlPosition.SelectedValue);
+                    p.Position = (PlayerPositionType)Enum.Parse(typeof(PlayerPositionType), ddlPosition.SelectedValue);
                 }
                 else
                 {
-                    p.Position = PlayerPostionType.None;
+                    p.Position = PlayerPositionType.None;
                 }
 
                 p.SquadNumber = Convert.ToInt16(tbSquadNumber.Text.Trim());

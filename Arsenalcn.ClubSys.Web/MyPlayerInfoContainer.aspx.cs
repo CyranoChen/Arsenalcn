@@ -37,7 +37,7 @@ namespace Arsenalcn.ClubSys.Web
                     Response.Write(string.Format("document.write('{0}');", strClub.ToString()));
                 }
 
-                Player player = PlayerStrip.GetPlayerInfo(ProfileUserID);
+                Gamer player = PlayerStrip.GetPlayerInfo(ProfileUserID);
 
                 if (player != null && player.CurrentGuid != null)
                 {

@@ -4,7 +4,6 @@ using System.Web.UI.WebControls;
 
 using Arsenalcn.ClubSys.Entity;
 using Arsenalcn.ClubSys.Service;
-using ArsenalVideo = Arsenalcn.ClubSys.Service.Arsenal.Video;
 
 namespace Arsenalcn.ClubSys.Web
 {
@@ -69,7 +68,7 @@ namespace Arsenalcn.ClubSys.Web
 
                 foreach (DataRow dr in dt.Rows)
                 {
-                    ArsenalVideo v = Arsenal_Video.Cache.Load((Guid)dr["VideoGuid"]);
+                    var v = Video.Cache.Load((Guid)dr["VideoGuid"]);
 
                     dr["GoalPlayerName"] = v.GoalPlayerName;
                     dr["GoalRank"] = Convert.ToInt16(v.GoalRank);
@@ -81,7 +80,7 @@ namespace Arsenalcn.ClubSys.Web
             gvVideo.DataSource = dt;
             gvVideo.DataBind();
 
-            this.ltlVideoCount.Text = string.Format("<span title=\"同一视频计为一个,仅计算可获得视频\">已获得(总共)视频:<em>{0}/{1}</em></span>", dt.Rows.Count.ToString(), Arsenal_Video.Cache.VideoList_Legend.Count.ToString());
+            this.ltlVideoCount.Text = string.Format("<span title=\"同一视频计为一个,仅计算可获得视频\">已获得(总共)视频:<em>{0}/{1}</em></span>", dt.Rows.Count.ToString(), Video.Cache.VideoList_Legend.Count.ToString());
         }
 
         protected void gvVideo_PageIndexChanging(object sender, GridViewPageEventArgs e)

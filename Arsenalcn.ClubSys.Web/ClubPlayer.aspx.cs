@@ -4,7 +4,7 @@ using System.Web.UI.WebControls;
 
 using Arsenalcn.ClubSys.Service;
 using Arsenalcn.ClubSys.Entity;
-using ArsenalPlayer = Arsenalcn.ClubSys.Service.Arsenal.Player;
+
 
 namespace Arsenalcn.ClubSys.Web
 {
@@ -56,7 +56,7 @@ namespace Arsenalcn.ClubSys.Web
         public Dictionary<int, int> ClubPlayerLvCount;
         public int FormalPlayerCount = 0;
 
-        private List<Player> _list;
+        private List<Gamer> _list;
         private void BindPlayers()
         {
             if (_list == null)
@@ -64,7 +64,7 @@ namespace Arsenalcn.ClubSys.Web
 
                 _list = PlayerStrip.GetClubPlayers(ClubID);
 
-                foreach (Player player in _list)
+                foreach (Gamer player in _list)
                 {
                     if (player.CurrentGuid != null)
                         FormalPlayerCount++;
@@ -129,7 +129,7 @@ namespace Arsenalcn.ClubSys.Web
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                Player player = e.Row.DataItem as Player;
+                Gamer player = e.Row.DataItem as Gamer;
 
                 Literal ltrlNum = e.Row.FindControl("ltrlNum") as Literal;
                 Literal ltrlShirtLV = e.Row.FindControl("ltrlShirtLV") as Literal;
@@ -158,12 +158,12 @@ namespace Arsenalcn.ClubSys.Web
             }
         }
 
-        private class PlayerComparer : IComparer<Player>
+        private class PlayerComparer : IComparer<Gamer>
         {
 
             #region IComparer<Player> Members
 
-            public int Compare(Player x, Player y)
+            public int Compare(Gamer x, Gamer y)
             {
                 if (!string.IsNullOrEmpty(x.CurrentGuid.ToString()) && string.IsNullOrEmpty(y.CurrentGuid.ToString()))
                     return -1;

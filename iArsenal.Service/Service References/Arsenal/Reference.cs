@@ -1033,7 +1033,7 @@ namespace iArsenal.Service.Arsenal {
         
         private string printingNameField;
         
-        private PlayerPostionType positionField;
+        private PlayerPositionType positionField;
         
         private int squadNumberField;
         
@@ -1114,7 +1114,7 @@ namespace iArsenal.Service.Arsenal {
         }
         
         /// <remarks/>
-        public PlayerPostionType Position {
+        public PlayerPositionType Position {
             get {
                 return this.positionField;
             }
@@ -1320,7 +1320,7 @@ namespace iArsenal.Service.Arsenal {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.81.0")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.arsenal.cn/")]
-    public enum PlayerPostionType {
+    public enum PlayerPositionType {
         
         /// <remarks/>
         None,

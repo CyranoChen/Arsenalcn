@@ -29,7 +29,7 @@ namespace Arsenalcn.ClubSys.Web
 
         private void BindData()
         {
-            List<Player> list = Service.PlayerStrip.GetPlayers(); ;
+            List<Gamer> list = Service.PlayerStrip.GetPlayers(); ;
 
             gvPlayer.DataSource = list;
             gvPlayer.DataBind();
@@ -39,7 +39,7 @@ namespace Arsenalcn.ClubSys.Web
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                Player p = e.Row.DataItem as Player;
+                Gamer p = e.Row.DataItem as Gamer;
 
                 TextBox tbShirt = e.Row.FindControl("tbShirt") as TextBox;
                 TextBox tbShorts = e.Row.FindControl("tbShorts") as TextBox;

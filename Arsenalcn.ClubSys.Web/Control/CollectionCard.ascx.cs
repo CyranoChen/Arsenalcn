@@ -4,13 +4,13 @@ using System.Web.UI.WebControls;
 
 using Arsenalcn.ClubSys.Service;
 using Arsenalcn.ClubSys.Entity;
-using ArsenalPlayer = Arsenalcn.ClubSys.Service.Arsenal.Player;
+
 
 namespace Arsenalcn.ClubSys.Web.Control
 {
     public partial class CollectionCard : Common.CollectionBase
     {
-        private Player _playerInfo = null;
+        private Gamer _playerInfo = null;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -47,8 +47,8 @@ namespace Arsenalcn.ClubSys.Web.Control
                 {
                     list.Sort(delegate(Card un1, Card un2)
                     {
-                        ArsenalPlayer p1 = Arsenal_Player.Cache.Load(un1.ArsenalPlayerGuid.Value);
-                        ArsenalPlayer p2 = Arsenal_Player.Cache.Load(un2.ArsenalPlayerGuid.Value);
+                        var p1 = Player.Cache.Load(un1.ArsenalPlayerGuid.Value);
+                        var p2 = Player.Cache.Load(un2.ArsenalPlayerGuid.Value);
 
                         if (p1.SquadNumber.Equals(p2.SquadNumber))
                             return Comparer<string>.Default.Compare(p1.DisplayName, p2.DisplayName);
@@ -64,8 +64,8 @@ namespace Arsenalcn.ClubSys.Web.Control
                 {
                     list.Sort(delegate(Card un1, Card un2)
                     {
-                        ArsenalPlayer p1 = Arsenal_Player.Cache.Load(un1.ArsenalPlayerGuid.Value);
-                        ArsenalPlayer p2 = Arsenal_Player.Cache.Load(un2.ArsenalPlayerGuid.Value);
+                        var p1 = Player.Cache.Load(un1.ArsenalPlayerGuid.Value);
+                        var p2 = Player.Cache.Load(un2.ArsenalPlayerGuid.Value);
 
                         if (p1.IsLegend.Equals(p2.IsLegend))
                         {

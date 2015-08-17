@@ -9,7 +9,7 @@ namespace Arsenalcn.ClubSys.Web.Control
 {
     public partial class CollectionInactiveCard : Common.CollectionBase
     {
-        private Player _playerInfo = null;
+        private Gamer _playerInfo = null;
 
         protected void Page_Load(object sender, EventArgs e)
         {

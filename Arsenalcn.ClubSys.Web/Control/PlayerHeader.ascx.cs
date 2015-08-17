@@ -84,7 +84,7 @@ namespace Arsenalcn.ClubSys.Web.Control
                 }
             }
 
-            Player _playerInfo = PlayerStrip.GetPlayerInfo(ProfileUserID);
+            Gamer _playerInfo = PlayerStrip.GetPlayerInfo(ProfileUserID);
 
             if (_playerInfo == null)
                 pnlSwf.Visible = false;

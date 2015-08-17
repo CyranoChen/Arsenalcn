@@ -1,13 +1,111 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-
-using Arsenal.Entity.ServiceProvider;
+using System.Data;
 
 namespace Arsenalcn.ClubSys.Service
 {
-    public static class Arsenal_Match
+    public class Match
     {
+        public Match() { }
+
+        private Match(DataRow dr)
+        {
+            InitMatch(dr);
+        }
+
+        private void InitMatch(DataRow dr)
+        {
+            if (dr != null)
+            {
+                ID = (Guid)dr["MatchGuid"];
+                TeamGuid = (Guid)dr["TeamGuid"];
+                TeamName = dr["TeamName"].ToString();
+                IsHome = Convert.ToBoolean(dr["IsHome"]);
+
+                if (Convert.IsDBNull(dr["ResultHome"]))
+                    ResultHome = null;
+                else
+                    ResultHome = Convert.ToInt16(dr["ResultHome"]);
+
+                if (Convert.IsDBNull(dr["ResultAway"]))
+                    ResultAway = null;
+                else
+                    ResultAway = Convert.ToInt16(dr["ResultAway"]);
+
+                PlayTime = Convert.ToDateTime(dr["PlayTime"]);
+
+                if (Convert.IsDBNull(dr["LeagueGuid"]))
+                    LeagueGuid = null;
+                else
+                    LeagueGuid = (Guid)dr["LeagueGuid"];
+
+                LeagueName = dr["LeagueName"].ToString();
+
+                if (Convert.IsDBNull(dr["Round"]))
+                    Round = null;
+                else
+                    Round = Convert.ToInt16(dr["Round"]);
+
+                IsActive = Convert.ToBoolean(dr["IsActive"]);
+            }
+            else
+                throw new Exception("Unable to init Match.");
+        }
+
+        public static List<Match> GetMatches()
+        {
+            DataTable dt = DataAccess.Match.GetMatches();
+            List<Match> list = new List<Match>();
+
+            if (dt != null)
+            {
+                foreach (DataRow dr in dt.Rows)
+                {
+                    list.Add(new Match(dr));
+                }
+            }
+
+            return list;
+        }
+
+        #region Members and Properties
+
+        public Guid ID
+        { get; set; }
+
+        public Guid TeamGuid
+        { get; set; }
+
+        public string TeamName
+        { get; set; }
+
+        public Boolean IsHome
+        { get; set; }
+
+        public short? ResultHome
+        { get; set; }
+
+        public short? ResultAway
+        { get; set; }
+
+        public DateTime PlayTime
+        { get; set; }
+
+        public Guid? LeagueGuid
+        { get; set; }
+
+        public string LeagueName
+        { get; set; }
+
+        public short? Round
+        { get; set; }
+
+        public Boolean IsActive
+        { get; set; }
+
+        #endregion
+
+
         public static class Cache
         {
             static Cache()
@@ -22,29 +120,15 @@ namespace Arsenalcn.ClubSys.Service
 
             private static void InitCache()
             {
-                var svc = RemoteServiceProvider.GetWebService();
-                var arrayMatchs = svc.GetMatchs();
-
-                if (MatchList != null)
-                { MatchList.Clear(); }
-                else
-                { MatchList = new List<Arsenal.Match>(); }
-
-                if (arrayMatchs != null && arrayMatchs.Length > 0)
-                {
-                    foreach (Arsenal.Match m in arrayMatchs)
-                    {
-                        MatchList.Add(m);
-                    }
-                }
+                MatchList = GetMatches();
             }
 
-            public static Arsenal.Match Load(Guid guid)
+            public static Match Load(Guid guid)
             {
-                return MatchList.Find(delegate(Arsenal.Match m) { return m.ID.Equals(guid); });
+                return MatchList.Find(x => x.ID.Equals(guid));
             }
 
-            public static List<Arsenal.Match> MatchList;
+            public static List<Match> MatchList;
         }
     }
 }

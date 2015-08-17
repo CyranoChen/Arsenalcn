@@ -114,6 +114,19 @@ namespace Arsenalcn.ClubSys.Entity
             }
         }
 
+        public static string ArsenalVideoUrl
+        {
+            get
+            {
+                string tmpUrl = ConfigDictionary["ArsenalVideoUrl"];
+
+                if (!string.IsNullOrEmpty(tmpUrl))
+                    return tmpUrl;
+                else
+                    return "http://ftp.arsenalcn.com/playervideo/";
+            }
+        }
+
         public static string SysNotice
         {
             get

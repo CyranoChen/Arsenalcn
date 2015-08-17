@@ -7,8 +7,8 @@ using System.Web;
 
 using Arsenalcn.ClubSys.Entity;
 using Arsenalcn.ClubSys.Service;
-using ArsenalPlayer = Arsenalcn.ClubSys.Service.Arsenal.Player;
-using ArsenalVideo = Arsenalcn.ClubSys.Service.Arsenal.Video;
+
+
 
 namespace Arsenalcn.ClubSys.Web
 {
@@ -126,7 +126,7 @@ namespace Arsenalcn.ClubSys.Web
             {
                 //output player info and public video info
 
-                Player player = PlayerStrip.GetPlayerInfo(UserID);
+                Gamer player = PlayerStrip.GetPlayerInfo(UserID);
 
                 if (player != null)
                 {
@@ -142,7 +142,7 @@ namespace Arsenalcn.ClubSys.Web
                     xmlContent.AppendFormat("<UserItems username=\"{0}\" userid=\"{1}\" userlv=\"{2}\" ", player.UserName, player.UserID, ((playerLv > ConfigGlobal.PlayerMaxLv) ? ConfigGlobal.PlayerMaxLv.ToString() + "+" : playerLv.ToString()));
                     int CardCount = PlayerStrip.GetMyNumbers(UserID).Count;
                     int VideoCount = Entity.UserVideo.GetUserVideosByUserID(UserID).Count;
-                    int InactiveCount = PlayerStrip.GetMyNumbers(UserID).FindAll(delegate(Card c) { return !c.ArsenalPlayerGuid.HasValue; }).Count;
+                    int InactiveCount = PlayerStrip.GetMyNumbers(UserID).FindAll(delegate (Card c) { return !c.ArsenalPlayerGuid.HasValue; }).Count;
 
                     xmlContent.AppendFormat("ShirtCount=\"{0}\" ShortsCount=\"{1}\" SockCount=\"{2}\" CardCount=\"{3}\" VideoCount=\"{4}\">", player.Shirt, player.Shorts, player.Sock, CardCount - InactiveCount, VideoCount + InactiveCount);
 
@@ -150,17 +150,17 @@ namespace Arsenalcn.ClubSys.Web
 
                     //DataView dv = Service.UserVideo.GetUserPublicVideo(UserID);
                     List<Entity.UserVideo> list = Entity.UserVideo.GetUserVideosByUserID(UserID)
-                        .FindAll(delegate(Entity.UserVideo uv) { return uv.IsPublic; });
+                        .FindAll(delegate (Entity.UserVideo uv) { return uv.IsPublic; });
 
                     foreach (Entity.UserVideo uv in list)
                     {
                         object _value;
 
-                        ArsenalVideo v = Arsenal_Video.Cache.Load(uv.VideoGuid);
+                        var v = Video.Cache.Load(uv.VideoGuid);
 
                         if (v != null)
                         {
-                            ArsenalPlayer p = Arsenal_Player.Cache.Load(v.GoalPlayerGuid.Value);
+                            var p = Player.Cache.Load(v.GoalPlayerGuid.Value);
 
                             if (p != null)
                             {
@@ -206,14 +206,14 @@ namespace Arsenalcn.ClubSys.Web
 
                     xmlContent.Append("<UserCard>");
                     List<Card> cards = PlayerStrip.GetMyNumbers(UserID);
-                    cards.RemoveAll(delegate(Card un) { return !un.ArsenalPlayerGuid.HasValue; });
+                    cards.RemoveAll(delegate (Card un) { return !un.ArsenalPlayerGuid.HasValue; });
 
                     foreach (Card c in cards)
                     {
                         xmlContent.Append("<CardItem ");
                         xmlContent.AppendFormat("UserNumberID=\"{0}\" IsActive=\"{1}\" ", c.ID, c.IsActive);
 
-                        ArsenalPlayer p = Arsenal_Player.Cache.Load(c.ArsenalPlayerGuid.Value);
+                        var p = Player.Cache.Load(c.ArsenalPlayerGuid.Value);
                         Object _value;
 
                         foreach (var properInfo in p.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
@@ -238,7 +238,7 @@ namespace Arsenalcn.ClubSys.Web
                 //output arsenal player info
 
                 //DataRow rowInfo = Arsenal_Player.Cache.GetInfo(new Guid(PlayerGuid));
-                ArsenalPlayer p = Arsenal_Player.Cache.Load(new Guid(PlayerGuid));
+                var p = Player.Cache.Load(new Guid(PlayerGuid));
                 Object _value;
 
                 if (p != null)
@@ -269,7 +269,7 @@ namespace Arsenalcn.ClubSys.Web
                     if (c.ArsenalPlayerGuid.HasValue)
                     {
                         //DataRow rowInfo = Arsenal_Player.Cache.GetInfo(c.ArsenalPlayerGuid.Value);
-                        ArsenalPlayer p = Arsenal_Player.Cache.Load(c.ArsenalPlayerGuid.Value);
+                        var p = Player.Cache.Load(c.ArsenalPlayerGuid.Value);
                         Object _value;
 
                         if (p != null)
@@ -310,11 +310,11 @@ namespace Arsenalcn.ClubSys.Web
 
                     object _value;
 
-                    ArsenalVideo v = Arsenal_Video.Cache.Load(uv.VideoGuid);
+                    var v = Video.Cache.Load(uv.VideoGuid);
 
                     if (v != null)
                     {
-                        ArsenalPlayer p = Arsenal_Player.Cache.Load(v.GoalPlayerGuid.Value);
+                        var p = Player.Cache.Load(v.GoalPlayerGuid.Value);
 
                         if (p != null)
                         {
@@ -365,11 +365,11 @@ namespace Arsenalcn.ClubSys.Web
                 //DataRow rowInfo = Service.UserVideo.GetVideoInfoByVideoGuid(new Guid(VideoGuid));
                 Object _value;
 
-                ArsenalVideo v = Arsenal_Video.Cache.Load(new Guid(VideoGuid));
+                var v = Video.Cache.Load(new Guid(VideoGuid));
 
                 if (v != null)
                 {
-                    ArsenalPlayer p = Arsenal_Player.Cache.Load(v.GoalPlayerGuid.Value);
+                    var p = Player.Cache.Load(v.GoalPlayerGuid.Value);
 
                     if (p != null)
                     {
@@ -402,14 +402,14 @@ namespace Arsenalcn.ClubSys.Web
             }
             else if (CurrArsenalPlayer == true)
             {
-                List<ArsenalPlayer> list = Arsenal_Player.Cache.PlayerList.FindAll(delegate(ArsenalPlayer p) { return !p.IsLegend && !p.IsLoan && p.SquadNumber >= 0; });
+                var list = Player.Cache.PlayerList.FindAll(p => !p.IsLegend && !p.IsLoan && p.SquadNumber >= 0);
 
-                list.Sort(delegate(ArsenalPlayer p1, ArsenalPlayer p2) { return p1.SquadNumber - p2.SquadNumber; });
+                list.Sort((p1, p2) => p1.SquadNumber - p2.SquadNumber);
 
                 StringBuilder xmlContent = new StringBuilder("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
                 xmlContent.Append("<CurrArsenalPlayer>");
 
-                foreach (ArsenalPlayer p in list)
+                foreach (var p in list)
                 {
                     xmlContent.AppendFormat("<PlayerInfo Guid=\"{0}\" DisplayName=\"{1}\" SquadNumber=\"{2}\" FaceURL=\"{3}\" />", p.ID.ToString(), p.DisplayName, p.SquadNumber.ToString(), p.FaceURL);
                 }

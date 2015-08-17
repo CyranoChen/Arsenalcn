@@ -80,7 +80,7 @@
               <s:element minOccurs="0" maxOccurs="1" name="LastName" type="s:string" />
               <s:element minOccurs="0" maxOccurs="1" name="DisplayName" type="s:string" />
               <s:element minOccurs="0" maxOccurs="1" name="PrintingName" type="s:string" />
-              <s:element minOccurs="1" maxOccurs="1" name="Position" type="tns:PlayerPostionType" />
+              <s:element minOccurs="1" maxOccurs="1" name="Position" type="tns:PlayerPositionType" />
               <s:element minOccurs="1" maxOccurs="1" name="SquadNumber" type="s:int" />
               <s:element minOccurs="0" maxOccurs="1" name="FaceURL" type="s:string" />
               <s:element minOccurs="0" maxOccurs="1" name="PhotoURL" type="s:string" />
@@ -104,7 +104,7 @@
           </s:extension>
         </s:complexContent>
       </s:complexType>
-      <s:simpleType name="PlayerPostionType">
+      <s:simpleType name="PlayerPositionType">
         <s:restriction base="s:string">
           <s:enumeration value="None" />
           <s:enumeration value="Goalkeeper" />

@@ -125,7 +125,7 @@ namespace Arsenal.Service.Casino
         { get; set; }
 
         [DbColumn("@ChoiceOption", ForeignKey = "CasinoItemGuid")]
-        public IEnumerable<ChoiceOption> ListChoiceOption
+        public IEnumerable<ChoiceOption> ChoiceOptions
         { get; set; }
 
         #endregion

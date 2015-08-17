@@ -22,9 +22,9 @@ namespace Arsenal.MvcWeb.Models.Casino
                 TeamHomeLogo = s.Home.TeamLogo,
                 TeamAwayName = s.Away.TeamDisplayName,
                 TeamAwayLogo = s.Away.TeamLogo,
-                HomeRate = s.ListChoiceOption.SingleOrDefault(x => x.OptionName.Equals("home", StringComparison.OrdinalIgnoreCase)).OptionRate,
-                DrawRate = s.ListChoiceOption.SingleOrDefault(x => x.OptionName.Equals("draw", StringComparison.OrdinalIgnoreCase)).OptionRate,
-                AwayRate = s.ListChoiceOption.SingleOrDefault(x => x.OptionName.Equals("away", StringComparison.OrdinalIgnoreCase)).OptionRate,
+                HomeRate = s.ChoiceOptions.SingleOrDefault(x => x.OptionName.Equals("home", StringComparison.OrdinalIgnoreCase)).OptionRate,
+                DrawRate = s.ChoiceOptions.SingleOrDefault(x => x.OptionName.Equals("draw", StringComparison.OrdinalIgnoreCase)).OptionRate,
+                AwayRate = s.ChoiceOptions.SingleOrDefault(x => x.OptionName.Equals("away", StringComparison.OrdinalIgnoreCase)).OptionRate,
             });
         }
 

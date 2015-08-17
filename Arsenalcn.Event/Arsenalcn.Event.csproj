@@ -63,7 +63,6 @@
   <ItemGroup>
     <Compile Include="API\CustomAPI.cs" />
     <Compile Include="DailyEvent.cs" />
-    <Compile Include="RegularEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -27,19 +27,19 @@ namespace Arsenal.MvcWeb.Models.Casino
             map.ForMember(d => d.BetResultHome, opt =>
             {
                 opt.Condition(s => s.CasinoItem.ItemType.Equals(CasinoType.MatchResult));
-                opt.MapFrom(s => Convert.ToInt16(s.ListBetDetail.SingleOrDefault(x => x.DetailName.Equals("home", StringComparison.OrdinalIgnoreCase)).DetailValue));
+                opt.MapFrom(s => Convert.ToInt16(s.BetDetails.SingleOrDefault(x => x.DetailName.Equals("home", StringComparison.OrdinalIgnoreCase)).DetailValue));
             });
 
             map.ForMember(d => d.BetResultAway, opt =>
             {
                 opt.Condition(s => s.CasinoItem.ItemType.Equals(CasinoType.MatchResult));
-                opt.MapFrom(s => Convert.ToInt16(s.ListBetDetail.SingleOrDefault(x => x.DetailName.Equals("away", StringComparison.OrdinalIgnoreCase)).DetailValue));
+                opt.MapFrom(s => Convert.ToInt16(s.BetDetails.SingleOrDefault(x => x.DetailName.Equals("away", StringComparison.OrdinalIgnoreCase)).DetailValue));
             });
 
             map.ForMember(d => d.BetResult, opt =>
             {
                 opt.Condition(s => s.CasinoItem.ItemType.Equals(CasinoType.SingleChoice));
-                opt.MapFrom(s => Enum.Parse(typeof(BetResultType), s.ListBetDetail.FirstOrDefault().DetailName));
+                opt.MapFrom(s => Enum.Parse(typeof(BetResultType), s.BetDetails.FirstOrDefault().DetailName));
             });
 
             map.ForMember(d => d.BetIcon, opt => opt.ResolveUsing(s =>

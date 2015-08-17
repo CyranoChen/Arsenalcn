@@ -15,10 +15,15 @@ namespace Arsenalcn.Core
         {
             Contract.Requires(func != null);
 
-            if (source != null && source.Count() > 0)
+            // Get the property which matches IEnumerable<TMany>
+            var property = typeof(TOne).GetProperties()
+                .Where(x => (Nullable.GetUnderlyingType(x.PropertyType) ?? x.PropertyType).Equals(typeof(IEnumerable<TMany>)))
+                .FirstOrDefault();
+
+            if (source != null && source.Count() > 0 && property != null)
             {
-                var propertyName = string.Format("List{0}", typeof(TMany).Name);
-                var property = typeof(TOne).GetProperty(propertyName, typeof(IEnumerable<TMany>));
+                //var propertyName = string.Format("List{0}", typeof(TMany).Name);
+                //var property = typeof(TOne).GetProperty(propertyName, typeof(IEnumerable<TMany>));
 
                 var attrCol = Repository.GetColumnAttr(property);
 
@@ -33,7 +38,7 @@ namespace Arsenalcn.Core
                     {
                         foreach (var instance in source)
                         {
-                            var pi = instance.GetType().GetProperty(propertyName, typeof(IEnumerable<TMany>));
+                            var pi = instance.GetType().GetProperty(property.Name, typeof(IEnumerable<TMany>));
                             if (pi == null) { continue; }
 
                             var predicate = new Predicate<TMany>(t => func(instance, t));
@@ -60,10 +65,15 @@ namespace Arsenalcn.Core
         {
             Contract.Requires(keySelector != null);
 
-            if (source != null && source.Count() > 0)
+            // Get the property which matches IEnumerable<TMany>
+            var property = typeof(TOne).GetProperties()
+                .Where(x => (Nullable.GetUnderlyingType(x.PropertyType) ?? x.PropertyType).Equals(typeof(IEnumerable<TMany>)))
+                .FirstOrDefault();
+
+            if (source != null && source.Count() > 0 && property != null)
             {
-                var propertyName = string.Format("List{0}", typeof(TMany).Name);
-                var property = typeof(TOne).GetProperty(propertyName, typeof(IEnumerable<TMany>));
+                //var propertyName = string.Format("List{0}", typeof(TMany).Name);
+                //var property = typeof(TOne).GetProperty(propertyName, typeof(IEnumerable<TMany>));
 
                 var attr = Repository.GetTableAttr<TMany>();
                 var attrCol = Repository.GetColumnAttr(property);
@@ -105,7 +115,7 @@ namespace Arsenalcn.Core
                     {
                         foreach (var instance in source)
                         {
-                            var pi = instance.GetType().GetProperty(propertyName, typeof(IEnumerable<TMany>));
+                            var pi = instance.GetType().GetProperty(property.Name, typeof(IEnumerable<TMany>));
                             if (pi == null) { continue; }
 
                             // TODO Find foreignKey by Attribute

@@ -130,7 +130,7 @@ namespace Arsenal.Service.Casino
         { get; set; }
 
         [DbColumn("@BetDetail", ForeignKey = "BetID")]
-        public IEnumerable<BetDetail> ListBetDetail
+        public IEnumerable<BetDetail> BetDetails
         { get; set; }
 
         #endregion

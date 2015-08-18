@@ -29,6 +29,9 @@ namespace Arsenalcn.Scheduler.Tests
                 Arsenal.Service.Casino.ChoiceOption.Clean();
                 Arsenal.Service.Casino.Bet.Clean();
                 Arsenal.Service.Casino.BetDetail.Clean();
+
+                // Clean Log
+                Arsenalcn.Core.Logger.Log.Clean();
             }
             catch (Exception ex)
             {

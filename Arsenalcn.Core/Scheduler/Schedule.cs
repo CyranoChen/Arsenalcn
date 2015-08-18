@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics.Contracts;
+using System.Linq;
 
 namespace Arsenalcn.Core.Scheduler
 {
@@ -11,61 +12,102 @@ namespace Arsenalcn.Core.Scheduler
     {
         public Schedule() { }
 
-        private Schedule(DataRow dr)
+        private static void CreateMap()
         {
-            Contract.Requires(dr != null);
+            var map = AutoMapper.Mapper.CreateMap<IDataReader, Schedule>();
 
-            Init(dr);
-        }
+            map.ForMember(d => d.ScheduleKey, opt => opt.MapFrom(s => s.GetValue("ScheduleKey").ToString()));
 
-        private void Init(DataRow dr)
-        {
-            if (dr != null)
+            map.ForMember(d => d.Minutes, opt => opt.ResolveUsing(s =>
             {
-                ScheduleKey = dr["ScheduleKey"].ToString();
-                ScheduleType = dr["ScheduleType"].ToString();
-                DailyTime = Convert.ToInt32(dr["DailyTime"]);
-
-                Minutes = Convert.ToInt32(dr["Minutes"]);
-
-                if (Minutes > 0 & Minutes < ScheduleManager.TimerMinutesInterval)
+                var mins = (int)s.GetValue("Minutes");
+                if (mins > 0 & mins < ScheduleManager.TimerMinutesInterval)
                 {
-                    Minutes = ScheduleManager.TimerMinutesInterval;
-                }
-
-                LastCompletedTime = Convert.ToDateTime(dr["LastCompletedTime"]);
-                IsSystem = Convert.ToBoolean(dr["IsSystem"]);
-                IsActive = Convert.ToBoolean(dr["IsActive"]);
-                Remark = dr["Remark"].ToString();
-
-                #region Generate ExecuteTimeInfo
-
-                if (DailyTime >= 0)
-                {
-                    ExecuteTimeInfo = string.Format("Run at {0}:{1}",
-                        (DailyTime / 60).ToString(), (DailyTime % 60).ToString());
+                    return ScheduleManager.TimerMinutesInterval;
                 }
                 else
                 {
-                    ExecuteTimeInfo = string.Format("Run By {0} mins", Minutes.ToString());
+                    return mins;
                 }
+            }));
 
-                #endregion
-            }
-            else
-            { throw new Exception("Unable to init Schedule"); }
+            map.ForMember(d => d.ExecuteTimeInfo, opt => opt.ResolveUsing(s =>
+            {
+                var dailyTime = (int)s.GetValue("DailyTime");
+
+                if (dailyTime >= 0)
+                {
+                    return string.Format("Run at {0}:{1}", dailyTime / 60, dailyTime % 60);
+                }
+                else
+                {
+                    return string.Format("Run By {0} mins", s.GetValue("Minutes").ToString());
+                }
+            }));
         }
 
-        public void Single()
+        //private Schedule(DataRow dr)
+        //{
+        //    Contract.Requires(dr != null);
+
+        //    Init(dr);
+        //}
+
+        //private void Init(DataRow dr)
+        //{
+        //    if (dr != null)
+        //    {
+        //        ScheduleKey = dr["ScheduleKey"].ToString();
+        //        ScheduleType = dr["ScheduleType"].ToString();
+        //        DailyTime = Convert.ToInt32(dr["DailyTime"]);
+
+        //        Minutes = Convert.ToInt32(dr["Minutes"]);
+
+        //        if (Minutes > 0 & Minutes < ScheduleManager.TimerMinutesInterval)
+        //        {
+        //            Minutes = ScheduleManager.TimerMinutesInterval;
+        //        }
+
+        //        LastCompletedTime = Convert.ToDateTime(dr["LastCompletedTime"]);
+        //        IsSystem = Convert.ToBoolean(dr["IsSystem"]);
+        //        IsActive = Convert.ToBoolean(dr["IsActive"]);
+        //        Remark = dr["Remark"].ToString();
+
+        //        #region Generate ExecuteTimeInfo
+
+        //        if (DailyTime >= 0)
+        //        {
+        //            ExecuteTimeInfo = string.Format("Run at {0}:{1}",
+        //                (DailyTime / 60).ToString(), (DailyTime % 60).ToString());
+        //        }
+        //        else
+        //        {
+        //            ExecuteTimeInfo = string.Format("Run By {0} mins", Minutes.ToString());
+        //        }
+
+        //        #endregion
+        //    }
+        //    else
+        //    { throw new Exception("Unable to init Schedule"); }
+        //}
+
+        public static Schedule Single(object key)
         {
             string sql = string.Format("SELECT * FROM {0} WHERE ScheduleKey = @key",
                 Repository.GetTableAttr<Schedule>().Name);
 
-            SqlParameter[] para = { new SqlParameter("@key", ScheduleKey) };
+            SqlParameter[] para = { new SqlParameter("@key", key) };
 
             DataSet ds = DataAccess.ExecuteDataset(sql, para);
 
-            if (ds.Tables[0].Rows.Count > 0) { Init(ds.Tables[0].Rows[0]); }
+            var dt = ds.Tables[0];
+
+            if (dt.Rows.Count == 0) { return null; }
+
+            using (var reader = dt.CreateDataReader())
+            {
+                return AutoMapper.Mapper.Map<IDataReader, IEnumerable<Schedule>>(reader).FirstOrDefault();
+            }
         }
 
         public bool Any()
@@ -90,11 +132,15 @@ namespace Arsenalcn.Core.Scheduler
 
             DataSet ds = DataAccess.ExecuteDataset(sql);
 
-            if (ds.Tables[0].Rows.Count > 0)
+            var dt = ds.Tables[0];
+
+            if (dt.Rows.Count > 0)
             {
-                foreach (DataRow dr in ds.Tables[0].Rows)
+                using (var reader = dt.CreateDataReader())
                 {
-                    list.Add(new Schedule(dr));
+                    Schedule.CreateMap();
+
+                    list = AutoMapper.Mapper.Map<IDataReader, List<Schedule>>(reader);
                 }
             }
 
@@ -121,31 +167,6 @@ namespace Arsenalcn.Core.Scheduler
 
             DataAccess.ExecuteNonQuery(sql, para, trans);
         }
-
-        //public static class Cache
-        //{
-        //    static Cache()
-        //    {
-        //        InitCache();
-        //    }
-
-        //    public static void RefreshCache()
-        //    {
-        //        InitCache();
-        //    }
-
-        //    private static void InitCache()
-        //    {
-        //        ScheduleList = All();
-        //    }
-
-        //    public static Schedule Load(string key)
-        //    {
-        //        return ScheduleList.Find(x => x.ScheduleKey.Equals(key, StringComparison.OrdinalIgnoreCase));
-        //    }
-
-        //    public static List<Schedule> ScheduleList;
-        //}
 
         #region Members and Properties
 

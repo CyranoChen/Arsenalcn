@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Diagnostics.Contracts;
 using System.Reflection;
 using System.Threading;
 
@@ -11,76 +9,91 @@ using Microsoft.ApplicationBlocks.Data;
 namespace Arsenalcn.Core.Logger
 {
     [DbSchema("Arsenalcn_Log", Sort = "ID DESC")]
-    public class Log
+    public class Log : Entity<int>
     {
         public Log() { }
 
-        public Log(DataRow dr)
+        public static void CreateMap()
         {
-            Contract.Requires(dr != null);
+            var map = AutoMapper.Mapper.CreateMap<IDataReader, Log>();
 
-            Init(dr);
+            map.ForMember(d => d.Level, opt => opt.MapFrom(s =>
+               (LogLevel)Enum.Parse(typeof(LogLevel), s.GetValue("LogLevel").ToString())));
         }
 
-        private void Init(DataRow dr)
-        {
-            if (dr != null)
-            {
-                ID = Convert.ToInt32(dr["ID"]);
-                Logger = dr["Logger"].ToString();
-                CreateTime = Convert.ToDateTime(dr["CreateTime"]);
-                Level = (LogLevel)Enum.Parse(typeof(LogLevel), dr["LogLevel"].ToString());
-                Message = dr["Message"].ToString();
-                StackTrace = dr["StackTrace"].ToString();
-                Thread = dr["Thread"].ToString();
-                Method = dr["Method"].ToString();
-                UserID = Convert.ToInt32(dr["UserID"]);
-                UserIP = dr["UserIP"].ToString();
-                UserBrowser = dr["UserBrowser"].ToString();
-                UserOS = dr["UserOS"].ToString();
-            }
-            else
-                throw new Exception("Unable to init Log.");
-        }
+        //public Log(DataRow dr)
+        //{
+        //    Contract.Requires(dr != null);
 
-        public void Single()
-        {
-            string sql = string.Format("SELECT * FROM {0} WHERE ID = @key",
-                Repository.GetTableAttr<Log>().Name);
+        //    Init(dr);
+        //}
 
-            SqlParameter[] para = { new SqlParameter("@key", ID) };
+        //private void Init(DataRow dr)
+        //{
+        //    if (dr != null)
+        //    {
+        //        ID = Convert.ToInt32(dr["ID"]);
+        //        Logger = dr["Logger"].ToString();
+        //        CreateTime = Convert.ToDateTime(dr["CreateTime"]);
+        //        Level = (LogLevel)Enum.Parse(typeof(LogLevel), dr["LogLevel"].ToString());
+        //        Message = dr["Message"].ToString();
+        //        StackTrace = dr["StackTrace"].ToString();
+        //        Thread = dr["Thread"].ToString();
+        //        Method = dr["Method"].ToString();
+        //        UserID = Convert.ToInt32(dr["UserID"]);
+        //        UserIP = dr["UserIP"].ToString();
+        //        UserBrowser = dr["UserBrowser"].ToString();
+        //        UserOS = dr["UserOS"].ToString();
+        //    }
+        //    else
+        //        throw new Exception("Unable to init Log.");
+        //}
 
-            DataSet ds = DataAccess.ExecuteDataset(sql, para);
+        //public void Single()
+        //{
+        //    string sql = string.Format("SELECT * FROM {0} WHERE ID = @key",
+        //        Repository.GetTableAttr<Log>().Name);
 
-            if (ds.Tables[0].Rows.Count > 0) { Init(ds.Tables[0].Rows[0]); }
-        }
+        //    SqlParameter[] para = { new SqlParameter("@key", ID) };
 
-        public static List<Log> All()
-        {
-            var list = new List<Log>();
+        //    DataSet ds = DataAccess.ExecuteDataset(sql, para);
 
-            var attr = Repository.GetTableAttr<Log>();
+        //    var dt = ds.Tables[0];
 
-            string sql = string.Format("SELECT * FROM {0} ORDER BY {1}", attr.Name, attr.Sort);
+        //    if (dt.Rows.Count == 0) { return null; }
 
-            DataSet ds = DataAccess.ExecuteDataset(sql);
+        //    using (var reader = dt.CreateDataReader())
+        //    {
+        //        return reader.DataReaderMapTo<T>().FirstOrDefault();
+        //    }
+        //}
 
-            if (ds.Tables[0].Rows.Count > 0)
-            {
-                foreach (DataRow dr in ds.Tables[0].Rows)
-                {
-                    list.Add(new Log(dr));
-                }
-            }
+        //public static List<Log> All()
+        //{
+        //    var list = new List<Log>();
 
-            return list;
-        }
+        //    var attr = Repository.GetTableAttr<Log>();
+
+        //    string sql = string.Format("SELECT * FROM {0} ORDER BY {1}", attr.Name, attr.Sort);
+
+        //    DataSet ds = DataAccess.ExecuteDataset(sql);
+
+        //    if (ds.Tables[0].Rows.Count > 0)
+        //    {
+        //        foreach (DataRow dr in ds.Tables[0].Rows)
+        //        {
+        //            list.Add(new Log(dr));
+        //        }
+        //    }
+
+        //    return list;
+        //}
 
         #region Members and Properties
 
-        [DbColumn("ID", IsKey = true)]
-        public int ID
-        { get; set; }
+        //[DbColumn("ID", IsKey = true)]
+        //public int ID
+        //{ get; set; }
 
         [DbColumn("Logger")]
         public string Logger
@@ -176,6 +189,19 @@ namespace Arsenalcn.Core.Logger
 
             // no logging method
             SqlHelper.ExecuteNonQuery(DataAccess.ConnectString, CommandType.Text, sql, para);
+        }
+
+        public static void Clean()
+        {
+            IRepository repo = new Repository();
+
+            var list = repo.Query<Log>(x => x.Logger == "DaoLog" && x.CreateTime < DateTime.Now.AddMonths(-1))
+                .FindAll(x => x.Level.Equals(LogLevel.Debug));
+
+            if (list != null && list.Count > 0)
+            {
+                list.Delete();
+            }
         }
     }
 

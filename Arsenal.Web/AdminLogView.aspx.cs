@@ -1,11 +1,14 @@
 ﻿using System;
 
 using Arsenalcn.Core.Logger;
+using Arsenalcn.Core;
 
 namespace Arsenal.Web
 {
     public partial class AdminLogView : AdminPageBase
     {
+        private readonly IRepository repo = new Repository();
+
         protected void Page_Load(object sender, EventArgs e)
         {
             ctrlAdminFieldToolBar.AdminUserName = this.Username;
@@ -34,9 +37,7 @@ namespace Arsenal.Web
         {
             if (LogID > 0)
             {
-                Log l = new Log();
-                l.ID = LogID;
-                l.Single();
+                var l = repo.Single<Log>(LogID);
 
                 ltrlLogID.Text = string.Format("详细日志查 <em>({0})</em>", LogID.ToString());
                 tbLogger.Text = l.Logger;

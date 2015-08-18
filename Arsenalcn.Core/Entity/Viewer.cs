@@ -1,23 +1,15 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Data;
 using System.Diagnostics.Contracts;
-using System.Linq;
-using System.Reflection;
-using System.Threading;
 using System.Web;
-
-using Arsenalcn.Core.Logger;
 using System.Linq.Expressions;
+using System.Linq;
 
 namespace Arsenalcn.Core
 {
     public abstract class Viewer : IViewer
     {
-        private readonly ILog log = new AppLog();
-
         protected Viewer() { }
 
         //protected Viewer(DataRow dr)
@@ -156,16 +148,24 @@ namespace Arsenalcn.Core
 
         public virtual void Many<T>(Expression<Func<T, bool>> whereBy) where T : class, IViewer, new()
         {
-            var propertyName = string.Format("List{0}", typeof(T).Name);
-            var property = this.GetType().GetProperty(propertyName, typeof(IEnumerable<T>));
+            // Get the property which matches IEnumerable<T>
+            var property = this.GetType().GetProperties()
+                .Where(x => (Nullable.GetUnderlyingType(x.PropertyType) ?? x.PropertyType).Equals(typeof(IEnumerable<T>)))
+                .FirstOrDefault();
 
-            IRepository repo = new Repository();
+            //var propertyName = string.Format("List{0}", typeof(T).Name);
+            //var property = this.GetType().GetProperty(propertyName, typeof(IEnumerable<T>));
 
-            var list = repo.Query<T>(whereBy);
-
-            if (list != null && list.Count > 0)
+            if (property != null)
             {
-                property.SetValue(this, list, null);
+                IRepository repo = new Repository();
+
+                var list = repo.Query<T>(whereBy);
+
+                if (list != null && list.Count > 0)
+                {
+                    property.SetValue(this, list, null);
+                }
             }
         }
     }

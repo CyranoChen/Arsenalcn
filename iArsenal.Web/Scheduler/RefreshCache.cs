@@ -39,6 +39,9 @@ namespace iArsenal.Scheduler
 
                 Order.RefreshOrderBaseType();
 
+                // Clean Log
+                Log.Clean();
+
                 log.Info("Scheduler End: (RefreshCache)", logInfo);
             }
             catch (Exception ex)

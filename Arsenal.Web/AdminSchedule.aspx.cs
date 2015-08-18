@@ -41,9 +41,7 @@ namespace Arsenal.Web
                 {
                     string key = gvSchedule.DataKeys[gvSchedule.SelectedIndex].Value.ToString();
 
-                    Schedule s = new Schedule();
-                    s.ScheduleKey = key;
-                    s.Single();
+                    Schedule s = Schedule.Single(key);
 
                     ISchedule instance = s.IScheduleInstance;
                     ManagedThreadPool.QueueUserWorkItem(new WaitCallback(instance.Execute));
@@ -88,9 +86,7 @@ namespace Arsenal.Web
             {
                 try
                 {
-                    var s = new Schedule();
-                    s.ScheduleKey = gvSchedule.DataKeys[gvSchedule.EditIndex].Value.ToString();
-                    s.Single();
+                    Schedule s = Schedule.Single(gvSchedule.DataKeys[gvSchedule.EditIndex].Value.ToString());
 
                     s.ScheduleType = tbScheduleType.Text.Trim();
                     s.DailyTime = Convert.ToInt32(tbDailyTime.Text.Trim());

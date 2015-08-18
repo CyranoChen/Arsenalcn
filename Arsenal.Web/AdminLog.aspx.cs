@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Linq;
 using System.Web.UI.WebControls;
 
-using Arsenal.Service;
 using Arsenalcn.Core;
 using Arsenalcn.Core.Logger;
 
@@ -10,6 +8,8 @@ namespace Arsenal.Web
 {
     public partial class AdminLog : AdminPageBase
     {
+        private readonly IRepository repo = new Repository();
+
         protected void Page_Load(object sender, EventArgs e)
         {
             ctrlAdminFieldToolBar.AdminUserName = this.Username;
@@ -45,7 +45,7 @@ namespace Arsenal.Web
 
         private void BindData()
         {
-            var list = Log.All().FindAll(x =>
+            var list = repo.All<Log>().FindAll(x =>
                 {
                     Boolean returnValue = true;
                     string tmpString = string.Empty;

@@ -44,6 +44,9 @@ namespace Arsenal.Scheduler
                 Arsenal.Service.Casino.Bet.Clean();
                 Arsenal.Service.Casino.BetDetail.Clean();
 
+                // Clean Log
+                Log.Clean();
+
                 log.Info("Scheduler End: (RefreshCache)", logInfo);
             }
             catch (Exception ex)

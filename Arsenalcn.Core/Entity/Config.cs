@@ -4,7 +4,6 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics.Contracts;
 using System.Linq;
-using System.Text;
 
 namespace Arsenalcn.Core
 {
@@ -13,39 +12,47 @@ namespace Arsenalcn.Core
     {
         public Config() { }
 
-        public Config(DataRow dr)
+        private static void CreateMap()
         {
-            Contract.Requires(dr != null);
+            var map = AutoMapper.Mapper.CreateMap<IDataReader, Config>();
 
-            Init(dr);
+            map.ForMember(d => d.ConfigSystem, opt => opt.MapFrom(s =>
+               (ConfigSystem)Enum.Parse(typeof(ConfigSystem), s.GetValue("ConfigSystem").ToString())));
         }
 
-        private void Init(DataRow dr)
-        {
-            if (dr != null)
-            {
-                ConfigSystem = (ConfigSystem)Enum.Parse(typeof(ConfigSystem), dr["ConfigSystem"].ToString());
-                ConfigKey = dr["ConfigKey"].ToString();
-                ConfigValue = dr["ConfigValue"].ToString();
-            }
-            else
-                throw new Exception("Unable to init Config.");
-        }
+        //public Config(DataRow dr)
+        //{
+        //    Contract.Requires(dr != null);
 
-        public void Single()
-        {
-            string sql = string.Format("SELECT * FROM {0} WHERE ConfigSystem = @configSystem AND ConfigKey = @configKey",
-                Repository.GetTableAttr<Config>().Name);
+        //    Init(dr);
+        //}
 
-            SqlParameter[] para = {
-                                      new SqlParameter("@configSystem", ConfigSystem.ToString()), 
-                                      new SqlParameter("@configKey", ConfigKey)
-                                  };
+        //private void Init(DataRow dr)
+        //{
+        //    if (dr != null)
+        //    {
+        //        ConfigSystem = (ConfigSystem)Enum.Parse(typeof(ConfigSystem), dr["ConfigSystem"].ToString());
+        //        ConfigKey = dr["ConfigKey"].ToString();
+        //        ConfigValue = dr["ConfigValue"].ToString();
+        //    }
+        //    else
+        //        throw new Exception("Unable to init Config.");
+        //}
 
-            DataSet ds = DataAccess.ExecuteDataset(sql, para);
+        //public void Single()
+        //{
+        //    string sql = string.Format("SELECT * FROM {0} WHERE ConfigSystem = @configSystem AND ConfigKey = @configKey",
+        //        Repository.GetTableAttr<Config>().Name);
 
-            if (ds.Tables[0].Rows.Count > 0) { Init(ds.Tables[0].Rows[0]); }
-        }
+        //    SqlParameter[] para = {
+        //                              new SqlParameter("@configSystem", ConfigSystem.ToString()), 
+        //                              new SqlParameter("@configKey", ConfigKey)
+        //                          };
+
+        //    DataSet ds = DataAccess.ExecuteDataset(sql, para);
+
+        //    if (ds.Tables[0].Rows.Count > 0) { Init(ds.Tables[0].Rows[0]); }
+        //}
 
         public bool Any()
         {
@@ -53,7 +60,7 @@ namespace Arsenalcn.Core
                 Repository.GetTableAttr<Config>().Name);
 
             SqlParameter[] para = {
-                                      new SqlParameter("@configSystem", ConfigSystem.ToString()), 
+                                      new SqlParameter("@configSystem", ConfigSystem.ToString()),
                                       new SqlParameter("@configKey", ConfigKey)
                                   };
 
@@ -72,20 +79,32 @@ namespace Arsenalcn.Core
 
             DataSet ds = DataAccess.ExecuteDataset(sql);
 
-            if (ds.Tables[0].Rows.Count > 0)
+            //if (ds.Tables[0].Rows.Count > 0)
+            //{
+            //    foreach (DataRow dr in ds.Tables[0].Rows)
+            //    {
+            //        list.Add(new Config(dr));
+            //    }
+            //}
+
+            var dt = ds.Tables[0];
+
+            if (dt.Rows.Count > 0)
             {
-                foreach (DataRow dr in ds.Tables[0].Rows)
+                using (var reader = dt.CreateDataReader())
                 {
-                    list.Add(new Config(dr));
+                    Config.CreateMap();
+
+                    list = AutoMapper.Mapper.Map<IDataReader, List<Config>>(reader);
                 }
             }
 
             return list;
         }
 
-        public static IQueryable<Config> All(ConfigSystem cs)
+        public static IEnumerable<Config> All(ConfigSystem cs)
         {
-            return All().AsQueryable().Where(x => x.ConfigSystem.Equals(cs));
+            return All().Where(x => x.ConfigSystem.Equals(cs));
         }
 
         public void Update(SqlTransaction trans = null)
@@ -95,9 +114,9 @@ namespace Arsenalcn.Core
             string sql = string.Format("UPDATE {0} SET ConfigValue = @configValue WHERE ConfigSystem = @configSystem AND ConfigKey = @configKey",
                  Repository.GetTableAttr<Config>().Name);
 
-            SqlParameter[] para = { 
-                                      new SqlParameter("@configSystem", ConfigSystem.ToString()), 
-                                      new SqlParameter("@configKey", ConfigKey), 
+            SqlParameter[] para = {
+                                      new SqlParameter("@configSystem", ConfigSystem.ToString()),
+                                      new SqlParameter("@configKey", ConfigKey),
                                       new SqlParameter("@configValue", ConfigValue) };
 
             DataAccess.ExecuteNonQuery(sql, para, trans);

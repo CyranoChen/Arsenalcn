@@ -85,15 +85,22 @@ namespace Arsenalcn.CasinoSys.Entity
             //1、赛季中必须投注博采币次数达到10个单场及以上（反复多次投注同一场比赛只能算是1次）；
             //2、赛季中参与累计投注量达到5,000菠菜币及以上；
             //3、赛季中并且获得RP+3及以上，即猜对本赛季3场以上的比赛比分。
-            return list.FindAll(delegate(CasinoGambler cg)
-            { return cg.MatchBet >= 10 && cg.TotalBet >= 5000f && cg.RPBonus >= 3; });
+            if (ConfigGlobal.ContestLimitIgnore)
+            {
+                return list;
+            }
+            else
+            {
+                return list.FindAll(delegate (CasinoGambler cg)
+                { return cg.MatchBet >= 10 && cg.TotalBet >= 5000f && cg.RPBonus >= 3; });
+            }
         }
 
         public static List<CasinoGambler> SortCasinoGambler(List<CasinoGambler> list, string orderKeyword)
         {
             if (orderKeyword.Equals("ProfitRate", StringComparison.OrdinalIgnoreCase))
             {
-                list.Sort(delegate(Entity.CasinoGambler cg1, Entity.CasinoGambler cg2)
+                list.Sort(delegate (Entity.CasinoGambler cg1, Entity.CasinoGambler cg2)
                 {
                     return !cg2.ProfitRate.Equals(cg1.ProfitRate) ?
                         cg2.ProfitRate.CompareTo(cg1.ProfitRate) : cg2.Profit.CompareTo(cg1.Profit);
@@ -101,7 +108,7 @@ namespace Arsenalcn.CasinoSys.Entity
             }
             else if (orderKeyword.Equals("TotalBet", StringComparison.OrdinalIgnoreCase))
             {
-                list.Sort(delegate(Entity.CasinoGambler cg1, Entity.CasinoGambler cg2)
+                list.Sort(delegate (Entity.CasinoGambler cg1, Entity.CasinoGambler cg2)
                 {
                     return !cg2.TotalBet.Equals(cg1.TotalBet) ?
                         cg2.TotalBet.CompareTo(cg1.TotalBet) : cg2.Profit.CompareTo(cg1.Profit);
@@ -109,7 +116,7 @@ namespace Arsenalcn.CasinoSys.Entity
             }
             else if (orderKeyword.Equals("RPBonus", StringComparison.OrdinalIgnoreCase))
             {
-                list.Sort(delegate(Entity.CasinoGambler cg1, Entity.CasinoGambler cg2)
+                list.Sort(delegate (Entity.CasinoGambler cg1, Entity.CasinoGambler cg2)
                 {
                     if (!cg1.RPBonus.HasValue && !cg2.RPBonus.HasValue)
                     {
@@ -132,7 +139,7 @@ namespace Arsenalcn.CasinoSys.Entity
             }
             else
             {
-                list.Sort(delegate(Entity.CasinoGambler cg1, Entity.CasinoGambler cg2)
+                list.Sort(delegate (Entity.CasinoGambler cg1, Entity.CasinoGambler cg2)
                 {
                     return cg2.Profit.CompareTo(cg1.Profit);
                 });
@@ -204,7 +211,7 @@ namespace Arsenalcn.CasinoSys.Entity
                 }
 
                 // Sort the final list
-                list.Sort(delegate(CasinoGambler cg1, CasinoGambler cg2)
+                list.Sort(delegate (CasinoGambler cg1, CasinoGambler cg2)
                 {
                     return !cg1.Credit.Value.Equals(cg2.Credit.Value)
                       ? cg1.Credit.Value - cg2.Credit.Value : cg2.Profit.CompareTo(cg1.Profit);

@@ -161,6 +161,21 @@ namespace Arsenalcn.CasinoSys.Entity
             }
         }
 
+        public static bool ContestLimitIgnore
+        {
+            get
+            {
+                try
+                {
+                    return Convert.ToBoolean(ConfigDictionary["ContestLimitIgnore"]);
+                }
+                catch
+                {
+                    return true;
+                }
+            }
+        }
+
         public static string SysNotice
         {
             get

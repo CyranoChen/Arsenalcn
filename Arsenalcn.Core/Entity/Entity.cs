@@ -80,7 +80,6 @@ namespace Arsenalcn.Core
         /// <remarks>
         /// This is the identifier that should be exposed via the web, etc.
         /// </remarks>
-
         string Key { get; }
     }
 }

@@ -178,7 +178,8 @@ namespace Arsenalcn.Core
         /// <remarks>
         /// This is the identifier that should be exposed via the web, etc.
         /// </remarks>
-
         string Key { get; }
+
+        void Many<T>(Expression<Func<T, bool>> whereBy) where T : class, IViewer, new();
     }
 }

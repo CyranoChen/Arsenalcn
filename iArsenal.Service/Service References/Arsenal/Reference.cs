@@ -101,7 +101,7 @@ namespace iArsenal.Service.Arsenal {
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://www.arsenal.cn/GetMatchs", RequestNamespace="http://www.arsenal.cn/", ResponseNamespace="http://www.arsenal.cn/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public Match[] GetMatchs() {
-            object[] results = this.Invoke("GetMatchs", new object[0]);
+            var results = this.Invoke("GetMatchs", new object[0]);
             return ((Match[])(results[0]));
         }
         
@@ -120,7 +120,7 @@ namespace iArsenal.Service.Arsenal {
         
         private void OnGetMatchsOperationCompleted(object arg) {
             if ((this.GetMatchsCompleted != null)) {
-                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                var invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
                 this.GetMatchsCompleted(this, new GetMatchsCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
@@ -128,7 +128,7 @@ namespace iArsenal.Service.Arsenal {
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://www.arsenal.cn/GetPlayers", RequestNamespace="http://www.arsenal.cn/", ResponseNamespace="http://www.arsenal.cn/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public Player[] GetPlayers() {
-            object[] results = this.Invoke("GetPlayers", new object[0]);
+            var results = this.Invoke("GetPlayers", new object[0]);
             return ((Player[])(results[0]));
         }
         
@@ -147,7 +147,7 @@ namespace iArsenal.Service.Arsenal {
         
         private void OnGetPlayersOperationCompleted(object arg) {
             if ((this.GetPlayersCompleted != null)) {
-                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                var invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
                 this.GetPlayersCompleted(this, new GetPlayersCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
@@ -155,7 +155,7 @@ namespace iArsenal.Service.Arsenal {
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://www.arsenal.cn/GetTeams", RequestNamespace="http://www.arsenal.cn/", ResponseNamespace="http://www.arsenal.cn/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public Team[] GetTeams() {
-            object[] results = this.Invoke("GetTeams", new object[0]);
+            var results = this.Invoke("GetTeams", new object[0]);
             return ((Team[])(results[0]));
         }
         
@@ -174,7 +174,7 @@ namespace iArsenal.Service.Arsenal {
         
         private void OnGetTeamsOperationCompleted(object arg) {
             if ((this.GetTeamsCompleted != null)) {
-                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                var invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
                 this.GetTeamsCompleted(this, new GetTeamsCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
@@ -182,7 +182,7 @@ namespace iArsenal.Service.Arsenal {
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://www.arsenal.cn/GetTeamsByLeagueGuid", RequestNamespace="http://www.arsenal.cn/", ResponseNamespace="http://www.arsenal.cn/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public Team[] GetTeamsByLeagueGuid(System.Guid guid) {
-            object[] results = this.Invoke("GetTeamsByLeagueGuid", new object[] {
+            var results = this.Invoke("GetTeamsByLeagueGuid", new object[] {
                         guid});
             return ((Team[])(results[0]));
         }
@@ -203,7 +203,7 @@ namespace iArsenal.Service.Arsenal {
         
         private void OnGetTeamsByLeagueGuidOperationCompleted(object arg) {
             if ((this.GetTeamsByLeagueGuidCompleted != null)) {
-                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                var invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
                 this.GetTeamsByLeagueGuidCompleted(this, new GetTeamsByLeagueGuidCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
@@ -211,7 +211,7 @@ namespace iArsenal.Service.Arsenal {
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://www.arsenal.cn/GetLeagues", RequestNamespace="http://www.arsenal.cn/", ResponseNamespace="http://www.arsenal.cn/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public League[] GetLeagues() {
-            object[] results = this.Invoke("GetLeagues", new object[0]);
+            var results = this.Invoke("GetLeagues", new object[0]);
             return ((League[])(results[0]));
         }
         
@@ -230,7 +230,7 @@ namespace iArsenal.Service.Arsenal {
         
         private void OnGetLeaguesOperationCompleted(object arg) {
             if ((this.GetLeaguesCompleted != null)) {
-                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                var invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
                 this.GetLeaguesCompleted(this, new GetLeaguesCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
@@ -238,7 +238,7 @@ namespace iArsenal.Service.Arsenal {
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://www.arsenal.cn/GetVideos", RequestNamespace="http://www.arsenal.cn/", ResponseNamespace="http://www.arsenal.cn/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public Video[] GetVideos() {
-            object[] results = this.Invoke("GetVideos", new object[0]);
+            var results = this.Invoke("GetVideos", new object[0]);
             return ((Video[])(results[0]));
         }
         
@@ -257,7 +257,7 @@ namespace iArsenal.Service.Arsenal {
         
         private void OnGetVideosOperationCompleted(object arg) {
             if ((this.GetVideosCompleted != null)) {
-                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                var invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
                 this.GetVideosCompleted(this, new GetVideosCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
@@ -272,7 +272,7 @@ namespace iArsenal.Service.Arsenal {
                         || (url == string.Empty))) {
                 return false;
             }
-            System.Uri wsUri = new System.Uri(url);
+            var wsUri = new System.Uri(url);
             if (((wsUri.Port >= 1024) 
                         && (string.Compare(wsUri.Host, "localHost", System.StringComparison.OrdinalIgnoreCase) == 0))) {
                 return true;

@@ -2,9 +2,6 @@
 using System.Data;
 using System.Data.SqlClient;
 
-using Arsenalcn.CasinoSys.DataAccess;
-using System.Collections.Generic;
-
 namespace Arsenalcn.CasinoSys.Entity
 {
     public abstract class CasinoItem
@@ -36,13 +33,13 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public static CasinoItem GetCasinoItem(Guid itemID)
         {
-            DataRow dr = DataAccess.CasinoItem.GetCasinoItemByID(itemID);
+            var dr = DataAccess.CasinoItem.GetCasinoItemByID(itemID);
 
             if (dr != null)
             {
-                CasinoType itemType = (CasinoType)Enum.Parse(typeof(CasinoType), Convert.ToString(dr["ItemType"]));
+                var itemType = (CasinoType)Enum.Parse(typeof(CasinoType), Convert.ToString(dr["ItemType"]));
 
-                CasinoItem item = CasinoItem.CreateInstance(itemType);
+                var item = CasinoItem.CreateInstance(itemType);
 
                 item.ItemGuid = itemID;
 
@@ -101,7 +98,7 @@ namespace Arsenalcn.CasinoSys.Entity
             else
             {
                 //insert
-                Guid newGuid = DataAccess.CasinoItem.InsertCasinoItem((int)ItemType, MatchGuid, ItemTitle, ItemBody, PublishTime, CloseTime, BankerID, BankerName, OwnerID, OwnerUserName, trans);
+                var newGuid = DataAccess.CasinoItem.InsertCasinoItem((int)ItemType, MatchGuid, ItemTitle, ItemBody, PublishTime, CloseTime, BankerID, BankerName, OwnerID, OwnerUserName, trans);
 
                 return newGuid;
             }
@@ -119,13 +116,13 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public static void ActiveCasinoItemStatistics()
         {
-            DataTable dt = DataAccess.CasinoItem.GetActiveCasinoItem();
+            var dt = DataAccess.CasinoItem.GetActiveCasinoItem();
 
             if (dt != null)
             {
                 foreach (DataRow dr in dt.Rows)
                 {
-                    CasinoItem item = CasinoItem.GetCasinoItem((Guid)dr["CasinoItemGuid"]);
+                    var item = CasinoItem.GetCasinoItem((Guid)dr["CasinoItemGuid"]);
                     item.Earning = DataAccess.Bet.GetTotalEarningByCasinoItemGuid((Guid)dr["CasinoItemGuid"]);
 
                     item.Save(null);
@@ -168,7 +165,7 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public static DataTable GetEndViewByTeam(Guid teamGuid)
         {
-            DataTable dt = DataAccess.CasinoItem.GetEndMatchViewByTeamGuid(teamGuid);
+            var dt = DataAccess.CasinoItem.GetEndMatchViewByTeamGuid(teamGuid);
 
             //if (dt != null)
             //{
@@ -187,9 +184,9 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public static DataTable GetHistoryViewByMatch(Guid matchGuid)
         {
-            Match match = new Match(matchGuid);
+            var match = new Match(matchGuid);
 
-            DataTable dt = DataAccess.CasinoItem.GetEndMatchViewByTeams(match.Home, match.Away);
+            var dt = DataAccess.CasinoItem.GetEndMatchViewByTeams(match.Home, match.Away);
 
             //if (dt != null)
             //{
@@ -208,20 +205,20 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public static int[] GetHistoryResultByMatch(Guid matchGuid)
         {
-            Match match = new Match(matchGuid);
-            int[] intArr = new int[4];
-            int matchCount = 0;
-            int wonCount = 0;
-            int drawCount = 0;
-            int loseCount = 0;
+            var match = new Match(matchGuid);
+            var intArr = new int[4];
+            var matchCount = 0;
+            var wonCount = 0;
+            var drawCount = 0;
+            var loseCount = 0;
 
-            DataTable dt = DataAccess.CasinoItem.GetEndMatchViewByTeams(match.Home, match.Away);
+            var dt = DataAccess.CasinoItem.GetEndMatchViewByTeams(match.Home, match.Away);
 
             if (dt != null)
             {
                 foreach (DataRow dr in dt.Rows)
                 {
-                    Match historyMatch = new Match((Guid)dr["MatchGuid"]);
+                    var historyMatch = new Match((Guid)dr["MatchGuid"]);
 
                     if (match.Home == historyMatch.Home && match.Away == historyMatch.Away)
                     {

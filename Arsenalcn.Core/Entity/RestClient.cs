@@ -12,7 +12,7 @@ namespace Arsenalcn.Core
     {
         public RestClient() { }
 
-        protected virtual string GetReponse(RequestMethod method = RequestMethod.POST, string contentType = "application/x-www-form-urlencoded")
+        protected virtual string GetResponse(RequestMethod method = RequestMethod.POST, string contentType = "application/x-www-form-urlencoded")
         {
             //New HttpWebRequest for DiscuzNT Service API
             HttpWebRequest req = (HttpWebRequest)WebRequest.Create(ServiceUrl);
@@ -35,7 +35,7 @@ namespace Arsenalcn.Core
 
             sig.Append(CryptographicKey);
 
-            var _strParameter = string.Format("sig={0}{1}", Encrypt.getMd5Hash(sig.ToString()), postData.ToString());
+            var _strParameter = string.Format("sig={0}{1}", Encrypt.GetMd5Hash(sig.ToString()), postData.ToString());
 
             #endregion
 
@@ -88,7 +88,7 @@ namespace Arsenalcn.Core
         public string Method
         { get; set; }
 
-        public ReponseType Format
+        public ResponseType Format
         { get; set; }
 
         public SortedDictionary<string, string> Parameters
@@ -97,7 +97,7 @@ namespace Arsenalcn.Core
         #endregion
     }
 
-    public enum ReponseType
+    public enum ResponseType
     {
         XML,
         JSON

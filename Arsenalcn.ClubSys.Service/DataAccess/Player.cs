@@ -1,5 +1,4 @@
-﻿using System;
-using System.Data;
+﻿using System.Data;
 
 using Microsoft.ApplicationBlocks.Data;
 using Arsenalcn.Common;
@@ -10,9 +9,9 @@ namespace Arsenalcn.ClubSys.DataAccess
     {
         public static DataTable GetPlayers()
         {
-            string sql = "SELECT * FROM Arsenal_Player ORDER BY IsLegend, IsLoan, SquadNumber, LastName";
+            var sql = "SELECT * FROM Arsenal_Player ORDER BY IsLegend, IsLoan, SquadNumber, LastName";
 
-            DataSet ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql);
+            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql);
 
             if (ds.Tables[0].Rows.Count == 0)
                 return null;

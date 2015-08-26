@@ -30,7 +30,7 @@ namespace iArsenal.Service
 
                 if (!string.IsNullOrEmpty(payment))
                 {
-                    string[] _strPayment = payment.Substring(1, payment.Length - 2).Split('|');
+                    var _strPayment = payment.Substring(1, payment.Length - 2).Split('|');
                     if (_strPayment[0].Equals(OrderPaymentType.Alipay.ToString(), StringComparison.OrdinalIgnoreCase))
                         retValue = string.Format("【支付宝】{0}", _strPayment[1]);
                     else if (_strPayment[0].Equals(OrderPaymentType.Bank.ToString(), StringComparison.OrdinalIgnoreCase))
@@ -55,8 +55,8 @@ namespace iArsenal.Service
             map.ForMember(d => d.PriceInfo, opt => opt.ResolveUsing(s =>
             {
                 #region Generate Order Price Info
-                double? sale = (double?)s.GetValue("Sale");
-                double price = (double)s.GetValue("Price");
+                var sale = (double?)s.GetValue("Sale");
+                var price = (double)s.GetValue("Price");
 
                 return sale.HasValue ? sale.Value.ToString("f2") : price.ToString("f2");
                 #endregion
@@ -102,7 +102,7 @@ namespace iArsenal.Service
 
         public void CalcOrderPrice(SqlTransaction trans = null)
         {
-            double price = default(double);
+            var price = default(double);
 
             IRepository repo = new Repository();
 
@@ -125,7 +125,7 @@ namespace iArsenal.Service
         {
             IRepository repo = new Repository();
 
-            Order o = repo.Single<Order>(key);
+            var o = repo.Single<Order>(key);
 
             if (o != null)
             {

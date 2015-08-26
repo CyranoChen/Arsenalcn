@@ -57,8 +57,8 @@ namespace Arsenal.Web
         {
             var list = repo.All<Player>().ToList().FindAll(x =>
                 {
-                    Boolean returnValue = true;
-                    string tmpString = string.Empty;
+                    var returnValue = true;
+                    var tmpString = string.Empty;
 
                     if (ViewState["SquadNumber"] != null)
                     {
@@ -94,7 +94,7 @@ namespace Arsenal.Web
             #region set GridView Selected PageIndex
             if (PlayerGuid.HasValue && !PlayerGuid.Value.Equals(Guid.Empty))
             {
-                int i = list.FindIndex(x => x.ID.Equals(PlayerGuid));
+                var i = list.FindIndex(x => x.ID.Equals(PlayerGuid));
                 if (i >= 0)
                 {
                     gvPlayer.PageIndex = i / gvPlayer.PageSize;

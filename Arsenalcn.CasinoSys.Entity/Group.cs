@@ -15,7 +15,7 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public Group(Guid groupGuid)
         {
-            DataRow dr = DataAccess.Group.GetGroupByID(groupGuid);
+            var dr = DataAccess.Group.GetGroupByID(groupGuid);
 
             if (dr != null)
                 InitGroup(dr);
@@ -48,8 +48,8 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public static List<Group> GetGroups()
         {
-            DataTable dt = DataAccess.Group.GetGroups();
-            List<Group> list = new List<Group>();
+            var dt = DataAccess.Group.GetGroups();
+            var list = new List<Group>();
 
             if (dt != null)
             {
@@ -96,15 +96,15 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public static bool IsExistGroupByLeague(Guid leagueGuid, bool isTable)
         {
-            DataTable dtGroup = DataAccess.Group.GetLeagueGroup(leagueGuid, isTable);
+            var dtGroup = DataAccess.Group.GetLeagueGroup(leagueGuid, isTable);
 
             return (dtGroup != null);
         }
 
         public static int GetResultMatchCount(Guid groupGuid)
         {
-            Group group = new Group(groupGuid);
-            DataTable dtGroupMatch = DataAccess.Match.GetResultMatchByGroupGuid(group.GroupGuid, group.IsTable);
+            var group = new Group(groupGuid);
+            var dtGroupMatch = DataAccess.Match.GetResultMatchByGroupGuid(group.GroupGuid, group.IsTable);
 
             if (dtGroupMatch != null)
                 return dtGroupMatch.Rows.Count;
@@ -114,8 +114,8 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public static int GetAllMatchCount(Guid groupGuid)
         {
-            Group group = new Group(groupGuid);
-            DataTable dtGroupMatch = DataAccess.Match.GetAllMatchByGroupGuid(group.GroupGuid, group.IsTable);
+            var group = new Group(groupGuid);
+            var dtGroupMatch = DataAccess.Match.GetAllMatchByGroupGuid(group.GroupGuid, group.IsTable);
 
             if (dtGroupMatch != null)
                 return dtGroupMatch.Rows.Count;
@@ -125,19 +125,19 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public static void SetGroupMatch(Guid groupGuid)
         {
-            Group group = new Group(groupGuid);
+            var group = new Group(groupGuid);
 
             DataAccess.Match.UpdateMatchGroupGuid(group.GroupGuid, group.LeagueGuid);
         }
 
         public static void ActiveGroupTableStatistics()
         {
-            List<Group> list = Group.GetGroups().FindAll((Predicate<Group>)delegate (Group g)
+            var list = Group.GetGroups().FindAll((Predicate<Group>)delegate (Group g)
             { return League.Cache.Load(g.LeagueGuid).IsActive; });
 
             if (list != null && list.Count > 0)
             {
-                foreach (Group g in list)
+                foreach (var g in list)
                 {
                     Entity.Group.GroupTableStatistics(g.GroupGuid);
                 }
@@ -146,15 +146,15 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public static void GroupTableStatistics(Guid groupGuid)
         {
-            Group group = new Group(groupGuid);
-            DataTable dtGroupTeam = DataAccess.Group.GetRelationGroupTeamByGroupGuid(groupGuid);
-            DataTable dtGroupMatch = DataAccess.Match.GetResultMatchByGroupGuid(group.GroupGuid, group.IsTable);
+            var group = new Group(groupGuid);
+            var dtGroupTeam = DataAccess.Group.GetRelationGroupTeamByGroupGuid(groupGuid);
+            var dtGroupMatch = DataAccess.Match.GetResultMatchByGroupGuid(group.GroupGuid, group.IsTable);
 
             if (dtGroupTeam != null && dtGroupMatch != null)
             {
                 foreach (DataRow dr in dtGroupTeam.Rows)
                 {
-                    GroupTeam gt = new GroupTeam(groupGuid, (Guid)dr["TeamGuid"], null);
+                    var gt = new GroupTeam(groupGuid, (Guid)dr["TeamGuid"], null);
                     GroupTeam.UpdateGroupTeamByGroupMatch(gt.GroupGuid, gt.TeamGuid, dtGroupMatch);
                 }
             }
@@ -167,7 +167,7 @@ namespace Arsenalcn.CasinoSys.Entity
             {
                 foreach (DataRow dr in dtGroupTeam.Rows)
                 {
-                    GroupTeam gt = new GroupTeam(groupGuid, (Guid)dr["TeamGuid"], null);
+                    var gt = new GroupTeam(groupGuid, (Guid)dr["TeamGuid"], null);
                     gt.PositionNo = ++positionNo;
                     gt.Update();
                 }

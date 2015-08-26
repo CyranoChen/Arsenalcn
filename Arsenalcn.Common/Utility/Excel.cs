@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -25,8 +24,8 @@ namespace Arsenalcn.Common.Utility
             HttpContext.Current.Response.ContentType = "application/ms-excel";//设置输出文件类型为excel文件。 
             //HttpContext.Current.Response.ContentType = "application/vnd.ms-excel";
 
-            StringWriter tw = new StringWriter();
-            HtmlTextWriter hw = new HtmlTextWriter(tw);
+            var tw = new StringWriter();
+            var hw = new HtmlTextWriter(tw);
 
             SetStyle(gv);
             gv.RenderControl(hw);

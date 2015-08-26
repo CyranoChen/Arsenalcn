@@ -41,16 +41,16 @@ namespace Arsenalcn.ClubSys.Web.Control
             {
                 pnlFuncLink.Visible = true;
 
-                List<Club> myClubs = ClubLogic.GetActiveUserClubs(this.userid);
+                var myClubs = ClubLogic.GetActiveUserClubs(this.userid);
 
-                int leftCount = ConfigGlobal.SingleUserMaxClubCount - myClubs.Count;
+                var leftCount = ConfigGlobal.SingleUserMaxClubCount - myClubs.Count;
 
                 if (leftCount < 0)
                 {
                     leftCount = 0;
                 }
 
-                ltrlToolBarTip.Text = string.Format("<strong>提醒：您还可以加入<em>{0}</em>个球会</strong>", leftCount.ToString());
+                ltrlToolBarTip.Text = $"<strong>提醒：您还可以加入<em>{leftCount.ToString()}</em>个球会</strong>";
 
                 if (ConfigAdmin.IsPluginAdmin(this.userid))
                 {
@@ -70,11 +70,11 @@ namespace Arsenalcn.ClubSys.Web.Control
 
                 ltrlBonus.Text = LuckyPlayer.CalcTotalBonus().ToString();
 
-                int luckyPlayerID = ConfigGlobal.LuckyPlayerID;
+                var luckyPlayerID = ConfigGlobal.LuckyPlayerID;
 
-                Gamer player = PlayerStrip.GetPlayerInfoByPlayerID(luckyPlayerID);
-                List<Club> clubs = ClubLogic.GetActiveUserClubs(player.UserID);
-                bool IsLuckyPlayerLeader = clubs.Exists(delegate(Club club) { return ClubLogic.GetClubLeads(club.ID.Value).Exists(delegate(UserClub uc) { return uc.Userid == this.userid; }); });
+                var player = PlayerStrip.GetPlayerInfoByPlayerID(luckyPlayerID);
+                var clubs = ClubLogic.GetActiveUserClubs(player.UserID);
+                var IsLuckyPlayerLeader = clubs.Exists(delegate(Club club) { return ClubLogic.GetClubLeads(club.ID.Value).Exists(delegate(UserClub uc) { return uc.Userid == this.userid; }); });
 
                 if (DateTime.Now.Hour < ConfigGlobal.LuckyPlayerDeadline)
                 {
@@ -123,41 +123,41 @@ namespace Arsenalcn.ClubSys.Web.Control
 
         protected void btnGetBonus_Click(object sender, EventArgs e)
         {
-            int luckyPlayerID = ConfigGlobal.LuckyPlayerID;
+            var luckyPlayerID = ConfigGlobal.LuckyPlayerID;
 
-            Gamer player = PlayerStrip.GetPlayerInfoByPlayerID(luckyPlayerID);
-            Gamer gPlayer = PlayerStrip.GetPlayerInfo(this.userid);
+            var player = PlayerStrip.GetPlayerInfoByPlayerID(luckyPlayerID);
+            var gPlayer = PlayerStrip.GetPlayerInfo(this.userid);
 
-            List<Club> clubs = ClubLogic.GetActiveUserClubs(player.UserID);
-            bool isLuckyPlayerLeader = clubs.Exists(delegate(Club club) { return ClubLogic.GetClubLeads(club.ID.Value).Exists(delegate(UserClub uc) { return uc.Userid == this.userid; }); });
+            var clubs = ClubLogic.GetActiveUserClubs(player.UserID);
+            var isLuckyPlayerLeader = clubs.Exists(delegate(Club club) { return ClubLogic.GetClubLeads(club.ID.Value).Exists(delegate(UserClub uc) { return uc.Userid == this.userid; }); });
 
-            string script = string.Empty;
-            bool CanGetLuckyPlayerBonus = false;
+            var script = string.Empty;
+            var CanGetLuckyPlayerBonus = false;
 
             if ((gPlayer.UserID == player.UserID) || isLuckyPlayerLeader)
                 CanGetLuckyPlayerBonus = true;
 
             if (player != null && gPlayer != null && !ConfigGlobal.LuckyPlayerBonusGot && CanGetLuckyPlayerBonus)
             {
-                int totalBonus = LuckyPlayer.CalcTotalBonus();
+                var totalBonus = LuckyPlayer.CalcTotalBonus();
 
-                int bonusToUser = (int)(totalBonus * ConfigGlobal.LuckyPlayerBonusPercentage);
-                int bonusToClub = totalBonus - bonusToUser;
+                var bonusToUser = (int)(totalBonus * ConfigGlobal.LuckyPlayerBonusPercentage);
+                var bonusToClub = totalBonus - bonusToUser;
 
-                UserInfo userInfo = AdminUsers.GetUserInfo(userid);
+                var userInfo = AdminUsers.GetUserInfo(userid);
                 userInfo.Extcredits2 += bonusToUser;
 
                 AdminUsers.UpdateUserAllInfo(userInfo);
 
                 //club update
                 //List<Club> clubs = ClubLogic.GetActiveUserClubs(userid);
-                int clubID = -1;
+                var clubID = -1;
 
                 if (clubs.Count == 0)
                     bonusToClub = 0;
                 else
                 {
-                    Club club = clubs[0];
+                    var club = clubs[0];
                     clubID = club.ID.Value;
 
                     club.Fortune += bonusToClub;
@@ -169,7 +169,7 @@ namespace Arsenalcn.ClubSys.Web.Control
 
                 ConfigGlobal.Cache.RefreshCache();
 
-                script = string.Format("alert('您已获得幸运球员奖金{0}枪手币，球会获得{1}枪手币');", bonusToUser, bonusToClub);
+                script = $"alert('您已获得幸运球员奖金{bonusToUser}枪手币，球会获得{bonusToClub}枪手币');";
 
                 btnGetBonus.Visible = true;
                 btnGetBonus.Enabled = false;

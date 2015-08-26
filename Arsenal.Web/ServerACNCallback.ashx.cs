@@ -14,9 +14,9 @@ namespace Arsenal.Web
     {
         public void ProcessRequest(HttpContext context)
         {
-            string authToken = string.Empty;
-            string nextURL = "/default.aspx";
-            string gotoURL = string.Empty;
+            var authToken = string.Empty;
+            var nextURL = "/default.aspx";
+            var gotoURL = string.Empty;
 
             try
             {
@@ -29,35 +29,35 @@ namespace Arsenal.Web
                     nextURL = context.Request.QueryString["next"];
 
                 //New HttpWebRequest for DiscuzNT Service API
-                HttpWebRequest req = (HttpWebRequest)WebRequest.Create(ConfigGlobal.APIServiceURL);
+                var req = (HttpWebRequest)WebRequest.Create(ConfigGlobal.APIServiceURL);
 
                 req.Method = "POST";
                 req.ContentType = "application/x-www-form-urlencoded";
 
                 //Gen Digital Signature
-                string sig = string.Format("api_key={0}auth_token={1}method={2}{3}", ConfigGlobal.APIAppKey, authToken, "auth.getSession", ConfigGlobal.APICryptographicKey);
+                var sig = string.Format("api_key={0}auth_token={1}method={2}{3}", ConfigGlobal.APIAppKey, authToken, "auth.getSession", ConfigGlobal.APICryptographicKey);
 
                 //Set WebRequest Parameter
-                string para = string.Format("method={0}&api_key={1}&auth_token={2}&sig={3}", "auth.getSession", ConfigGlobal.APIAppKey, authToken, getMd5Hash(sig));
+                var para = string.Format("method={0}&api_key={1}&auth_token={2}&sig={3}", "auth.getSession", ConfigGlobal.APIAppKey, authToken, getMd5Hash(sig));
 
-                byte[] encodedBytes = Encoding.UTF8.GetBytes(para);
+                var encodedBytes = Encoding.UTF8.GetBytes(para);
                 req.ContentLength = encodedBytes.Length;
 
                 // Write encoded data into request stream
-                Stream requestStream = req.GetRequestStream();
+                var requestStream = req.GetRequestStream();
                 requestStream.Write(encodedBytes, 0, encodedBytes.Length);
                 requestStream.Close();
 
                 using (var response = req.GetResponse())
                 {
                     var receiveStream = response.GetResponseStream();
-                    StreamReader readStream = new StreamReader(receiveStream, Encoding.UTF8);
-                    string responseResult = readStream.ReadToEnd();
+                    var readStream = new StreamReader(receiveStream, Encoding.UTF8);
+                    var responseResult = readStream.ReadToEnd();
 
                     if (!string.IsNullOrEmpty(responseResult))
                     {
-                        XmlDocument xml = new XmlDocument();
-                        StringReader sr = new StringReader(responseResult);
+                        var xml = new XmlDocument();
+                        var sr = new StringReader(responseResult);
                         xml.Load(sr);
 
                         //Build Member & ACNUser Cookie Information
@@ -69,8 +69,8 @@ namespace Arsenal.Web
                         }
                         else
                         {
-                            string error_code = xml.GetElementsByTagName("error_code").Item(0).InnerText;
-                            string error_msg = xml.GetElementsByTagName("error_msg").Item(0).InnerText;
+                            var error_code = xml.GetElementsByTagName("error_code").Item(0).InnerText;
+                            var error_msg = xml.GetElementsByTagName("error_msg").Item(0).InnerText;
                             throw new Exception(string.Format("({0}) {1}", error_code, error_msg));
                         }
 
@@ -87,7 +87,7 @@ namespace Arsenal.Web
             }
             catch (Exception ex)
             {
-                string errorMsg = ex.Message.ToString();
+                var errorMsg = ex.Message.ToString();
                 context.Response.Redirect(nextURL);
             }
         }
@@ -95,18 +95,18 @@ namespace Arsenal.Web
         private string getMd5Hash(string input)
         {
             // Create a new instance of the MD5CryptoServiceProvider object.
-            MD5 md5Hasher = MD5.Create();
+            var md5Hasher = MD5.Create();
 
             // Convert the input string to a byte array and compute the hash.
-            byte[] data = md5Hasher.ComputeHash(Encoding.Default.GetBytes(input));
+            var data = md5Hasher.ComputeHash(Encoding.Default.GetBytes(input));
 
             // Create a new Stringbuilder to collect the bytes
             // and create a string.
-            StringBuilder sBuilder = new StringBuilder();
+            var sBuilder = new StringBuilder();
 
             // Loop through each byte of the hashed data 
             // and format each one as a hexadecimal string.
-            for (int i = 0; i < data.Length; i++)
+            for (var i = 0; i < data.Length; i++)
             {
                 sBuilder.Append(data[i].ToString("x2"));
             }

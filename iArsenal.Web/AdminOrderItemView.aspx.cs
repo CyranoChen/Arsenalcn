@@ -36,7 +36,7 @@ namespace iArsenal.Web
         {
             if (OrderItemID > 0)
             {
-                OrderItem oi = repo.Single<OrderItem>(OrderItemID);
+                var oi = repo.Single<OrderItem>(OrderItemID);
 
                 lblOrderItemInfo.Text = string.Format("更新会员的许愿单 ID:<em>{0}</em>", OrderItemID.ToString());
 
@@ -81,7 +81,7 @@ namespace iArsenal.Web
         {
             try
             {
-                OrderItem oi = new OrderItem();
+                var oi = new OrderItem();
 
                 if (OrderItemID > 0)
                 {
@@ -149,7 +149,7 @@ namespace iArsenal.Web
 
         protected void btnBackOrder_Click(object sender, EventArgs e)
         {
-            OrderItem oi = repo.Single<OrderItem>(OrderItemID);
+            var oi = repo.Single<OrderItem>(OrderItemID);
 
             if (oi.OrderID > 0)
                 Response.Redirect("AdminOrderView.aspx?OrderID=" + oi.OrderID.ToString());

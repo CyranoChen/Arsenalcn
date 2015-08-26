@@ -18,7 +18,7 @@ namespace Arsenalcn.ClubSys.Web.Control
             {
                 _playerInfo = PlayerStrip.GetPlayerInfo(ProfileUserID);
 
-                List<Card> list = PlayerStrip.GetMyCards(ProfileUserID).FindAll(delegate(Card un)
+                var list = PlayerStrip.GetMyCards(ProfileUserID).FindAll(delegate(Card un)
                 { return un.IsActive && un.ArsenalPlayerGuid.HasValue && un.ActiveDate.HasValue; });
 
                 list = SortUserNumberListByOrderClause(list, OrderClause);
@@ -93,15 +93,16 @@ namespace Arsenalcn.ClubSys.Web.Control
         {
             if ((e.Item.ItemType == ListItemType.Item) || (e.Item.ItemType == ListItemType.AlternatingItem))
             {
-                Card un = e.Item.DataItem as Card;
+                var un = e.Item.DataItem as Card;
 
-                Label lblPlayerCardID = e.Item.FindControl("lblPlayerCardID") as Label;
-                Label lblPlayerCardPath = e.Item.FindControl("lblPlayerCardPath") as Label;
-                LinkButton btnSetCurrent = e.Item.FindControl("btnSetCurrent") as LinkButton;
-                Label lblSetCurrent = e.Item.FindControl("lblSetCurrent") as Label;
+                var lblPlayerCardID = e.Item.FindControl("lblPlayerCardID") as Label;
+                var lblPlayerCardPath = e.Item.FindControl("lblPlayerCardPath") as Label;
+                var btnSetCurrent = e.Item.FindControl("btnSetCurrent") as LinkButton;
+                var lblSetCurrent = e.Item.FindControl("lblSetCurrent") as Label;
 
                 lblPlayerCardID.Text = un.ID.ToString();
-                lblPlayerCardPath.Text = string.Format("swf/PlayerCardActive.swf?XMLURL=ServerXml.aspx%3FPlayerGuid={0}", un.ArsenalPlayerGuid.ToString());
+                lblPlayerCardPath.Text =
+                    $"swf/PlayerCardActive.swf?XMLURL=ServerXml.aspx%3FPlayerGuid={un.ArsenalPlayerGuid.ToString()}";
 
                 if (ProfileUserID == this.CurrentUserID)
                 {
@@ -160,39 +161,39 @@ namespace Arsenalcn.ClubSys.Web.Control
         {
             if (e.CommandName == "SetCurrent")
             {
-                int userNumID = int.Parse(e.CommandArgument.ToString());
+                var userNumID = int.Parse(e.CommandArgument.ToString());
 
-                Card un = PlayerStrip.GetUserNumber(userNumID);
+                var un = PlayerStrip.GetUserNumber(userNumID);
 
                 if (un.UserID == CurrentUserID && un.IsActive && !un.IsInUse)
                 {
                     PlayerStrip.UpdatePlayerCurrentNum(CurrentUserID, userNumID);
 
-                    string script = "alert('球衣已被换上'); window.location.href = window.location.href;";
+                    var script = "alert('球衣已被换上'); window.location.href = window.location.href;";
                     this.Page.ClientScript.RegisterClientScriptBlock(typeof(string), "SetCurrentSucceed", script, true);
                 }
                 else
                 {
-                    string script = "alert('您不能换上该球衣');";
+                    var script = "alert('您不能换上该球衣');";
                     this.Page.ClientScript.RegisterClientScriptBlock(typeof(string), "SetCurrentFailed", script, true);
                 }
             }
             else if (e.CommandName == "CancelCurrent")
             {
-                int userNumID = int.Parse(e.CommandArgument.ToString());
+                var userNumID = int.Parse(e.CommandArgument.ToString());
 
-                Card un = PlayerStrip.GetUserNumber(userNumID);
+                var un = PlayerStrip.GetUserNumber(userNumID);
 
                 if (un.UserID == CurrentUserID && un.IsActive && un.IsInUse)
                 {
                     PlayerStrip.RemovePlayerCurrentNum(CurrentUserID, userNumID);
 
-                    string script = "alert('球衣已被换下'); window.location.href = window.location.href;";
+                    var script = "alert('球衣已被换下'); window.location.href = window.location.href;";
                     this.Page.ClientScript.RegisterClientScriptBlock(typeof(string), "SetCurrentSucceed", script, true);
                 }
                 else
                 {
-                    string script = "alert('您不能换下该球衣');";
+                    var script = "alert('您不能换下该球衣');";
                     this.Page.ClientScript.RegisterClientScriptBlock(typeof(string), "SetCurrentFailed", script, true);
                 }
             }

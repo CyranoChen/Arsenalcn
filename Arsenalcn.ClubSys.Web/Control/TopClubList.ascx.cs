@@ -1,13 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Configuration;
-using System.Data;
-using System.Web;
-using System.Web.Security;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
 using System.Collections.Generic;
 
 using Arsenalcn.ClubSys.Service;
@@ -20,10 +11,10 @@ namespace Arsenalcn.ClubSys.Web.Control
         protected void Page_Load(object sender, EventArgs e)
         {
             #region Top Rank Club
-            List<Club> topRankClubs = ClubLogic.GetTopRankClubs();
+            var topRankClubs = ClubLogic.GetTopRankClubs();
 
-            int rank = 1;
-            foreach (Club topClub in topRankClubs)
+            var rank = 1;
+            foreach (var topClub in topRankClubs)
             {
                 topClub.AdditionalData2 = rank.ToString();
                 rank++;
@@ -34,10 +25,10 @@ namespace Arsenalcn.ClubSys.Web.Control
             #endregion
 
             #region Top Lv Rank Club
-            List<Club> topLvClubs = ClubLogic.GetTopLvClubs();
+            var topLvClubs = ClubLogic.GetTopLvClubs();
 
             rank = 1;
-            foreach (Club topClub in topLvClubs)
+            foreach (var topClub in topLvClubs)
             {
                 topClub.AdditionalData2 = rank.ToString();
                 rank++;
@@ -48,10 +39,10 @@ namespace Arsenalcn.ClubSys.Web.Control
             #endregion
 
             #region Top Fortune Rank Club
-            List<Club> topFortuneClubs = ClubLogic.GetTopFortuneClubs();
+            var topFortuneClubs = ClubLogic.GetTopFortuneClubs();
 
             rank = 1;
-            foreach (Club topClub in topFortuneClubs)
+            foreach (var topClub in topFortuneClubs)
             {
                 topClub.AdditionalData2 = rank.ToString();
                 rank++;

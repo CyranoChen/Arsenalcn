@@ -11,7 +11,7 @@ namespace Arsenalcn.ClubSys.Web
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            ListItem item = new ListItem("--请选择球会--", Guid.Empty.ToString());
+            var item = new ListItem("--请选择球会--", Guid.Empty.ToString());
 
             ddlClub.DataSource = ClubLogic.GetActiveClubs();
             ddlClub.DataTextField = "FullName";
@@ -32,10 +32,10 @@ namespace Arsenalcn.ClubSys.Web
         {
             get
             {
-                int clubID = -1;
+                var clubID = -1;
 
-                string ddlKey = string.Empty;
-                foreach (string key in Request.Form.AllKeys)
+                var ddlKey = string.Empty;
+                foreach (var key in Request.Form.AllKeys)
                 {
                     if (key.IndexOf("ddlClub") >= 0)
                         ddlKey = key;
@@ -64,9 +64,9 @@ namespace Arsenalcn.ClubSys.Web
                 else
                     history = ClubLogic.GetClubHistory();
 
-                foreach (Arsenalcn.ClubSys.Entity.ClubHistory ch in history)
+                foreach (var ch in history)
                 {
-                    ClubHistoryActionType actionType = (ClubHistoryActionType)Enum.Parse(typeof(ClubHistoryActionType), ch.ActionType);
+                    var actionType = (ClubHistoryActionType)Enum.Parse(typeof(ClubHistoryActionType), ch.ActionType);
                     switch (actionType)
                     {
                         case ClubHistoryActionType.JoinClub:

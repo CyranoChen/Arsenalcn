@@ -40,19 +40,19 @@ namespace Arsenalcn.ClubSys.Entity
 
         protected ClubSysObject(DataRow dr)
         {
-            PropertyInfo[] properties = this.GetType().GetProperties();
+            var properties = this.GetType().GetProperties();
 
-            foreach (PropertyInfo pi in properties)
+            foreach (var pi in properties)
             {
-                object[] attributes = pi.GetCustomAttributes(typeof(ClubSysDbColumnAttribute), true);
+                var attributes = pi.GetCustomAttributes(typeof(ClubSysDbColumnAttribute), true);
 
                 if (attributes.Length != 1)
                     continue;
                 else
                 {
-                    ClubSysDbColumnAttribute dbColumn = (ClubSysDbColumnAttribute)attributes[0];
+                    var dbColumn = (ClubSysDbColumnAttribute)attributes[0];
 
-                    string columnName = dbColumn.ColumnName;
+                    var columnName = dbColumn.ColumnName;
 
                     if( dr[columnName] == DBNull.Value )
                         pi.SetValue(this, null, null);

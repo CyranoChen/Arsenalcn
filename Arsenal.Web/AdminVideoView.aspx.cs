@@ -17,7 +17,7 @@ namespace Arsenal.Web
             if (!IsPostBack)
             {
                 #region Bind ddlLeague, ddlMatch
-                List<League> leagueList = League.Cache.LeagueList.FindAll(l =>
+                var leagueList = League.Cache.LeagueList.FindAll(l =>
                     Match.Cache.MatchList.FindAll(m => m.LeagueGuid.Equals(l.ID)).Count > 0);
 
                 ddlLeague.DataSource = leagueList;
@@ -30,11 +30,11 @@ namespace Arsenal.Web
                 #endregion
 
                 #region Bind ddlGoalPlayer, ddlAssistPlayer
-                List<Player> list = Player.Cache.PlayerList_HasSquadNumber;
+                var list = Player.Cache.PlayerList_HasSquadNumber;
 
                 if (list != null && list.Count > 0)
                 {
-                    foreach (Player p in list)
+                    foreach (var p in list)
                     {
                         ddlGoalPlayer.Items.Add(new ListItem(string.Format("NO.{0} - {1}", p.SquadNumber.ToString(), p.DisplayName), p.ID.ToString()));
                         ddlAssistPlayer.Items.Add(new ListItem(string.Format("NO.{0} - {1}", p.SquadNumber.ToString(), p.DisplayName), p.ID.ToString()));
@@ -68,7 +68,7 @@ namespace Arsenal.Web
         {
             if (VideoGuid != Guid.Empty)
             {
-                Video v = repo.Single<Video>(VideoGuid);
+                var v = repo.Single<Video>(VideoGuid);
 
                 tbVideoGuid.Text = VideoGuid.ToString();
                 tbFileName.Text = v.FileName.ToString();
@@ -76,7 +76,7 @@ namespace Arsenal.Web
                 #region Set Video ArsenalMatchGuid
                 if (v.ArsenalMatchGuid.HasValue)
                 {
-                    Match m = Match.Cache.Load(v.ArsenalMatchGuid.Value);
+                    var m = Match.Cache.Load(v.ArsenalMatchGuid.Value);
 
                     if (m != null)
                     {
@@ -124,7 +124,7 @@ namespace Arsenal.Web
         {
             try
             {
-                Video v = new Video();
+                var v = new Video();
 
                 if (!VideoGuid.Equals(Guid.Empty))
                 {
@@ -229,7 +229,7 @@ namespace Arsenal.Web
 
         private void BindMatchData(Guid LeagueGuid)
         {
-            string _strRound = string.Empty;
+            var _strRound = string.Empty;
 
             ddlMatch.Items.Clear();
 
@@ -257,7 +257,7 @@ namespace Arsenal.Web
 
         private void BindOponnentData(Guid MatchGuid)
         {
-            Match m = Match.Cache.Load(MatchGuid);
+            var m = Match.Cache.Load(MatchGuid);
 
             if (m != null)
             {

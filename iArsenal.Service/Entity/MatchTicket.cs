@@ -22,7 +22,7 @@ namespace iArsenal.Service
         private void Init(DataRow dr = null)
         {
             // Match Info Initializer
-            Match m = Arsenal_Match.Cache.Load(ID);
+            var m = Arsenal_Match.Cache.Load(ID);
 
             ID = m.ID;
             TeamGuid = m.TeamGuid;
@@ -90,14 +90,14 @@ namespace iArsenal.Service
 
         public void Single()
         {
-            string sql = string.Format("SELECT * FROM {0} WHERE MatchGuid = @key",
+            var sql = string.Format("SELECT * FROM {0} WHERE MatchGuid = @key",
                 Repository.GetTableAttr<MatchTicket>().Name);
 
             SqlParameter[] para = {
                                       new SqlParameter("@key", ID),
                                   };
 
-            DataSet ds = DataAccess.ExecuteDataset(sql, para);
+            var ds = DataAccess.ExecuteDataset(sql, para);
 
             if (ds.Tables[0].Rows.Count > 0)
             {
@@ -111,12 +111,12 @@ namespace iArsenal.Service
 
         public bool Any()
         {
-            string sql = string.Format("SELECT * FROM {0} WHERE MatchGuid = @key",
+            var sql = string.Format("SELECT * FROM {0} WHERE MatchGuid = @key",
                 Repository.GetTableAttr<MatchTicket>().Name);
 
             SqlParameter[] para = { new SqlParameter("@key", ID), };
 
-            DataSet ds = DataAccess.ExecuteDataset(sql, para);
+            var ds = DataAccess.ExecuteDataset(sql, para);
 
             return ds.Tables[0].Rows.Count > 0;
         }
@@ -130,25 +130,25 @@ namespace iArsenal.Service
             {
                 // Get DataSet of iArsenal_MatchTicket 
                 var attr = Repository.GetTableAttr<MatchTicket>();
-                string sql = string.Format("SELECT * FROM {0} ORDER BY {1}", attr.Name, attr.Sort);
-                DataSet ds = DataAccess.ExecuteDataset(sql);
+                var sql = string.Format("SELECT * FROM {0} ORDER BY {1}", attr.Name, attr.Sort);
+                var ds = DataAccess.ExecuteDataset(sql);
 
                 if (ds.Tables[0].Rows.Count > 0)
                 {
-                    DataTable dt = ds.Tables[0];
+                    var dt = ds.Tables[0];
                     dt.PrimaryKey = new DataColumn[] { dt.Columns["MatchGuid"] };
                 }
 
                 var list = new List<MatchTicket>();
 
-                foreach (Match m in mlist)
+                foreach (var m in mlist)
                 {
-                    MatchTicket mt = new MatchTicket();
+                    var mt = new MatchTicket();
                     mt.ID = m.ID;
 
                     if (ds.Tables[0].Rows.Count > 0)
                     {
-                        DataRow dr = ds.Tables[0].Rows.Find(m.ID);
+                        var dr = ds.Tables[0].Rows.Find(m.ID);
                         mt.Init(dr);
                     }
                     else
@@ -169,7 +169,7 @@ namespace iArsenal.Service
 
         public void Create(SqlTransaction trans = null)
         {
-            string sql = @"INSERT INTO {0} (MatchGuid, ProductCode, Deadline, AllowMemberClass, TicketCount, IsActive, Remark) 
+            var sql = @"INSERT INTO {0} (MatchGuid, ProductCode, Deadline, AllowMemberClass, TicketCount, IsActive, Remark) 
                                VALUES (@key, @productCode, @deadline, @allowMemberClass, @ticketCount, @isActive, @remark)";
 
             sql = string.Format(sql, Repository.GetTableAttr<MatchTicket>().Name);
@@ -189,7 +189,7 @@ namespace iArsenal.Service
 
         public void Update(SqlTransaction trans = null)
         {
-            string sql = @"UPDATE {0} SET ProductCode = @productCode, Deadline = @deadline, AllowMemberClass = @allowMemberClass,
+            var sql = @"UPDATE {0} SET ProductCode = @productCode, Deadline = @deadline, AllowMemberClass = @allowMemberClass,
                                   TicketCount = @ticketCount, IsActive = @isActive, Remark = @remark WHERE MatchGuid = @key";
 
             sql = string.Format(sql, Repository.GetTableAttr<MatchTicket>().Name);
@@ -209,7 +209,7 @@ namespace iArsenal.Service
 
         public void Delete(SqlTransaction trans = null)
         {
-            string sql = string.Format("DELETE FROM {0} WHERE MatchGuid = @key",
+            var sql = string.Format("DELETE FROM {0} WHERE MatchGuid = @key",
                 Repository.GetTableAttr<MatchTicket>().Name);
 
             SqlParameter[] para = { new SqlParameter("@key", ID) };
@@ -230,7 +230,7 @@ namespace iArsenal.Service
                 var oiQuery = repo.Query<OrderItem>(oi =>
                     oi.IsActive == true && oi.Remark != string.Empty);
 
-                foreach (MatchTicket mt in list)
+                foreach (var mt in list)
                 {
                     var _list = oiQuery.FindAll(oi => oi.Remark.Equals(mt.ID.ToString()));
                     var _count = oQuery.FindAll(o => _list.Any(oi => oi.OrderID.Equals(o.ID))).Count;
@@ -257,8 +257,8 @@ namespace iArsenal.Service
 
         private static DateTime ConvertToDST(DateTime date)
         {
-            DateTime begDST = new DateTime(date.Year, 3, 31);
-            DateTime endDST = new DateTime(date.Year, 11, 1);
+            var begDST = new DateTime(date.Year, 3, 31);
+            var endDST = new DateTime(date.Year, 11, 1);
 
             if (begDST.DayOfWeek != DayOfWeek.Sunday)
                 begDST = begDST.AddDays(-((int)begDST.DayOfWeek));

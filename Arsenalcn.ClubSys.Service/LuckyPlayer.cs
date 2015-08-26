@@ -13,14 +13,14 @@ namespace Arsenalcn.ClubSys.Service
         {
             if (ConfigGlobal.LuckyPlayerActive)
             {
-                string sql = @"SELECT TOP 1 ID FROM dbo.AcnClub_Player WHERE (UserID IN
+                var sql = @"SELECT TOP 1 ID FROM dbo.AcnClub_Player WHERE (UserID IN
                           (SELECT UserID FROM dbo.AcnClub_RelationUserClub WHERE IsActive = 1)) ORDER BY NEWID()";
 
-                int playerID = 0;
+                var playerID = 0;
 
-                using (SqlConnection con = SQLConn.GetConnection())
+                using (var con = SQLConn.GetConnection())
                 {
-                    SqlCommand com = new SqlCommand(sql, con);
+                    var com = new SqlCommand(sql, con);
 
                     con.Open();
 
@@ -35,9 +35,9 @@ namespace Arsenalcn.ClubSys.Service
                     sql = sql + "IF NOT EXISTS (SELECT * FROM dbo.Arsenalcn_Config WHERE ConfigKey = 'LuckyPlayerBonusGot'  AND ConfigSystem = 'AcnClub') INSERT INTO dbo.Arsenalcn_Config VALUES ('AcnClub', 'LuckyPlayerBonusGot', 'false'); UPDATE dbo.Arsenalcn_Config SET ConfigValue = 'false' WHERE ConfigKey = 'LuckyPlayerBonusGot' AND ConfigSystem = 'AcnClub'; ";
                     sql = sql + "INSERT INTO dbo.AcnClub_LogLuckyPlayer (PlayerID, TotalBonus, [Date], BonusGot) values (@value, @bonus, getdate(), 0);";
 
-                    using (SqlConnection con = SQLConn.GetConnection())
+                    using (var con = SQLConn.GetConnection())
                     {
-                        SqlCommand com = new SqlCommand(sql, con);
+                        var com = new SqlCommand(sql, con);
                         com.Parameters.Add(new SqlParameter("@value", playerID.ToString()));
                         com.Parameters.Add(new SqlParameter("@bonus", CalcTotalBonus()));
 
@@ -53,20 +53,20 @@ namespace Arsenalcn.ClubSys.Service
 
         public static int CalcTotalBonus()
         {
-            string sql = "SELECT COUNT(*) FROM dbo.AcnClub_LogBingo WHERE ActionDate BETWEEN @fromDate AND @toDate";
+            var sql = "SELECT COUNT(*) FROM dbo.AcnClub_LogBingo WHERE ActionDate BETWEEN @fromDate AND @toDate";
 
-            int totalBonus = 0;
+            var totalBonus = 0;
 
-            using (SqlConnection con = SQLConn.GetConnection())
+            using (var con = SQLConn.GetConnection())
             {
-                SqlCommand com = new SqlCommand(sql, con);
+                var com = new SqlCommand(sql, con);
 
                 con.Open();
 
                 com.Parameters.Add(new SqlParameter("@fromDate", DateTime.Today.AddDays(-1)));
                 com.Parameters.Add(new SqlParameter("@toDate", DateTime.Today));
 
-                int count = (int)com.ExecuteScalar();
+                var count = (int)com.ExecuteScalar();
 
                 totalBonus = count * ConfigGlobal.BingoGetCost;
 
@@ -78,12 +78,12 @@ namespace Arsenalcn.ClubSys.Service
 
         public static void SetBonusGot(int playerID, int bonusToClub, int clubID, int luckyPlayerID)
         {
-            string sql = "UPDATE dbo.Arsenalcn_Config SET ConfigValue = 'true' WHERE ConfigKey = 'LuckyPlayerBonusGot'; ";
+            var sql = "UPDATE dbo.Arsenalcn_Config SET ConfigValue = 'true' WHERE ConfigKey = 'LuckyPlayerBonusGot'; ";
             sql = sql + "UPDATE dbo.AcnClub_LogLuckyPlayer SET BonusGot = 1 WHERE [ID] = (SELECT TOP 1 [ID] FROM AcnClub_LogLuckyPlayer ORDER BY [Date] DESC); ";
 
-            using (SqlConnection con = SQLConn.GetConnection())
+            using (var con = SQLConn.GetConnection())
             {
-                SqlCommand com = new SqlCommand(sql, con);
+                var com = new SqlCommand(sql, con);
 
                 con.Open();
 
@@ -92,12 +92,12 @@ namespace Arsenalcn.ClubSys.Service
                 //con.Close();
             }
            
-            Gamer player = PlayerStrip.GetPlayerInfoByPlayerID(playerID);
-            Gamer lPlayer = PlayerStrip.GetPlayerInfoByPlayerID(luckyPlayerID);
+            var player = PlayerStrip.GetPlayerInfoByPlayerID(playerID);
+            var lPlayer = PlayerStrip.GetPlayerInfoByPlayerID(luckyPlayerID);
     
             if (player != null && clubID > 0)
             {
-                ClubHistory ch = new ClubHistory();
+                var ch = new ClubHistory();
                 ch.ClubID = clubID;
                 ch.ActionUserName = lPlayer.UserName;
                 ch.OperatorUserName = player.UserName;
@@ -110,16 +110,16 @@ namespace Arsenalcn.ClubSys.Service
 
         public static DataTable GetLuckPlayerHistory()
         {
-            string sql = "SELECT * FROM dbo.AcnClub_LogLuckyPlayer lp INNER JOIN dbo.AcnClub_Player p ON lp.PlayerID = p.[ID] order by lp.ID desc";
+            var sql = "SELECT * FROM dbo.AcnClub_LogLuckyPlayer lp INNER JOIN dbo.AcnClub_Player p ON lp.PlayerID = p.[ID] order by lp.ID desc";
 
-            using (SqlConnection con = SQLConn.GetConnection())
+            using (var con = SQLConn.GetConnection())
             {
-                SqlCommand com = new SqlCommand(sql, con);
+                var com = new SqlCommand(sql, con);
 
-                SqlDataAdapter sda = new SqlDataAdapter(com);
+                var sda = new SqlDataAdapter(com);
                 con.Open();
 
-                DataTable dt = new DataTable();
+                var dt = new DataTable();
 
                 sda.Fill(dt);
 

@@ -20,7 +20,7 @@ namespace iArsenal.Web
             {
                 #region Bind ddlLeague
 
-                List<MatchTicket> mtList = MatchTicket.Cache.MatchTicketList;
+                var mtList = MatchTicket.Cache.MatchTicketList;
 
                 var list = mtList.GroupBy(mt => new { mt.LeagueGuid, mt.LeagueName })
                     .Select(l => new { l.Key.LeagueGuid, l.Key.LeagueName })
@@ -37,7 +37,7 @@ namespace iArsenal.Web
 
                 #region Bind ddlProductCode
 
-                List<Product> pList = Product.Cache.Load(ProductType.MatchTicket);
+                var pList = Product.Cache.Load(ProductType.MatchTicket);
 
                 ddlProductCode.DataSource = pList;
                 ddlProductCode.DataTextField = "DisplayName";
@@ -79,8 +79,8 @@ namespace iArsenal.Web
         {
             var list = MatchTicket.All().FindAll(x =>
             {
-                Boolean returnValue = true;
-                string tmpString = string.Empty;
+                var returnValue = true;
+                var tmpString = string.Empty;
 
                 if (ViewState["LeagueGuid"] != null)
                 {
@@ -123,7 +123,7 @@ namespace iArsenal.Web
             #region set GridView Selected PageIndex
             if (MatchGuid.HasValue && MatchGuid != Guid.Empty)
             {
-                int i = list.FindIndex(mt => mt.ID.Equals(MatchGuid));
+                var i = list.FindIndex(mt => mt.ID.Equals(MatchGuid));
                 if (i >= 0)
                 {
                     gvMatchTicket.PageIndex = i / gvMatchTicket.PageSize;
@@ -271,9 +271,9 @@ namespace iArsenal.Web
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                MatchTicket mt = e.Row.DataItem as MatchTicket;
+                var mt = e.Row.DataItem as MatchTicket;
 
-                Label lblHomeAway = e.Row.FindControl("lblHomeAway") as Label;
+                var lblHomeAway = e.Row.FindControl("lblHomeAway") as Label;
 
                 if (lblHomeAway != null)
                 {

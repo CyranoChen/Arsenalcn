@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Web;
-using System.Web.UI;
-
-using iArsenal.Service;
 
 namespace iArsenal.Web
 {
@@ -19,7 +16,7 @@ namespace iArsenal.Web
                     {
                         HttpCookie mycookie;
                         mycookie = Request.Cookies["session_key"];
-                        TimeSpan ts = new TimeSpan(0, 0, 0, 0);//时间跨度 
+                        var ts = new TimeSpan(0, 0, 0, 0);//时间跨度 
                         mycookie.Expires = DateTime.Now.Add(ts);//立即过期 
                         Response.Cookies.Remove("session_key");//清除 
                         Response.Cookies.Add(mycookie);//写入立即过期的*/
@@ -30,7 +27,7 @@ namespace iArsenal.Web
                     {
                         HttpCookie mycookie;
                         mycookie = Request.Cookies["uid"];
-                        TimeSpan ts = new TimeSpan(0, 0, 0, 0);//时间跨度 
+                        var ts = new TimeSpan(0, 0, 0, 0);//时间跨度 
                         mycookie.Expires = DateTime.Now.Add(ts);//立即过期 
                         Response.Cookies.Remove("uid");//清除 
                         Response.Cookies.Add(mycookie);//写入立即过期的*/
@@ -41,7 +38,7 @@ namespace iArsenal.Web
                     {
                         HttpCookie mycookie;
                         mycookie = Request.Cookies["user_name"];
-                        TimeSpan ts = new TimeSpan(0, 0, 0, 0);//时间跨度 
+                        var ts = new TimeSpan(0, 0, 0, 0);//时间跨度 
                         mycookie.Expires = DateTime.Now.Add(ts);//立即过期 
                         Response.Cookies.Remove("user_name");//清除 
                         Response.Cookies.Add(mycookie);//写入立即过期的*/
@@ -52,7 +49,7 @@ namespace iArsenal.Web
                     {
                         HttpCookie mycookie;
                         mycookie = Request.Cookies["mid"];
-                        TimeSpan ts = new TimeSpan(0, 0, 0, 0);//时间跨度 
+                        var ts = new TimeSpan(0, 0, 0, 0);//时间跨度 
                         mycookie.Expires = DateTime.Now.Add(ts);//立即过期 
                         Response.Cookies.Remove("mid");//清除 
                         Response.Cookies.Add(mycookie);//写入立即过期的*/
@@ -63,7 +60,7 @@ namespace iArsenal.Web
                     {
                         HttpCookie mycookie;
                         mycookie = Request.Cookies["member_name"];
-                        TimeSpan ts = new TimeSpan(0, 0, 0, 0);//时间跨度 
+                        var ts = new TimeSpan(0, 0, 0, 0);//时间跨度 
                         mycookie.Expires = DateTime.Now.Add(ts);//立即过期 
                         Response.Cookies.Remove("member_name");//清除 
                         Response.Cookies.Add(mycookie);//写入立即过期的*/

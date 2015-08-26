@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data;
 
 namespace iArsenal.Service
 {
@@ -12,7 +11,7 @@ namespace iArsenal.Service
             try { MatchGuid = !string.IsNullOrEmpty(Remark) ? new Guid(Remark) : Guid.Empty; }
             catch { throw new Exception("Can't get the Partner of OrderItem_MatchTicket.Remark."); }
 
-            DateTime _date = DateTime.MinValue;
+            var _date = DateTime.MinValue;
             if (!string.IsNullOrEmpty(Size) && DateTime.TryParse(Size, out _date))
             {
                 TravelDate = _date;
@@ -25,7 +24,7 @@ namespace iArsenal.Service
             if (ProductGuid == null)
                 throw new Exception("Loading OrderItem failed.");
 
-            Product p = Product.Cache.Load(ProductGuid);
+            var p = Product.Cache.Load(ProductGuid);
 
             if (!p.ProductType.Equals(ProductType.MatchTicket))
                 throw new Exception("The OrderItem is not the type of MatchTicket.");
@@ -62,7 +61,7 @@ namespace iArsenal.Service
             if (ProductGuid == null)
                 throw new Exception("Loading OrderItem failed.");
 
-            Product p = Product.Cache.Load(ProductGuid);
+            var p = Product.Cache.Load(ProductGuid);
 
             if (!p.ProductType.Equals(ProductType.TicketBeijing))
                 throw new Exception("The OrderItem is not the type of TicketBeijing.");
@@ -72,7 +71,7 @@ namespace iArsenal.Service
         {
             this.Size = SeatLevel;
 
-            Product product = Product.Cache.ProductList.Find(p =>
+            var product = Product.Cache.ProductList.Find(p =>
                 p.ProductType.Equals(ProductType.TicketBeijing));
 
             base.Place(m, product, trans);

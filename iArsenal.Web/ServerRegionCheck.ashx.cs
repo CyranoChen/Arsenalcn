@@ -11,22 +11,22 @@ namespace iArsenal.Web
     {
         public void ProcessRequest(HttpContext context)
         {
-            string responseText = string.Empty;
+            var responseText = string.Empty;
 
             if (!string.IsNullOrEmpty(context.Request.QueryString["RegionID"]))
             {
                 try
                 {
-                    int rid = int.Parse(context.Request.QueryString["RegionID"]);
+                    var rid = int.Parse(context.Request.QueryString["RegionID"]);
 
-                    List<DictionaryItem> itemList = DictionaryItem.Cache.DictionaryItemList_Region;
+                    var itemList = DictionaryItem.Cache.DictionaryItemList_Region;
 
                     itemList = itemList.FindAll(item => item.ParentID.Equals(rid));
                     itemList.RemoveAll(item => item.Name.Equals("市辖区") || item.Name.Equals("县") || item.Name.Equals("市") || item.Name.Contains("行政单位"));
 
                     if (itemList != null)
                     {
-                        JavaScriptSerializer jsonSerializer = new JavaScriptSerializer();
+                        var jsonSerializer = new JavaScriptSerializer();
                         responseText = jsonSerializer.Serialize(itemList);
                     }
                 }

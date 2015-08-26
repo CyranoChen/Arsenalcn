@@ -28,7 +28,7 @@ namespace Arsenalcn.Core
             {
                 Contract.Requires(!string.IsNullOrEmpty(sql));
 
-                DataSet ds = SqlHelper.ExecuteDataset(ConnectString, CommandType.Text, sql, para);
+                var ds = SqlHelper.ExecuteDataset(ConnectString, CommandType.Text, sql, para);
 
                 log.Debug(sql, new LogInfo()
                 {
@@ -88,11 +88,12 @@ namespace Arsenalcn.Core
         public static object ExecuteScalar(string sql, SqlParameter[] para = null, SqlTransaction trans = null)
         {
             ILog log = new DaoLog();
-            object key;
+
+            Contract.Requires(!string.IsNullOrEmpty(sql));
 
             try
             {
-                Contract.Requires(!string.IsNullOrEmpty(sql));
+                object key;
 
                 if (trans != null)
                 {
@@ -103,7 +104,7 @@ namespace Arsenalcn.Core
                     key = SqlHelper.ExecuteScalar(ConnectString, CommandType.Text, sql, para);
                 }
 
-                log.Debug(sql, new LogInfo()
+                log.Debug(sql, new LogInfo
                 {
                     MethodInstance = MethodBase.GetCurrentMethod(),
                     ThreadInstance = Thread.CurrentThread
@@ -113,7 +114,7 @@ namespace Arsenalcn.Core
             }
             catch (Exception ex)
             {
-                log.Debug(ex, new LogInfo()
+                log.Debug(ex, new LogInfo
                 {
                     MethodInstance = MethodBase.GetCurrentMethod(),
                     ThreadInstance = Thread.CurrentThread

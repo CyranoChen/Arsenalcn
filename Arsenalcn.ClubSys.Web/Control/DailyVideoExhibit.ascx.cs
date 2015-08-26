@@ -12,13 +12,14 @@ namespace Arsenalcn.ClubSys.Web.Control
             {
                 if (ConfigGlobal.DailyVideoActive)
                 {
-                    Guid guid = ConfigGlobal.DailyVideoGuid;
+                    var guid = ConfigGlobal.DailyVideoGuid;
 
                     if (!guid.Equals(Guid.Empty))
                     {
-                        ltrlVideo.Text = string.Format("<script type=\"text/javascript\">GenSwfObject('PlayerVideoActive', 'swf/PlayerVideoActive.swf?XMLURL=ServerXml.aspx%3FVideoGuid={0}&ShowEffect=true', '160', '200');</script>", guid.ToString());
+                        ltrlVideo.Text =
+                            $"<script type=\"text/javascript\">GenSwfObject('PlayerVideoActive', 'swf/PlayerVideoActive.swf?XMLURL=ServerXml.aspx%3FVideoGuid={guid.ToString()}&ShowEffect=true', '160', '200');</script>";
 
-                        btnSwfView.OnClientClick = string.Format("ShowVideoPreview('{0}'); return false", guid.ToString());
+                        btnSwfView.OnClientClick = $"ShowVideoPreview('{guid.ToString()}'); return false";
 
                         pnlVideoExhibit.Visible = true;
                     }

@@ -143,7 +143,7 @@ namespace Arsenalcn.Core.Logger
 
         protected static void Logging(string logger, DateTime createTime, LogLevel level, string message, string stackTrace, UserClientInfo userClient = null)
         {
-            string sql = @"INSERT INTO {0} (Logger, CreateTime, LogLevel, Message, StackTrace, Thread, Method, UserID, UserIP, UserBrowser, UserOS) 
+            var sql = @"INSERT INTO {0} (Logger, CreateTime, LogLevel, Message, StackTrace, Thread, Method, UserID, UserIP, UserBrowser, UserOS) 
                                VALUES (@logger, @createTime, @logLevel, @message, @stackTrace, @thread, @method, @userID, @userIP, @userBrowser, @userOS)";
 
             sql = string.Format(sql, Repository.GetTableAttr<Log>().Name);
@@ -156,7 +156,7 @@ namespace Arsenalcn.Core.Logger
                                       new SqlParameter("@stackTrace", stackTrace),
                                       new SqlParameter("@thread", string.Empty),
                                       new SqlParameter("@method", string.Empty),
-                                      new SqlParameter("@userID", userClient != null ? userClient.UserID : -1),
+                                      new SqlParameter("@userID", userClient?.UserID ?? -1),
                                       new SqlParameter("@userIP", userClient != null ? userClient.UserIP : "127.0.0.1"),
                                       new SqlParameter("@userBrowser", userClient != null ? userClient.UserBrowser : string.Empty),
                                       new SqlParameter("@userOS", userClient != null? userClient.UserOS : string.Empty)
@@ -168,7 +168,7 @@ namespace Arsenalcn.Core.Logger
 
         protected static void Logging(string logger, DateTime createTime, LogLevel level, string message, string stackTrace, Thread thread, MethodBase method, UserClientInfo userClient = null)
         {
-            string sql = @"INSERT INTO {0} (Logger, CreateTime, LogLevel, Message, StackTrace, Thread, Method, UserID, UserIP, UserBrowser, UserOS) 
+            var sql = @"INSERT INTO {0} (Logger, CreateTime, LogLevel, Message, StackTrace, Thread, Method, UserID, UserIP, UserBrowser, UserOS) 
                                VALUES (@logger, @createTime, @logLevel, @message, @stackTrace, @thread, @method, @userID, @userIP, @userBrowser, @userOS)";
 
             sql = string.Format(sql, Repository.GetTableAttr<Log>().Name);
@@ -180,8 +180,10 @@ namespace Arsenalcn.Core.Logger
                                       new SqlParameter("@message", message),
                                       new SqlParameter("@stackTrace", stackTrace),
                                       new SqlParameter("@thread", thread.Name ?? thread.ManagedThreadId.ToString()),
-                                      new SqlParameter("@method", method != null ? string.Format("{0}, {1}", method.Name, method.DeclaringType.FullName) : string.Empty),
-                                      new SqlParameter("@userID", userClient != null ? userClient.UserID : -1),
+                                      new SqlParameter("@method", method != null ?
+                                          $"{method.Name}, {method.DeclaringType?.FullName}"
+                                          : string.Empty),
+                                      new SqlParameter("@userID", userClient?.UserID ?? -1),
                                       new SqlParameter("@userIP", userClient != null ? userClient.UserIP : "127.0.0.1"),
                                       new SqlParameter("@userBrowser", userClient != null ? userClient.UserBrowser : string.Empty),
                                       new SqlParameter("@userOS", userClient != null? userClient.UserOS : string.Empty)
@@ -198,7 +200,7 @@ namespace Arsenalcn.Core.Logger
             var list = repo.Query<Log>(x => x.Logger == "DaoLog" && x.CreateTime < DateTime.Now.AddMonths(-1))
                 .FindAll(x => x.Level.Equals(LogLevel.Debug));
 
-            if (list != null && list.Count > 0)
+            if (list.Count > 0)
             {
                 list.Delete();
             }

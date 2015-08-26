@@ -21,14 +21,14 @@ namespace Arsenalcn.CasinoSys.Web
 
         private void BindData()
         {
-            DataTable dt = Entity.CasinoItem.GetMatchCasinoItemView(false);
+            var dt = Entity.CasinoItem.GetMatchCasinoItemView(false);
 
             dt.Columns.Add("HomeDisplay", typeof(string));
             dt.Columns.Add("AwayDisplay", typeof(string));
 
             foreach (DataRow dr in dt.Rows)
             {
-                Match m = new Match((Guid)dr["MatchGuid"]);
+                var m = new Match((Guid)dr["MatchGuid"]);
 
                 dr["HomeDisplay"] = Team.Cache.Load((Guid)m.Home).TeamDisplayName;
                 dr["AwayDisplay"] = Team.Cache.Load((Guid)m.Away).TeamDisplayName;
@@ -43,17 +43,17 @@ namespace Arsenalcn.CasinoSys.Web
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
                 //Match m = e.Row.DataItem as Match;
-                DataRowView drv = e.Row.DataItem as DataRowView;
-                Match m = new Match((Guid)drv["MatchGuid"]);
+                var drv = e.Row.DataItem as DataRowView;
+                var m = new Match((Guid)drv["MatchGuid"]);
 
-                Literal matchResult = e.Row.FindControl("ltrlMatchResult") as Literal;
-                LinkButton btnCalcBonus = e.Row.FindControl("btnCalcBonus") as LinkButton;
-                LinkButton btnReturnBet = e.Row.FindControl("btnReturnBet") as LinkButton;
-                Label lblBonus = e.Row.FindControl("lblBonus") as Label;
-                TextBox tbPlayTime = e.Row.FindControl("tbPlayTime") as TextBox;
-                TextBox tbRound = e.Row.FindControl("tbRound") as TextBox;
-                TextBox tbHome = e.Row.FindControl("tbHome") as TextBox;
-                TextBox tbAway = e.Row.FindControl("tbAway") as TextBox;
+                var matchResult = e.Row.FindControl("ltrlMatchResult") as Literal;
+                var btnCalcBonus = e.Row.FindControl("btnCalcBonus") as LinkButton;
+                var btnReturnBet = e.Row.FindControl("btnReturnBet") as LinkButton;
+                var lblBonus = e.Row.FindControl("lblBonus") as Label;
+                var tbPlayTime = e.Row.FindControl("tbPlayTime") as TextBox;
+                var tbRound = e.Row.FindControl("tbRound") as TextBox;
+                var tbHome = e.Row.FindControl("tbHome") as TextBox;
+                var tbAway = e.Row.FindControl("tbAway") as TextBox;
 
                 if (tbPlayTime != null)
                     tbPlayTime.Text = m.PlayTime.ToString("yyyy-MM-dd HH:mm");
@@ -71,13 +71,13 @@ namespace Arsenalcn.CasinoSys.Web
                 {
                     matchResult.Text = string.Format("{0}：{1}", m.ResultHome.ToString(), m.ResultAway.ToString());
 
-                    Guid matchGuid = m.MatchGuid;
+                    var matchGuid = m.MatchGuid;
 
-                    Guid? itemGuid = Entity.CasinoItem.GetCasinoItemGuidByMatch(matchGuid, CasinoType.SingleChoice);
+                    var itemGuid = Entity.CasinoItem.GetCasinoItemGuidByMatch(matchGuid, CasinoType.SingleChoice);
 
                     if (itemGuid.HasValue)
                     {
-                        Entity.CasinoItem item = Entity.CasinoItem.GetCasinoItem(itemGuid.Value);
+                        var item = Entity.CasinoItem.GetCasinoItem(itemGuid.Value);
 
                         if (item.Earning.HasValue)
                         {
@@ -102,9 +102,9 @@ namespace Arsenalcn.CasinoSys.Web
                 }
                 else
                 {
-                    List<Entity.Bet> betList = Entity.Bet.GetMatchAllBet(m.MatchGuid);
+                    var betList = Entity.Bet.GetMatchAllBet(m.MatchGuid);
 
-                    int betCount = 0;
+                    var betCount = 0;
                     if (betList != null && betList.Count > 0)
                         betCount = betList.Count;
 
@@ -127,18 +127,18 @@ namespace Arsenalcn.CasinoSys.Web
 
         protected void gvMatch_RowUpdating(object sender, GridViewUpdateEventArgs e)
         {
-            TextBox tbHome = gvMatch.Rows[gvMatch.EditIndex].FindControl("tbHome") as TextBox;
-            TextBox tbAway = gvMatch.Rows[gvMatch.EditIndex].FindControl("tbAway") as TextBox;
-            TextBox tbPlayTime = gvMatch.Rows[gvMatch.EditIndex].FindControl("tbPlayTime") as TextBox;
-            TextBox tbRound = gvMatch.Rows[gvMatch.EditIndex].FindControl("tbRound") as TextBox;
+            var tbHome = gvMatch.Rows[gvMatch.EditIndex].FindControl("tbHome") as TextBox;
+            var tbAway = gvMatch.Rows[gvMatch.EditIndex].FindControl("tbAway") as TextBox;
+            var tbPlayTime = gvMatch.Rows[gvMatch.EditIndex].FindControl("tbPlayTime") as TextBox;
+            var tbRound = gvMatch.Rows[gvMatch.EditIndex].FindControl("tbRound") as TextBox;
 
             if (tbHome != null && tbAway != null && tbPlayTime != null && tbRound != null)
             {
                 try
                 {
-                    Guid guid = (Guid)gvMatch.DataKeys[gvMatch.EditIndex].Value;
+                    var guid = (Guid)gvMatch.DataKeys[gvMatch.EditIndex].Value;
 
-                    Match m = new Match(guid);
+                    var m = new Match(guid);
 
                     short rHome;
                     short rAway;
@@ -160,7 +160,7 @@ namespace Arsenalcn.CasinoSys.Web
 
                     m.Update();
 
-                    Guid? casinoItemGuid = Entity.CasinoItem.GetCasinoItemGuidByMatch(guid, CasinoType.MatchResult);
+                    var casinoItemGuid = Entity.CasinoItem.GetCasinoItemGuidByMatch(guid, CasinoType.MatchResult);
 
                     if (casinoItemGuid.HasValue && m.ResultHome.HasValue && m.ResultAway.HasValue)
                     {
@@ -183,10 +183,10 @@ namespace Arsenalcn.CasinoSys.Web
 
         protected void gvMatch_RowDeleting(object sender, GridViewDeleteEventArgs e)
         {
-            Guid guid = (Guid)gvMatch.DataKeys[e.RowIndex].Value;
+            var guid = (Guid)gvMatch.DataKeys[e.RowIndex].Value;
             try
             {
-                Match m = new Match(guid);
+                var m = new Match(guid);
                 m.Delete();
             }
             catch (Exception ex)
@@ -218,9 +218,9 @@ namespace Arsenalcn.CasinoSys.Web
             {
                 if (e.CommandName == "ReturnBet")
                 {
-                    Guid guid = new Guid(e.CommandArgument.ToString());
+                    var guid = new Guid(e.CommandArgument.ToString());
 
-                    Match m = new Match(guid);
+                    var m = new Match(guid);
                     m.ReturnBet();
 
                     this.ClientScript.RegisterClientScriptBlock(typeof(string), "success", "alert('投注退还成功');", true);
@@ -229,9 +229,9 @@ namespace Arsenalcn.CasinoSys.Web
                 }
                 else if (e.CommandName == "CalcBonus")
                 {
-                    Guid guid = new Guid(e.CommandArgument.ToString());
+                    var guid = new Guid(e.CommandArgument.ToString());
 
-                    Match m = new Match(guid);
+                    var m = new Match(guid);
                     m.CalcBonus();
 
                     this.ClientScript.RegisterClientScriptBlock(typeof(string), "success", "alert('奖金发放成功');", true);

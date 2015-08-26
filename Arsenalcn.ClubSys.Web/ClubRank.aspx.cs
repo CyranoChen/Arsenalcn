@@ -1,15 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Configuration;
-using System.Data;
-using System.Web;
-using System.Web.Security;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
-using System.Web.UI.HtmlControls;
-using System.Collections.Generic;
-
 using Arsenalcn.ClubSys.Service;
 using Arsenalcn.ClubSys.Entity;
 
@@ -53,27 +42,32 @@ namespace Arsenalcn.ClubSys.Web
 
             #endregion
 
-            Club currentClub = ClubLogic.GetClubInfo(ClubID);
+            var currentClub = ClubLogic.GetClubInfo(ClubID);
 
             if (currentClub != null && this.Title.IndexOf("{0}") >= 0)
                 this.Title = string.Format(this.Title, currentClub.FullName);
 
             if (currentClub != null)
             {
-                int memberCount = ClubLogic.GetClubMemberCount(ClubID);
-                int memberQuota = ClubLogic.GetClubMemberQuota(ClubID);
+                var memberCount = ClubLogic.GetClubMemberCount(ClubID);
+                var memberQuota = ClubLogic.GetClubMemberQuota(ClubID);
 
-                RankAlgorithm ra = new RankAlgorithm(currentClub);
+                var ra = new RankAlgorithm(currentClub);
 
-                ltrlMemberCount.Text = string.Format("<cite class=\"RankLevel\"><a style=\"width: {0}px\">{1}%</a></cite><em>{2}//{3}</em>", (ra.MemberCountRank * 2).ToString(), ra.MemberCountRank.ToString(), memberCount.ToString(), memberQuota.ToString());
+                ltrlMemberCount.Text =
+                    $"<cite class=\"RankLevel\"><a style=\"width: {(ra.MemberCountRank*2).ToString()}px\">{ra.MemberCountRank.ToString()}%</a></cite><em>{memberCount.ToString()}//{memberQuota.ToString()}</em>";
 
-                ltrlClubFortune.Text = string.Format("<cite class=\"RankLevel\"><a style=\"width: {0}px\">{1}%</a></cite><em>{2}</em>", (ra.ClubFortuneRank * 2).ToString(), ra.ClubFortuneRank.ToString(), Convert.ToInt32(currentClub.Fortune).ToString("N0"));
+                ltrlClubFortune.Text =
+                    $"<cite class=\"RankLevel\"><a style=\"width: {(ra.ClubFortuneRank*2).ToString()}px\">{ra.ClubFortuneRank.ToString()}%</a></cite><em>{Convert.ToInt32(currentClub.Fortune).ToString("N0")}</em>";
 
-                ltrlMemberCredit.Text = string.Format("<cite class=\"RankLevel\"><a style=\"width: {0}px\">{1}%</a></cite><em>{2}</em>", (ra.MemberCreditRank * 2).ToString(), ra.MemberCreditRank.ToString(), Convert.ToInt32(currentClub.MemberCredit).ToString("N0"));
+                ltrlMemberCredit.Text =
+                    $"<cite class=\"RankLevel\"><a style=\"width: {(ra.MemberCreditRank*2).ToString()}px\">{ra.MemberCreditRank.ToString()}%</a></cite><em>{Convert.ToInt32(currentClub.MemberCredit).ToString("N0")}</em>";
 
-                ltrlMemberRP.Text = string.Format("<cite class=\"RankLevel\"><a style=\"width: {0}px\">{1}%</a></cite><em>{2}</em>", (ra.MemberRPRank * 2).ToString(), ra.MemberRPRank.ToString(), Convert.ToInt32(currentClub.MemberRP).ToString("N0"));
+                ltrlMemberRP.Text =
+                    $"<cite class=\"RankLevel\"><a style=\"width: {(ra.MemberRPRank*2).ToString()}px\">{ra.MemberRPRank.ToString()}%</a></cite><em>{Convert.ToInt32(currentClub.MemberRP).ToString("N0")}</em>";
 
-                ltrlEquipmentCount.Text = string.Format("<cite class=\"RankLevel\"><a style=\"width: {0}px\">{1}%</a></cite><em>C:{2}|V:{3}</em>", (ra.MemberEquipmentRank * 2).ToString(), ra.MemberEquipmentRank.ToString(), PlayerStrip.GetClubMemberCardCount(currentClub.ID.Value).ToString(), PlayerStrip.GetClubMemberVideoCount(currentClub.ID.Value).ToString());
+                ltrlEquipmentCount.Text =
+                    $"<cite class=\"RankLevel\"><a style=\"width: {(ra.MemberEquipmentRank*2).ToString()}px\">{ra.MemberEquipmentRank.ToString()}%</a></cite><em>C:{PlayerStrip.GetClubMemberCardCount(currentClub.ID.Value).ToString()}|V:{PlayerStrip.GetClubMemberVideoCount(currentClub.ID.Value).ToString()}</em>";
 
                 ltrlRankScore.Text = currentClub.RankScore.ToString();
             }

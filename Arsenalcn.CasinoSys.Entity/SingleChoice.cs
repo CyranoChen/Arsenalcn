@@ -13,14 +13,14 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public override Guid Save(SqlTransaction trans)
         {
-            Guid newGuid = base.Save(trans);
+            var newGuid = base.Save(trans);
 
             if (!ItemGuid.HasValue)
             {
 
                 DataAccess.SingleChoice.InsertSingleChoice(newGuid, FloatingRate, trans);
 
-                foreach (ChoiceOption option in Options)
+                foreach (var option in Options)
                 {
                     option.Insert(newGuid, trans);
                 }
@@ -30,7 +30,7 @@ namespace Arsenalcn.CasinoSys.Entity
 
         protected override void BuildDetail()
         {
-            DataRow dr = DataAccess.SingleChoice.GetSingleChoice(ItemGuid.Value);
+            var dr = DataAccess.SingleChoice.GetSingleChoice(ItemGuid.Value);
 
             if (dr != null)
             {
@@ -43,11 +43,11 @@ namespace Arsenalcn.CasinoSys.Entity
             }
 
             //init options
-            DataTable dt = DataAccess.ChoiceOption.GetChoiceOptions(ItemGuid.Value);
+            var dt = DataAccess.ChoiceOption.GetChoiceOptions(ItemGuid.Value);
 
             foreach (DataRow drOption in dt.Rows)
             {
-                ChoiceOption option = new ChoiceOption();
+                var option = new ChoiceOption();
                 option.CasinoItemGuid = (Guid)drOption["CasinoItemGuid"];
                 option.OptionValue = Convert.ToString(drOption["OptionValue"]);
                 option.OptionDisplay = Convert.ToString(drOption["OptionDisplay"]);
@@ -93,10 +93,10 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public static void CleanNoCasinoItemChoiceOption()
         {
-            using (SqlConnection conn = SQLConn.GetConnection())
+            using (var conn = SQLConn.GetConnection())
             {
                 conn.Open();
-                SqlTransaction trans = conn.BeginTransaction();
+                var trans = conn.BeginTransaction();
                 try
                 {
                     DataAccess.ChoiceOption.CleanChoiceOption(trans);

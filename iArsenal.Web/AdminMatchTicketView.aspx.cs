@@ -19,7 +19,7 @@ namespace iArsenal.Web
             {
                 #region Bind ddlProductCode
 
-                List<Product> pList = Product.Cache.Load(ProductType.MatchTicket);
+                var pList = Product.Cache.Load(ProductType.MatchTicket);
 
                 ddlProductCode.DataSource = pList;
                 ddlProductCode.DataTextField = "DisplayName";
@@ -52,7 +52,7 @@ namespace iArsenal.Web
         {
             if (MatchGuid != Guid.Empty)
             {
-                MatchTicket mt = new MatchTicket();
+                var mt = new MatchTicket();
                 mt.ID = MatchGuid;
                 mt.Single();
 
@@ -138,14 +138,14 @@ namespace iArsenal.Web
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                Order o = e.Row.DataItem as Order;
+                var o = e.Row.DataItem as Order;
 
-                HyperLink hlName = e.Row.FindControl("hlName") as HyperLink;
-                Label lblOrderStatus = e.Row.FindControl("lblOrderStatus") as Label;
+                var hlName = e.Row.FindControl("hlName") as HyperLink;
+                var lblOrderStatus = e.Row.FindControl("lblOrderStatus") as Label;
 
                 if (hlName != null)
                 {
-                    Member m = Member.Cache.Load(o.MemberID);
+                    var m = Member.Cache.Load(o.MemberID);
 
                     switch (m.Evalution)
                     {
@@ -167,7 +167,7 @@ namespace iArsenal.Web
 
                 if (lblOrderStatus != null)
                 {
-                    string _strStatus = string.Empty;
+                    var _strStatus = string.Empty;
 
                     if (o.Status.Equals(OrderStatusType.Confirmed))
                         _strStatus = string.Format("<em>{0}</em>", o.StatusInfo);
@@ -183,7 +183,7 @@ namespace iArsenal.Web
         {
             try
             {
-                MatchTicket mt = new MatchTicket();
+                var mt = new MatchTicket();
                 mt.ID = MatchGuid;
                 mt.Single();
 
@@ -249,7 +249,7 @@ namespace iArsenal.Web
             {
                 if (MatchGuid != Guid.Empty)
                 {
-                    MatchTicket mt = new MatchTicket();
+                    var mt = new MatchTicket();
                     mt.ID = MatchGuid;
                     mt.Delete();
 

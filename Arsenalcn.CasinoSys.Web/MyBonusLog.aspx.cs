@@ -55,18 +55,18 @@ namespace Arsenalcn.CasinoSys.Web
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                DataRowView drv = e.Row.DataItem as DataRowView;
+                var drv = e.Row.DataItem as DataRowView;
 
-                Match m = new Match((Guid)drv["MatchGuid"]);
+                var m = new Match((Guid)drv["MatchGuid"]);
 
-                HyperLink hlHome = e.Row.FindControl("hlHome") as HyperLink;
-                HyperLink hlAway = e.Row.FindControl("hlAway") as HyperLink;
-                HyperLink hlVersus = e.Row.FindControl("hlVersus") as HyperLink;
+                var hlHome = e.Row.FindControl("hlHome") as HyperLink;
+                var hlAway = e.Row.FindControl("hlAway") as HyperLink;
+                var hlVersus = e.Row.FindControl("hlVersus") as HyperLink;
 
                 if (hlHome != null && hlAway != null && hlVersus != null)
                 {
-                    Team tHome = Team.Cache.Load(m.Home);
-                    Team tAway = Team.Cache.Load(m.Away);
+                    var tHome = Team.Cache.Load(m.Home);
+                    var tAway = Team.Cache.Load(m.Away);
 
                     hlHome.Text = tHome.TeamDisplayName;
                     hlHome.NavigateUrl = string.Format("CasinoTeam.aspx?Team={0}", m.Home);
@@ -79,13 +79,13 @@ namespace Arsenalcn.CasinoSys.Web
                         tHome.Capacity.HasValue ? ("(" + tHome.Capacity.Value.ToString() + ")") : string.Empty);
                 }
 
-                List<Entity.Bet> betList = Entity.Bet.GetUserMatchAllBet(CurrentUserID, m.MatchGuid);
+                var betList = Entity.Bet.GetUserMatchAllBet(CurrentUserID, m.MatchGuid);
                 betList.RemoveAll(delegate(Entity.Bet bet) { return !bet.IsWin.HasValue; });
 
                 float totalBetCount = 0, totalWin = 0;
-                bool rpBonus = false;
+                var rpBonus = false;
 
-                foreach (Entity.Bet bet in betList)
+                foreach (var bet in betList)
                 {
                     totalBetCount += bet.BetAmount.GetValueOrDefault(0f);
                     totalWin += (bet.Earning.Value - bet.BetAmount.GetValueOrDefault(0f));
@@ -94,10 +94,10 @@ namespace Arsenalcn.CasinoSys.Web
                         rpBonus = true;
                 }
 
-                Literal ltrlResult = e.Row.FindControl("ltrlResult") as Literal;
-                Literal ltrlBetCount = e.Row.FindControl("ltrlBetCount") as Literal;
-                Literal ltrWinLose = e.Row.FindControl("ltrWinLose") as Literal;
-                Literal ltrlExtraBonus = e.Row.FindControl("ltrlExtraBonus") as Literal;
+                var ltrlResult = e.Row.FindControl("ltrlResult") as Literal;
+                var ltrlBetCount = e.Row.FindControl("ltrlBetCount") as Literal;
+                var ltrWinLose = e.Row.FindControl("ltrWinLose") as Literal;
+                var ltrlExtraBonus = e.Row.FindControl("ltrlExtraBonus") as Literal;
 
                 ltrlBetCount.Text = totalBetCount.ToString("N0");
                 ltrWinLose.Text = totalWin.ToString("N2");
@@ -137,7 +137,7 @@ namespace Arsenalcn.CasinoSys.Web
         {
             get
             {
-                ShortUserInfo sUser = AdminUsers.GetShortUserInfo(CurrentUserID);
+                var sUser = AdminUsers.GetShortUserInfo(CurrentUserID);
                 return sUser.Username.Trim();
             }
         }

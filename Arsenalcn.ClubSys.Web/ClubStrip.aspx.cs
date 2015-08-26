@@ -12,7 +12,7 @@ namespace Arsenalcn.ClubSys.Web
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            Club club = ClubLogic.GetClubInfo(ClubID);
+            var club = ClubLogic.GetClubInfo(ClubID);
 
             if (club != null && this.Title.IndexOf("{0}") >= 0)
                 this.Title = string.Format(this.Title, club.FullName);
@@ -37,8 +37,10 @@ namespace Arsenalcn.ClubSys.Web
 
             BindStripHistory();
 
-            this.ltlClubBingoStrip.Text = string.Format("<span title=\"抽取装备计数\">今天(累计)尝试:<em>{0}({1})</em>次 | 库存:<em>{2}/{3}</em>件装备</span>", PlayerStrip.GetClubBingoPlayCountToday(ClubID).ToString(), PlayerStrip.GetClubBingoPlayCount(ClubID).ToString("N0"), PlayerStrip.GetClubRemainingEquipment(ClubID).ToString(), ConfigGlobal.DailyClubEquipmentCount.ToString());
-            this.ltlClubStripCount.Text = string.Format("<span class=\"ClubSys_Strip SHIRT\">球衣:</span><em>{0}</em><span class=\"ClubSys_Strip SHORTS\">球裤:</span><em>{1}</em><span class=\"ClubSys_Strip SOCK\">球袜:</span><em>{2}</em><span class=\"ClubSys_Strip CARD\">球星卡:</span><em>{3}</em><span class=\"ClubSys_Strip VIDEO\">视频卡:</span><em>{4}</em>", ShirtCount, ShortsCount, SockCount, CardCount, VideoCount);
+            this.ltlClubBingoStrip.Text =
+                $"<span title=\"抽取装备计数\">今天(累计)尝试:<em>{PlayerStrip.GetClubBingoPlayCountToday(ClubID).ToString()}({PlayerStrip.GetClubBingoPlayCount(ClubID).ToString("N0")})</em>次 | 库存:<em>{PlayerStrip.GetClubRemainingEquipment(ClubID).ToString()}/{ConfigGlobal.DailyClubEquipmentCount.ToString()}</em>件装备</span>";
+            this.ltlClubStripCount.Text =
+                $"<span class=\"ClubSys_Strip SHIRT\">球衣:</span><em>{ShirtCount}</em><span class=\"ClubSys_Strip SHORTS\">球裤:</span><em>{ShortsCount}</em><span class=\"ClubSys_Strip SOCK\">球袜:</span><em>{SockCount}</em><span class=\"ClubSys_Strip CARD\">球星卡:</span><em>{CardCount}</em><span class=\"ClubSys_Strip VIDEO\">视频卡:</span><em>{VideoCount}</em>";
         }
 
         public int ClubID
@@ -105,9 +107,9 @@ namespace Arsenalcn.ClubSys.Web
 
                 _list = PlayerStrip.GetClubBingoHistory(ClubID);
 
-                foreach (BingoHistory bh in _list)
+                foreach (var bh in _list)
                 {
-                    BingoResult br = new BingoResult(bh.Result, bh.ResultDetail);
+                    var br = new BingoResult(bh.Result, bh.ResultDetail);
                     switch (br.Result)
                     {
                         case BingoResultType.Strip:
@@ -122,7 +124,8 @@ namespace Arsenalcn.ClubSys.Web
                             if (br.ResultDetail == "legend")
                                 bh.AdditionalData = "<span class=\"ClubSys_Strip VIDEO\">视频</span>";
                             else
-                                bh.AdditionalData = string.Format("<span class=\"ClubSys_Strip CARD\">{0}</span>", Player.Cache.Load(new Guid(br.ResultDetail)).DisplayName);
+                                bh.AdditionalData =
+                                    $"<span class=\"ClubSys_Strip CARD\">{Player.Cache.Load(new Guid(br.ResultDetail)).DisplayName}</span>";
                             break;
                         case BingoResultType.Cash:
                             bh.AdditionalData = "<span class=\"ClubSys_Strip CASH\">枪手币: " + br.ResultDetail + "</span>";

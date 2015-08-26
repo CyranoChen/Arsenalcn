@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Web.UI.WebControls;
 
 using Arsenalcn.Core;
@@ -48,8 +47,8 @@ namespace iArsenal.Web
         {
             var list = repo.All<Log>().FindAll(x =>
                 {
-                    Boolean returnValue = true;
-                    string tmpString = string.Empty;
+                    var returnValue = true;
+                    var tmpString = string.Empty;
 
                     if (ViewState["Logger"] != null)
                     {
@@ -130,7 +129,7 @@ namespace iArsenal.Web
             #region set GridView Selected PageIndex
             if (LogID > 0)
             {
-                int i = list.FindIndex(x => x.ID.Equals(LogID));
+                var i = list.FindIndex(x => x.ID.Equals(LogID));
                 if (i >= 0)
                 {
                     gvLog.PageIndex = i / gvLog.PageSize;
@@ -173,9 +172,9 @@ namespace iArsenal.Web
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                Log l = e.Row.DataItem as Log;
+                var l = e.Row.DataItem as Log;
 
-                Literal ltrlException = e.Row.FindControl("ltrlException") as Literal;
+                var ltrlException = e.Row.FindControl("ltrlException") as Literal;
 
                 if (ltrlException != null && !string.IsNullOrEmpty(l.StackTrace))
                 {

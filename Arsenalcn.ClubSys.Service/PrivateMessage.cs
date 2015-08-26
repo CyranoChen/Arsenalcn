@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-
 using Arsenalcn.ClubSys.Entity;
 
 using Discuz.Entity;
@@ -33,15 +31,15 @@ namespace Arsenalcn.ClubSys.Service
 
         public static void SendMessage(int clubID, string userName, ClubSysMessageType messageType, params string[] para)
         {
-            int userID = AdminUsers.GetUserId(userName);
-            Club club = ClubLogic.GetClubInfo(clubID);
+            var userID = AdminUsers.GetUserId(userName);
+            var club = ClubLogic.GetClubInfo(clubID);
 
             PrivateMessageInfo pm;
 
             switch (messageType)
             {
                 case ClubSysMessageType.ApplyClub:
-                    foreach (string aID in ConfigGlobal.PluginAdmin)
+                    foreach (var aID in ConfigGlobal.PluginAdmin)
                     {
                         pm = new PrivateMessageInfo();
 
@@ -61,8 +59,8 @@ namespace Arsenalcn.ClubSys.Service
                     }
                     break;
                 case ClubSysMessageType.ApplyJoinClub:
-                    List<UserClub> users = ClubLogic.GetClubLeads(clubID);
-                    foreach (UserClub userClub in users)
+                    var users = ClubLogic.GetClubLeads(clubID);
+                    foreach (var userClub in users)
                     {
                         pm = new PrivateMessageInfo();
 
@@ -83,7 +81,7 @@ namespace Arsenalcn.ClubSys.Service
                 case ClubSysMessageType.ApproveClub:
                     if (club != null)
                     {
-                        string result = "通过";
+                        var result = "通过";
                         if (!club.IsActive.Value)
                             result = "驳回";
 

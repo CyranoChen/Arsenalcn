@@ -23,13 +23,13 @@ namespace Arsenal.Service.Casino
         {
             Contract.Requires(this.ID != null && !this.ID.Equals(Guid.Empty));
 
-            string sql = string.Format(@"SELECT ISNULL(SUM(Bet), 0) - ISNULL(SUM(Earning), 0) AS TotalEarning 
+            var sql = string.Format(@"SELECT ISNULL(SUM(Bet), 0) - ISNULL(SUM(Earning), 0) AS TotalEarning 
                    FROM {0} WHERE CasinoItemGuid = @key",
                    Repository.GetTableAttr<Bet>().Name);
 
             SqlParameter[] para = { new SqlParameter("@key", this.ID) };
 
-            DataSet ds = DataAccess.ExecuteDataset(sql, para);
+            var ds = DataAccess.ExecuteDataset(sql, para);
 
             if (ds.Tables[0].Rows.Count > 0)
             {
@@ -43,7 +43,7 @@ namespace Arsenal.Service.Casino
         public static void Clean(SqlTransaction trans = null)
         {
             //DELETE FROM AcnCasino_CasinoItem WHERE (MatchGuid NOT IN(SELECT MatchGuid FROM AcnCasino_Match))
-            string sql = string.Format(@"DELETE FROM {0} WHERE (MatchGuid NOT IN (SELECT MatchGuid FROM {1}));
+            var sql = string.Format(@"DELETE FROM {0} WHERE (MatchGuid NOT IN (SELECT MatchGuid FROM {1}));
                    DELETE FROM AcnCasino_MatchResult WHERE (CasinoItemGuid NOT IN (SELECT CasinoItemGuid FROM {0}));
                    DELETE FROM AcnCasino_SingleChoice WHERE (CasinoItemGuid NOT IN (SELECT CasinoItemGuid FROM {0}))",
                    Repository.GetTableAttr<CasinoItem>().Name,

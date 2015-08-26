@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
 using Arsenalcn.ClubSys.Entity;
 using Discuz.Entity;
 
@@ -21,7 +18,7 @@ namespace Arsenalcn.ClubSys.Service
 
         internal static int CalcContributeFortune(int userID, int memberCredit, float memberMana, int memberFortune, bool playerBonus)
         {
-            int returnValue = (int)(ConfigGlobal.ClubFortuneIncrementVariable * Math.Pow(Math.Log10(memberCredit), 4)) + (int)((memberMana + 1) * Math.Log10(memberFortune));
+            var returnValue = (int)(ConfigGlobal.ClubFortuneIncrementVariable * Math.Pow(Math.Log10(memberCredit), 4)) + (int)((memberMana + 1) * Math.Log10(memberFortune));
 
             if (returnValue < 0)
                 returnValue = 0;

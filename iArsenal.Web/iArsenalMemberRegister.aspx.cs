@@ -20,7 +20,7 @@ namespace iArsenal.Web
         {
             get
             {
-                Member m = Member.Cache.LoadByAcnID(this.UID);
+                var m = Member.Cache.LoadByAcnID(this.UID);
 
                 if (m != null && m.ID > 0)
                 {
@@ -47,7 +47,7 @@ namespace iArsenal.Web
 
             if (MemberID > 0)
             {
-                Member m = repo.Single<Member>(MemberID);
+                var m = repo.Single<Member>(MemberID);
 
                 tbName.Text = m.Name;
                 rblGender.SelectedValue = m.Gender.ToString().ToLower();
@@ -64,7 +64,7 @@ namespace iArsenal.Web
         {
             try
             {
-                Member m = new Member();
+                var m = new Member();
 
                 if (MemberID > 0)
                 {

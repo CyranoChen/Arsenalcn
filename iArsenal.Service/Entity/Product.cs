@@ -110,9 +110,9 @@ namespace iArsenal.Service
             map.ForMember(d => d.PriceCNY, opt => opt.ResolveUsing(s =>
             {
                 #region Generate PriceCNY
-                double retValue = default(double);
-                double? sale = (double?)s.GetValue("Sale");
-                double price = (double)s.GetValue("Price");
+                var retValue = default(double);
+                var sale = (double?)s.GetValue("Sale");
+                var price = (double)s.GetValue("Price");
 
                 double _unitPrice;
 
@@ -146,7 +146,7 @@ namespace iArsenal.Service
             {
                 #region Generate PriceInfo
                 var retValue = string.Empty;
-                double price = (double)s.GetValue("Price");
+                var price = (double)s.GetValue("Price");
                 var currencyIcon = string.Empty;
 
                 switch ((ProductCurrencyType)((int)s.GetValue("Currency")))
@@ -177,7 +177,7 @@ namespace iArsenal.Service
             {
                 #region Generate SaleInfo
                 var retValue = string.Empty;
-                double? sale = (double?)s.GetValue("Sale");
+                var sale = (double?)s.GetValue("Sale");
                 var currencyIcon = string.Empty;
 
                 switch ((ProductCurrencyType)((int)s.GetValue("Currency")))

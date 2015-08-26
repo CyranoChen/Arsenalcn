@@ -45,8 +45,8 @@ namespace Arsenalcn.ClubSys.Web
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            Club club = ClubLogic.GetClubInfo(ClubID);
-            UserInfo userInfo = AdminUsers.GetUserInfo(ToUserID);
+            var club = ClubLogic.GetClubInfo(ClubID);
+            var userInfo = AdminUsers.GetUserInfo(ToUserID);
 
             if (club != null && userInfo != null && this.Title.IndexOf("{0}") >= 0 && this.Title.IndexOf("{1}") >= 0)
                 this.Title = string.Format(this.Title, club.FullName.ToString(), userInfo.Username.ToString().Trim());
@@ -78,25 +78,27 @@ namespace Arsenalcn.ClubSys.Web
             //UserClub ucFrom = ClubLogic.GetActiveUserClubs(this.userid);
             //UserClub ucTo = ClubLogic.GetActiveUserClub(ToUserID, ClubID);
 
-            UserInfo userFrom = AdminUsers.GetUserInfo(this.userid);
-            UserInfo userTo = AdminUsers.GetUserInfo(ToUserID);
+            var userFrom = AdminUsers.GetUserInfo(this.userid);
+            var userTo = AdminUsers.GetUserInfo(ToUserID);
 
             if (this.userid != ToUserID)
             {
-                List<Club> list = ClubLogic.GetUserManagedClubs(this.userid);
+                var list = ClubLogic.GetUserManagedClubs(this.userid);
 
                 if (list != null && list.Count > 0)
                 {
                     pnlInaccessible.Visible = false;
                     phContent.Visible = true;
 
-                    Club club = ClubLogic.GetClubInfo(ClubID);
+                    var club = ClubLogic.GetClubInfo(ClubID);
                     lblTransferInfo.Text = string.Format("<em>{1}</em>转账给会员<em>{0} {2}</em>，您现拥有枪手币<em>{3}</em>", club.FullName, userFrom.Username.Trim(), userTo.Username.Trim(), userFrom.Extcredits2.ToString("N2"));
 
-                    ltrlFromUserInfo.Text = string.Format("<em>{0}</em>(金钱:{1} | RP:{2})", userFrom.Username.Trim(), userFrom.Extcredits2.ToString("N2"), userFrom.Extcredits4.ToString());
-                    ltrlToUserInfo.Text = string.Format("<em>{0}</em>(金钱:{1} | RP:{2})", userTo.Username.Trim(), userTo.Extcredits2.ToString("N2"), userTo.Extcredits4.ToString());
+                    ltrlFromUserInfo.Text =
+                        $"<em>{userFrom.Username.Trim()}</em>(金钱:{userFrom.Extcredits2.ToString("N2")} | RP:{userFrom.Extcredits4.ToString()})";
+                    ltrlToUserInfo.Text =
+                        $"<em>{userTo.Username.Trim()}</em>(金钱:{userTo.Extcredits2.ToString("N2")} | RP:{userTo.Extcredits4.ToString()})";
 
-                    lblMaxTransfer.Text = string.Format(" *最多为可转账<em>{0}</em>枪手币 ", (userFrom.Extcredits2 * 0.5f).ToString("N0"));
+                    lblMaxTransfer.Text = $" *最多为可转账<em>{(userFrom.Extcredits2*0.5f).ToString("N0")}</em>枪手币 ";
                     rvMaxCash.MaximumValue = Convert.ToInt32(userFrom.Extcredits2 * 0.5f).ToString();
                 }
                 else
@@ -123,10 +125,10 @@ namespace Arsenalcn.ClubSys.Web
         {
             try
             {
-                float cash = 0f;
+                var cash = 0f;
 
-                UserInfo user = AdminUsers.GetUserInfo(this.userid);
-                float maxCash = user.Extcredits2 * 0.5f;
+                var user = AdminUsers.GetUserInfo(this.userid);
+                var maxCash = user.Extcredits2 * 0.5f;
 
                 if (float.TryParse(tbCash.Text.Trim(), out cash) && maxCash >= 1f)
                 {

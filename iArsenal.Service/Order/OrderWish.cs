@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-
 using Arsenalcn.Core;
 
 namespace iArsenal.Service
@@ -36,7 +33,7 @@ namespace iArsenal.Service
 
             #region Order Status Workflow Info
 
-            string _strWorkflow = "{{ \"StatusType\": \"{0}\", \"StatusInfo\": \"{1}\" }}";
+            var _strWorkflow = "{{ \"StatusType\": \"{0}\", \"StatusInfo\": \"{1}\" }}";
 
             string[] _workflowInfo = {
                                       string.Format(_strWorkflow, ((int)OrderStatusType.Draft).ToString(), "未提交"),

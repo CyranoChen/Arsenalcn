@@ -58,15 +58,6 @@ namespace Arsenalcn.ClubSys.Web {
         protected global::System.Web.UI.WebControls.Literal ltrlShortName;
         
         /// <summary>
-        /// ltrlCreatorUid control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltrlCreatorUid;
-        
-        /// <summary>
         /// ltrlCreatorName control.
         /// </summary>
         /// <remarks>

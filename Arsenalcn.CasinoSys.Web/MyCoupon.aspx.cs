@@ -34,7 +34,7 @@ namespace Arsenalcn.CasinoSys.Web
 
             if (!IsPostBack)
             {
-                DataTable dtMatch = Entity.CasinoItem.GetMatchCasinoItemView(true);
+                var dtMatch = Entity.CasinoItem.GetMatchCasinoItemView(true);
 
                 //if (dtMatch != null)
                 //{
@@ -70,34 +70,34 @@ namespace Arsenalcn.CasinoSys.Web
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                DataRowView drv = e.Row.DataItem as DataRowView;
+                var drv = e.Row.DataItem as DataRowView;
 
-                Match m = new Match((Guid)drv["MatchGuid"]);
+                var m = new Match((Guid)drv["MatchGuid"]);
 
-                Literal ltrlLeagueInfo = e.Row.FindControl("ltrlLeagueInfo") as Literal;
+                var ltrlLeagueInfo = e.Row.FindControl("ltrlLeagueInfo") as Literal;
 
                 if (ltrlLeagueInfo != null)
                 {
-                    string _strLeague = "<a href=\"CasinoGame.aspx?League={0}\" title=\"{1}\"><img src=\"{2}\" alt=\"{1}\" class=\"CasinoSys_CategoryImg\" /></a>";
+                    var _strLeague = "<a href=\"CasinoGame.aspx?League={0}\" title=\"{1}\"><img src=\"{2}\" alt=\"{1}\" class=\"CasinoSys_CategoryImg\" /></a>";
 
-                    string _strLeagueName = string.Format("{0}{1}", m.LeagueName, m.Round.HasValue ?
+                    var _strLeagueName = string.Format("{0}{1}", m.LeagueName, m.Round.HasValue ?
                         string.Format(" 第{0}轮", m.Round.ToString()) : string.Empty);
 
                     ltrlLeagueInfo.Text = string.Format(_strLeague, m.LeagueGuid.ToString(), _strLeagueName,
                         League.Cache.Load(m.LeagueGuid).LeagueLogo);
                 }
 
-                Label lblHome = e.Row.FindControl("lblHome") as Label;
-                Label lblAway = e.Row.FindControl("lblAway") as Label;
-                HyperLink hlVersus = e.Row.FindControl("hlVersus") as HyperLink;
+                var lblHome = e.Row.FindControl("lblHome") as Label;
+                var lblAway = e.Row.FindControl("lblAway") as Label;
+                var hlVersus = e.Row.FindControl("hlVersus") as HyperLink;
 
                 if (lblHome != null && lblAway != null && hlVersus != null)
                 {
-                    Team tHome = Team.Cache.Load(m.Home);
-                    Team tAway = Team.Cache.Load(m.Away);
+                    var tHome = Team.Cache.Load(m.Home);
+                    var tAway = Team.Cache.Load(m.Away);
 
-                    string _strTeamName = "<a class=\"StrongLink\" href=\"CasinoTeam.aspx?Team={0}\"  title=\"{1}\">{2}</a> ";
-                    string _strTeamLogo = "<img src=\"{3}\" alt=\"{1}\" /> ";
+                    var _strTeamName = "<a class=\"StrongLink\" href=\"CasinoTeam.aspx?Team={0}\"  title=\"{1}\">{2}</a> ";
+                    var _strTeamLogo = "<img src=\"{3}\" alt=\"{1}\" /> ";
 
                     lblHome.Text = string.Format(_strTeamName + _strTeamLogo,
                         tHome.ID.ToString(), tHome.TeamEnglishName, tHome.TeamDisplayName, tHome.TeamLogo);
@@ -109,25 +109,25 @@ namespace Arsenalcn.CasinoSys.Web
                         tHome.Capacity.HasValue ? ("(" + tHome.Capacity.Value.ToString() + ")") : string.Empty);
                 }
 
-                Guid? guid = Entity.CasinoItem.GetCasinoItemGuidByMatch(m.MatchGuid, CasinoType.SingleChoice);
+                var guid = Entity.CasinoItem.GetCasinoItemGuidByMatch(m.MatchGuid, CasinoType.SingleChoice);
 
                 if (guid.HasValue)
                 {
-                    Entity.CasinoItem item = Entity.CasinoItem.GetCasinoItem(guid.Value);
+                    var item = Entity.CasinoItem.GetCasinoItem(guid.Value);
 
                     if (item != null)
                     {
-                        List<Entity.ChoiceOption> options = ((Entity.SingleChoice)item).Options;
+                        var options = ((Entity.SingleChoice)item).Options;
 
-                        ChoiceOption winOption = options.Find(delegate(ChoiceOption option) { return option.OptionValue == Entity.MatchChoiceOption.HomeWinValue; });
-                        ChoiceOption drawOption = options.Find(delegate(ChoiceOption option) { return option.OptionValue == Entity.MatchChoiceOption.DrawValue; });
-                        ChoiceOption loseOption = options.Find(delegate(ChoiceOption option) { return option.OptionValue == Entity.MatchChoiceOption.AwayWinValue; });
+                        var winOption = options.Find(delegate(ChoiceOption option) { return option.OptionValue == Entity.MatchChoiceOption.HomeWinValue; });
+                        var drawOption = options.Find(delegate(ChoiceOption option) { return option.OptionValue == Entity.MatchChoiceOption.DrawValue; });
+                        var loseOption = options.Find(delegate(ChoiceOption option) { return option.OptionValue == Entity.MatchChoiceOption.AwayWinValue; });
 
                         if (!string.IsNullOrEmpty(winOption.OptionValue) && !string.IsNullOrEmpty(drawOption.OptionValue) && !string.IsNullOrEmpty(loseOption.OptionValue))
                         {
-                            Literal ltrlWinRate = e.Row.FindControl("ltrlWinRate") as Literal;
-                            Literal ltrlDrawRate = e.Row.FindControl("ltrlDrawRate") as Literal;
-                            Literal ltrlLoseRate = e.Row.FindControl("ltrlLoseRate") as Literal;
+                            var ltrlWinRate = e.Row.FindControl("ltrlWinRate") as Literal;
+                            var ltrlDrawRate = e.Row.FindControl("ltrlDrawRate") as Literal;
+                            var ltrlLoseRate = e.Row.FindControl("ltrlLoseRate") as Literal;
 
                             ltrlWinRate.Text = Convert.ToSingle(winOption.OptionRate.Value).ToString("f2");
                             ltrlDrawRate.Text = Convert.ToSingle(drawOption.OptionRate.Value).ToString("f2");
@@ -142,18 +142,18 @@ namespace Arsenalcn.CasinoSys.Web
 
                 if (guid.HasValue)
                 {
-                    Entity.CasinoItem item = Entity.CasinoItem.GetCasinoItem(guid.Value);
+                    var item = Entity.CasinoItem.GetCasinoItem(guid.Value);
 
                     if (item != null)
                     {
-                        List<Entity.Bet> bets = Entity.Bet.GetUserCasinoItemAllBet(this.userid, item.ItemGuid.Value);
+                        var bets = Entity.Bet.GetUserCasinoItemAllBet(this.userid, item.ItemGuid.Value);
 
                         if (bets.Count != 0)
                         {
-                            MatchResultBetDetail betDetail = new MatchResultBetDetail(Entity.BetDetail.GetBetDetailByBetID(bets[0].ID));
+                            var betDetail = new MatchResultBetDetail(Entity.BetDetail.GetBetDetailByBetID(bets[0].ID));
 
-                            TextBox tbHomeScore = e.Row.FindControl("tbHomeScore") as TextBox;
-                            TextBox tbAwayScore = e.Row.FindControl("tbAwayScore") as TextBox;
+                            var tbHomeScore = e.Row.FindControl("tbHomeScore") as TextBox;
+                            var tbAwayScore = e.Row.FindControl("tbAwayScore") as TextBox;
 
                             tbHomeScore.Text = betDetail.Home.ToString();
                             tbHomeScore.ReadOnly = true;
@@ -182,22 +182,22 @@ namespace Arsenalcn.CasinoSys.Web
         {
             foreach (GridViewRow row in gvMatch.Rows)
             {
-                TextBox tbHomeScore = row.FindControl("tbHomeScore") as TextBox;
-                TextBox tbAwayScore = row.FindControl("tbAwayScore") as TextBox;
+                var tbHomeScore = row.FindControl("tbHomeScore") as TextBox;
+                var tbAwayScore = row.FindControl("tbAwayScore") as TextBox;
 
                 if (tbHomeScore != null && tbAwayScore != null)
                 {
-                    Guid matchGuid = (Guid)gvMatch.DataKeys[row.RowIndex].Value;
+                    var matchGuid = (Guid)gvMatch.DataKeys[row.RowIndex].Value;
 
-                    Guid? guid = Entity.CasinoItem.GetCasinoItemGuidByMatch(matchGuid, CasinoType.MatchResult);
+                    var guid = Entity.CasinoItem.GetCasinoItemGuidByMatch(matchGuid, CasinoType.MatchResult);
 
                     if (guid.HasValue)
                     {
-                        Entity.CasinoItem item = Entity.CasinoItem.GetCasinoItem(guid.Value);
+                        var item = Entity.CasinoItem.GetCasinoItem(guid.Value);
 
                         if (item != null)
                         {
-                            List<Entity.Bet> bets = Entity.Bet.GetUserCasinoItemAllBet(this.userid, item.ItemGuid.Value);
+                            var bets = Entity.Bet.GetUserCasinoItemAllBet(this.userid, item.ItemGuid.Value);
 
                             if (bets.Count != 0)
                             {
@@ -222,7 +222,7 @@ namespace Arsenalcn.CasinoSys.Web
 
                                     try
                                     {
-                                        Bet bet = new Bet();
+                                        var bet = new Bet();
                                         bet.BetAmount = null;
                                         bet.BetRate = null;
                                         bet.CasinoItemGuid = guid.Value;
@@ -231,7 +231,7 @@ namespace Arsenalcn.CasinoSys.Web
 
                                         if (bet.BetCheck())
                                         {
-                                            MatchResultBetDetail matchResult = new Entity.MatchResultBetDetail();
+                                            var matchResult = new Entity.MatchResultBetDetail();
                                             matchResult.Home = homeScore;
                                             matchResult.Away = awayScore;
 

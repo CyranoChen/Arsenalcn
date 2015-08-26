@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics.Contracts;
+﻿using System.Diagnostics.Contracts;
 using System.Linq;
 
 using Arsenalcn.Core;
@@ -22,7 +21,7 @@ namespace Arsenal.Service
             Contract.Requires(!string.IsNullOrEmpty(password));
 
             Method = "auth.validate";
-            Format = ReponseType.JSON;
+            Format = ResponseType.JSON;
 
             SetDefaultParameters();
 
@@ -32,7 +31,7 @@ namespace Arsenal.Service
             if (!string.IsNullOrEmpty(passwordFormat))
             { Parameters.Add("password_format", passwordFormat); }
 
-            return GetReponse();
+            return GetResponse();
         }
 
         public string AuthRegister(string username, string password, string email, string passwordFormat = "md5")
@@ -42,7 +41,7 @@ namespace Arsenal.Service
             Contract.Requires(!string.IsNullOrEmpty(email));
 
             Method = "auth.register";
-            Format = ReponseType.JSON;
+            Format = ResponseType.JSON;
 
             SetDefaultParameters();
 
@@ -53,7 +52,7 @@ namespace Arsenal.Service
             if (!string.IsNullOrEmpty(passwordFormat))
             { Parameters.Add("password_format", passwordFormat); }
 
-            return GetReponse();
+            return GetResponse();
         }
 
         public string UsersChangePassword(int uid, string oldPassword, string newPassword, string passwordFormat = "md5")
@@ -63,7 +62,7 @@ namespace Arsenal.Service
             Contract.Requires(!string.IsNullOrEmpty(newPassword));
 
             Method = "users.changepassword";
-            Format = ReponseType.JSON;
+            Format = ResponseType.JSON;
 
             SetDefaultParameters();
 
@@ -75,7 +74,7 @@ namespace Arsenal.Service
             if (!string.IsNullOrEmpty(passwordFormat))
             { Parameters.Add("password_format", passwordFormat); }
 
-            return GetReponse();
+            return GetResponse();
         }
 
         public string UsersGetID(string username)
@@ -83,13 +82,13 @@ namespace Arsenal.Service
             Contract.Requires(!string.IsNullOrEmpty(username));
 
             Method = "users.getid";
-            Format = ReponseType.JSON;
+            Format = ResponseType.JSON;
 
             SetDefaultParameters();
 
             Parameters.Add("user_name", username);
 
-            return GetReponse();
+            return GetResponse();
         }
 
         public string UsersGetInfo(int[] uids, string[] fields)
@@ -98,14 +97,14 @@ namespace Arsenal.Service
             Contract.Requires(fields.Length > 0);
 
             Method = "users.getinfo";
-            Format = ReponseType.JSON;
+            Format = ResponseType.JSON;
 
             SetDefaultParameters();
 
             Parameters.Add("uids", string.Join(",", uids.ToArray()));
             Parameters.Add("fields", string.Join(",", fields.ToArray()));
 
-            return GetReponse();
+            return GetResponse();
         }
 
         #region Members and Properties

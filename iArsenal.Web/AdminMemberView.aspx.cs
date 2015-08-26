@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Data;
 using System.Linq;
 
 using Arsenalcn.Core;
 using Arsenalcn.Core.Utility;
 using iArsenal.Service;
-using System.Collections;
 
 namespace iArsenal.Web
 {
@@ -42,7 +40,7 @@ namespace iArsenal.Web
         {
             if (MemberID > 0)
             {
-                Member m = repo.Single<Member>(MemberID);
+                var m = repo.Single<Member>(MemberID);
 
                 lblMemberInfo.Text = string.Format("会员姓名<em>({0})</em>:", MemberID.ToString());
 
@@ -80,7 +78,7 @@ namespace iArsenal.Web
                     {
                         ddlNation.SelectedValue = m.Nation;
 
-                        string[] region = m.Region.Split('|');
+                        var region = m.Region.Split('|');
                         if (region.Length > 1)
                         {
                             tbRegion1.Text = region[0];
@@ -146,7 +144,7 @@ namespace iArsenal.Web
         {
             try
             {
-                Member m = new Member();
+                var m = new Member();
 
                 if (MemberID > 0)
                 {
@@ -188,7 +186,7 @@ namespace iArsenal.Web
                 m.QQ = tbQQ.Text.Trim();
 
                 #region Get Member Nation & Region
-                string _nation = ddlNation.SelectedValue;
+                var _nation = ddlNation.SelectedValue;
 
                 if (!string.IsNullOrEmpty(_nation))
                 {
@@ -240,9 +238,9 @@ namespace iArsenal.Web
                 m.Remark = tbRemark.Text.Trim();
 
                 #region Filter Member By AcnID
-                int tmpMID = int.MinValue;
+                var tmpMID = int.MinValue;
 
-                Member tmpMem = repo.Query<Member>(x => x.AcnID == m.AcnID).FirstOrDefault();
+                var tmpMem = repo.Query<Member>(x => x.AcnID == m.AcnID).FirstOrDefault();
 
                 if (tmpMem != null)
                 {
@@ -261,7 +259,7 @@ namespace iArsenal.Web
                 {
                     if (tmpMID > 0)
                     {
-                        string msg = string.Format("if (confirm('该会员的AcnID已经注册,是否跳转?')) {{ window.location.href = 'AdminMemberView.aspx?MemberID={0}'; }}", tmpMID.ToString());
+                        var msg = string.Format("if (confirm('该会员的AcnID已经注册,是否跳转?')) {{ window.location.href = 'AdminMemberView.aspx?MemberID={0}'; }}", tmpMID.ToString());
                         ClientScript.RegisterClientScriptBlock(typeof(string), "failed", msg, true);
                         //ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("JumpToMemberViewer('{0}')", tmpMID.ToString()), true);
                         throw new Exception(string.Format("AcnID in use for Member(No.{0})", tmpMID.ToString()));

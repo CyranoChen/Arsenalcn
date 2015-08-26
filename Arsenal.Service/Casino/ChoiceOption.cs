@@ -25,7 +25,7 @@ namespace Arsenal.Service.Casino
         public static void Clean(SqlTransaction trans = null)
         {
             //DELETE FROM AcnCasino_ChoiceOption WHERE (CasinoItemGuid NOT IN(SELECT CasinoItemGuid FROM AcnCasino_CasinoItem))
-            string sql = string.Format(@"DELETE FROM {0} WHERE (CasinoItemGuid NOT IN (SELECT CasinoItemGuid FROM {1}))",
+            var sql = string.Format(@"DELETE FROM {0} WHERE (CasinoItemGuid NOT IN (SELECT CasinoItemGuid FROM {1}))",
                    Repository.GetTableAttr<ChoiceOption>().Name,
                    Repository.GetTableAttr<CasinoItem>().Name);
 

@@ -1,13 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Configuration;
-using System.Data;
-using System.Web;
-using System.Web.Security;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
-using System.Web.UI.HtmlControls;
 using System.Collections.Generic;
 
 using Arsenalcn.ClubSys.Service;
@@ -33,7 +24,7 @@ namespace Arsenalcn.ClubSys.Web
             {
                 if (Request.QueryString["UserID"] != null)
                 {
-                    int profileUserID = -1;
+                    var profileUserID = -1;
 
                     if (int.TryParse(Request.QueryString["UserID"], out profileUserID))
                         return profileUserID;
@@ -53,7 +44,7 @@ namespace Arsenalcn.ClubSys.Web
                     return this.username;
                 else
                 {
-                    ShortUserInfo sUser = AdminUsers.GetShortUserInfo(ProfileUserID);
+                    var sUser = AdminUsers.GetShortUserInfo(ProfileUserID);
                     return sUser.Username.Trim();
                 }
             }
@@ -74,25 +65,25 @@ namespace Arsenalcn.ClubSys.Web
 
             #endregion
 
-            lblClubTip.Text = string.Format("请点击下方的图片欣赏<em>{0}</em>的球员收藏。", ProfileUserName);
+            lblClubTip.Text = $"请点击下方的图片欣赏<em>{ProfileUserName}</em>的球员收藏。";
 
-            btnVideoActive.ToolTip = string.Format("点击进入{0}的集锦收藏", ProfileUserName);
-            btnCardActive.ToolTip = string.Format("点击进入{0}的卡片收藏", ProfileUserName);
+            btnVideoActive.ToolTip = $"点击进入{ProfileUserName}的集锦收藏";
+            btnCardActive.ToolTip = $"点击进入{ProfileUserName}的卡片收藏";
 
-            string queryStrUserID = string.Empty;
+            var queryStrUserID = string.Empty;
 
             if (ProfileUserID != this.userid)
                 queryStrUserID = "&userid=" + ProfileUserID.ToString();
 
             //btnVideoActive.OnClientClick = string.Format("window.location.href='MyCollection.aspx?type=Video{0}';", queryStrUserID);
             //btnCardActive.OnClientClick = string.Format("window.location.href='MyCollection.aspx?type=Card{0}';", queryStrUserID);
-            btnVideoActive.PostBackUrl = string.Format("MyCollection.aspx?type=Video{0}",queryStrUserID);
-            btnCardActive.PostBackUrl = string.Format("MyCollection.aspx?type=Card{0}", queryStrUserID);
+            btnVideoActive.PostBackUrl = $"MyCollection.aspx?type=Video{queryStrUserID}";
+            btnCardActive.PostBackUrl = $"MyCollection.aspx?type=Card{queryStrUserID}";
 
             //DataTable dtVideo = Service.UserVideo.GetUserVideo(ProfileUserID);
             lblVideoActiveCount.Text = Entity.UserVideo.GetUserVideosByUserID(ProfileUserID).Count.ToString();
 
-            List<Card> items = PlayerStrip.GetMyNumbers(ProfileUserID);
+            var items = PlayerStrip.GetMyNumbers(ProfileUserID);
             items.RemoveAll(delegate(Card un) { return un.ArsenalPlayerGuid.HasValue; });
             lblVideoCount.Text = items.Count.ToString();
 

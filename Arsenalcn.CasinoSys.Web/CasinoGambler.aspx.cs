@@ -84,7 +84,7 @@ namespace Arsenalcn.CasinoSys.Web
 
         private void BindData()
         {
-            League l = League.Cache.Load(ContestLeague);
+            var l = League.Cache.Load(ContestLeague);
 
             if (l != null)
             {
@@ -99,7 +99,7 @@ namespace Arsenalcn.CasinoSys.Web
             {
                 if (ContestArea > 0)
                 {
-                    float _tbs = ConfigGlobal.TotalBetStandard;
+                    var _tbs = ConfigGlobal.TotalBetStandard;
 
                     list = Entity.CasinoGambler.GetCasinoGamblers(CurrentLeague).FindAll(delegate(Entity.CasinoGambler cg)
                     {
@@ -166,9 +166,9 @@ namespace Arsenalcn.CasinoSys.Web
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                Entity.CasinoGambler cg = e.Row.DataItem as Entity.CasinoGambler;
+                var cg = e.Row.DataItem as Entity.CasinoGambler;
 
-                Label lblRank = e.Row.FindControl("lblRank") as Label;
+                var lblRank = e.Row.FindControl("lblRank") as Label;
 
                 if (lblRank != null)
                 {

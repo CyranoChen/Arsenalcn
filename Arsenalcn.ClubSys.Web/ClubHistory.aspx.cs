@@ -1,14 +1,5 @@
 ﻿using System;
-using System.Collections;
-using System.Configuration;
-using System.Data;
-using System.Web;
-using System.Web.Security;
-using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
-using System.Web.UI.HtmlControls;
-
 using System.Collections.Generic;
 
 using Arsenalcn.ClubSys.Service;
@@ -36,7 +27,7 @@ namespace Arsenalcn.ClubSys.Web
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            Club club = ClubLogic.GetClubInfo(ClubID);
+            var club = ClubLogic.GetClubInfo(ClubID);
 
             if( club != null && this.Title.IndexOf("{0}") >= 0 )
                 this.Title = string.Format(this.Title, club.FullName);
@@ -69,9 +60,9 @@ namespace Arsenalcn.ClubSys.Web
             {
                 history = ClubLogic.GetClubHistory(ClubID);
 
-                foreach (Arsenalcn.ClubSys.Entity.ClubHistory ch in history)
+                foreach (var ch in history)
                 {
-                    ClubHistoryActionType actionType = (ClubHistoryActionType)Enum.Parse(typeof(ClubHistoryActionType), ch.ActionType);
+                    var actionType = (ClubHistoryActionType)Enum.Parse(typeof(ClubHistoryActionType), ch.ActionType);
                     switch (actionType)
                     {
                         case ClubHistoryActionType.JoinClub:

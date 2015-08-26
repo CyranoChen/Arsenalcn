@@ -46,7 +46,7 @@ namespace Arsenalcn.ClubSys.Web.Control
         {
             get
             {
-                int lv = 0;
+                var lv = 0;
 
                 if (shirtLv < shortsLv)
                     lv = shirtLv;
@@ -62,7 +62,7 @@ namespace Arsenalcn.ClubSys.Web.Control
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            List<Club> clubs = ClubLogic.GetActiveUserClubs(ProfileUserID);
+            var clubs = ClubLogic.GetActiveUserClubs(ProfileUserID);
 
             if (clubs.Count == 0)
             {
@@ -72,10 +72,10 @@ namespace Arsenalcn.ClubSys.Web.Control
             }
             else
             {
-                Club club = clubs[0];
+                var club = clubs[0];
 
                 btnClub.Text = club.FullName;
-                btnClub.PostBackUrl = string.Format("../ClubView.aspx?ClubID={0}", club.ID.Value);
+                btnClub.PostBackUrl = $"../ClubView.aspx?ClubID={club.ID.Value}";
 
                 if (ProfileUserID != _userID)
                 {
@@ -84,7 +84,7 @@ namespace Arsenalcn.ClubSys.Web.Control
                 }
             }
 
-            Gamer _playerInfo = PlayerStrip.GetPlayerInfo(ProfileUserID);
+            var _playerInfo = PlayerStrip.GetPlayerInfo(ProfileUserID);
 
             if (_playerInfo == null)
                 pnlSwf.Visible = false;
@@ -97,7 +97,7 @@ namespace Arsenalcn.ClubSys.Web.Control
                 sockLv = _playerInfo.Sock;
             }
 
-            int TotalCount = PlayerStrip.GetUserBingoPlayCount(ProfileUserID);
+            var TotalCount = PlayerStrip.GetUserBingoPlayCount(ProfileUserID);
             if (TotalCount <= 0)
             {
                 ltrlRP.Text = "0%";
@@ -107,9 +107,10 @@ namespace Arsenalcn.ClubSys.Web.Control
                 ltrlRP.Text = (PlayerStrip.GetUserBingoGainCount(ProfileUserID) * 100 / TotalCount).ToString() + "%";
             }
 
-            int _playerLV = Math.Min(PlayerLv, ConfigGlobal.PlayerMaxLv);
+            var _playerLV = Math.Min(PlayerLv, ConfigGlobal.PlayerMaxLv);
 
-            ltrlPlayerLV.Text = string.Format("<div class=\"ClubSys_PlayerLV\" style=\"width: {0}px;\" title=\"球员等级\"></div>", (_playerLV*20).ToString());
+            ltrlPlayerLV.Text =
+                $"<div class=\"ClubSys_PlayerLV\" style=\"width: {(_playerLV*20).ToString()}px;\" title=\"球员等级\"></div>";
         }
     }
 }

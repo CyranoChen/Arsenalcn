@@ -36,7 +36,7 @@ namespace iArsenal.Web
             {
                 lblMemberName.Text = string.Format("<b>{0}</b> (<em>NO.{1}</em>)", this.MemberName, this.MID.ToString());
 
-                bool _isMemberCouldPurchase = true;
+                var _isMemberCouldPurchase = true;
 
                 if (OrderID > 0)
                 {
@@ -63,7 +63,7 @@ namespace iArsenal.Web
 
                     #endregion
 
-                    Member m = repo.Single<Member>(o.MemberID);
+                    var m = repo.Single<Member>(o.MemberID);
 
                     lblOrderMobile.Text = string.Format("<em>{0}</em>", o.Mobile);
 
@@ -74,10 +74,10 @@ namespace iArsenal.Web
                         {
                             lblMemberRegion.Text = "中国 ";
 
-                            string[] region = m.Region.Split('|');
-                            int _regionID = int.MinValue;
+                            var region = m.Region.Split('|');
+                            var _regionID = int.MinValue;
 
-                            for (int i = 0; i < region.Length; i++)
+                            for (var i = 0; i < region.Length; i++)
                             {
                                 if (int.TryParse(region[i], out _regionID))
                                 {
@@ -119,10 +119,10 @@ namespace iArsenal.Web
                     }
 
                     // Should be Calculator in this Page
-                    double price = default(double);
-                    string priceInfo = string.Empty;
+                    var price = default(double);
+                    var priceInfo = string.Empty;
 
-                    OrdrItmMatchTicket oiMatchTicket = o.OIMatchTicket;
+                    var oiMatchTicket = o.OIMatchTicket;
 
                     // Get Order MatchTicket Info
 
@@ -130,7 +130,7 @@ namespace iArsenal.Web
                     {
                         if (oiMatchTicket.MatchGuid != null)
                         {
-                            MatchTicket mt = MatchTicket.Cache.Load(oiMatchTicket.MatchGuid);
+                            var mt = MatchTicket.Cache.Load(oiMatchTicket.MatchGuid);
 
                             if (mt == null)
                             {
@@ -141,7 +141,7 @@ namespace iArsenal.Web
 
                             _isMemberCouldPurchase = mt.CheckMemberCanPurchase(mp);
 
-                            Product p = Product.Cache.Load(mt.ProductCode);
+                            var p = Product.Cache.Load(mt.ProductCode);
 
                             if (p == null)
                             {
@@ -152,7 +152,7 @@ namespace iArsenal.Web
                                 lblMatchTicketInfo.Text = string.Format("<em>【{0}】{1}({2})</em>", mt.LeagueName, mt.TeamName, Arsenal_Team.Cache.Load(mt.TeamGuid).TeamEnglishName);
                                 lblMatchTicketPlayTime.Text = string.Format("<em>【伦敦】{0}</em>", mt.PlayTimeLocal.ToString("yyyy-MM-dd HH:mm"));
 
-                                string _strRank = mt.ProductInfo.Trim();
+                                var _strRank = mt.ProductInfo.Trim();
                                 if (lblMatchTicketRank != null && !string.IsNullOrEmpty(_strRank))
                                 {
                                     lblMatchTicketRank.Text = string.Format("<em>{0}</em>", _strRank.Substring(_strRank.Length - 7, 7));
@@ -244,7 +244,7 @@ namespace iArsenal.Web
             {
                 if (OrderID > 0)
                 {
-                    Order o = repo.Single<Order>(OrderID);
+                    var o = repo.Single<Order>(OrderID);
 
                     if (o == null || !o.MemberID.Equals(MID) || !o.IsActive)
                         throw new Exception("此订单无效或非当前用户订单");
@@ -274,7 +274,7 @@ namespace iArsenal.Web
             {
                 if (OrderID > 0)
                 {
-                    Order o = repo.Single<Order>(OrderID);
+                    var o = repo.Single<Order>(OrderID);
 
                     if (o == null || !o.MemberID.Equals(MID) || !o.IsActive)
                         throw new Exception("此订单无效或非当前用户订单");
@@ -298,7 +298,7 @@ namespace iArsenal.Web
             {
                 if (OrderID > 0)
                 {
-                    Order o = repo.Single<Order>(OrderID);
+                    var o = repo.Single<Order>(OrderID);
 
                     if (o == null || !o.MemberID.Equals(MID) || !o.IsActive)
                         throw new Exception("此订单无效或非当前用户订单");

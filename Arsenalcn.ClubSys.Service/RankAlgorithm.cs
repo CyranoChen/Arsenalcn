@@ -20,11 +20,11 @@ namespace Arsenalcn.ClubSys.Service
         {
             get
             {
-                Rank currentRank = RankLevel.GetInstance().GetRank(currentClub.Fortune.Value);
+                var currentRank = RankLevel.GetInstance().GetRank(currentClub.Fortune.Value);
 
-                float tmp = (float)memberCount / (float)currentRank.MaxMember;
+                var tmp = (float)memberCount / (float)currentRank.MaxMember;
 
-                int returnValue = (int)(Math.Sqrt(tmp * 100) * 10 * (1 + (1 - tmp) / 2.8));
+                var returnValue = (int)(Math.Sqrt(tmp * 100) * 10 * (1 + (1 - tmp) / 2.8));
 
                 if (returnValue > 100)
                     return 100;
@@ -39,12 +39,12 @@ namespace Arsenalcn.ClubSys.Service
         {
             get
             {
-                int clubFortune = currentClub.Fortune.Value;
-                Rank currentRank = RankLevel.GetInstance().GetRank(currentClub.Fortune.Value);
+                var clubFortune = currentClub.Fortune.Value;
+                var currentRank = RankLevel.GetInstance().GetRank(currentClub.Fortune.Value);
 
-                float tmp = (float)clubFortune / (float)currentRank.MaxClubFortune;
+                var tmp = (float)clubFortune / (float)currentRank.MaxClubFortune;
 
-                int returnValue = (int)(Math.Sqrt(tmp * 100) * 10 * (1 + (1 - tmp) / 3));
+                var returnValue = (int)(Math.Sqrt(tmp * 100) * 10 * (1 + (1 - tmp) / 3));
 
                 if (returnValue > 100)
                     return 100;
@@ -59,10 +59,10 @@ namespace Arsenalcn.ClubSys.Service
         {
             get
             {
-                int memberCredit = currentClub.MemberCredit.Value;
-                Rank currentRank = RankLevel.GetInstance().GetRank(currentClub.Fortune.Value);
+                var memberCredit = currentClub.MemberCredit.Value;
+                var currentRank = RankLevel.GetInstance().GetRank(currentClub.Fortune.Value);
 
-                int returnValue = (int)((((float)memberCredit * ((float)1 + (float)currentRank.ID / (float)20)) / (float)memberCount) / (float)currentRank.MemberCreditRankEvaluateValue * 100);
+                var returnValue = (int)((((float)memberCredit * ((float)1 + (float)currentRank.ID / (float)20)) / (float)memberCount) / (float)currentRank.MemberCreditRankEvaluateValue * 100);
 
                 if (returnValue > 100)
                     return 100;
@@ -77,10 +77,10 @@ namespace Arsenalcn.ClubSys.Service
         {
             get
             {
-                int memberFortune = currentClub.MemberFortune.Value;
-                Rank currentRank = RankLevel.GetInstance().GetRank(currentClub.Fortune.Value);
+                var memberFortune = currentClub.MemberFortune.Value;
+                var currentRank = RankLevel.GetInstance().GetRank(currentClub.Fortune.Value);
 
-                int returnValue = (int)((((float)memberFortune * ((float)1 + (float)currentRank.ID / (float)20)) / (float)memberCount) / (float)currentRank.MemberFortuneRankEvaluateValue * 100);
+                var returnValue = (int)((((float)memberFortune * ((float)1 + (float)currentRank.ID / (float)20)) / (float)memberCount) / (float)currentRank.MemberFortuneRankEvaluateValue * 100);
 
                 if (returnValue > 100)
                     return 100;
@@ -95,10 +95,10 @@ namespace Arsenalcn.ClubSys.Service
         {
             get
             {
-                int memberRP = currentClub.MemberRP.Value;
-                Rank currentRank = RankLevel.GetInstance().GetRank(currentClub.Fortune.Value);
+                var memberRP = currentClub.MemberRP.Value;
+                var currentRank = RankLevel.GetInstance().GetRank(currentClub.Fortune.Value);
 
-                int returnValue = (int)((float)memberRP / (float)memberCount / (float)currentRank.MemberRPRankEvaluateValue * 100);
+                var returnValue = (int)((float)memberRP / (float)memberCount / (float)currentRank.MemberRPRankEvaluateValue * 100);
 
                 if (returnValue > 100)
                     return 100;
@@ -113,19 +113,19 @@ namespace Arsenalcn.ClubSys.Service
         {
             get
             {
-                List<Video> list = Video.Cache.VideoList_Legend.FindAll(x =>
+                var list = Video.Cache.VideoList_Legend.FindAll(x =>
                 {
-                    int _gRank = int.MinValue;
+                    var _gRank = int.MinValue;
                     if (int.TryParse(x.GoalRank, out _gRank))
                         return (_gRank >= 1) && (_gRank <= 3);
                     else
                         return false;
                 });
 
-                int videoClubHaveGetCount = UserVideo.GetUserVideoByClubID(currentClub.ID.Value).Rows.Count;
-                int videoCanGetCount = list.Count;
+                var videoClubHaveGetCount = UserVideo.GetUserVideoByClubID(currentClub.ID.Value).Rows.Count;
+                var videoCanGetCount = list.Count;
 
-                int returnValue = (int)(((float)videoClubHaveGetCount / (float)videoCanGetCount) * 100f);
+                var returnValue = (int)(((float)videoClubHaveGetCount / (float)videoCanGetCount) * 100f);
 
                 if (returnValue > 100)
                     return 100;
@@ -140,10 +140,10 @@ namespace Arsenalcn.ClubSys.Service
         {
             get
             {
-                int memberLoyalty = currentClub.MemberLoyalty.Value;
-                Rank currentRank = RankLevel.GetInstance().GetRank(currentClub.Fortune.Value);
+                var memberLoyalty = currentClub.MemberLoyalty.Value;
+                var currentRank = RankLevel.GetInstance().GetRank(currentClub.Fortune.Value);
 
-                int returnValue = (int)((((float)memberLoyalty * ((float)1 + (float)currentRank.ID / (float)20)) / (float)memberCount) / (float)currentRank.MemberLoyaltyRankEvaluateValue * 100);
+                var returnValue = (int)((((float)memberLoyalty * ((float)1 + (float)currentRank.ID / (float)20)) / (float)memberCount) / (float)currentRank.MemberLoyaltyRankEvaluateValue * 100);
 
                 if (returnValue > 100)
                     return 100;
@@ -158,11 +158,11 @@ namespace Arsenalcn.ClubSys.Service
         {
             get
             {
-                int memberCountWeight = Arsenalcn.ClubSys.Entity.ConfigGlobal.SummaryRankPoint_MemberCountWeight;
-                int clubFortuneWeight = Arsenalcn.ClubSys.Entity.ConfigGlobal.SummaryRankPoint_ClubFortuneWeight;
-                int memberCreditWeight = Arsenalcn.ClubSys.Entity.ConfigGlobal.SummaryRankPoint_MemberCreditWeight;
-                int memberRPWeight = Arsenalcn.ClubSys.Entity.ConfigGlobal.SummaryRankPoint_MemberRPWeight;
-                int memberEquipmentWeight = Arsenalcn.ClubSys.Entity.ConfigGlobal.SummaryRankPoint_MemberEquipmentWeight;
+                var memberCountWeight = Arsenalcn.ClubSys.Entity.ConfigGlobal.SummaryRankPoint_MemberCountWeight;
+                var clubFortuneWeight = Arsenalcn.ClubSys.Entity.ConfigGlobal.SummaryRankPoint_ClubFortuneWeight;
+                var memberCreditWeight = Arsenalcn.ClubSys.Entity.ConfigGlobal.SummaryRankPoint_MemberCreditWeight;
+                var memberRPWeight = Arsenalcn.ClubSys.Entity.ConfigGlobal.SummaryRankPoint_MemberRPWeight;
+                var memberEquipmentWeight = Arsenalcn.ClubSys.Entity.ConfigGlobal.SummaryRankPoint_MemberEquipmentWeight;
 
                 return (memberCountWeight * MemberCountRank + clubFortuneWeight * ClubFortuneRank + memberCreditWeight * MemberCreditRank + memberRPWeight * MemberRPRank + memberEquipmentWeight * MemberEquipmentRank) / (memberCountWeight + clubFortuneWeight + memberCreditWeight + memberRPWeight + memberEquipmentWeight);
             }

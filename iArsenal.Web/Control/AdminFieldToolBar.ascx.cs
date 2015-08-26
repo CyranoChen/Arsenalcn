@@ -1,6 +1,4 @@
 ﻿using System;
-
-using Arsenalcn.Core;
 using Arsenalcn.Core.Utility;
 using iArsenal.Service;
 
@@ -12,7 +10,7 @@ namespace iArsenal.Web.Control
         {
             ltrlAdminInfo.Text = string.Format("<strong>欢迎<em>{0}</em>, 进入{1} 后台管理</strong>", AdminUserName, ConfigGlobal.PluginDisplayName);
 
-            string _ip = IPLocation.GetIP();
+            var _ip = IPLocation.GetIP();
 
             ltrlMyIPInfo.Text = string.Format("<a>IP: {0} - {1}</a>", _ip, IPLocation.GetIPInfo(_ip));
         }

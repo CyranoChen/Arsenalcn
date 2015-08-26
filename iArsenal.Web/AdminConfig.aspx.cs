@@ -36,12 +36,12 @@ namespace iArsenal.Web
         {
             try
             {
-                TextBox tbConfigValue = gvSysConfig.Rows[gvSysConfig.EditIndex].Cells[1].Controls[0] as TextBox;
+                var tbConfigValue = gvSysConfig.Rows[gvSysConfig.EditIndex].Cells[1].Controls[0] as TextBox;
 
                 if (tbConfigValue != null)
                 {
 
-                    Config c = new Config();
+                    var c = new Config();
 
                     c.ConfigSystem = ConfigSystem.iArsenal;
                     c.ConfigKey = gvSysConfig.DataKeys[gvSysConfig.EditIndex].Value.ToString();

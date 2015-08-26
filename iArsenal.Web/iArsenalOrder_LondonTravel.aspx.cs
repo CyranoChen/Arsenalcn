@@ -39,8 +39,8 @@ namespace iArsenal.Web
                 lblMemberName.Text = string.Format("<b>{0}</b> (<em>NO.{1}</em>)", this.MemberName, this.MID.ToString());
                 lblMemberACNInfo.Text = string.Format("<b>{0}</b> (<em>ID.{1}</em>)", this.Username, this.UID.ToString());
 
-                Product pETPL = Product.Cache.Load("iETPL");
-                Product pETPA = Product.Cache.Load("iETPA");
+                var pETPL = Product.Cache.Load("iETPL");
+                var pETPA = Product.Cache.Load("iETPA");
 
                 if (pETPL == null || pETPA == null)
                 {
@@ -57,7 +57,7 @@ namespace iArsenal.Web
                     {
                         lblMemberName.Text = string.Format("<b>{0}</b> (<em>NO.{1}</em>)", o.MemberName, o.MemberID.ToString());
 
-                        Member m = repo.Single<Member>(o.MemberID);
+                        var m = repo.Single<Member>(o.MemberID);
 
                         if (m == null || !m.IsActive)
                         {
@@ -74,7 +74,7 @@ namespace iArsenal.Web
                                 {
                                     ddlNation.SelectedValue = m.Nation;
 
-                                    string[] region = m.Region.Split('|');
+                                    var region = m.Region.Split('|');
                                     if (region.Length > 1)
                                     {
                                         tbRegion1.Text = region[0];
@@ -119,7 +119,7 @@ namespace iArsenal.Web
                     var oiTP = o.OITravelPlan.MapTo<OrdrItmTravelPlanLondon>();
                     oiTP.Init();
 
-                    List<OrdrItmTravelPartner> listPartner = o.OITravelPartnerList.FindAll(oi =>
+                    var listPartner = o.OITravelPartnerList.FindAll(oi =>
                         oi.IsActive && !string.IsNullOrEmpty(oi.Remark));
 
                     if (oiTP != null && oiTP.IsActive)
@@ -129,14 +129,14 @@ namespace iArsenal.Web
                         tbToDate.Text = oiTP.TravelToDate.ToString("yyyy-MM-dd");
 
                         // Set Order Travel Option
-                        for (int j = 0; j < cblTravelOption.Items.Count; j++)
+                        for (var j = 0; j < cblTravelOption.Items.Count; j++)
                         {
                             cblTravelOption.Items[j].Selected = false;
                         }
 
                         if (oiTP.TravelOption != null && oiTP.TravelOption.Length > 0)
                         {
-                            for (int i = 0; i < oiTP.TravelOption.Length; i++)
+                            for (var i = 0; i < oiTP.TravelOption.Length; i++)
                             {
                                 cblTravelOption.Items.FindByValue(oiTP.TravelOption[i]).Selected = true;
                             }
@@ -151,7 +151,7 @@ namespace iArsenal.Web
                     {
                         cbPartner.Checked = true;
 
-                        Partner pa = listPartner[0].Partner;
+                        var pa = listPartner[0].Partner;
 
                         if (pa != null)
                         {
@@ -177,7 +177,7 @@ namespace iArsenal.Web
                 else
                 {
                     //Fill Member draft information into textbox
-                    Member m = repo.Single<Member>(this.MID);
+                    var m = repo.Single<Member>(this.MID);
 
                     #region Set Member Nation & Region
                     if (!string.IsNullOrEmpty(m.Nation))
@@ -186,7 +186,7 @@ namespace iArsenal.Web
                         {
                             ddlNation.SelectedValue = m.Nation;
 
-                            string[] region = m.Region.Split('|');
+                            var region = m.Region.Split('|');
                             if (region.Length > 1)
                             {
                                 tbRegion1.Text = region[0];
@@ -229,18 +229,18 @@ namespace iArsenal.Web
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
-            using (SqlConnection conn = new SqlConnection(DataAccess.ConnectString))
+            using (var conn = new SqlConnection(DataAccess.ConnectString))
             {
                 conn.Open();
-                SqlTransaction trans = conn.BeginTransaction();
+                var trans = conn.BeginTransaction();
 
                 try
                 {
-                    Member m = repo.Single<Member>(this.MID);
+                    var m = repo.Single<Member>(this.MID);
 
                     // Update Member Information
                     #region Get Member Nation & Region
-                    string _nation = ddlNation.SelectedValue;
+                    var _nation = ddlNation.SelectedValue;
 
                     if (!string.IsNullOrEmpty(_nation))
                     {
@@ -316,8 +316,8 @@ namespace iArsenal.Web
                     repo.Update(m);
 
                     // New Order
-                    Order o = new Order();
-                    int _newID = int.MinValue;
+                    var o = new Order();
+                    var _newID = int.MinValue;
 
                     if (OrderID > 0)
                     {
@@ -362,12 +362,12 @@ namespace iArsenal.Web
                     //Remove Order Item of this Order
                     if (OrderID > 0 && o.ID.Equals(OrderID))
                     {
-                        int count = repo.Query<OrderItem>(x => x.OrderID == OrderID).Delete(trans);
+                        var count = repo.Query<OrderItem>(x => x.OrderID == OrderID).Delete(trans);
                     }
 
                     //New Order Items
                     //Product pETPL = Product.Cache.Load("iETPL");
-                    Product pETPA = Product.Cache.Load("iETPA");
+                    var pETPA = Product.Cache.Load("iETPA");
 
                     if (pETPA == null)
                         throw new Exception("无观赛信息，请联系管理员");
@@ -376,9 +376,9 @@ namespace iArsenal.Web
 
                     if (cbPartner.Checked)
                     {
-                        OrdrItmTravelPartner oiPartner = new OrdrItmTravelPartner();
+                        var oiPartner = new OrdrItmTravelPartner();
 
-                        Partner pa = new Partner();
+                        var pa = new Partner();
 
                         if (!string.IsNullOrEmpty(tbPartnerName.Text.Trim()))
                             pa.Name = tbPartnerName.Text.Trim();
@@ -421,7 +421,7 @@ namespace iArsenal.Web
                     }
 
                     // Generate OrderItemTravelPlan
-                    OrdrItmTravelPlanLondon oiPlan = new OrdrItmTravelPlanLondon();
+                    var oiPlan = new OrdrItmTravelPlanLondon();
 
                     // Genernate Travel Date
                     if (!string.IsNullOrEmpty(tbFromDate.Text.Trim()) && !string.IsNullOrEmpty(tbToDate.Text.Trim()))
@@ -437,9 +437,9 @@ namespace iArsenal.Web
                     // Generate Travel Option
                     //string _strTravelOption = string.Empty;
 
-                    List<string> listTravelOption = new List<string>();
+                    var listTravelOption = new List<string>();
 
-                    for (int i = 0; i < cblTravelOption.Items.Count; i++)
+                    for (var i = 0; i < cblTravelOption.Items.Count; i++)
                     {
                         if (cblTravelOption.Items[i].Selected)
                         {

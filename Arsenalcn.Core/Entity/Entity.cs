@@ -14,7 +14,7 @@ namespace Arsenalcn.Core
         {
             get
             {
-                if (typeof(TKey).Equals(typeof(Guid)))
+                if (typeof(TKey) == typeof(Guid))
                 {
                     if (_id == null || (_id != null && _id.Equals(Guid.Empty)))
                     {
@@ -22,7 +22,7 @@ namespace Arsenalcn.Core
                     }
                 }
 
-                return _id == null ? default(TKey) : (TKey)_id;
+                return (TKey?) _id ?? default(TKey);
             }
             set { _id = value; }
         }

@@ -28,7 +28,7 @@ namespace Arsenalcn.ClubSys.Web
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            Club club = ClubLogic.GetClubInfo(ClubID);
+            var club = ClubLogic.GetClubInfo(ClubID);
 
             if (club != null && this.Title.IndexOf("{0}") >= 0)
                 this.Title = string.Format(this.Title, club.FullName);
@@ -56,7 +56,7 @@ namespace Arsenalcn.ClubSys.Web
 
         protected void LoadPageData()
         {
-            Club club = ClubLogic.GetClubInfo(ClubID);
+            var club = ClubLogic.GetClubInfo(ClubID);
 
             if (club != null)
             {
@@ -87,9 +87,9 @@ namespace Arsenalcn.ClubSys.Web
                     {
                         phExecutor.Visible = true;
 
-                        List<UserClub> users = ClubLogic.GetClubLeads(ClubID);
-                        System.Text.StringBuilder sbEx = new System.Text.StringBuilder();
-                        foreach (UserClub user in users)
+                        var users = ClubLogic.GetClubLeads(ClubID);
+                        var sbEx = new System.Text.StringBuilder();
+                        foreach (var user in users)
                         {
                             if (user.Responsibility.Value == (int)Responsibility.Executor)
                             {
@@ -140,12 +140,12 @@ namespace Arsenalcn.ClubSys.Web
         {
             if (fuLogo.PostedFile.ContentLength != 0)
             {
-                string logoName = fuLogo.FileName;
+                var logoName = fuLogo.FileName;
 
                 if (logoName.ToLower().LastIndexOf(".gif") != logoName.Length - 4 && logoName.ToLower().LastIndexOf(".jpg") != logoName.Length - 4 && logoName.ToLower().LastIndexOf(".png") != logoName.Length - 4)
                 {
                     //invalid logo file
-                    string invalidAlert = "alert('请上传扩展名为gif，jpg或png的文件！');";
+                    var invalidAlert = "alert('请上传扩展名为gif，jpg或png的文件！');";
                     this.ClientScript.RegisterClientScriptBlock(typeof(string), "invalid_logo_file", invalidAlert, true);
 
                     LoadPageData();
@@ -155,7 +155,7 @@ namespace Arsenalcn.ClubSys.Web
 
                 if (fuLogo.FileBytes.LongLength > 100 * 1024)
                 {
-                    string fileLengthAlert = "alert('请上传小于100K的文件！');";
+                    var fileLengthAlert = "alert('请上传小于100K的文件！');";
                     this.ClientScript.RegisterClientScriptBlock(typeof(string), "file_too_large", fileLengthAlert, true);
 
                     LoadPageData();
@@ -165,7 +165,7 @@ namespace Arsenalcn.ClubSys.Web
             }
 
             //validate assignment
-            Club club = ClubLogic.GetClubInfo(ClubID);
+            var club = ClubLogic.GetClubInfo(ClubID);
 
             //check manager
             if (tbManager.Text != club.ManagerUserName)
@@ -174,7 +174,7 @@ namespace Arsenalcn.ClubSys.Web
                 if (Users.GetUserId(tbManager.Text) <= 0)
                 {
                     //alert
-                    string script = "alert('会长用户在系统中不存在！');";
+                    var script = "alert('会长用户在系统中不存在！');";
                     this.ClientScript.RegisterClientScriptBlock(typeof(string), "user_not_exist", script, true);
 
                     LoadPageData();
@@ -182,11 +182,11 @@ namespace Arsenalcn.ClubSys.Web
                     return;
                 }
 
-                int managerID = Users.GetUserId(tbManager.Text);
+                var managerID = Users.GetUserId(tbManager.Text);
                 //check if the new manager is a member of the club, if not, alert
                 if (ClubLogic.GetActiveUserClub(managerID, ClubID) == null)
                 {
-                    string script = "alert('新会长必须为该球会成员！');";
+                    var script = "alert('新会长必须为该球会成员！');";
                     this.ClientScript.RegisterClientScriptBlock(typeof(string), "user_not_member", script, true);
 
                     LoadPageData();
@@ -199,8 +199,8 @@ namespace Arsenalcn.ClubSys.Web
             if (tbExecutor.Text == string.Empty)
             {
                 //change current executor to normal member
-                List<UserClub> users = ClubLogic.GetClubLeads(ClubID);
-                foreach (UserClub userClub in users)
+                var users = ClubLogic.GetClubLeads(ClubID);
+                foreach (var userClub in users)
                 {
                     if (userClub.Responsibility == (int)Responsibility.Executor)
                     {
@@ -212,13 +212,13 @@ namespace Arsenalcn.ClubSys.Web
             else
             {
                 //check each executor existance
-                string[] executors = tbExecutor.Text.Split('|');
+                var executors = tbExecutor.Text.Split('|');
 
                 //check club max executor count
                 if (executors.Length > ClubLogic.GetClubExecutorQuota(ClubID))
                 {
                     //alert
-                    string script = "alert('干事数超过限额！');";
+                    var script = "alert('干事数超过限额！');";
                     this.ClientScript.RegisterClientScriptBlock(typeof(string), "executor_count_exceed", script, true);
 
                     LoadPageData();
@@ -226,14 +226,14 @@ namespace Arsenalcn.ClubSys.Web
                     return;
                 }
 
-                foreach (string executor in executors)
+                foreach (var executor in executors)
                 {
-                    string executorName = executor.Trim();
+                    var executorName = executor.Trim();
 
                     if (executorName == club.ManagerUserName)
                     {
                         //alert
-                        string script = "alert('干事不能为该球会会长！');";
+                        var script = "alert('干事不能为该球会会长！');";
                         this.ClientScript.RegisterClientScriptBlock(typeof(string), "user_not_manager", script, true);
 
                         LoadPageData();
@@ -244,7 +244,7 @@ namespace Arsenalcn.ClubSys.Web
                     if (Users.GetUserId(executorName) <= 0)
                     {
                         //alert
-                        string script = "alert('干事用户在系统中不存在！');";
+                        var script = "alert('干事用户在系统中不存在！');";
                         this.ClientScript.RegisterClientScriptBlock(typeof(string), "user_not_exist", script, true);
 
                         LoadPageData();
@@ -252,11 +252,11 @@ namespace Arsenalcn.ClubSys.Web
                         return;
                     }
 
-                    int executorID = Users.GetUserId(executorName);
+                    var executorID = Users.GetUserId(executorName);
 
                     if (ClubLogic.GetActiveUserClub(executorID, ClubID) == null)
                     {
-                        string script = "alert('干事必须为该球会成员！');";
+                        var script = "alert('干事必须为该球会成员！');";
                         this.ClientScript.RegisterClientScriptBlock(typeof(string), "user_not_member", script, true);
 
                         LoadPageData();
@@ -265,13 +265,13 @@ namespace Arsenalcn.ClubSys.Web
                     }
                 }
 
-                List<UserClub> leaders = ClubLogic.GetClubLeads(ClubID);
+                var leaders = ClubLogic.GetClubLeads(ClubID);
 
                 //save executor
-                foreach (string executor in executors)
+                foreach (var executor in executors)
                 {
-                    string executorName = executor.Trim();
-                    int executorID = Users.GetUserId(executorName);
+                    var executorName = executor.Trim();
+                    var executorID = Users.GetUserId(executorName);
 
                     if (leaders.Exists(delegate(UserClub uc) { return uc.Userid == executorID; }))
                     {
@@ -282,7 +282,7 @@ namespace Arsenalcn.ClubSys.Web
                         UserClubLogic.ChangeResponsibility(executorID, executorName, ClubID, Responsibility.Executor, this.username);
                 }
 
-                foreach (UserClub leader in leaders)
+                foreach (var leader in leaders)
                 {
                     if (leader.Responsibility.Value != (int)Responsibility.Manager)
                     {
@@ -300,7 +300,7 @@ namespace Arsenalcn.ClubSys.Web
             //update info
             ClubLogic.UpdateClubInfo(ClubID, fuLogo.PostedFile, tbSlogan.Text, tbDesc.Text, Boolean.Parse(rblAppliable.SelectedValue), null);
 
-            string scriptSaved = "alert('信息已保存');";
+            var scriptSaved = "alert('信息已保存');";
             this.ClientScript.RegisterClientScriptBlock(typeof(string), "saved", scriptSaved, true);
 
             LoadPageData();

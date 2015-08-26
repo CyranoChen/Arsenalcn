@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Web.UI.WebControls;
 using System.Linq;
 
@@ -40,7 +39,7 @@ namespace iArsenal.Web
         {
             if (ProductGuid != Guid.Empty)
             {
-                Product p = repo.Single<Product>(ProductGuid);
+                var p = repo.Single<Product>(ProductGuid);
 
                 tbProductGuid.Text = ProductGuid.ToString();
                 tbCode.Text = p.Code;
@@ -129,10 +128,10 @@ namespace iArsenal.Web
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                string _strStatus = string.Empty;
-                Order o = e.Row.DataItem as Order;
+                var _strStatus = string.Empty;
+                var o = e.Row.DataItem as Order;
 
-                Label lblOrderStatus = e.Row.FindControl("lblOrderStatus") as Label;
+                var lblOrderStatus = e.Row.FindControl("lblOrderStatus") as Label;
 
                 if (lblOrderStatus != null)
                 {
@@ -150,7 +149,7 @@ namespace iArsenal.Web
         {
             try
             {
-                Product p = new Product();
+                var p = new Product();
 
                 if (!ProductGuid.Equals(Guid.Empty))
                 {

@@ -27,7 +27,7 @@ namespace Arsenalcn.CasinoSys.Web.Control
             ltrlGamblerCount.Text = Gambler.Cache.GamblerList.Count.ToString();
             ltrlGameCount.Text = (CasinoItem.GetMatchCasinoItemCount() + CasinoItem.GetOtherCasinoItemCount()).ToString();
 
-            Banker defaultBanker = new Banker(Banker.DefaultBankerID);
+            var defaultBanker = new Banker(Banker.DefaultBankerID);
             ltrlDefaultBanker.Text = defaultBanker.Cash.ToString("N2");
         }
 

@@ -1,15 +1,7 @@
 ﻿using System;
-using System.Collections;
-using System.Configuration;
-using System.Data;
 using System.Web;
-using System.Web.Security;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
-using System.Web.UI.HtmlControls;
 using System.Collections.Generic;
-
+using System.Web.UI.WebControls;
 using Arsenalcn.ClubSys.Service;
 using Arsenalcn.ClubSys.Entity;
 
@@ -53,23 +45,25 @@ namespace Arsenalcn.ClubSys.Web
 
             #endregion
 
-            Club currentClub = ClubLogic.GetClubInfo(ClubID);
+            var currentClub = ClubLogic.GetClubInfo(ClubID);
 
-            if (currentClub != null && this.Title.IndexOf("{0}") >= 0)
+            if (currentClub != null && this.Title.IndexOf("{0}", StringComparison.Ordinal) >= 0)
                 this.Title = string.Format(this.Title, currentClub.FullName);
 
             if (currentClub != null)
             {
                 ltrlShortName.Text = currentClub.ShortName;
-                ltrlCreatorName.Text = currentClub.CreatorUserName;
-                ltrlCreatorUid.Text = currentClub.CreatorUid.Value.ToString();
+                ltrlCreatorName.Text =
+                    $"<a href=\"MyPlayerProfile.aspx?userid={ currentClub.CreatorUid.Value.ToString() }\" target = \"_blank\" >{currentClub.CreatorUserName}</ a >";
+                //ltrlCreatorUid.Text = currentClub.CreatorUid.Value.ToString();
 
                 ltrlSlogan.Text = HttpUtility.HtmlEncode(currentClub.Slogan);
                 ltrlFortune.Text = Convert.ToInt32(currentClub.Fortune).ToString("N0");
                 ltrlMemberCredit.Text = Convert.ToInt32(currentClub.MemberCredit).ToString("N0");
                 ltrlMemberFortune.Text = Convert.ToInt32(currentClub.MemberFortune).ToString("N0");
                 //ltrlEquipmentCount.Text = Convert.ToInt32(PlayerStrip.GetClubMemberEquipmentCount(currentClub.ID.Value)).ToString("N0");
-                ltrlEquipmentCount.Text = string.Format("C:{0} | V:{1}", PlayerStrip.GetClubMemberCardCount(currentClub.ID.Value).ToString(), PlayerStrip.GetClubMemberVideoCount(currentClub.ID.Value).ToString());
+                ltrlEquipmentCount.Text =
+                    $"C:{PlayerStrip.GetClubMemberCardCount(currentClub.ID.Value).ToString()} | V:{PlayerStrip.GetClubMemberVideoCount(currentClub.ID.Value).ToString()}";
                 ltrlCreateDate.Text = currentClub.CreateDate.ToString("yyyy年MM月dd日");
                 ltrlDays.Text = (DateTime.Now - currentClub.CreateDate).Days.ToString();
                 ltrlMemeberCount.Text = ClubLogic.GetClubMemberCount(ClubID).ToString();
@@ -84,9 +78,9 @@ namespace Arsenalcn.ClubSys.Web
                     ltrlAppliable.Text = "已关闭";
                 }
 
-                List<UserClub> uc = ClubLogic.GetClubLeads(ClubID);
+                var uc = ClubLogic.GetClubLeads(ClubID);
 
-                foreach (UserClub userClub in uc)
+                foreach (var userClub in uc)
                 {
                     userClub.AdditionalData = ClubLogic.TranslateResponsibility(userClub.Responsibility.Value);
 

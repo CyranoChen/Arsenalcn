@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web.UI.WebControls;
 
 using iArsenal.Service;
@@ -40,7 +38,7 @@ namespace iArsenal.Web
         {
             if (OrderID > 0)
             {
-                Order o = repo.Single<Order>(OrderID);
+                var o = repo.Single<Order>(OrderID);
 
                 lblOrderInfo.Text = string.Format("更新会员的订单 ID:<a href=\"ServerOrderView.ashx?OrderID={0}\" target=\"_blank\"><em>{0}</em></a>", OrderID.ToString());
 
@@ -137,7 +135,7 @@ namespace iArsenal.Web
         {
             try
             {
-                Order o = new Order();
+                var o = new Order();
 
                 if (OrderID > 0)
                 {
@@ -202,7 +200,7 @@ namespace iArsenal.Web
             {
                 if (OrderID > 0)
                 {
-                    Order o = repo.Single<Order>(OrderID);
+                    var o = repo.Single<Order>(OrderID);
 
                     o.CalcOrderPrice();
 
@@ -237,7 +235,7 @@ namespace iArsenal.Web
             {
                 if (OrderID > 0)
                 {
-                    int count = repo.Query<OrderItem>(x => x.OrderID == OrderID).Delete();
+                    var count = repo.Query<OrderItem>(x => x.OrderID == OrderID).Delete();
 
                     repo.Delete<Order>(OrderID);
 

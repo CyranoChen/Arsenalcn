@@ -54,8 +54,8 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public static List<CasinoGambler> GetCasinoGamblers()
         {
-            DataTable dt = DataAccess.Gambler.GetGamblerProfitView();
-            List<CasinoGambler> list = new List<CasinoGambler>();
+            var dt = DataAccess.Gambler.GetGamblerProfitView();
+            var list = new List<CasinoGambler>();
 
             if (dt != null)
             {
@@ -70,8 +70,8 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public static List<CasinoGambler> GetCasinoGamblers(Guid leagueGuid)
         {
-            DataTable dt = DataAccess.Gambler.GetGamblerProfitView(leagueGuid);
-            List<CasinoGambler> list = new List<CasinoGambler>();
+            var dt = DataAccess.Gambler.GetGamblerProfitView(leagueGuid);
+            var list = new List<CasinoGambler>();
 
             if (dt != null)
             {
@@ -153,9 +153,9 @@ namespace Arsenalcn.CasinoSys.Entity
             //else
             //    orderClause = "Profit DESC, RPBonus DESC, ProfitRate DESC, TotalBet DESC";
 
-            int _rank = 1;
+            var _rank = 1;
 
-            foreach (Entity.CasinoGambler cg in list)
+            foreach (var cg in list)
             {
                 cg.Rank = _rank++;
                 cg.Credit = cg.Rank;
@@ -179,18 +179,18 @@ namespace Arsenalcn.CasinoSys.Entity
         {
             if (list != null && list.Count > 0)
             {
-                Dictionary<int, int> dictCasinoGambler = new Dictionary<int, int>();
+                var dictCasinoGambler = new Dictionary<int, int>();
                 string[] arrayOrderKeyword = { "ProfitRate", "TotalBet", "RPBonus", "Profit" };
 
                 // Sort List<CasinoGambler> by different orderKeywords
-                foreach (string s in arrayOrderKeyword)
+                foreach (var s in arrayOrderKeyword)
                 {
-                    List<CasinoGambler> sortedList = SortCasinoGambler(list, s);
+                    var sortedList = SortCasinoGambler(list, s);
 
                     // Insert CasinoGambler instance into Dictionary or Add the rank of exist instance
                     if (sortedList != null && sortedList.Count > 0)
                     {
-                        foreach (CasinoGambler cg in sortedList)
+                        foreach (var cg in sortedList)
                         {
                             if (dictCasinoGambler.ContainsKey(cg.UserID))
                             {
@@ -205,7 +205,7 @@ namespace Arsenalcn.CasinoSys.Entity
                 }
 
                 // Update the Rank of every list Gamblers
-                foreach (CasinoGambler cg in list)
+                foreach (var cg in list)
                 {
                     cg.Credit = dictCasinoGambler[cg.UserID];
                 }
@@ -217,8 +217,8 @@ namespace Arsenalcn.CasinoSys.Entity
                       ? cg1.Credit.Value - cg2.Credit.Value : cg2.Profit.CompareTo(cg1.Profit);
                 });
 
-                int _rank = 1;
-                foreach (CasinoGambler cg in list)
+                var _rank = 1;
+                foreach (var cg in list)
                 { cg.Rank = _rank++; }
             }
 

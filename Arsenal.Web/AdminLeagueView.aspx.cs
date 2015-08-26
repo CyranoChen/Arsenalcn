@@ -36,7 +36,7 @@ namespace Arsenal.Web
         {
             if (LeagueGuid != Guid.Empty)
             {
-                League l = repo.Single<League>(LeagueGuid);
+                var l = repo.Single<League>(LeagueGuid);
 
                 tbLeagueGuid.Text = LeagueGuid.ToString();
                 tbLeagueName.Text = l.LeagueName;
@@ -58,7 +58,7 @@ namespace Arsenal.Web
         {
             try
             {
-                League l = new League();
+                var l = new League();
 
                 if (!LeagueGuid.Equals(Guid.Empty))
                 {

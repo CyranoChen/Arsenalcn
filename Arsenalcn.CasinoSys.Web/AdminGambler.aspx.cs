@@ -22,14 +22,14 @@ namespace Arsenalcn.CasinoSys.Web
 
         private void BindData()
         {
-            string queryUsername = string.Empty;
+            var queryUsername = string.Empty;
             if (ViewState["username"] != null)
                 queryUsername = ViewState["username"].ToString();
 
-            List<Gambler> list = Entity.Gambler.GetGamblers().FindAll(delegate(Gambler g)
+            var list = Entity.Gambler.GetGamblers().FindAll(delegate(Gambler g)
             {
-                Boolean returnValue = true;
-                string tmpString = string.Empty;
+                var returnValue = true;
+                var tmpString = string.Empty;
 
                 if (ViewState["username"] != null)
                 {
@@ -49,19 +49,19 @@ namespace Arsenalcn.CasinoSys.Web
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                Gambler g = e.Row.DataItem as Gambler;
+                var g = e.Row.DataItem as Gambler;
 
-                Label lblQSB = e.Row.FindControl("lblQSB") as Label;
-                Label lblRP = e.Row.FindControl("lblRP") as Label;
-                Label lblCash = e.Row.FindControl("lblCash") as Label;
-                Label lblWin = e.Row.FindControl("lblWin") as Label;
-                Label lblLose = e.Row.FindControl("lblLose") as Label;
+                var lblQSB = e.Row.FindControl("lblQSB") as Label;
+                var lblRP = e.Row.FindControl("lblRP") as Label;
+                var lblCash = e.Row.FindControl("lblCash") as Label;
+                var lblWin = e.Row.FindControl("lblWin") as Label;
+                var lblLose = e.Row.FindControl("lblLose") as Label;
 
-                TextBox tbCash = e.Row.FindControl("tbCash") as TextBox;
-                TextBox tbWin = e.Row.FindControl("tbWin") as TextBox;
-                TextBox tbLose = e.Row.FindControl("tbLose") as TextBox;
+                var tbCash = e.Row.FindControl("tbCash") as TextBox;
+                var tbWin = e.Row.FindControl("tbWin") as TextBox;
+                var tbLose = e.Row.FindControl("tbLose") as TextBox;
 
-                LinkButton btnResetGambler = e.Row.FindControl("btnResetGambler") as LinkButton;
+                var btnResetGambler = e.Row.FindControl("btnResetGambler") as LinkButton;
 
                 if (AdminUsers.GetUserInfo(g.UserID) != null && lblQSB != null && lblRP != null)
                 {
@@ -103,11 +103,11 @@ namespace Arsenalcn.CasinoSys.Web
 
         protected void gvGambler_RowUpdating(object sender, GridViewUpdateEventArgs e)
         {
-            TextBox tbCash = gvGambler.Rows[gvGambler.EditIndex].FindControl("tbCash") as TextBox;
-            TextBox tbWin = gvGambler.Rows[gvGambler.EditIndex].FindControl("tbWin") as TextBox;
-            TextBox tbLose = gvGambler.Rows[gvGambler.EditIndex].FindControl("tbLose") as TextBox;
+            var tbCash = gvGambler.Rows[gvGambler.EditIndex].FindControl("tbCash") as TextBox;
+            var tbWin = gvGambler.Rows[gvGambler.EditIndex].FindControl("tbWin") as TextBox;
+            var tbLose = gvGambler.Rows[gvGambler.EditIndex].FindControl("tbLose") as TextBox;
 
-            Entity.Gambler gambler = new Entity.Gambler((int)gvGambler.DataKeys[gvGambler.EditIndex].Value);
+            var gambler = new Entity.Gambler((int)gvGambler.DataKeys[gvGambler.EditIndex].Value);
 
             if (gambler != null && tbCash != null && tbWin != null && tbLose != null)
             {

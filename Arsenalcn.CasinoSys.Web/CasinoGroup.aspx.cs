@@ -30,7 +30,7 @@ namespace Arsenalcn.CasinoSys.Web
                 if (CurrentLeague != Guid.Empty)
                 {
                     //Bind ddlSeason
-                    List<League> list = Entity.League.Cache.GetSeasonsByLeagueGuid(CurrentLeague);
+                    var list = Entity.League.Cache.GetSeasonsByLeagueGuid(CurrentLeague);
 
                     ddlSeason.DataSource = list;
                     ddlSeason.DataTextField = "LeagueSeason";
@@ -39,7 +39,7 @@ namespace Arsenalcn.CasinoSys.Web
                     ddlSeason.SelectedValue = CurrentLeague.ToString();
 
                     // Bind ddlGroup
-                    DataTable dtGroup = Entity.Group.GetGroupByLeague(CurrentLeague);
+                    var dtGroup = Entity.Group.GetGroupByLeague(CurrentLeague);
 
                     if (dtGroup != null)
                     {
@@ -48,7 +48,7 @@ namespace Arsenalcn.CasinoSys.Web
                         ddlGroup.DataValueField = "GroupGuid";
                         ddlGroup.DataBind();
 
-                        ListItem item = new ListItem("所有分组", Guid.Empty.ToString());
+                        var item = new ListItem("所有分组", Guid.Empty.ToString());
                         ddlGroup.Items.Insert(0, item);
 
                         ddlGroup.SelectedValue = CurrentGroup.ToString();
@@ -69,7 +69,7 @@ namespace Arsenalcn.CasinoSys.Web
             {
                 BindGroupData(gvGroupTable, CurrentGroup);
 
-                Group group = new Group(CurrentGroup);
+                var group = new Group(CurrentGroup);
 
                 btnGroupMatch.Visible = !group.IsTable;
                 pnlGroupList.Visible = false;
@@ -78,7 +78,7 @@ namespace Arsenalcn.CasinoSys.Web
             {
                 if (Entity.Group.IsExistGroupByLeague(CurrentLeague, false))
                 {
-                    DataTable dtGroup = Entity.Group.GetGroupByLeague(CurrentLeague);
+                    var dtGroup = Entity.Group.GetGroupByLeague(CurrentLeague);
                     rptGroup.DataSource = dtGroup;
                     rptGroup.DataBind();
 
@@ -88,8 +88,8 @@ namespace Arsenalcn.CasinoSys.Web
                 }
                 else if (Entity.Group.IsExistGroupByLeague(CurrentLeague, true))
                 {
-                    DataTable dtTable = Entity.Group.GetGroupByLeague(CurrentLeague);
-                    DataRow drTable = dtTable.Rows[0];
+                    var dtTable = Entity.Group.GetGroupByLeague(CurrentLeague);
+                    var drTable = dtTable.Rows[0];
 
                     BindGroupData(gvGroupTable, (Guid)drTable["GroupGuid"]);
 
@@ -107,7 +107,7 @@ namespace Arsenalcn.CasinoSys.Web
 
         private void BindGroupData(GridView gv, Guid groupGuid)
         {
-            DataTable dt = Entity.Group.GetTableGroupTeam(groupGuid);
+            var dt = Entity.Group.GetTableGroupTeam(groupGuid);
 
             gv.Columns[1].HeaderText = string.Format("<a href=\"CasinoGroup.aspx?Group={0}\">&lt;{1}&gt;</a>", groupGuid.ToString(), new Group(groupGuid).GroupName);
 
@@ -183,8 +183,8 @@ namespace Arsenalcn.CasinoSys.Web
         {
             if ((e.Item.ItemType == ListItemType.Item) || (e.Item.ItemType == ListItemType.AlternatingItem))
             {
-                DataRowView dr = e.Item.DataItem as DataRowView;
-                GridView gvGroupTeam = e.Item.FindControl("gvGroupTeam") as GridView;
+                var dr = e.Item.DataItem as DataRowView;
+                var gvGroupTeam = e.Item.FindControl("gvGroupTeam") as GridView;
 
                 BindGroupData(gvGroupTeam, (Guid)dr["GroupGuid"]);
             }
@@ -199,15 +199,15 @@ namespace Arsenalcn.CasinoSys.Web
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                DataRowView drv = e.Row.DataItem as DataRowView;
+                var drv = e.Row.DataItem as DataRowView;
 
-                Literal ltrlTeamLogo = e.Row.FindControl("ltrlTeamLogo") as Literal;
-                HyperLink hlTeamInfo = e.Row.FindControl("hlTeamInfo") as HyperLink;
-                Literal ltrlGoalDiff = e.Row.FindControl("ltrlGoalDiff") as Literal;
+                var ltrlTeamLogo = e.Row.FindControl("ltrlTeamLogo") as Literal;
+                var hlTeamInfo = e.Row.FindControl("hlTeamInfo") as HyperLink;
+                var ltrlGoalDiff = e.Row.FindControl("ltrlGoalDiff") as Literal;
 
                 if (ltrlTeamLogo != null && hlTeamInfo != null)
                 {
-                    Team t = Team.Cache.Load((Guid)drv["TeamGuid"]);
+                    var t = Team.Cache.Load((Guid)drv["TeamGuid"]);
 
                     ltrlTeamLogo.Text = string.Format("<span class=\"CasinoSys_GameName\" title=\"{0}\"><img src=\"{1}\" alt=\"{0}\" /></span>",
                         t.TeamEnglishName, t.TeamLogo);
@@ -218,7 +218,7 @@ namespace Arsenalcn.CasinoSys.Web
 
                 if (ltrlGoalDiff != null)
                 {
-                    short _goalDiff = (short)drv["TotalGoalDiff"];
+                    var _goalDiff = (short)drv["TotalGoalDiff"];
 
                     ltrlGoalDiff.Text = string.Format("<em>{0}</em>",
                         _goalDiff > 0 ? ("+" + _goalDiff.ToString()) : _goalDiff.ToString());
@@ -230,15 +230,15 @@ namespace Arsenalcn.CasinoSys.Web
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                DataRowView drv = e.Row.DataItem as DataRowView;
+                var drv = e.Row.DataItem as DataRowView;
 
-                Literal ltrlTeamLogo = e.Row.FindControl("ltrlTeamLogo") as Literal;
-                HyperLink hlTeamInfo = e.Row.FindControl("hlTeamInfo") as HyperLink;
-                Literal ltrlGoalDiff = e.Row.FindControl("ltrlGoalDiff") as Literal;
+                var ltrlTeamLogo = e.Row.FindControl("ltrlTeamLogo") as Literal;
+                var hlTeamInfo = e.Row.FindControl("hlTeamInfo") as HyperLink;
+                var ltrlGoalDiff = e.Row.FindControl("ltrlGoalDiff") as Literal;
 
                 if (ltrlTeamLogo != null && hlTeamInfo != null)
                 {
-                    Team t = Team.Cache.Load((Guid)drv["TeamGuid"]);
+                    var t = Team.Cache.Load((Guid)drv["TeamGuid"]);
 
                     ltrlTeamLogo.Text = string.Format("<span class=\"CasinoSys_GameName\" title=\"{0}\"><img src=\"{1}\" alt=\"{0}\" /></span>",
                         t.TeamEnglishName, t.TeamLogo);

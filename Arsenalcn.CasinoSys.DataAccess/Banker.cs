@@ -11,9 +11,9 @@ namespace Arsenalcn.CasinoSys.DataAccess
     {
         public static DataRow GetBankerByID(Guid bankerID)
         {
-            string sql = "SELECT * FROM dbo.AcnCasino_Banker WHERE [ID] = @bankerID";
+            var sql = "SELECT * FROM dbo.AcnCasino_Banker WHERE [ID] = @bankerID";
 
-            DataSet ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@bankerID", bankerID));
+            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@bankerID", bankerID));
 
             if (ds.Tables[0].Rows.Count == 0)
                 return null;
@@ -23,7 +23,7 @@ namespace Arsenalcn.CasinoSys.DataAccess
 
         public static void UpdateBankerCash(Guid bankerID, float cash, SqlTransaction trans)
         {
-            string sql = "UPDATE dbo.AcnCasino_Banker SET Cash = @cash WHERE [ID] = @bankerID";
+            var sql = "UPDATE dbo.AcnCasino_Banker SET Cash = @cash WHERE [ID] = @bankerID";
 
             if( trans == null )
                 SqlHelper.ExecuteNonQuery(SQLConn.GetConnection(), System.Data.CommandType.Text, sql, new SqlParameter("@cash", cash), new SqlParameter("@bankerID", bankerID));
@@ -33,9 +33,9 @@ namespace Arsenalcn.CasinoSys.DataAccess
         
         public static DataTable GetAllBankers()
         {
-            string sql = "SELECT * FROM dbo.AcnCasino_Banker ORDER BY Cash DESC";
+            var sql = "SELECT * FROM dbo.AcnCasino_Banker ORDER BY Cash DESC";
 
-            DataSet ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql);
+            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql);
 
             if( ds.Tables[0].Rows.Count == 0 )
                 return null;
@@ -45,9 +45,9 @@ namespace Arsenalcn.CasinoSys.DataAccess
 
         public static DataTable GetAllBankers(bool isActive)
         {
-            string sql = "SELECT * FROM dbo.AcnCasino_Banker WHERE IsActive = @isActive ORDER BY Cash DESC";
+            var sql = "SELECT * FROM dbo.AcnCasino_Banker WHERE IsActive = @isActive ORDER BY Cash DESC";
 
-            DataSet ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@isActive", isActive));
+            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@isActive", isActive));
 
             if (ds.Tables[0].Rows.Count == 0)
                 return null;

@@ -8,7 +8,7 @@ namespace iArsenal.Service.ServiceProvider
     {
         public static ServiceArsenal GetWebService()
         {
-            ServiceArsenal svc = new ServiceArsenal();
+            var svc = new ServiceArsenal();
 
             svc.Url = ConfigurationManager.AppSettings["Arsenalcn.WebService.Url"].ToString();            
 

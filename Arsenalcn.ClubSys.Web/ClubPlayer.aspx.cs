@@ -12,7 +12,7 @@ namespace Arsenalcn.ClubSys.Web
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            Club club = ClubLogic.GetClubInfo(ClubID);
+            var club = ClubLogic.GetClubInfo(ClubID);
 
             if (club != null && this.Title.IndexOf("{0}") >= 0)
                 this.Title = string.Format(this.Title, club.FullName);
@@ -37,16 +37,17 @@ namespace Arsenalcn.ClubSys.Web
 
             ClubPlayerLvCount = new Dictionary<int, int>();
 
-            for (int i = 0; i <= (ConfigGlobal.PlayerMaxLv + 1); i++)
+            for (var i = 0; i <= (ConfigGlobal.PlayerMaxLv + 1); i++)
             {
                 ClubPlayerLvCount[i] = 0;
             }
             BindPlayers();
 
-            this.ltlPlayerCount.Text = string.Format("<span>本球会正式/总球员数:<em>{0}/{1}</em></span>", FormalPlayerCount.ToString(), PlayerStrip.GetClubPlayerCount(ClubID).ToString());
-            this.ltlPlayerLv.Text = string.Format("<span>&gt;LV5:{0}</span>", ClubPlayerLvCount[ConfigGlobal.PlayerMaxLv + 1].ToString());
+            this.ltlPlayerCount.Text =
+                $"<span>本球会正式/总球员数:<em>{FormalPlayerCount.ToString()}/{PlayerStrip.GetClubPlayerCount(ClubID).ToString()}</em></span>";
+            this.ltlPlayerLv.Text = $"<span>&gt;LV5:{ClubPlayerLvCount[ConfigGlobal.PlayerMaxLv + 1].ToString()}</span>";
 
-            for (int j = ConfigGlobal.PlayerMaxLv; j > 0; j--)
+            for (var j = ConfigGlobal.PlayerMaxLv; j > 0; j--)
             {
                 this.ltlPlayerLv.Text += string.Format(" <span class=\"ClubSys_PlayerLV{0}\">LV{0}:{1}</span>", j.ToString(), ClubPlayerLvCount[j].ToString());
             }
@@ -64,12 +65,12 @@ namespace Arsenalcn.ClubSys.Web
 
                 _list = PlayerStrip.GetClubPlayers(ClubID);
 
-                foreach (Gamer player in _list)
+                foreach (var player in _list)
                 {
                     if (player.CurrentGuid != null)
                         FormalPlayerCount++;
 
-                    int playerLv = player.Shirt;
+                    var playerLv = player.Shirt;
 
                     if (player.Shorts < playerLv)
                         playerLv = player.Shorts;
@@ -129,16 +130,16 @@ namespace Arsenalcn.ClubSys.Web
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                Gamer player = e.Row.DataItem as Gamer;
+                var player = e.Row.DataItem as Gamer;
 
-                Literal ltrlNum = e.Row.FindControl("ltrlNum") as Literal;
-                Literal ltrlShirtLV = e.Row.FindControl("ltrlShirtLV") as Literal;
-                Literal ltrlShortsLV = e.Row.FindControl("ltrlShortsLV") as Literal;
-                Literal ltrlSockLV = e.Row.FindControl("ltrlSockLV") as Literal;
+                var ltrlNum = e.Row.FindControl("ltrlNum") as Literal;
+                var ltrlShirtLV = e.Row.FindControl("ltrlShirtLV") as Literal;
+                var ltrlShortsLV = e.Row.FindControl("ltrlShortsLV") as Literal;
+                var ltrlSockLV = e.Row.FindControl("ltrlSockLV") as Literal;
 
                 if (player.CurrentGuid != null)
                 {
-                    String StrSwfContent = "<div class=\"ClubSys_PlayerCardPH\">";
+                    var StrSwfContent = "<div class=\"ClubSys_PlayerCardPH\">";
                     StrSwfContent += string.Format("<script type=\"text/javascript\">GenSwfObject('PlayerCardActive{0}','swf/PlayerCardActive.swf?XMLURL=ServerXml.aspx%3FPlayerGuid={0}','80','100');</script>", player.CurrentGuid.Value.ToString());
                     StrSwfContent += "</div>";
                     ltrlNum.Text = StrSwfContent;
@@ -148,9 +149,9 @@ namespace Arsenalcn.ClubSys.Web
                     ltrlNum.Text = "<img src=\"uploadfiles/PlayerLogo.gif\" alt=\"NoCurrentPlayer\" title=\"NoCurrentPlayer\" height=\"50\" />";
                 }
 
-                int _shirtLV = Math.Min(player.Shirt, ConfigGlobal.PlayerMaxLv);
-                int _shortsLV = Math.Min(player.Shorts, ConfigGlobal.PlayerMaxLv);
-                int _sockLV = Math.Min(player.Sock, ConfigGlobal.PlayerMaxLv);
+                var _shirtLV = Math.Min(player.Shirt, ConfigGlobal.PlayerMaxLv);
+                var _shortsLV = Math.Min(player.Shorts, ConfigGlobal.PlayerMaxLv);
+                var _sockLV = Math.Min(player.Sock, ConfigGlobal.PlayerMaxLv);
 
                 ltrlShirtLV.Text = string.Format("<div class=\"Clubsys_StripLV\" title=\"LV{0}\"><img src=\"uploadfiles/StripLV/shirt{1}.gif\" alt=\"LV{0}\" /></div>", player.Shirt.ToString(), _shirtLV.ToString());
                 ltrlShortsLV.Text = string.Format("<div class=\"Clubsys_StripLV\" title=\"LV{0}\"><img src=\"uploadfiles/StripLV/shorts{1}.gif\" alt=\"LV{0}\" /></div>", player.Shorts.ToString(), _shortsLV.ToString());
@@ -169,8 +170,8 @@ namespace Arsenalcn.ClubSys.Web
                     return -1;
                 else if (string.IsNullOrEmpty(x.CurrentGuid.ToString()) == string.IsNullOrEmpty(y.CurrentGuid.ToString()))
                 {
-                    int xLv = (int)x.AdditionalData2;
-                    int yLv = (int)y.AdditionalData2;
+                    var xLv = (int)x.AdditionalData2;
+                    var yLv = (int)y.AdditionalData2;
 
                     return yLv - xLv;
                 }

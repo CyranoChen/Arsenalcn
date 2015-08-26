@@ -15,7 +15,7 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public Bet(int betID)
         {
-            DataRow dr = DataAccess.Bet.GetBetByID(betID);
+            var dr = DataAccess.Bet.GetBetByID(betID);
 
             if (dr != null)
                 InitBet(dr);
@@ -74,27 +74,27 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public void Insert(MatchResultBetDetail matchResult)
         {
-            using (SqlConnection conn = SQLConn.GetConnection())
+            using (var conn = SQLConn.GetConnection())
             {
                 conn.Open();
-                SqlTransaction trans = conn.BeginTransaction();
+                var trans = conn.BeginTransaction();
                 try
                 {
                     if (BetCheck())
                     {
                         //update gambler statistics
-                        Gambler gambler = new Gambler(UserID, trans);
+                        var gambler = new Gambler(UserID, trans);
                         gambler.TotalBet += BetAmount.GetValueOrDefault(0f);
 
                         if (BetAmount.HasValue)
                             gambler.Cash -= BetAmount.GetValueOrDefault(0f);
                         gambler.Update(trans);
 
-                        Entity.Banker banker = new Banker(Entity.CasinoItem.GetCasinoItem(CasinoItemGuid).BankerID);
+                        var banker = new Banker(Entity.CasinoItem.GetCasinoItem(CasinoItemGuid).BankerID);
                         banker.Cash += BetAmount.GetValueOrDefault(0f);
                         banker.Update(trans);
 
-                        int betID = DataAccess.Bet.InsertBet(UserID, UserName, CasinoItemGuid, BetAmount, BetRate, trans);
+                        var betID = DataAccess.Bet.InsertBet(UserID, UserName, CasinoItemGuid, BetAmount, BetRate, trans);
                         matchResult.Save(betID, trans);
 
                         trans.Commit();
@@ -113,27 +113,27 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public void Insert(string optionValue)
         {
-            using (SqlConnection conn = SQLConn.GetConnection())
+            using (var conn = SQLConn.GetConnection())
             {
                 conn.Open();
-                SqlTransaction trans = conn.BeginTransaction();
+                var trans = conn.BeginTransaction();
                 try
                 {
                     if (BetCheck(trans))
                     {
                         //update gambler statistics
-                        Gambler gambler = new Gambler(UserID, trans);
+                        var gambler = new Gambler(UserID, trans);
                         gambler.TotalBet += BetAmount.GetValueOrDefault(0f);
 
                         if (BetAmount.HasValue)
                             gambler.Cash -= BetAmount.GetValueOrDefault(0f);
                         gambler.Update(trans);
 
-                        Entity.Banker banker = new Banker(Entity.CasinoItem.GetCasinoItem(CasinoItemGuid).BankerID);
+                        var banker = new Banker(Entity.CasinoItem.GetCasinoItem(CasinoItemGuid).BankerID);
                         banker.Cash += BetAmount.GetValueOrDefault(0f);
                         banker.Update(trans);
 
-                        int betID = DataAccess.Bet.InsertBet(UserID, UserName, CasinoItemGuid, BetAmount, BetRate, trans);
+                        var betID = DataAccess.Bet.InsertBet(UserID, UserName, CasinoItemGuid, BetAmount, BetRate, trans);
                         Entity.MatchChoiceOption.SaveMatchChoiceOption(betID, optionValue, trans);
 
                         trans.Commit();
@@ -152,10 +152,10 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public static void CleanNoCasinoItemBet()
         {
-            using (SqlConnection conn = SQLConn.GetConnection())
+            using (var conn = SQLConn.GetConnection())
             {
                 conn.Open();
-                SqlTransaction trans = conn.BeginTransaction();
+                var trans = conn.BeginTransaction();
                 try
                 {
                     DataAccess.Bet.CleanBet(trans);
@@ -173,20 +173,20 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public static void ReturnBet(int betID)
         {
-            using (SqlConnection conn = SQLConn.GetConnection())
+            using (var conn = SQLConn.GetConnection())
             {
                 conn.Open();
-                SqlTransaction trans = conn.BeginTransaction();
+                var trans = conn.BeginTransaction();
                 try
                 {
-                    Bet bet = new Bet(betID);
+                    var bet = new Bet(betID);
 
                     if (bet.BetAmount.HasValue && bet.BetAmount >= 0f)
                     {
-                        float betAmount = Convert.ToSingle(bet.BetAmount);
+                        var betAmount = Convert.ToSingle(bet.BetAmount);
 
-                        Banker banker = new Banker(CasinoItem.GetCasinoItem(bet.CasinoItemGuid).BankerID);
-                        Gambler gambler = new Gambler(bet.UserID, trans);
+                        var banker = new Banker(CasinoItem.GetCasinoItem(bet.CasinoItemGuid).BankerID);
+                        var gambler = new Gambler(bet.UserID, trans);
 
                         gambler.Cash += betAmount;
                         gambler.TotalBet -= betAmount;
@@ -216,7 +216,7 @@ namespace Arsenalcn.CasinoSys.Entity
         public bool BetCheck(SqlTransaction trans = null)
         {
             //check close time
-            Entity.CasinoItem item = Entity.CasinoItem.GetCasinoItem(CasinoItemGuid);
+            var item = Entity.CasinoItem.GetCasinoItem(CasinoItemGuid);
 
             if (item == null)
                 return false;
@@ -230,7 +230,7 @@ namespace Arsenalcn.CasinoSys.Entity
             //check user account
             if (BetAmount.HasValue)
             {
-                Gambler gamber = new Gambler(UserID, trans);
+                var gamber = new Gambler(UserID, trans);
                 if (gamber.Cash < BetAmount.Value)
                     return false;
             }
@@ -240,8 +240,8 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public static List<Bet> GetUserMatchAllBet(int userid, Guid matchGuid)
         {
-            DataTable dt = DataAccess.Bet.GetUserMatchAllBet(userid, matchGuid);
-            List<Bet> betList = new List<Bet>();
+            var dt = DataAccess.Bet.GetUserMatchAllBet(userid, matchGuid);
+            var betList = new List<Bet>();
 
             if (dt != null)
             {
@@ -261,8 +261,8 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public static List<Bet> GetUserCasinoItemAllBet(int userid, Guid casinoItemGuid)
         {
-            DataTable dt = DataAccess.Bet.GetUserCasinoItemAllBet(userid, casinoItemGuid);
-            List<Bet> betList = new List<Bet>();
+            var dt = DataAccess.Bet.GetUserCasinoItemAllBet(userid, casinoItemGuid);
+            var betList = new List<Bet>();
 
             if (dt != null)
             {
@@ -277,8 +277,8 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public static List<Bet> GetBetByCasinoItemGuid(Guid guid, SqlTransaction trans)
         {
-            DataTable dt = DataAccess.Bet.GetBetByCasinoItemGuid(guid, trans);
-            List<Bet> betList = new List<Bet>();
+            var dt = DataAccess.Bet.GetBetByCasinoItemGuid(guid, trans);
+            var betList = new List<Bet>();
 
             if (dt != null)
             {
@@ -293,8 +293,8 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public static List<Bet> GetMatchAllBet(Guid matchGuid)
         {
-            DataTable dt = DataAccess.Bet.GetMatchAllBet(matchGuid);
-            List<Bet> betList = new List<Bet>();
+            var dt = DataAccess.Bet.GetMatchAllBet(matchGuid);
+            var betList = new List<Bet>();
 
             if (dt != null)
             {
@@ -314,8 +314,8 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public static List<Bet> GetAllBetByTimeDiff(int timeDiff)
         {
-            DataTable dt = DataAccess.Bet.GetAllBetByTimeDiff(timeDiff);
-            List<Bet> betList = new List<Bet>();
+            var dt = DataAccess.Bet.GetAllBetByTimeDiff(timeDiff);
+            var betList = new List<Bet>();
 
             if (dt != null)
             {

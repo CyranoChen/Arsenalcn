@@ -1,7 +1,5 @@
 ﻿<%@ Page Language="C#" MasterPageFile="DefaultMaster.master" CodeBehind="ClubVideoView.aspx.cs"
     Inherits="Arsenalcn.ClubSys.Web.ClubVideoView" Title="{0} 视频名人堂" EnableViewState="false" %>
-
-<%@ Import Namespace="Arsenalcn.ClubSys.Service" %>
 <%@ Register Src="Control/LeftPanel.ascx" TagName="LeftPanel" TagPrefix="uc1" %>
 <%@ Register Src="Control/FieldToolBar.ascx" TagName="FieldToolBar" TagPrefix="uc2" %>
 <%@ Register Src="Control/MenuTabBar.ascx" TagName="MenuTabBar" TagPrefix="uc3" %>

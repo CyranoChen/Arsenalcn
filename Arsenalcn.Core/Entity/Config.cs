@@ -56,15 +56,15 @@ namespace Arsenalcn.Core
 
         public bool Any()
         {
-            string sql = string.Format("SELECT * FROM {0} WHERE ConfigSystem = @configSystem AND ConfigKey = @configKey",
-                Repository.GetTableAttr<Config>().Name);
+            var sql =
+                $"SELECT * FROM {Repository.GetTableAttr<Config>().Name} WHERE ConfigSystem = @configSystem AND ConfigKey = @configKey";
 
             SqlParameter[] para = {
                                       new SqlParameter("@configSystem", ConfigSystem.ToString()),
                                       new SqlParameter("@configKey", ConfigKey)
                                   };
 
-            DataSet ds = DataAccess.ExecuteDataset(sql, para);
+            var ds = DataAccess.ExecuteDataset(sql, para);
 
             return ds.Tables[0].Rows.Count > 0;
         }
@@ -75,9 +75,9 @@ namespace Arsenalcn.Core
 
             var list = new List<Config>();
 
-            string sql = string.Format("SELECT * FROM {0} ORDER BY {1}", attr.Name, attr.Sort);
+            var sql = $"SELECT * FROM {attr.Name} ORDER BY {attr.Sort}";
 
-            DataSet ds = DataAccess.ExecuteDataset(sql);
+            var ds = DataAccess.ExecuteDataset(sql);
 
             //if (ds.Tables[0].Rows.Count > 0)
             //{
@@ -93,7 +93,7 @@ namespace Arsenalcn.Core
             {
                 using (var reader = dt.CreateDataReader())
                 {
-                    Config.CreateMap();
+                    CreateMap();
 
                     list = AutoMapper.Mapper.Map<IDataReader, List<Config>>(reader);
                 }
@@ -109,10 +109,10 @@ namespace Arsenalcn.Core
 
         public void Update(SqlTransaction trans = null)
         {
-            Contract.Requires(this.Any());
+            Contract.Requires(Any());
 
-            string sql = string.Format("UPDATE {0} SET ConfigValue = @configValue WHERE ConfigSystem = @configSystem AND ConfigKey = @configKey",
-                 Repository.GetTableAttr<Config>().Name);
+            var sql =
+                $"UPDATE {Repository.GetTableAttr<Config>().Name} SET ConfigValue = @configValue WHERE ConfigSystem = @configSystem AND ConfigKey = @configKey";
 
             SqlParameter[] para = {
                                       new SqlParameter("@configSystem", ConfigSystem.ToString()),
@@ -151,16 +151,22 @@ namespace Arsenalcn.Core
 
             public static Dictionary<string, string> GetDictionaryByConfigSystem(ConfigSystem cs)
             {
-                List<Config> list = ConfigList.FindAll(x => x.ConfigSystem.Equals(cs));
+                var list = ConfigList.FindAll(x => x.ConfigSystem.Equals(cs));
 
-                if (list != null && list.Count > 0)
+                if (list.Count > 0)
                 {
-                    Dictionary<string, string> dict = new Dictionary<string, string>();
+                    var dict = new Dictionary<string, string>();
 
-                    foreach (Config c in list)
+                    foreach (var c in list)
                     {
-                        try { dict.Add(c.ConfigKey, c.ConfigValue); }
-                        catch { continue; }
+                        try
+                        {
+                            dict.Add(c.ConfigKey, c.ConfigValue);
+                        }
+                        catch
+                        {
+                            // ignored
+                        }
                     }
 
                     return dict;
@@ -195,6 +201,7 @@ namespace Arsenalcn.Core
     {
         AcnClub,
         AcnCasino,
+        // ReSharper disable once InconsistentNaming
         iArsenal,
         Arsenal
     }

@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-
-using Arsenalcn.ClubSys.Service;
 using Arsenalcn.ClubSys.Entity;
 
 namespace Arsenalcn.ClubSys.Web
@@ -16,7 +13,7 @@ namespace Arsenalcn.ClubSys.Web
             }
             else
             {
-                ltrlPluginName.Text = string.Format("<strong>欢迎进入{0}</strong>", ConfigGlobal.PluginDisplayName);
+                ltrlPluginName.Text = $"<strong>欢迎进入{ConfigGlobal.PluginDisplayName}</strong>";
 
                 if (ConfigAdmin.IsPluginAdmin(this.userid))
                     pnlAdmin.Visible = true;

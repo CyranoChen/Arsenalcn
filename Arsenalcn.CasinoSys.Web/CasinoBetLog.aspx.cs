@@ -60,10 +60,10 @@ namespace Arsenalcn.CasinoSys.Web
                 //display all match bet
                 ddlTimeDiff.Visible = false;
 
-                Match m = new Match(CurrentMatch);
+                var m = new Match(CurrentMatch);
 
-                Team homeT = Team.Cache.Load(m.Home);
-                Team awayT = Team.Cache.Load(m.Away);
+                var homeT = Team.Cache.Load(m.Home);
+                var awayT = Team.Cache.Load(m.Away);
                 home = homeT.TeamDisplayName;
                 away = awayT.TeamDisplayName;
 
@@ -126,13 +126,13 @@ namespace Arsenalcn.CasinoSys.Web
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                Bet bet = e.Row.DataItem as Bet;
+                var bet = e.Row.DataItem as Bet;
 
-                Literal ltrlHome = e.Row.FindControl("ltrlHome") as Literal;
-                Literal ltrlAway = e.Row.FindControl("ltrlAway") as Literal;
-                Literal ltrlVS = e.Row.FindControl("ltrlVS") as Literal;
+                var ltrlHome = e.Row.FindControl("ltrlHome") as Literal;
+                var ltrlAway = e.Row.FindControl("ltrlAway") as Literal;
+                var ltrlVS = e.Row.FindControl("ltrlVS") as Literal;
 
-                Entity.CasinoItem item = Entity.CasinoItem.GetCasinoItem(bet.CasinoItemGuid);
+                var item = Entity.CasinoItem.GetCasinoItem(bet.CasinoItemGuid);
 
                 if (CurrentMatch != Guid.Empty)
                 {
@@ -141,10 +141,10 @@ namespace Arsenalcn.CasinoSys.Web
                 }
                 else
                 {
-                    Match m = new Match(item.MatchGuid.Value);
+                    var m = new Match(item.MatchGuid.Value);
 
-                    Team homeT = Team.Cache.Load(m.Home);
-                    Team awayT = Team.Cache.Load(m.Away);
+                    var homeT = Team.Cache.Load(m.Home);
+                    var awayT = Team.Cache.Load(m.Away);
 
                     ltrlHome.Text = string.Format("<a class=\"StrongLink\" href=\"CasinoTeam.aspx?Team={0}\">{1}</a>", homeT.ID.ToString(), homeT.TeamDisplayName);
                     ltrlAway.Text = string.Format("<a class=\"StrongLink\" href=\"CasinoTeam.aspx?Team={0}\">{1}</a>", awayT.ID.ToString(), awayT.TeamDisplayName);
@@ -152,12 +152,12 @@ namespace Arsenalcn.CasinoSys.Web
                     ltrlVS.Text = string.Format("<a href=\"CasinoTeam.aspx?Match={0}\"><em title=\"{1}({2})\">vs</em></a>", m.MatchGuid.ToString(), homeT.Ground, homeT.Capacity.ToString());
                 }
 
-                Literal ltrlResult = e.Row.FindControl("ltrlResult") as Literal;
-                DataTable dt = Entity.BetDetail.GetBetDetailByBetID(bet.ID);
+                var ltrlResult = e.Row.FindControl("ltrlResult") as Literal;
+                var dt = Entity.BetDetail.GetBetDetailByBetID(bet.ID);
 
                 if (dt != null)
                 {
-                    DataRow dr = dt.Rows[0];
+                    var dr = dt.Rows[0];
 
                     switch (item.ItemType)
                     {
@@ -171,13 +171,13 @@ namespace Arsenalcn.CasinoSys.Web
 
                             break;
                         case CasinoType.MatchResult:
-                            Entity.MatchResultBetDetail betDetail = new MatchResultBetDetail(dt);
+                            var betDetail = new MatchResultBetDetail(dt);
                             ltrlResult.Text = string.Format("{0}：{1}", betDetail.Home, betDetail.Away);
                             break;
                     }
                 }
 
-                Literal ltrlBetResult = e.Row.FindControl("ltrlBetResult") as Literal;
+                var ltrlBetResult = e.Row.FindControl("ltrlBetResult") as Literal;
 
                 if (!bet.IsWin.HasValue)
                 {
@@ -200,7 +200,7 @@ namespace Arsenalcn.CasinoSys.Web
                     }
                 }
 
-                Literal ltrlBetRate = e.Row.FindControl("ltrlBetRate") as Literal;
+                var ltrlBetRate = e.Row.FindControl("ltrlBetRate") as Literal;
 
                 if (bet.BetRate.HasValue)
                 {

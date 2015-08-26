@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web.UI.WebControls;
 
 using iArsenal.Service;
@@ -44,8 +42,8 @@ namespace iArsenal.Web
         {
             var list = repo.All<Product>().FindAll(x =>
             {
-                Boolean returnValue = true;
-                string tmpString = string.Empty;
+                var returnValue = true;
+                var tmpString = string.Empty;
 
                 if (ViewState["Code"] != null)
                 {
@@ -88,7 +86,7 @@ namespace iArsenal.Web
             #region set GridView Selected PageIndex
             if (ProductGuid.HasValue && ProductGuid != Guid.Empty)
             {
-                int i = list.FindIndex(x => x.ID.Equals(ProductGuid));
+                var i = list.FindIndex(x => x.ID.Equals(ProductGuid));
                 if (i >= 0)
                 {
                     gvProduct.PageIndex = i / gvProduct.PageSize;

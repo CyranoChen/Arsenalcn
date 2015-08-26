@@ -15,8 +15,8 @@ namespace Arsenalcn.ClubSys.Web
         {
             if (!string.IsNullOrEmpty(Request.QueryString["url"]))
             {
-                string url = HttpUtility.UrlDecode(Request.QueryString["url"], Encoding.UTF8);
-                string retValue = CrawlPageContent(url);
+                var url = HttpUtility.UrlDecode(Request.QueryString["url"], Encoding.UTF8);
+                var retValue = CrawlPageContent(url);
                 retValue = retValue.Replace("href=\"/", "href=\"http://googleads.g.doubleclick.net/");
                 retValue = retValue.Replace("src=\"/", "src=\"http://googleads.g.doubleclick.net/");
                 retValue = retValue.Replace("target=\"_top\"", "target=\"_blank\"");
@@ -25,12 +25,13 @@ namespace Arsenalcn.ClubSys.Web
 
                 if (retValue.IndexOf("google_flash_obj") != -1)
                 {
-                    string clickURL = retValue.Substring(retValue.IndexOf("clickTAG=") + 9);
+                    var clickURL = retValue.Substring(retValue.IndexOf("clickTAG=") + 9);
                     clickURL = clickURL.Substring(0, clickURL.IndexOf("\""));
                     clickURL = HttpUtility.UrlDecode(clickURL, Encoding.UTF8);
-                    clickURL = string.Format("<a href=\"{0}\" target=\"_blank\" onclick=\"parent.GoogleAdvClick(this.href);\" style=\"position:absolute;left:0px;z-index:1101;display:block;width:468px;height:60px;background:#fff;filter:alpha(opacity=1);-moz-opacity:0.01;opacity:0.01;\"></a>", clickURL.Replace("\r\n", ""));
+                    clickURL =
+                        $"<a href=\"{clickURL.Replace("\r\n", "")}\" target=\"_blank\" onclick=\"parent.GoogleAdvClick(this.href);\" style=\"position:absolute;left:0px;z-index:1101;display:block;width:468px;height:60px;background:#fff;filter:alpha(opacity=1);-moz-opacity:0.01;opacity:0.01;\"></a>";
 
-                    retValue = retValue.Replace("<div id=\"google_flash_div", string.Format("{0}<div id=\"google_flash_div", clickURL));
+                    retValue = retValue.Replace("<div id=\"google_flash_div", $"{clickURL}<div id=\"google_flash_div");
                 }
 
                 Response.Clear();
@@ -41,10 +42,10 @@ namespace Arsenalcn.ClubSys.Web
             }
             else if (!string.IsNullOrEmpty(Request.QueryString["logAdv"]))
             {
-                bool isLog = false;
+                var isLog = false;
                 bool.TryParse(Request.QueryString["logAdv"], out isLog);
 
-                string advURL = string.Empty;
+                var advURL = string.Empty;
                 if (!string.IsNullOrEmpty(Request.QueryString["advURL"]))
                     advURL = HttpUtility.UrlDecode(Request.QueryString["advURL"], Encoding.UTF8);
 
@@ -72,11 +73,11 @@ namespace Arsenalcn.ClubSys.Web
 
         public static string CrawlPageContent(string url)
         {
-            HttpWebRequest request = HttpWebRequest.Create(url) as HttpWebRequest;
+            var request = HttpWebRequest.Create(url) as HttpWebRequest;
 
             if (request != null)
             {
-                StreamReader reader = new StreamReader(request.GetResponse().GetResponseStream(), Encoding.GetEncoding("UTF-8"));
+                var reader = new StreamReader(request.GetResponse().GetResponseStream(), Encoding.GetEncoding("UTF-8"));
 
                 return reader.ReadToEnd();
             }
@@ -86,21 +87,18 @@ namespace Arsenalcn.ClubSys.Web
 
         public static string CrawlPageContent(string url, string begin, string end, bool includeBegin, bool includeEnd)
         {
-            HttpWebRequest request = HttpWebRequest.Create(url) as HttpWebRequest;
+            var request = HttpWebRequest.Create(url) as HttpWebRequest;
 
             if (request != null)
             {
-                StreamReader reader = new StreamReader(request.GetResponse().GetResponseStream(), Encoding.GetEncoding("UTF-8"));
+                var reader = new StreamReader(request.GetResponse().GetResponseStream(), Encoding.GetEncoding("UTF-8"));
 
-                string pageContent = reader.ReadToEnd();
-                string retValue = string.Empty;
+                var pageContent = reader.ReadToEnd();
+                var retValue = string.Empty;
                 if (begin != string.Empty && end != string.Empty)
                     retValue = GetStringBetweenBeginAndEnd(pageContent, begin, end);
 
-                return string.Format("{0}{1}{2}",
-                    includeBegin ? begin : string.Empty,
-                    retValue,
-                    includeEnd ? end : string.Empty);
+                return $"{(includeBegin ? begin : string.Empty)}{retValue}{(includeEnd ? end : string.Empty)}";
             }
             else
             {
@@ -110,7 +108,7 @@ namespace Arsenalcn.ClubSys.Web
 
         private static string GetStringBetweenBeginAndEnd(string input, string begin, string end)
         {
-            string pattern = string.Format("(?<={0})[\\W\\w]*?(?={1})", begin, end);
+            var pattern = $"(?<={begin})[\\W\\w]*?(?={end})";
             if (Regex.IsMatch(input, pattern))
                 return Regex.Match(input, pattern).Value;
             else

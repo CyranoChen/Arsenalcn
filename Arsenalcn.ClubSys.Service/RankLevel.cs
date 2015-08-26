@@ -20,7 +20,7 @@ namespace Arsenalcn.ClubSys.Service
 
         public Rank GetRank(int clubFortune)
         {
-            foreach (Rank rank in _ranks)
+            foreach (var rank in _ranks)
             {
                 if (clubFortune <= rank.MaxClubFortune)
                     return rank;
@@ -53,15 +53,15 @@ namespace Arsenalcn.ClubSys.Service
 
         internal static List<Rank> GetSysRanks()
         {
-            string sql = "SELECT * FROM dbo.AcnClub_ConfigRank	ORDER BY RankLevelID";
+            var sql = "SELECT * FROM dbo.AcnClub_ConfigRank	ORDER BY RankLevelID";
 
-            DataSet ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql);
+            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql);
 
             if (ds.Tables[0].Rows.Count == 0)
                 return new List<Rank>();
             else
             {
-                List<Rank> list = new List<Rank>();
+                var list = new List<Rank>();
                 foreach (DataRow dr in ds.Tables[0].Rows)
                 {
                     list.Add(new Rank(dr));

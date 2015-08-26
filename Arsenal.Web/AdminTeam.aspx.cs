@@ -19,7 +19,7 @@ namespace Arsenal.Web
             if (!IsPostBack)
             {
                 #region Bind ddlLeague
-                List<League> list = League.Cache.LeagueList;
+                var list = League.Cache.LeagueList;
 
                 ddlLeague.DataSource = list;
                 ddlLeague.DataTextField = "LeagueNameInfo";
@@ -55,8 +55,8 @@ namespace Arsenal.Web
         {
             var list = repo.All<Team>().ToList().FindAll(x =>
              {
-                 Boolean returnValue = true;
-                 string tmpString = string.Empty;
+                 var returnValue = true;
+                 var tmpString = string.Empty;
 
                  if (ViewState["LeagueGuid"] != null)
                  {
@@ -78,7 +78,7 @@ namespace Arsenal.Web
             #region set GridView Selected PageIndex
             if (TeamGuid.HasValue && !TeamGuid.Equals(Guid.Empty))
             {
-                int i = list.FindIndex(x => x.ID.Equals(TeamGuid));
+                var i = list.FindIndex(x => x.ID.Equals(TeamGuid));
                 if (i >= 0)
                 {
                     gvTeam.PageIndex = i / gvTeam.PageSize;
@@ -146,8 +146,8 @@ namespace Arsenal.Web
 
         protected void gvTeam_RowDeleting(object sender, GridViewDeleteEventArgs e)
         {
-            Guid teamGuid = (Guid)gvTeam.DataKeys[e.RowIndex].Value;
-            Guid leagueGuid = Guid.Empty;
+            var teamGuid = (Guid)gvTeam.DataKeys[e.RowIndex].Value;
+            var leagueGuid = Guid.Empty;
 
             try
             {

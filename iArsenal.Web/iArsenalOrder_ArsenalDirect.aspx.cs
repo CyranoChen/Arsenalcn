@@ -51,7 +51,7 @@ namespace iArsenal.Web
                     {
                         lblMemberName.Text = string.Format("<b>{0}</b> (<em>NO.{1}</em>)", o.MemberName, o.MemberID.ToString());
 
-                        Member m = repo.Single<Member>(o.MemberID);
+                        var m = repo.Single<Member>(o.MemberID);
 
                         if (m == null || !m.IsActive)
                         {
@@ -77,7 +77,7 @@ namespace iArsenal.Web
 
                     if (query != null && query.Count() > 0)
                     {
-                        JavaScriptSerializer jsonSerializer = new JavaScriptSerializer();
+                        var jsonSerializer = new JavaScriptSerializer();
                         tbWishOrderItemListInfo.Text = jsonSerializer.Serialize(query.ToList());
                     }
                     else
@@ -88,7 +88,7 @@ namespace iArsenal.Web
                 else
                 {
                     //Fill Member draft information into textbox
-                    Member m = repo.Single<Member>(this.MID);
+                    var m = repo.Single<Member>(this.MID);
 
                     tbOrderMobile.Text = m.Mobile;
                     tbEmail.Text = m.Email;
@@ -103,10 +103,10 @@ namespace iArsenal.Web
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
-            using (SqlConnection conn = new SqlConnection(DataAccess.ConnectString))
+            using (var conn = new SqlConnection(DataAccess.ConnectString))
             {
                 conn.Open();
-                SqlTransaction trans = conn.BeginTransaction();
+                var trans = conn.BeginTransaction();
 
                 try
                 {
@@ -114,11 +114,11 @@ namespace iArsenal.Web
                     { throw new Exception("请填写订购纪念品信息"); }
 
                     // Convert ProductListInfo to List<OrderItem>
-                    string _strWishOrderItemListInfo = string.Format("[ {0} ]", tbWishOrderItemListInfo.Text.Trim());
+                    var _strWishOrderItemListInfo = string.Format("[ {0} ]", tbWishOrderItemListInfo.Text.Trim());
 
-                    JavaScriptSerializer jsonSerializer = new JavaScriptSerializer();
+                    var jsonSerializer = new JavaScriptSerializer();
 
-                    List<OrderItem> wishList = jsonSerializer.Deserialize<List<OrderItem>>(_strWishOrderItemListInfo);
+                    var wishList = jsonSerializer.Deserialize<List<OrderItem>>(_strWishOrderItemListInfo);
 
                     // Validate the OrderItemBase Code & Quantity in oiList
                     if (wishList.Count > 0)
@@ -137,7 +137,7 @@ namespace iArsenal.Web
                         throw new Exception("请填写订购纪念品信息");
                     }
 
-                    Member m = repo.Single<Member>(this.MID);
+                    var m = repo.Single<Member>(this.MID);
 
                     if (!string.IsNullOrEmpty(tbEmail.Text.Trim()))
                     {
@@ -151,8 +151,8 @@ namespace iArsenal.Web
                     }
 
                     //New Order
-                    Order o = new Order();
-                    int _newID = int.MinValue;
+                    var o = new Order();
+                    var _newID = int.MinValue;
 
                     if (OrderID > 0)
                     {
@@ -207,16 +207,16 @@ namespace iArsenal.Web
                         //Remove Order Item of this Order
                         if (OrderID > 0 && o.ID.Equals(OrderID))
                         {
-                            int count = repo.Query<OrderItem>(x => x.OrderID == OrderID).Delete(trans);
+                            var count = repo.Query<OrderItem>(x => x.OrderID == OrderID).Delete(trans);
                         }
 
                         //New Order Item for each WishOrderItem
-                        foreach (OrderItem oi in wishList)
+                        foreach (var oi in wishList)
                         {
                             if (!oi.ProductGuid.Equals(Guid.Empty))
                             {
                                 // Exist Product Wished
-                                Product p = Product.Cache.Load(oi.ProductGuid);
+                                var p = Product.Cache.Load(oi.ProductGuid);
 
                                 if (p != null && p.IsActive && p.ProductType.Equals(ProductType.Other))
                                 {

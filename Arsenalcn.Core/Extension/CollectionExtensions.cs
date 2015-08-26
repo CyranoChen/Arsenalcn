@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Diagnostics.Contracts;
 using System.Linq;
-using System.Text;
 
 namespace Arsenalcn.Core
 {
@@ -17,10 +16,9 @@ namespace Arsenalcn.Core
 
             // Get the property which matches IEnumerable<TMany>
             var property = typeof(TOne).GetProperties()
-                .Where(x => (Nullable.GetUnderlyingType(x.PropertyType) ?? x.PropertyType).Equals(typeof(IEnumerable<TMany>)))
-                .FirstOrDefault();
+                .FirstOrDefault(x => (Nullable.GetUnderlyingType(x.PropertyType) ?? x.PropertyType) == typeof(IEnumerable<TMany>));
 
-            if (source != null && source.Count() > 0 && property != null)
+            if (source != null && source.Any() && property != null)
             {
                 //var propertyName = string.Format("List{0}", typeof(TMany).Name);
                 //var property = typeof(TOne).GetProperty(propertyName, typeof(IEnumerable<TMany>));
@@ -45,7 +43,7 @@ namespace Arsenalcn.Core
 
                             var result = list.FindAll(predicate);
 
-                            if (result != null && result.Count > 0)
+                            if (result.Count > 0)
                             {
                                 pi.SetValue(instance, result, null);
                             }
@@ -67,10 +65,9 @@ namespace Arsenalcn.Core
 
             // Get the property which matches IEnumerable<TMany>
             var property = typeof(TOne).GetProperties()
-                .Where(x => (Nullable.GetUnderlyingType(x.PropertyType) ?? x.PropertyType).Equals(typeof(IEnumerable<TMany>)))
-                .FirstOrDefault();
+                .FirstOrDefault(x => (Nullable.GetUnderlyingType(x.PropertyType) ?? x.PropertyType) == typeof(IEnumerable<TMany>));
 
-            if (source != null && source.Count() > 0 && property != null)
+            if (source != null && source.Any() && property != null)
             {
                 //var propertyName = string.Format("List{0}", typeof(TMany).Name);
                 //var property = typeof(TOne).GetProperty(propertyName, typeof(IEnumerable<TMany>));
@@ -80,24 +77,22 @@ namespace Arsenalcn.Core
 
                 if (attr != null && attrCol != null && !string.IsNullOrEmpty(attrCol.ForeignKey))
                 {
-                    IRepository repo = new Repository();
                     var list = new List<TMany>();
 
                     #region Get All T instances where ForeignKey in T.PrimaryKeys
-                    var keys = source.Select(t => keySelector(t)).ToArray();
-                    List<string> _names = new List<string>();
-                    List<SqlParameter> _paras = new List<SqlParameter>();
+                    var keys = source.Select(keySelector).ToArray();
+                    var names = new List<string>();
+                    var paras = new List<SqlParameter>();
 
                     for (var i = 0; i < keys.Length; i++)
                     {
-                        _names.Add("@" + i.ToString());
-                        _paras.Add(new SqlParameter("@" + i.ToString(), keys[i]));
+                        names.Add("@" + i);
+                        paras.Add(new SqlParameter("@" + i, keys[i]));
                     }
 
-                    var sql = string.Format("SELECT * FROM {0} WHERE {1} IN ({2})",
-                            attr.Name, attrCol.ForeignKey, string.Join(", ", _names));
+                    var sql = $"SELECT * FROM {attr.Name} WHERE {attrCol.ForeignKey} IN ({string.Join(", ", names)})";
 
-                    var ds = DataAccess.ExecuteDataset(sql, _paras.ToArray());
+                    var ds = DataAccess.ExecuteDataset(sql, paras.ToArray());
 
                     var dt = ds.Tables[0];
 
@@ -111,25 +106,24 @@ namespace Arsenalcn.Core
                     #endregion
 
                     #region Package each property Ts in TSource
-                    if (list != null && list.Count > 0)
+                    if (list.Count > 0)
                     {
                         foreach (var instance in source)
                         {
                             var pi = instance.GetType().GetProperty(property.Name, typeof(IEnumerable<TMany>));
                             if (pi == null) { continue; }
 
-                            // TODO Find foreignKey by Attribute
-                            var _fKey = typeof(TMany).GetProperty(attrCol.ForeignKey);
-                            if (_fKey == null) { break; }
+                            var fKey = typeof(TMany).GetProperty(attrCol.ForeignKey);
+                            if (fKey == null) { break; }
 
-                            var _keyValue = keySelector(instance);
+                            var keyValue = keySelector(instance);
 
                             var predicate = new Predicate<TMany>(many =>
-                                _fKey.GetValue(many, null).Equals(_keyValue));
+                                fKey.GetValue(many, null).Equals(keyValue));
 
                             var result = list.FindAll(predicate);
 
-                            if (result != null && result.Count > 0)
+                            if (result.Count > 0)
                             {
                                 pi.SetValue(instance, result, null);
                             }
@@ -149,7 +143,7 @@ namespace Arsenalcn.Core
             Contract.Requires(pageIndex >= 0);
             Contract.Requires(pageSize >= 0);
 
-            int skip = pageIndex * pageSize;
+            var skip = pageIndex * pageSize;
 
             if (skip > 0)
                 source = source.Skip(skip);
@@ -179,9 +173,9 @@ namespace Arsenalcn.Core
         {
             Contract.Requires(source != null);
 
-            HashSet<TKey> seenKeys = new HashSet<TKey>();
+            var seenKeys = new HashSet<TKey>();
 
-            foreach (T instance in source)
+            foreach (var instance in source)
             {
                 if (seenKeys.Add(keySelector(instance)))
                 {

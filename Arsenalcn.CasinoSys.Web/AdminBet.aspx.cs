@@ -45,30 +45,30 @@ namespace Arsenalcn.CasinoSys.Web
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                Bet bet = e.Row.DataItem as Bet;
+                var bet = e.Row.DataItem as Bet;
 
-                Literal ltrlHome = e.Row.FindControl("ltrlHome") as Literal;
-                Literal ltrlAway = e.Row.FindControl("ltrlAway") as Literal;
-                LinkButton btnReturnBet = e.Row.FindControl("btnReturnBet") as LinkButton;
+                var ltrlHome = e.Row.FindControl("ltrlHome") as Literal;
+                var ltrlAway = e.Row.FindControl("ltrlAway") as Literal;
+                var btnReturnBet = e.Row.FindControl("btnReturnBet") as LinkButton;
 
-                CasinoItem item = Entity.CasinoItem.GetCasinoItem(bet.CasinoItemGuid);
+                var item = Entity.CasinoItem.GetCasinoItem(bet.CasinoItemGuid);
 
-                Match m = new Match(item.MatchGuid.Value);
+                var m = new Match(item.MatchGuid.Value);
                 if (m != null)
                 {
-                    Team homeT = Team.Cache.Load(m.Home);
-                    Team awayT = Team.Cache.Load(m.Away);
+                    var homeT = Team.Cache.Load(m.Home);
+                    var awayT = Team.Cache.Load(m.Away);
 
                     ltrlHome.Text = homeT.TeamDisplayName;
                     ltrlAway.Text = awayT.TeamDisplayName;
                 }
 
-                Literal ltrlResult = e.Row.FindControl("ltrlResult") as Literal;
-                DataTable dt = Entity.BetDetail.GetBetDetailByBetID(bet.ID);
+                var ltrlResult = e.Row.FindControl("ltrlResult") as Literal;
+                var dt = Entity.BetDetail.GetBetDetailByBetID(bet.ID);
 
                 if (dt != null)
                 {
-                    DataRow dr = dt.Rows[0];
+                    var dr = dt.Rows[0];
 
                     switch (item.ItemType)
                     {
@@ -82,13 +82,13 @@ namespace Arsenalcn.CasinoSys.Web
 
                             break;
                         case CasinoType.MatchResult:
-                            Entity.MatchResultBetDetail betDetail = new MatchResultBetDetail(dt);
+                            var betDetail = new MatchResultBetDetail(dt);
                             ltrlResult.Text = string.Format("{0}：{1}", betDetail.Home, betDetail.Away);
                             break;
                     }
                 }
 
-                Literal ltrlBetRate = e.Row.FindControl("ltrlBetRate") as Literal;
+                var ltrlBetRate = e.Row.FindControl("ltrlBetRate") as Literal;
 
                 if (bet.BetRate.HasValue)
                 {
@@ -122,7 +122,7 @@ namespace Arsenalcn.CasinoSys.Web
         {
             if (e.CommandName == "ReturnBet")
             {
-                Bet bet = new Bet(Convert.ToInt32(e.CommandArgument.ToString()));
+                var bet = new Bet(Convert.ToInt32(e.CommandArgument.ToString()));
 
                 try
                 {

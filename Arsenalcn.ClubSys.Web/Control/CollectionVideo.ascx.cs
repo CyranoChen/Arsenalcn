@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data;
 using System.Collections.Generic;
 using System.Web.UI.WebControls;
 
@@ -20,12 +19,12 @@ namespace Arsenalcn.ClubSys.Web.Control
 
             if (ProfileUserID > 0)
             {
-                int haveVideoCount = 0;
-                int totalVideoCount = Video.Cache.GetAvailableVideosByRank(GRank, TRank).Count;
+                var haveVideoCount = 0;
+                var totalVideoCount = Video.Cache.GetAvailableVideosByRank(GRank, TRank).Count;
 
                 //load data
                 //DataTable dt = UserVideo.GetUserVideo(ProfileUserID);
-                List<Entity.UserVideo> list = Entity.UserVideo.GetUserVideosByUserID(ProfileUserID);
+                var list = Entity.UserVideo.GetUserVideosByUserID(ProfileUserID);
 
                 if (list != null && list.Count > 0)
                 {
@@ -63,7 +62,8 @@ namespace Arsenalcn.ClubSys.Web.Control
                     rptVideo.DataBind();
                 }
 
-                ltlVideoCount.Text = string.Format("<span title=\"GRank:{0} | TRank:{1}\">已获得(总共)视频:<em>{2}/{3}</em></span>", GRank.ToString(), TRank.ToString(), haveVideoCount.ToString(), totalVideoCount.ToString());
+                ltlVideoCount.Text =
+                    $"<span title=\"GRank:{GRank.ToString()} | TRank:{TRank.ToString()}\">已获得(总共)视频:<em>{haveVideoCount.ToString()}/{totalVideoCount.ToString()}</em></span>";
             }
         }
 
@@ -100,20 +100,21 @@ namespace Arsenalcn.ClubSys.Web.Control
             if ((e.Item.ItemType == ListItemType.Item) || (e.Item.ItemType == ListItemType.AlternatingItem))
             {
                 //DataRow dr = e.Item.DataItem as DataRow;
-                Entity.UserVideo uv = e.Item.DataItem as Entity.UserVideo;
+                var uv = e.Item.DataItem as Entity.UserVideo;
 
-                Label lblPlayerVideoID = e.Item.FindControl("lblPlayerVideoID") as Label;
-                Label lblPlayerVideoPath = e.Item.FindControl("lblPlayerVideoPath") as Label;
+                var lblPlayerVideoID = e.Item.FindControl("lblPlayerVideoID") as Label;
+                var lblPlayerVideoPath = e.Item.FindControl("lblPlayerVideoPath") as Label;
 
                 lblPlayerVideoID.Text = uv.UserVideoID.ToString();
-                lblPlayerVideoPath.Text = string.Format("swf/PlayerVideoActive.swf?XMLURL=ServerXml.aspx%3FUserVideoID={0}", uv.UserVideoID.ToString());
+                lblPlayerVideoPath.Text =
+                    $"swf/PlayerVideoActive.swf?XMLURL=ServerXml.aspx%3FUserVideoID={uv.UserVideoID.ToString()}";
 
-                LinkButton btnSwfView = e.Item.FindControl("btnSwfView") as LinkButton;
+                var btnSwfView = e.Item.FindControl("btnSwfView") as LinkButton;
 
-                btnSwfView.OnClientClick = string.Format("ShowVideoPreview('{0}'); return false", uv.VideoGuid.ToString());
+                btnSwfView.OnClientClick = $"ShowVideoPreview('{uv.VideoGuid.ToString()}'); return false";
 
-                LinkButton btnSetCurrent = e.Item.FindControl("btnSetCurrent") as LinkButton;
-                Label lblCurrent = e.Item.FindControl("lblSetCurrent") as Label;
+                var btnSetCurrent = e.Item.FindControl("btnSetCurrent") as LinkButton;
+                var lblCurrent = e.Item.FindControl("lblSetCurrent") as Label;
 
                 if (!this.ProfileUserID.Equals(this.CurrentUserID))
                 {
@@ -148,7 +149,7 @@ namespace Arsenalcn.ClubSys.Web.Control
 
         protected void rptVideo_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
-            int id = int.Parse(e.CommandArgument.ToString());
+            var id = int.Parse(e.CommandArgument.ToString());
 
             if (e.CommandName == "SetCurrent")
             {
@@ -159,7 +160,7 @@ namespace Arsenalcn.ClubSys.Web.Control
                 }
                 else
                 {
-                    Entity.UserVideo uv = new Entity.UserVideo();
+                    var uv = new Entity.UserVideo();
                     uv.UserVideoID = id;
                     uv.Select();
 
@@ -171,7 +172,7 @@ namespace Arsenalcn.ClubSys.Web.Control
             }
             else if (e.CommandName == "CancelCurrent")
             {
-                Entity.UserVideo uv = new Entity.UserVideo();
+                var uv = new Entity.UserVideo();
                 uv.UserVideoID = id;
                 uv.Select();
 

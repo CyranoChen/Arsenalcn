@@ -61,7 +61,7 @@ namespace iArsenal.Web
 
                     #endregion
 
-                    Member m = repo.Single<Member>(o.MemberID);
+                    var m = repo.Single<Member>(o.MemberID);
 
                     lblOrderMobile.Text = string.Format("<em>{0}</em>", o.Mobile);
 
@@ -72,10 +72,10 @@ namespace iArsenal.Web
                         {
                             lblMemberRegion.Text = "中国 ";
 
-                            string[] region = m.Region.Split('|');
-                            int _regionID = int.MinValue;
+                            var region = m.Region.Split('|');
+                            var _regionID = int.MinValue;
 
-                            for (int i = 0; i < region.Length; i++)
+                            for (var i = 0; i < region.Length; i++)
                             {
                                 if (int.TryParse(region[i], out _regionID))
                                 {
@@ -117,8 +117,8 @@ namespace iArsenal.Web
                     }
 
                     // Should be Calculator in this Page
-                    double price = default(double);
-                    string priceInfo = string.Empty;
+                    var price = default(double);
+                    var priceInfo = string.Empty;
 
                     var oiAsiaTrophy = o.OITravelPlan.MapTo<OrdrItmTravelPlan2015AsiaTrophy>();
                     oiAsiaTrophy.Init();
@@ -126,7 +126,7 @@ namespace iArsenal.Web
                     if (oiAsiaTrophy.IsActive)
                     {
                         // Set Order Match Option
-                        string _strMatchInfo = string.Empty;
+                        var _strMatchInfo = string.Empty;
 
                         if (oiAsiaTrophy.TravelOption.MatchOption.Equals(MatchOption.First))
                         {
@@ -145,7 +145,7 @@ namespace iArsenal.Web
                             oiAsiaTrophy.IsTicketOnly ? "仅购票" : "观赛团", _strMatchInfo);
 
                         // Set Order Travel Option
-                        System.Text.StringBuilder sb = new System.Text.StringBuilder();
+                        var sb = new System.Text.StringBuilder();
 
                         if (oiAsiaTrophy.TravelOption.IsVisa) { sb.Append("【代办签证】"); }
                         if (oiAsiaTrophy.TravelOption.IsFlight) { sb.Append("【购买机票】"); }
@@ -162,17 +162,17 @@ namespace iArsenal.Web
                     }
 
                     // Set Travel Partner
-                    List<OrdrItmTravelPartner> listPartner = o.OITravelPartnerList.FindAll(oi =>
+                    var listPartner = o.OITravelPartnerList.FindAll(oi =>
                         oi.IsActive && oi.Partner != null);
 
                     if (listPartner != null && listPartner.Count > 0)
                     {
-                        OrdrItmTravelPartner oiPartner = listPartner[0];
-                        Partner pa = oiPartner.Partner;
+                        var oiPartner = listPartner[0];
+                        var pa = oiPartner.Partner;
 
                         if (pa != null)
                         {
-                            string _strParterRelation = "（{0}）";
+                            var _strParterRelation = "（{0}）";
                             if (pa.Relation.Equals(1))
                             {
                                 _strParterRelation = string.Format(_strParterRelation, "亲属");
@@ -201,7 +201,7 @@ namespace iArsenal.Web
 
                     if (listPartner != null && listPartner.Count > 0)
                     {
-                        OrdrItmTravelPartner oiPartner = listPartner[0];
+                        var oiPartner = listPartner[0];
 
                         price = oiPartner.TotalPrice + oiAsiaTrophy.TotalPrice;
                         priceInfo = string.Format("观赛团费用（如球票、训练课定金等）：{0}+ 同伴1名：{1} = <em>{2}</em>元 (CNY)",
@@ -262,7 +262,7 @@ namespace iArsenal.Web
             {
                 if (OrderID > 0)
                 {
-                    Order o = repo.Single<Order>(OrderID);
+                    var o = repo.Single<Order>(OrderID);
 
                     if (o == null || !o.MemberID.Equals(MID) || !o.IsActive)
                         throw new Exception("此订单无效或非当前用户订单");
@@ -292,7 +292,7 @@ namespace iArsenal.Web
             {
                 if (OrderID > 0)
                 {
-                    Order o = repo.Single<Order>(OrderID);
+                    var o = repo.Single<Order>(OrderID);
 
                     if (o == null || !o.MemberID.Equals(MID) || !o.IsActive)
                         throw new Exception("此订单无效或非当前用户订单");
@@ -316,7 +316,7 @@ namespace iArsenal.Web
             {
                 if (OrderID > 0)
                 {
-                    Order o = repo.Single<Order>(OrderID);
+                    var o = repo.Single<Order>(OrderID);
 
                     if (o == null || !o.MemberID.Equals(MID) || !o.IsActive)
                         throw new Exception("此订单无效或非当前用户订单");

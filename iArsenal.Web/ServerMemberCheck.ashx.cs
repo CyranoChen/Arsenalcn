@@ -12,19 +12,19 @@ namespace iArsenal.Web
         private readonly IRepository repo = new Repository();
         public void ProcessRequest(HttpContext context)
         {
-            string responseText = string.Empty;
+            var responseText = string.Empty;
 
             if (!string.IsNullOrEmpty(context.Request.QueryString["MemberID"]))
             {
                 try
                 {
-                    string mID = context.Request.QueryString["MemberID"];
+                    var mID = context.Request.QueryString["MemberID"];
 
-                    Member m = repo.Single<Member>(Convert.ToInt32(mID));
+                    var m = repo.Single<Member>(Convert.ToInt32(mID));
 
                     if (m != null)
                     {
-                        JavaScriptSerializer jsonSerializer = new JavaScriptSerializer();
+                        var jsonSerializer = new JavaScriptSerializer();
                         responseText = jsonSerializer.Serialize(m);
                     }
                     else

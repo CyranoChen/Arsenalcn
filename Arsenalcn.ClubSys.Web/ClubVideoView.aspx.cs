@@ -57,7 +57,7 @@ namespace Arsenalcn.ClubSys.Web
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            Club club = ClubLogic.GetClubInfo(ClubID);
+            var club = ClubLogic.GetClubInfo(ClubID);
 
             if (club != null && this.Title.IndexOf("{0}") >= 0)
                 this.Title = string.Format(this.Title, club.FullName);

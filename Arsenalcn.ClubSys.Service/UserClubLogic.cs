@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-
 using Arsenalcn.ClubSys.Entity;
 using Discuz.Entity;
 using Discuz.Forum;
@@ -17,7 +15,7 @@ namespace Arsenalcn.ClubSys.Service
 
         public static void ApplyJoinClub(int userID, string userName, int clubID)
         {
-            ApplyHistory ah = new ApplyHistory();
+            var ah = new ApplyHistory();
 
             ah.Userid = userID;
             ah.UserName = userName;
@@ -31,13 +29,13 @@ namespace Arsenalcn.ClubSys.Service
 
         public static void ApproveJoinClub(int applyHistoryId, bool approved, string operatorUserName)
         {
-            ApplyHistory ah = ClubLogic.GetApplyHistory(applyHistoryId);
+            var ah = ClubLogic.GetApplyHistory(applyHistoryId);
 
             ah.IsAccepted = approved;
 
             ClubLogic.SaveApplyHistory(ah);
 
-            ClubHistory ch = new ClubHistory();
+            var ch = new ClubHistory();
             ch.ClubID = ah.ClubUid;
             ch.ActionUserName = ah.UserName;
             ch.OperatorUserName = operatorUserName;
@@ -46,7 +44,7 @@ namespace Arsenalcn.ClubSys.Service
             if (approved)
             {
                 //insert user club
-                UserClub uc = new UserClub();
+                var uc = new UserClub();
 
                 uc.ClubUid = ah.ClubUid;
                 uc.JoinClubDate = DateTime.Now;
@@ -82,7 +80,7 @@ namespace Arsenalcn.ClubSys.Service
         //for internal temp leave usage
         internal static bool LeaveClub(int userID, int clubID)
         {
-            UserClub uc = ClubLogic.GetActiveUserClub(userID, clubID);
+            var uc = ClubLogic.GetActiveUserClub(userID, clubID);
 
             if (uc != null)
             {
@@ -102,7 +100,7 @@ namespace Arsenalcn.ClubSys.Service
 
         public static bool LeaveClub(int userID, int clubID, bool isKicked, string kickUserName)
         {
-            UserClub uc = ClubLogic.GetActiveUserClub(userID, clubID);
+            var uc = ClubLogic.GetActiveUserClub(userID, clubID);
 
             if (uc != null)
             {
@@ -114,7 +112,7 @@ namespace Arsenalcn.ClubSys.Service
 
                 ClubLogic.SaveUserClub(uc);
 
-                ClubHistory ch = new ClubHistory();
+                var ch = new ClubHistory();
                 ch.ClubID = clubID;
                 ch.ActionUserName = uc.UserName;
 
@@ -146,24 +144,24 @@ namespace Arsenalcn.ClubSys.Service
 
         public static void ChangeResponsibility(int userID, string userName, int clubID, Responsibility res, string operatorUserName)
         {
-            UserClub userClub = ClubLogic.GetActiveUserClub(userID, clubID);
+            var userClub = ClubLogic.GetActiveUserClub(userID, clubID);
             if (userClub != null && userClub.Responsibility == (int)res)
                 return;
 
-            Club club = ClubLogic.GetClubInfo(clubID);
+            var club = ClubLogic.GetClubInfo(clubID);
 
             if (club != null)
             {
                 if (res == Responsibility.Manager)
                 {
                     #region Proceed previous manager user club info
-                    int preManagerUid = club.ManagerUid.Value;
-                    string preManagerName = club.ManagerUserName;
+                    var preManagerUid = club.ManagerUid.Value;
+                    var preManagerName = club.ManagerUserName;
                     LeaveClub(preManagerUid, clubID);
 
-                    UserClub preManagerUc = ClubLogic.GetActiveUserClub(preManagerUid, clubID);
+                    var preManagerUc = ClubLogic.GetActiveUserClub(preManagerUid, clubID);
 
-                    UserClub preUC = new UserClub();
+                    var preUC = new UserClub();
                     preUC.ClubUid = clubID;
                     preUC.JoinClubDate = preManagerUc.JoinClubDate;
                     preUC.FromDate = DateTime.Now;
@@ -183,7 +181,7 @@ namespace Arsenalcn.ClubSys.Service
 
                 LeaveClub(userID, clubID);
 
-                UserClub uc = new UserClub();
+                var uc = new UserClub();
                 uc.ClubUid = clubID;
                 uc.JoinClubDate = userClub.JoinClubDate;
                 uc.FromDate = DateTime.Now;
@@ -192,7 +190,7 @@ namespace Arsenalcn.ClubSys.Service
                 uc.UserName = userName;
 
 
-                ClubHistory ch = new ClubHistory();
+                var ch = new ClubHistory();
                 ch.ClubID = clubID;
                 ch.ActionUserName = userName;
                 ch.OperatorUserName = operatorUserName;
@@ -221,7 +219,7 @@ namespace Arsenalcn.ClubSys.Service
 
         internal static bool CancelApplication(int userID, string userName, int clubID)
         {
-            ApplyHistory ah = ClubLogic.GetActiveApplyHistoryByUserClub(userID, clubID);
+            var ah = ClubLogic.GetActiveApplyHistoryByUserClub(userID, clubID);
 
             if (ah != null)
             {
@@ -238,7 +236,7 @@ namespace Arsenalcn.ClubSys.Service
 
         internal static bool JoinClub(int userID, string userName, int clubID)
         {
-            ApplyHistory ah = ClubLogic.GetActiveApplyHistoryByUserClub(userID, clubID);
+            var ah = ClubLogic.GetActiveApplyHistoryByUserClub(userID, clubID);
             if (ah == null)
             {
                 //proceed it
@@ -274,15 +272,15 @@ namespace Arsenalcn.ClubSys.Service
             //UserClub ucFrom = ClubLogic.GetActiveUserClub(fromUserID, clubID);
             //UserClub ucTo = ClubLogic.GetActiveUserClub(toUserID, clubID);
 
-            UserInfo userFrom = AdminUsers.GetUserInfo(fromUserID);
-            UserInfo userTo = AdminUsers.GetUserInfo(toUserID);
+            var userFrom = AdminUsers.GetUserInfo(fromUserID);
+            var userTo = AdminUsers.GetUserInfo(toUserID);
 
             if (fromUserID != toUserID)
             {
                 if (extCredit > AdminUsers.GetUserExtCredits(fromUserID, extCreditType))
                 { throw new Exception("Insufficient Founds"); }
 
-                List<Club> list = ClubLogic.GetUserManagedClubs(fromUserID);
+                var list = ClubLogic.GetUserManagedClubs(fromUserID);
                 if (list == null || list.Count <= 0)
                 { throw new Exception("No privilege of tranfer"); }
 
@@ -293,7 +291,7 @@ namespace Arsenalcn.ClubSys.Service
 
                 // Club History Log & SMS
 
-                ClubHistory ch = new ClubHistory();
+                var ch = new ClubHistory();
                 ch.ClubID = clubID;
                 ch.ActionUserName = userTo.Username.Trim();
                 ch.ActionType = ClubHistoryActionType.TransferExtcredit.ToString();
@@ -312,22 +310,22 @@ namespace Arsenalcn.ClubSys.Service
 
         public static void UserClubStatistics()
         {
-            foreach (Club club in ClubLogic.GetActiveClubs())
+            foreach (var club in ClubLogic.GetActiveClubs())
             {
                 try
                 {
-                    int clubMemberFortune = 0;
-                    int clubMemberCredit = 0;
-                    int clubMemberLoyalty = 0;
-                    int clubMemberRP = 0;
+                    var clubMemberFortune = 0;
+                    var clubMemberCredit = 0;
+                    var clubMemberLoyalty = 0;
+                    var clubMemberRP = 0;
 
-                    List<UserClub> members = ClubLogic.GetClubMembers(club.ID.Value);
+                    var members = ClubLogic.GetClubMembers(club.ID.Value);
 
-                    foreach (UserClub member in members)
+                    foreach (var member in members)
                     {
                         try
                         {
-                            ShortUserInfo userInfo = Users.GetShortUserInfo(member.Userid.Value);
+                            var userInfo = Users.GetShortUserInfo(member.Userid.Value);
 
                             if (userInfo != null)
                             {
@@ -348,7 +346,7 @@ namespace Arsenalcn.ClubSys.Service
                     club.MemberLoyalty = clubMemberLoyalty;
                     club.MemberRP = clubMemberRP;
 
-                    RankAlgorithm ra = new RankAlgorithm(club);
+                    var ra = new RankAlgorithm(club);
                     club.RankScore = ra.SummaryRankPoint;
 
                     ClubLogic.SaveClub(club);
@@ -362,19 +360,19 @@ namespace Arsenalcn.ClubSys.Service
 
         public static void CalcClubFortuneIncrement()
         {
-            foreach (Club club in ClubLogic.GetActiveClubs())
+            foreach (var club in ClubLogic.GetActiveClubs())
             {
                 try
                 {
-                    int clubFortuneIncrement = 0;
+                    var clubFortuneIncrement = 0;
 
-                    List<UserClub> members = ClubLogic.GetClubMembers(club.ID.Value);
+                    var members = ClubLogic.GetClubMembers(club.ID.Value);
 
-                    foreach (UserClub member in members)
+                    foreach (var member in members)
                     {
                         try
                         {
-                            ShortUserInfo userInfo = Users.GetShortUserInfo(member.Userid.Value);
+                            var userInfo = Users.GetShortUserInfo(member.Userid.Value);
 
                             if (userInfo != null)
                             {
@@ -395,7 +393,7 @@ namespace Arsenalcn.ClubSys.Service
 
                     club.Fortune = club.Fortune.Value + clubFortuneIncrement;
 
-                    RankAlgorithm ra = new RankAlgorithm(club);
+                    var ra = new RankAlgorithm(club);
                     club.RankLevel = RankLevel.GetInstance().GetRank(club.Fortune.Value).ID;
 
                     ClubLogic.SaveClub(club);

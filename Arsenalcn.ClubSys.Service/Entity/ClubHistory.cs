@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Data;
-using System.Configuration;
-using System.Web;
 using System.Collections.Generic;
 
 namespace Arsenalcn.ClubSys.Entity
@@ -161,8 +159,8 @@ namespace Arsenalcn.ClubSys.Entity
 
         public int Compare(ClubHistory x, ClubHistory y)
         {
-            DateTime xDate = x.ActionDate;
-            DateTime yDate = y.ActionDate;
+            var xDate = x.ActionDate;
+            var yDate = y.ActionDate;
 
             if ((yDate - xDate).TotalSeconds > 0)
                 return 1;

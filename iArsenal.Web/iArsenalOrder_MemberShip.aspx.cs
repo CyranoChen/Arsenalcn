@@ -35,7 +35,7 @@ namespace iArsenal.Web
         {
             get
             {
-                ProductType _pt = ProductType.MemberShipPremier;
+                var _pt = ProductType.MemberShipPremier;
 
                 # region Check whether core or premier membership
                 if (OrderID > 0)
@@ -94,7 +94,7 @@ namespace iArsenal.Web
             get
             {
                 // Set Default Deadline yyyy-06-30 23:59:59
-                DateTime _seasonDeadline = new DateTime(DateTime.Now.Year, 7, 1).AddSeconds(-1);
+                var _seasonDeadline = new DateTime(DateTime.Now.Year, 7, 1).AddSeconds(-1);
 
                 if (DateTime.Now >= _seasonDeadline)
                 {
@@ -161,7 +161,7 @@ namespace iArsenal.Web
                     {
                         lblMemberName.Text = string.Format("<b>{0}</b> (<em>NO.{1}</em>)", o.MemberName, o.MemberID.ToString());
 
-                        Member m = repo.Single<Member>(o.MemberID);
+                        var m = repo.Single<Member>(o.MemberID);
 
                         if (m == null || !m.IsActive)
                         {
@@ -178,7 +178,7 @@ namespace iArsenal.Web
                                 {
                                     ddlNation.SelectedValue = m.Nation;
 
-                                    string[] region = m.Region.Split('|');
+                                    var region = m.Region.Split('|');
                                     if (region.Length > 1)
                                     {
                                         tbRegion1.Text = region[0];
@@ -236,7 +236,7 @@ namespace iArsenal.Web
                         throw new Exception("此订单未登记会籍信息");
                     }
 
-                    Product pMemberShip = Product.Cache.Load(oiMemberShip.ProductGuid);
+                    var pMemberShip = Product.Cache.Load(oiMemberShip.ProductGuid);
 
                     if (pMemberShip != null)
                     {
@@ -255,7 +255,7 @@ namespace iArsenal.Web
                 else
                 {
                     //Fill Member draft information into textbox
-                    Member m = repo.Single<Member>(this.MID);
+                    var m = repo.Single<Member>(this.MID);
 
                     #region Set Member Nation & Region
                     if (!string.IsNullOrEmpty(m.Nation))
@@ -264,7 +264,7 @@ namespace iArsenal.Web
                         {
                             ddlNation.SelectedValue = m.Nation;
 
-                            string[] region = m.Region.Split('|');
+                            var region = m.Region.Split('|');
                             if (region.Length > 1)
                             {
                                 tbRegion1.Text = region[0];
@@ -298,7 +298,7 @@ namespace iArsenal.Web
                     tbQQ.Text = m.QQ;
                     tbEmail.Text = m.Email;
 
-                    Product pMemberShip = Product.Cache.Load(CurrProductType).Find(p => p.IsActive);
+                    var pMemberShip = Product.Cache.Load(CurrProductType).Find(p => p.IsActive);
 
                     if (pMemberShip != null)
                     {
@@ -314,12 +314,12 @@ namespace iArsenal.Web
                         throw new Exception("无相关会籍可申请，请联系管理员");
                     }
 
-                    Product pPremier = Product.Cache.Load("iMS2");
-                    Product pCore = Product.Cache.Load("iMS1");
+                    var pPremier = Product.Cache.Load("iMS2");
+                    var pCore = Product.Cache.Load("iMS1");
 
                     if (IsUpgrade)
                     {
-                        float _sale = pPremier.PriceCNY - pCore.PriceCNY;
+                        var _sale = pPremier.PriceCNY - pCore.PriceCNY;
 
                         tbMemberCardNo.Text = CurrentCardNo;
 
@@ -331,7 +331,7 @@ namespace iArsenal.Web
                     }
                     else if (IsRenew)
                     {
-                        float _sale = CurrProductType.Equals(ProductType.MemberShipPremier) ?
+                        var _sale = CurrProductType.Equals(ProductType.MemberShipPremier) ?
                             Convert.ToSingle(Math.Floor(pPremier.PriceCNY * 0.88)) : pCore.PriceCNY;
 
                         tbMemberCardNo.Text = CurrentCardNo;
@@ -352,19 +352,19 @@ namespace iArsenal.Web
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
-            using (SqlConnection conn = new SqlConnection(DataAccess.ConnectString))
+            using (var conn = new SqlConnection(DataAccess.ConnectString))
             {
                 conn.Open();
-                SqlTransaction trans = conn.BeginTransaction();
+                var trans = conn.BeginTransaction();
 
                 try
                 {
-                    Member m = repo.Single<Member>(this.MID);
+                    var m = repo.Single<Member>(this.MID);
 
                     // Update Member Information
 
                     #region Get Member Nation & Region
-                    string _nation = ddlNation.SelectedValue;
+                    var _nation = ddlNation.SelectedValue;
 
                     if (!string.IsNullOrEmpty(_nation))
                     {
@@ -440,8 +440,8 @@ namespace iArsenal.Web
                     repo.Update(m);
 
                     // New Order
-                    Order o = new Order();
-                    int _newID = int.MinValue;
+                    var o = new Order();
+                    var _newID = int.MinValue;
 
                     if (OrderID > 0)
                     {
@@ -484,24 +484,24 @@ namespace iArsenal.Web
                     }
 
                     //New Order Items
-                    OrdrItmMemberShip oi = new OrdrItmMemberShip();
+                    var oi = new OrdrItmMemberShip();
 
                     if (!string.IsNullOrEmpty(tbMemberClass.Text.Trim()))
                     {
                         //Remove Order Item of this Order
                         if (OrderID > 0 && o.ID.Equals(OrderID))
                         {
-                            int count = repo.Query<OrderItem>(x => x.OrderID == OrderID).Delete(trans);
+                            var count = repo.Query<OrderItem>(x => x.OrderID == OrderID).Delete(trans);
                         }
 
-                        ProductType _currProductType = (ProductType)Enum.Parse(typeof(ProductType), tbMemberClass.Text.Trim());
-                        Product pMembership = Product.Cache.Load(_currProductType).Find(p => p.IsActive);
+                        var _currProductType = (ProductType)Enum.Parse(typeof(ProductType), tbMemberClass.Text.Trim());
+                        var pMembership = Product.Cache.Load(_currProductType).Find(p => p.IsActive);
 
                         if (pMembership == null)
                             throw new Exception("无相关会籍可申请，请联系管理员");
 
                         // Validate Member Card No
-                        int _cardNo = 0;
+                        var _cardNo = 0;
                         if (!string.IsNullOrEmpty(tbMemberCardNo.Text.Trim()) && int.TryParse(tbMemberCardNo.Text.Trim(), out _cardNo))
                         {
                             oi.MemberCardNo = _cardNo.ToString();

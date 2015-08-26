@@ -18,7 +18,7 @@ namespace Arsenal.Web
             if (!IsPostBack)
             {
                 #region Bind ddlLeague
-                List<League> list = League.Cache.LeagueList;
+                var list = League.Cache.LeagueList;
 
                 ddlTeamLeague.DataSource = list;
                 ddlTeamLeague.DataTextField = "LeagueNameInfo";
@@ -50,7 +50,7 @@ namespace Arsenal.Web
         {
             if (TeamGuid != Guid.Empty)
             {
-                Team t = repo.Single<Team>(TeamGuid);
+                var t = repo.Single<Team>(TeamGuid);
 
                 tbTeamGuid.Text = t.ID.ToString();
                 tbTeamEnglishName.Text = t.TeamEnglishName;
@@ -75,7 +75,7 @@ namespace Arsenal.Web
         {
             try
             {
-                Team t = new Team();
+                var t = new Team();
 
                 if (!TeamGuid.Equals(Guid.Empty))
                 {
@@ -95,7 +95,7 @@ namespace Arsenal.Web
                 // Insert Relation Team League
                 if (!string.IsNullOrEmpty(ddlTeamLeague.SelectedValue))
                 {
-                    Guid leagueGuid = new Guid(ddlTeamLeague.SelectedValue);
+                    var leagueGuid = new Guid(ddlTeamLeague.SelectedValue);
 
                     var rlt = new RelationLeagueTeam() { TeamGuid = TeamGuid, LeagueGuid = leagueGuid };
 

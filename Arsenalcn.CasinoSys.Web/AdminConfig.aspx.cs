@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Web.UI.WebControls;
-
-using Arsenalcn.Common;
 using Arsenalcn.Common.Entity;
 
 namespace Arsenalcn.CasinoSys.Web
@@ -22,7 +19,7 @@ namespace Arsenalcn.CasinoSys.Web
 
         private void BindData()
         {
-            List<Config> list = Config.GetConfigs().FindAll(delegate(Config c) { return c.ConfigSystem.Equals(ConfigSystem.AcnCasino); });
+            var list = Config.GetConfigs().FindAll(delegate(Config c) { return c.ConfigSystem.Equals(ConfigSystem.AcnCasino); });
 
             gvSysConfig.DataSource = list;
             gvSysConfig.DataBind();
@@ -37,13 +34,13 @@ namespace Arsenalcn.CasinoSys.Web
 
         protected void gvSysConfig_RowUpdating(object sender, GridViewUpdateEventArgs e)
         {
-            TextBox tbConfigValue = gvSysConfig.Rows[gvSysConfig.EditIndex].Cells[1].Controls[0] as TextBox;
+            var tbConfigValue = gvSysConfig.Rows[gvSysConfig.EditIndex].Cells[1].Controls[0] as TextBox;
 
             if (tbConfigValue != null)
             {
                 try
                 {
-                    Config c = new Config();
+                    var c = new Config();
 
                     c.ConfigSystem = ConfigSystem.AcnCasino;
                     c.ConfigKey = gvSysConfig.DataKeys[gvSysConfig.EditIndex].Value.ToString();

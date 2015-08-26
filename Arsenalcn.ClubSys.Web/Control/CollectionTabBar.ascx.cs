@@ -1,13 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Configuration;
-using System.Data;
-using System.Web;
-using System.Web.Security;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
 using System.Collections.Generic;
 
 using Arsenalcn.ClubSys.Entity;
@@ -93,7 +84,7 @@ namespace Arsenalcn.ClubSys.Web.Control
             get
             {
                 if (ProfileUserID > 0)
-                    return string.Format("&userid={0}", _profileUserId);
+                    return $"&userid={_profileUserId}";
                 else
                     return string.Empty;
             }
@@ -103,7 +94,7 @@ namespace Arsenalcn.ClubSys.Web.Control
         {
             get
             {
-                List<Card> items = PlayerStrip.GetMyNumbers(ProfileUserID);
+                var items = PlayerStrip.GetMyNumbers(ProfileUserID);
                 items.RemoveAll(delegate(Card un) { return !un.IsActive; });
 
                 return items.Count.ToString();
@@ -114,7 +105,7 @@ namespace Arsenalcn.ClubSys.Web.Control
         {
             get
             {
-                List<Card> items = PlayerStrip.GetMyNumbers(ProfileUserID);
+                var items = PlayerStrip.GetMyNumbers(ProfileUserID);
                 items.RemoveAll(delegate(Card un) { return un.IsActive || !un.ArsenalPlayerGuid.HasValue; });
 
                 return items.Count.ToString();
@@ -135,7 +126,7 @@ namespace Arsenalcn.ClubSys.Web.Control
         {
             get
             {
-                List<Card> items = PlayerStrip.GetMyNumbers(ProfileUserID);
+                var items = PlayerStrip.GetMyNumbers(ProfileUserID);
                 items.RemoveAll(delegate(Card un) { return un.ArsenalPlayerGuid.HasValue; });
 
                 return items.Count.ToString();

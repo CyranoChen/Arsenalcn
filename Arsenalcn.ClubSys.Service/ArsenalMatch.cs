@@ -54,8 +54,8 @@ namespace Arsenalcn.ClubSys.Service
 
         public static List<Match> GetMatches()
         {
-            DataTable dt = DataAccess.Match.GetMatches();
-            List<Match> list = new List<Match>();
+            var dt = DataAccess.Match.GetMatches();
+            var list = new List<Match>();
 
             if (dt != null)
             {

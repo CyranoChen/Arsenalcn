@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web.UI.WebControls;
-
-using Arsenalcn.Common;
 using Arsenalcn.ClubSys.Entity;
 
 
@@ -29,7 +27,7 @@ namespace Arsenalcn.ClubSys.Web
 
         private void BindData()
         {
-            List<Gamer> list = Service.PlayerStrip.GetPlayers(); ;
+            var list = Service.PlayerStrip.GetPlayers(); ;
 
             gvPlayer.DataSource = list;
             gvPlayer.DataBind();
@@ -39,12 +37,12 @@ namespace Arsenalcn.ClubSys.Web
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                Gamer p = e.Row.DataItem as Gamer;
+                var p = e.Row.DataItem as Gamer;
 
-                TextBox tbShirt = e.Row.FindControl("tbShirt") as TextBox;
-                TextBox tbShorts = e.Row.FindControl("tbShorts") as TextBox;
-                TextBox tbSock = e.Row.FindControl("tbSock") as TextBox;
-                DropDownList ddlIsActive = e.Row.FindControl("ddlIsActive") as DropDownList;
+                var tbShirt = e.Row.FindControl("tbShirt") as TextBox;
+                var tbShorts = e.Row.FindControl("tbShorts") as TextBox;
+                var tbSock = e.Row.FindControl("tbSock") as TextBox;
+                var ddlIsActive = e.Row.FindControl("ddlIsActive") as DropDownList;
 
                 if (tbShirt != null)
                 { 
@@ -70,16 +68,16 @@ namespace Arsenalcn.ClubSys.Web
 
         protected void gvPlayer_RowUpdating(object sender, GridViewUpdateEventArgs e)
         {
-            TextBox tbShirt = gvPlayer.Rows[gvPlayer.EditIndex].FindControl("tbShirt") as TextBox;
-            TextBox tbShorts = gvPlayer.Rows[gvPlayer.EditIndex].FindControl("tbShorts") as TextBox;
-            TextBox tbSock = gvPlayer.Rows[gvPlayer.EditIndex].FindControl("tbSock") as TextBox;
-            DropDownList ddlIsActive = gvPlayer.Rows[gvPlayer.EditIndex].FindControl("ddlIsActive") as DropDownList;
+            var tbShirt = gvPlayer.Rows[gvPlayer.EditIndex].FindControl("tbShirt") as TextBox;
+            var tbShorts = gvPlayer.Rows[gvPlayer.EditIndex].FindControl("tbShorts") as TextBox;
+            var tbSock = gvPlayer.Rows[gvPlayer.EditIndex].FindControl("tbSock") as TextBox;
+            var ddlIsActive = gvPlayer.Rows[gvPlayer.EditIndex].FindControl("ddlIsActive") as DropDownList;
 
             if (tbShirt != null && tbShorts != null && tbSock != null && ddlIsActive != null)
             {
                 try
                 {
-                    int pid = (int)gvPlayer.DataKeys[gvPlayer.EditIndex].Value;
+                    var pid = (int)gvPlayer.DataKeys[gvPlayer.EditIndex].Value;
 
                     int _shirt;
                     int _shorts;
@@ -99,7 +97,8 @@ namespace Arsenalcn.ClubSys.Web
                 }
                 catch (Exception ex)
                 {
-                    this.ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}');", ex.Message.ToString()), true);
+                    this.ClientScript.RegisterClientScriptBlock(typeof(string), "failed",
+                        $"alert('{ex.Message.ToString()}');", true);
                 }
             }
 

@@ -163,7 +163,7 @@ namespace Arsenalcn.Core.Tests
         [TestMethod()]
         public void Crud_Test()
         {
-            League l = new League();
+            var l = new League();
 
             l.LeagueName = "test";
             l.LeagueOrgName = "t";
@@ -196,9 +196,9 @@ namespace Arsenalcn.Core.Tests
             var attr = Repository.GetTableAttr<MatchView>();
             var pager = new Pager { CurrentPage = 0, PagingSize = 10 };
 
-            string innerSql = string.Format("(SELECT ROW_NUMBER() OVER(ORDER BY {1}) AS RowNo, * FROM {0})", attr.Name, attr.Sort);
+            var innerSql = string.Format("(SELECT ROW_NUMBER() OVER(ORDER BY {1}) AS RowNo, * FROM {0})", attr.Name, attr.Sort);
 
-            string sql = string.Format("SELECT * FROM {0} AS t WHERE t.RowNo BETWEEN {1} AND {2} AND 1=2;",
+            var sql = string.Format("SELECT * FROM {0} AS t WHERE t.RowNo BETWEEN {1} AND {2} AND 1=2;",
                 innerSql, (pager.CurrentPage * pager.PagingSize).ToString(), ((pager.CurrentPage + 1) * pager.PagingSize - 1).ToString());
 
             sql += string.Format("SELECT COUNT(*) AS TotalCount FROM {0} WHERE 1=2", attr.Name);

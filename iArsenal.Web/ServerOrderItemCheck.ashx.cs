@@ -10,15 +10,15 @@ namespace iArsenal.Web
     {
         public void ProcessRequest(HttpContext context)
         {
-            string responseText = string.Empty;
+            var responseText = string.Empty;
 
             if (!string.IsNullOrEmpty(context.Request.QueryString["OrderItem"]))
             {
                 try
                 {
-                    OrderItem oi = new OrderItem();
+                    var oi = new OrderItem();
 
-                    JavaScriptSerializer jsonSerializer = new JavaScriptSerializer();
+                    var jsonSerializer = new JavaScriptSerializer();
                     responseText = jsonSerializer.Serialize(oi);
 
                 }

@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Web.UI.WebControls;
-using System.Linq;
-
 using iArsenal.Service;
 using Arsenalcn.Core;
 
@@ -44,8 +41,8 @@ namespace iArsenal.Web
             {
                 var list = repo.Query<Order>(x => x.MemberID == this.MID).FindAll(x =>
                 {
-                    Boolean returnValue = true;
-                    string tmpString = string.Empty;
+                    var returnValue = true;
+                    var tmpString = string.Empty;
 
                     if (ViewState["OrderID"] != null)
                     {
@@ -71,7 +68,7 @@ namespace iArsenal.Web
                 #region set GridView Selected PageIndex
                 if (OrderID > 0)
                 {
-                    int i = list.FindIndex(x => x.ID.Equals(OrderID));
+                    var i = list.FindIndex(x => x.ID.Equals(OrderID));
                     if (i >= 0)
                     {
                         gvOrder.PageIndex = i / gvOrder.PageSize;
@@ -138,7 +135,7 @@ namespace iArsenal.Web
         {
             if (gvOrder.SelectedIndex != -1)
             {
-                Order o = repo.Single<Order>((int)gvOrder.DataKeys[gvOrder.SelectedIndex].Value);
+                var o = repo.Single<Order>((int)gvOrder.DataKeys[gvOrder.SelectedIndex].Value);
 
                 if (o != null)
                 {
@@ -169,12 +166,12 @@ namespace iArsenal.Web
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                string _strStatus = string.Empty;
-                Order o = e.Row.DataItem as Order;
+                var _strStatus = string.Empty;
+                var o = e.Row.DataItem as Order;
 
-                Label lblOrderType = e.Row.FindControl("lblOrderType") as Label;
-                Label lblOrderStatus = e.Row.FindControl("lblOrderStatus") as Label;
-                Label lblPriceInfo = e.Row.FindControl("lblPriceInfo") as Label;
+                var lblOrderType = e.Row.FindControl("lblOrderType") as Label;
+                var lblOrderStatus = e.Row.FindControl("lblOrderStatus") as Label;
+                var lblPriceInfo = e.Row.FindControl("lblPriceInfo") as Label;
 
                 if (lblOrderType != null && !o.OrderType.Equals(OrderBaseType.None))
                 {

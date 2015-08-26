@@ -1,13 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Configuration;
-using System.Data;
-using System.Web;
-using System.Web.Security;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
 using System.Collections.Generic;
 
 using Arsenalcn.ClubSys.Service;
@@ -73,7 +64,7 @@ namespace Arsenalcn.ClubSys.Web.Control
 
 
                 #region MyClubPanel
-                List<Club> myClubs = ClubLogic.GetActiveUserClubs(this._userId);
+                var myClubs = ClubLogic.GetActiveUserClubs(this._userId);
 
                 if (myClubs.Count == 0)
                 {
@@ -89,16 +80,17 @@ namespace Arsenalcn.ClubSys.Web.Control
                     phMyClub.Visible = true;
                     hlNoClub.Visible = false;
 
-                    Club myClub = myClubs[0];
+                    var myClub = myClubs[0];
                     hlMyClub.Text = myClub.FullName;
-                    hlMyClub.NavigateUrl = string.Format("../ClubView.aspx?ClubID={0}", myClub.ID.Value.ToString());
+                    hlMyClub.NavigateUrl = $"../ClubView.aspx?ClubID={myClub.ID.Value.ToString()}";
                     //ltrlMyClubName.Text = myClub.FullName;
                     //ltrlMyClubID.Text = myClub.ID.Value.ToString();
-                    ltrlMyClubRankScore.Text = string.Format(" <a href=\"ClubRank.aspx?ClubID={0}\"><em title=\"评价分 RankPoint\">RPos: {1}</em></a>", myClub.ID.Value.ToString(), myClub.RankScore.Value.ToString());
+                    ltrlMyClubRankScore.Text =
+                        $" <a href=\"ClubRank.aspx?ClubID={myClub.ID.Value.ToString()}\"><em title=\"评价分 RankPoint\">RPos: {myClub.RankScore.Value.ToString()}</em></a>";
 
                     phCreateClub.Visible = false;
 
-                    List<Club> managedClubs = ClubLogic.GetUserManagedClubs(this._userId);
+                    var managedClubs = ClubLogic.GetUserManagedClubs(this._userId);
                     if (managedClubs.Count == 0)
                     {
                         phClubAdmin.Visible = false;
@@ -106,7 +98,8 @@ namespace Arsenalcn.ClubSys.Web.Control
                     else
                     {
                         phClubAdmin.Visible = true;
-                        hlMyAdminClub.NavigateUrl = string.Format("../ManageApplication.aspx?ClubID={0}", managedClubs[0].ID.Value.ToString());
+                        hlMyAdminClub.NavigateUrl =
+                            $"../ManageApplication.aspx?ClubID={managedClubs[0].ID.Value.ToString()}";
                     }
                 }
                 #endregion

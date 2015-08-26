@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
 using System.Web;
 
 namespace Arsenalcn.Core.Utility
@@ -10,9 +9,9 @@ namespace Arsenalcn.Core.Utility
         {
             if (HttpContext.Current == null) { return string.Empty; }
 
-            HttpBrowserCapabilities bc = HttpContext.Current.Request.Browser;
+            var bc = HttpContext.Current.Request.Browser;
 
-            StringBuilder retValue = new StringBuilder();
+            var retValue = new StringBuilder();
 
             retValue.Append(bc.Type);
 

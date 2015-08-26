@@ -15,9 +15,9 @@ namespace Arsenalcn.CasinoSys.Web
 
             if (!IsPostBack)
             {
-                List<League> list = Entity.League.Cache.LeagueList_Active;
+                var list = Entity.League.Cache.LeagueList_Active;
 
-                ListItem item = new ListItem("--请选择分类--", Guid.Empty.ToString());
+                var item = new ListItem("--请选择分类--", Guid.Empty.ToString());
 
                 ddlLeague.DataSource = list;
                 ddlLeague.DataTextField = "LeagueNameInfo";
@@ -42,7 +42,7 @@ namespace Arsenalcn.CasinoSys.Web
 
         private void BindGroupData()
         {
-            DataTable dtGroup = Entity.Group.GetGroupByLeague(SelectedLeague);
+            var dtGroup = Entity.Group.GetGroupByLeague(SelectedLeague);
             DataTable dtGroupTeam;
 
             if (dtGroup != null)
@@ -57,12 +57,12 @@ namespace Arsenalcn.CasinoSys.Web
 
                 foreach (DataRow dr in dtGroup.Rows)
                 {
-                    League l = League.Cache.Load((Guid)dr["LeagueGuid"]);
+                    var l = League.Cache.Load((Guid)dr["LeagueGuid"]);
 
                     dr["LeagueName"] = l.LeagueName;
                     dr["LeagueSeason"] = l.LeagueSeason;
 
-                    int groupTeamCount = 0;
+                    var groupTeamCount = 0;
                     dtGroupTeam = Entity.Group.GetRelationGroupTeam((Guid)dr["GroupGuid"]);
 
                     if (dtGroupTeam != null)
@@ -77,8 +77,8 @@ namespace Arsenalcn.CasinoSys.Web
                     else
                         dr["GroupTeamCount"] = 0;
 
-                    int allMatchCount = Entity.Group.GetAllMatchCount((Guid)dr["GroupGuid"]);
-                    int resultMatchCount = Entity.Group.GetResultMatchCount((Guid)dr["GroupGuid"]);
+                    var allMatchCount = Entity.Group.GetAllMatchCount((Guid)dr["GroupGuid"]);
+                    var resultMatchCount = Entity.Group.GetResultMatchCount((Guid)dr["GroupGuid"]);
 
                     dr["GroupAllMatchCount"] = allMatchCount;
                     dr["GroupMatchCount"] = string.Format("{0}({1})", allMatchCount.ToString(), resultMatchCount.ToString());
@@ -107,7 +107,7 @@ namespace Arsenalcn.CasinoSys.Web
 
         private void BindGroupTeam()
         {
-            List<Team> list = Entity.Team.Cache.GetTeamsByLeagueGuid(new Guid(ddlGroupLeague.SelectedValue));
+            var list = Entity.Team.Cache.GetTeamsByLeagueGuid(new Guid(ddlGroupLeague.SelectedValue));
 
             lbLeagueTeam.DataSource = list;
             lbLeagueTeam.DataTextField = "TeamDisplayName";
@@ -130,10 +130,10 @@ namespace Arsenalcn.CasinoSys.Web
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                DataRowView drv = e.Row.DataItem as DataRowView;
+                var drv = e.Row.DataItem as DataRowView;
 
-                LinkButton btnResetGroupTable = e.Row.FindControl("btnResetGroupTable") as LinkButton;
-                LinkButton btnResetGroupMatch = e.Row.FindControl("btnResetGroupMatch") as LinkButton;
+                var btnResetGroupTable = e.Row.FindControl("btnResetGroupTable") as LinkButton;
+                var btnResetGroupMatch = e.Row.FindControl("btnResetGroupMatch") as LinkButton;
 
                 if (btnResetGroupTable != null)
                     btnResetGroupTable.CommandArgument = drv["GroupGuid"].ToString();
@@ -193,7 +193,7 @@ namespace Arsenalcn.CasinoSys.Web
         {
             if (gvGroup.SelectedIndex != -1)
             {
-                Group group = new Group(SelectedGroup);
+                var group = new Group(SelectedGroup);
 
                 lblGroupGuid.Text = group.GroupGuid.ToString();
                 tbGroupName.Text = group.GroupName.ToString();
@@ -212,9 +212,9 @@ namespace Arsenalcn.CasinoSys.Web
         {
             try
             {
-                Guid groupGuid = new Guid(lblGroupGuid.Text);
-                Guid leagueGuid = Guid.Empty;
-                Guid teamGuid = Guid.Empty;
+                var groupGuid = new Guid(lblGroupGuid.Text);
+                var leagueGuid = Guid.Empty;
+                var teamGuid = Guid.Empty;
 
                 #region ListBox Multiple Value for RelationGroupTeam
                 if (ddlGroupLeague.SelectedValue != Guid.Empty.ToString())
@@ -228,7 +228,7 @@ namespace Arsenalcn.CasinoSys.Web
                         teamGuid = new Guid(item.Value);
                         if ((item.Selected) && (!Entity.GroupTeam.IsExistRelationGroupTeam(groupGuid, teamGuid)))
                         {
-                            GroupTeam gt = new GroupTeam();
+                            var gt = new GroupTeam();
                             gt.GroupGuid = groupGuid;
                             gt.TeamGuid = teamGuid;
                             gt.Insert();
@@ -244,7 +244,7 @@ namespace Arsenalcn.CasinoSys.Web
                 if (leagueGuid == Guid.Empty)
                     throw new Exception("No Selected League Guid");
 
-                Group group = new Group(groupGuid);
+                var group = new Group(groupGuid);
                 group.GroupGuid = groupGuid;
                 group.GroupName = tbGroupName.Text;
                 group.GroupOrder = Convert.ToInt16(tbGroupOrder.Text);
@@ -295,7 +295,7 @@ namespace Arsenalcn.CasinoSys.Web
             {
                 try
                 {
-                    Guid groupGuid = (Guid)gvGroup.DataKeys[e.RowIndex].Value;
+                    var groupGuid = (Guid)gvGroup.DataKeys[e.RowIndex].Value;
                     //Guid leagueGuid = new Guid(ddlLeague.SelectedValue);
 
                     Entity.Group.RemoveGroup(groupGuid);
@@ -319,7 +319,7 @@ namespace Arsenalcn.CasinoSys.Web
         {
             if (e.CommandName == "ResetGroupTable")
             {
-                Guid groupGuid = new Guid(e.CommandArgument.ToString());
+                var groupGuid = new Guid(e.CommandArgument.ToString());
                 //Guid groupGuid = new Guid(gvGroup.SelectedDataKey.Value.ToString());
                 try
                 {
@@ -335,7 +335,7 @@ namespace Arsenalcn.CasinoSys.Web
 
             if (e.CommandName == "ResetGroupMatch")
             {
-                Guid groupGuid = new Guid(e.CommandArgument.ToString());
+                var groupGuid = new Guid(e.CommandArgument.ToString());
 
                 try
                 {

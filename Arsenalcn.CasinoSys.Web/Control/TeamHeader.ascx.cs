@@ -9,21 +9,21 @@ namespace Arsenalcn.CasinoSys.Web.Control
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            Team t = Team.Cache.Load(TeamGuid);
+            var t = Team.Cache.Load(TeamGuid);
 
             if (t != null)
             {
-                DataTable dt = CasinoItem.GetEndViewByTeam(t.ID);
-                int matchCount = 0;
-                int wonCount = 0;
-                int drawCount = 0;
-                int lostCount = 0;
+                var dt = CasinoItem.GetEndViewByTeam(t.ID);
+                var matchCount = 0;
+                var wonCount = 0;
+                var drawCount = 0;
+                var lostCount = 0;
 
                 if (dt != null)
                 {
                     foreach (DataRow dr in dt.Rows)
                     {
-                        Match m = new Match((Guid)dr["MatchGuid"]);
+                        var m = new Match((Guid)dr["MatchGuid"]);
                         if (t.ID == m.Home)
                         {
                             if (m.ResultHome > m.ResultAway)

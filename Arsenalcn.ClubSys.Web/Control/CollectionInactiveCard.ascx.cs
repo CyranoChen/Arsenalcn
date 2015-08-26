@@ -17,7 +17,7 @@ namespace Arsenalcn.ClubSys.Web.Control
             {
                 _playerInfo = PlayerStrip.GetPlayerInfo(ProfileUserID);
 
-                List<Card> items = PlayerStrip.GetMyNumbers(ProfileUserID);
+                var items = PlayerStrip.GetMyNumbers(ProfileUserID);
                 items.RemoveAll(delegate(Card un) { return un.IsActive; });
                 items.RemoveAll(delegate(Card un) { return !un.ArsenalPlayerGuid.HasValue; });
 
@@ -29,14 +29,15 @@ namespace Arsenalcn.ClubSys.Web.Control
         {
             if ((e.Item.ItemType == ListItemType.Item) || (e.Item.ItemType == ListItemType.AlternatingItem))
             {
-                Card un = e.Item.DataItem as Card;
+                var un = e.Item.DataItem as Card;
 
-                Label lblPlayerInactiveCardID = e.Item.FindControl("lblPlayerInactiveCardID") as Label;
-                Label lblPlayerInactiveCardPath = e.Item.FindControl("lblPlayerInactiveCardPath") as Label;
-                LinkButton btnActive = e.Item.FindControl("btnActive") as LinkButton;
+                var lblPlayerInactiveCardID = e.Item.FindControl("lblPlayerInactiveCardID") as Label;
+                var lblPlayerInactiveCardPath = e.Item.FindControl("lblPlayerInactiveCardPath") as Label;
+                var btnActive = e.Item.FindControl("btnActive") as LinkButton;
 
                 lblPlayerInactiveCardID.Text = un.ID.ToString();
-                lblPlayerInactiveCardPath.Text = string.Format("swf/PlayerCard.swf?XMLURL=ServerXml.aspx%3FPlayerGuid={0}", un.ArsenalPlayerGuid.ToString());
+                lblPlayerInactiveCardPath.Text =
+                    $"swf/PlayerCard.swf?XMLURL=ServerXml.aspx%3FPlayerGuid={un.ArsenalPlayerGuid.ToString()}";
 
                 if (ProfileUserID == CurrentUserID)
                 {

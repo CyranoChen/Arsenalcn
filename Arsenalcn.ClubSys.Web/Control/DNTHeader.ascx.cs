@@ -51,7 +51,7 @@ namespace Arsenalcn.ClubSys.Web.Control
                 phAthenticated.Visible = true;
 
                 ltrlUserName.Text = this._userName;
-                linkLogout.NavigateUrl = string.Format("{0}{1}", linkLogout.NavigateUrl, this._userKey);
+                linkLogout.NavigateUrl = $"{linkLogout.NavigateUrl}{this._userKey}";
             }
             else
             {
@@ -59,7 +59,8 @@ namespace Arsenalcn.ClubSys.Web.Control
                 phAthenticated.Visible = false;
             }
 
-            ltrlTitle.Text = string.Format("<a href=\"/index.aspx\">{0}</a> &raquo; <a href=\"default.aspx\">{1}</a> &raquo; <strong>{2}</strong>", "阿森纳中国官方球迷会", ConfigGlobal.PluginDisplayName, this.Page.Title);
+            ltrlTitle.Text =
+                $"<a href=\"/index.aspx\">{"阿森纳中国官方球迷会"}</a> &raquo; <a href=\"default.aspx\">{ConfigGlobal.PluginDisplayName}</a> &raquo; <strong>{this.Page.Title}</strong>";
 
             ltrlClubCount.Text = ClubLogic.GetActiveClubCount().ToString();
             ltrlUserCount.Text = ClubLogic.GetActiveUserCount().ToString();

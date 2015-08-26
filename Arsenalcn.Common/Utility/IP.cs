@@ -12,7 +12,7 @@ namespace Arsenalcn.Common.Utility
     {
         public static string GetIP()
         {
-            string result = HttpContext.Current.Request.ServerVariables["HTTP_X_FORWARDED_FOR"];
+            var result = HttpContext.Current.Request.ServerVariables["HTTP_X_FORWARDED_FOR"];
 
             if (string.IsNullOrEmpty(result))
                 result = HttpContext.Current.Request.ServerVariables["REMOTE_ADDR"];
@@ -32,7 +32,7 @@ namespace Arsenalcn.Common.Utility
 
         public static string GetIPInfo(string ip)
         {
-            string ipInfo = IpSearch.GetAddressWithIP(ip);
+            var ipInfo = IpSearch.GetAddressWithIP(ip);
 
             // 如果数据库文件不存在
             if (ipInfo == null)
@@ -72,7 +72,7 @@ namespace Arsenalcn.Common.Utility
 
         static IpSearch()
         {
-            string ipdatadir = "/App_Data";
+            var ipdatadir = "/App_Data";
             //if (!Directory.Exists(GetMapPath(ipdatadir)))
             //{
             //    CreateDir(GetMapPath(ipdatadir));
@@ -95,7 +95,7 @@ namespace Arsenalcn.Common.Utility
         {
             lock (lockHelper)
             {
-                string result = pcz.GetAddressWithIP(IPValue.Trim());
+                var result = pcz.GetAddressWithIP(IPValue.Trim());
 
                 if (File.Exists(filePath))
                 {
@@ -210,7 +210,7 @@ namespace Arsenalcn.Common.Utility
                     return "";
 
                 Initialize();
-                UInt32 ip = IPToUInt32(IPValue);
+                var ip = IPToUInt32(IPValue);
 
                 while (true)
                 {
@@ -250,8 +250,8 @@ namespace Arsenalcn.Common.Utility
 
             private string ReadAddressInfoAtOffset(UInt32 Offset)
             {
-                string country = "";
-                string area = "";
+                var country = "";
+                var area = "";
                 UInt32 country_Offset = 0;
                 byte Tag = 0;
                 //跳过4字节，因这4个字节是该索引的IP区间上限。
@@ -310,7 +310,7 @@ namespace Arsenalcn.Common.Utility
 
             private UInt32 GetOffset()
             {
-                byte[] TempByte4 = new byte[4];
+                var TempByte4 = new byte[4];
                 TempByte4[0] = (byte)FileStrm.ReadByte();
                 TempByte4[1] = (byte)FileStrm.ReadByte();
                 TempByte4[2] = (byte)FileStrm.ReadByte();
@@ -320,7 +320,7 @@ namespace Arsenalcn.Common.Utility
 
             protected string ReadArea()
             {
-                byte Tag = GetTag();
+                var Tag = GetTag();
 
                 if (Tag == 0x01 || Tag == 0x02)
                     FileStrm.Seek(GetOffset(), SeekOrigin.Begin);
@@ -333,7 +333,7 @@ namespace Arsenalcn.Common.Utility
             protected string ReadString()
             {
                 UInt32 Offset = 0;
-                byte[] TempByteArray = new byte[256];
+                var TempByteArray = new byte[256];
                 TempByteArray[Offset] = (byte)FileStrm.ReadByte();
                 while (TempByteArray[Offset] != 0x00)
                 {
@@ -350,7 +350,7 @@ namespace Arsenalcn.Common.Utility
 
             protected CZ_INDEX_INFO IndexInfoAtPos(UInt32 Index_Pos)
             {
-                CZ_INDEX_INFO Index_Info = new CZ_INDEX_INFO();
+                var Index_Info = new CZ_INDEX_INFO();
                 //根据索引编号计算出在文件中在偏移位置
                 FileStrm.Seek(Index_Set + 7 * Index_Pos, SeekOrigin.Begin);
                 Index_Info.IpSet = GetUInt32();
@@ -368,17 +368,17 @@ namespace Arsenalcn.Common.Utility
             /// <returns></returns>
             public UInt32 IPToUInt32(string IpValue)
             {
-                string[] IpByte = IpValue.Split('.');
-                Int32 nUpperBound = IpByte.GetUpperBound(0);
+                var IpByte = IpValue.Split('.');
+                var nUpperBound = IpByte.GetUpperBound(0);
                 if (nUpperBound != 3)
                 {
                     IpByte = new string[4];
-                    for (Int32 i = 1; i <= 3 - nUpperBound; i++)
+                    for (var i = 1; i <= 3 - nUpperBound; i++)
                         IpByte[nUpperBound + i] = "0";
                 }
 
-                byte[] TempByte4 = new byte[4];
-                for (Int32 i = 0; i <= 3; i++)
+                var TempByte4 = new byte[4];
+                for (var i = 0; i <= 3; i++)
                 {
                     if (IsNumeric(IpByte[i]))
                         TempByte4[3 - i] = (byte)(Convert.ToInt32(IpByte[i]) & 0xff);
@@ -402,7 +402,7 @@ namespace Arsenalcn.Common.Utility
 
             protected UInt32 GetUInt32()
             {
-                byte[] TempByte4 = new byte[4];
+                var TempByte4 = new byte[4];
                 FileStrm.Read(TempByte4, 0, 4);
                 return BitConverter.ToUInt32(TempByte4, 0);
             }

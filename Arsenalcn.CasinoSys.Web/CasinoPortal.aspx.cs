@@ -31,7 +31,7 @@ namespace Arsenalcn.CasinoSys.Web
                 gvMatch.Columns[gvMatch.Columns.Count - 1].Visible = false;
             }
 
-            DataTable dtMatch = Entity.CasinoItem.GetMatchCasinoItemView(true);
+            var dtMatch = Entity.CasinoItem.GetMatchCasinoItemView(true);
 
             gvMatch.DataSource = dtMatch;
             gvMatch.DataBind();
@@ -41,34 +41,34 @@ namespace Arsenalcn.CasinoSys.Web
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                DataRowView drv = e.Row.DataItem as DataRowView;
+                var drv = e.Row.DataItem as DataRowView;
 
-                Match m = new Match((Guid)drv["MatchGuid"]);
+                var m = new Match((Guid)drv["MatchGuid"]);
 
-                Literal ltrlLeagueInfo = e.Row.FindControl("ltrlLeagueInfo") as Literal;
+                var ltrlLeagueInfo = e.Row.FindControl("ltrlLeagueInfo") as Literal;
 
                 if (ltrlLeagueInfo != null)
                 {
-                    string _strLeague = "<a href=\"CasinoGame.aspx?League={0}\" title=\"{1}\"><img src=\"{2}\" alt=\"{1}\" class=\"CasinoSys_CategoryImg\" /></a>";
+                    var _strLeague = "<a href=\"CasinoGame.aspx?League={0}\" title=\"{1}\"><img src=\"{2}\" alt=\"{1}\" class=\"CasinoSys_CategoryImg\" /></a>";
 
-                    string _strLeagueName = string.Format("{0}{1}", m.LeagueName, m.Round.HasValue ?
+                    var _strLeagueName = string.Format("{0}{1}", m.LeagueName, m.Round.HasValue ?
                         string.Format(" 第{0}轮", m.Round.ToString()) : string.Empty);
 
                     ltrlLeagueInfo.Text = string.Format(_strLeague, m.LeagueGuid.ToString(), _strLeagueName,
                         League.Cache.Load(m.LeagueGuid).LeagueLogo);
                 }
 
-                Label lblHome = e.Row.FindControl("lblHome") as Label;
-                Label lblAway = e.Row.FindControl("lblAway") as Label;
-                HyperLink hlVersus = e.Row.FindControl("hlVersus") as HyperLink;
+                var lblHome = e.Row.FindControl("lblHome") as Label;
+                var lblAway = e.Row.FindControl("lblAway") as Label;
+                var hlVersus = e.Row.FindControl("hlVersus") as HyperLink;
 
                 if (lblHome != null && lblAway != null && hlVersus != null)
                 {
-                    Team tHome = Team.Cache.Load(m.Home);
-                    Team tAway = Team.Cache.Load(m.Away);
+                    var tHome = Team.Cache.Load(m.Home);
+                    var tAway = Team.Cache.Load(m.Away);
 
-                    string _strTeamName = "<a class=\"StrongLink\" href=\"CasinoTeam.aspx?Team={0}\"  title=\"{1}\">{2}</a> ";
-                    string _strTeamLogo = "<img src=\"{3}\" alt=\"{1}\" /> ";
+                    var _strTeamName = "<a class=\"StrongLink\" href=\"CasinoTeam.aspx?Team={0}\"  title=\"{1}\">{2}</a> ";
+                    var _strTeamLogo = "<img src=\"{3}\" alt=\"{1}\" /> ";
 
                     lblHome.Text = string.Format(_strTeamName + _strTeamLogo,
                         tHome.ID.ToString(), tHome.TeamEnglishName, tHome.TeamDisplayName, tHome.TeamLogo);
@@ -80,33 +80,33 @@ namespace Arsenalcn.CasinoSys.Web
                         tHome.Capacity.HasValue ? ("(" + tHome.Capacity.Value.ToString() + ")") : string.Empty);
                 }
 
-                Guid? guid = Entity.CasinoItem.GetCasinoItemGuidByMatch(m.MatchGuid, CasinoType.SingleChoice);
+                var guid = Entity.CasinoItem.GetCasinoItemGuidByMatch(m.MatchGuid, CasinoType.SingleChoice);
 
                 if (guid.HasValue)
                 {
-                    CasinoItem item = Entity.CasinoItem.GetCasinoItem(guid.Value);
+                    var item = Entity.CasinoItem.GetCasinoItem(guid.Value);
 
                     if (item != null)
                     {
-                        List<ChoiceOption> options = ((SingleChoice)item).Options;
+                        var options = ((SingleChoice)item).Options;
 
-                        ChoiceOption winOption = options.Find(delegate(ChoiceOption option) { return option.OptionValue == MatchChoiceOption.HomeWinValue; });
-                        ChoiceOption drawOption = options.Find(delegate(ChoiceOption option) { return option.OptionValue == MatchChoiceOption.DrawValue; });
-                        ChoiceOption loseOption = options.Find(delegate(ChoiceOption option) { return option.OptionValue == MatchChoiceOption.AwayWinValue; });
+                        var winOption = options.Find(delegate(ChoiceOption option) { return option.OptionValue == MatchChoiceOption.HomeWinValue; });
+                        var drawOption = options.Find(delegate(ChoiceOption option) { return option.OptionValue == MatchChoiceOption.DrawValue; });
+                        var loseOption = options.Find(delegate(ChoiceOption option) { return option.OptionValue == MatchChoiceOption.AwayWinValue; });
 
                         if (!string.IsNullOrEmpty(winOption.OptionValue) && !string.IsNullOrEmpty(drawOption.OptionValue) && !string.IsNullOrEmpty(loseOption.OptionValue))
                         {
-                            Literal ltrlWinRate = e.Row.FindControl("ltrlWinRate") as Literal;
-                            Literal ltrlDrawRate = e.Row.FindControl("ltrlDrawRate") as Literal;
-                            Literal ltrlLoseRate = e.Row.FindControl("ltrlLoseRate") as Literal;
+                            var ltrlWinRate = e.Row.FindControl("ltrlWinRate") as Literal;
+                            var ltrlDrawRate = e.Row.FindControl("ltrlDrawRate") as Literal;
+                            var ltrlLoseRate = e.Row.FindControl("ltrlLoseRate") as Literal;
 
                             ltrlWinRate.Text = string.Format("<em title=\"主队胜赔率\">{0}</em>", Convert.ToSingle(winOption.OptionRate.Value).ToString("f2"));
                             ltrlDrawRate.Text = string.Format("<em title=\"双方平赔率\">{0}</em>", Convert.ToSingle(drawOption.OptionRate.Value).ToString("f2"));
                             ltrlLoseRate.Text = string.Format("<em title=\"客队胜赔率\">{0}</em>", Convert.ToSingle(loseOption.OptionRate.Value).ToString("f2"));
 
-                            Label lbWinInfo = e.Row.FindControl("lbWinInfo") as Label;
-                            Label lbDrawInfo = e.Row.FindControl("lbDrawInfo") as Label;
-                            Label lbLoseInfo = e.Row.FindControl("lbLoseInfo") as Label;
+                            var lbWinInfo = e.Row.FindControl("lbWinInfo") as Label;
+                            var lbDrawInfo = e.Row.FindControl("lbDrawInfo") as Label;
+                            var lbLoseInfo = e.Row.FindControl("lbLoseInfo") as Label;
 
                             lbWinInfo.Text = string.Format("{0} | {1}", ChoiceOption.GetOptionTotalCount(guid.Value, winOption.OptionValue).ToString(), ChoiceOption.GetOptionTotalBet(guid.Value, winOption.OptionValue).ToString("N0"));
                             lbDrawInfo.Text = string.Format("{0} | {1}", ChoiceOption.GetOptionTotalCount(guid.Value, drawOption.OptionValue).ToString(), ChoiceOption.GetOptionTotalBet(guid.Value, drawOption.OptionValue).ToString("N0"));
@@ -128,12 +128,12 @@ namespace Arsenalcn.CasinoSys.Web
                             //ltrlDrawBetCount.Text = Entity.ChoiceOption.GetOptionTotalCount(guid.Value, drawOption.OptionValue).ToString();
                             //ltrlLoseBetCount.Text = Entity.ChoiceOption.GetOptionTotalCount(guid.Value, loseOption.OptionValue).ToString();
 
-                            HyperLink btnBet = e.Row.FindControl("btnBet") as HyperLink;
+                            var btnBet = e.Row.FindControl("btnBet") as HyperLink;
 
                             if (btnBet != null)
                             {
-                                List<Bet> betList = Entity.Bet.GetUserMatchAllBet(this.userid, m.MatchGuid);
-                                int betCount = int.MinValue;
+                                var betList = Entity.Bet.GetUserMatchAllBet(this.userid, m.MatchGuid);
+                                var betCount = int.MinValue;
 
                                 if (betList != null && betList.Count > 0)
                                     betCount = betList.Count;

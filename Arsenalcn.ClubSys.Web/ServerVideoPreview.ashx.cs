@@ -9,38 +9,38 @@ namespace Arsenalcn.ClubSys.Web
     {
         public void ProcessRequest(HttpContext context)
         {
-            string responseText = string.Empty;
+            var responseText = string.Empty;
 
             if (!string.IsNullOrEmpty(context.Request.QueryString["VideoGuid"]))
             {
                 try
                 {
-                    Guid guid = new Guid(context.Request.QueryString["VideoGuid"]);
+                    var guid = new Guid(context.Request.QueryString["VideoGuid"]);
 
-                    string _jsonVideo = string.Empty;
-                    string _jsonGoalPlayer = string.Empty;
-                    string _jsonAssistPlayer = string.Empty;
-                    string _jsonMatch = string.Empty;
+                    var _jsonVideo = string.Empty;
+                    var _jsonGoalPlayer = string.Empty;
+                    var _jsonAssistPlayer = string.Empty;
+                    var _jsonMatch = string.Empty;
 
                     var v = Video.Cache.Load(guid);
 
                     if (v != null)
                     {
-                        _jsonVideo = string.Format("{{ \"VideoGuid\": \"{0}\", \"VideoFilePath\": \"{1}\", \"VideoType\": \"{2}\", \"VideoWidth\": \"{3}\",  \"VideoHeight\": \"{4}\", \"GoalRank\": \"{5}\", \"TeamworkRank\": \"{6}\" }}",
-                            v.ID.ToString(), v.VideoFilePath, v.VideoType.ToString(), v.VideoWidth.ToString(), v.VideoHeight.ToString(), v.GoalRank.ToString(), v.TeamworkRank.ToString());
+                        _jsonVideo =
+                            $"{{ \"VideoGuid\": \"{v.ID.ToString()}\", \"VideoFilePath\": \"{v.VideoFilePath}\", \"VideoType\": \"{v.VideoType.ToString()}\", \"VideoWidth\": \"{v.VideoWidth.ToString()}\",  \"VideoHeight\": \"{v.VideoHeight.ToString()}\", \"GoalRank\": \"{v.GoalRank.ToString()}\", \"TeamworkRank\": \"{v.TeamworkRank.ToString()}\" }}";
 
                         if (v.GoalPlayerGuid.HasValue)
                         {
                             var pg = Player.Cache.Load(v.GoalPlayerGuid.Value);
-                            _jsonGoalPlayer = string.Format("{{ \"PlayerGuid\": \"{0}\", \"DisplayName\": \"{1}\", \"PhotoURL\": \"{2}\" }}",
-                                pg.ID.ToString(), pg.DisplayName, pg.PhotoURL);
+                            _jsonGoalPlayer =
+                                $"{{ \"PlayerGuid\": \"{pg.ID.ToString()}\", \"DisplayName\": \"{pg.DisplayName}\", \"PhotoURL\": \"{pg.PhotoURL}\" }}";
                         }
 
                         if (v.AssistPlayerGuid.HasValue)
                         {
                             var pa = Player.Cache.Load(v.AssistPlayerGuid.Value);
-                            _jsonAssistPlayer = string.Format("{{ \"PlayerGuid\": \"{0}\", \"DisplayName\": \"{1}\", \"PhotoURL\": \"{2}\" }}",
-                                pa.ID.ToString(), pa.DisplayName, pa.PhotoURL);
+                            _jsonAssistPlayer =
+                                $"{{ \"PlayerGuid\": \"{pa.ID.ToString()}\", \"DisplayName\": \"{pa.DisplayName}\", \"PhotoURL\": \"{pa.PhotoURL}\" }}";
                         }
 
                         if (v.ArsenalMatchGuid.HasValue)
@@ -49,8 +49,8 @@ namespace Arsenalcn.ClubSys.Web
                             var to = Team.Cache.Load(m.TeamGuid);
                             var ta = Team.Cache.Load(Entity.ConfigGlobal.ArsenalTeamGuid);
 
-                            string _strMatchInfo = "{{ \"MatchGuid\": \"{0}\", \"HomeTeam\": \"{1}\", \"HomeTeamLogo\": \"{2}\", \"ResultHome\": \"{3}\", \"ResultAway\": \"{4}\", \"PlayTime\": \"{5}\", \"AwayTeam\": \"{6}\", \"AwayTeamLogo\": \"{7}\" }}";
-                            string _strAcnCasinoPath = "/plugin/AcnCasino/";
+                            var _strMatchInfo = "{{ \"MatchGuid\": \"{0}\", \"HomeTeam\": \"{1}\", \"HomeTeamLogo\": \"{2}\", \"ResultHome\": \"{3}\", \"ResultAway\": \"{4}\", \"PlayTime\": \"{5}\", \"AwayTeam\": \"{6}\", \"AwayTeamLogo\": \"{7}\" }}";
+                            var _strAcnCasinoPath = "/plugin/AcnCasino/";
 
                             if (m.IsHome)
                             {
@@ -78,11 +78,8 @@ namespace Arsenalcn.ClubSys.Web
                             }
                         }
 
-                        responseText = string.Format("{{ \"Video\": {0}, \"GoalPlayer\": {1}, \"AssistPlayer\": {2}, \"Match\": {3} }}",
-                            _jsonVideo,
-                            !string.IsNullOrEmpty(_jsonGoalPlayer) ? _jsonGoalPlayer : "\"\"",
-                            !string.IsNullOrEmpty(_jsonAssistPlayer) ? _jsonAssistPlayer : "\"\"",
-                            !string.IsNullOrEmpty(_jsonMatch) ? _jsonMatch : "\"\"");
+                        responseText =
+                            $"{{ \"Video\": {_jsonVideo}, \"GoalPlayer\": {(!string.IsNullOrEmpty(_jsonGoalPlayer) ? _jsonGoalPlayer : "\"\"")}, \"AssistPlayer\": {(!string.IsNullOrEmpty(_jsonAssistPlayer) ? _jsonAssistPlayer : "\"\"")}, \"Match\": {(!string.IsNullOrEmpty(_jsonMatch) ? _jsonMatch : "\"\"")} }}";
                     }
                     else
                     {
@@ -91,7 +88,7 @@ namespace Arsenalcn.ClubSys.Web
                 }
                 catch (Exception ex)
                 {
-                    responseText = string.Format("{{  \"result\": \"error\", \"error_msg\": \"{0}\" }}", ex.Message);
+                    responseText = $"{{  \"result\": \"error\", \"error_msg\": \"{ex.Message}\" }}";
                 }
             }
 

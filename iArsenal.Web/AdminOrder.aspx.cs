@@ -59,7 +59,7 @@ namespace iArsenal.Web
         {
             if (MemberID > 0)
             {
-                Member m = repo.Single<Member>(MemberID);
+                var m = repo.Single<Member>(MemberID);
 
                 if (m != null)
                 {
@@ -71,8 +71,8 @@ namespace iArsenal.Web
 
             var list = repo.All<Order>().FindAll(x =>
             {
-                Boolean returnValue = true;
-                string tmpString = string.Empty;
+                var returnValue = true;
+                var tmpString = string.Empty;
 
                 if (ViewState["OrderID"] != null)
                 {
@@ -122,7 +122,7 @@ namespace iArsenal.Web
             #region set GridView Selected PageIndex
             if (OrderID > 0)
             {
-                int i = list.FindIndex(x => x.ID.Equals(OrderID));
+                var i = list.FindIndex(x => x.ID.Equals(OrderID));
                 if (i >= 0)
                 {
                     gvOrder.PageIndex = i / gvOrder.PageSize;
@@ -233,8 +233,8 @@ namespace iArsenal.Web
                 #region Get the Order List
                 var list = repo.All<Order>().FindAll(x =>
                 {
-                    Boolean returnValue = x.IsActive; // Export the active order
-                    string tmpString = string.Empty;
+                    var returnValue = x.IsActive; // Export the active order
+                    var tmpString = string.Empty;
 
                     if (ViewState["OrderID"] != null)
                     {
@@ -276,25 +276,25 @@ namespace iArsenal.Web
                 #endregion
 
                 #region Convert List to DataTable
-                DataTable dt = new DataTable();
-                Type t = Type.GetType("System.String");
+                var dt = new DataTable();
+                var t = Type.GetType("System.String");
 
                 #region Create DataTable and DataColumn
-                DataColumn dcMemberAcnName = new DataColumn("User", t);
-                DataColumn dcOrderMemberName = new DataColumn("Member", t);
-                DataColumn dcOrderMobile = new DataColumn("Contact", t);
-                DataColumn dcOrderID = new DataColumn("OID", Type.GetType("System.Int16"));
-                DataColumn dcOrderItemCode = new DataColumn("Code", t);
-                DataColumn dcProductName = new DataColumn("Souvenir", t);
-                DataColumn dcProductDisplayName = new DataColumn("As", t);
-                DataColumn dcProductColour = new DataColumn("Color", t);
-                DataColumn dcOrderItemSize = new DataColumn("Size", t);
-                DataColumn dcProductPrice = new DataColumn("Unit", Type.GetType("System.Single"));
-                DataColumn dcOrderItemQuantity = new DataColumn("Qty", Type.GetType("System.Int16"));
-                DataColumn dcProductTotalPrice = new DataColumn("GBP Price", Type.GetType("System.Single"));
-                DataColumn dcOrderItemTotalPrice = new DataColumn("CNY Price", Type.GetType("System.Single"));
-                DataColumn dcOrderPriceInfo = new DataColumn("Order Price", t);
-                DataColumn dcOrderRemark = new DataColumn("Remark", t);
+                var dcMemberAcnName = new DataColumn("User", t);
+                var dcOrderMemberName = new DataColumn("Member", t);
+                var dcOrderMobile = new DataColumn("Contact", t);
+                var dcOrderID = new DataColumn("OID", Type.GetType("System.Int16"));
+                var dcOrderItemCode = new DataColumn("Code", t);
+                var dcProductName = new DataColumn("Souvenir", t);
+                var dcProductDisplayName = new DataColumn("As", t);
+                var dcProductColour = new DataColumn("Color", t);
+                var dcOrderItemSize = new DataColumn("Size", t);
+                var dcProductPrice = new DataColumn("Unit", Type.GetType("System.Single"));
+                var dcOrderItemQuantity = new DataColumn("Qty", Type.GetType("System.Int16"));
+                var dcProductTotalPrice = new DataColumn("GBP Price", Type.GetType("System.Single"));
+                var dcOrderItemTotalPrice = new DataColumn("CNY Price", Type.GetType("System.Single"));
+                var dcOrderPriceInfo = new DataColumn("Order Price", t);
+                var dcOrderRemark = new DataColumn("Remark", t);
 
                 dt.Columns.Add(dcMemberAcnName);
                 dt.Columns.Add(dcOrderMemberName);
@@ -316,11 +316,11 @@ namespace iArsenal.Web
                 if (list != null && list.Count > 0)
                 {
                     // Tackle with Every Order and OrderItem
-                    foreach (Order o in list)
+                    foreach (var o in list)
                     {
-                        Member m = new Member();
-                        Product p = new Product();
-                        Product pFont = new Product();
+                        var m = new Member();
+                        var p = new Product();
+                        var pFont = new Product();
 
                         switch (ddlOrderType.SelectedValue)
                         {
@@ -350,11 +350,11 @@ namespace iArsenal.Web
                                     throw new Exception(string.Format("此订单未购买球衣商品(OrderID:{0})", oReplicaKit.ID.ToString()));
                                 }
 
-                                OrdrItmPlayerNumber oiNumber = oReplicaKit.OIPlayerNumber;
-                                OrdrItmPlayerName oiName = oReplicaKit.OIPlayerName;
-                                OrdrItmArsenalFont oiFont = oReplicaKit.OIArsenalFont; ;
-                                OrdrItmPremiershipPatch oiPremierPatch = oReplicaKit.OIPremiershipPatch;
-                                OrdrItmChampionshipPatch oiChampionPatch = oReplicaKit.OIChampionshipPatch;
+                                var oiNumber = oReplicaKit.OIPlayerNumber;
+                                var oiName = oReplicaKit.OIPlayerName;
+                                var oiFont = oReplicaKit.OIArsenalFont; ;
+                                var oiPremierPatch = oReplicaKit.OIPremiershipPatch;
+                                var oiChampionPatch = oReplicaKit.OIChampionshipPatch;
 
                                 // get Member Info By Order
                                 m = repo.Single<Member>(o.MemberID);
@@ -362,7 +362,7 @@ namespace iArsenal.Web
                                 // get Product Info By OrderItem
                                 p = Product.Cache.Load(oiReplicaKit.ProductGuid);
 
-                                DataRow dr = dt.NewRow();
+                                var dr = dt.NewRow();
                                 dr["User"] = string.Format("{0}({1})", m.AcnName, m.AcnID.ToString());
                                 dr["Member"] = string.Format("{0}({1})", o.MemberName, o.MemberID.ToString());
                                 dr["Contact"] = o.Mobile;
@@ -555,7 +555,7 @@ namespace iArsenal.Web
 
                                 if (query != null && query.Count() > 0)
                                 {
-                                    int _listCount = 0;
+                                    var _listCount = 0;
 
                                     foreach (var oi in query)
                                     {
@@ -633,8 +633,8 @@ namespace iArsenal.Web
                 if (dt.Rows.Count > 0)
                 {
                     // Export DataTable
-                    GridView gvw = new GridView();
-                    string fileName = string.Format("AdminOrderExport-{0}.xls", DateTime.Now.ToString("yyyyMMdd-HHmmss"));
+                    var gvw = new GridView();
+                    var fileName = string.Format("AdminOrderExport-{0}.xls", DateTime.Now.ToString("yyyyMMdd-HHmmss"));
 
                     gvw.AutoGenerateColumns = true;
 
@@ -658,13 +658,13 @@ namespace iArsenal.Web
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                Order o = e.Row.DataItem as Order;
+                var o = e.Row.DataItem as Order;
 
-                CheckBox cbOrderID = e.Row.FindControl("cbOrderID") as CheckBox;
-                HyperLink hlOrderID = e.Row.FindControl("hlOrderID") as HyperLink;
-                HyperLink hlName = e.Row.FindControl("hlName") as HyperLink;
-                Label lblOrderType = e.Row.FindControl("lblOrderType") as Label;
-                Label lblOrderStatus = e.Row.FindControl("lblOrderStatus") as Label;
+                var cbOrderID = e.Row.FindControl("cbOrderID") as CheckBox;
+                var hlOrderID = e.Row.FindControl("hlOrderID") as HyperLink;
+                var hlName = e.Row.FindControl("hlName") as HyperLink;
+                var lblOrderType = e.Row.FindControl("lblOrderType") as Label;
+                var lblOrderStatus = e.Row.FindControl("lblOrderStatus") as Label;
 
                 if (cbOrderID != null)
                 {
@@ -676,7 +676,7 @@ namespace iArsenal.Web
 
                 if (hlName != null)
                 {
-                    Member m = Member.Cache.Load(o.MemberID);
+                    var m = Member.Cache.Load(o.MemberID);
 
                     switch (m.Evalution)
                     {
@@ -708,7 +708,7 @@ namespace iArsenal.Web
 
                 if (lblOrderStatus != null)
                 {
-                    string _strStatus = string.Empty;
+                    var _strStatus = string.Empty;
 
                     if (o.Status.Equals(OrderStatusType.Confirmed))
                         _strStatus = string.Format("<em>{0}</em>", o.StatusInfo);

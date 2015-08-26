@@ -11,8 +11,8 @@ namespace iArsenal.Web
         {
             try
             {
-                string _strOrderID = context.Request.QueryString["OrderID"];
-                int _orderID = int.MinValue;
+                var _strOrderID = context.Request.QueryString["OrderID"];
+                var _orderID = int.MinValue;
 
                 if (!string.IsNullOrEmpty(_strOrderID) && int.TryParse(_strOrderID, out _orderID))
                 {

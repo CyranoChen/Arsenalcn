@@ -11,9 +11,9 @@ namespace Arsenalcn.CasinoSys.DataAccess
     {
         public static DataRow GetMatchByID(Guid matchGuid)
         {
-            string sql = "SELECT * FROM dbo.AcnCasino_Match WHERE MatchGuid = @guid";
+            var sql = "SELECT * FROM dbo.AcnCasino_Match WHERE MatchGuid = @guid";
 
-            DataSet ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@guid", matchGuid));
+            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@guid", matchGuid));
 
             if (ds.Tables[0].Rows.Count == 0)
                 return null;
@@ -32,9 +32,9 @@ namespace Arsenalcn.CasinoSys.DataAccess
 
         public static void UpdateMatch(Guid matchGuid, Guid home, Guid away, short? resultHome, short? resultAway, DateTime playTime, Guid leagueGuid, string leagueName, int? round, Guid? groupGuid)
         {
-            string sql = "UPDATE dbo.AcnCasino_Match SET Home = @home, Away = @away, ResultHome = @resultHome, ResultAway = @resultAway, PlayTime = @playTime, LeagueGuid = @leagueGuid, LeagueName = @leagueName, Round = @round, GroupGuid = @groupGuid WHERE MatchGuid = @guid";
+            var sql = "UPDATE dbo.AcnCasino_Match SET Home = @home, Away = @away, ResultHome = @resultHome, ResultAway = @resultAway, PlayTime = @playTime, LeagueGuid = @leagueGuid, LeagueName = @leagueName, Round = @round, GroupGuid = @groupGuid WHERE MatchGuid = @guid";
 
-            SqlParameter[] para = new SqlParameter[10];
+            var para = new SqlParameter[10];
 
             para[0] = new SqlParameter("@guid", matchGuid);
             para[1] = new SqlParameter("@home", home);
@@ -69,9 +69,9 @@ namespace Arsenalcn.CasinoSys.DataAccess
 
         public static void InsertMatch(Guid matchGuid, Guid home, Guid away, DateTime playTime, Guid leagueGuid, string leagueName, int? round, Guid? groupGuid, SqlTransaction trans)
         {
-            string sql = "INSERT INTO dbo.AcnCasino_Match (MatchGuid,Home,Away,ResultHome,ResultAway,PlayTime,LeagueGuid,LeagueName,Round,GroupGuid) VALUES (@guid, @home, @away, null, null, @time, @league, @leagueName, @round, @groupGuid)";
+            var sql = "INSERT INTO dbo.AcnCasino_Match (MatchGuid,Home,Away,ResultHome,ResultAway,PlayTime,LeagueGuid,LeagueName,Round,GroupGuid) VALUES (@guid, @home, @away, null, null, @time, @league, @leagueName, @round, @groupGuid)";
 
-            SqlParameter[] para = new SqlParameter[8];
+            var para = new SqlParameter[8];
             para[0] = new SqlParameter("@guid", matchGuid);
             para[1] = new SqlParameter("@home", home);
             para[2] = new SqlParameter("@away", away);
@@ -97,17 +97,17 @@ namespace Arsenalcn.CasinoSys.DataAccess
 
         public static void DeleteMatch(Guid matchGuid)
         {
-            string sql = "DELETE FROM dbo.AcnCasino_Match WHERE MatchGuid = @guid";
+            var sql = "DELETE FROM dbo.AcnCasino_Match WHERE MatchGuid = @guid";
 
             SqlHelper.ExecuteNonQuery(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@guid", matchGuid));
         }
 
         public static DataTable GetMatchs()
         {
-            string sql = @"SELECT MatchGuid, Home, Away, ResultHome, ResultAway, PlayTime, LeagueGuid, LeagueName, Round, GroupGuid 
+            var sql = @"SELECT MatchGuid, Home, Away, ResultHome, ResultAway, PlayTime, LeagueGuid, LeagueName, Round, GroupGuid 
                                FROM dbo.AcnCasino_Match ORDER BY PlayTime DESC";
 
-            DataSet ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql);
+            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql);
 
             if (ds.Tables[0].Rows.Count == 0)
                 return null;
@@ -117,21 +117,21 @@ namespace Arsenalcn.CasinoSys.DataAccess
 
         public static void UpdateMatchResult(Guid matchGuid, short resultHome, short resultAway)
         {
-            string sql = "UPDATE dbo.AcnCasino_Match SET ResultHome = @resultHome, ResultAway = @resultAway WHERE MatchGuid = @guid";
+            var sql = "UPDATE dbo.AcnCasino_Match SET ResultHome = @resultHome, ResultAway = @resultAway WHERE MatchGuid = @guid";
 
             SqlHelper.ExecuteNonQuery(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@resultHome", resultHome), new SqlParameter("@resultAway", resultAway), new SqlParameter("@guid", matchGuid));
         }
 
         public static void RemoveMatchGroupGuid(Guid groupGuid)
         {
-            string sql = "UPDATE dbo.AcnCasino_Match SET GroupGuid = NULL WHERE GroupGuid = @groupGuid";
+            var sql = "UPDATE dbo.AcnCasino_Match SET GroupGuid = NULL WHERE GroupGuid = @groupGuid";
 
             SqlHelper.ExecuteNonQuery(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@groupGuid", groupGuid));
         }
 
         public static void UpdateMatchGroupGuid(Guid groupGuid, Guid leagueGuid)
         {
-            string sql = @"UPDATE dbo.AcnCasino_Match SET GroupGuid = @groupGuid WHERE LeagueGuid = @leagueGuid 
+            var sql = @"UPDATE dbo.AcnCasino_Match SET GroupGuid = @groupGuid WHERE LeagueGuid = @leagueGuid 
                           AND Home in (Select TeamGuid from dbo.Arsenal_RelationGroupTeam where GroupGuid = @groupGuid)
                           AND Away in (Select TeamGuid from dbo.Arsenal_RelationGroupTeam where GroupGuid = @groupGuid)";
 
@@ -140,10 +140,10 @@ namespace Arsenalcn.CasinoSys.DataAccess
 
         public static DataTable GetResultMatchByLeagueGuid(Guid leagueGuid)
         {
-            string sql = @"SELECT * FROM dbo.AcnCasino_Match WHERE (LeagueGuid = @leagueGuid) AND
+            var sql = @"SELECT * FROM dbo.AcnCasino_Match WHERE (LeagueGuid = @leagueGuid) AND
                           (ResultHome IS NOT NULL) AND (ResultAway IS NOT NULL) ORDER BY PlayTime DESC";
 
-            DataSet ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@leagueGuid", leagueGuid));
+            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@leagueGuid", leagueGuid));
 
             if (ds.Tables[0].Rows.Count == 0)
                 return null;
@@ -153,7 +153,7 @@ namespace Arsenalcn.CasinoSys.DataAccess
 
         public static DataTable GetResultMatchByGroupGuid(Guid groupGuid, bool isTable)
         {
-            string sql = string.Empty;
+            var sql = string.Empty;
             if (!isTable)
                 sql = @"SELECT * FROM dbo.AcnCasino_Match WHERE (GroupGuid =@groupGuid) AND (ResultHome IS NOT NULL) AND (ResultAway IS NOT NULL) 
                         AND (LeagueGuid = (SElECT LeagueGuid FROM dbo.Arsenal_Group WHERE GroupGuid = @groupGuid)) ORDER BY PlayTime DESC";
@@ -164,7 +164,7 @@ namespace Arsenalcn.CasinoSys.DataAccess
                         (LeagueGuid = (SELECT LeagueGuid FROM dbo.Arsenal_Group WHERE GroupGuid = @groupGuid))
                         ORDER BY PlayTime DESC";
 
-            DataSet ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@groupGuid", groupGuid));
+            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@groupGuid", groupGuid));
 
             if (ds.Tables[0].Rows.Count == 0)
                 return null;
@@ -174,7 +174,7 @@ namespace Arsenalcn.CasinoSys.DataAccess
 
         public static DataTable GetAllMatchByGroupGuid(Guid groupGuid, bool isTable)
         {
-            string sql = string.Empty;
+            var sql = string.Empty;
             if (!isTable)
                 sql = @"SELECT * FROM dbo.AcnCasino_Match WHERE (GroupGuid =@groupGuid) AND 
                         (LeagueGuid = (SElECT LeagueGuid FROM dbo.Arsenal_Group WHERE GroupGuid = @groupGuid)) ORDER BY PlayTime DESC";
@@ -185,7 +185,7 @@ namespace Arsenalcn.CasinoSys.DataAccess
                         (LeagueGuid = (SELECT LeagueGuid FROM dbo.Arsenal_Group WHERE GroupGuid = @groupGuid))
                         ORDER BY PlayTime DESC";
 
-            DataSet ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@groupGuid", groupGuid));
+            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@groupGuid", groupGuid));
 
             if (ds.Tables[0].Rows.Count == 0)
                 return null;

@@ -2,8 +2,6 @@
 
 using Arsenalcn.CasinoSys.Entity;
 
-using Discuz.Forum;
-
 namespace Arsenalcn.CasinoSys.Web.Control
 {
     public partial class LeftPanel : System.Web.UI.UserControl
@@ -24,12 +22,12 @@ namespace Arsenalcn.CasinoSys.Web.Control
             {
                 pnlMyCasino.Visible = true;
 
-                Gambler g = new Gambler(UserID);
+                var g = new Gambler(UserID);
 
                 if (g != null)
                 {
-                    string _strRP = g.RPBonus.HasValue ? string.Format("(RP: {0}) ", g.RPBonus.Value) : string.Empty;
-                    string _strRank = g.ContestRank.HasValue ? string.Format("(Rank: {0}) ", g.ContestRank.Value) : string.Empty;
+                    var _strRP = g.RPBonus.HasValue ? string.Format("(RP: {0}) ", g.RPBonus.Value) : string.Empty;
+                    var _strRank = g.ContestRank.HasValue ? string.Format("(Rank: {0}) ", g.ContestRank.Value) : string.Empty;
 
                     ltrlMyGamblerInfo.Text = string.Format("<li class=\"LiTitle\">博彩币:<em style=\"font-size: 12px; margin: 0 2px\">{0}</em>{1}</li>", g.Cash.ToString("N2"),
                         string.IsNullOrEmpty(_strRP) && string.IsNullOrEmpty(_strRank)

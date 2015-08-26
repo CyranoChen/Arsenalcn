@@ -23,9 +23,9 @@ namespace Arsenalcn.ClubSys.DataAccess
 
         public static DataTable GetTeams()
         {
-            string sql = "SELECT * FROM Arsenal_Team ORDER BY TeamEnglishName";
+            var sql = "SELECT * FROM Arsenal_Team ORDER BY TeamEnglishName";
 
-            DataSet ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql);
+            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql);
 
             if (ds.Tables[0].Rows.Count == 0)
                 return null;
@@ -35,14 +35,14 @@ namespace Arsenalcn.ClubSys.DataAccess
 
         public static bool ExistRelationLeagueTeam(Guid teamGuid, Guid leagueGuid)
         {
-            string sql = string.Format("SELECT * FROM Arsenal_RelationLeagueTeam WHERE TeamGuid = @teamGuid AND LeagueGuid = @leagueGuid");
+            var sql = string.Format("SELECT * FROM Arsenal_RelationLeagueTeam WHERE TeamGuid = @teamGuid AND LeagueGuid = @leagueGuid");
 
             SqlParameter[] para = {
                                       new SqlParameter("@teamGuid", teamGuid),
                                       new SqlParameter("@leagueGuid", leagueGuid)
                                   };
 
-            DataSet ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql, para);
+            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql, para);
 
             return ds.Tables[0].Rows.Count > 0;
         }

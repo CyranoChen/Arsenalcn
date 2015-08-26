@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-
 using Arsenalcn.Core;
 
 namespace Arsenal.Service
@@ -20,9 +18,9 @@ namespace Arsenal.Service
 
             map.ForMember(d => d.ResultInfo, opt => opt.ResolveUsing(s =>
             {
-                short? resultHome = (short?)s.GetValue("ResultHome");
-                short? resultAway = (short?)s.GetValue("ResultAway");
-                bool IsHome = (bool)s.GetValue("IsHome");
+                var resultHome = (short?)s.GetValue("ResultHome");
+                var resultAway = (short?)s.GetValue("ResultAway");
+                var IsHome = (bool)s.GetValue("IsHome");
 
                 if (resultHome.HasValue && resultAway.HasValue)
                 {

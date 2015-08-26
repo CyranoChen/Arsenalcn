@@ -32,7 +32,7 @@ namespace Arsenalcn.Common.Entity
 
         public void Select()
         {
-            DataRow dr = DataAccess.Dictionary.GetDictionaryByID(DictionaryID);
+            var dr = DataAccess.Dictionary.GetDictionaryByID(DictionaryID);
 
             if (dr != null)
                 InitDictionary(dr);
@@ -55,8 +55,8 @@ namespace Arsenalcn.Common.Entity
 
         public static List<Dictionary> GetDictionaries()
         {
-            DataTable dt = DataAccess.Dictionary.GetDictionaries();
-            List<Dictionary> list = new List<Dictionary>();
+            var dt = DataAccess.Dictionary.GetDictionaries();
+            var list = new List<Dictionary>();
 
             if (dt != null)
             {

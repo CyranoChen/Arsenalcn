@@ -1,14 +1,5 @@
 ﻿using System;
-using System.Collections;
-using System.Configuration;
-using System.Data;
 using System.Web;
-using System.Web.Security;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
-
 using Arsenalcn.ClubSys.Service;
 using Arsenalcn.ClubSys.Entity;
 
@@ -23,22 +14,22 @@ namespace Arsenalcn.ClubSys.Web.Control
                 if (aManageClub.HRef.IndexOf("{0}") >= 0)
                     aManageClub.HRef = string.Format(aManageClub.HRef, clubID.ToString());
 
-                Club currentClub = ClubLogic.GetClubInfo(clubID);
+                var currentClub = ClubLogic.GetClubInfo(clubID);
 
                 if (currentClub != null)
                 {
-                    imgClubLogo.ImageUrl = string.Format("../UploadFiles/{0}", currentClub.LogoName);
+                    imgClubLogo.ImageUrl = $"../UploadFiles/{currentClub.LogoName}";
                     imgClubLogo.ToolTip = currentClub.FullName;
 
                     ltrlClubFullName.Text = currentClub.FullName;
 
-                    string clubDesc = HttpUtility.HtmlEncode(currentClub.Description);
+                    var clubDesc = HttpUtility.HtmlEncode(currentClub.Description);
                     if (clubDesc.Length > 80)
-                        ltrlClubDesc.Text = string.Format("<span title=\"{0}\">{1}...</span>", clubDesc, clubDesc.Substring(0, 80));
+                        ltrlClubDesc.Text = $"<span title=\"{clubDesc}\">{clubDesc.Substring(0, 80)}...</span>";
                     else
                         ltrlClubDesc.Text = clubDesc;
 
-                    divClubRank.Style.Add("Width", string.Format("{0}px", currentClub.RankLevel * 20));
+                    divClubRank.Style.Add("Width", $"{currentClub.RankLevel*20}px");
                     divClubRank.Attributes.Add("Title", currentClub.RankScore.ToString());
 
                     if (userID == -1)
@@ -55,7 +46,7 @@ namespace Arsenalcn.ClubSys.Web.Control
                     }
                     else
                     {
-                        UserClubStatus ucs = ClubLogic.GetUserClubStatus(userID, clubID);
+                        var ucs = ClubLogic.GetUserClubStatus(userID, clubID);
                         switch (ucs)
                         {
                             case UserClubStatus.Applied:
@@ -96,7 +87,7 @@ namespace Arsenalcn.ClubSys.Web.Control
                             btnJoinClub.Visible = false;
                         }
 
-                        UserClub userClub = ClubLogic.GetActiveUserClub(userID, clubID);
+                        var userClub = ClubLogic.GetActiveUserClub(userID, clubID);
 
                         if (userClub != null)
                         {
@@ -160,12 +151,12 @@ namespace Arsenalcn.ClubSys.Web.Control
 
         protected void btnJoinClub_Click(object sender, EventArgs e)
         {
-            UserClubStatus uct = ClubLogic.GetUserClubStatus(userID, clubID);
+            var uct = ClubLogic.GetUserClubStatus(userID, clubID);
 
             if (uct != UserClubStatus.No)
                 return;
 
-            string script = string.Empty;
+            var script = string.Empty;
 
             if (UserClubLogic.UserClubAction(userID, userName, clubID, uct))
             {
@@ -184,12 +175,12 @@ namespace Arsenalcn.ClubSys.Web.Control
 
         protected void btnCancelApply_Click(object sender, EventArgs e)
         {
-            UserClubStatus uct = ClubLogic.GetUserClubStatus(userID, clubID);
+            var uct = ClubLogic.GetUserClubStatus(userID, clubID);
 
             if (uct != UserClubStatus.Applied)
                 return;
 
-            string script = string.Empty;
+            var script = string.Empty;
 
             if (UserClubLogic.UserClubAction(userID, userName, clubID, uct))
             {
@@ -208,12 +199,12 @@ namespace Arsenalcn.ClubSys.Web.Control
 
         protected void btnLeaveClub_Click(object sender, EventArgs e)
         {
-            UserClubStatus uct = ClubLogic.GetUserClubStatus(userID, clubID);
+            var uct = ClubLogic.GetUserClubStatus(userID, clubID);
 
             if (uct != UserClubStatus.Member)
                 return;
 
-            string script = string.Empty;
+            var script = string.Empty;
 
             if (UserClubLogic.UserClubAction(userID, userName, clubID, uct))
             {

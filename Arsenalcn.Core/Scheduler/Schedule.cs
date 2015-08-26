@@ -37,11 +37,11 @@ namespace Arsenalcn.Core.Scheduler
 
                 if (dailyTime >= 0)
                 {
-                    return string.Format("Run at {0}:{1}", dailyTime / 60, dailyTime % 60);
+                    return $"Run at {dailyTime/60}:{dailyTime%60}";
                 }
                 else
                 {
-                    return string.Format("Run By {0} mins", s.GetValue("Minutes").ToString());
+                    return $"Run By {s.GetValue("Minutes").ToString()} mins";
                 }
             }));
         }
@@ -93,12 +93,11 @@ namespace Arsenalcn.Core.Scheduler
 
         public static Schedule Single(object key)
         {
-            string sql = string.Format("SELECT * FROM {0} WHERE ScheduleKey = @key",
-                Repository.GetTableAttr<Schedule>().Name);
+            var sql = $"SELECT * FROM {Repository.GetTableAttr<Schedule>().Name} WHERE ScheduleKey = @key";
 
             SqlParameter[] para = { new SqlParameter("@key", key) };
 
-            DataSet ds = DataAccess.ExecuteDataset(sql, para);
+            var ds = DataAccess.ExecuteDataset(sql, para);
 
             var dt = ds.Tables[0];
 
@@ -112,12 +111,11 @@ namespace Arsenalcn.Core.Scheduler
 
         public bool Any()
         {
-            string sql = string.Format("SELECT * FROM {0} WHERE ScheduleKey = @key",
-                Repository.GetTableAttr<Schedule>().Name);
+            var sql = $"SELECT * FROM {Repository.GetTableAttr<Schedule>().Name} WHERE ScheduleKey = @key";
 
             SqlParameter[] para = { new SqlParameter("@key", ScheduleKey) };
 
-            DataSet ds = DataAccess.ExecuteDataset(sql, para);
+            var ds = DataAccess.ExecuteDataset(sql, para);
 
             return ds.Tables[0].Rows.Count > 0;
         }
@@ -128,9 +126,9 @@ namespace Arsenalcn.Core.Scheduler
 
             var list = new List<Schedule>();
 
-            string sql = string.Format("SELECT * FROM {0} ORDER BY {1}", attr.Name, attr.Sort);
+            var sql = $"SELECT * FROM {attr.Name} ORDER BY {attr.Sort}";
 
-            DataSet ds = DataAccess.ExecuteDataset(sql);
+            var ds = DataAccess.ExecuteDataset(sql);
 
             var dt = ds.Tables[0];
 
@@ -138,7 +136,7 @@ namespace Arsenalcn.Core.Scheduler
             {
                 using (var reader = dt.CreateDataReader())
                 {
-                    Schedule.CreateMap();
+                    CreateMap();
 
                     list = AutoMapper.Mapper.Map<IDataReader, List<Schedule>>(reader);
                 }
@@ -149,11 +147,13 @@ namespace Arsenalcn.Core.Scheduler
 
         public void Update(SqlTransaction trans = null)
         {
-            Contract.Requires(this.Any());
+            Contract.Requires(Any());
 
-            string sql = string.Format(@"UPDATE {0} SET ScheduleType = @scheduleType, DailyTime = @dailyTime, Minutes = @minutes, 
+            var sql =
+                $@"UPDATE {Repository.GetTableAttr<Schedule>().Name
+                    } SET ScheduleType = @scheduleType, DailyTime = @dailyTime, Minutes = @minutes, 
                              LastCompletedTime = @lastCompletedTime, IsSystem = @isSystem, IsActive = @isActive, Remark = @remark 
-                             WHERE ScheduleKey = @key", Repository.GetTableAttr<Schedule>().Name);
+                             WHERE ScheduleKey = @key";
 
             SqlParameter[] para = {
                                       new SqlParameter("@scheduleType", ScheduleType),
@@ -255,12 +255,12 @@ namespace Arsenalcn.Core.Scheduler
         {
             if (_ischedule == null)
             {
-                if (this.ScheduleType == null)
+                if (ScheduleType == null)
                 {
                     //SchedulerLogs.WriteFailedLog("计划任务没有定义其 type 属性");
                 }
 
-                Type type = Type.GetType(this.ScheduleType);
+                var type = Type.GetType(ScheduleType);
 
                 if (type == null)
                 {
@@ -281,20 +281,20 @@ namespace Arsenalcn.Core.Scheduler
         public bool ShouldExecute()
         {
             //If we have a TimeOfDay value, use it and ignore the Minutes interval
-            if (this.DailyTime > -1)
+            if (DailyTime > -1)
             {
                 //Now
-                DateTime dtNow = DateTime.Now;  //now
+                var dtNow = DateTime.Now;  //now
                 //We are looking for the current day @ 12:00 am
-                DateTime dtCompare = new DateTime(dtNow.Year, dtNow.Month, dtNow.Day);
+                var dtCompare = new DateTime(dtNow.Year, dtNow.Month, dtNow.Day);
                 //Check to see if the LastCompleted date is less than the 12:00 am + TimeOfDay minutes
-                return LastCompletedTime < dtCompare.AddMinutes(this.DailyTime) && dtCompare.AddMinutes(this.DailyTime) <= DateTime.Now;
+                return LastCompletedTime < dtCompare.AddMinutes(DailyTime) && dtCompare.AddMinutes(DailyTime) <= DateTime.Now;
 
             }
             else
             {
                 //Is the LastCompleted date + the Minutes interval less than now?
-                return LastCompletedTime.AddMinutes(this.Minutes) < DateTime.Now;
+                return LastCompletedTime.AddMinutes(Minutes) < DateTime.Now;
             }
         }
     }

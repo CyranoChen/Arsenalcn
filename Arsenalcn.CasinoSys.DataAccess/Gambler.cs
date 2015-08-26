@@ -11,9 +11,9 @@ namespace Arsenalcn.CasinoSys.DataAccess
     {
         public static DataRow GetGamblerByID(int gID)
         {
-            string sql = "SELECT * FROM dbo.AcnCasino_Gambler WHERE ID = @gID";
+            var sql = "SELECT * FROM dbo.AcnCasino_Gambler WHERE ID = @gID";
 
-            DataSet ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@gID", gID));
+            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@gID", gID));
 
             if (ds.Tables[0].Rows.Count == 0)
                 return null;
@@ -23,7 +23,7 @@ namespace Arsenalcn.CasinoSys.DataAccess
 
         public static DataRow GetGamblerByUserID(int userID, SqlTransaction trans = null)
         {
-            string sql = "SELECT * FROM dbo.AcnCasino_Gambler WHERE UserID = @userID";
+            var sql = "SELECT * FROM dbo.AcnCasino_Gambler WHERE UserID = @userID";
 
             DataSet ds = null;
 
@@ -45,7 +45,7 @@ namespace Arsenalcn.CasinoSys.DataAccess
         public static void UpdateGambler(int gID, int userID, string userName, float cash, float totalBet, int win, int lose, int? rpBonus, int? contestRank,
             int totalRank, int? banker, DateTime joinDate, bool isActive, string description, string remark, SqlTransaction trans = null)
         {
-            string sql = @"UPDATE dbo.AcnCasino_Gambler SET UserID = @userID, UserName = @userName, Cash = @cash, TotalBet = @totalBet, 
+            var sql = @"UPDATE dbo.AcnCasino_Gambler SET UserID = @userID, UserName = @userName, Cash = @cash, TotalBet = @totalBet, 
                                   Win = @win, Lose = @lose, RPBonus = @rpBonus, ContestRank = @contestRank, TotalRank = @totalRank, Banker = @banker,
                                   JoinDate = @joinDate, IsActive = @isActive, [Description] = @description, Remark = @remark WHERE ID = @gID";
 
@@ -76,7 +76,7 @@ namespace Arsenalcn.CasinoSys.DataAccess
         public static int InsertGambler(int gID, int userID, string userName, float cash, float totalBet, int win, int lose, int? rpBonus, int? contestRank,
             int totalRank, int? banker, DateTime joinDate, bool isActive, string description, string remark, SqlTransaction trans = null)
         {
-            string sql = @"INSERT INTO dbo.AcnCasino_Gambler (UserID, UserName, Cash, TotalBet, Win, Lose, RPBonus, ContestRank, 
+            var sql = @"INSERT INTO dbo.AcnCasino_Gambler (UserID, UserName, Cash, TotalBet, Win, Lose, RPBonus, ContestRank, 
                                  TotalRank, Banker, JoinDate, IsActive, Description, Remark)  
                                  VALUES (@userID, @userName, @cash, @totalBet, @win, @lose, @rpBonus, @ContestRank, 
                                  @totalRank, @banker, @joinDate, @isActive, @description, @remark);
@@ -110,7 +110,7 @@ namespace Arsenalcn.CasinoSys.DataAccess
 
         public static void DeleteGambler(int gID, SqlTransaction trans = null)
         {
-            string sql = "DELETE dbo.AcnCasino_Gambler WHERE ID = @gID";
+            var sql = "DELETE dbo.AcnCasino_Gambler WHERE ID = @gID";
 
             SqlParameter[] para = { new SqlParameter("@gID", gID) };
 
@@ -122,10 +122,10 @@ namespace Arsenalcn.CasinoSys.DataAccess
 
         public static DataTable GetGamblers()
         {
-            string sql = @"SELECT  ID, UserID, UserName, Cash, TotalBet, Win, Lose, RPBonus, ContestRank, TotalRank, Banker, JoinDate, IsActive, Description, Remark  
+            var sql = @"SELECT  ID, UserID, UserName, Cash, TotalBet, Win, Lose, RPBonus, ContestRank, TotalRank, Banker, JoinDate, IsActive, Description, Remark  
                                   FROM AcnCasino_Gambler Order By TotalBet DESC, Cash DESC, WIN DESC, LOSE DESC, ID";
 
-            DataSet ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql);
+            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql);
 
             if (ds.Tables[0].Rows.Count == 0)
                 return null;
@@ -135,7 +135,7 @@ namespace Arsenalcn.CasinoSys.DataAccess
 
         public static DataTable GetGamblerProfitView()
         {
-            string sql = @"SELECT BetInfo.*, RPInfo.RPBet, RPInfo.RPBonus FROM
+            var sql = @"SELECT BetInfo.*, RPInfo.RPBet, RPInfo.RPBonus FROM
                                     (SELECT UserID, UserName, 
                                                 COUNT(CASE IsWin WHEN 1 THEN 1 ELSE NULL END) AS Win, 
                                                 COUNT(CASE IsWin WHEN 0 THEN 0 ELSE NULL END) AS Lose, 
@@ -153,7 +153,7 @@ namespace Arsenalcn.CasinoSys.DataAccess
                                 ON BetInfo.UserID = RPInfo.UserID AND BetInfo.UserName = RPInfo.UserName
                                 ORDER BY BetInfo.TotalBet DESC";
 
-            DataSet ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql);
+            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql);
 
             if (ds.Tables[0].Rows.Count == 0)
                 return null;
@@ -163,7 +163,7 @@ namespace Arsenalcn.CasinoSys.DataAccess
 
         public static DataTable GetGamblerProfitView(Guid leagueGuid)
         {
-            string sql = @"SELECT BetInfo.*, RPInfo.RPBet, RPInfo.RPBonus FROM
+            var sql = @"SELECT BetInfo.*, RPInfo.RPBet, RPInfo.RPBonus FROM
                                     (SELECT UserID, UserName, 
                                                 COUNT(CASE IsWin WHEN 1 THEN 1 ELSE NULL END) AS Win, 
                                                 COUNT(CASE IsWin WHEN 0 THEN 0 ELSE NULL END) AS Lose, 
@@ -183,7 +183,7 @@ namespace Arsenalcn.CasinoSys.DataAccess
                                 ON BetInfo.UserID = RPInfo.UserID AND BetInfo.UserName = RPInfo.UserName
                                 ORDER BY BetInfo.TotalBet DESC";
 
-            DataSet ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@leagueGuid", leagueGuid));
+            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@leagueGuid", leagueGuid));
 
             if (ds.Tables[0].Rows.Count == 0)
                 return null;
@@ -193,38 +193,38 @@ namespace Arsenalcn.CasinoSys.DataAccess
 
         public static float GetGamblerTotalBetByUserID(int userid)
         {
-            string sql = @"SELECT SUM(ISNULL(Bet, 0)) AS TotalBet FROM dbo.vw_AcnCasino_BetInfo 
+            var sql = @"SELECT SUM(ISNULL(Bet, 0)) AS TotalBet FROM dbo.vw_AcnCasino_BetInfo 
                                   WHERE (Earning IS NOT NULL) AND (Bet IS NOT NULL) AND (UserID = @userid)";
 
-            Object obj = SqlHelper.ExecuteScalar(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@userid", userid));
+            var obj = SqlHelper.ExecuteScalar(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@userid", userid));
 
             return obj.Equals(DBNull.Value) ? 0f : Convert.ToSingle(obj);
         }
 
         public static float GetGamblerTotalBetByUserID(int userid, Guid leagueGuid)
         {
-            string sql = @"SELECT SUM(ISNULL(Bet, 0)) AS TotalBet FROM dbo.vw_AcnCasino_BetInfo 
+            var sql = @"SELECT SUM(ISNULL(Bet, 0)) AS TotalBet FROM dbo.vw_AcnCasino_BetInfo 
                                   WHERE (Earning IS NOT NULL) AND (Bet IS NOT NULL) AND (UserID = @userid) AND (LeagueGuid = @leagueGuid)";
 
-            Object obj = SqlHelper.ExecuteScalar(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@userid", userid), new SqlParameter("@leagueGuid", leagueGuid));
+            var obj = SqlHelper.ExecuteScalar(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@userid", userid), new SqlParameter("@leagueGuid", leagueGuid));
 
             return obj.Equals(DBNull.Value) ? 0f : Convert.ToSingle(obj);
         }
 
         public static int GetGamblerRPByUserID(int userid)
         {
-            string sql = @"SELECT COUNT(*) AS RPBonus FROM dbo.AcnCasino_Bet WHERE Earning = 0 AND EarningDesc = 'RP+1' AND IsWin = 1 AND UserID = @userid";
+            var sql = @"SELECT COUNT(*) AS RPBonus FROM dbo.AcnCasino_Bet WHERE Earning = 0 AND EarningDesc = 'RP+1' AND IsWin = 1 AND UserID = @userid";
 
-            Object obj = SqlHelper.ExecuteScalar(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@userid", userid));
+            var obj = SqlHelper.ExecuteScalar(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@userid", userid));
 
             return obj.Equals(DBNull.Value) ? 0 : Convert.ToInt32(obj);
         }
 
         public static int GetGamblerRPByUserID(int userid, Guid leagueGuid)
         {
-            string sql = @"SELECT COUNT(*) AS RPBonus FROM dbo.vw_AcnCasino_BetInfo WHERE Earning = 0 AND EarningDesc = 'RP+1' AND IsWin = 1 AND UserID = @userid AND LeagueGuid = @guid";
+            var sql = @"SELECT COUNT(*) AS RPBonus FROM dbo.vw_AcnCasino_BetInfo WHERE Earning = 0 AND EarningDesc = 'RP+1' AND IsWin = 1 AND UserID = @userid AND LeagueGuid = @guid";
 
-            Object obj = SqlHelper.ExecuteScalar(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@userid", userid), new SqlParameter("@guid", leagueGuid));
+            var obj = SqlHelper.ExecuteScalar(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@userid", userid), new SqlParameter("@guid", leagueGuid));
 
             return obj.Equals(DBNull.Value) ? 0 : Convert.ToInt32(obj);
         }

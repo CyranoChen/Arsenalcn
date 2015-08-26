@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Web.UI;
 using System.Web.UI.WebControls;
 
 using Arsenalcn.ClubSys.Service;
@@ -16,7 +14,7 @@ namespace Arsenalcn.ClubSys.Web
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            Club club = ClubLogic.GetClubInfo(ClubID);
+            var club = ClubLogic.GetClubInfo(ClubID);
 
             if (club != null && this.Title.IndexOf("{0}") >= 0)
                 this.Title = string.Format(this.Title, club.FullName);
@@ -38,7 +36,7 @@ namespace Arsenalcn.ClubSys.Web
             if (!IsPostBack)
             {
                 #region Bind ddlGroup
-                List<Club> list = ClubLogic.GetActiveClubs();
+                var list = ClubLogic.GetActiveClubs();
                 if (list != null && list.Count > 0)
                 {
                     ddlClub.DataSource = list;
@@ -46,7 +44,7 @@ namespace Arsenalcn.ClubSys.Web
                     ddlClub.DataValueField = "ID";
                     ddlClub.DataBind();
 
-                    ListItem item = new ListItem("--请选择球会--", string.Empty);
+                    var item = new ListItem("--请选择球会--", string.Empty);
                     ddlClub.Items.Insert(0, item);
                 }
                 else
@@ -64,7 +62,7 @@ namespace Arsenalcn.ClubSys.Web
                 }
                 else
                 {
-                    UserClub userClub = ClubLogic.GetActiveUserClub(this.userid, ClubID);
+                    var userClub = ClubLogic.GetActiveUserClub(this.userid, ClubID);
 
                     if (userClub != null && userClub.Responsibility.HasValue)
                     {
@@ -117,7 +115,7 @@ namespace Arsenalcn.ClubSys.Web
         {
             get
             {
-                List<Club> list = ClubLogic.GetUserManagedClubs(this.userid);
+                var list = ClubLogic.GetUserManagedClubs(this.userid);
 
                 if (list != null && list.Count > 0)
                 {
@@ -134,7 +132,7 @@ namespace Arsenalcn.ClubSys.Web
 
         private void BindData()
         {
-            List<UserClub> clubMemberList = ClubLogic.GetClubMembers(ClubID);
+            var clubMemberList = ClubLogic.GetClubMembers(ClubID);
 
             gvClubMemberList.DataSource = clubMemberList;
             gvClubMemberList.DataBind();
@@ -144,15 +142,15 @@ namespace Arsenalcn.ClubSys.Web
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                UserClub uc = e.Row.DataItem as UserClub;
+                var uc = e.Row.DataItem as UserClub;
                 if (uc != null)
                 {
-                    UserInfo userInfo = AdminUsers.GetUserInfo(uc.Userid.Value);
+                    var userInfo = AdminUsers.GetUserInfo(uc.Userid.Value);
                     if (userInfo != null)
                     {
                         #region set avatar
 
-                        Image imgAvatar = e.Row.FindControl("imgAvatar") as Image;
+                        var imgAvatar = e.Row.FindControl("imgAvatar") as Image;
 
                         if (imgAvatar != null)
                         {
@@ -173,7 +171,7 @@ namespace Arsenalcn.ClubSys.Web
                             //    imgAvatar.ImageUrl = string.Format("/{0}", userInfo.Avatar);
                             //}
 
-                            string myAvatar = Avatars.GetAvatarUrl(uc.Userid.Value, AvatarSize.Small);
+                            var myAvatar = Avatars.GetAvatarUrl(uc.Userid.Value, AvatarSize.Small);
                             imgAvatar.ImageUrl = myAvatar;
 
                             imgAvatar.AlternateText = userInfo.Username.Trim();
@@ -183,16 +181,16 @@ namespace Arsenalcn.ClubSys.Web
 
                         #region set User Info & Responsibility
 
-                        Literal ltrlUserInfoResponsibility = e.Row.FindControl("ltrlUserInfoResponsibility") as Literal;
-                        string _strUserInfo = string.Format("<a href=\"MyPlayerProfile.aspx?userID={0}\" target=\"_blank\">{1}</a>",
-                            uc.Userid.ToString(), uc.UserName.Trim());
+                        var ltrlUserInfoResponsibility = e.Row.FindControl("ltrlUserInfoResponsibility") as Literal;
+                        var _strUserInfo =
+                            $"<a href=\"MyPlayerProfile.aspx?userID={uc.Userid.ToString()}\" target=\"_blank\">{uc.UserName.Trim()}</a>";
 
                         if (ltrlUserInfoResponsibility != null)
                         {
                             if (uc.Responsibility.HasValue && !uc.Responsibility.Value.Equals((int)Responsibility.Member))
                             {
-                                ltrlUserInfoResponsibility.Text = string.Format("{0}<em>{1}</em>",
-                                    _strUserInfo, ClubLogic.TranslateResponsibility(uc.Responsibility.Value));
+                                ltrlUserInfoResponsibility.Text =
+                                    $"{_strUserInfo}<em>{ClubLogic.TranslateResponsibility(uc.Responsibility.Value)}</em>";
                             }
                             else
                             {
@@ -204,20 +202,21 @@ namespace Arsenalcn.ClubSys.Web
 
                         #region set user group
 
-                        Literal ltrlUserGroup = e.Row.FindControl("ltrlUserGroup") as Literal;
+                        var ltrlUserGroup = e.Row.FindControl("ltrlUserGroup") as Literal;
                         if (ltrlUserGroup != null)
                         {
-                            UserGroupInfo groupInfo = UserGroups.GetUserGroupInfo(userInfo.Groupid);
+                            var groupInfo = UserGroups.GetUserGroupInfo(userInfo.Groupid);
 
                             if (groupInfo != null)
-                                ltrlUserGroup.Text = string.Format("<span title=\"积分:{0}\">{1}</span>", userInfo.Credits.ToString("N0"), groupInfo.Grouptitle);
+                                ltrlUserGroup.Text =
+                                    $"<span title=\"积分:{userInfo.Credits.ToString("N0")}\">{groupInfo.Grouptitle}</span>";
                         }
 
                         #endregion
 
                         #region set user fortune
 
-                        Literal ltrlUserFortune = e.Row.FindControl("ltrlUserFortune") as Literal;
+                        var ltrlUserFortune = e.Row.FindControl("ltrlUserFortune") as Literal;
                         if (ltrlUserFortune != null)
                         {
                             ltrlUserFortune.Text = userInfo.Extcredits2.ToString("N2");
@@ -227,7 +226,7 @@ namespace Arsenalcn.ClubSys.Web
 
                         #region set user posts
 
-                        Literal ltrlUserPosts = e.Row.FindControl("ltrlUserPosts") as Literal;
+                        var ltrlUserPosts = e.Row.FindControl("ltrlUserPosts") as Literal;
                         if (ltrlUserPosts != null)
                         {
                             ltrlUserPosts.Text = userInfo.Posts.ToString("N0");
@@ -237,25 +236,25 @@ namespace Arsenalcn.ClubSys.Web
 
                         #region set user days
 
-                        Literal ltrlDays = e.Row.FindControl("ltrlDays") as Literal;
-                        int _days = (int)((DateTime.Now - uc.JoinClubDate.Value).TotalDays);
+                        var ltrlDays = e.Row.FindControl("ltrlDays") as Literal;
+                        var _days = (int)((DateTime.Now - uc.JoinClubDate.Value).TotalDays);
 
                         if (ltrlDays != null)
                         {
-                            ltrlDays.Text = string.Format("<em title=\"自{0}入会以来\">{1}天</em>",
-                                uc.FromDate.ToString("yyyy-MM-dd"), _days.ToString());
+                            ltrlDays.Text =
+                                $"<em title=\"自{uc.FromDate.ToString("yyyy-MM-dd")}入会以来\">{_days.ToString()}天</em>";
                         }
 
                         #endregion
 
                         #region contribute value
 
-                        Literal ltrlContributeValue = e.Row.FindControl("ltrlContributeValue") as Literal;
+                        var ltrlContributeValue = e.Row.FindControl("ltrlContributeValue") as Literal;
 
                         try
                         {
-                            ltrlContributeValue.Text = string.Format("<em>{0}</em>",
-                                FortuneContributeAlgorithm.CalcContributeFortune(userInfo, true).ToString("N2"));
+                            ltrlContributeValue.Text =
+                                $"<em>{FortuneContributeAlgorithm.CalcContributeFortune(userInfo, true).ToString("N2")}</em>";
                         }
                         catch { }
 
@@ -268,7 +267,7 @@ namespace Arsenalcn.ClubSys.Web
                         //    ltrlButtonDisplay.Text = "none";
                         //}
 
-                        LinkButton btnKick = e.Row.FindControl("btnKick") as LinkButton;
+                        var btnKick = e.Row.FindControl("btnKick") as LinkButton;
 
                         if (btnKick != null && ClubID > 0)
                         {
@@ -279,12 +278,13 @@ namespace Arsenalcn.ClubSys.Web
                             { btnKick.Visible = false; }
                         }
 
-                        HyperLink hlTransfer = e.Row.FindControl("hlTransfer") as HyperLink;
+                        var hlTransfer = e.Row.FindControl("hlTransfer") as HyperLink;
 
                         if (hlTransfer != null)
                         {
                             if (uc.Userid.Value != this.userid)
-                                hlTransfer.NavigateUrl = string.Format("ManageExtcredit.aspx?clubID={0}&ToUID={1}", ClubID.ToString(), uc.Userid.Value.ToString());
+                                hlTransfer.NavigateUrl =
+                                    $"ManageExtcredit.aspx?clubID={ClubID.ToString()}&ToUID={uc.Userid.Value.ToString()}";
                             else
                                 hlTransfer.Visible = false;
                         }
@@ -299,10 +299,10 @@ namespace Arsenalcn.ClubSys.Web
             {
                 if (e.CommandName == "KickUser")
                 {
-                    int _kickUserID = Convert.ToInt32(e.CommandArgument.ToString());
+                    var _kickUserID = Convert.ToInt32(e.CommandArgument.ToString());
 
-                    Club club = ClubLogic.GetClubInfo(ClubID);
-                    UserClub userClub = ClubLogic.GetActiveUserClub(this.userid, ClubID);
+                    var club = ClubLogic.GetClubInfo(ClubID);
+                    var userClub = ClubLogic.GetActiveUserClub(this.userid, ClubID);
 
                     if (userClub != null && club != null)
                     {
@@ -335,7 +335,8 @@ namespace Arsenalcn.ClubSys.Web
             }
             catch (Exception ex)
             {
-                this.ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}');", ex.Message.ToString()), true);
+                this.ClientScript.RegisterClientScriptBlock(typeof(string), "failed",
+                    $"alert('{ex.Message.ToString()}');", true);
             }
         }
 

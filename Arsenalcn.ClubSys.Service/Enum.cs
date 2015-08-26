@@ -1,9 +1,4 @@
-﻿using System;
-using System.Data;
-using System.Configuration;
-using System.Web;
-
-namespace Arsenalcn.ClubSys.Service
+﻿namespace Arsenalcn.ClubSys.Service
 {
     public enum Responsibility
     {

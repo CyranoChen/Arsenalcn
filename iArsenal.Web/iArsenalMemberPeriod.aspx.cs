@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web.UI.WebControls;
 
 using iArsenal.Service;
@@ -27,8 +25,8 @@ namespace iArsenal.Web
             {
                 var list = repo.Query<MemberPeriod>(x => x.MemberID == this.MID).FindAll(x =>
                 {
-                    Boolean returnValue = true;
-                    string tmpString = string.Empty;
+                    var returnValue = true;
+                    var tmpString = string.Empty;
 
                     if (ViewState["MemberCardNo"] != null)
                     {
@@ -56,10 +54,10 @@ namespace iArsenal.Web
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                MemberPeriod mp = e.Row.DataItem as MemberPeriod;
+                var mp = e.Row.DataItem as MemberPeriod;
 
-                HyperLink btnUpgrade = e.Row.FindControl("btnUpgrade") as HyperLink;
-                HyperLink btnRenew = e.Row.FindControl("btnRenew") as HyperLink;
+                var btnUpgrade = e.Row.FindControl("btnUpgrade") as HyperLink;
+                var btnRenew = e.Row.FindControl("btnRenew") as HyperLink;
 
                 if (btnUpgrade != null)
                 {

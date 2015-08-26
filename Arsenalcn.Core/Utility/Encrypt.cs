@@ -6,7 +6,7 @@ namespace Arsenalcn.Core.Utility
 {
     public static class Encrypt
     {
-        public static string getMd5Hash(string input)
+        public static string GetMd5Hash(string input)
         {
             // Create a new instance of the MD5CryptoServiceProvider object.
             MD5 md5Hasher = MD5.Create();

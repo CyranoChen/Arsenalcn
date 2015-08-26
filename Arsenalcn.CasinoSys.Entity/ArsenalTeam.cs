@@ -38,8 +38,8 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public static List<Team> GetTeams()
         {
-            DataTable dt = DataAccess.Team.GetTeams();
-            List<Team> list = new List<Team>();
+            var dt = DataAccess.Team.GetTeams();
+            var list = new List<Team>();
 
             if (dt != null)
             {

@@ -16,7 +16,7 @@ namespace Arsenalcn.ClubSys.Service
     {
         public static bool CheckUserNumActiveCondition(int userid, int userNumID)
         {
-            Card un = PlayerStrip.GetUserNumber(userNumID);
+            var un = PlayerStrip.GetUserNumber(userNumID);
 
             if (un == null)
                 return false;
@@ -27,7 +27,7 @@ namespace Arsenalcn.ClubSys.Service
             if (un.UserID != userid)
                 return false;
 
-            Gamer player = PlayerStrip.GetPlayerInfo(userid);
+            var player = PlayerStrip.GetPlayerInfo(userid);
 
             if (player == null)
                 return false;
@@ -42,21 +42,21 @@ namespace Arsenalcn.ClubSys.Service
 
         public static int GetClubMemberEquipmentCount(int clubID)
         {
-            int totalCount = 0;
+            var totalCount = 0;
 
-            List<UserClub> ucs = ClubLogic.GetClubMembers(clubID);
+            var ucs = ClubLogic.GetClubMembers(clubID);
 
-            foreach (UserClub uc in ucs)
+            foreach (var uc in ucs)
             {
-                Gamer player = PlayerStrip.GetPlayerInfo(uc.Userid.Value);
-                List<Card> numbers = PlayerStrip.GetMyNumbers(uc.Userid.Value);
+                var player = PlayerStrip.GetPlayerInfo(uc.Userid.Value);
+                var numbers = PlayerStrip.GetMyNumbers(uc.Userid.Value);
 
                 if (player != null)
                     totalCount += (player.Shirt + player.Shorts + player.Sock);
 
                 totalCount += numbers.Count;
 
-                foreach (Card number in numbers)
+                foreach (var number in numbers)
                 {
                     if (number.IsActive)
                         totalCount += 15;
@@ -69,14 +69,14 @@ namespace Arsenalcn.ClubSys.Service
 
         public static int GetClubMemberCardCount(int clubID)
         {
-            int totalCount = 0;
+            var totalCount = 0;
 
-            List<UserClub> ucs = ClubLogic.GetClubMembers(clubID);
+            var ucs = ClubLogic.GetClubMembers(clubID);
 
-            foreach (UserClub uc in ucs)
+            foreach (var uc in ucs)
             {
-                Gamer player = PlayerStrip.GetPlayerInfo(uc.Userid.Value);
-                List<Card> numbers = PlayerStrip.GetMyNumbers(uc.Userid.Value);
+                var player = PlayerStrip.GetPlayerInfo(uc.Userid.Value);
+                var numbers = PlayerStrip.GetMyNumbers(uc.Userid.Value);
 
                 if (player != null)
                     totalCount += numbers.Count;
@@ -87,13 +87,13 @@ namespace Arsenalcn.ClubSys.Service
 
         public static int GetClubMemberVideoCount(int clubID)
         {
-            int totalCount = 0;
+            var totalCount = 0;
 
-            List<UserClub> ucs = ClubLogic.GetClubMembers(clubID);
+            var ucs = ClubLogic.GetClubMembers(clubID);
 
-            foreach (UserClub uc in ucs)
+            foreach (var uc in ucs)
             {
-                Gamer player = PlayerStrip.GetPlayerInfo(uc.Userid.Value);
+                var player = PlayerStrip.GetPlayerInfo(uc.Userid.Value);
                 //DataTable dt = UserVideo.GetUserVideo(uc.Userid.Value);
 
                 if (player != null)
@@ -105,11 +105,11 @@ namespace Arsenalcn.ClubSys.Service
 
         public static float CalcPlayerContributionBonusRate(int userID)
         {
-            Gamer player = GetPlayerInfo(userID);
+            var player = GetPlayerInfo(userID);
 
             if (player != null)
             {
-                int lv = ConfigGlobal.PlayerMaxLv;
+                var lv = ConfigGlobal.PlayerMaxLv;
 
                 if (lv > player.Shirt)
                     lv = player.Shirt;
@@ -130,23 +130,23 @@ namespace Arsenalcn.ClubSys.Service
 
         public static string CalcFlashRate(int userID)
         {
-            ShortUserInfo info = AdminUsers.GetShortUserInfo(userID);
+            var info = AdminUsers.GetShortUserInfo(userID);
 
-            double result = Math.Log10((double)info.Extcredits2);
+            var result = Math.Log10((double)info.Extcredits2);
 
-            decimal deci = decimal.Round(decimal.Parse(result.ToString()), 1);
+            var deci = decimal.Round(decimal.Parse(result.ToString()), 1);
 
             return deci.ToString();
         }
 
         public static int GetUserBingoPlayCountThisHour(int userID)
         {
-            string sql = "SELECT COUNT(*) FROM dbo.AcnClub_LogBingo WHERE UserID = @userID AND ActionDate BETWEEN @fromDate AND @toDate";
-            int count = 0;
+            var sql = "SELECT COUNT(*) FROM dbo.AcnClub_LogBingo WHERE UserID = @userID AND ActionDate BETWEEN @fromDate AND @toDate";
+            var count = 0;
 
-            using (SqlConnection con = SQLConn.GetConnection())
+            using (var con = SQLConn.GetConnection())
             {
-                SqlCommand com = new SqlCommand(sql, con);
+                var com = new SqlCommand(sql, con);
 
                 com.Parameters.Add(new SqlParameter("@userID", userID));
                 com.Parameters.Add(new SqlParameter("@fromDate", DateTime.Now.ToString("yyyy-MM-dd HH:00:00")));
@@ -164,19 +164,19 @@ namespace Arsenalcn.ClubSys.Service
 
         public static List<Card> GetMyNumbers(int userId)
         {
-            List<Card> list = new List<Card>();
+            var list = new List<Card>();
 
-            string sql = "SELECT * FROM dbo.AcnClub_Card WHERE UserID = @userID ORDER BY GainDate DESC";
+            var sql = "SELECT * FROM dbo.AcnClub_Card WHERE UserID = @userID ORDER BY GainDate DESC";
 
-            using (SqlConnection con = SQLConn.GetConnection())
+            using (var con = SQLConn.GetConnection())
             {
-                SqlCommand com = new SqlCommand(sql, con);
+                var com = new SqlCommand(sql, con);
                 com.Parameters.Add(new SqlParameter("@userID", userId));
 
-                SqlDataAdapter sda = new SqlDataAdapter(com);
+                var sda = new SqlDataAdapter(com);
                 con.Open();
 
-                DataTable dt = new DataTable();
+                var dt = new DataTable();
 
                 sda.Fill(dt);
 
@@ -184,7 +184,7 @@ namespace Arsenalcn.ClubSys.Service
 
                 foreach (DataRow dr in dt.Rows)
                 {
-                    Card c = new Card(dr);
+                    var c = new Card(dr);
 
                     list.Add(c);
                 }
@@ -195,19 +195,19 @@ namespace Arsenalcn.ClubSys.Service
 
         public static List<Card> GetMyCards(int userId)
         {
-            List<Card> list = new List<Card>();
+            var list = new List<Card>();
 
-            string sql = "SELECT * FROM dbo.AcnClub_Card WHERE UserID = @userID ORDER BY GainDate DESC";
+            var sql = "SELECT * FROM dbo.AcnClub_Card WHERE UserID = @userID ORDER BY GainDate DESC";
 
-            using (SqlConnection con = SQLConn.GetConnection())
+            using (var con = SQLConn.GetConnection())
             {
-                SqlCommand com = new SqlCommand(sql, con);
+                var com = new SqlCommand(sql, con);
                 com.Parameters.Add(new SqlParameter("@userID", userId));
 
-                SqlDataAdapter sda = new SqlDataAdapter(com);
+                var sda = new SqlDataAdapter(com);
                 con.Open();
 
-                DataTable dt = new DataTable();
+                var dt = new DataTable();
 
                 sda.Fill(dt);
 
@@ -215,7 +215,7 @@ namespace Arsenalcn.ClubSys.Service
 
                 foreach (DataRow dr in dt.Rows)
                 {
-                    Card un = new Card(dr);
+                    var un = new Card(dr);
 
                     list.Add(un);
                 }
@@ -226,18 +226,18 @@ namespace Arsenalcn.ClubSys.Service
 
         public static List<BingoHistory> GetAllBingoHistory()
         {
-            List<BingoHistory> list = new List<BingoHistory>();
+            var list = new List<BingoHistory>();
 
-            string sql = "SELECT * FROM dbo.AcnClub_LogBingo WHERE Result IS NOT NULL ORDER BY ActionDate DESC";
+            var sql = "SELECT * FROM dbo.AcnClub_LogBingo WHERE Result IS NOT NULL ORDER BY ActionDate DESC";
 
-            using (SqlConnection con = SQLConn.GetConnection())
+            using (var con = SQLConn.GetConnection())
             {
-                SqlCommand com = new SqlCommand(sql, con);
+                var com = new SqlCommand(sql, con);
 
-                SqlDataAdapter sda = new SqlDataAdapter(com);
+                var sda = new SqlDataAdapter(com);
                 con.Open();
 
-                DataTable dt = new DataTable();
+                var dt = new DataTable();
 
                 sda.Fill(dt);
 
@@ -245,7 +245,7 @@ namespace Arsenalcn.ClubSys.Service
 
                 foreach (DataRow dr in dt.Rows)
                 {
-                    BingoHistory bh = new BingoHistory(dr);
+                    var bh = new BingoHistory(dr);
 
                     list.Add(bh);
                 }
@@ -256,19 +256,19 @@ namespace Arsenalcn.ClubSys.Service
 
         public static List<BingoHistory> GetUserBingoHistory(int userID)
         {
-            List<BingoHistory> list = new List<BingoHistory>();
+            var list = new List<BingoHistory>();
 
-            string sql = "SELECT * FROM dbo.AcnClub_LogBingo WHERE UserID = @userID ORDER BY ActionDate DESC";
+            var sql = "SELECT * FROM dbo.AcnClub_LogBingo WHERE UserID = @userID ORDER BY ActionDate DESC";
 
-            using (SqlConnection con = SQLConn.GetConnection())
+            using (var con = SQLConn.GetConnection())
             {
-                SqlCommand com = new SqlCommand(sql, con);
+                var com = new SqlCommand(sql, con);
                 com.Parameters.Add(new SqlParameter("@userID", userID));
 
-                SqlDataAdapter sda = new SqlDataAdapter(com);
+                var sda = new SqlDataAdapter(com);
                 con.Open();
 
-                DataTable dt = new DataTable();
+                var dt = new DataTable();
 
                 sda.Fill(dt);
 
@@ -276,7 +276,7 @@ namespace Arsenalcn.ClubSys.Service
 
                 foreach (DataRow dr in dt.Rows)
                 {
-                    BingoHistory bh = new BingoHistory(dr);
+                    var bh = new BingoHistory(dr);
 
                     list.Add(bh);
                 }
@@ -287,19 +287,19 @@ namespace Arsenalcn.ClubSys.Service
 
         public static List<BingoHistory> GetClubBingoHistory(int clubID)
         {
-            List<BingoHistory> list = new List<BingoHistory>();
+            var list = new List<BingoHistory>();
 
-            string sql = "SELECT * FROM AcnClub_LogBingo WHERE ClubID = @clubID AND Result IS NOT NULL ORDER BY ActionDate DESC";
+            var sql = "SELECT * FROM AcnClub_LogBingo WHERE ClubID = @clubID AND Result IS NOT NULL ORDER BY ActionDate DESC";
 
-            using (SqlConnection con = SQLConn.GetConnection())
+            using (var con = SQLConn.GetConnection())
             {
-                SqlCommand com = new SqlCommand(sql, con);
+                var com = new SqlCommand(sql, con);
                 com.Parameters.Add(new SqlParameter("@clubID", clubID));
 
-                SqlDataAdapter sda = new SqlDataAdapter(com);
+                var sda = new SqlDataAdapter(com);
                 con.Open();
 
-                DataTable dt = new DataTable();
+                var dt = new DataTable();
 
                 sda.Fill(dt);
 
@@ -307,7 +307,7 @@ namespace Arsenalcn.ClubSys.Service
 
                 foreach (DataRow dr in dt.Rows)
                 {
-                    BingoHistory bh = new BingoHistory(dr);
+                    var bh = new BingoHistory(dr);
 
                     list.Add(bh);
                 }
@@ -318,11 +318,11 @@ namespace Arsenalcn.ClubSys.Service
 
         public static int InsertBingoStart(int userID, string userName, int clubID)
         {
-            string sql = "INSERT INTO AcnClub_LogBingo VALUES (@userID, @userName, @clubID, getdate(), null, null); SELECT scope_identity()";
+            var sql = "INSERT INTO AcnClub_LogBingo VALUES (@userID, @userName, @clubID, getdate(), null, null); SELECT scope_identity()";
 
-            using (SqlConnection con = SQLConn.GetConnection())
+            using (var con = SQLConn.GetConnection())
             {
-                SqlCommand com = new SqlCommand(sql, con);
+                var com = new SqlCommand(sql, con);
 
                 com.Parameters.Add(new SqlParameter("@userID", userID));
                 com.Parameters.Add(new SqlParameter("@userName", userName));
@@ -330,7 +330,7 @@ namespace Arsenalcn.ClubSys.Service
 
                 con.Open();
 
-                Decimal id = (Decimal)com.ExecuteScalar();
+                var id = (Decimal)com.ExecuteScalar();
 
                 //con.Close();
 
@@ -340,11 +340,11 @@ namespace Arsenalcn.ClubSys.Service
 
         public static void UpdateBingoResultLog(int userID, BingoResult result)
         {
-            string sql = "UPDATE AcnClub_LogBingo SET Result = @result, ResultDetail = @resultDetail WHERE [ID] = (SELECT TOP 1 [ID] FROM AcnClub_LogBingo WHERE UserID = @userID AND Result is NULL ORDER BY ActionDate DESC)";
+            var sql = "UPDATE AcnClub_LogBingo SET Result = @result, ResultDetail = @resultDetail WHERE [ID] = (SELECT TOP 1 [ID] FROM AcnClub_LogBingo WHERE UserID = @userID AND Result is NULL ORDER BY ActionDate DESC)";
 
-            using (SqlConnection con = SQLConn.GetConnection())
+            using (var con = SQLConn.GetConnection())
             {
-                SqlCommand com = new SqlCommand(sql, con);
+                var com = new SqlCommand(sql, con);
 
                 object tempValue = null;
 
@@ -370,17 +370,17 @@ namespace Arsenalcn.ClubSys.Service
         {
             if (result.Result != BingoResultType.Null)
             {
-                string sql = string.Empty;
+                var sql = string.Empty;
                 if ((resultType == "card") && (result.Result == BingoResultType.Card) && (result.ResultDetail.Length == 36))
                 {
                     try
                     {
-                        string guid = result.ResultDetail;
+                        var guid = result.ResultDetail;
                         sql = "INSERT INTO dbo.AcnClub_Card (UserID, UserName, IsActive, IsInUse, GainDate, ActiveDate, ArsenalPlayerGuid) VALUES (@userID, @userName, 0, 0, getdate(), null, @guid)";
 
-                        using (SqlConnection con = SQLConn.GetConnection())
+                        using (var con = SQLConn.GetConnection())
                         {
-                            SqlCommand com = new SqlCommand(sql, con);
+                            var com = new SqlCommand(sql, con);
 
                             com.Parameters.Add(new SqlParameter("@userID", userID));
                             com.Parameters.Add(new SqlParameter("@userName", userName));
@@ -409,9 +409,9 @@ namespace Arsenalcn.ClubSys.Service
                     {
                         sql = "INSERT INTO dbo.AcnClub_Card (UserID, UserName, IsActive, IsInUse, GainDate, ActiveDate, ArsenalPlayerGuid) VALUES (@userID, @userName, 0, 0, getdate(), null, null)";
 
-                        using (SqlConnection con = SQLConn.GetConnection())
+                        using (var con = SQLConn.GetConnection())
                         {
-                            SqlCommand com = new SqlCommand(sql, con);
+                            var com = new SqlCommand(sql, con);
 
                             com.Parameters.Add(new SqlParameter("@userID", userID));
                             com.Parameters.Add(new SqlParameter("@userName", userName));
@@ -436,10 +436,10 @@ namespace Arsenalcn.ClubSys.Service
                 {
                     try
                     {
-                        float bonusCash = Convert.ToSingle(result.ResultDetail);
-                        string finalResult = string.Empty;
+                        var bonusCash = Convert.ToSingle(result.ResultDetail);
+                        var finalResult = string.Empty;
 
-                        UserInfo info = AdminUsers.GetUserInfo(userID);
+                        var info = AdminUsers.GetUserInfo(userID);
                         info.Extcredits2 += bonusCash;
 
                         if (AdminUsers.UpdateUserAllInfo(info))
@@ -465,15 +465,15 @@ namespace Arsenalcn.ClubSys.Service
                     try
                     {
                         // Strip Bonus
-                        int shirt = 0;
-                        int shorts = 0;
-                        int sock = 0;
-                        float bonusCash = 0f;
-                        float bonusRate = ConfigGlobal.BingoBonusRate;
+                        var shirt = 0;
+                        var shorts = 0;
+                        var sock = 0;
+                        var bonusCash = 0f;
+                        var bonusRate = ConfigGlobal.BingoBonusRate;
 
-                        string finalResult = string.Empty;
+                        var finalResult = string.Empty;
 
-                        Gamer player = GetPlayerInfo(userID);
+                        var player = GetPlayerInfo(userID);
 
                         if ((result.Result == BingoResultType.Strip) || (result.Result == BingoResultType.Both))
                         {
@@ -502,9 +502,9 @@ namespace Arsenalcn.ClubSys.Service
 
                                 sql = "UPDATE dbo.AcnClub_Player SET Shirt = @shirt, Shorts = @shorts, Sock = @sock WHERE UserID = @userID AND UserName = @userName";
                             }
-                            using (SqlConnection con = SQLConn.GetConnection())
+                            using (var con = SQLConn.GetConnection())
                             {
-                                SqlCommand com = new SqlCommand(sql, con);
+                                var com = new SqlCommand(sql, con);
 
                                 com.Parameters.Add(new SqlParameter("@userID", userID));
                                 com.Parameters.Add(new SqlParameter("@userName", userName));
@@ -545,7 +545,7 @@ namespace Arsenalcn.ClubSys.Service
 
                             bonusCash += Convert.ToSingle(ConfigGlobal.BingoGetCost) + Convert.ToSingle(ConfigGlobal.BingoCost);
 
-                            UserInfo info = AdminUsers.GetUserInfo(userID);
+                            var info = AdminUsers.GetUserInfo(userID);
                             info.Extcredits2 += bonusCash;
                             if (AdminUsers.UpdateUserAllInfo(info))
                             {
@@ -572,13 +572,13 @@ namespace Arsenalcn.ClubSys.Service
 
         public static int GetClubRemainingEquipment(int clubID)
         {
-            string sql = "SELECT COUNT(*) FROM AcnClub_LogBingo WHERE ClubID = @clubID AND RESULT IS NOT NULL AND ActionDate BETWEEN @fromDate AND @toDate";
+            var sql = "SELECT COUNT(*) FROM AcnClub_LogBingo WHERE ClubID = @clubID AND RESULT IS NOT NULL AND ActionDate BETWEEN @fromDate AND @toDate";
 
-            int count = 0;
+            var count = 0;
 
-            using (SqlConnection con = SQLConn.GetConnection())
+            using (var con = SQLConn.GetConnection())
             {
-                SqlCommand com = new SqlCommand(sql, con);
+                var com = new SqlCommand(sql, con);
                 com.Parameters.Add(new SqlParameter("@clubID", clubID));
                 com.Parameters.Add(new SqlParameter("@fromDate", DateTime.Today));
                 com.Parameters.Add(new SqlParameter("@toDate", DateTime.Today.AddDays(1)));
@@ -598,13 +598,13 @@ namespace Arsenalcn.ClubSys.Service
 
         public static int GetUserBingoGainCount(int userID)
         {
-            string sql = "SELECT COUNT(*) FROM AcnClub_LogBingo WHERE UserID = @userID AND Result IS NOT NULL";
+            var sql = "SELECT COUNT(*) FROM AcnClub_LogBingo WHERE UserID = @userID AND Result IS NOT NULL";
 
-            int count = 0;
+            var count = 0;
 
-            using (SqlConnection con = SQLConn.GetConnection())
+            using (var con = SQLConn.GetConnection())
             {
-                SqlCommand com = new SqlCommand(sql, con);
+                var com = new SqlCommand(sql, con);
                 com.Parameters.Add(new SqlParameter("@userID", userID));
 
                 con.Open();
@@ -619,13 +619,13 @@ namespace Arsenalcn.ClubSys.Service
 
         public static int GetUserBingoGainCountToday(int userID)
         {
-            string sql = "SELECT COUNT(*) FROM AcnClub_LogBingo WHERE UserID = @userID AND Result IS NOT NULL AND ActionDate BETWEEN @fromDate AND @toDate";
+            var sql = "SELECT COUNT(*) FROM AcnClub_LogBingo WHERE UserID = @userID AND Result IS NOT NULL AND ActionDate BETWEEN @fromDate AND @toDate";
 
-            int count = 0;
+            var count = 0;
 
-            using (SqlConnection con = SQLConn.GetConnection())
+            using (var con = SQLConn.GetConnection())
             {
-                SqlCommand com = new SqlCommand(sql, con);
+                var com = new SqlCommand(sql, con);
                 com.Parameters.Add(new SqlParameter("@userID", userID));
                 com.Parameters.Add(new SqlParameter("@fromDate", DateTime.Today));
                 com.Parameters.Add(new SqlParameter("@toDate", DateTime.Today.AddDays(1)));
@@ -642,13 +642,13 @@ namespace Arsenalcn.ClubSys.Service
 
         public static int GetUserBingoPlayCount(int userID)
         {
-            string sql = "SELECT COUNT(*) FROM AcnClub_LogBingo WHERE UserID = @userID";
+            var sql = "SELECT COUNT(*) FROM AcnClub_LogBingo WHERE UserID = @userID";
 
-            int count = 0;
+            var count = 0;
 
-            using (SqlConnection con = SQLConn.GetConnection())
+            using (var con = SQLConn.GetConnection())
             {
-                SqlCommand com = new SqlCommand(sql, con);
+                var com = new SqlCommand(sql, con);
                 com.Parameters.Add(new SqlParameter("@userID", userID));
 
                 con.Open();
@@ -663,13 +663,13 @@ namespace Arsenalcn.ClubSys.Service
 
         public static int GetUserBingoPlayCountToday(int userID)
         {
-            string sql = "SELECT COUNT(*) FROM AcnClub_LogBingo WHERE UserID = @userID AND ActionDate BETWEEN @fromDate AND @toDate";
+            var sql = "SELECT COUNT(*) FROM AcnClub_LogBingo WHERE UserID = @userID AND ActionDate BETWEEN @fromDate AND @toDate";
 
-            int count = 0;
+            var count = 0;
 
-            using (SqlConnection con = SQLConn.GetConnection())
+            using (var con = SQLConn.GetConnection())
             {
-                SqlCommand com = new SqlCommand(sql, con);
+                var com = new SqlCommand(sql, con);
                 com.Parameters.Add(new SqlParameter("@userID", userID));
                 com.Parameters.Add(new SqlParameter("@fromDate", DateTime.Today));
                 com.Parameters.Add(new SqlParameter("@toDate", DateTime.Today.AddDays(1)));
@@ -686,13 +686,13 @@ namespace Arsenalcn.ClubSys.Service
 
         public static int GetClubBingoPlayCount(int clubID)
         {
-            string sql = "SELECT COUNT(*) FROM AcnClub_LogBingo WHERE ClubID = @clubID";
+            var sql = "SELECT COUNT(*) FROM AcnClub_LogBingo WHERE ClubID = @clubID";
 
-            int count = 0;
+            var count = 0;
 
-            using (SqlConnection con = SQLConn.GetConnection())
+            using (var con = SQLConn.GetConnection())
             {
-                SqlCommand com = new SqlCommand(sql, con);
+                var com = new SqlCommand(sql, con);
                 com.Parameters.Add(new SqlParameter("@clubID", clubID));
 
                 con.Open();
@@ -707,13 +707,13 @@ namespace Arsenalcn.ClubSys.Service
 
         public static int GetClubBingoPlayCountToday(int clubID)
         {
-            string sql = "SELECT COUNT(*) FROM AcnClub_LogBingo WHERE ClubID = @clubID AND ActionDate BETWEEN @fromDate AND @toDate";
+            var sql = "SELECT COUNT(*) FROM AcnClub_LogBingo WHERE ClubID = @clubID AND ActionDate BETWEEN @fromDate AND @toDate";
 
-            int count = 0;
+            var count = 0;
 
-            using (SqlConnection con = SQLConn.GetConnection())
+            using (var con = SQLConn.GetConnection())
             {
-                SqlCommand com = new SqlCommand(sql, con);
+                var com = new SqlCommand(sql, con);
                 com.Parameters.Add(new SqlParameter("@clubID", clubID));
                 com.Parameters.Add(new SqlParameter("@fromDate", DateTime.Today));
                 com.Parameters.Add(new SqlParameter("@toDate", DateTime.Today.AddDays(1)));
@@ -730,7 +730,7 @@ namespace Arsenalcn.ClubSys.Service
 
         public static int GetClubEquipmentGainCount(int clubID, BingoResultType type, string resultDetail)
         {
-            string sql = string.Empty;
+            var sql = string.Empty;
 
             switch (type)
             {
@@ -755,9 +755,9 @@ namespace Arsenalcn.ClubSys.Service
 
             if (sql != string.Empty)
             {
-                using (SqlConnection con = SQLConn.GetConnection())
+                using (var con = SQLConn.GetConnection())
                 {
-                    SqlCommand com = new SqlCommand(sql, con);
+                    var com = new SqlCommand(sql, con);
 
                     com.Parameters.Add(new SqlParameter("@clubID", clubID));
                     com.Parameters.Add(new SqlParameter("@result", (int)type));
@@ -765,7 +765,7 @@ namespace Arsenalcn.ClubSys.Service
 
                     con.Open();
 
-                    int count = (int)com.ExecuteScalar();
+                    var count = (int)com.ExecuteScalar();
 
                     //con.Close();
 
@@ -778,19 +778,19 @@ namespace Arsenalcn.ClubSys.Service
 
         public static List<Gamer> GetPlayers()
         {
-            List<Gamer> list = new List<Gamer>();
+            var list = new List<Gamer>();
 
-            string sql = "SELECT * FROM AcnClub_Player ORDER BY ID DESC";
+            var sql = "SELECT * FROM AcnClub_Player ORDER BY ID DESC";
 
-            using (SqlConnection con = SQLConn.GetConnection())
+            using (var con = SQLConn.GetConnection())
             {
-                SqlCommand com = new SqlCommand(sql, con);
+                var com = new SqlCommand(sql, con);
                 //com.Parameters.Add(new SqlParameter("@clubID", clubID));
 
-                SqlDataAdapter sda = new SqlDataAdapter(com);
+                var sda = new SqlDataAdapter(com);
                 con.Open();
 
-                DataTable dt = new DataTable();
+                var dt = new DataTable();
 
                 sda.Fill(dt);
 
@@ -798,7 +798,7 @@ namespace Arsenalcn.ClubSys.Service
 
                 foreach (DataRow dr in dt.Rows)
                 {
-                    Gamer bh = new Gamer(dr);
+                    var bh = new Gamer(dr);
 
                     list.Add(bh);
                 }
@@ -809,19 +809,19 @@ namespace Arsenalcn.ClubSys.Service
 
         public static List<Gamer> GetClubPlayers(int clubID)
         {
-            List<Gamer> list = new List<Gamer>();
+            var list = new List<Gamer>();
 
-            string sql = "SELECT p.* FROM AcnClub_Player p INNER JOIN AcnClub_RelationUserClub uc ON p.UserID = uc.UserID WHERE uc.ClubUID = @clubID AND uc.IsActive = 1 ORDER BY Shirt+Shorts+Sock DESC";
+            var sql = "SELECT p.* FROM AcnClub_Player p INNER JOIN AcnClub_RelationUserClub uc ON p.UserID = uc.UserID WHERE uc.ClubUID = @clubID AND uc.IsActive = 1 ORDER BY Shirt+Shorts+Sock DESC";
 
-            using (SqlConnection con = SQLConn.GetConnection())
+            using (var con = SQLConn.GetConnection())
             {
-                SqlCommand com = new SqlCommand(sql, con);
+                var com = new SqlCommand(sql, con);
                 com.Parameters.Add(new SqlParameter("@clubID", clubID));
 
-                SqlDataAdapter sda = new SqlDataAdapter(com);
+                var sda = new SqlDataAdapter(com);
                 con.Open();
 
-                DataTable dt = new DataTable();
+                var dt = new DataTable();
 
                 sda.Fill(dt);
 
@@ -829,7 +829,7 @@ namespace Arsenalcn.ClubSys.Service
 
                 foreach (DataRow dr in dt.Rows)
                 {
-                    Gamer p = new Gamer(dr);
+                    var p = new Gamer(dr);
 
                     list.Add(p);
                 }
@@ -840,17 +840,17 @@ namespace Arsenalcn.ClubSys.Service
 
         public static int GetClubPlayerCount(int clubID)
         {
-            string sql = "SELECT COUNT(*) FROM AcnClub_Player p INNER JOIN AcnClub_RelationUserClub uc ON p.UserID = uc.UserID WHERE uc.ClubUID = @clubID AND uc.IsActive = 1";
+            var sql = "SELECT COUNT(*) FROM AcnClub_Player p INNER JOIN AcnClub_RelationUserClub uc ON p.UserID = uc.UserID WHERE uc.ClubUID = @clubID AND uc.IsActive = 1";
 
-            using (SqlConnection con = SQLConn.GetConnection())
+            using (var con = SQLConn.GetConnection())
             {
-                SqlCommand com = new SqlCommand(sql, con);
+                var com = new SqlCommand(sql, con);
 
                 com.Parameters.Add(new SqlParameter("@clubID", clubID));
 
                 con.Open();
 
-                int count = (int)com.ExecuteScalar();
+                var count = (int)com.ExecuteScalar();
 
                 //con.Close();
 
@@ -862,17 +862,17 @@ namespace Arsenalcn.ClubSys.Service
         {
             Gamer player = null;
 
-            string sql = "SELECT * FROM dbo.AcnClub_Player WHERE UserID = @userId";
+            var sql = "SELECT * FROM dbo.AcnClub_Player WHERE UserID = @userId";
 
-            using (SqlConnection con = SQLConn.GetConnection())
+            using (var con = SQLConn.GetConnection())
             {
-                SqlCommand com = new SqlCommand(sql, con);
+                var com = new SqlCommand(sql, con);
                 com.Parameters.Add(new SqlParameter("@userId", userId));
 
-                SqlDataAdapter sda = new SqlDataAdapter(com);
+                var sda = new SqlDataAdapter(com);
                 con.Open();
 
-                DataTable dt = new DataTable();
+                var dt = new DataTable();
 
                 sda.Fill(dt);
 
@@ -891,17 +891,17 @@ namespace Arsenalcn.ClubSys.Service
         {
             Gamer player = null;
 
-            string sql = "SELECT * FROM dbo.AcnClub_Player WHERE [ID] = @playerID";
+            var sql = "SELECT * FROM dbo.AcnClub_Player WHERE [ID] = @playerID";
 
-            using (SqlConnection con = SQLConn.GetConnection())
+            using (var con = SQLConn.GetConnection())
             {
-                SqlCommand com = new SqlCommand(sql, con);
+                var com = new SqlCommand(sql, con);
                 com.Parameters.Add(new SqlParameter("@playerID", playerID));
 
-                SqlDataAdapter sda = new SqlDataAdapter(com);
+                var sda = new SqlDataAdapter(com);
                 con.Open();
 
-                DataTable dt = new DataTable();
+                var dt = new DataTable();
 
                 sda.Fill(dt);
 
@@ -919,12 +919,12 @@ namespace Arsenalcn.ClubSys.Service
 
         public static void UpdatePlayerInfo(int id, int shirt, int shorts, int sock, bool isActive)
         {
-            string sql = @"UPDATE dbo.AcnClub_Player SET Shirt = @shirt, Shorts = @shorts, Sock = @sock,
+            var sql = @"UPDATE dbo.AcnClub_Player SET Shirt = @shirt, Shorts = @shorts, Sock = @sock,
                                   IsActive = @isActive WHERE ID = @id";
 
-            using (SqlConnection con = SQLConn.GetConnection())
+            using (var con = SQLConn.GetConnection())
             {
-                SqlCommand com = new SqlCommand(sql, con);
+                var com = new SqlCommand(sql, con);
 
                 com.Parameters.Add(new SqlParameter("@id", id));
                 com.Parameters.Add(new SqlParameter("@shirt", shirt));
@@ -942,15 +942,15 @@ namespace Arsenalcn.ClubSys.Service
 
         public static void UpdatePlayerGoogleAdvActive(int userID, bool isActive)
         {
-            Gamer player = GetPlayerInfo(userID);
+            var player = GetPlayerInfo(userID);
 
             if (player != null)
             {
-                string sql = "UPDATE dbo.AcnClub_Player SET IsActive = @isActive WHERE ID = @playerID;";
+                var sql = "UPDATE dbo.AcnClub_Player SET IsActive = @isActive WHERE ID = @playerID;";
 
-                using (SqlConnection con = SQLConn.GetConnection())
+                using (var con = SQLConn.GetConnection())
                 {
-                    SqlCommand com = new SqlCommand(sql, con);
+                    var com = new SqlCommand(sql, con);
 
                     com.Parameters.Add(new SqlParameter("@playerID", player.ID));
                     com.Parameters.Add(new SqlParameter("@isActive", isActive));
@@ -968,17 +968,17 @@ namespace Arsenalcn.ClubSys.Service
         {
             Card userNumber = null;
 
-            string sql = "SELECT * FROM dbo.AcnClub_Card WHERE [ID] = @id";
+            var sql = "SELECT * FROM dbo.AcnClub_Card WHERE [ID] = @id";
 
-            using (SqlConnection con = SQLConn.GetConnection())
+            using (var con = SQLConn.GetConnection())
             {
-                SqlCommand com = new SqlCommand(sql, con);
+                var com = new SqlCommand(sql, con);
                 com.Parameters.Add(new SqlParameter("@id", id));
 
-                SqlDataAdapter sda = new SqlDataAdapter(com);
+                var sda = new SqlDataAdapter(com);
                 con.Open();
 
-                DataTable dt = new DataTable();
+                var dt = new DataTable();
 
                 sda.Fill(dt);
 
@@ -996,15 +996,15 @@ namespace Arsenalcn.ClubSys.Service
 
         public static void UpdatePlayerCurrentNum(int userID, int userNumID)
         {
-            Card un = GetUserNumber(userNumID);
+            var un = GetUserNumber(userNumID);
 
             if (un.ArsenalPlayerGuid.HasValue)
             {
-                string sql = "UPDATE dbo.AcnClub_Card SET IsInUse = 0 WHERE UserID = @userID; UPDATE dbo.AcnClub_Card SET IsInUse = 1 WHERE [ID] = @userNumID; UPDATE dbo.AcnClub_Player SET CurrentGuid = @currentGuid WHERE UserID = @userID";
+                var sql = "UPDATE dbo.AcnClub_Card SET IsInUse = 0 WHERE UserID = @userID; UPDATE dbo.AcnClub_Card SET IsInUse = 1 WHERE [ID] = @userNumID; UPDATE dbo.AcnClub_Player SET CurrentGuid = @currentGuid WHERE UserID = @userID";
 
-                using (SqlConnection con = SQLConn.GetConnection())
+                using (var con = SQLConn.GetConnection())
                 {
-                    SqlCommand com = new SqlCommand(sql, con);
+                    var com = new SqlCommand(sql, con);
 
                     com.Parameters.Add(new SqlParameter("@userID", userID));
                     com.Parameters.Add(new SqlParameter("@userNumID", userNumID));
@@ -1021,15 +1021,15 @@ namespace Arsenalcn.ClubSys.Service
 
         public static void RemovePlayerCurrentNum(int userID, int userNumID)
         {
-            Card un = GetUserNumber(userNumID);
+            var un = GetUserNumber(userNumID);
 
             if (un.ArsenalPlayerGuid.HasValue)
             {
-                string sql = "UPDATE dbo.AcnClub_Card SET IsInUse = 0 WHERE UserID = @userID; UPDATE dbo.AcnClub_Player SET CurrentGuid = NULL WHERE UserID = @userID AND CurrentGuid = @currentGuid";
+                var sql = "UPDATE dbo.AcnClub_Card SET IsInUse = 0 WHERE UserID = @userID; UPDATE dbo.AcnClub_Player SET CurrentGuid = NULL WHERE UserID = @userID AND CurrentGuid = @currentGuid";
 
-                using (SqlConnection con = SQLConn.GetConnection())
+                using (var con = SQLConn.GetConnection())
                 {
-                    SqlCommand com = new SqlCommand(sql, con);
+                    var com = new SqlCommand(sql, con);
 
                     com.Parameters.Add(new SqlParameter("@userID", userID));
                     com.Parameters.Add(new SqlParameter("@userNumID", userNumID));
@@ -1046,12 +1046,12 @@ namespace Arsenalcn.ClubSys.Service
 
         public static void ActiveVideoCost(int userID, int userNumID)
         {
-            string sql = @"DELETE FROM AcnClub_Card WHERE [ID] = @userNumID; 
+            var sql = @"DELETE FROM AcnClub_Card WHERE [ID] = @userNumID; 
                                  UPDATE dbo.AcnClub_Player SET Shirt = Shirt - 5, Shorts = Shorts - 5, Sock = Sock - 5 WHERE UserID = @userID";
 
-            using (SqlConnection con = SQLConn.GetConnection())
+            using (var con = SQLConn.GetConnection())
             {
-                SqlCommand com = new SqlCommand(sql, con);
+                var com = new SqlCommand(sql, con);
 
                 com.Parameters.Add(new SqlParameter("@userID", userID));
                 com.Parameters.Add(new SqlParameter("@userNumID", userNumID));
@@ -1066,11 +1066,11 @@ namespace Arsenalcn.ClubSys.Service
 
         public static void SetCardAcitve(int userID, int userNumID)
         {
-            string sql = "UPDATE dbo.AcnClub_Card SET IsActive = 1, ActiveDate = GETDATE() WHERE [ID] = @userNumID; UPDATE dbo.AcnClub_Player SET Shirt = Shirt - 5, Shorts = Shorts - 5, Sock = Sock - 5 WHERE UserID = @userID";
+            var sql = "UPDATE dbo.AcnClub_Card SET IsActive = 1, ActiveDate = GETDATE() WHERE [ID] = @userNumID; UPDATE dbo.AcnClub_Player SET Shirt = Shirt - 5, Shorts = Shorts - 5, Sock = Sock - 5 WHERE UserID = @userID";
 
-            using (SqlConnection con = SQLConn.GetConnection())
+            using (var con = SQLConn.GetConnection())
             {
-                SqlCommand com = new SqlCommand(sql, con);
+                var com = new SqlCommand(sql, con);
 
                 com.Parameters.Add(new SqlParameter("@userID", userID));
                 com.Parameters.Add(new SqlParameter("@userNumID", userNumID));
@@ -1085,13 +1085,13 @@ namespace Arsenalcn.ClubSys.Service
 
         public static int GetAllPlayerCount()
         {
-            string sql = "SELECT COUNT(*) FROM AcnClub_Player";
+            var sql = "SELECT COUNT(*) FROM AcnClub_Player";
 
-            int count = 0;
+            var count = 0;
 
-            using (SqlConnection con = SQLConn.GetConnection())
+            using (var con = SQLConn.GetConnection())
             {
-                SqlCommand com = new SqlCommand(sql, con);
+                var com = new SqlCommand(sql, con);
 
                 con.Open();
 
@@ -1105,16 +1105,16 @@ namespace Arsenalcn.ClubSys.Service
 
         public static bool ValidateAuthKey(string id, string userId, string authKey)
         {
-            string authPrivateKey = ConfigGlobal.AuthPrivateKey;
+            var authPrivateKey = ConfigGlobal.AuthPrivateKey;
 
-            string originStr = id + userId + authPrivateKey;
+            var originStr = id + userId + authPrivateKey;
 
-            byte[] bytes = Encoding.UTF8.GetBytes(originStr);
+            var bytes = Encoding.UTF8.GetBytes(originStr);
 
-            byte[] resultBytes = System.Security.Cryptography.MD5.Create().ComputeHash(bytes);
+            var resultBytes = System.Security.Cryptography.MD5.Create().ComputeHash(bytes);
 
-            string sTemp = "";
-            for (int i = 0; i < resultBytes.Length; i++)
+            var sTemp = "";
+            for (var i = 0; i < resultBytes.Length; i++)
             {
                 sTemp += resultBytes[i].ToString("x").PadLeft(2, '0');
             }
@@ -1124,11 +1124,11 @@ namespace Arsenalcn.ClubSys.Service
 
         public static bool ValidateBingoResult(int bingoHistoryID, int userID)
         {
-            string sql = "SELECT TOP 1 [ID] FROM AcnClub_LogBingo WHERE UserID = @userID AND Result is NULL ORDER BY ActionDate DESC";
+            var sql = "SELECT TOP 1 [ID] FROM AcnClub_LogBingo WHERE UserID = @userID AND Result is NULL ORDER BY ActionDate DESC";
 
-            using (SqlConnection con = SQLConn.GetConnection())
+            using (var con = SQLConn.GetConnection())
             {
-                SqlCommand com = new SqlCommand(sql, con);
+                var com = new SqlCommand(sql, con);
 
                 com.Parameters.Add(new SqlParameter("@userID", userID));
 
@@ -1136,7 +1136,7 @@ namespace Arsenalcn.ClubSys.Service
 
                 try
                 {
-                    int id = (int)com.ExecuteScalar();
+                    var id = (int)com.ExecuteScalar();
 
                     //con.Close();
 
@@ -1151,20 +1151,20 @@ namespace Arsenalcn.ClubSys.Service
 
         public static DataTable GetTopRpPlayers()
         {
-            string sql = @"select top 5 A.username, A.userid, countGot * 100 / countTotal as rp, countGot, countTotal from
+            var sql = @"select top 5 A.username, A.userid, countGot * 100 / countTotal as rp, countGot, countTotal from
             (select username, userid, count(*) as countTotal from AcnClub_LogBingo group by username, userid) A
             inner join
             (select username, userid, count(*) as countGot from AcnClub_LogBingo where result is not null group by username, userid) B
             ON A.username = B.username AND A.userid = B.userid
             order by CountGot desc";
 
-            DataTable players = new DataTable();
+            var players = new DataTable();
 
-            using (SqlConnection con = SQLConn.GetConnection())
+            using (var con = SQLConn.GetConnection())
             {
-                SqlCommand com = new SqlCommand(sql, con);
+                var com = new SqlCommand(sql, con);
 
-                SqlDataAdapter sda = new SqlDataAdapter(com);
+                var sda = new SqlDataAdapter(com);
 
                 con.Open();
 
@@ -1178,19 +1178,19 @@ namespace Arsenalcn.ClubSys.Service
 
         public static DataTable GetTopVideoPlayers()
         {
-            string sql = @"select top 5 ISNULL(A.username, B.username) as username, ISNULL(A.userid, B.userid) as userid, ISNULL(inactiveVideo, 0) + ISNULL(videoCount, 0) as videoCount from
+            var sql = @"select top 5 ISNULL(A.username, B.username) as username, ISNULL(A.userid, B.userid) as userid, ISNULL(inactiveVideo, 0) + ISNULL(videoCount, 0) as videoCount from
             (select username, userid, count(*) as inactiveVideo from AcnClub_Card where ArsenalPlayerGuid is null group by username, userid) A
             full outer join
             (select username, userid, count(*) as videoCount from acnclub_relationuservideo group by username, userid) B
             ON A.username = B.username AND A.userid = B.userid order by videoCount desc";
 
-            DataTable players = new DataTable();
+            var players = new DataTable();
 
-            using (SqlConnection con = SQLConn.GetConnection())
+            using (var con = SQLConn.GetConnection())
             {
-                SqlCommand com = new SqlCommand(sql, con);
+                var com = new SqlCommand(sql, con);
 
-                SqlDataAdapter sda = new SqlDataAdapter(com);
+                var sda = new SqlDataAdapter(com);
 
                 con.Open();
 
@@ -1204,16 +1204,16 @@ namespace Arsenalcn.ClubSys.Service
 
         public static DataTable GetTopCardPlayers()
         {
-            string sql = @"select top 5 username,userid, count(*) as cardCount
+            var sql = @"select top 5 username,userid, count(*) as cardCount
             from dbo.AcnClub_Card where ArsenalPlayerGuid is not null group by username, userid order by cardCount desc";
 
-            DataTable players = new DataTable();
+            var players = new DataTable();
 
-            using (SqlConnection con = SQLConn.GetConnection())
+            using (var con = SQLConn.GetConnection())
             {
-                SqlCommand com = new SqlCommand(sql, con);
+                var com = new SqlCommand(sql, con);
 
-                SqlDataAdapter sda = new SqlDataAdapter(com);
+                var sda = new SqlDataAdapter(com);
 
                 con.Open();
 
@@ -1227,11 +1227,11 @@ namespace Arsenalcn.ClubSys.Service
 
         public static void AddCard(int userid, string username, Guid? cardGuid, bool isActive)
         {
-            string sql = "INSERT INTO dbo.AcnClub_Card (UserID, UserName, IsActive, IsInUse, GainDate, ActiveDate, ArsenalPlayerGuid) VALUES (@userID, @userName, @isActive, 0, getdate(), @activeDate, @guid)";
+            var sql = "INSERT INTO dbo.AcnClub_Card (UserID, UserName, IsActive, IsInUse, GainDate, ActiveDate, ArsenalPlayerGuid) VALUES (@userID, @userName, @isActive, 0, getdate(), @activeDate, @guid)";
 
-            using (SqlConnection con = SQLConn.GetConnection())
+            using (var con = SQLConn.GetConnection())
             {
-                SqlCommand com = new SqlCommand(sql, con);
+                var com = new SqlCommand(sql, con);
 
                 com.Parameters.Add(new SqlParameter("@userID", userid));
                 com.Parameters.Add(new SqlParameter("@userName", username));
@@ -1259,7 +1259,7 @@ namespace Arsenalcn.ClubSys.Service
     {
         public static BingoResult AnalyzeFlashResult(int userID, string result, string resultType)
         {
-            BingoResult br = new BingoResult();
+            var br = new BingoResult();
 
             switch (resultType)
             {
@@ -1284,16 +1284,16 @@ namespace Arsenalcn.ClubSys.Service
                     return br;
                 case "cash":
                     br.Result = BingoResultType.Cash;
-                    float bonusCash = 0f;
-                    float bonusRate = ConfigGlobal.BingoBonusRate;
+                    var bonusCash = 0f;
+                    var bonusRate = ConfigGlobal.BingoBonusRate;
 
                     if (result == "cash")
                     {
-                        int videoActiveCount = Entity.UserVideo.GetUserVideosByUserID(userID).Count;
+                        var videoActiveCount = Entity.UserVideo.GetUserVideosByUserID(userID).Count;
 
-                        List<Card> items = PlayerStrip.GetMyNumbers(userID);
+                        var items = PlayerStrip.GetMyNumbers(userID);
                         items.RemoveAll(delegate(Card un) { return !un.IsActive; });
-                        int cardActiveCount = items.Count;
+                        var cardActiveCount = items.Count;
 
                         // Video & Card Cash Bonus
                         bonusCash += (videoActiveCount * 5 + cardActiveCount) * bonusRate;
@@ -1325,8 +1325,8 @@ namespace Arsenalcn.ClubSys.Service
                 return string.Format(formatString, AnalyzeStripDetail(br.ResultDetail.ToString()));
             else if (br.Result == BingoResultType.Both)
             {
-                string stripResult = br.ResultDetail.Substring(0, br.ResultDetail.IndexOf("+"));
-                string cashResult = br.ResultDetail.Substring(br.ResultDetail.IndexOf("(") + 1, (br.ResultDetail.IndexOf(")") - br.ResultDetail.IndexOf("(") - 1));
+                var stripResult = br.ResultDetail.Substring(0, br.ResultDetail.IndexOf("+"));
+                var cashResult = br.ResultDetail.Substring(br.ResultDetail.IndexOf("(") + 1, (br.ResultDetail.IndexOf(")") - br.ResultDetail.IndexOf("(") - 1));
                 return string.Format(formatString, AnalyzeStripDetail(stripResult), cashResult);
             }
             else

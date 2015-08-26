@@ -37,10 +37,10 @@ namespace Arsenal.Service
                 // https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET
                 // {"access_token":"ACCESS_TOKEN","expires_in":7200}
 
-                string uri = string.Format("{0}token?grant_type=client_credential&appid={1}&secret={2}",
+                var uri = string.Format("{0}token?grant_type=client_credential&appid={1}&secret={2}",
                     ServiceUrl, AppKey, CryptographicKey);
 
-                WebClient client = new WebClient();
+                var client = new WebClient();
 
                 using (var responseStream = client.OpenRead(uri))
                 {

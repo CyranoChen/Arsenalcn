@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -19,7 +18,7 @@ namespace iArsenal.Service
             map.ForMember(d => d.TotalPrice, opt => opt.ResolveUsing(s => 
             {
                 #region Generate OrderItem TotalPrice
-                double? sale = (double?)s.GetValue("Sale");
+                var sale = (double?)s.GetValue("Sale");
 
                 if (sale.HasValue)
                     return sale.Value;

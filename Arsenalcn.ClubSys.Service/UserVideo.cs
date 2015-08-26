@@ -14,9 +14,9 @@ namespace Arsenalcn.ClubSys.Service
     {
         public static DataRow GetUserVideoByID(int uvID)
         {
-            string sql = "SELECT * FROM dbo.AcnClub_RelationUserVideo WHERE ID = @uvID";
+            var sql = "SELECT * FROM dbo.AcnClub_RelationUserVideo WHERE ID = @uvID";
 
-            DataSet ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@uvID", uvID));
+            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@uvID", uvID));
 
             if (ds.Tables[0].Rows.Count == 0)
                 return null;
@@ -26,7 +26,7 @@ namespace Arsenalcn.ClubSys.Service
 
         public static void UpdateUserVideo(int uvID, int userID, string userName, Guid videoGuid, DateTime activeDate, string userDesc, bool isPublic, SqlTransaction trans = null)
         {
-            string sql = @"UPDATE dbo.AcnClub_RelationUserVideo SET UserID = @userID, UserName = @userName, VideoGuid = @videoGuid, 
+            var sql = @"UPDATE dbo.AcnClub_RelationUserVideo SET UserID = @userID, UserName = @userName, VideoGuid = @videoGuid, 
                                   ActiveDate = @activeDate, UserDesc = @userDesc, IsPublic = @isPublic WHERE ID = @uvID";
 
             SqlParameter[] para = {
@@ -47,7 +47,7 @@ namespace Arsenalcn.ClubSys.Service
 
         public static void InsertUserVideo(int uvID, int userID, string userName, Guid videoGuid, DateTime activeDate, string userDesc, bool isPublic, SqlTransaction trans = null)
         {
-            string sql = @"INSERT INTO dbo.AcnClub_RelationUserVideo (UserID, UserName, VideoGuid, ActiveDate, UserDesc, IsPublic)  
+            var sql = @"INSERT INTO dbo.AcnClub_RelationUserVideo (UserID, UserName, VideoGuid, ActiveDate, UserDesc, IsPublic)  
                                  VALUES (@userID, @userName, @videoGuid, @activeDate, @userDesc, @isPublic)";
 
             SqlParameter[] para = {
@@ -68,7 +68,7 @@ namespace Arsenalcn.ClubSys.Service
 
         public static void DeleteUserVideo(int uvID, SqlTransaction trans = null)
         {
-            string sql = "DELETE dbo.AcnClub_RelationUserVideo WHERE ID = @uvID";
+            var sql = "DELETE dbo.AcnClub_RelationUserVideo WHERE ID = @uvID";
 
             SqlParameter[] para = { new SqlParameter("@uvID", uvID) };
 
@@ -80,10 +80,10 @@ namespace Arsenalcn.ClubSys.Service
 
         public static DataTable GetUserVideos()
         {
-            string sql = @"SELECT  ID, UserID, UserName, VideoGuid, ActiveDate, UserDesc, IsPublic  
+            var sql = @"SELECT  ID, UserID, UserName, VideoGuid, ActiveDate, UserDesc, IsPublic  
                                   FROM AcnClub_RelationUserVideo ORDER BY ActiveDate DESC";
 
-            DataSet ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql);
+            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql);
 
             if (ds.Tables[0].Rows.Count == 0)
                 return null;
@@ -126,7 +126,7 @@ namespace Arsenalcn.ClubSys.Service
 
         public static DataTable GetUserVideoByClubID(int clubID)
         {
-            string sql = @"SELECT * INTO #TmpUserClubVideo FROM AcnClub_RelationUserVideo
+            var sql = @"SELECT * INTO #TmpUserClubVideo FROM AcnClub_RelationUserVideo
                                   WHERE (UserID IN (SELECT UserID FROM AcnClub_RelationUserClub 
                                   WHERE (ClubUid = @clubID) AND (IsActive = 1)))
 
@@ -139,7 +139,7 @@ namespace Arsenalcn.ClubSys.Service
 
             SqlParameter[] para = { new SqlParameter("@clubID", clubID) };
 
-            DataSet ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql, para);
+            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql, para);
 
             if (ds.Tables[0].Rows.Count == 0)
                 return null;
@@ -245,7 +245,7 @@ namespace Arsenalcn.ClubSys.Service
             //    return guid;
             //}
 
-            List<Video> list = new List<Video>();
+            var list = new List<Video>();
 
             if (!isLegend.HasValue)
             {
@@ -264,7 +264,7 @@ namespace Arsenalcn.ClubSys.Service
 
             if (userID > 0)
             {
-                List<Entity.UserVideo> userList = Entity.UserVideo.GetUserVideosByUserID(userID);
+                var userList = Entity.UserVideo.GetUserVideosByUserID(userID);
 
                 if (userList != null && userList.Count > 0)
                 {
@@ -274,7 +274,7 @@ namespace Arsenalcn.ClubSys.Service
 
             if (list != null && list.Count > 0)
             {
-                Random rand = new Random(Guid.NewGuid().GetHashCode());
+                var rand = new Random(Guid.NewGuid().GetHashCode());
                 return list[rand.Next(0, list.Count - 1)].ID;
             }
             else
@@ -285,11 +285,11 @@ namespace Arsenalcn.ClubSys.Service
 
         public static void ConsolidateCards(int userID, string userName, int userNumID1, int userNumID2)
         {
-            string sql = "DELETE FROM AcnClub_Card WHERE [ID] = @userNum1 OR [ID] = @userNum2 ; INSERT INTO dbo.AcnClub_Card (UserID, UserName, IsActive, IsInUse, GainDate, ActiveDate, ArsenalPlayerGuid) VALUES (@userID, @userName, 0, 0, getdate(), null, null);";
+            var sql = "DELETE FROM AcnClub_Card WHERE [ID] = @userNum1 OR [ID] = @userNum2 ; INSERT INTO dbo.AcnClub_Card (UserID, UserName, IsActive, IsInUse, GainDate, ActiveDate, ArsenalPlayerGuid) VALUES (@userID, @userName, 0, 0, getdate(), null, null);";
 
-            using (SqlConnection con = SQLConn.GetConnection())
+            using (var con = SQLConn.GetConnection())
             {
-                SqlCommand com = new SqlCommand(sql, con);
+                var com = new SqlCommand(sql, con);
 
                 com.Parameters.Add(new SqlParameter("@userID", userID));
                 com.Parameters.Add(new SqlParameter("@userName", userName));
@@ -326,7 +326,7 @@ namespace Arsenalcn.ClubSys.Service
 
         public static Guid? SetDailyVideo()
         {
-            Guid? guid = UserVideo.GetRandomVideo(-1, 4, 5, null);
+            var guid = UserVideo.GetRandomVideo(-1, 4, 5, null);
             if ((guid.HasValue) && (ConfigGlobal.DailyVideoActive == true))
             {
                 if (ConfigGlobal.DailyVideoGuid.Equals(guid.Value))

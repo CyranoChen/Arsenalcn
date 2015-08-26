@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Web.UI.WebControls;
-
-using Arsenalcn.Common;
 using Arsenalcn.Common.Entity;
 
 namespace Arsenalcn.ClubSys.Web
@@ -22,7 +19,7 @@ namespace Arsenalcn.ClubSys.Web
 
         private void BindData()
         {
-            List<Config> list = Config.GetConfigs().FindAll(delegate(Config c) { return c.ConfigSystem.Equals(ConfigSystem.AcnClub); });
+            var list = Config.GetConfigs().FindAll(delegate(Config c) { return c.ConfigSystem.Equals(ConfigSystem.AcnClub); });
 
             gvSysConfig.DataSource = list;
             gvSysConfig.DataBind();
@@ -37,13 +34,13 @@ namespace Arsenalcn.ClubSys.Web
 
         protected void gvSysConfig_RowUpdating(object sender, GridViewUpdateEventArgs e)
         {
-            TextBox tbConfigValue = gvSysConfig.Rows[gvSysConfig.EditIndex].Cells[1].Controls[0] as TextBox;
+            var tbConfigValue = gvSysConfig.Rows[gvSysConfig.EditIndex].Cells[1].Controls[0] as TextBox;
 
             if (tbConfigValue != null)
             {
                 try
                 {
-                    Config c = new Config();
+                    var c = new Config();
 
                     c.ConfigSystem = ConfigSystem.AcnClub;
                     c.ConfigKey = gvSysConfig.DataKeys[gvSysConfig.EditIndex].Value.ToString();
@@ -54,7 +51,8 @@ namespace Arsenalcn.ClubSys.Web
                 }
                 catch (Exception ex)
                 {
-                    this.ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}');", ex.Message.ToString()), true);
+                    this.ClientScript.RegisterClientScriptBlock(typeof(string), "failed",
+                        $"alert('{ex.Message.ToString()}');", true);
                 }
             }
 
@@ -92,7 +90,8 @@ namespace Arsenalcn.ClubSys.Web
             }
             catch (Exception ex)
             {
-                this.ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}');", ex.Message.ToString()), true);
+                this.ClientScript.RegisterClientScriptBlock(typeof(string), "failed",
+                    $"alert('{ex.Message.ToString()}');", true);
             }
         }
     }

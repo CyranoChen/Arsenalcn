@@ -59,8 +59,8 @@ namespace Arsenalcn.ClubSys.Service
 
         public static List<Player> GetPlayers()
         {
-            DataTable dt = DataAccess.Player.GetPlayers();
-            List<Player> list = new List<Player>();
+            var dt = DataAccess.Player.GetPlayers();
+            var list = new List<Player>();
 
             if (dt != null)
             {

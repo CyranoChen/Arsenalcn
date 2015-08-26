@@ -1,7 +1,4 @@
-﻿using System;
-using System.Data;
-using System.Data.SqlClient;
-
+﻿using System.Data;
 using Microsoft.ApplicationBlocks.Data;
 using Arsenalcn.Common;
 
@@ -35,9 +32,9 @@ namespace Arsenalcn.CasinoSys.DataAccess
 
         public static DataTable GetLeagues()
         {
-            string sql = "SELECT * FROM Arsenal_League ORDER BY LeagueOrder, LeagueOrgName";
+            var sql = "SELECT * FROM Arsenal_League ORDER BY LeagueOrder, LeagueOrgName";
 
-            DataSet ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql);
+            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql);
 
             if (ds.Tables[0].Rows.Count == 0)
                 return null;

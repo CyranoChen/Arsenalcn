@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web.UI.WebControls;
 
 using iArsenal.Service;
@@ -19,7 +18,7 @@ namespace iArsenal.Web
             {
                 #region Bind ddlProductCode
 
-                List<Product> pList = Product.Cache.Load(ProductType.MatchTicket).FindAll(p => p.IsActive);
+                var pList = Product.Cache.Load(ProductType.MatchTicket).FindAll(p => p.IsActive);
 
                 ddlProductCode.DataSource = pList;
                 ddlProductCode.DataTextField = "DisplayName";
@@ -56,10 +55,10 @@ namespace iArsenal.Web
         {
             try
             {
-                List<MatchTicket> list = MatchTicket.Cache.MatchTicketList.FindAll(delegate(MatchTicket mt)
+                var list = MatchTicket.Cache.MatchTicketList.FindAll(delegate(MatchTicket mt)
                 {
-                    Boolean returnValue = true;
-                    string tmpString = string.Empty;
+                    var returnValue = true;
+                    var tmpString = string.Empty;
 
                     if (ViewState["ProductCode"] != null)
                     {
@@ -133,16 +132,16 @@ namespace iArsenal.Web
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                MatchTicket mt = e.Row.DataItem as MatchTicket;
-                ArsenalTeam at = Arsenal_Team.Cache.Load(mt.TeamGuid);
+                var mt = e.Row.DataItem as MatchTicket;
+                var at = Arsenal_Team.Cache.Load(mt.TeamGuid);
 
-                string _strRank = mt.ProductInfo.Trim();
+                var _strRank = mt.ProductInfo.Trim();
 
-                Literal ltrlTeamInfo = e.Row.FindControl("ltrlTeamInfo") as Literal;
-                Label lblMatchTicketRank = e.Row.FindControl("lblMatchTicketRank") as Label;
-                Label lblMatchDeadlineOrResult = e.Row.FindControl("lblMatchDeadlineOrResult") as Label;
-                HyperLink hlAllowMemberClass = e.Row.FindControl("hlAllowMemberClass") as HyperLink;
-                HyperLink hlTicketApply = e.Row.FindControl("hlTicketApply") as HyperLink;
+                var ltrlTeamInfo = e.Row.FindControl("ltrlTeamInfo") as Literal;
+                var lblMatchTicketRank = e.Row.FindControl("lblMatchTicketRank") as Label;
+                var lblMatchDeadlineOrResult = e.Row.FindControl("lblMatchDeadlineOrResult") as Label;
+                var hlAllowMemberClass = e.Row.FindControl("hlAllowMemberClass") as HyperLink;
+                var hlTicketApply = e.Row.FindControl("hlTicketApply") as HyperLink;
 
                 if (ltrlTeamInfo != null)
                 {

@@ -98,14 +98,14 @@ namespace iArsenal.Web
                     }
 
                     // Should be Calculator in this Page
-                    double price = default(double);
-                    string priceInfo = string.Empty;
+                    var price = default(double);
+                    var priceInfo = string.Empty;
 
-                    OrdrItmPlayerNumber oiNumber = o.OIPlayerNumber;
-                    OrdrItmPlayerName oiName = o.OIPlayerName;
-                    OrdrItmArsenalFont oiFont = o.OIArsenalFont; ;
-                    OrdrItmPremiershipPatch oiPremierPatch = o.OIPremiershipPatch;
-                    OrdrItmChampionshipPatch oiChampionPatch = o.OIChampionshipPatch;
+                    var oiNumber = o.OIPlayerNumber;
+                    var oiName = o.OIPlayerName;
+                    var oiFont = o.OIArsenalFont; ;
+                    var oiPremierPatch = o.OIPremiershipPatch;
+                    var oiChampionPatch = o.OIChampionshipPatch;
 
                     lblOrderItem_ReplicaKit.Text = string.Format("<em>{0}</em>", oiReplicaKit.ProductName);
                     tbOrderItem_ReplicaKit.Text = oiReplicaKit.ProductGuid.ToString();
@@ -215,7 +215,7 @@ namespace iArsenal.Web
             {
                 if (OrderID > 0)
                 {
-                    Order o = repo.Single<Order>(OrderID);
+                    var o = repo.Single<Order>(OrderID);
 
                     if (o == null || !o.MemberID.Equals(MID) || !o.IsActive)
                         throw new Exception("此订单无效或非当前用户订单");
@@ -245,7 +245,7 @@ namespace iArsenal.Web
             {
                 if (OrderID > 0)
                 {
-                    Order o = repo.Single<Order>(OrderID);
+                    var o = repo.Single<Order>(OrderID);
 
                     if (o == null || !o.MemberID.Equals(MID) || !o.IsActive)
                         throw new Exception("此订单无效或非当前用户订单");
@@ -269,7 +269,7 @@ namespace iArsenal.Web
             {
                 if (OrderID > 0)
                 {
-                    Order o = repo.Single<Order>(OrderID);
+                    var o = repo.Single<Order>(OrderID);
 
                     if (o == null || !o.MemberID.Equals(MID) || !o.IsActive)
                         throw new Exception("此订单无效或非当前用户订单");

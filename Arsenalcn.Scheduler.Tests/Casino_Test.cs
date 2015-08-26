@@ -1,11 +1,12 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Linq;
 
+using Arsenal.Service.Casino;
 using Arsenalcn.Core;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using ArsenalMatch = Arsenal.Service.Match;
 using CasinoMatch = Arsenal.Service.Casino.Match;
-using Arsenal.Service.Casino;
 
 namespace Arsenalcn.Scheduler.Tests
 {
@@ -64,10 +65,6 @@ namespace Arsenalcn.Scheduler.Tests
 
                             repo.Update(m);
                         }
-                        else
-                        {
-                            continue;
-                        }
                     }
                 }
             }
@@ -87,7 +84,7 @@ namespace Arsenalcn.Scheduler.Tests
                 var list = repo.All<CasinoItem>().FindAll(x =>
                     x.ItemType.Equals(CasinoType.SingleChoice) && x.Earning.HasValue);
 
-                foreach (var c in list)
+                foreach (var c in list.Take(10))
                 {
                     c.Statistics();
                 }
@@ -96,7 +93,6 @@ namespace Arsenalcn.Scheduler.Tests
             {
                 Assert.Fail(ex.Message);
             }
-
         }
 
         [TestMethod]
@@ -117,7 +113,6 @@ namespace Arsenalcn.Scheduler.Tests
             {
                 Assert.Fail(ex.Message);
             }
-
         }
     }
 }

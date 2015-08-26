@@ -13,27 +13,27 @@ namespace iArsenal.Web
 
         public void ProcessRequest(HttpContext context)
         {
-            string responseText = string.Empty;
+            var responseText = string.Empty;
 
             if (!string.IsNullOrEmpty(context.Request.QueryString["SelectedOrderIDs"]))
             {
                 try
                 {
-                    string[] arrayOrderIDs = context.Request.QueryString["SelectedOrderIDs"].Split('|');
+                    var arrayOrderIDs = context.Request.QueryString["SelectedOrderIDs"].Split('|');
 
-                    int countSucceed = 0;
-                    int countFailed = 0;
+                    var countSucceed = 0;
+                    var countFailed = 0;
 
                     if (arrayOrderIDs.Length > 0)
                     {
-                        foreach (string strID in arrayOrderIDs)
+                        foreach (var strID in arrayOrderIDs)
                         {
                             int _id;
                             if (int.TryParse(strID, out _id))
                             {
                                 try
                                 {
-                                    Order o = repo.Single<Order>(_id);
+                                    var o = repo.Single<Order>(_id);
 
                                     if (o != null && o.Status.Equals(OrderStatusType.Confirmed))
                                     {
@@ -72,7 +72,7 @@ namespace iArsenal.Web
                             countFailed = countFailed
                         };
 
-                        JavaScriptSerializer jsonSerializer = new JavaScriptSerializer();
+                        var jsonSerializer = new JavaScriptSerializer();
                         responseText = jsonSerializer.Serialize(returnObj);
                     }
                     else

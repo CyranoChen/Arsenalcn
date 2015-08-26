@@ -73,7 +73,7 @@ namespace iArsenal.Web
                     Response.Clear();
                 }
 
-                MatchTicket mt = MatchTicket.Cache.Load(MatchGuid);
+                var mt = MatchTicket.Cache.Load(MatchGuid);
 
                 if (mt == null)
                 {
@@ -91,7 +91,7 @@ namespace iArsenal.Web
                 //        string.Format("alert('由于球票数量紧张，所有阿森纳主场球票预订，均只向收费会员开放，请在跳转页面后续费或升级会员资格');window.location.href = 'iArsenalMemberPeriod.aspx'"), true);
                 //}
 
-                Product p = Product.Cache.Load(mt.ProductCode);
+                var p = Product.Cache.Load(mt.ProductCode);
 
                 if (p == null)
                 {
@@ -101,7 +101,7 @@ namespace iArsenal.Web
                 lblMatchTicketInfo.Text = string.Format("<em>【{0}】{1}({2})</em>", mt.LeagueName, mt.TeamName, Arsenal_Team.Cache.Load(mt.TeamGuid).TeamEnglishName);
                 lblMatchTicketPlayTime.Text = string.Format("<em>【伦敦】{0}</em>", mt.PlayTimeLocal.ToString("yyyy-MM-dd HH:mm"));
 
-                string _strRank = mt.ProductInfo.Trim();
+                var _strRank = mt.ProductInfo.Trim();
                 if (lblMatchTicketRank != null && !string.IsNullOrEmpty(_strRank))
                 {
                     lblMatchTicketRank.Text = string.Format("<em>{0} - {1}</em>", _strRank.Substring(_strRank.Length - 7, 7), p.PriceInfo);
@@ -134,7 +134,7 @@ namespace iArsenal.Web
                     {
                         lblMemberName.Text = string.Format("<b>{0}</b> (<em>NO.{1}</em>)", o.MemberName, o.MemberID.ToString());
 
-                        Member m = repo.Single<Member>(o.MemberID);
+                        var m = repo.Single<Member>(o.MemberID);
 
                         if (m == null || !m.IsActive)
                         {
@@ -151,7 +151,7 @@ namespace iArsenal.Web
                                 {
                                     ddlNation.SelectedValue = m.Nation;
 
-                                    string[] region = m.Region.Split('|');
+                                    var region = m.Region.Split('|');
                                     if (region.Length > 1)
                                     {
                                         tbRegion1.Text = region[0];
@@ -193,7 +193,7 @@ namespace iArsenal.Web
                         throw new Exception("此订单非当前用户订单");
                     }
 
-                    OrdrItmMatchTicket oi = o.OIMatchTicket;
+                    var oi = o.OIMatchTicket;
 
                     if (oi != null)
                     {
@@ -208,7 +208,7 @@ namespace iArsenal.Web
                 else
                 {
                     //Fill Member draft information into textbox
-                    Member m = repo.Single<Member>(this.MID);
+                    var m = repo.Single<Member>(this.MID);
 
                     #region Set Member Nation & Region
                     if (!string.IsNullOrEmpty(m.Nation))
@@ -217,7 +217,7 @@ namespace iArsenal.Web
                         {
                             ddlNation.SelectedValue = m.Nation;
 
-                            string[] region = m.Region.Split('|');
+                            var region = m.Region.Split('|');
                             if (region.Length > 1)
                             {
                                 tbRegion1.Text = region[0];
@@ -262,10 +262,10 @@ namespace iArsenal.Web
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
-            using (SqlConnection conn = new SqlConnection(DataAccess.ConnectString))
+            using (var conn = new SqlConnection(DataAccess.ConnectString))
             {
                 conn.Open();
-                SqlTransaction trans = conn.BeginTransaction();
+                var trans = conn.BeginTransaction();
 
                 try
                 {
@@ -275,18 +275,18 @@ namespace iArsenal.Web
                         Response.Clear();
                     }
 
-                    MatchTicket mt = MatchTicket.Cache.Load(MatchGuid);
+                    var mt = MatchTicket.Cache.Load(MatchGuid);
 
                     if (mt == null)
                     {
                         throw new Exception("无相关比赛信息，请联系管理员");
                     }
 
-                    Member m = repo.Single<Member>(this.MID);
+                    var m = repo.Single<Member>(this.MID);
 
                     // Update Member Information
                     #region Get Member Nation & Region
-                    string _nation = ddlNation.SelectedValue;
+                    var _nation = ddlNation.SelectedValue;
 
                     if (!string.IsNullOrEmpty(_nation))
                     {
@@ -362,8 +362,8 @@ namespace iArsenal.Web
                     repo.Update(m);
 
                     // New Order
-                    Order o = new Order();
-                    int _newID = int.MinValue;
+                    var o = new Order();
+                    var _newID = int.MinValue;
 
                     if (OrderID > 0)
                     {
@@ -406,17 +406,17 @@ namespace iArsenal.Web
                     }
 
                     //New Order Items
-                    Product p = Product.Cache.Load(mt.ProductCode);
+                    var p = Product.Cache.Load(mt.ProductCode);
 
                     if (p == null)
                         throw new Exception("无相关商品信息，请联系管理员");
 
-                    OrdrItmMatchTicket oi = new OrdrItmMatchTicket();
+                    var oi = new OrdrItmMatchTicket();
 
                     //Remove Order Item of this Order
                     if (OrderID > 0 && o.ID.Equals(OrderID))
                     {
-                        int count = repo.Query<OrderItem>(x => x.OrderID == OrderID).Delete(trans);
+                        var count = repo.Query<OrderItem>(x => x.OrderID == OrderID).Delete(trans);
                     }
 
                     // Genernate Travel Date

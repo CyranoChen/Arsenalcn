@@ -5,7 +5,6 @@ using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Arsenalcn.Core.Logger;
-using Arsenalcn.Core.Utility;
 
 namespace Arsenalcn.Core.Tests
 {
@@ -16,7 +15,7 @@ namespace Arsenalcn.Core.Tests
         [TestMethod()]
         public void Logger_Test()
         {
-            string sql = "INSERT XXX INTO XXX";
+            var sql = "INSERT XXX INTO XXX";
 
             ILog log1 = new DaoLog();
 
@@ -34,8 +33,8 @@ namespace Arsenalcn.Core.Tests
         {
             try
             {
-                string _str = "0000-0000";
-                Guid g = new Guid(_str);
+                var _str = "0000-0000";
+                var g = new Guid(_str);
             }
             catch (Exception ex)
             {

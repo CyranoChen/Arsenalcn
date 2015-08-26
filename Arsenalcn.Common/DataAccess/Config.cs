@@ -9,11 +9,11 @@ namespace Arsenalcn.Common.DataAccess
     {
         public static DataRow GetConfigByID(string configSystem, string configKey)
         {
-            string sql = "SELECT ConfigSystem, ConfigKey, ConfigValue FROM dbo.Arsenalcn_Config WHERE ConfigSystem = @configSystem AND ConfigKey = @configKey";
+            var sql = "SELECT ConfigSystem, ConfigKey, ConfigValue FROM dbo.Arsenalcn_Config WHERE ConfigSystem = @configSystem AND ConfigKey = @configKey";
 
             SqlParameter[] para = { new SqlParameter("@configSystem", configSystem), new SqlParameter("@configKey", configKey) };
 
-            DataSet ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql, para);
+            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql, para);
 
             if (ds.Tables[0].Rows.Count == 0)
                 return null;
@@ -23,7 +23,7 @@ namespace Arsenalcn.Common.DataAccess
 
         public static void UpdateConfig(string configSystem, string configKey, string configValue, SqlTransaction trans)
         {
-            string sql = "UPDATE dbo.Arsenalcn_Config SET ConfigValue = @configValue WHERE ConfigSystem = @configSystem AND ConfigKey = @configKey";
+            var sql = "UPDATE dbo.Arsenalcn_Config SET ConfigValue = @configValue WHERE ConfigSystem = @configSystem AND ConfigKey = @configKey";
 
             SqlParameter[] para = { new SqlParameter("@configSystem", configSystem), new SqlParameter("@configKey", configKey), new SqlParameter("@configValue", configValue) };
 
@@ -35,7 +35,7 @@ namespace Arsenalcn.Common.DataAccess
 
         public static void InsertConfig(string configSystem, string configKey, string configValue, SqlTransaction trans)
         {
-            string sql = "INSERT INTO dbo.Arsenalcn_Config (ConfigSystem, ConfigKey, ConfigValue) VALUES (@configSystem, @configKey, @configValue)";
+            var sql = "INSERT INTO dbo.Arsenalcn_Config (ConfigSystem, ConfigKey, ConfigValue) VALUES (@configSystem, @configKey, @configValue)";
 
             SqlParameter[] para = { new SqlParameter("@configSystem", configSystem), new SqlParameter("@configKey", configKey), new SqlParameter("@configValue", configValue) };
 
@@ -47,7 +47,7 @@ namespace Arsenalcn.Common.DataAccess
 
         public static void DeleteConfig(string configSystem, string configKey)
         {
-            string sql = "DELETE dbo.Arsenalcn_Config WHERE ConfigSystem = @configSystem AND ConfigKey = @configKey";
+            var sql = "DELETE dbo.Arsenalcn_Config WHERE ConfigSystem = @configSystem AND ConfigKey = @configKey";
 
             SqlParameter[] para = { new SqlParameter("@configSystem", configSystem), new SqlParameter("@configKey", configKey) };
 
@@ -56,9 +56,9 @@ namespace Arsenalcn.Common.DataAccess
 
         public static DataTable GetConfigs()
         {
-            string sql = @"SELECT * FROM dbo.Arsenalcn_Config ORDER BY ConfigSystem, ConfigKey";
+            var sql = @"SELECT * FROM dbo.Arsenalcn_Config ORDER BY ConfigSystem, ConfigKey";
 
-            DataSet ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql);
+            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql);
 
             if (ds.Tables[0].Rows.Count == 0)
                 return null;

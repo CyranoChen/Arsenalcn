@@ -45,7 +45,7 @@ namespace Arsenalcn.ClubSys.Web.Common
             //Set Master Page Info
             if (this.Master != null && this.Master is DefaultMaster)
             {
-                DefaultMaster masterPage = this.Master as DefaultMaster;
+                var masterPage = this.Master as DefaultMaster;
 
                 masterPage.UserID = userid;
                 masterPage.UserName = username;

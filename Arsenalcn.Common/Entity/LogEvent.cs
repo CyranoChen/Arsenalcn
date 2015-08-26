@@ -30,7 +30,7 @@ namespace Arsenalcn.Common.Entity
 
         public void Select()
         {
-            DataRow dr = DataAccess.LogEvent.GetLogEventByID(LogID);
+            var dr = DataAccess.LogEvent.GetLogEventByID(LogID);
 
             if (dr != null)
                 InitLogEvent(dr);
@@ -53,8 +53,8 @@ namespace Arsenalcn.Common.Entity
 
         public static List<LogEvent> GetLogEvents()
         {
-            DataTable dt = DataAccess.LogEvent.GetLogEvents();
-            List<LogEvent> list = new List<LogEvent>();
+            var dt = DataAccess.LogEvent.GetLogEvents();
+            var list = new List<LogEvent>();
 
             if (dt != null)
             {
@@ -69,7 +69,7 @@ namespace Arsenalcn.Common.Entity
 
         public static void Logging(LogEventType let, string message, string errorStackTrace, string errorParam)
         {
-            LogEvent l = new LogEvent();
+            var l = new LogEvent();
             l.EventType = let;
             l.Message = message;
             l.ErrorStackTrace = errorStackTrace;

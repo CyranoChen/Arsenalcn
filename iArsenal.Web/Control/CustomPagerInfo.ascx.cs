@@ -20,9 +20,9 @@ namespace iArsenal.Web.Control
 
         protected void tbPagerGoto_Click(object sender, EventArgs e)
         {
-            DataNavigatorEventArgs args = new DataNavigatorEventArgs();
+            var args = new DataNavigatorEventArgs();
 
-            int i = 0;
+            var i = 0;
             if (!string.IsNullOrEmpty(tbPagerIndex.Text.Trim()) && int.TryParse(tbPagerIndex.Text.Trim(), out i))
                 args.PageIndex = i - 1;
 

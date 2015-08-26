@@ -59,7 +59,7 @@ namespace Microsoft.ApplicationBlocks.Data
             if (command == null) throw new ArgumentNullException("command");
             if (commandParameters != null)
             {
-                foreach (SqlParameter p in commandParameters)
+                foreach (var p in commandParameters)
                 {
                     if (p != null)
                     {
@@ -89,17 +89,15 @@ namespace Microsoft.ApplicationBlocks.Data
                 return;
             }
 
-            int i = 0;
+            var i = 0;
             // Set the parameters values
-            foreach (SqlParameter commandParameter in commandParameters)
+            foreach (var commandParameter in commandParameters)
             {
                 // Check the parameter name
                 if (commandParameter.ParameterName == null ||
                     commandParameter.ParameterName.Length <= 1)
                     throw new Exception(
-                        string.Format(
-                            "Please provide a valid parameter name on the parameter #{0}, the ParameterName property has the following value: '{1}'.",
-                            i, commandParameter.ParameterName));
+                        $"Please provide a valid parameter name on the parameter #{i}, the ParameterName property has the following value: '{commandParameter.ParameterName}'.");
                 if (dataRow.Table.Columns.IndexOf(commandParameter.ParameterName.Substring(1)) != -1)
                     commandParameter.Value = dataRow[commandParameter.ParameterName.Substring(1)];
                 i++;
@@ -132,7 +130,7 @@ namespace Microsoft.ApplicationBlocks.Data
                 // If the current array value derives from IDbDataParameter, then assign its Value property
                 if (parameterValues[i] is IDbDataParameter)
                 {
-                    IDbDataParameter paramInstance = (IDbDataParameter)parameterValues[i];
+                    var paramInstance = (IDbDataParameter)parameterValues[i];
                     if (paramInstance.Value == null)
                     {
                         commandParameters[i].Value = DBNull.Value;
@@ -201,7 +199,6 @@ namespace Microsoft.ApplicationBlocks.Data
             {
                 AttachParameters(command, commandParameters);
             }
-            return;
         }
 
         #endregion private utility methods & constructors
@@ -244,7 +241,7 @@ namespace Microsoft.ApplicationBlocks.Data
             if (connectionString == null || connectionString.Length == 0) throw new ArgumentNullException("connectionString");
 
             // Create & open a SqlConnection, and dispose of it after we are done
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(connectionString))
             {
                 connection.Open();
 
@@ -277,7 +274,7 @@ namespace Microsoft.ApplicationBlocks.Data
             if ((parameterValues != null) && (parameterValues.Length > 0))
             {
                 // Pull the parameters for this stored procedure from the parameter cache (or discover them & populate the cache)
-                SqlParameter[] commandParameters = SqlHelperParameterCache.GetSpParameterSet(connectionString, spName);
+                var commandParameters = SqlHelperParameterCache.GetSpParameterSet(connectionString, spName);
 
                 // Assign the provided values to these parameters based on parameter order
                 AssignParameterValues(commandParameters, parameterValues);
@@ -327,12 +324,12 @@ namespace Microsoft.ApplicationBlocks.Data
             if (connection == null) throw new ArgumentNullException("connection");
 
             // Create a command and prepare it for execution
-            SqlCommand cmd = new SqlCommand();
-            bool mustCloseConnection = false;
+            var cmd = new SqlCommand();
+            var mustCloseConnection = false;
             PrepareCommand(cmd, connection, (SqlTransaction)null, commandType, commandText, commandParameters, out mustCloseConnection);
 
             // Finally, execute the command
-            int retval = cmd.ExecuteNonQuery();
+            var retval = cmd.ExecuteNonQuery();
 
             // Detach the SqlParameters from the command object, so they can be used again
             cmd.Parameters.Clear();
@@ -365,7 +362,7 @@ namespace Microsoft.ApplicationBlocks.Data
             if ((parameterValues != null) && (parameterValues.Length > 0))
             {
                 // Pull the parameters for this stored procedure from the parameter cache (or discover them & populate the cache)
-                SqlParameter[] commandParameters = SqlHelperParameterCache.GetSpParameterSet(connection, spName);
+                var commandParameters = SqlHelperParameterCache.GetSpParameterSet(connection, spName);
 
                 // Assign the provided values to these parameters based on parameter order
                 AssignParameterValues(commandParameters, parameterValues);
@@ -416,12 +413,12 @@ namespace Microsoft.ApplicationBlocks.Data
             if (transaction != null && transaction.Connection == null) throw new ArgumentException("The transaction was rollbacked or commited, please provide an open transaction.", "transaction");
 
             // Create a command and prepare it for execution
-            SqlCommand cmd = new SqlCommand();
-            bool mustCloseConnection = false;
+            var cmd = new SqlCommand();
+            var mustCloseConnection = false;
             PrepareCommand(cmd, transaction.Connection, transaction, commandType, commandText, commandParameters, out mustCloseConnection);
 
             // Finally, execute the command
-            int retval = cmd.ExecuteNonQuery();
+            var retval = cmd.ExecuteNonQuery();
 
             // Detach the SqlParameters from the command object, so they can be used again
             cmd.Parameters.Clear();
@@ -453,7 +450,7 @@ namespace Microsoft.ApplicationBlocks.Data
             if ((parameterValues != null) && (parameterValues.Length > 0))
             {
                 // Pull the parameters for this stored procedure from the parameter cache (or discover them & populate the cache)
-                SqlParameter[] commandParameters = SqlHelperParameterCache.GetSpParameterSet(transaction.Connection, spName);
+                var commandParameters = SqlHelperParameterCache.GetSpParameterSet(transaction.Connection, spName);
 
                 // Assign the provided values to these parameters based on parameter order
                 AssignParameterValues(commandParameters, parameterValues);
@@ -508,7 +505,7 @@ namespace Microsoft.ApplicationBlocks.Data
             if (connectionString == null || connectionString.Length == 0) throw new ArgumentNullException("connectionString");
 
             // Create & open a SqlConnection, and dispose of it after we are done
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(connectionString))
             {
                 connection.Open();
 
@@ -541,7 +538,7 @@ namespace Microsoft.ApplicationBlocks.Data
             if ((parameterValues != null) && (parameterValues.Length > 0))
             {
                 // Pull the parameters for this stored procedure from the parameter cache (or discover them & populate the cache)
-                SqlParameter[] commandParameters = SqlHelperParameterCache.GetSpParameterSet(connectionString, spName);
+                var commandParameters = SqlHelperParameterCache.GetSpParameterSet(connectionString, spName);
 
                 // Assign the provided values to these parameters based on parameter order
                 AssignParameterValues(commandParameters, parameterValues);
@@ -591,14 +588,14 @@ namespace Microsoft.ApplicationBlocks.Data
             if (connection == null) throw new ArgumentNullException("connection");
 
             // Create a command and prepare it for execution
-            SqlCommand cmd = new SqlCommand();
-            bool mustCloseConnection = false;
+            var cmd = new SqlCommand();
+            var mustCloseConnection = false;
             PrepareCommand(cmd, connection, (SqlTransaction)null, commandType, commandText, commandParameters, out mustCloseConnection);
 
             // Create the DataAdapter & DataSet
-            using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+            using (var da = new SqlDataAdapter(cmd))
             {
-                DataSet ds = new DataSet();
+                var ds = new DataSet();
 
                 // Fill the DataSet using default values for DataTable names, etc
                 da.Fill(ds);
@@ -638,7 +635,7 @@ namespace Microsoft.ApplicationBlocks.Data
             if ((parameterValues != null) && (parameterValues.Length > 0))
             {
                 // Pull the parameters for this stored procedure from the parameter cache (or discover them & populate the cache)
-                SqlParameter[] commandParameters = SqlHelperParameterCache.GetSpParameterSet(connection, spName);
+                var commandParameters = SqlHelperParameterCache.GetSpParameterSet(connection, spName);
 
                 // Assign the provided values to these parameters based on parameter order
                 AssignParameterValues(commandParameters, parameterValues);
@@ -689,14 +686,14 @@ namespace Microsoft.ApplicationBlocks.Data
             if (transaction != null && transaction.Connection == null) throw new ArgumentException("The transaction was rollbacked or commited, please provide an open transaction.", "transaction");
 
             // Create a command and prepare it for execution
-            SqlCommand cmd = new SqlCommand();
-            bool mustCloseConnection = false;
+            var cmd = new SqlCommand();
+            var mustCloseConnection = false;
             PrepareCommand(cmd, transaction.Connection, transaction, commandType, commandText, commandParameters, out mustCloseConnection);
 
             // Create the DataAdapter & DataSet
-            using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+            using (var da = new SqlDataAdapter(cmd))
             {
-                DataSet ds = new DataSet();
+                var ds = new DataSet();
 
                 // Fill the DataSet using default values for DataTable names, etc
                 da.Fill(ds);
@@ -734,7 +731,7 @@ namespace Microsoft.ApplicationBlocks.Data
             if ((parameterValues != null) && (parameterValues.Length > 0))
             {
                 // Pull the parameters for this stored procedure from the parameter cache (or discover them & populate the cache)
-                SqlParameter[] commandParameters = SqlHelperParameterCache.GetSpParameterSet(transaction.Connection, spName);
+                var commandParameters = SqlHelperParameterCache.GetSpParameterSet(transaction.Connection, spName);
 
                 // Assign the provided values to these parameters based on parameter order
                 AssignParameterValues(commandParameters, parameterValues);
@@ -784,9 +781,9 @@ namespace Microsoft.ApplicationBlocks.Data
         {
             if (connection == null) throw new ArgumentNullException("connection");
 
-            bool mustCloseConnection = false;
+            var mustCloseConnection = false;
             // Create a command and prepare it for execution
-            SqlCommand cmd = new SqlCommand();
+            var cmd = new SqlCommand();
             try
             {
                 PrepareCommand(cmd, connection, transaction, commandType, commandText, commandParameters, out mustCloseConnection);
@@ -809,7 +806,7 @@ namespace Microsoft.ApplicationBlocks.Data
                 // when the reader is closed, so if the parameters are detached from the command
                 // then the SqlReader can´t set its values. 
                 // When this happen, the parameters can´t be used again in other command.
-                bool canClear = true;
+                var canClear = true;
                 foreach (SqlParameter commandParameter in cmd.Parameters)
                 {
                     if (commandParameter.Direction != ParameterDirection.Input)
@@ -906,7 +903,7 @@ namespace Microsoft.ApplicationBlocks.Data
             // If we receive parameter values, we need to figure out where they go
             if ((parameterValues != null) && (parameterValues.Length > 0))
             {
-                SqlParameter[] commandParameters = SqlHelperParameterCache.GetSpParameterSet(connectionString, spName);
+                var commandParameters = SqlHelperParameterCache.GetSpParameterSet(connectionString, spName);
 
                 AssignParameterValues(commandParameters, parameterValues);
 
@@ -978,7 +975,7 @@ namespace Microsoft.ApplicationBlocks.Data
             // If we receive parameter values, we need to figure out where they go
             if ((parameterValues != null) && (parameterValues.Length > 0))
             {
-                SqlParameter[] commandParameters = SqlHelperParameterCache.GetSpParameterSet(connection, spName);
+                var commandParameters = SqlHelperParameterCache.GetSpParameterSet(connection, spName);
 
                 AssignParameterValues(commandParameters, parameterValues);
 
@@ -1054,7 +1051,7 @@ namespace Microsoft.ApplicationBlocks.Data
             // If we receive parameter values, we need to figure out where they go
             if ((parameterValues != null) && (parameterValues.Length > 0))
             {
-                SqlParameter[] commandParameters = SqlHelperParameterCache.GetSpParameterSet(transaction.Connection, spName);
+                var commandParameters = SqlHelperParameterCache.GetSpParameterSet(transaction.Connection, spName);
 
                 AssignParameterValues(commandParameters, parameterValues);
 
@@ -1106,7 +1103,7 @@ namespace Microsoft.ApplicationBlocks.Data
         {
             if (connectionString == null || connectionString.Length == 0) throw new ArgumentNullException("connectionString");
             // Create & open a SqlConnection, and dispose of it after we are done
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(connectionString))
             {
                 connection.Open();
 
@@ -1139,7 +1136,7 @@ namespace Microsoft.ApplicationBlocks.Data
             if ((parameterValues != null) && (parameterValues.Length > 0))
             {
                 // Pull the parameters for this stored procedure from the parameter cache (or discover them & populate the cache)
-                SqlParameter[] commandParameters = SqlHelperParameterCache.GetSpParameterSet(connectionString, spName);
+                var commandParameters = SqlHelperParameterCache.GetSpParameterSet(connectionString, spName);
 
                 // Assign the provided values to these parameters based on parameter order
                 AssignParameterValues(commandParameters, parameterValues);
@@ -1189,13 +1186,13 @@ namespace Microsoft.ApplicationBlocks.Data
             if (connection == null) throw new ArgumentNullException("connection");
 
             // Create a command and prepare it for execution
-            SqlCommand cmd = new SqlCommand();
+            var cmd = new SqlCommand();
 
-            bool mustCloseConnection = false;
+            var mustCloseConnection = false;
             PrepareCommand(cmd, connection, (SqlTransaction)null, commandType, commandText, commandParameters, out mustCloseConnection);
 
             // Execute the command & return the results
-            object retval = cmd.ExecuteScalar();
+            var retval = cmd.ExecuteScalar();
 
             // Detach the SqlParameters from the command object, so they can be used again
             cmd.Parameters.Clear();
@@ -1230,7 +1227,7 @@ namespace Microsoft.ApplicationBlocks.Data
             if ((parameterValues != null) && (parameterValues.Length > 0))
             {
                 // Pull the parameters for this stored procedure from the parameter cache (or discover them & populate the cache)
-                SqlParameter[] commandParameters = SqlHelperParameterCache.GetSpParameterSet(connection, spName);
+                var commandParameters = SqlHelperParameterCache.GetSpParameterSet(connection, spName);
 
                 // Assign the provided values to these parameters based on parameter order
                 AssignParameterValues(commandParameters, parameterValues);
@@ -1281,12 +1278,12 @@ namespace Microsoft.ApplicationBlocks.Data
             if (transaction != null && transaction.Connection == null) throw new ArgumentException("The transaction was rollbacked or commited, please provide an open transaction.", "transaction");
 
             // Create a command and prepare it for execution
-            SqlCommand cmd = new SqlCommand();
-            bool mustCloseConnection = false;
+            var cmd = new SqlCommand();
+            var mustCloseConnection = false;
             PrepareCommand(cmd, transaction.Connection, transaction, commandType, commandText, commandParameters, out mustCloseConnection);
 
             // Execute the command & return the results
-            object retval = cmd.ExecuteScalar();
+            var retval = cmd.ExecuteScalar();
 
             // Detach the SqlParameters from the command object, so they can be used again
             cmd.Parameters.Clear();
@@ -1318,7 +1315,7 @@ namespace Microsoft.ApplicationBlocks.Data
             if ((parameterValues != null) && (parameterValues.Length > 0))
             {
                 // PPull the parameters for this stored procedure from the parameter cache (or discover them & populate the cache)
-                SqlParameter[] commandParameters = SqlHelperParameterCache.GetSpParameterSet(transaction.Connection, spName);
+                var commandParameters = SqlHelperParameterCache.GetSpParameterSet(transaction.Connection, spName);
 
                 // Assign the provided values to these parameters based on parameter order
                 AssignParameterValues(commandParameters, parameterValues);
@@ -1370,15 +1367,15 @@ namespace Microsoft.ApplicationBlocks.Data
         {
             if (connection == null) throw new ArgumentNullException("connection");
 
-            bool mustCloseConnection = false;
+            var mustCloseConnection = false;
             // Create a command and prepare it for execution
-            SqlCommand cmd = new SqlCommand();
+            var cmd = new SqlCommand();
             try
             {
                 PrepareCommand(cmd, connection, (SqlTransaction)null, commandType, commandText, commandParameters, out mustCloseConnection);
 
                 // Create the DataAdapter & DataSet
-                XmlReader retval = cmd.ExecuteXmlReader();
+                var retval = cmd.ExecuteXmlReader();
 
                 // Detach the SqlParameters from the command object, so they can be used again
                 cmd.Parameters.Clear();
@@ -1417,7 +1414,7 @@ namespace Microsoft.ApplicationBlocks.Data
             if ((parameterValues != null) && (parameterValues.Length > 0))
             {
                 // Pull the parameters for this stored procedure from the parameter cache (or discover them & populate the cache)
-                SqlParameter[] commandParameters = SqlHelperParameterCache.GetSpParameterSet(connection, spName);
+                var commandParameters = SqlHelperParameterCache.GetSpParameterSet(connection, spName);
 
                 // Assign the provided values to these parameters based on parameter order
                 AssignParameterValues(commandParameters, parameterValues);
@@ -1468,12 +1465,12 @@ namespace Microsoft.ApplicationBlocks.Data
             if (transaction != null && transaction.Connection == null) throw new ArgumentException("The transaction was rollbacked or commited, please provide an open transaction.", "transaction");
 
             // Create a command and prepare it for execution
-            SqlCommand cmd = new SqlCommand();
-            bool mustCloseConnection = false;
+            var cmd = new SqlCommand();
+            var mustCloseConnection = false;
             PrepareCommand(cmd, transaction.Connection, transaction, commandType, commandText, commandParameters, out mustCloseConnection);
 
             // Create the DataAdapter & DataSet
-            XmlReader retval = cmd.ExecuteXmlReader();
+            var retval = cmd.ExecuteXmlReader();
 
             // Detach the SqlParameters from the command object, so they can be used again
             cmd.Parameters.Clear();
@@ -1505,7 +1502,7 @@ namespace Microsoft.ApplicationBlocks.Data
             if ((parameterValues != null) && (parameterValues.Length > 0))
             {
                 // Pull the parameters for this stored procedure from the parameter cache (or discover them & populate the cache)
-                SqlParameter[] commandParameters = SqlHelperParameterCache.GetSpParameterSet(transaction.Connection, spName);
+                var commandParameters = SqlHelperParameterCache.GetSpParameterSet(transaction.Connection, spName);
 
                 // Assign the provided values to these parameters based on parameter order
                 AssignParameterValues(commandParameters, parameterValues);
@@ -1543,7 +1540,7 @@ namespace Microsoft.ApplicationBlocks.Data
             if (dataSet == null) throw new ArgumentNullException("dataSet");
 
             // Create & open a SqlConnection, and dispose of it after we are done
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(connectionString))
             {
                 connection.Open();
 
@@ -1575,7 +1572,7 @@ namespace Microsoft.ApplicationBlocks.Data
             if (connectionString == null || connectionString.Length == 0) throw new ArgumentNullException("connectionString");
             if (dataSet == null) throw new ArgumentNullException("dataSet");
             // Create & open a SqlConnection, and dispose of it after we are done
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(connectionString))
             {
                 connection.Open();
 
@@ -1609,7 +1606,7 @@ namespace Microsoft.ApplicationBlocks.Data
             if (connectionString == null || connectionString.Length == 0) throw new ArgumentNullException("connectionString");
             if (dataSet == null) throw new ArgumentNullException("dataSet");
             // Create & open a SqlConnection, and dispose of it after we are done
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(connectionString))
             {
                 connection.Open();
 
@@ -1691,7 +1688,7 @@ namespace Microsoft.ApplicationBlocks.Data
             if ((parameterValues != null) && (parameterValues.Length > 0))
             {
                 // Pull the parameters for this stored procedure from the parameter cache (or discover them & populate the cache)
-                SqlParameter[] commandParameters = SqlHelperParameterCache.GetSpParameterSet(connection, spName);
+                var commandParameters = SqlHelperParameterCache.GetSpParameterSet(connection, spName);
 
                 // Assign the provided values to these parameters based on parameter order
                 AssignParameterValues(commandParameters, parameterValues);
@@ -1781,7 +1778,7 @@ namespace Microsoft.ApplicationBlocks.Data
             if ((parameterValues != null) && (parameterValues.Length > 0))
             {
                 // Pull the parameters for this stored procedure from the parameter cache (or discover them & populate the cache)
-                SqlParameter[] commandParameters = SqlHelperParameterCache.GetSpParameterSet(transaction.Connection, spName);
+                var commandParameters = SqlHelperParameterCache.GetSpParameterSet(transaction.Connection, spName);
 
                 // Assign the provided values to these parameters based on parameter order
                 AssignParameterValues(commandParameters, parameterValues);
@@ -1821,19 +1818,19 @@ namespace Microsoft.ApplicationBlocks.Data
             if (dataSet == null) throw new ArgumentNullException("dataSet");
 
             // Create a command and prepare it for execution
-            SqlCommand command = new SqlCommand();
-            bool mustCloseConnection = false;
+            var command = new SqlCommand();
+            var mustCloseConnection = false;
             PrepareCommand(command, connection, transaction, commandType, commandText, commandParameters, out mustCloseConnection);
 
             // Create the DataAdapter & DataSet
-            using (SqlDataAdapter dataAdapter = new SqlDataAdapter(command))
+            using (var dataAdapter = new SqlDataAdapter(command))
             {
 
                 // Add the table mappings specified by the user
                 if (tableNames != null && tableNames.Length > 0)
                 {
-                    string tableName = "Table";
-                    for (int index = 0; index < tableNames.Length; index++)
+                    var tableName = "Table";
+                    for (var index = 0; index < tableNames.Length; index++)
                     {
                         if (tableNames[index] == null || tableNames[index].Length == 0) throw new ArgumentException("The tableNames parameter must contain a list of tables, a value was provided as null or empty string.", "tableNames");
                         dataAdapter.TableMappings.Add(tableName, tableNames[index]);
@@ -1874,7 +1871,7 @@ namespace Microsoft.ApplicationBlocks.Data
             if (tableName == null || tableName.Length == 0) throw new ArgumentNullException("tableName");
 
             // Create a SqlDataAdapter, and dispose of it after we are done
-            using (SqlDataAdapter dataAdapter = new SqlDataAdapter())
+            using (var dataAdapter = new SqlDataAdapter())
             {
                 // Set the data adapter commands
                 dataAdapter.UpdateCommand = updateCommand;
@@ -1909,17 +1906,17 @@ namespace Microsoft.ApplicationBlocks.Data
             if (spName == null || spName.Length == 0) throw new ArgumentNullException("spName");
 
             // Create a SqlCommand
-            SqlCommand cmd = new SqlCommand(spName, connection);
+            var cmd = new SqlCommand(spName, connection);
             cmd.CommandType = CommandType.StoredProcedure;
 
             // If we receive parameter values, we need to figure out where they go
             if ((sourceColumns != null) && (sourceColumns.Length > 0))
             {
                 // Pull the parameters for this stored procedure from the parameter cache (or discover them & populate the cache)
-                SqlParameter[] commandParameters = SqlHelperParameterCache.GetSpParameterSet(connection, spName);
+                var commandParameters = SqlHelperParameterCache.GetSpParameterSet(connection, spName);
 
                 // Assign the provided source columns to these parameters based on parameter order
-                for (int index = 0; index < sourceColumns.Length; index++)
+                for (var index = 0; index < sourceColumns.Length; index++)
                     commandParameters[index].SourceColumn = sourceColumns[index];
 
                 // Attach the discovered parameters to the SqlCommand object
@@ -1950,16 +1947,16 @@ namespace Microsoft.ApplicationBlocks.Data
             if (dataRow != null && dataRow.ItemArray.Length > 0)
             {
                 // Pull the parameters for this stored procedure from the parameter cache (or discover them & populate the cache)
-                SqlParameter[] commandParameters = SqlHelperParameterCache.GetSpParameterSet(connectionString, spName);
+                var commandParameters = SqlHelperParameterCache.GetSpParameterSet(connectionString, spName);
 
                 // Set the parameters values
                 AssignParameterValues(commandParameters, dataRow);
 
-                return SqlHelper.ExecuteNonQuery(connectionString, CommandType.StoredProcedure, spName, commandParameters);
+                return ExecuteNonQuery(connectionString, CommandType.StoredProcedure, spName, commandParameters);
             }
             else
             {
-                return SqlHelper.ExecuteNonQuery(connectionString, CommandType.StoredProcedure, spName);
+                return ExecuteNonQuery(connectionString, CommandType.StoredProcedure, spName);
             }
         }
 
@@ -1982,16 +1979,16 @@ namespace Microsoft.ApplicationBlocks.Data
             if (dataRow != null && dataRow.ItemArray.Length > 0)
             {
                 // Pull the parameters for this stored procedure from the parameter cache (or discover them & populate the cache)
-                SqlParameter[] commandParameters = SqlHelperParameterCache.GetSpParameterSet(connection, spName);
+                var commandParameters = SqlHelperParameterCache.GetSpParameterSet(connection, spName);
 
                 // Set the parameters values
                 AssignParameterValues(commandParameters, dataRow);
 
-                return SqlHelper.ExecuteNonQuery(connection, CommandType.StoredProcedure, spName, commandParameters);
+                return ExecuteNonQuery(connection, CommandType.StoredProcedure, spName, commandParameters);
             }
             else
             {
-                return SqlHelper.ExecuteNonQuery(connection, CommandType.StoredProcedure, spName);
+                return ExecuteNonQuery(connection, CommandType.StoredProcedure, spName);
             }
         }
 
@@ -2015,16 +2012,16 @@ namespace Microsoft.ApplicationBlocks.Data
             if (dataRow != null && dataRow.ItemArray.Length > 0)
             {
                 // Pull the parameters for this stored procedure from the parameter cache (or discover them & populate the cache)
-                SqlParameter[] commandParameters = SqlHelperParameterCache.GetSpParameterSet(transaction.Connection, spName);
+                var commandParameters = SqlHelperParameterCache.GetSpParameterSet(transaction.Connection, spName);
 
                 // Set the parameters values
                 AssignParameterValues(commandParameters, dataRow);
 
-                return SqlHelper.ExecuteNonQuery(transaction, CommandType.StoredProcedure, spName, commandParameters);
+                return ExecuteNonQuery(transaction, CommandType.StoredProcedure, spName, commandParameters);
             }
             else
             {
-                return SqlHelper.ExecuteNonQuery(transaction, CommandType.StoredProcedure, spName);
+                return ExecuteNonQuery(transaction, CommandType.StoredProcedure, spName);
             }
         }
         #endregion
@@ -2049,16 +2046,16 @@ namespace Microsoft.ApplicationBlocks.Data
             if (dataRow != null && dataRow.ItemArray.Length > 0)
             {
                 // Pull the parameters for this stored procedure from the parameter cache (or discover them & populate the cache)
-                SqlParameter[] commandParameters = SqlHelperParameterCache.GetSpParameterSet(connectionString, spName);
+                var commandParameters = SqlHelperParameterCache.GetSpParameterSet(connectionString, spName);
 
                 // Set the parameters values
                 AssignParameterValues(commandParameters, dataRow);
 
-                return SqlHelper.ExecuteDataset(connectionString, CommandType.StoredProcedure, spName, commandParameters);
+                return ExecuteDataset(connectionString, CommandType.StoredProcedure, spName, commandParameters);
             }
             else
             {
-                return SqlHelper.ExecuteDataset(connectionString, CommandType.StoredProcedure, spName);
+                return ExecuteDataset(connectionString, CommandType.StoredProcedure, spName);
             }
         }
 
@@ -2081,16 +2078,16 @@ namespace Microsoft.ApplicationBlocks.Data
             if (dataRow != null && dataRow.ItemArray.Length > 0)
             {
                 // Pull the parameters for this stored procedure from the parameter cache (or discover them & populate the cache)
-                SqlParameter[] commandParameters = SqlHelperParameterCache.GetSpParameterSet(connection, spName);
+                var commandParameters = SqlHelperParameterCache.GetSpParameterSet(connection, spName);
 
                 // Set the parameters values
                 AssignParameterValues(commandParameters, dataRow);
 
-                return SqlHelper.ExecuteDataset(connection, CommandType.StoredProcedure, spName, commandParameters);
+                return ExecuteDataset(connection, CommandType.StoredProcedure, spName, commandParameters);
             }
             else
             {
-                return SqlHelper.ExecuteDataset(connection, CommandType.StoredProcedure, spName);
+                return ExecuteDataset(connection, CommandType.StoredProcedure, spName);
             }
         }
 
@@ -2114,16 +2111,16 @@ namespace Microsoft.ApplicationBlocks.Data
             if (dataRow != null && dataRow.ItemArray.Length > 0)
             {
                 // Pull the parameters for this stored procedure from the parameter cache (or discover them & populate the cache)
-                SqlParameter[] commandParameters = SqlHelperParameterCache.GetSpParameterSet(transaction.Connection, spName);
+                var commandParameters = SqlHelperParameterCache.GetSpParameterSet(transaction.Connection, spName);
 
                 // Set the parameters values
                 AssignParameterValues(commandParameters, dataRow);
 
-                return SqlHelper.ExecuteDataset(transaction, CommandType.StoredProcedure, spName, commandParameters);
+                return ExecuteDataset(transaction, CommandType.StoredProcedure, spName, commandParameters);
             }
             else
             {
-                return SqlHelper.ExecuteDataset(transaction, CommandType.StoredProcedure, spName);
+                return ExecuteDataset(transaction, CommandType.StoredProcedure, spName);
             }
         }
 
@@ -2149,16 +2146,16 @@ namespace Microsoft.ApplicationBlocks.Data
             if (dataRow != null && dataRow.ItemArray.Length > 0)
             {
                 // Pull the parameters for this stored procedure from the parameter cache (or discover them & populate the cache)
-                SqlParameter[] commandParameters = SqlHelperParameterCache.GetSpParameterSet(connectionString, spName);
+                var commandParameters = SqlHelperParameterCache.GetSpParameterSet(connectionString, spName);
 
                 // Set the parameters values
                 AssignParameterValues(commandParameters, dataRow);
 
-                return SqlHelper.ExecuteReader(connectionString, CommandType.StoredProcedure, spName, commandParameters);
+                return ExecuteReader(connectionString, CommandType.StoredProcedure, spName, commandParameters);
             }
             else
             {
-                return SqlHelper.ExecuteReader(connectionString, CommandType.StoredProcedure, spName);
+                return ExecuteReader(connectionString, CommandType.StoredProcedure, spName);
             }
         }
 
@@ -2182,16 +2179,16 @@ namespace Microsoft.ApplicationBlocks.Data
             if (dataRow != null && dataRow.ItemArray.Length > 0)
             {
                 // Pull the parameters for this stored procedure from the parameter cache (or discover them & populate the cache)
-                SqlParameter[] commandParameters = SqlHelperParameterCache.GetSpParameterSet(connection, spName);
+                var commandParameters = SqlHelperParameterCache.GetSpParameterSet(connection, spName);
 
                 // Set the parameters values
                 AssignParameterValues(commandParameters, dataRow);
 
-                return SqlHelper.ExecuteReader(connection, CommandType.StoredProcedure, spName, commandParameters);
+                return ExecuteReader(connection, CommandType.StoredProcedure, spName, commandParameters);
             }
             else
             {
-                return SqlHelper.ExecuteReader(connection, CommandType.StoredProcedure, spName);
+                return ExecuteReader(connection, CommandType.StoredProcedure, spName);
             }
         }
 
@@ -2215,16 +2212,16 @@ namespace Microsoft.ApplicationBlocks.Data
             if (dataRow != null && dataRow.ItemArray.Length > 0)
             {
                 // Pull the parameters for this stored procedure from the parameter cache (or discover them & populate the cache)
-                SqlParameter[] commandParameters = SqlHelperParameterCache.GetSpParameterSet(transaction.Connection, spName);
+                var commandParameters = SqlHelperParameterCache.GetSpParameterSet(transaction.Connection, spName);
 
                 // Set the parameters values
                 AssignParameterValues(commandParameters, dataRow);
 
-                return SqlHelper.ExecuteReader(transaction, CommandType.StoredProcedure, spName, commandParameters);
+                return ExecuteReader(transaction, CommandType.StoredProcedure, spName, commandParameters);
             }
             else
             {
-                return SqlHelper.ExecuteReader(transaction, CommandType.StoredProcedure, spName);
+                return ExecuteReader(transaction, CommandType.StoredProcedure, spName);
             }
         }
         #endregion
@@ -2249,16 +2246,16 @@ namespace Microsoft.ApplicationBlocks.Data
             if (dataRow != null && dataRow.ItemArray.Length > 0)
             {
                 // Pull the parameters for this stored procedure from the parameter cache (or discover them & populate the cache)
-                SqlParameter[] commandParameters = SqlHelperParameterCache.GetSpParameterSet(connectionString, spName);
+                var commandParameters = SqlHelperParameterCache.GetSpParameterSet(connectionString, spName);
 
                 // Set the parameters values
                 AssignParameterValues(commandParameters, dataRow);
 
-                return SqlHelper.ExecuteScalar(connectionString, CommandType.StoredProcedure, spName, commandParameters);
+                return ExecuteScalar(connectionString, CommandType.StoredProcedure, spName, commandParameters);
             }
             else
             {
-                return SqlHelper.ExecuteScalar(connectionString, CommandType.StoredProcedure, spName);
+                return ExecuteScalar(connectionString, CommandType.StoredProcedure, spName);
             }
         }
 
@@ -2281,16 +2278,16 @@ namespace Microsoft.ApplicationBlocks.Data
             if (dataRow != null && dataRow.ItemArray.Length > 0)
             {
                 // Pull the parameters for this stored procedure from the parameter cache (or discover them & populate the cache)
-                SqlParameter[] commandParameters = SqlHelperParameterCache.GetSpParameterSet(connection, spName);
+                var commandParameters = SqlHelperParameterCache.GetSpParameterSet(connection, spName);
 
                 // Set the parameters values
                 AssignParameterValues(commandParameters, dataRow);
 
-                return SqlHelper.ExecuteScalar(connection, CommandType.StoredProcedure, spName, commandParameters);
+                return ExecuteScalar(connection, CommandType.StoredProcedure, spName, commandParameters);
             }
             else
             {
-                return SqlHelper.ExecuteScalar(connection, CommandType.StoredProcedure, spName);
+                return ExecuteScalar(connection, CommandType.StoredProcedure, spName);
             }
         }
 
@@ -2314,16 +2311,16 @@ namespace Microsoft.ApplicationBlocks.Data
             if (dataRow != null && dataRow.ItemArray.Length > 0)
             {
                 // Pull the parameters for this stored procedure from the parameter cache (or discover them & populate the cache)
-                SqlParameter[] commandParameters = SqlHelperParameterCache.GetSpParameterSet(transaction.Connection, spName);
+                var commandParameters = SqlHelperParameterCache.GetSpParameterSet(transaction.Connection, spName);
 
                 // Set the parameters values
                 AssignParameterValues(commandParameters, dataRow);
 
-                return SqlHelper.ExecuteScalar(transaction, CommandType.StoredProcedure, spName, commandParameters);
+                return ExecuteScalar(transaction, CommandType.StoredProcedure, spName, commandParameters);
             }
             else
             {
-                return SqlHelper.ExecuteScalar(transaction, CommandType.StoredProcedure, spName);
+                return ExecuteScalar(transaction, CommandType.StoredProcedure, spName);
             }
         }
         #endregion
@@ -2348,16 +2345,16 @@ namespace Microsoft.ApplicationBlocks.Data
             if (dataRow != null && dataRow.ItemArray.Length > 0)
             {
                 // Pull the parameters for this stored procedure from the parameter cache (or discover them & populate the cache)
-                SqlParameter[] commandParameters = SqlHelperParameterCache.GetSpParameterSet(connection, spName);
+                var commandParameters = SqlHelperParameterCache.GetSpParameterSet(connection, spName);
 
                 // Set the parameters values
                 AssignParameterValues(commandParameters, dataRow);
 
-                return SqlHelper.ExecuteXmlReader(connection, CommandType.StoredProcedure, spName, commandParameters);
+                return ExecuteXmlReader(connection, CommandType.StoredProcedure, spName, commandParameters);
             }
             else
             {
-                return SqlHelper.ExecuteXmlReader(connection, CommandType.StoredProcedure, spName);
+                return ExecuteXmlReader(connection, CommandType.StoredProcedure, spName);
             }
         }
 
@@ -2381,16 +2378,16 @@ namespace Microsoft.ApplicationBlocks.Data
             if (dataRow != null && dataRow.ItemArray.Length > 0)
             {
                 // Pull the parameters for this stored procedure from the parameter cache (or discover them & populate the cache)
-                SqlParameter[] commandParameters = SqlHelperParameterCache.GetSpParameterSet(transaction.Connection, spName);
+                var commandParameters = SqlHelperParameterCache.GetSpParameterSet(transaction.Connection, spName);
 
                 // Set the parameters values
                 AssignParameterValues(commandParameters, dataRow);
 
-                return SqlHelper.ExecuteXmlReader(transaction, CommandType.StoredProcedure, spName, commandParameters);
+                return ExecuteXmlReader(transaction, CommandType.StoredProcedure, spName, commandParameters);
             }
             else
             {
-                return SqlHelper.ExecuteXmlReader(transaction, CommandType.StoredProcedure, spName);
+                return ExecuteXmlReader(transaction, CommandType.StoredProcedure, spName);
             }
         }
         #endregion
@@ -2423,7 +2420,7 @@ namespace Microsoft.ApplicationBlocks.Data
             if (connection == null) throw new ArgumentNullException("connection");
             if (spName == null || spName.Length == 0) throw new ArgumentNullException("spName");
 
-            SqlCommand cmd = new SqlCommand(spName, connection);
+            var cmd = new SqlCommand(spName, connection);
             cmd.CommandType = CommandType.StoredProcedure;
 
             connection.Open();
@@ -2435,12 +2432,12 @@ namespace Microsoft.ApplicationBlocks.Data
                 cmd.Parameters.RemoveAt(0);
             }
 
-            SqlParameter[] discoveredParameters = new SqlParameter[cmd.Parameters.Count];
+            var discoveredParameters = new SqlParameter[cmd.Parameters.Count];
 
             cmd.Parameters.CopyTo(discoveredParameters, 0);
 
             // Init the parameters with a DBNull value
-            foreach (SqlParameter discoveredParameter in discoveredParameters)
+            foreach (var discoveredParameter in discoveredParameters)
             {
                 discoveredParameter.Value = DBNull.Value;
             }
@@ -2454,7 +2451,7 @@ namespace Microsoft.ApplicationBlocks.Data
         /// <returns></returns>
         private static SqlParameter[] CloneParameters(SqlParameter[] originalParameters)
         {
-            SqlParameter[] clonedParameters = new SqlParameter[originalParameters.Length];
+            var clonedParameters = new SqlParameter[originalParameters.Length];
 
             for (int i = 0, j = originalParameters.Length; i < j; i++)
             {
@@ -2479,7 +2476,7 @@ namespace Microsoft.ApplicationBlocks.Data
             if (connectionString == null || connectionString.Length == 0) throw new ArgumentNullException("connectionString");
             if (commandText == null || commandText.Length == 0) throw new ArgumentNullException("commandText");
 
-            string hashKey = connectionString + ":" + commandText;
+            var hashKey = connectionString + ":" + commandText;
 
             paramCache[hashKey] = commandParameters;
         }
@@ -2495,9 +2492,9 @@ namespace Microsoft.ApplicationBlocks.Data
             if (connectionString == null || connectionString.Length == 0) throw new ArgumentNullException("connectionString");
             if (commandText == null || commandText.Length == 0) throw new ArgumentNullException("commandText");
 
-            string hashKey = connectionString + ":" + commandText;
+            var hashKey = connectionString + ":" + commandText;
 
-            SqlParameter[] cachedParameters = paramCache[hashKey] as SqlParameter[];
+            var cachedParameters = paramCache[hashKey] as SqlParameter[];
             if (cachedParameters == null)
             {
                 return null;
@@ -2541,7 +2538,7 @@ namespace Microsoft.ApplicationBlocks.Data
             if (connectionString == null || connectionString.Length == 0) throw new ArgumentNullException("connectionString");
             if (spName == null || spName.Length == 0) throw new ArgumentNullException("spName");
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(connectionString))
             {
                 return GetSpParameterSetInternal(connection, spName, includeReturnValueParameter);
             }
@@ -2574,7 +2571,7 @@ namespace Microsoft.ApplicationBlocks.Data
         internal static SqlParameter[] GetSpParameterSet(SqlConnection connection, string spName, bool includeReturnValueParameter)
         {
             if (connection == null) throw new ArgumentNullException("connection");
-            using (SqlConnection clonedConnection = (SqlConnection)((ICloneable)connection).Clone())
+            using (var clonedConnection = (SqlConnection)((ICloneable)connection).Clone())
             {
                 return GetSpParameterSetInternal(clonedConnection, spName, includeReturnValueParameter);
             }
@@ -2592,14 +2589,14 @@ namespace Microsoft.ApplicationBlocks.Data
             if (connection == null) throw new ArgumentNullException("connection");
             if (spName == null || spName.Length == 0) throw new ArgumentNullException("spName");
 
-            string hashKey = connection.ConnectionString + ":" + spName + (includeReturnValueParameter ? ":include ReturnValue Parameter" : "");
+            var hashKey = connection.ConnectionString + ":" + spName + (includeReturnValueParameter ? ":include ReturnValue Parameter" : "");
 
             SqlParameter[] cachedParameters;
 
             cachedParameters = paramCache[hashKey] as SqlParameter[];
             if (cachedParameters == null)
             {
-                SqlParameter[] spParameters = DiscoverSpParameterSet(connection, spName, includeReturnValueParameter);
+                var spParameters = DiscoverSpParameterSet(connection, spName, includeReturnValueParameter);
                 paramCache[hashKey] = spParameters;
                 cachedParameters = spParameters;
             }

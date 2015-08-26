@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web.UI.WebControls;
 
 using Arsenalcn.Core;
@@ -42,8 +40,8 @@ namespace iArsenal.Web
         {
             var list = repo.All<Member>().FindAll(x =>
             {
-                Boolean returnValue = true;
-                string tmpString = string.Empty;
+                var returnValue = true;
+                var tmpString = string.Empty;
 
                 if (ViewState["Name"] != null)
                 {
@@ -86,7 +84,7 @@ namespace iArsenal.Web
             #region set GridView Selected PageIndex
             if (MemberID > 0)
             {
-                int i = list.FindIndex(x => x.ID.Equals(MemberID));
+                var i = list.FindIndex(x => x.ID.Equals(MemberID));
                 if (i >= 0)
                 {
                     gvMember.PageIndex = i / gvMember.PageSize;
@@ -196,9 +194,9 @@ namespace iArsenal.Web
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                Member m = e.Row.DataItem as Member;
+                var m = e.Row.DataItem as Member;
 
-                HyperLink hlName = e.Row.FindControl("hlName") as HyperLink;
+                var hlName = e.Row.FindControl("hlName") as HyperLink;
 
                 if (hlName != null)
                 {

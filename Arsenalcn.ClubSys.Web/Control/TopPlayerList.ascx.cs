@@ -1,17 +1,6 @@
 ﻿using System;
-using System.Collections;
-using System.Configuration;
 using System.Data;
-using System.Web;
-using System.Web.Security;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
-using System.Collections.Generic;
-
 using Arsenalcn.ClubSys.Service;
-using Arsenalcn.ClubSys.Entity;
 
 namespace Arsenalcn.ClubSys.Web.Control
 {
@@ -20,8 +9,8 @@ namespace Arsenalcn.ClubSys.Web.Control
         protected void Page_Load(object sender, EventArgs e)
         {
             #region Top Rp Player
-            int rank = 1;
-            DataTable dtTopRp = PlayerStrip.GetTopRpPlayers();
+            var rank = 1;
+            var dtTopRp = PlayerStrip.GetTopRpPlayers();
 
             if (dtTopRp != null)
             {
@@ -39,7 +28,7 @@ namespace Arsenalcn.ClubSys.Web.Control
 
             #region Top Card Player
             rank = 1;
-            DataTable dtTopCard = PlayerStrip.GetTopCardPlayers();
+            var dtTopCard = PlayerStrip.GetTopCardPlayers();
 
             if (dtTopCard != null)
             {
@@ -57,7 +46,7 @@ namespace Arsenalcn.ClubSys.Web.Control
 
             #region Top Video Player
             rank = 1;
-            DataTable dtTopVideo = PlayerStrip.GetTopVideoPlayers();
+            var dtTopVideo = PlayerStrip.GetTopVideoPlayers();
 
             if (dtTopVideo != null)
             {

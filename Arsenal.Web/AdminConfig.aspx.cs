@@ -34,13 +34,13 @@ namespace Arsenal.Web
 
         protected void gvSysConfig_RowUpdating(object sender, GridViewUpdateEventArgs e)
         {
-            TextBox tbConfigValue = gvSysConfig.Rows[gvSysConfig.EditIndex].Cells[1].Controls[0] as TextBox;
+            var tbConfigValue = gvSysConfig.Rows[gvSysConfig.EditIndex].Cells[1].Controls[0] as TextBox;
 
             if (tbConfigValue != null)
             {
                 try
                 {
-                    Config c = new Config();
+                    var c = new Config();
 
                     c.ConfigSystem = ConfigSystem.Arsenal;
                     c.ConfigKey = gvSysConfig.DataKeys[gvSysConfig.EditIndex].Value.ToString();

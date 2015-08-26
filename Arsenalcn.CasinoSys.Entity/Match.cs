@@ -15,7 +15,7 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public Match(Guid matchGuid)
         {
-            DataRow dr = DataAccess.Match.GetMatchByID(matchGuid);
+            var dr = DataAccess.Match.GetMatchByID(matchGuid);
 
             if (dr != null)
                 InitMatch(dr);
@@ -69,16 +69,16 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public void Insert(int userID, string username, float winRate, float drawRate, float loseRate)
         {
-            using (SqlConnection conn = SQLConn.GetConnection())
+            using (var conn = SQLConn.GetConnection())
             {
                 conn.Open();
-                SqlTransaction trans = conn.BeginTransaction();
+                var trans = conn.BeginTransaction();
                 try
                 {
                     DataAccess.Match.InsertMatch(MatchGuid, Home, Away, PlayTime, LeagueGuid, LeagueName, Round, GroupGuid, trans);
 
                     //add matchResult
-                    MatchResult itemMatchResult = (MatchResult)Entity.CasinoItem.CreateInstance(CasinoType.MatchResult);
+                    var itemMatchResult = (MatchResult)Entity.CasinoItem.CreateInstance(CasinoType.MatchResult);
                     itemMatchResult.MatchGuid = MatchGuid;
                     itemMatchResult.CreateTime = DateTime.Now;
                     itemMatchResult.PublishTime = DateTime.Now;
@@ -92,7 +92,7 @@ namespace Arsenalcn.CasinoSys.Entity
                     itemMatchResult.Save(trans);
 
                     //add singleChoice
-                    SingleChoice itemSingleChoice = (SingleChoice)Entity.CasinoItem.CreateInstance(CasinoType.SingleChoice);
+                    var itemSingleChoice = (SingleChoice)Entity.CasinoItem.CreateInstance(CasinoType.SingleChoice);
                     itemSingleChoice.MatchGuid = MatchGuid;
                     itemSingleChoice.CreateTime = DateTime.Now;
                     itemSingleChoice.PublishTime = DateTime.Now;
@@ -129,8 +129,8 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public static List<Match> GetMatchs()
         {
-            DataTable dt = DataAccess.Match.GetMatchs();
-            List<Match> list = new List<Match>();
+            var dt = DataAccess.Match.GetMatchs();
+            var list = new List<Match>();
 
             if (dt != null)
             {
@@ -150,27 +150,27 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public void ReturnBet()
         {
-            using (SqlConnection conn = SQLConn.GetConnection())
+            using (var conn = SQLConn.GetConnection())
             {
                 conn.Open();
-                SqlTransaction trans = conn.BeginTransaction();
+                var trans = conn.BeginTransaction();
                 try
                 {
-                    Guid? casinoItemGuid = DataAccess.CasinoItem.GetCasinoItemGuidByMatch(MatchGuid, (int)CasinoType.SingleChoice, trans);
+                    var casinoItemGuid = DataAccess.CasinoItem.GetCasinoItemGuidByMatch(MatchGuid, (int)CasinoType.SingleChoice, trans);
                     if (casinoItemGuid.HasValue)
                     {
-                        CasinoItem item = CasinoItem.GetCasinoItem(casinoItemGuid.Value);
-                        Banker banker = new Banker(item.BankerID);
+                        var item = CasinoItem.GetCasinoItem(casinoItemGuid.Value);
+                        var banker = new Banker(item.BankerID);
 
-                        DataTable dtMatchBet = DataAccess.Bet.GetMatchAllBet(MatchGuid);
+                        var dtMatchBet = DataAccess.Bet.GetMatchAllBet(MatchGuid);
 
-                        float TotalBet = 0f;
+                        var TotalBet = 0f;
 
                         foreach (DataRow dr in dtMatchBet.Rows)
                         {
                             if (!Convert.IsDBNull(dr["Bet"]))
                             {
-                                Entity.Gambler gambler = new Entity.Gambler(Convert.ToInt32(dr["UserID"]), trans);
+                                var gambler = new Entity.Gambler(Convert.ToInt32(dr["UserID"]), trans);
                                 gambler.Cash += Convert.ToSingle(dr["Bet"]);
                                 gambler.TotalBet -= Convert.ToSingle(dr["Bet"]);
                                 gambler.Update(trans);
@@ -204,38 +204,38 @@ namespace Arsenalcn.CasinoSys.Entity
                 throw new Exception("You can not calc bonus without a match result");
             }
 
-            using (SqlConnection conn = SQLConn.GetConnection())
+            using (var conn = SQLConn.GetConnection())
             {
                 conn.Open();
-                SqlTransaction trans = conn.BeginTransaction();
+                var trans = conn.BeginTransaction();
 
                 try
                 {
-                    Guid? itemGuid = DataAccess.CasinoItem.GetCasinoItemGuidByMatch(MatchGuid, (int)CasinoType.SingleChoice, trans);
+                    var itemGuid = DataAccess.CasinoItem.GetCasinoItemGuidByMatch(MatchGuid, (int)CasinoType.SingleChoice, trans);
 
                     if (itemGuid.HasValue)
                     {
                         //single choice bonus
-                        Entity.CasinoItem item = Entity.CasinoItem.GetCasinoItem(itemGuid.Value);
-                        Entity.Banker banker = new Entity.Banker(item.BankerID);
+                        var item = Entity.CasinoItem.GetCasinoItem(itemGuid.Value);
+                        var banker = new Entity.Banker(item.BankerID);
 
-                        float totalEarning = 0f;
+                        var totalEarning = 0f;
 
-                        List<Entity.Bet> betList = Entity.Bet.GetBetByCasinoItemGuid(itemGuid.Value, trans);
+                        var betList = Entity.Bet.GetBetByCasinoItemGuid(itemGuid.Value, trans);
 
-                        foreach (Entity.Bet bet in betList)
+                        foreach (var bet in betList)
                         {
-                            DataTable dt = DataAccess.BetDetail.GetBetDetailByBetID(bet.ID);
+                            var dt = DataAccess.BetDetail.GetBetDetailByBetID(bet.ID);
 
                             if (dt != null)
                             {
-                                Entity.Gambler gambler = new Arsenalcn.CasinoSys.Entity.Gambler(bet.UserID, trans);
+                                var gambler = new Arsenalcn.CasinoSys.Entity.Gambler(bet.UserID, trans);
 
                                 if (bet.IsWin == null)
                                 {
-                                    bool isWin = false;
+                                    var isWin = false;
 
-                                    DataRow dr = dt.Rows[0];
+                                    var dr = dt.Rows[0];
 
                                     if (dr["DetailName"].ToString() == MatchChoiceOption.HomeWinValue && ResultHome > ResultAway)
                                         isWin = true;
@@ -287,19 +287,19 @@ namespace Arsenalcn.CasinoSys.Entity
                     if (itemGuid.HasValue)
                     {
                         //match result bonus
-                        List<Entity.Bet> betList = Entity.Bet.GetBetByCasinoItemGuid(itemGuid.Value, trans);
+                        var betList = Entity.Bet.GetBetByCasinoItemGuid(itemGuid.Value, trans);
 
-                        Entity.CasinoItem item = Entity.CasinoItem.GetCasinoItem(itemGuid.Value);
+                        var item = Entity.CasinoItem.GetCasinoItem(itemGuid.Value);
                         item.Earning = 0;
                         item.Save(trans);
 
-                        foreach (Entity.Bet bet in betList)
+                        foreach (var bet in betList)
                         {
-                            Entity.Gambler gambler = new Arsenalcn.CasinoSys.Entity.Gambler(bet.UserID, trans);
+                            var gambler = new Arsenalcn.CasinoSys.Entity.Gambler(bet.UserID, trans);
 
-                            DataTable dt = DataAccess.BetDetail.GetBetDetailByBetID(bet.ID);
+                            var dt = DataAccess.BetDetail.GetBetDetailByBetID(bet.ID);
 
-                            Entity.MatchResultBetDetail betDetail = new MatchResultBetDetail(dt);
+                            var betDetail = new MatchResultBetDetail(dt);
 
                             if (bet.IsWin == null)
                             {

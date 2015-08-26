@@ -21,8 +21,7 @@
                             简称:</label><asp:Literal ID="ltrlShortName" runat="server"></asp:Literal></dt>
                     <dd>
                         <label>
-                            创建人:</label><a href="MyPlayerProfile.aspx?userid=<asp:Literal ID="ltrlCreatorUid" runat="server"></asp:Literal>"
-                                target="_blank"><asp:Literal ID="ltrlCreatorName" runat="server"></asp:Literal></a></dd>
+                            创建人:</label><asp:Literal ID="ltrlCreatorName" runat="server"></asp:Literal></dd>
                     <dt>
                         <label>
                             球会口号:</label><asp:Literal ID="ltrlSlogan" runat="server"></asp:Literal></dt>

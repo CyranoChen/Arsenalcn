@@ -51,8 +51,8 @@ namespace Arsenal.Web
         {
             var list = repo.All<Video>().ToList().FindAll(x =>
                  {
-                     Boolean returnValue = true;
-                     string tmpString = string.Empty;
+                     var returnValue = true;
+                     var tmpString = string.Empty;
 
                      if (ViewState["GoalYear"] != null)
                      {
@@ -81,7 +81,7 @@ namespace Arsenal.Web
             #region set GridView Selected PageIndex
             if (VideoGuid.HasValue && !VideoGuid.Equals(Guid.Empty))
             {
-                int i = list.FindIndex(x => x.ID.Equals(VideoGuid));
+                var i = list.FindIndex(x => x.ID.Equals(VideoGuid));
                 if (i >= 0)
                 {
                     gvVideo.PageIndex = i / gvVideo.PageSize;
@@ -151,12 +151,12 @@ namespace Arsenal.Web
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                Video v = e.Row.DataItem as Video;
-                Literal ltrlMatchOpponentInfo = e.Row.FindControl("ltrlMatchOpponentInfo") as Literal;
+                var v = e.Row.DataItem as Video;
+                var ltrlMatchOpponentInfo = e.Row.FindControl("ltrlMatchOpponentInfo") as Literal;
 
                 if (v.ArsenalMatchGuid.HasValue)
                 {
-                    Match m = Match.Cache.Load(v.ArsenalMatchGuid.Value);
+                    var m = Match.Cache.Load(v.ArsenalMatchGuid.Value);
 
                     if (m != null)
                     {

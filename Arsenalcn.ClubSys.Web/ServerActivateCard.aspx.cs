@@ -11,14 +11,14 @@ namespace Arsenalcn.ClubSys.Web
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            string result = "false";
-            string returnURL = string.Empty;
-            string responseText = string.Empty;
+            var result = "false";
+            var returnURL = string.Empty;
+            var responseText = string.Empty;
 
-            using (SqlConnection conn = ConfigGlobal.SQLConnectionStrings)
+            using (var conn = ConfigGlobal.SQLConnectionStrings)
             {
                 conn.Open();
-                SqlTransaction trans = conn.BeginTransaction();
+                var trans = conn.BeginTransaction();
 
                 try
                 {
@@ -26,8 +26,8 @@ namespace Arsenalcn.ClubSys.Web
                     {
                         if (Request.Form["CardID"] != null)
                         {
-                            int unID = -1;
-                            string authKey = Request.Form["AuthKey"];
+                            var unID = -1;
+                            var authKey = Request.Form["AuthKey"];
 
                             if (int.TryParse(Request.Form["CardID"], out unID))
                             {
@@ -35,7 +35,7 @@ namespace Arsenalcn.ClubSys.Web
                                 {
                                     if (PlayerStrip.CheckUserNumActiveCondition(this.userid, unID))
                                     {
-                                        Card un = PlayerStrip.GetUserNumber(unID);
+                                        var un = PlayerStrip.GetUserNumber(unID);
 
                                         if (un.ArsenalPlayerGuid.HasValue)
                                         {
@@ -49,12 +49,12 @@ namespace Arsenalcn.ClubSys.Web
                                         else
                                         {
                                             //video card
-                                            Guid? guid = Service.UserVideo.GetRandomVideo(this.userid, 1, 3, true);
+                                            var guid = Service.UserVideo.GetRandomVideo(this.userid, 1, 3, true);
 
                                             if (!guid.HasValue)
                                                 throw new Exception("No Video Available.");
 
-                                            Entity.UserVideo uv = new Entity.UserVideo();
+                                            var uv = new Entity.UserVideo();
 
                                             uv.UserID = this.userid;
                                             uv.UserName = this.username;
@@ -101,11 +101,11 @@ namespace Arsenalcn.ClubSys.Web
 
             if (!String.IsNullOrEmpty(returnURL))
             {
-                responseText = string.Format("ServerMessage={0}&PhotoURL={1}", result, returnURL);
+                responseText = $"ServerMessage={result}&PhotoURL={returnURL}";
             }
             else
             {
-                responseText = string.Format("ServerMessage={0}", result);
+                responseText = $"ServerMessage={result}";
             }
 
             Response.Write(responseText);

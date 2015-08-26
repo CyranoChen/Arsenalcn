@@ -21,7 +21,7 @@ namespace iArsenal.Web
 
                 try
                 {
-                    List<ArsenalPlayer> list = Arsenal_Player.Cache.PlayerList.FindAll(p => !p.IsLegend && !p.IsLoan && p.SquadNumber > 0);
+                    var list = Arsenal_Player.Cache.PlayerList.FindAll(p => !p.IsLegend && !p.IsLoan && p.SquadNumber > 0);
 
                     if (list != null && list.Count > 0)
                     {
@@ -65,7 +65,7 @@ namespace iArsenal.Web
         {
             get
             {
-                ProductType _pt = ProductType.ReplicaKitHome;
+                var _pt = ProductType.ReplicaKitHome;
 
                 # region Check whether home or away replicakit
 
@@ -143,15 +143,15 @@ namespace iArsenal.Web
 
                 var _list = Product.Cache.ProductList;
 
-                Product pNumber = Product.Cache.Load(ProductType.PlayerNumber).Find(p => p.IsActive);
-                Product pName = Product.Cache.Load(ProductType.PlayerName).Find(p => p.IsActive);
-                Product pPremierPatch = Product.Cache.Load(ProductType.PremiershipPatch).Find(p => p.IsActive);
-                Product pChampionPatch = Product.Cache.Load(ProductType.ChampionshipPatch).Find(p => p.IsActive);
-                Product pFont = Product.Cache.Load(ProductType.ArsenalFont).Find(p => p.IsActive);
+                var pNumber = Product.Cache.Load(ProductType.PlayerNumber).Find(p => p.IsActive);
+                var pName = Product.Cache.Load(ProductType.PlayerName).Find(p => p.IsActive);
+                var pPremierPatch = Product.Cache.Load(ProductType.PremiershipPatch).Find(p => p.IsActive);
+                var pChampionPatch = Product.Cache.Load(ProductType.ChampionshipPatch).Find(p => p.IsActive);
+                var pFont = Product.Cache.Load(ProductType.ArsenalFont).Find(p => p.IsActive);
 
                 if (pNumber != null && pName != null && pPremierPatch != null && pChampionPatch != null && pFont != null)
                 {
-                    float pricePlayerDetail = pNumber.PriceCNY + pName.PriceCNY;
+                    var pricePlayerDetail = pNumber.PriceCNY + pName.PriceCNY;
 
                     lblPricePlayerDetail.Text = string.Format("<em>{0}</em>元", pricePlayerDetail.ToString("f2"));
 
@@ -197,7 +197,7 @@ namespace iArsenal.Web
                     {
                         lblMemberName.Text = string.Format("<b>{0}</b> (<em>NO.{1}</em>)", o.MemberName, o.MemberID.ToString());
 
-                        Member m = repo.Single<Member>(o.MemberID);
+                        var m = repo.Single<Member>(o.MemberID);
 
                         if (m == null || !m.IsActive)
                         {
@@ -220,7 +220,7 @@ namespace iArsenal.Web
                     // Set Order Payment Info
                     if (!string.IsNullOrEmpty(o.Payment))
                     {
-                        string[] payment = o.Payment.Substring(1, o.Payment.Length - 2).Split('|');
+                        var payment = o.Payment.Substring(1, o.Payment.Length - 2).Split('|');
                         rblOrderPayment.SelectedValue = payment[0];
 
                         if (payment[0].Equals("Bank", StringComparison.OrdinalIgnoreCase))
@@ -245,13 +245,13 @@ namespace iArsenal.Web
                         trAlipay.Style.Add("display", "none");
                     }
 
-                    OrdrItmPlayerNumber oiNumber = o.OIPlayerNumber;
-                    OrdrItmPlayerName oiName = o.OIPlayerName;
-                    OrdrItmArsenalFont oiFont = o.OIArsenalFont; ;
-                    OrdrItmPremiershipPatch oiPremierPatch = o.OIPremiershipPatch;
-                    OrdrItmChampionshipPatch oiChampionPatch = o.OIChampionshipPatch;
+                    var oiNumber = o.OIPlayerNumber;
+                    var oiName = o.OIPlayerName;
+                    var oiFont = o.OIArsenalFont; ;
+                    var oiPremierPatch = o.OIPremiershipPatch;
+                    var oiChampionPatch = o.OIChampionshipPatch;
 
-                    Product p = Product.Cache.Load(oiReplicaKit.ProductGuid);
+                    var p = Product.Cache.Load(oiReplicaKit.ProductGuid);
 
                     ddlReplicaKit.Items.Insert(0, new ListItem(string.Format("({0}) {1} - 售价{2}元", p.Code, p.DisplayName, oiReplicaKit.UnitPrice.ToString("f2")), oiReplicaKit.ProductGuid.ToString()));
                     tbOrderItemSize.Text = oiReplicaKit.Size;
@@ -272,7 +272,7 @@ namespace iArsenal.Web
 
                         // Set Printing Number and Name
 
-                        Guid _playerGuid = Guid.Empty;
+                        var _playerGuid = Guid.Empty;
 
                         if (oiNumber.Remark.Equals(oiName.Remark, StringComparison.OrdinalIgnoreCase))
                         {
@@ -284,7 +284,7 @@ namespace iArsenal.Web
                             _playerGuid = Guid.Empty;
                         }
 
-                        ArsenalPlayer player = Arsenal_Player.Cache.Load(_playerGuid);
+                        var player = Arsenal_Player.Cache.Load(_playerGuid);
 
                         if (player != null)
                         {
@@ -356,7 +356,7 @@ namespace iArsenal.Web
                 else
                 {
                     //Fill Member draft information into textbox
-                    Member m = repo.Single<Member>(this.MID);
+                    var m = repo.Single<Member>(this.MID);
 
                     tbOrderMobile.Text = m.Mobile;
                     tbAlipay.Text = m.TaobaoName;
@@ -386,21 +386,21 @@ namespace iArsenal.Web
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
-            using (SqlConnection conn = new SqlConnection(DataAccess.ConnectString))
+            using (var conn = new SqlConnection(DataAccess.ConnectString))
             {
                 conn.Open();
-                SqlTransaction trans = conn.BeginTransaction();
+                var trans = conn.BeginTransaction();
 
                 try
                 {
                     if (string.IsNullOrEmpty(ddlReplicaKit.SelectedValue))
                     { throw new Exception("请选择需要订购的球衣"); }
 
-                    Member m = repo.Single<Member>(this.MID);
+                    var m = repo.Single<Member>(this.MID);
 
                     //New Order
-                    Order o = new Order();
-                    int _newID = int.MinValue;
+                    var o = new Order();
+                    var _newID = int.MinValue;
 
                     if (OrderID > 0)
                     {
@@ -454,13 +454,13 @@ namespace iArsenal.Web
                     //Remove Order Item of this Order
                     if (OrderID > 0 && o.ID.Equals(OrderID))
                     {
-                        int count = repo.Query<OrderItem>(x => x.OrderID == OrderID).Delete(trans);
+                        var count = repo.Query<OrderItem>(x => x.OrderID == OrderID).Delete(trans);
                     }
 
                     //New Order Item for ReplicaKit
-                    Product pReplicaKit = Product.Cache.Load(new Guid(ddlReplicaKit.SelectedValue));
+                    var pReplicaKit = Product.Cache.Load(new Guid(ddlReplicaKit.SelectedValue));
 
-                    OrdrItmReplicaKit oi = new OrdrItmReplicaKit();
+                    var oi = new OrdrItmReplicaKit();
 
                     if (pReplicaKit == null)
                         throw new Exception("无相关纪念品或缺货，请联系管理员");
@@ -480,15 +480,15 @@ namespace iArsenal.Web
                     // New Order Item for Home Player Number & Name
                     if (!string.IsNullOrEmpty(ddlPlayerDetail.SelectedValue))
                     {
-                        Product pNumber = Product.Cache.Load(ProductType.PlayerNumber).Find(p => p.IsActive);
-                        Product pName = Product.Cache.Load(ProductType.PlayerName).Find(p => p.IsActive);
+                        var pNumber = Product.Cache.Load(ProductType.PlayerNumber).Find(p => p.IsActive);
+                        var pName = Product.Cache.Load(ProductType.PlayerName).Find(p => p.IsActive);
 
                         if (pNumber == null || pName == null)
                             throw new Exception("无印号信息，请联系管理员");
 
-                        OrdrItmArsenalFont oiFont = new OrdrItmArsenalFont();
-                        OrdrItmPlayerNumber oiNumber = new OrdrItmPlayerNumber();
-                        OrdrItmPlayerName oiName = new OrdrItmPlayerName();
+                        var oiFont = new OrdrItmArsenalFont();
+                        var oiNumber = new OrdrItmPlayerNumber();
+                        var oiName = new OrdrItmPlayerName();
 
                         oiFont.OrderID = _newID;
                         oiFont.Size = string.Empty;
@@ -512,7 +512,7 @@ namespace iArsenal.Web
                             // New Order Item for Arsenal Font
                             if (cbArsenalFont.Checked)
                             {
-                                Product pFont = Product.Cache.Load(ProductType.ArsenalFont).Find(p => p.IsActive);
+                                var pFont = Product.Cache.Load(ProductType.ArsenalFont).Find(p => p.IsActive);
 
                                 if (pFont == null)
                                     throw new Exception("无特殊字体信息，请联系管理员");
@@ -557,17 +557,17 @@ namespace iArsenal.Web
                         else
                         {
                             // Arsenal Player Printing
-                            ArsenalPlayer player = Arsenal_Player.Cache.Load(new Guid(ddlPlayerDetail.SelectedValue));
+                            var player = Arsenal_Player.Cache.Load(new Guid(ddlPlayerDetail.SelectedValue));
 
                             if (player == null)
                                 throw new Exception("无球员信息，请联系管理员");
 
-                            string _printingName = GetArsenalPlayerPrintingName(player);
+                            var _printingName = GetArsenalPlayerPrintingName(player);
 
                             // New Order Item for Arsenal Font
                             if (cbArsenalFont.Checked)
                             {
-                                Product pFont = Product.Cache.Load(ProductType.ArsenalFont).Find(p => p.IsActive);
+                                var pFont = Product.Cache.Load(ProductType.ArsenalFont).Find(p => p.IsActive);
 
                                 if (pFont == null)
                                     throw new Exception("无特殊字体信息，请联系管理员");
@@ -618,12 +618,12 @@ namespace iArsenal.Web
                     // New Order Item for Premiership Patch
                     if (Convert.ToInt32(rblPremierPatch.SelectedValue) > 0)
                     {
-                        Product pPremierPatch = Product.Cache.Load(ProductType.PremiershipPatch).Find(p => p.IsActive);
+                        var pPremierPatch = Product.Cache.Load(ProductType.PremiershipPatch).Find(p => p.IsActive);
 
                         if (pPremierPatch == null)
                             throw new Exception("无英超袖标信息，请联系管理员");
 
-                        OrdrItmPremiershipPatch oiPremierPatch = new OrdrItmPremiershipPatch();
+                        var oiPremierPatch = new OrdrItmPremiershipPatch();
 
                         oiPremierPatch.OrderID = _newID;
                         oiPremierPatch.Size = string.Empty;
@@ -637,12 +637,12 @@ namespace iArsenal.Web
                     // New Order Item for Championship Patch
                     if (Convert.ToInt32(rblChampionPatch.SelectedValue) > 0)
                     {
-                        Product pChampionPatch = Product.Cache.Load(ProductType.ChampionshipPatch).Find(p => p.IsActive);
+                        var pChampionPatch = Product.Cache.Load(ProductType.ChampionshipPatch).Find(p => p.IsActive);
 
                         if (pChampionPatch == null)
                             throw new Exception("无欧冠袖标信息，请联系管理员");
 
-                        OrdrItmChampionshipPatch oiChampionShipPatch = new OrdrItmChampionshipPatch();
+                        var oiChampionShipPatch = new OrdrItmChampionshipPatch();
 
                         oiChampionShipPatch.OrderID = _newID;
                         oiChampionShipPatch.Size = string.Empty;
@@ -674,7 +674,7 @@ namespace iArsenal.Web
         {
             foreach (ListItem li in (sender as DropDownList).Items)
             {
-                Product p = Product.Cache.Load(new Guid(li.Value));
+                var p = Product.Cache.Load(new Guid(li.Value));
 
                 li.Text = string.Format("({0}) {1} - 售价 ￥{2}", p.Code, p.DisplayName, p.PriceCNY.ToString("f2"));
             }
@@ -684,7 +684,7 @@ namespace iArsenal.Web
         {
             foreach (ListItem li in (sender as DropDownList).Items)
             {
-                ArsenalPlayer p = Arsenal_Player.Cache.Load(new Guid(li.Value));
+                var p = Arsenal_Player.Cache.Load(new Guid(li.Value));
 
                 if (p != null)
                 {
@@ -696,7 +696,7 @@ namespace iArsenal.Web
 
         private string GetArsenalPlayerPrintingName(ArsenalPlayer ap)
         {
-            string _strPrintingName = string.Empty;
+            var _strPrintingName = string.Empty;
 
             if (ap != null)
             {

@@ -19,7 +19,7 @@ namespace Arsenal.Web
             if (!IsPostBack)
             {
                 #region Bind ddlLeague
-                List<League> list = League.Cache.LeagueList.FindAll(l =>
+                var list = League.Cache.LeagueList.FindAll(l =>
                     Match.Cache.MatchList.Exists(m => m.LeagueGuid.Equals(l.ID)));
 
                 ddlLeague.DataSource = list;
@@ -56,8 +56,8 @@ namespace Arsenal.Web
         {
             var list = repo.All<Match>().FindAll(x =>
             {
-                Boolean returnValue = true;
-                string tmpString = string.Empty;
+                var returnValue = true;
+                var tmpString = string.Empty;
 
                 if (ViewState["LeagueGuid"] != null)
                 {
@@ -86,7 +86,7 @@ namespace Arsenal.Web
             #region set GridView Selected PageIndex
             if (MatchGuid.HasValue && !MatchGuid.Value.Equals(Guid.Empty))
             {
-                int i = list.FindIndex(x => x.ID.Equals(MatchGuid));
+                var i = list.FindIndex(x => x.ID.Equals(MatchGuid));
                 if (i >= 0)
                 {
                     gvMatch.PageIndex = i / gvMatch.PageSize;
@@ -169,7 +169,7 @@ namespace Arsenal.Web
             {
                 foreach (var rlt in rltList)
                 {
-                    Team t = Team.Cache.Load(rlt.TeamGuid);
+                    var t = Team.Cache.Load(rlt.TeamGuid);
 
                     if (t != null)
                         list.Add(t);

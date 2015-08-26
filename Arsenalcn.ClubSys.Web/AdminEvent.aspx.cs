@@ -19,7 +19,7 @@ namespace Arsenalcn.ClubSys.Web
 
         private void BindData()
         {
-            List<LogEvent> logList = LogEvent.GetLogEvents();
+            var logList = LogEvent.GetLogEvents();
 
             gvEvent.DataSource = logList;
             gvEvent.DataBind();

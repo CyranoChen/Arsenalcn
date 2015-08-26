@@ -32,7 +32,7 @@ namespace Arsenalcn.ClubSys.Entity
 
         public void Select()
         {
-            DataRow dr = Service.UserVideo.GetUserVideoByID(UserVideoID);
+            var dr = Service.UserVideo.GetUserVideoByID(UserVideoID);
 
             if (dr != null)
                 InitUserVideo(dr);
@@ -55,8 +55,8 @@ namespace Arsenalcn.ClubSys.Entity
 
         public static List<UserVideo> GetUserVideos()
         {
-            DataTable dt = Service.UserVideo.GetUserVideos();
-            List<UserVideo> list = new List<UserVideo>();
+            var dt = Service.UserVideo.GetUserVideos();
+            var list = new List<UserVideo>();
 
             if (dt != null)
             {
@@ -76,8 +76,8 @@ namespace Arsenalcn.ClubSys.Entity
 
         public static List<UserVideo> GetUserVideosByClubID(int clubID)
         {
-            DataTable dt = Service.UserVideo.GetUserVideoByClubID(clubID);
-            List<UserVideo> list = new List<UserVideo>();
+            var dt = Service.UserVideo.GetUserVideoByClubID(clubID);
+            var list = new List<UserVideo>();
 
             if (dt != null)
             {

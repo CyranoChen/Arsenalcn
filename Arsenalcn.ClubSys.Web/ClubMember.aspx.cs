@@ -1,13 +1,5 @@
 ﻿using System;
-using System.Collections;
-using System.Configuration;
-using System.Data;
-using System.Web;
-using System.Web.Security;
-using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
-using System.Web.UI.HtmlControls;
 using System.Collections.Generic;
 
 using Arsenalcn.ClubSys.Service;
@@ -38,7 +30,7 @@ namespace Arsenalcn.ClubSys.Web
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            Club club = ClubLogic.GetClubInfo(ClubID);
+            var club = ClubLogic.GetClubInfo(ClubID);
 
             if (club != null && this.Title.IndexOf("{0}") >= 0)
                 this.Title = string.Format(this.Title, club.FullName);
@@ -78,15 +70,15 @@ namespace Arsenalcn.ClubSys.Web
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                UserClub uc = e.Row.DataItem as UserClub;
+                var uc = e.Row.DataItem as UserClub;
                 if (uc != null)
                 {
-                    UserInfo userInfo = AdminUsers.GetUserInfo(uc.Userid.Value);
+                    var userInfo = AdminUsers.GetUserInfo(uc.Userid.Value);
                     if (userInfo != null)
                     {
                         #region set avatar
 
-                        Image imgAvatar = e.Row.FindControl("imgAvatar") as Image;
+                        var imgAvatar = e.Row.FindControl("imgAvatar") as Image;
 
                         if (imgAvatar != null)
                         {
@@ -107,7 +99,7 @@ namespace Arsenalcn.ClubSys.Web
                             //    imgAvatar.ImageUrl = string.Format("/{0}", userInfo.Avatar);
                             //}
 
-                            string myAvatar = Avatars.GetAvatarUrl(uc.Userid.Value, AvatarSize.Small);
+                            var myAvatar = Avatars.GetAvatarUrl(uc.Userid.Value, AvatarSize.Small);
                             imgAvatar.ImageUrl = myAvatar;
 
                             imgAvatar.AlternateText = userInfo.Username.Trim();
@@ -117,33 +109,35 @@ namespace Arsenalcn.ClubSys.Web
 
                         #region set responsibility
 
-                        Literal ltrlResponsibility = e.Row.FindControl("ltrlResponsibility") as Literal;
+                        var ltrlResponsibility = e.Row.FindControl("ltrlResponsibility") as Literal;
                         if (ltrlResponsibility != null)
                         {
                             if (uc.Responsibility.Value == (int)Responsibility.Member)
                                 ltrlResponsibility.Text = string.Empty;
                             else
-                                ltrlResponsibility.Text = string.Format("<em>({0})</em>", ClubLogic.TranslateResponsibility(uc.Responsibility.Value));
+                                ltrlResponsibility.Text =
+                                    $"<em>({ClubLogic.TranslateResponsibility(uc.Responsibility.Value)})</em>";
                         }
 
                         #endregion
 
                         #region set user group
 
-                        Literal ltrlUserGroup = e.Row.FindControl("ltrlUserGroup") as Literal;
+                        var ltrlUserGroup = e.Row.FindControl("ltrlUserGroup") as Literal;
                         if (ltrlUserGroup != null)
                         {
-                            UserGroupInfo groupInfo = UserGroups.GetUserGroupInfo(userInfo.Groupid);
+                            var groupInfo = UserGroups.GetUserGroupInfo(userInfo.Groupid);
 
                             if( groupInfo != null )
-                                ltrlUserGroup.Text = string.Format("<span title=\"积分:{0}\">{1}</span>", userInfo.Credits.ToString("N0"), groupInfo.Grouptitle);
+                                ltrlUserGroup.Text =
+                                    $"<span title=\"积分:{userInfo.Credits.ToString("N0")}\">{groupInfo.Grouptitle}</span>";
                         }
 
                         #endregion
 
                         #region set user fortune
 
-                        Literal ltrlUserFortune = e.Row.FindControl("ltrlUserFortune") as Literal;
+                        var ltrlUserFortune = e.Row.FindControl("ltrlUserFortune") as Literal;
                         if (ltrlUserFortune != null)
                         {
                             ltrlUserFortune.Text = userInfo.Extcredits2.ToString("N2");
@@ -153,7 +147,7 @@ namespace Arsenalcn.ClubSys.Web
 
                         #region set user posts
 
-                        Literal ltrlUserPosts = e.Row.FindControl("ltrlUserPosts") as Literal;
+                        var ltrlUserPosts = e.Row.FindControl("ltrlUserPosts") as Literal;
                         if (ltrlUserPosts != null)
                         {
                             ltrlUserPosts.Text = userInfo.Posts.ToString("N0");
@@ -163,7 +157,7 @@ namespace Arsenalcn.ClubSys.Web
 
                         #region set user days
 
-                        Literal ltrlDays = e.Row.FindControl("ltrlDays") as Literal;
+                        var ltrlDays = e.Row.FindControl("ltrlDays") as Literal;
                         if (ltrlDays != null)
                         {
                             ltrlDays.Text = ((int)((DateTime.Now - uc.JoinClubDate.Value).TotalDays)).ToString();
@@ -173,18 +167,18 @@ namespace Arsenalcn.ClubSys.Web
 
                         #region contribute value
 
-                        Literal ltrlContributeValue = e.Row.FindControl("ltrlContributeValue") as Literal;
+                        var ltrlContributeValue = e.Row.FindControl("ltrlContributeValue") as Literal;
 
                         try
                         {
-                            int contribution = FortuneContributeAlgorithm.CalcContributeFortune(userInfo, false);
+                            var contribution = FortuneContributeAlgorithm.CalcContributeFortune(userInfo, false);
 
-                            float bonusRate = PlayerStrip.CalcPlayerContributionBonusRate(uc.Userid.Value);
+                            var bonusRate = PlayerStrip.CalcPlayerContributionBonusRate(uc.Userid.Value);
 
                             if( bonusRate != 0 )
-                                ltrlContributeValue.Text = string.Format("<em>{0}(*{1}) 枪手币</em>", contribution, 1 + bonusRate);
+                                ltrlContributeValue.Text = $"<em>{contribution}(*{1 + bonusRate}) 枪手币</em>";
                             else
-                                ltrlContributeValue.Text = string.Format("<em>{0} 枪手币</em>", contribution);
+                                ltrlContributeValue.Text = $"<em>{contribution} 枪手币</em>";
 
                             _totalContribution += (int)(contribution * (1 + bonusRate));
                         }

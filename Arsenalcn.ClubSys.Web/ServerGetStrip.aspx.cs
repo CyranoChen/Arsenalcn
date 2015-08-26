@@ -13,10 +13,10 @@ namespace Arsenalcn.ClubSys.Web
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            string responseMessage = "-1";
-            string userMoney = "0";
-            int bingoHistoryID = 0;
-            bool isGoogleAdv = false;
+            var responseMessage = "-1";
+            var userMoney = "0";
+            var bingoHistoryID = 0;
+            var isGoogleAdv = false;
 
             try
             {
@@ -29,17 +29,17 @@ namespace Arsenalcn.ClubSys.Web
                             Boolean.TryParse(Request.Form["IsGoogleAdv"], out isGoogleAdv);
 
                             #region StartGetStrip
-                            List<Club> clubs = ClubLogic.GetActiveUserClubs(userid);
+                            var clubs = ClubLogic.GetActiveUserClubs(userid);
 
                             if (clubs.Count != 0)
                             {
-                                int clubID = clubs[0].ID.Value;
+                                var clubID = clubs[0].ID.Value;
 
                                 //check the user last time play
                                 //TimeSpan ts = PlayerStrip.GetUserBingoTimeSpan(userid);
 
-                                int count = PlayerStrip.GetUserBingoPlayCountThisHour(userid);
-                                UserInfo info = AdminUsers.GetUserInfo(userid);
+                                var count = PlayerStrip.GetUserBingoPlayCountThisHour(userid);
+                                var info = AdminUsers.GetUserInfo(userid);
 
                                 userMoney = ((int)info.Extcredits2).ToString();
 
@@ -54,7 +54,7 @@ namespace Arsenalcn.ClubSys.Web
                                     else
                                     {
                                         //play cost
-                                        int bingoCost = ConfigGlobal.BingoCost;
+                                        var bingoCost = ConfigGlobal.BingoCost;
 
                                         if (info.Extcredits2 >= bingoCost)
                                         {
@@ -88,14 +88,14 @@ namespace Arsenalcn.ClubSys.Web
                         }
                         else if (Request.Form["StripResult"] == "result")
                         {
-                            string finalResult = Request.Form["FinalResult"];
-                            string resultType = Request.Form["ResultType"];
+                            var finalResult = Request.Form["FinalResult"];
+                            var resultType = Request.Form["ResultType"];
 
-                            string authKey = Request.Form["AuthKey"];
+                            var authKey = Request.Form["AuthKey"];
                             bingoHistoryID = int.Parse(Request.Form["ID"]);
                             Boolean.TryParse(Request.Form["IsGoogleAdv"], out isGoogleAdv);
 
-                            UserInfo info = AdminUsers.GetUserInfo(userid);
+                            var info = AdminUsers.GetUserInfo(userid);
 
                             if (PlayerStrip.ValidateAuthKey(bingoHistoryID.ToString(), this.userid.ToString(), authKey))
                             {
@@ -104,21 +104,21 @@ namespace Arsenalcn.ClubSys.Web
                                     if (isGoogleAdv && ConfigGlobal.GoogleAdvActive)
                                     {
                                         #region GetStripResult
-                                        BingoResult br = BingoUtil.AnalyzeFlashResult(userid, finalResult, resultType);
+                                        var br = BingoUtil.AnalyzeFlashResult(userid, finalResult, resultType);
                                         responseMessage = PlayerStrip.UpdateBingoResult(userid, username, br, resultType);
                                         userMoney = ((int)info.Extcredits2).ToString("f0");
                                         #endregion
                                     }
                                     else
                                     {
-                                        int bingoGetCost = ConfigGlobal.BingoGetCost;
+                                        var bingoGetCost = ConfigGlobal.BingoGetCost;
                                         if (info.Extcredits2 >= bingoGetCost)
                                         {
                                             info.Extcredits2 = info.Extcredits2 - bingoGetCost;
                                             if (AdminUsers.UpdateUserAllInfo(info))
                                             {
                                                 #region GetStripResult
-                                                BingoResult br = BingoUtil.AnalyzeFlashResult(userid, finalResult, resultType);
+                                                var br = BingoUtil.AnalyzeFlashResult(userid, finalResult, resultType);
                                                 responseMessage = PlayerStrip.UpdateBingoResult(userid, username, br, resultType);
                                                 userMoney = ((int)info.Extcredits2).ToString("f0");
                                                 #endregion
@@ -143,7 +143,8 @@ namespace Arsenalcn.ClubSys.Web
             {
                 responseMessage = "-1";
             }
-            string responseText = string.Format("ServerMessage={0}&UserMoney={1}&ID={2}&UserID={3}", responseMessage, userMoney, bingoHistoryID, userid);
+            var responseText =
+                $"ServerMessage={responseMessage}&UserMoney={userMoney}&ID={bingoHistoryID}&UserID={userid}";
             Response.Write(responseText);
         }
     }

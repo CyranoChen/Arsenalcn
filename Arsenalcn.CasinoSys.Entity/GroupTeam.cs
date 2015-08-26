@@ -34,7 +34,7 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public GroupTeam(Guid groupGuid, Guid teamGuid, SqlTransaction trans)
         {
-            DataRow dr = DataAccess.Group.GetGroupTeamInfo(groupGuid, teamGuid, trans);
+            var dr = DataAccess.Group.GetGroupTeamInfo(groupGuid, teamGuid, trans);
 
             if (dr == null)
             {
@@ -157,21 +157,21 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public static bool IsExistRelationGroupTeamByLeagueGuid(Guid leagueGuid, Guid teamGuid)
         {
-            DataTable dtGroupTeam = DataAccess.Group.GetRelationGroupTeamByLeagueGuid(leagueGuid, teamGuid);
+            var dtGroupTeam = DataAccess.Group.GetRelationGroupTeamByLeagueGuid(leagueGuid, teamGuid);
 
             return (dtGroupTeam != null);
         }
 
         public static void UpdateGroupTeamByGroupMatch(Guid groupGuid, Guid teamGuid, DataTable dtGroupMatch)
         {
-            GroupTeam gt = new GroupTeam();
+            var gt = new GroupTeam();
             gt.GroupGuid = groupGuid;
             gt.TeamGuid = teamGuid;
             gt.PositionNo = 0;
 
             foreach (DataRow dr in dtGroupMatch.Rows)
             {
-                Match match = new Match((Guid)dr["MatchGuid"]);
+                var match = new Match((Guid)dr["MatchGuid"]);
 
                 if (match != null)
                 {

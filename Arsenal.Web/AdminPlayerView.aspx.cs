@@ -37,7 +37,7 @@ namespace Arsenal.Web
         {
             if (PlayerGuid != Guid.Empty)
             {
-                Player p = repo.Single<Player>(PlayerGuid);
+                var p = repo.Single<Player>(PlayerGuid);
 
                 lblPlayerBasicInfo.InnerHtml = string.Format("<em>{0}</em> 基本信息", p.DisplayName);
                 lblPlayerDetailInfo.InnerHtml = string.Format("<em>{0}</em> 详细信息", p.DisplayName);
@@ -104,7 +104,7 @@ namespace Arsenal.Web
         {
             try
             {
-                Player p = new Player();
+                var p = new Player();
 
                 if (!PlayerGuid.Equals(Guid.Empty))
                 {
@@ -121,7 +121,7 @@ namespace Arsenal.Web
                 else
                     p.LastName = null;
 
-                string _pName = string.Format("{0} {1}", tbFirstName.Text.Trim(), tbLastName.Text.Trim()).Trim();
+                var _pName = string.Format("{0} {1}", tbFirstName.Text.Trim(), tbLastName.Text.Trim()).Trim();
                 if (!string.IsNullOrEmpty(_pName))
                     p.DisplayName = _pName.Trim();
                 else

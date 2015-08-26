@@ -29,7 +29,7 @@ namespace Arsenalcn.CasinoSys.Web
 
             #endregion
 
-            float qsb = AdminUsers.GetUserExtCredits(userid, 2);
+            var qsb = AdminUsers.GetUserExtCredits(userid, 2);
 
             ltrlUserQSB.Text = qsb.ToString("N2");
             ltrlUserCash.Text = CurrentGambler.Cash.ToString("N2");
@@ -38,7 +38,7 @@ namespace Arsenalcn.CasinoSys.Web
 
             //int maxCash = (int)(qsb / (1 + Entity.ConfigGlobal.ExchangeFee) * Entity.ConfigGlobal.ExchangeRate);
 
-            int maxCash = (int)(qsb * Entity.ConfigGlobal.ExchangeRate);
+            var maxCash = (int)(qsb * Entity.ConfigGlobal.ExchangeRate);
             ltrlMaxCash.Text = maxCash.ToString("N0");
 
             if (maxCash >= 10)
@@ -46,7 +46,7 @@ namespace Arsenalcn.CasinoSys.Web
             else
                 rvToCash.MaximumValue = "10";
 
-            int maxQSB = (int)(CurrentGambler.Cash * (1 - Entity.ConfigGlobal.ExchangeFee) / Entity.ConfigGlobal.ExchangeRate);
+            var maxQSB = (int)(CurrentGambler.Cash * (1 - Entity.ConfigGlobal.ExchangeFee) / Entity.ConfigGlobal.ExchangeRate);
             ltrlMaxQSB.Text = maxQSB.ToString("N0");
 
             if (maxQSB >= 1)
@@ -63,7 +63,7 @@ namespace Arsenalcn.CasinoSys.Web
                 
                 //int qsb = (int)(Convert.ToInt32(tbCash.Text) * (1 + Entity.ConfigGlobal.ExchangeFee) / Entity.ConfigGlobal.ExchangeRate);
 
-                int qsb = (int)(Convert.ToInt32(tbCash.Text) / Entity.ConfigGlobal.ExchangeRate);
+                var qsb = (int)(Convert.ToInt32(tbCash.Text) / Entity.ConfigGlobal.ExchangeRate);
 
                 if (qsb > AdminUsers.GetUserExtCredits(userid, 2) || qsb <= 0)
                     throw new Exception("Insufficient Founds");
@@ -71,7 +71,7 @@ namespace Arsenalcn.CasinoSys.Web
                 CurrentGambler.Cash += Convert.ToInt32(tbCash.Text.Trim());
                 CurrentGambler.Update(null);
 
-                Entity.Banker banker = new Entity.Banker(Entity.Banker.DefaultBankerID);
+                var banker = new Entity.Banker(Entity.Banker.DefaultBankerID);
                 banker.Cash += qsb * Entity.ConfigGlobal.ExchangeFee * Entity.ConfigGlobal.ExchangeRate;
                 banker.Update(null);
 
@@ -89,7 +89,7 @@ namespace Arsenalcn.CasinoSys.Web
         {
             try
             {
-                int cash = (int)(Convert.ToInt32(tbQSB.Text) / (1 - Entity.ConfigGlobal.ExchangeFee) * Entity.ConfigGlobal.ExchangeRate);
+                var cash = (int)(Convert.ToInt32(tbQSB.Text) / (1 - Entity.ConfigGlobal.ExchangeFee) * Entity.ConfigGlobal.ExchangeRate);
 
                 if (cash > CurrentGambler.Cash || cash <= 0)
                     throw new Exception("Insufficient Founds");
@@ -97,7 +97,7 @@ namespace Arsenalcn.CasinoSys.Web
                 CurrentGambler.Cash -= cash;
                 CurrentGambler.Update(null);
 
-                Entity.Banker banker = new Entity.Banker(Entity.Banker.DefaultBankerID);
+                var banker = new Entity.Banker(Entity.Banker.DefaultBankerID);
                 banker.Cash += cash * Entity.ConfigGlobal.ExchangeFee;
                 banker.Update(null);
 

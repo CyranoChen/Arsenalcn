@@ -7,7 +7,7 @@ namespace Arsenalcn.Common
     {
         public static SqlConnection GetConnection()
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["Arsenalcn.ConnectionString"].ConnectionString;
+            var connectionString = ConfigurationManager.ConnectionStrings["Arsenalcn.ConnectionString"].ConnectionString;
 
             return new SqlConnection(connectionString);
         }

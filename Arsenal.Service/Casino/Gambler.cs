@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Data;
-
 using Arsenalcn.Core;
 
 namespace Arsenal.Service.Casino

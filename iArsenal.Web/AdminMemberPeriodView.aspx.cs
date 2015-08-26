@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 
 using Arsenalcn.Core;
@@ -38,7 +37,7 @@ namespace iArsenal.Web
         {
             if (MemberPeriodID > 0)
             {
-                MemberPeriod mp = repo.Single<MemberPeriod>(MemberPeriodID);
+                var mp = repo.Single<MemberPeriod>(MemberPeriodID);
 
                 // Set Visible for the member back button for this memberPeriod
                 if (mp.MemberID > 0)
@@ -52,7 +51,7 @@ namespace iArsenal.Web
 
                 if (mp.OrderID.HasValue)
                 {
-                    Order o = repo.Single<Order>(mp.OrderID.Value);
+                    var o = repo.Single<Order>(mp.OrderID.Value);
 
                     tbOrderID.Text = o.ID.ToString();
 
@@ -81,7 +80,7 @@ namespace iArsenal.Web
         {
             try
             {
-                MemberPeriod mp = new MemberPeriod();
+                var mp = new MemberPeriod();
 
                 if (MemberPeriodID > 0)
                 {
@@ -152,7 +151,7 @@ namespace iArsenal.Web
 
         protected void btnBackMember_Click(object sender, EventArgs e)
         {
-            MemberPeriod mp = repo.Single<MemberPeriod>(MemberPeriodID);
+            var mp = repo.Single<MemberPeriod>(MemberPeriodID);
 
             if (mp.MemberID > 0)
                 Response.Redirect("AdminMemberView.aspx?MemberID=" + mp.MemberID.ToString());

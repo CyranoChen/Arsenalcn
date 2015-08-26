@@ -65,7 +65,7 @@ namespace iArsenal.Web
 
                     lblOrderMobile.Text = string.Format("<em>{0}</em>", o.Mobile);
 
-                    Member m = repo.Single<Member>(o.MemberID);
+                    var m = repo.Single<Member>(o.MemberID);
 
                     if (m != null)
                     {
@@ -142,16 +142,16 @@ namespace iArsenal.Web
             var o = (OrdrWish)Order.Select(OrderID);
 
             // Should be Calculator in this Page
-            double price = default(double);
-            string priceInfo = string.Empty;
-            List<string> _lstPriceInfo = new List<string>();
+            var price = default(double);
+            var priceInfo = string.Empty;
+            var _lstPriceInfo = new List<string>();
 
             var list = repo.Query<OrderItem>(x =>
                 x.OrderID == o.ID && x.IsActive == true).OrderBy(x => x.ID).ToList();
 
             if (list != null && list.Count > 0)
             {
-                foreach (OrderItem oi in list)
+                foreach (var oi in list)
                 {
                     if (!oi.ProductGuid.Equals(Guid.Empty) && oi.TotalPrice > 0)
                     {
@@ -197,14 +197,14 @@ namespace iArsenal.Web
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                OrderItem oi = e.Row.DataItem as OrderItem;
+                var oi = e.Row.DataItem as OrderItem;
 
-                Label lblWishPriceInfo = e.Row.FindControl("lblWishPriceInfo") as Label;
-                Label lblWishTotalPriceInfo = e.Row.FindControl("lblWishTotalPriceInfo") as Label;
+                var lblWishPriceInfo = e.Row.FindControl("lblWishPriceInfo") as Label;
+                var lblWishTotalPriceInfo = e.Row.FindControl("lblWishTotalPriceInfo") as Label;
 
                 if (oi != null && !oi.ProductGuid.Equals(Guid.Empty) && Product.Cache.Load(oi.ProductGuid) != null)
                 {
-                    Product p = Product.Cache.Load(oi.ProductGuid);
+                    var p = Product.Cache.Load(oi.ProductGuid);
 
                     if (p.Sale.HasValue)
                     {
@@ -233,7 +233,7 @@ namespace iArsenal.Web
             {
                 if (OrderID > 0)
                 {
-                    Order o = repo.Single<Order>(OrderID);
+                    var o = repo.Single<Order>(OrderID);
 
                     if (o == null || !o.MemberID.Equals(MID) || !o.IsActive)
                         throw new Exception("此订单无效或非当前用户订单");
@@ -263,7 +263,7 @@ namespace iArsenal.Web
             {
                 if (OrderID > 0)
                 {
-                    Order o = repo.Single<Order>(OrderID);
+                    var o = repo.Single<Order>(OrderID);
 
                     if (o == null || !o.MemberID.Equals(MID) || !o.IsActive)
                         throw new Exception("此订单无效或非当前用户订单");
@@ -288,7 +288,7 @@ namespace iArsenal.Web
             {
                 if (OrderID > 0)
                 {
-                    Order o = repo.Single<Order>(OrderID);
+                    var o = repo.Single<Order>(OrderID);
 
                     if (o == null || !o.MemberID.Equals(MID) || !o.IsActive)
                         throw new Exception("此订单无效或非当前用户订单");
@@ -318,7 +318,7 @@ namespace iArsenal.Web
             {
                 if (OrderID > 0)
                 {
-                    Order o = repo.Single<Order>(OrderID);
+                    var o = repo.Single<Order>(OrderID);
 
                     if (o == null || !o.MemberID.Equals(MID) || !o.IsActive)
                         throw new Exception("此订单无效或非当前用户订单");

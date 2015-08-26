@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data;
 using System.Collections.Generic;
 using System.Web.UI.WebControls;
 
@@ -13,16 +12,16 @@ namespace Arsenalcn.CasinoSys.Web.Control
         {
             if (!ConfigGlobal.DefaultLeagueID.Equals(Guid.Empty))
             {
-                League l = League.Cache.Load(ConfigGlobal.DefaultLeagueID);
+                var l = League.Cache.Load(ConfigGlobal.DefaultLeagueID);
                 ltrlContestTitle.Text = string.Format("<a title=\"{0}{1}\">ACN博彩竞赛排行榜</a>", l.LeagueName, l.LeagueSeason);
 
-                float _tbs = ConfigGlobal.TotalBetStandard;
+                var _tbs = ConfigGlobal.TotalBetStandard;
 
-                List<Entity.CasinoGambler> listUpper =
+                var listUpper =
                     Entity.CasinoGambler.GetCasinoGamblers(l.ID).FindAll(delegate(Entity.CasinoGambler cg)
                     { return cg.TotalBet >= _tbs; });
 
-                List<Entity.CasinoGambler> listLower =
+                var listLower =
                     Entity.CasinoGambler.GetCasinoGamblers(l.ID).FindAll(delegate(Entity.CasinoGambler cg)
                     { return cg.TotalBet < _tbs; });
 
@@ -53,9 +52,9 @@ namespace Arsenalcn.CasinoSys.Web.Control
         {
             if ((e.Item.ItemType == ListItemType.Item) || (e.Item.ItemType == ListItemType.AlternatingItem))
             {
-                Entity.CasinoGambler cg = e.Item.DataItem as Entity.CasinoGambler;
+                var cg = e.Item.DataItem as Entity.CasinoGambler;
 
-                Literal ltrlUpperGamblerRank = e.Item.FindControl("ltrlUpperGamblerRank") as Literal;
+                var ltrlUpperGamblerRank = e.Item.FindControl("ltrlUpperGamblerRank") as Literal;
 
                 if (ltrlUpperGamblerRank != null)
                     ltrlUpperGamblerRank.Text = string.Format("<li class=\"IconTop{0}\"><em title=\"竞赛积分\">{0}</em><a href=\"MyBonusLog.aspx?UserID={1}\">{2}</a></li>",
@@ -67,9 +66,9 @@ namespace Arsenalcn.CasinoSys.Web.Control
         {
             if ((e.Item.ItemType == ListItemType.Item) || (e.Item.ItemType == ListItemType.AlternatingItem))
             {
-                Entity.CasinoGambler cg = e.Item.DataItem as Entity.CasinoGambler;
+                var cg = e.Item.DataItem as Entity.CasinoGambler;
 
-                Literal ltrlLowerGamblerRank = e.Item.FindControl("ltrlLowerGamblerRank") as Literal;
+                var ltrlLowerGamblerRank = e.Item.FindControl("ltrlLowerGamblerRank") as Literal;
 
                 if (ltrlLowerGamblerRank != null)
                     ltrlLowerGamblerRank.Text = string.Format("<li class=\"IconTop{0}\"><em title=\"竞赛积分\">{0}</em><a href=\"MyBonusLog.aspx?UserID={1}\">{2}</a></li>",

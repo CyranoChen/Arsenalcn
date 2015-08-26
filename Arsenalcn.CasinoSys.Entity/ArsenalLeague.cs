@@ -34,8 +34,8 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public static List<League> GetLeagues()
         {
-            DataTable dt = DataAccess.League.GetLeagues();
-            List<League> list = new List<League>();
+            var dt = DataAccess.League.GetLeagues();
+            var list = new List<League>();
 
             if (dt != null)
             {

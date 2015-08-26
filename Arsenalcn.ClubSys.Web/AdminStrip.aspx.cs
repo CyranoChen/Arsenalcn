@@ -40,11 +40,11 @@ namespace Arsenalcn.ClubSys.Web
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                BingoHistory bh = e.Row.DataItem as BingoHistory;
+                var bh = e.Row.DataItem as BingoHistory;
 
-                BingoResult br = new BingoResult(bh.Result, bh.ResultDetail);
+                var br = new BingoResult(bh.Result, bh.ResultDetail);
 
-                string finalResult = string.Empty;
+                var finalResult = string.Empty;
 
                 switch (br.Result)
                 {
@@ -60,7 +60,8 @@ namespace Arsenalcn.ClubSys.Web
                         if (br.ResultDetail == "legend")
                             finalResult = "<span class=\"ClubSys_Strip VIDEO\">视频</span>";
                         else
-                            finalResult = string.Format("<span class=\"ClubSys_Strip CARD\">{0}</span>", Player.Cache.Load(new Guid(br.ResultDetail)).DisplayName);
+                            finalResult =
+                                $"<span class=\"ClubSys_Strip CARD\">{Player.Cache.Load(new Guid(br.ResultDetail)).DisplayName}</span>";
                         break;
                     case BingoResultType.Cash:
                         finalResult = "<span class=\"ClubSys_Strip CASH\">枪手币: " + br.ResultDetail.ToString() + "</span>";
@@ -70,7 +71,7 @@ namespace Arsenalcn.ClubSys.Web
                         break;
                 }
 
-                Literal ltrlStrip = e.Row.FindControl("ltrlStrip") as Literal;
+                var ltrlStrip = e.Row.FindControl("ltrlStrip") as Literal;
                 ltrlStrip.Text = finalResult;
             }
         }

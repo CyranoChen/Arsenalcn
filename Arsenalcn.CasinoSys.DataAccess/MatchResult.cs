@@ -11,9 +11,9 @@ namespace Arsenalcn.CasinoSys.DataAccess
     {
         public static DataRow GetMatchResult(Guid casinoItemGuid)
         {
-            string sql = "SELECT * FROM dbo.AcnCasino_MatchResult WHERE CasinoItemGuid = @guid";
+            var sql = "SELECT * FROM dbo.AcnCasino_MatchResult WHERE CasinoItemGuid = @guid";
 
-            DataSet ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@guid", casinoItemGuid));
+            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@guid", casinoItemGuid));
 
             if (ds.Tables[0].Rows.Count == 0)
                 return null;
@@ -23,7 +23,7 @@ namespace Arsenalcn.CasinoSys.DataAccess
 
         public static void InsertMatchResult(Guid casinoItemGuid, SqlTransaction trans)
         {
-            string sql = "INSERT INTO dbo.AcnCasino_MatchResult VALUES (@guid, null, null)";
+            var sql = "INSERT INTO dbo.AcnCasino_MatchResult VALUES (@guid, null, null)";
 
             if (trans != null)
             {
@@ -39,7 +39,7 @@ namespace Arsenalcn.CasinoSys.DataAccess
 
         public static void UpdateMatchResult(Guid casinoItemGuid, short home, short away, SqlTransaction trans)
         {
-            string sql = "UPDATE dbo.AcnCasino_MatchResult SET Home = @home, Away = @away WHERE CasinoItemGuid = @guid";
+            var sql = "UPDATE dbo.AcnCasino_MatchResult SET Home = @home, Away = @away WHERE CasinoItemGuid = @guid";
 
             SqlParameter[] para = { new SqlParameter("@home", home), new SqlParameter("@away", away), new SqlParameter("@guid", casinoItemGuid) };
 

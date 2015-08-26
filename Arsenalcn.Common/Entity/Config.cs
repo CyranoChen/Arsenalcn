@@ -28,7 +28,7 @@ namespace Arsenalcn.Common.Entity
 
         public void Select()
         {
-            DataRow dr = DataAccess.Config.GetConfigByID(ConfigSystem.ToString(), ConfigKey);
+            var dr = DataAccess.Config.GetConfigByID(ConfigSystem.ToString(), ConfigKey);
 
             if (dr != null)
                 InitConfig(dr);
@@ -36,10 +36,10 @@ namespace Arsenalcn.Common.Entity
 
         public void Update()
         {
-            using (SqlConnection conn = SQLConn.GetConnection())
+            using (var conn = SQLConn.GetConnection())
             {
                 conn.Open();
-                SqlTransaction trans = conn.BeginTransaction();
+                var trans = conn.BeginTransaction();
                 try
                 {
                     DataAccess.Config.UpdateConfig(ConfigSystem.ToString(), ConfigKey, ConfigValue, trans);
@@ -57,10 +57,10 @@ namespace Arsenalcn.Common.Entity
 
         private void Insert()
         {
-            using (SqlConnection conn = SQLConn.GetConnection())
+            using (var conn = SQLConn.GetConnection())
             {
                 conn.Open();
-                SqlTransaction trans = conn.BeginTransaction();
+                var trans = conn.BeginTransaction();
                 try
                 {
                     DataAccess.Config.InsertConfig(ConfigSystem.ToString(), ConfigKey, ConfigValue, trans);
@@ -83,8 +83,8 @@ namespace Arsenalcn.Common.Entity
 
         public static List<Config> GetConfigs()
         {
-            DataTable dt = DataAccess.Config.GetConfigs();
-            List<Config> list = new List<Config>();
+            var dt = DataAccess.Config.GetConfigs();
+            var list = new List<Config>();
 
             if (dt != null)
             {
@@ -99,13 +99,13 @@ namespace Arsenalcn.Common.Entity
 
         protected static Dictionary<string, string> GetDictionaryByConfigSystem(ConfigSystem cs)
         {
-            List<Config> list = Config.Cache.ConfigList.FindAll(delegate(Config c) { return c.ConfigSystem.Equals(cs); });
+            var list = Config.Cache.ConfigList.FindAll(delegate(Config c) { return c.ConfigSystem.Equals(cs); });
 
             if (list != null && list.Count > 0)
             {
-                Dictionary<string, string> dict = new Dictionary<string, string>();
+                var dict = new Dictionary<string, string>();
 
-                foreach (Config c in list)
+                foreach (var c in list)
                 {
                     try { dict.Add(c.ConfigKey, c.ConfigValue); }
                     catch { continue; }

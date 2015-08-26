@@ -9,9 +9,9 @@ namespace Arsenalcn.Common.DataAccess
     {
         public static DataRow GetDictionaryByID(int dictID)
         {
-            string sql = "SELECT * FROM dbo.Arsenalcn_Dictionary WHERE ID = @dictID";
+            var sql = "SELECT * FROM dbo.Arsenalcn_Dictionary WHERE ID = @dictID";
 
-            DataSet ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@dictID", dictID));
+            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@dictID", dictID));
 
             if (ds.Tables[0].Rows.Count == 0)
                 return null;
@@ -21,7 +21,7 @@ namespace Arsenalcn.Common.DataAccess
 
         public static void UpdateDictionary(int dictID, string name, string displayName, string standardLevel, string businessField, string standardCode, bool isTreeDictionary, string description)
         {
-            string sql = @"UPDATE dbo.Arsenalcn_Dictionary SET [Name] = @name, DisplayName = @displayName, StandardLevel = @standardLevel, BusinessField = @businessField, 
+            var sql = @"UPDATE dbo.Arsenalcn_Dictionary SET [Name] = @name, DisplayName = @displayName, StandardLevel = @standardLevel, BusinessField = @businessField, 
                             StandardCode = @standardCode, IsTreeDictionary = @isTreeDictionary, Description = @description WHERE ID = @dictID";
 
             SqlParameter[] para = { new SqlParameter("@dictID", dictID), new SqlParameter("@name", name), new SqlParameter("@displayName", displayName), new SqlParameter("@standardLevel", standardLevel), new SqlParameter("@businessField", businessField), new SqlParameter("@standardCode", standardCode), new SqlParameter("@isTreeDictionary", isTreeDictionary), new SqlParameter("@description", description) };
@@ -31,7 +31,7 @@ namespace Arsenalcn.Common.DataAccess
 
         public static void InsertDictionary(string name, string displayName, string standardLevel, string businessField, string standardCode, bool isTreeDictionary, string description)
         {
-            string sql = @"INSERT INTO dbo.Arsenalcn_Dictionary ([Name], DisplayName, StandardLevel, BusinessField, StandardCode, IsTreeDictionary, Description) 
+            var sql = @"INSERT INTO dbo.Arsenalcn_Dictionary ([Name], DisplayName, StandardLevel, BusinessField, StandardCode, IsTreeDictionary, Description) 
                                VALUES (@name, @displayName, @standardLevel, @businessField, @standardCode, @isTreeDictionary, @description)";
 
             SqlParameter[] para = { new SqlParameter("@name", name), new SqlParameter("@displayName", displayName), new SqlParameter("@standardLevel", standardLevel), new SqlParameter("@businessField", businessField), new SqlParameter("@standardCode", standardCode), new SqlParameter("@isTreeDictionary", isTreeDictionary), new SqlParameter("@description", description) };
@@ -41,7 +41,7 @@ namespace Arsenalcn.Common.DataAccess
 
         public static void DeleteDictionary(int dictID)
         {
-            string sql = "DELETE dbo.Arsenalcn_Dictionary WHERE ID = @dictID";
+            var sql = "DELETE dbo.Arsenalcn_Dictionary WHERE ID = @dictID";
 
             SqlParameter[] para = { new SqlParameter("@dictID", dictID) };
 
@@ -50,9 +50,9 @@ namespace Arsenalcn.Common.DataAccess
 
         public static DataTable GetDictionaries()
         {
-            string sql = "SELECT ID, Name, DisplayName, StandardLevel, BusinessField, StandardCode, IsTreeDictionary, Description FROM dbo.Arsenalcn_Dictionary ORDER BY ID";
+            var sql = "SELECT ID, Name, DisplayName, StandardLevel, BusinessField, StandardCode, IsTreeDictionary, Description FROM dbo.Arsenalcn_Dictionary ORDER BY ID";
 
-            DataSet ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql);
+            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql);
 
             if (ds.Tables[0].Rows.Count == 0)
                 return null;

@@ -23,10 +23,10 @@ namespace Arsenalcn.ClubSys.Web
                     else
                     {
                         //get request info
-                        string leftCardID = Request.Form["LeftCardID"];
-                        string rightCardID = Request.Form["RightCardID"];
-                        string fusionResult = Request.Form["FusionResult"];
-                        string authKey = Request.Form["AuthKey"];
+                        var leftCardID = Request.Form["LeftCardID"];
+                        var rightCardID = Request.Form["RightCardID"];
+                        var fusionResult = Request.Form["FusionResult"];
+                        var authKey = Request.Form["AuthKey"];
 
                         if (!string.IsNullOrEmpty(leftCardID) && !string.IsNullOrEmpty(rightCardID) && !string.IsNullOrEmpty(fusionResult) && !string.IsNullOrEmpty(authKey))
                         {
@@ -36,8 +36,8 @@ namespace Arsenalcn.ClubSys.Web
                             {
                                 if (ValidateAuthKey(card1.ToString(), card2.ToString(), this.userid.ToString(), authKey))
                                 {
-                                    Card un1 = PlayerStrip.GetUserNumber(card1);
-                                    Card un2 = PlayerStrip.GetUserNumber(card2);
+                                    var un1 = PlayerStrip.GetUserNumber(card1);
+                                    var un2 = PlayerStrip.GetUserNumber(card2);
 
                                     if (un1 != null && un2 != null && un1.UserID == this.userid && un2.UserID == this.userid)
                                     {
@@ -85,16 +85,16 @@ namespace Arsenalcn.ClubSys.Web
 
         private static bool ValidateAuthKey(string card1, string card2, string userid, string authKey)
         {
-            string authPrivateKey = ConfigGlobal.AuthPrivateKey;
+            var authPrivateKey = ConfigGlobal.AuthPrivateKey;
 
-            string originStr = card1 + card2 + userid + authPrivateKey;
+            var originStr = card1 + card2 + userid + authPrivateKey;
 
-            byte[] bytes = Encoding.UTF8.GetBytes(originStr);
+            var bytes = Encoding.UTF8.GetBytes(originStr);
 
-            byte[] resultBytes = System.Security.Cryptography.MD5.Create().ComputeHash(bytes);
+            var resultBytes = System.Security.Cryptography.MD5.Create().ComputeHash(bytes);
 
-            string sTemp = "";
-            for (int i = 0; i < resultBytes.Length; i++)
+            var sTemp = "";
+            for (var i = 0; i < resultBytes.Length; i++)
             {
                 sTemp += resultBytes[i].ToString("x").PadLeft(2, '0');
             }

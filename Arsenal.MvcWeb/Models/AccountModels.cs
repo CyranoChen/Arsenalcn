@@ -8,8 +8,6 @@ using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
-
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 using Arsenal.Service;
@@ -122,7 +120,7 @@ namespace Arsenal.MvcWeb.Models
             IRepository repo = new Repository();
 
             var query = repo.Query<Membership>(x =>
-                x.UserName == username && x.Password == Encrypt.getMd5Hash(password));
+                x.UserName == username && x.Password == Encrypt.GetMd5Hash(password));
 
             if (query.Count > 0)
             {
@@ -147,7 +145,7 @@ namespace Arsenal.MvcWeb.Models
 
             var client = new DiscuzApiClient();
 
-            var uid = client.AuthValidate(username, Encrypt.getMd5Hash(password));
+            var uid = client.AuthValidate(username, Encrypt.GetMd5Hash(password));
 
             return Convert.ToInt32(uid.Replace("\"", "")) > 0;
         }
@@ -181,8 +179,8 @@ namespace Arsenal.MvcWeb.Models
 
             if (string.IsNullOrEmpty(responseResult)) { return; }
 
-            JArray jlist = JArray.Parse(responseResult);
-            JToken json = jlist[0];
+            var jlist = JArray.Parse(responseResult);
+            var json = jlist[0];
 
             this.Init();
 
@@ -194,10 +192,10 @@ namespace Arsenal.MvcWeb.Models
             this.Remark = string.Format("{{\"AcnID\": {0}}}", uid);
             #endregion
 
-            using (SqlConnection conn = new SqlConnection(DataAccess.ConnectString))
+            using (var conn = new SqlConnection(DataAccess.ConnectString))
             {
                 conn.Open();
-                SqlTransaction trans = conn.BeginTransaction();
+                var trans = conn.BeginTransaction();
 
                 try
                 {
@@ -252,10 +250,10 @@ namespace Arsenal.MvcWeb.Models
         //     property for a System.Web.Security.MembershipCreateStatus value.
         public void CreateUser(string username, string password, out object providerUserKey, out MembershipCreateStatus status)
         {
-            using (SqlConnection conn = new SqlConnection(DataAccess.ConnectString))
+            using (var conn = new SqlConnection(DataAccess.ConnectString))
             {
                 conn.Open();
-                SqlTransaction trans = conn.BeginTransaction();
+                var trans = conn.BeginTransaction();
 
                 try
                 {
@@ -288,7 +286,7 @@ namespace Arsenal.MvcWeb.Models
 
                     #endregion
 
-                    this.Password = Encrypt.getMd5Hash(password);
+                    this.Password = Encrypt.GetMd5Hash(password);
                     this.Mobile = string.Empty;
                     this.Email = string.Empty;
 
@@ -389,19 +387,19 @@ namespace Arsenal.MvcWeb.Models
             if (oldPassword.Equals(newPassword, StringComparison.OrdinalIgnoreCase))
             { throw new Exception("新密码应与旧密码不同"); }
 
-            if (!instance.Password.Equals(Encrypt.getMd5Hash(oldPassword)))
+            if (!instance.Password.Equals(Encrypt.GetMd5Hash(oldPassword)))
             { throw new Exception("用户旧密码验证不正确"); }
 
-            using (SqlConnection conn = new SqlConnection(DataAccess.ConnectString))
+            using (var conn = new SqlConnection(DataAccess.ConnectString))
             {
                 conn.Open();
-                SqlTransaction trans = conn.BeginTransaction();
+                var trans = conn.BeginTransaction();
 
                 try
                 {
                     IRepository repo = new Repository();
 
-                    instance.Password = Encrypt.getMd5Hash(newPassword);
+                    instance.Password = Encrypt.GetMd5Hash(newPassword);
 
                     repo.Update(instance, trans);
 
@@ -416,7 +414,7 @@ namespace Arsenal.MvcWeb.Models
                             var client = new DiscuzApiClient();
 
                             var result = client.UsersChangePassword(user.AcnID.Value,
-                                Encrypt.getMd5Hash(oldPassword), Encrypt.getMd5Hash(newPassword));
+                                Encrypt.GetMd5Hash(oldPassword), Encrypt.GetMd5Hash(newPassword));
 
                             if (!Convert.ToBoolean(result.Replace("\"", "")))
                             { throw new Exception("ACN同步失败"); }

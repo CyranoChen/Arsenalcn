@@ -20,25 +20,25 @@ namespace Arsenalcn.Core
 
         public void Build(Expression expression)
         {
-            PartialEvaluator evaluator = new PartialEvaluator();
-            Expression evaluatedExpression = evaluator.Eval(expression);
+            var evaluator = new PartialEvaluator();
+            var evaluatedExpression = evaluator.Eval(expression);
 
-            this.m_arguments = new List<object>();
-            this.m_conditionParts = new Stack<string>();
+            m_arguments = new List<object>();
+            m_conditionParts = new Stack<string>();
 
-            this.Visit(evaluatedExpression);
+            Visit(evaluatedExpression);
 
-            this.Arguments = this.m_arguments.ToArray();
-            this.Condition = this.m_conditionParts.Count > 0 ? this.m_conditionParts.Pop() : null;
+            Arguments = m_arguments.ToArray();
+            Condition = m_conditionParts.Count > 0 ? m_conditionParts.Pop() : null;
 
             // Convert Arguments from List<object> to List<SqlParameter>
-            if (this.m_arguments.Count > 0)
+            if (m_arguments.Count > 0)
             {
-                this.SqlArguments = new List<SqlParameter>();
+                SqlArguments = new List<SqlParameter>();
 
-                for (var i = 0; i < this.m_arguments.Count; i++)
+                for (var i = 0; i < m_arguments.Count; i++)
                 {
-                    this.SqlArguments.Add(new SqlParameter("@para" + i, this.m_arguments[i]));
+                    SqlArguments.Add(new SqlParameter("@para" + i, m_arguments[i]));
                 }
             }
         }
@@ -90,14 +90,14 @@ namespace Arsenalcn.Core
                     throw new NotSupportedException(b.NodeType + "is not supported.");
             }
 
-            this.Visit(b.Left);
-            this.Visit(b.Right);
+            Visit(b.Left);
+            Visit(b.Right);
 
-            string right = this.m_conditionParts.Pop();
-            string left = this.m_conditionParts.Pop();
+            var right = m_conditionParts.Pop();
+            var left = m_conditionParts.Pop();
 
-            string condition = String.Format("({0} {1} {2})", left, opr, right);
-            this.m_conditionParts.Push(condition);
+            var condition = $"({left} {opr} {right})";
+            m_conditionParts.Push(condition);
 
             return b;
         }
@@ -106,11 +106,11 @@ namespace Arsenalcn.Core
         {
             if (c == null) return c;
 
-            this.m_arguments.Add(c.Value);
+            m_arguments.Add(c.Value);
 
             //this.m_conditionParts.Push(String.Format("{{{0}}}", this.m_arguments.Count - 1));
             //use @para{0} instead of {0}
-            this.m_conditionParts.Push(string.Format("@para{0}", this.m_arguments.Count - 1));
+            m_conditionParts.Push($"@para{m_arguments.Count - 1}");
 
             return c;
         }
@@ -122,25 +122,25 @@ namespace Arsenalcn.Core
             // Except for property HasValue
             if (m.Member.Name.Equals("HasValue"))
             {
-                PropertyInfo propertyInfo = ((MemberExpression)m.Expression).Member as PropertyInfo;
+                var propertyInfo = ((MemberExpression)m.Expression).Member as PropertyInfo;
                 if (propertyInfo == null) return m;
 
                 // Whether this property is DB Column by Meta Attribute
                 var attrCol = Repository.GetColumnAttr(propertyInfo);
                 if (attrCol == null) return m;
 
-                this.m_conditionParts.Push(String.Format("[{0}] IS NOT NULL", attrCol.Name));
+                m_conditionParts.Push($"[{attrCol.Name}] IS NOT NULL");
             }
             else
             {
-                PropertyInfo propertyInfo = m.Member as PropertyInfo;
+                var propertyInfo = m.Member as PropertyInfo;
                 if (propertyInfo == null) return m;
 
                 // Whether this property is DB Column by Meta Attribute
                 var attrCol = Repository.GetColumnAttr(propertyInfo);
                 if (attrCol == null) return m;
 
-                this.m_conditionParts.Push(String.Format("[{0}]", attrCol.Name));
+                m_conditionParts.Push($"[{attrCol.Name}]");
             }
 
             return m;
@@ -158,14 +158,14 @@ namespace Arsenalcn.Core
 
         public PartialEvaluator(Func<Expression, bool> fnCanBeEvaluated)
         {
-            this.m_fnCanBeEvaluated = fnCanBeEvaluated;
+            m_fnCanBeEvaluated = fnCanBeEvaluated;
         }
 
         public Expression Eval(Expression exp)
         {
-            this.m_candidates = new Nominator(this.m_fnCanBeEvaluated).Nominate(exp);
+            m_candidates = new Nominator(m_fnCanBeEvaluated).Nominate(exp);
 
-            return this.Visit(exp);
+            return Visit(exp);
         }
 
         protected override Expression Visit(Expression exp)
@@ -175,9 +175,9 @@ namespace Arsenalcn.Core
                 return null;
             }
 
-            if (this.m_candidates.Contains(exp))
+            if (m_candidates.Contains(exp))
             {
-                return this.Evaluate(exp);
+                return Evaluate(exp);
             }
 
             return base.Visit(exp);
@@ -190,8 +190,8 @@ namespace Arsenalcn.Core
                 return e;
             }
 
-            LambdaExpression lambda = Expression.Lambda(e);
-            Delegate fn = lambda.Compile();
+            var lambda = Expression.Lambda(e);
+            var fn = lambda.Compile();
 
             return Expression.Constant(fn.DynamicInvoke(null), e.Type);
         }
@@ -215,38 +215,38 @@ namespace Arsenalcn.Core
 
             internal Nominator(Func<Expression, bool> fnCanBeEvaluated)
             {
-                this.m_fnCanBeEvaluated = fnCanBeEvaluated;
+                m_fnCanBeEvaluated = fnCanBeEvaluated;
             }
 
             internal HashSet<Expression> Nominate(Expression expression)
             {
-                this.m_candidates = new HashSet<Expression>();
-                this.Visit(expression);
-                return this.m_candidates;
+                m_candidates = new HashSet<Expression>();
+                Visit(expression);
+                return m_candidates;
             }
 
             protected override Expression Visit(Expression expression)
             {
                 if (expression != null)
                 {
-                    bool saveCannotBeEvaluated = this.m_cannotBeEvaluated;
-                    this.m_cannotBeEvaluated = false;
+                    var saveCannotBeEvaluated = m_cannotBeEvaluated;
+                    m_cannotBeEvaluated = false;
 
                     base.Visit(expression);
 
-                    if (!this.m_cannotBeEvaluated)
+                    if (!m_cannotBeEvaluated)
                     {
-                        if (this.m_fnCanBeEvaluated(expression))
+                        if (m_fnCanBeEvaluated(expression))
                         {
-                            this.m_candidates.Add(expression);
+                            m_candidates.Add(expression);
                         }
                         else
                         {
-                            this.m_cannotBeEvaluated = true;
+                            m_cannotBeEvaluated = true;
                         }
                     }
 
-                    this.m_cannotBeEvaluated |= saveCannotBeEvaluated;
+                    m_cannotBeEvaluated |= saveCannotBeEvaluated;
                 }
 
                 return expression;
@@ -263,7 +263,8 @@ namespace Arsenalcn.Core
         protected virtual Expression Visit(Expression exp)
         {
             if (exp == null)
-                return exp;
+                return null;
+
             switch (exp.NodeType)
             {
                 case ExpressionType.Negate:
@@ -274,7 +275,7 @@ namespace Arsenalcn.Core
                 case ExpressionType.ArrayLength:
                 case ExpressionType.Quote:
                 case ExpressionType.TypeAs:
-                    return this.VisitUnary((UnaryExpression)exp);
+                    return VisitUnary((UnaryExpression)exp);
                 case ExpressionType.Add:
                 case ExpressionType.AddChecked:
                 case ExpressionType.Subtract:
@@ -298,34 +299,34 @@ namespace Arsenalcn.Core
                 case ExpressionType.RightShift:
                 case ExpressionType.LeftShift:
                 case ExpressionType.ExclusiveOr:
-                    return this.VisitBinary((BinaryExpression)exp);
+                    return VisitBinary((BinaryExpression)exp);
                 case ExpressionType.TypeIs:
-                    return this.VisitTypeIs((TypeBinaryExpression)exp);
+                    return VisitTypeIs((TypeBinaryExpression)exp);
                 case ExpressionType.Conditional:
-                    return this.VisitConditional((ConditionalExpression)exp);
+                    return VisitConditional((ConditionalExpression)exp);
                 case ExpressionType.Constant:
-                    return this.VisitConstant((ConstantExpression)exp);
+                    return VisitConstant((ConstantExpression)exp);
                 case ExpressionType.Parameter:
-                    return this.VisitParameter((ParameterExpression)exp);
+                    return VisitParameter((ParameterExpression)exp);
                 case ExpressionType.MemberAccess:
-                    return this.VisitMemberAccess((MemberExpression)exp);
+                    return VisitMemberAccess((MemberExpression)exp);
                 case ExpressionType.Call:
-                    return this.VisitMethodCall((MethodCallExpression)exp);
+                    return VisitMethodCall((MethodCallExpression)exp);
                 case ExpressionType.Lambda:
-                    return this.VisitLambda((LambdaExpression)exp);
+                    return VisitLambda((LambdaExpression)exp);
                 case ExpressionType.New:
-                    return this.VisitNew((NewExpression)exp);
+                    return VisitNew((NewExpression)exp);
                 case ExpressionType.NewArrayInit:
                 case ExpressionType.NewArrayBounds:
-                    return this.VisitNewArray((NewArrayExpression)exp);
+                    return VisitNewArray((NewArrayExpression)exp);
                 case ExpressionType.Invoke:
-                    return this.VisitInvocation((InvocationExpression)exp);
+                    return VisitInvocation((InvocationExpression)exp);
                 case ExpressionType.MemberInit:
-                    return this.VisitMemberInit((MemberInitExpression)exp);
+                    return VisitMemberInit((MemberInitExpression)exp);
                 case ExpressionType.ListInit:
-                    return this.VisitListInit((ListInitExpression)exp);
+                    return VisitListInit((ListInitExpression)exp);
                 default:
-                    throw new Exception(string.Format("Unhandled expression type: '{0}'", exp.NodeType));
+                    throw new Exception($"Unhandled expression type: '{exp.NodeType}'");
             }
         }
 
@@ -334,19 +335,19 @@ namespace Arsenalcn.Core
             switch (binding.BindingType)
             {
                 case MemberBindingType.Assignment:
-                    return this.VisitMemberAssignment((MemberAssignment)binding);
+                    return VisitMemberAssignment((MemberAssignment)binding);
                 case MemberBindingType.MemberBinding:
-                    return this.VisitMemberMemberBinding((MemberMemberBinding)binding);
+                    return VisitMemberMemberBinding((MemberMemberBinding)binding);
                 case MemberBindingType.ListBinding:
-                    return this.VisitMemberListBinding((MemberListBinding)binding);
+                    return VisitMemberListBinding((MemberListBinding)binding);
                 default:
-                    throw new Exception(string.Format("Unhandled binding type '{0}'", binding.BindingType));
+                    throw new Exception($"Unhandled binding type '{binding.BindingType}'");
             }
         }
 
         protected virtual ElementInit VisitElementInitializer(ElementInit initializer)
         {
-            ReadOnlyCollection<Expression> arguments = this.VisitExpressionList(initializer.Arguments);
+            var arguments = VisitExpressionList(initializer.Arguments);
             if (arguments != initializer.Arguments)
             {
                 return Expression.ElementInit(initializer.AddMethod, arguments);
@@ -356,7 +357,7 @@ namespace Arsenalcn.Core
 
         protected virtual Expression VisitUnary(UnaryExpression u)
         {
-            Expression operand = this.Visit(u.Operand);
+            var operand = Visit(u.Operand);
             if (operand != u.Operand)
             {
                 return Expression.MakeUnary(u.NodeType, operand, u.Type, u.Method);
@@ -366,9 +367,9 @@ namespace Arsenalcn.Core
 
         protected virtual Expression VisitBinary(BinaryExpression b)
         {
-            Expression left = this.Visit(b.Left);
-            Expression right = this.Visit(b.Right);
-            Expression conversion = this.Visit(b.Conversion);
+            var left = Visit(b.Left);
+            var right = Visit(b.Right);
+            var conversion = Visit(b.Conversion);
             if (left != b.Left || right != b.Right || conversion != b.Conversion)
             {
                 if (b.NodeType == ExpressionType.Coalesce && b.Conversion != null)
@@ -381,7 +382,7 @@ namespace Arsenalcn.Core
 
         protected virtual Expression VisitTypeIs(TypeBinaryExpression b)
         {
-            Expression expr = this.Visit(b.Expression);
+            var expr = Visit(b.Expression);
             if (expr != b.Expression)
             {
                 return Expression.TypeIs(expr, b.TypeOperand);
@@ -396,9 +397,9 @@ namespace Arsenalcn.Core
 
         protected virtual Expression VisitConditional(ConditionalExpression c)
         {
-            Expression test = this.Visit(c.Test);
-            Expression ifTrue = this.Visit(c.IfTrue);
-            Expression ifFalse = this.Visit(c.IfFalse);
+            var test = Visit(c.Test);
+            var ifTrue = Visit(c.IfTrue);
+            var ifFalse = Visit(c.IfFalse);
             if (test != c.Test || ifTrue != c.IfTrue || ifFalse != c.IfFalse)
             {
                 return Expression.Condition(test, ifTrue, ifFalse);
@@ -413,7 +414,7 @@ namespace Arsenalcn.Core
 
         protected virtual Expression VisitMemberAccess(MemberExpression m)
         {
-            Expression exp = this.Visit(m.Expression);
+            var exp = Visit(m.Expression);
             if (exp != m.Expression)
             {
                 return Expression.MakeMemberAccess(exp, m.Member);
@@ -423,8 +424,8 @@ namespace Arsenalcn.Core
 
         protected virtual Expression VisitMethodCall(MethodCallExpression m)
         {
-            Expression obj = this.Visit(m.Object);
-            IEnumerable<Expression> args = this.VisitExpressionList(m.Arguments);
+            var obj = Visit(m.Object);
+            IEnumerable<Expression> args = VisitExpressionList(m.Arguments);
             if (obj != m.Object || args != m.Arguments)
             {
                 return Expression.Call(obj, m.Method, args);
@@ -437,7 +438,7 @@ namespace Arsenalcn.Core
             List<Expression> list = null;
             for (int i = 0, n = original.Count; i < n; i++)
             {
-                Expression p = this.Visit(original[i]);
+                var p = Visit(original[i]);
                 if (list != null)
                 {
                     list.Add(p);
@@ -445,7 +446,7 @@ namespace Arsenalcn.Core
                 else if (p != original[i])
                 {
                     list = new List<Expression>(n);
-                    for (int j = 0; j < i; j++)
+                    for (var j = 0; j < i; j++)
                     {
                         list.Add(original[j]);
                     }
@@ -461,7 +462,7 @@ namespace Arsenalcn.Core
 
         protected virtual MemberAssignment VisitMemberAssignment(MemberAssignment assignment)
         {
-            Expression e = this.Visit(assignment.Expression);
+            var e = Visit(assignment.Expression);
             if (e != assignment.Expression)
             {
                 return Expression.Bind(assignment.Member, e);
@@ -471,7 +472,7 @@ namespace Arsenalcn.Core
 
         protected virtual MemberMemberBinding VisitMemberMemberBinding(MemberMemberBinding binding)
         {
-            IEnumerable<MemberBinding> bindings = this.VisitBindingList(binding.Bindings);
+            var bindings = VisitBindingList(binding.Bindings);
             if (bindings != binding.Bindings)
             {
                 return Expression.MemberBind(binding.Member, bindings);
@@ -481,7 +482,7 @@ namespace Arsenalcn.Core
 
         protected virtual MemberListBinding VisitMemberListBinding(MemberListBinding binding)
         {
-            IEnumerable<ElementInit> initializers = this.VisitElementInitializerList(binding.Initializers);
+            var initializers = VisitElementInitializerList(binding.Initializers);
             if (initializers != binding.Initializers)
             {
                 return Expression.ListBind(binding.Member, initializers);
@@ -494,7 +495,7 @@ namespace Arsenalcn.Core
             List<MemberBinding> list = null;
             for (int i = 0, n = original.Count; i < n; i++)
             {
-                MemberBinding b = this.VisitBinding(original[i]);
+                var b = VisitBinding(original[i]);
                 if (list != null)
                 {
                     list.Add(b);
@@ -502,7 +503,7 @@ namespace Arsenalcn.Core
                 else if (b != original[i])
                 {
                     list = new List<MemberBinding>(n);
-                    for (int j = 0; j < i; j++)
+                    for (var j = 0; j < i; j++)
                     {
                         list.Add(original[j]);
                     }
@@ -519,7 +520,7 @@ namespace Arsenalcn.Core
             List<ElementInit> list = null;
             for (int i = 0, n = original.Count; i < n; i++)
             {
-                ElementInit init = this.VisitElementInitializer(original[i]);
+                var init = VisitElementInitializer(original[i]);
                 if (list != null)
                 {
                     list.Add(init);
@@ -527,7 +528,7 @@ namespace Arsenalcn.Core
                 else if (init != original[i])
                 {
                     list = new List<ElementInit>(n);
-                    for (int j = 0; j < i; j++)
+                    for (var j = 0; j < i; j++)
                     {
                         list.Add(original[j]);
                     }
@@ -541,7 +542,7 @@ namespace Arsenalcn.Core
 
         protected virtual Expression VisitLambda(LambdaExpression lambda)
         {
-            Expression body = this.Visit(lambda.Body);
+            var body = Visit(lambda.Body);
             if (body != lambda.Body)
             {
                 return Expression.Lambda(lambda.Type, body, lambda.Parameters);
@@ -551,7 +552,7 @@ namespace Arsenalcn.Core
 
         protected virtual NewExpression VisitNew(NewExpression nex)
         {
-            IEnumerable<Expression> args = this.VisitExpressionList(nex.Arguments);
+            IEnumerable<Expression> args = VisitExpressionList(nex.Arguments);
             if (args != nex.Arguments)
             {
                 if (nex.Members != null)
@@ -564,8 +565,8 @@ namespace Arsenalcn.Core
 
         protected virtual Expression VisitMemberInit(MemberInitExpression init)
         {
-            NewExpression n = this.VisitNew(init.NewExpression);
-            IEnumerable<MemberBinding> bindings = this.VisitBindingList(init.Bindings);
+            var n = VisitNew(init.NewExpression);
+            var bindings = VisitBindingList(init.Bindings);
             if (n != init.NewExpression || bindings != init.Bindings)
             {
                 return Expression.MemberInit(n, bindings);
@@ -575,8 +576,8 @@ namespace Arsenalcn.Core
 
         protected virtual Expression VisitListInit(ListInitExpression init)
         {
-            NewExpression n = this.VisitNew(init.NewExpression);
-            IEnumerable<ElementInit> initializers = this.VisitElementInitializerList(init.Initializers);
+            var n = VisitNew(init.NewExpression);
+            var initializers = VisitElementInitializerList(init.Initializers);
             if (n != init.NewExpression || initializers != init.Initializers)
             {
                 return Expression.ListInit(n, initializers);
@@ -586,7 +587,7 @@ namespace Arsenalcn.Core
 
         protected virtual Expression VisitNewArray(NewArrayExpression na)
         {
-            IEnumerable<Expression> exprs = this.VisitExpressionList(na.Expressions);
+            IEnumerable<Expression> exprs = VisitExpressionList(na.Expressions);
             if (exprs != na.Expressions)
             {
                 if (na.NodeType == ExpressionType.NewArrayInit)
@@ -603,8 +604,8 @@ namespace Arsenalcn.Core
 
         protected virtual Expression VisitInvocation(InvocationExpression iv)
         {
-            IEnumerable<Expression> args = this.VisitExpressionList(iv.Arguments);
-            Expression expr = this.Visit(iv.Expression);
+            IEnumerable<Expression> args = VisitExpressionList(iv.Arguments);
+            var expr = Visit(iv.Expression);
             if (args != iv.Arguments || expr != iv.Expression)
             {
                 return Expression.Invoke(expr, args);

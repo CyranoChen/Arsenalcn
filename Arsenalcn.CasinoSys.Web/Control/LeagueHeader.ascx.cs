@@ -10,7 +10,7 @@ namespace Arsenalcn.CasinoSys.Web.Control
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            List<League> list = Entity.League.Cache.LeagueList_Active;
+            var list = Entity.League.Cache.LeagueList_Active;
 
             rptLeague.DataSource = list;
             rptLeague.DataBind();
@@ -42,10 +42,10 @@ namespace Arsenalcn.CasinoSys.Web.Control
         {
             if ((e.Item.ItemType == ListItemType.Item) || (e.Item.ItemType == ListItemType.AlternatingItem))
             {
-                League l = e.Item.DataItem as League;
-                Literal ltrlLeagueInfo = e.Item.FindControl("ltrlLeagueInfo") as Literal;
+                var l = e.Item.DataItem as League;
+                var ltrlLeagueInfo = e.Item.FindControl("ltrlLeagueInfo") as Literal;
 
-                string href = string.Format("{0}?League={1}", pageURL, l.ID.ToString());
+                var href = string.Format("{0}?League={1}", pageURL, l.ID.ToString());
 
                 ltrlLeagueInfo.Text = string.Format("<li id=\"{0}\"><a href=\"{1}\" target=\"_self\" title=\"{3}\"><img src=\"{2}\" alt=\"{3}\" /></a></li>", l.ID.ToString(), href, l.LeagueLogo.ToString(), l.LeagueName.ToString());
             }

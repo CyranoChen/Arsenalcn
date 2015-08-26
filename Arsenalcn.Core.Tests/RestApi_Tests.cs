@@ -2,12 +2,9 @@
 using System.IO;
 using System.Net;
 using System.Text;
-using System.Xml;
-
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Arsenal.Service;
-using Arsenalcn.Core;
 using System.Web;
 using Arsenalcn.Core.Utility;
 
@@ -25,18 +22,18 @@ namespace Arsenalcn.Core.Tests
         [TestMethod()]
         public void ApiValidate_Test()
         {
-            string authToken = string.Empty;
+            var authToken = string.Empty;
             //string nextURL = "/default.aspx";
-            string gotoURL = string.Empty;
+            var gotoURL = string.Empty;
 
-            string _apiServiceUrl = "http://vm-win2008r2/services/restserver.aspx";
-            string _apiAppKey = "e5b551b11b65fd03bf8e9afe14a092c5";
-            string _apiCryptographicKey = "68a9b3a904bc09ce89a62310e9ebbd3c";
-            string _method = "auth.validate";
+            var _apiServiceUrl = "http://vm-win2008r2/services/restserver.aspx";
+            var _apiAppKey = "e5b551b11b65fd03bf8e9afe14a092c5";
+            var _apiCryptographicKey = "68a9b3a904bc09ce89a62310e9ebbd3c";
+            var _method = "auth.validate";
             //string _strAuthToken = !string.IsNullOrEmpty(authToken) ? string.Format("authToken={0}", authToken) : string.Empty;
 
-            string _username = "小胖妞";
-            string _password = "vickie1204";
+            var _username = "小胖妞";
+            var _password = "vickie1204";
 
             try
             {
@@ -49,32 +46,32 @@ namespace Arsenalcn.Core.Tests
                 //    nextURL = context.Request.QueryString["next"];
 
                 //New HttpWebRequest for DiscuzNT Service API
-                HttpWebRequest req = (HttpWebRequest)WebRequest.Create(_apiServiceUrl);
+                var req = (HttpWebRequest)WebRequest.Create(_apiServiceUrl);
 
                 req.Method = "POST";
                 req.ContentType = "application/x-www-form-urlencoded";
 
                 //Gen Digital Signature
-                string sig = string.Format("api_key={0}format=jsonmethod={1}password={2}user_name={3}{4}",
+                var sig = string.Format("api_key={0}format=jsonmethod={1}password={2}user_name={3}{4}",
                     _apiAppKey, _method, _password, _username, _apiCryptographicKey);
 
                 //Set WebRequest Parameter
-                string para = string.Format("method={0}&format=json&api_key={1}&sig={2}&user_name={3}&password={4}",
-                    _method, _apiAppKey, Encrypt.getMd5Hash(sig), _username, _password);
+                var para = string.Format("method={0}&format=json&api_key={1}&sig={2}&user_name={3}&password={4}",
+                    _method, _apiAppKey, Encrypt.GetMd5Hash(sig), _username, _password);
 
-                byte[] encodedBytes = Encoding.UTF8.GetBytes(para);
+                var encodedBytes = Encoding.UTF8.GetBytes(para);
                 req.ContentLength = encodedBytes.Length;
 
                 // Write encoded data into request stream
-                Stream requestStream = req.GetRequestStream();
+                var requestStream = req.GetRequestStream();
                 requestStream.Write(encodedBytes, 0, encodedBytes.Length);
                 requestStream.Close();
 
                 using (var response = req.GetResponse())
                 {
                     var receiveStream = response.GetResponseStream();
-                    StreamReader readStream = new StreamReader(receiveStream, Encoding.UTF8);
-                    string responseResult = readStream.ReadToEnd();
+                    var readStream = new StreamReader(receiveStream, Encoding.UTF8);
+                    var responseResult = readStream.ReadToEnd();
 
                     if (!string.IsNullOrEmpty(responseResult))
                     {
@@ -135,7 +132,7 @@ namespace Arsenalcn.Core.Tests
         {
             var client = new DiscuzApiClient();
 
-            var uid = client.AuthValidate("cyrano", Encrypt.getMd5Hash("linfeng"));
+            var uid = client.AuthValidate("cyrano", Encrypt.GetMd5Hash("linfeng"));
 
             Assert.AreEqual(443, Convert.ToInt32(uid.Replace("\"", "")));
         }

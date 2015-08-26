@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data;
 
 namespace iArsenal.Service
 {
@@ -9,7 +8,7 @@ namespace iArsenal.Service
 
         public void Init()
         {
-            String[] _para = Remark.Split('|');
+            var _para = Remark.Split('|');
 
             MemberCardNo = !string.IsNullOrEmpty(_para[0]) ? _para[0] : string.Empty;
 
@@ -75,7 +74,7 @@ namespace iArsenal.Service
             if (ProductGuid == null)
                 throw new Exception("Loading OrderItem failed.");
 
-            Product p = Product.Cache.Load(ProductGuid);
+            var p = Product.Cache.Load(ProductGuid);
 
             if (!p.ProductType.Equals(ProductType.MemberShipCore))
                 throw new Exception("The OrderItem is not the type of MemberShipCore.");
@@ -83,7 +82,7 @@ namespace iArsenal.Service
 
         public void Place(Member m, System.Data.SqlClient.SqlTransaction trans = null)
         {
-            Product product = Product.Cache.ProductList.Find(p =>
+            var product = Product.Cache.ProductList.Find(p =>
                 p.ProductType.Equals(ProductType.MemberShipCore));
 
             base.Place(m, product, trans);
@@ -101,7 +100,7 @@ namespace iArsenal.Service
             if (ProductGuid == null)
                 throw new Exception("Loading OrderItem failed.");
 
-            Product p = Product.Cache.Load(ProductGuid);
+            var p = Product.Cache.Load(ProductGuid);
 
             if (!p.ProductType.Equals(ProductType.MemberShipPremier))
                 throw new Exception("The OrderItem is not the type of MemberShipPremier.");
@@ -109,7 +108,7 @@ namespace iArsenal.Service
 
         public void Place(Member m, System.Data.SqlClient.SqlTransaction trans = null)
         {
-            Product product = Product.Cache.ProductList.Find(p =>
+            var product = Product.Cache.ProductList.Find(p =>
                 p.ProductType.Equals(ProductType.MemberShipPremier));
 
             base.Place(m, product, trans);

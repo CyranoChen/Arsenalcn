@@ -8,9 +8,9 @@ namespace Arsenalcn.CasinoSys.Web.Control
         protected void Page_Load(object sender, EventArgs e)
         {
             #region Top Gambler Profit
-            int rank = 1;
-            int months = 0;
-            DataTable dtTopProfit = Entity.Rank.GetTopGamblerProfit(out months);
+            var rank = 1;
+            var months = 0;
+            var dtTopProfit = Entity.Rank.GetTopGamblerProfit(out months);
 
             if (dtTopProfit != null)
             {
@@ -31,7 +31,7 @@ namespace Arsenalcn.CasinoSys.Web.Control
             #region Top Gambler RP
             rank = 1;
             months = 0;
-            DataTable dtTopRP = Entity.Rank.GetTopGamblerRP(out months);
+            var dtTopRP = Entity.Rank.GetTopGamblerRP(out months);
 
             if (dtTopRP != null)
             {
@@ -52,7 +52,7 @@ namespace Arsenalcn.CasinoSys.Web.Control
             #region Top Gambler Bet
             rank = 1;
             months = 0;
-            DataTable dtTopBet = Entity.Rank.GetTopGamblerTotalBet(out months);
+            var dtTopBet = Entity.Rank.GetTopGamblerTotalBet(out months);
 
             if (dtTopBet != null)
             {

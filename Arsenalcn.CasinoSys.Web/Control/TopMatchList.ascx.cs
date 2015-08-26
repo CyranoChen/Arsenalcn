@@ -11,9 +11,9 @@ namespace Arsenalcn.CasinoSys.Web.Control
         protected void Page_Load(object sender, EventArgs e)
         {
             #region Top Match Earning
-            int rank = 1;
-            int months = 0;
-            DataTable dtTopEarning = Entity.CasinoItem.GetTopMatchEarning(out months);
+            var rank = 1;
+            var months = 0;
+            var dtTopEarning = Entity.CasinoItem.GetTopMatchEarning(out months);
 
             if (dtTopEarning != null)
             {
@@ -34,7 +34,7 @@ namespace Arsenalcn.CasinoSys.Web.Control
             #region Top Match Loss
             rank = 1;
             months = 0;
-            DataTable dtTopLoss = Entity.CasinoItem.GetTopMatchLoss(out months);
+            var dtTopLoss = Entity.CasinoItem.GetTopMatchLoss(out months);
 
             if (dtTopLoss != null)
             {
@@ -57,18 +57,18 @@ namespace Arsenalcn.CasinoSys.Web.Control
         {
             if ((e.Item.ItemType == ListItemType.Item) || (e.Item.ItemType == ListItemType.AlternatingItem))
             {
-                DataRowView drv = e.Item.DataItem as DataRowView;
+                var drv = e.Item.DataItem as DataRowView;
 
-                Match m = new Match((Guid)drv["MatchGuid"]);
+                var m = new Match((Guid)drv["MatchGuid"]);
 
-                Literal ltrlMatchInfo = e.Item.FindControl("ltrlMatchInfo") as Literal;
+                var ltrlMatchInfo = e.Item.FindControl("ltrlMatchInfo") as Literal;
 
                 if (ltrlMatchInfo != null && m != null)
                 {
-                    Team tHome = Team.Cache.Load(m.Home);
-                    Team tAway = Team.Cache.Load(m.Away);
+                    var tHome = Team.Cache.Load(m.Home);
+                    var tAway = Team.Cache.Load(m.Away);
 
-                    string _strMatchInfo = "<li class=\"IconTop{0}\"><a href=\"CasinoBetLog.aspx?Match={1}\" title=\"{2} {3}\">{4} <em>vs</em> {5}</a><em title=\"比赛盈余\"  class=\"CasinoSys_TopRankEM\">{6}</em></li>";
+                    var _strMatchInfo = "<li class=\"IconTop{0}\"><a href=\"CasinoBetLog.aspx?Match={1}\" title=\"{2} {3}\">{4} <em>vs</em> {5}</a><em title=\"比赛盈余\"  class=\"CasinoSys_TopRankEM\">{6}</em></li>";
 
                     ltrlMatchInfo.Text = string.Format(_strMatchInfo, drv["Rank"].ToString(), m.MatchGuid.ToString(), m.LeagueName,
                         m.PlayTime.ToString("yyyy-MM-dd HH:mm"), tHome.TeamDisplayName, tAway.TeamDisplayName,
@@ -81,18 +81,18 @@ namespace Arsenalcn.CasinoSys.Web.Control
         {
             if ((e.Item.ItemType == ListItemType.Item) || (e.Item.ItemType == ListItemType.AlternatingItem))
             {
-                DataRowView drv = e.Item.DataItem as DataRowView;
+                var drv = e.Item.DataItem as DataRowView;
 
-                Match m = new Match((Guid)drv["MatchGuid"]);
+                var m = new Match((Guid)drv["MatchGuid"]);
 
-                Literal ltrlMatchInfo = e.Item.FindControl("ltrlMatchInfo") as Literal;
+                var ltrlMatchInfo = e.Item.FindControl("ltrlMatchInfo") as Literal;
 
                 if (ltrlMatchInfo != null && m != null)
                 {
-                    Team tHome = Team.Cache.Load(m.Home);
-                    Team tAway = Team.Cache.Load(m.Away);
+                    var tHome = Team.Cache.Load(m.Home);
+                    var tAway = Team.Cache.Load(m.Away);
 
-                    string _strMatchInfo = "<li class=\"IconTop{0}\"><a href=\"CasinoBetLog.aspx?Match={1}\" title=\"{2} {3}\">{4} <em>vs</em> {5}</a><em title=\"比赛亏损\"  class=\"CasinoSys_TopRankEM\">{6}</em></li>";
+                    var _strMatchInfo = "<li class=\"IconTop{0}\"><a href=\"CasinoBetLog.aspx?Match={1}\" title=\"{2} {3}\">{4} <em>vs</em> {5}</a><em title=\"比赛亏损\"  class=\"CasinoSys_TopRankEM\">{6}</em></li>";
 
                     ltrlMatchInfo.Text = string.Format(_strMatchInfo, drv["Rank"].ToString(), m.MatchGuid.ToString(), m.LeagueName,
                         m.PlayTime.ToString("yyyy-MM-dd HH:mm"), tHome.TeamDisplayName, tAway.TeamDisplayName,

@@ -15,24 +15,24 @@ namespace Arsenalcn.CasinoSys.Web
 
             if (!IsPostBack)
             {
-                List<League> list = Entity.League.Cache.LeagueList_Active;
+                var list = Entity.League.Cache.LeagueList_Active;
 
                 ddlLeague.DataSource = list;
                 ddlLeague.DataTextField = "LeagueNameInfo";
                 ddlLeague.DataValueField = "ID";
                 ddlLeague.DataBind();
 
-                ListItem itemLeague = new ListItem("--请选择比赛分类--", Guid.Empty.ToString());
+                var itemLeague = new ListItem("--请选择比赛分类--", Guid.Empty.ToString());
                 ddlLeague.Items.Insert(0, itemLeague);
 
-                ListItem itemGroup = new ListItem("--请选择比赛组别--", Guid.Empty.ToString());
+                var itemGroup = new ListItem("--请选择比赛组别--", Guid.Empty.ToString());
                 ddlLeagueGroup.Items.Insert(0, itemGroup);
             }
         }
 
         protected void ddlLeague_SelectedIndexChanged(object sender, EventArgs e)
         {
-            List<Team> list = Entity.Team.Cache.GetTeamsByLeagueGuid(new Guid(ddlLeague.SelectedValue));
+            var list = Entity.Team.Cache.GetTeamsByLeagueGuid(new Guid(ddlLeague.SelectedValue));
 
             if (list != null && list.Count > 0)
             {
@@ -53,7 +53,7 @@ namespace Arsenalcn.CasinoSys.Web
             }
 
 
-            DataTable dtGroups = Entity.Group.GetGroupByLeague(new Guid(ddlLeague.SelectedValue), false);
+            var dtGroups = Entity.Group.GetGroupByLeague(new Guid(ddlLeague.SelectedValue), false);
 
             if (dtGroups != null)
             {
@@ -66,7 +66,7 @@ namespace Arsenalcn.CasinoSys.Web
                 ddlLeagueGroup.Items.Clear();
 
 
-            ListItem itemGroup = new ListItem("--请选择比赛组别--", Guid.Empty.ToString());
+            var itemGroup = new ListItem("--请选择比赛组别--", Guid.Empty.ToString());
             ddlLeagueGroup.Items.Insert(0, itemGroup);
         }
 
@@ -74,7 +74,7 @@ namespace Arsenalcn.CasinoSys.Web
         {
             try
             {
-                Match m = new Match();
+                var m = new Match();
 
                 m.MatchGuid = Guid.NewGuid();
                 m.Home = new Guid(ddlHomeTeam.SelectedValue);
@@ -82,7 +82,7 @@ namespace Arsenalcn.CasinoSys.Web
                 m.PlayTime = Convert.ToDateTime(tbPlayTime.Text);
                 m.LeagueGuid = new Guid(ddlLeague.SelectedValue);
 
-                League l = League.Cache.Load(m.LeagueGuid);
+                var l = League.Cache.Load(m.LeagueGuid);
                 m.LeagueName = l.LeagueNameInfo;
 
                 if (!string.IsNullOrEmpty(tbRound.Text))
@@ -95,9 +95,9 @@ namespace Arsenalcn.CasinoSys.Web
                 else
                     m.GroupGuid = null;
 
-                float winRate = Convert.ToSingle(tbWinRate.Text);
-                float drawRate = Convert.ToSingle(tbDrawRate.Text);
-                float loseRate = Convert.ToSingle(tbLoseRate.Text);
+                var winRate = Convert.ToSingle(tbWinRate.Text);
+                var drawRate = Convert.ToSingle(tbDrawRate.Text);
+                var loseRate = Convert.ToSingle(tbLoseRate.Text);
 
                 m.Insert(this.userid, this.username, Convert.ToSingle(tbWinRate.Text), Convert.ToSingle(tbDrawRate.Text), Convert.ToSingle(tbLoseRate.Text));
 

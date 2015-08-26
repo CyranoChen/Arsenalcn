@@ -44,7 +44,7 @@ namespace Arsenal.MvcWeb.Models.Casino
 
             map.ForMember(d => d.BetIcon, opt => opt.ResolveUsing(s =>
             {
-                BetIconType _icon = BetIconType.none;
+                var _icon = BetIconType.none;
 
                 if (s.IsWin.HasValue)
                 {

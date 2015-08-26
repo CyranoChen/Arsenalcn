@@ -1,5 +1,3 @@
-using System;
-
 namespace Arsenalcn.Core.Scheduler
 {
     /// <summary>

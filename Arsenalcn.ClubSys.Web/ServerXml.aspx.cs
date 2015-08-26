@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Reflection;
 using System.Text;
 using System.Web;
@@ -106,13 +105,13 @@ namespace Arsenalcn.ClubSys.Web
             {
                 //output club info
 
-                Club club = ClubLogic.GetClubInfo(ClubID);
+                var club = ClubLogic.GetClubInfo(ClubID);
 
                 if (club != null)
                 {
-                    RankAlgorithm ra = new RankAlgorithm(club);
+                    var ra = new RankAlgorithm(club);
 
-                    StringBuilder xmlContent = new StringBuilder("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+                    var xmlContent = new StringBuilder("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
                     xmlContent.AppendFormat("<RankChart ClubID=\"{0}\" RankPoint=\"{1}\">", club.ID, club.RankScore);
                     xmlContent.AppendFormat("<RankItem name=\"会员数\" value=\"{0}\" />", ra.MemberCountRank);
                     xmlContent.AppendFormat("<RankItem name=\"总财富\" value=\"{0}\" />", ra.ClubFortuneRank);
@@ -126,12 +125,12 @@ namespace Arsenalcn.ClubSys.Web
             {
                 //output player info and public video info
 
-                Gamer player = PlayerStrip.GetPlayerInfo(UserID);
+                var player = PlayerStrip.GetPlayerInfo(UserID);
 
                 if (player != null)
                 {
-                    StringBuilder xmlContent = new StringBuilder("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
-                    int playerLv = player.Shirt;
+                    var xmlContent = new StringBuilder("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+                    var playerLv = player.Shirt;
 
                     if (player.Shorts < playerLv)
                         playerLv = player.Shorts;
@@ -140,19 +139,19 @@ namespace Arsenalcn.ClubSys.Web
                         playerLv = player.Sock;
 
                     xmlContent.AppendFormat("<UserItems username=\"{0}\" userid=\"{1}\" userlv=\"{2}\" ", player.UserName, player.UserID, ((playerLv > ConfigGlobal.PlayerMaxLv) ? ConfigGlobal.PlayerMaxLv.ToString() + "+" : playerLv.ToString()));
-                    int CardCount = PlayerStrip.GetMyNumbers(UserID).Count;
-                    int VideoCount = Entity.UserVideo.GetUserVideosByUserID(UserID).Count;
-                    int InactiveCount = PlayerStrip.GetMyNumbers(UserID).FindAll(delegate (Card c) { return !c.ArsenalPlayerGuid.HasValue; }).Count;
+                    var CardCount = PlayerStrip.GetMyNumbers(UserID).Count;
+                    var VideoCount = Entity.UserVideo.GetUserVideosByUserID(UserID).Count;
+                    var InactiveCount = PlayerStrip.GetMyNumbers(UserID).FindAll(delegate (Card c) { return !c.ArsenalPlayerGuid.HasValue; }).Count;
 
                     xmlContent.AppendFormat("ShirtCount=\"{0}\" ShortsCount=\"{1}\" SockCount=\"{2}\" CardCount=\"{3}\" VideoCount=\"{4}\">", player.Shirt, player.Shorts, player.Sock, CardCount - InactiveCount, VideoCount + InactiveCount);
 
                     xmlContent.AppendFormat("<UserVideo>");
 
                     //DataView dv = Service.UserVideo.GetUserPublicVideo(UserID);
-                    List<Entity.UserVideo> list = Entity.UserVideo.GetUserVideosByUserID(UserID)
+                    var list = Entity.UserVideo.GetUserVideosByUserID(UserID)
                         .FindAll(delegate (Entity.UserVideo uv) { return uv.IsPublic; });
 
-                    foreach (Entity.UserVideo uv in list)
+                    foreach (var uv in list)
                     {
                         object _value;
 
@@ -205,10 +204,10 @@ namespace Arsenalcn.ClubSys.Web
                     xmlContent.Append("</UserVideo>");
 
                     xmlContent.Append("<UserCard>");
-                    List<Card> cards = PlayerStrip.GetMyNumbers(UserID);
+                    var cards = PlayerStrip.GetMyNumbers(UserID);
                     cards.RemoveAll(delegate (Card un) { return !un.ArsenalPlayerGuid.HasValue; });
 
-                    foreach (Card c in cards)
+                    foreach (var c in cards)
                     {
                         xmlContent.Append("<CardItem ");
                         xmlContent.AppendFormat("UserNumberID=\"{0}\" IsActive=\"{1}\" ", c.ID, c.IsActive);
@@ -243,7 +242,7 @@ namespace Arsenalcn.ClubSys.Web
 
                 if (p != null)
                 {
-                    StringBuilder xmlContent = new StringBuilder("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+                    var xmlContent = new StringBuilder("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
                     xmlContent.Append("<PlayerInfo ");
 
                     foreach (var properInfo in p.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
@@ -261,7 +260,7 @@ namespace Arsenalcn.ClubSys.Web
             }
             else if (CardID > 0)
             {
-                Card c = PlayerStrip.GetUserNumber(CardID);
+                var c = PlayerStrip.GetUserNumber(CardID);
 
                 if (c != null)
                 {
@@ -274,7 +273,7 @@ namespace Arsenalcn.ClubSys.Web
 
                         if (p != null)
                         {
-                            StringBuilder xmlContent = new StringBuilder("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+                            var xmlContent = new StringBuilder("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
                             xmlContent.AppendFormat("<CardInfo CardID=\"{0}\" ", CardID);
 
                             foreach (var properInfo in p.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
@@ -292,7 +291,7 @@ namespace Arsenalcn.ClubSys.Web
                     }
                     else
                     {
-                        StringBuilder xmlContent = new StringBuilder("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+                        var xmlContent = new StringBuilder("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
                         xmlContent.AppendFormat("<CardInfo CardID=\"{0}\" Legend=\"True\" />", CardID);
                         Response.Write(xmlContent.ToString());
                     }
@@ -304,7 +303,7 @@ namespace Arsenalcn.ClubSys.Web
                 //DataRow rowInfo = Service.UserVideo.GetVideoInfoByUserVideoID(UserVideoID);
                 try
                 {
-                    Entity.UserVideo uv = new Entity.UserVideo();
+                    var uv = new Entity.UserVideo();
                     uv.UserVideoID = UserVideoID;
                     uv.Select();
 
@@ -318,7 +317,7 @@ namespace Arsenalcn.ClubSys.Web
 
                         if (p != null)
                         {
-                            StringBuilder xmlContent = new StringBuilder("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+                            var xmlContent = new StringBuilder("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
                             xmlContent.Append("<VideoInfo ");
 
                             // build UserVideo xml info
@@ -373,7 +372,7 @@ namespace Arsenalcn.ClubSys.Web
 
                     if (p != null)
                     {
-                        StringBuilder xmlContent = new StringBuilder("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+                        var xmlContent = new StringBuilder("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
                         xmlContent.Append("<VideoInfo ");
 
                         // build ArsenalVideo xml info
@@ -406,7 +405,7 @@ namespace Arsenalcn.ClubSys.Web
 
                 list.Sort((p1, p2) => p1.SquadNumber - p2.SquadNumber);
 
-                StringBuilder xmlContent = new StringBuilder("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+                var xmlContent = new StringBuilder("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
                 xmlContent.Append("<CurrArsenalPlayer>");
 
                 foreach (var p in list)

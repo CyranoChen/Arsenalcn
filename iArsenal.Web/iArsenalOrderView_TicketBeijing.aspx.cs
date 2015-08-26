@@ -60,7 +60,7 @@ namespace iArsenal.Web
 
                     #endregion
 
-                    Member m = repo.Single<Member>(o.MemberID);
+                    var m = repo.Single<Member>(o.MemberID);
 
                     if (m == null || !m.IsActive)
                         throw new Exception("无此会员信息");
@@ -85,10 +85,10 @@ namespace iArsenal.Web
                     }
 
                     // Should be Calculator in this Page
-                    double price = default(double);
-                    string priceInfo = string.Empty;
+                    var price = default(double);
+                    var priceInfo = string.Empty;
 
-                    OrdrItm2012TicketBeijing oiTicket = o.OITicketBeijing;
+                    var oiTicket = o.OITicketBeijing;
                     if (oiTicket != null && oiTicket.IsActive)
                     {
                         lblOrderItem_TicketBeijing.Text = string.Format("<em>{0}</em>", oiTicket.ProductName);
@@ -157,7 +157,7 @@ namespace iArsenal.Web
             {
                 if (OrderID > 0)
                 {
-                    Order o = repo.Single<Order>(OrderID);
+                    var o = repo.Single<Order>(OrderID);
 
                     if (o == null || !o.MemberID.Equals(MID) || !o.IsActive)
                         throw new Exception("此订单无效或非当前用户订单");
@@ -183,7 +183,7 @@ namespace iArsenal.Web
             {
                 if (OrderID > 0)
                 {
-                    Order o = repo.Single<Order>(OrderID);
+                    var o = repo.Single<Order>(OrderID);
 
                     if (o == null || !o.MemberID.Equals(MID) || !o.IsActive)
                         throw new Exception("此订单无效或非当前用户订单");
@@ -203,7 +203,7 @@ namespace iArsenal.Web
             {
                 if (OrderID > 0)
                 {
-                    Order o = repo.Single<Order>(OrderID);
+                    var o = repo.Single<Order>(OrderID);
 
                     if (o == null || !o.MemberID.Equals(MID) || !o.IsActive)
                         throw new Exception("此订单无效或非当前用户订单");

@@ -19,7 +19,7 @@ namespace Arsenalcn.CasinoSys.Web
 
             #endregion
 
-            DataTable dt = Entity.Rank.GetTopGamblerMonthly();
+            var dt = Entity.Rank.GetTopGamblerMonthly();
 
             if (dt != null)
             {
@@ -27,7 +27,7 @@ namespace Arsenalcn.CasinoSys.Web
                 dt.Columns.Add("WinnerProfitRate", typeof(float));
                 dt.Columns.Add("LoserProfitRate", typeof(float));
 
-                string rMonth = string.Empty;
+                var rMonth = string.Empty;
 
                 foreach (DataRow dr in dt.Rows)
                 {

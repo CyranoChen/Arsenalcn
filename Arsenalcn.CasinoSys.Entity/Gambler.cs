@@ -18,7 +18,7 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public Gambler(int userID, SqlTransaction trans = null)
         {
-            DataRow dr = DataAccess.Gambler.GetGamblerByUserID(userID, trans);
+            var dr = DataAccess.Gambler.GetGamblerByUserID(userID, trans);
 
             if (dr != null)
             {
@@ -87,7 +87,7 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public void Select()
         {
-            DataRow dr = DataAccess.Gambler.GetGamblerByID(GamblerID);
+            var dr = DataAccess.Gambler.GetGamblerByID(GamblerID);
 
             if (dr != null)
                 InitGambler(dr);
@@ -95,7 +95,7 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public void Select(int userID)
         {
-            DataRow dr = DataAccess.Gambler.GetGamblerByUserID(userID);
+            var dr = DataAccess.Gambler.GetGamblerByUserID(userID);
 
             if (dr != null)
                 InitGambler(dr);
@@ -120,8 +120,8 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public static List<Gambler> GetGamblers()
         {
-            DataTable dt = DataAccess.Gambler.GetGamblers();
-            List<Gambler> list = new List<Gambler>();
+            var dt = DataAccess.Gambler.GetGamblers();
+            var list = new List<Gambler>();
 
             if (dt != null)
             {
@@ -182,10 +182,10 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public static void GamblerStatistics()
         {
-            List<Gambler> listGambler = Gambler.GetGamblers();
-            List<CasinoGambler> listCasinoGambler = CasinoGambler.GetCasinoGamblers();
+            var listGambler = Gambler.GetGamblers();
+            var listCasinoGambler = CasinoGambler.GetCasinoGamblers();
 
-            List<CasinoGambler> listCasinoCamblerContest = CasinoGambler.GetCasinoGamblers(ConfigGlobal.DefaultLeagueID);
+            var listCasinoCamblerContest = CasinoGambler.GetCasinoGamblers(ConfigGlobal.DefaultLeagueID);
 
             if (listCasinoCamblerContest != null && listCasinoCamblerContest.Count > 0)
             {
@@ -194,15 +194,15 @@ namespace Arsenalcn.CasinoSys.Entity
 
             if (listGambler != null && listGambler.Count > 0 && listCasinoGambler != null && listCasinoGambler.Count > 0)
             {
-                foreach (Gambler g in listGambler)
+                foreach (var g in listGambler)
                 {
-                    CasinoGambler cg = listCasinoGambler.Find(
+                    var cg = listCasinoGambler.Find(
                         delegate(CasinoGambler casinoGambler) { return casinoGambler.UserID.Equals(g.UserID); });
 
                     if (cg != null)
                         g.InitGambler(cg);
 
-                    CasinoGambler cgc = listCasinoCamblerContest.Find(
+                    var cgc = listCasinoCamblerContest.Find(
                         delegate(CasinoGambler casinoGambler) { return casinoGambler.UserID.Equals(g.UserID); });
 
                     if (cgc != null)
@@ -217,12 +217,12 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public static void GamblerStatistics(int userID)
         {
-            Gambler g = new Gambler(userID);
-            CasinoGambler cg = CasinoGambler.GetCasinoGamblers().Find(
+            var g = new Gambler(userID);
+            var cg = CasinoGambler.GetCasinoGamblers().Find(
                 delegate(CasinoGambler casinoGambler) { return casinoGambler.UserID.Equals(userID); });
             CasinoGambler cgc = null;
 
-            List<CasinoGambler> listCasinoCamblerContest = CasinoGambler.GetCasinoGamblers(ConfigGlobal.DefaultLeagueID);
+            var listCasinoCamblerContest = CasinoGambler.GetCasinoGamblers(ConfigGlobal.DefaultLeagueID);
 
             if (listCasinoCamblerContest != null && listCasinoCamblerContest.Count > 0 &&
                 listCasinoCamblerContest.Exists(delegate(CasinoGambler casinoGambler) { return casinoGambler.UserID.Equals(userID); }))
@@ -261,20 +261,20 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public static void TopGamblerMonthlyStatistics()
         {
-            DateTime iDay = DateTime.Today;
+            var iDay = DateTime.Today;
 
-            DateTime lastBetTime = DataAccess.Bet.GetLastBetTime();
-            string sql = string.Empty;
+            var lastBetTime = DataAccess.Bet.GetLastBetTime();
+            var sql = string.Empty;
 
             while (!(iDay.Year <= lastBetTime.Year && iDay.Month < lastBetTime.Month))
             {
-                DataTable dtWinner = DataAccess.Rank.GetTopGamblerMonthly(true, iDay);
-                DataTable dtLoser = DataAccess.Rank.GetTopGamblerMonthly(false, iDay);
-                DataTable dtRP = DataAccess.Rank.GetTopGamblerMonthly(true, iDay, true);
+                var dtWinner = DataAccess.Rank.GetTopGamblerMonthly(true, iDay);
+                var dtLoser = DataAccess.Rank.GetTopGamblerMonthly(false, iDay);
+                var dtRP = DataAccess.Rank.GetTopGamblerMonthly(true, iDay, true);
 
                 if (dtWinner != null && dtLoser != null && dtRP != null)
                 {
-                    DataTable dtRanks = DataAccess.Rank.GetAllRanks(iDay.Year, iDay.Month);
+                    var dtRanks = DataAccess.Rank.GetAllRanks(iDay.Year, iDay.Month);
 
                     if (dtRanks != null)
                     {

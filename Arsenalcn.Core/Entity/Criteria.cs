@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Arsenalcn.Core
+﻿namespace Arsenalcn.Core
 {
     public class Criteria : IPager
     {

@@ -34,7 +34,7 @@ namespace Arsenalcn.Common.Entity
 
         protected void Select()
         {
-            DataRow dr = DataAccess.DictionaryItem.GetDictionaryItemByID(ItemID);
+            var dr = DataAccess.DictionaryItem.GetDictionaryItemByID(ItemID);
 
             if (dr != null)
                 InitDictionaryItem(dr);
@@ -57,8 +57,8 @@ namespace Arsenalcn.Common.Entity
 
         protected static List<DictionaryItem> GetDictionaryItems()
         {
-            DataTable dt = DataAccess.DictionaryItem.GetDictionaryItems();
-            List<DictionaryItem> list = new List<DictionaryItem>();
+            var dt = DataAccess.DictionaryItem.GetDictionaryItems();
+            var list = new List<DictionaryItem>();
 
             if (dt != null)
             {

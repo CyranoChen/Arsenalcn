@@ -12,7 +12,7 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public Banker(Guid bankerID)
         {
-            DataRow dr = DataAccess.Banker.GetBankerByID(bankerID);
+            var dr = DataAccess.Banker.GetBankerByID(bankerID);
 
             if (dr != null)
                 InitBanker(dr);
@@ -44,13 +44,13 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public static void ActiveBankerStatistics()
         {
-            DataTable dt = DataAccess.Banker.GetAllBankers(true);
+            var dt = DataAccess.Banker.GetAllBankers(true);
 
             if (dt != null)
             {
                 foreach (DataRow dr in dt.Rows)
                 {
-                    Banker banker = new Banker((Guid)dr["ID"]);
+                    var banker = new Banker((Guid)dr["ID"]);
                     banker.Cash = DataAccess.Bet.GetTotalEarningByBankerGuid((Guid)dr["ID"]);
                     banker.Update(null);
                 }

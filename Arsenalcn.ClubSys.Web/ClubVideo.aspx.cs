@@ -29,9 +29,9 @@ namespace Arsenalcn.ClubSys.Web
         {
             int gRank;
             if (int.TryParse(ddlGoalRank.SelectedValue, out gRank))
-                Response.Redirect(string.Format("ClubVideoView.aspx?ClubID={0}&GRank={1}", ClubID.ToString(), gRank));
+                Response.Redirect($"ClubVideoView.aspx?ClubID={ClubID.ToString()}&GRank={gRank}");
 
-            Club club = ClubLogic.GetClubInfo(ClubID);
+            var club = ClubLogic.GetClubInfo(ClubID);
 
             if (club != null && this.Title.IndexOf("{0}") >= 0)
                 this.Title = string.Format(this.Title, club.FullName);
@@ -59,7 +59,7 @@ namespace Arsenalcn.ClubSys.Web
 
         private void BindVideo()
         {
-            DataTable dt = Service.UserVideo.GetUserVideoByClubID(ClubID);
+            var dt = Service.UserVideo.GetUserVideoByClubID(ClubID);
 
             if (dt != null)
             {
@@ -80,7 +80,8 @@ namespace Arsenalcn.ClubSys.Web
             gvVideo.DataSource = dt;
             gvVideo.DataBind();
 
-            this.ltlVideoCount.Text = string.Format("<span title=\"同一视频计为一个,仅计算可获得视频\">已获得(总共)视频:<em>{0}/{1}</em></span>", dt.Rows.Count.ToString(), Video.Cache.VideoList_Legend.Count.ToString());
+            this.ltlVideoCount.Text =
+                $"<span title=\"同一视频计为一个,仅计算可获得视频\">已获得(总共)视频:<em>{dt.Rows.Count.ToString()}/{Video.Cache.VideoList_Legend.Count.ToString()}</em></span>";
         }
 
         protected void gvVideo_PageIndexChanging(object sender, GridViewPageEventArgs e)
@@ -94,15 +95,15 @@ namespace Arsenalcn.ClubSys.Web
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                DataRowView drv = e.Row.DataItem as DataRowView;
+                var drv = e.Row.DataItem as DataRowView;
 
-                Literal ltrlVideo = e.Row.FindControl("ltrlVideo") as Literal;
-                Literal ltrlGoalRankInfo = e.Row.FindControl("ltrlGoalRankInfo") as Literal;
-                LinkButton btnSwfView = e.Row.FindControl("btnSwfView") as LinkButton;
+                var ltrlVideo = e.Row.FindControl("ltrlVideo") as Literal;
+                var ltrlGoalRankInfo = e.Row.FindControl("ltrlGoalRankInfo") as Literal;
+                var btnSwfView = e.Row.FindControl("btnSwfView") as LinkButton;
 
                 if (ltrlVideo != null)
                 {
-                    String StrSwfContent = "<div class=\"ClubSys_ItemPH\">";
+                    var StrSwfContent = "<div class=\"ClubSys_ItemPH\">";
                     StrSwfContent += string.Format("<script type=\"text/javascript\">GenSwfObject('PlayerVideoActive{0}', 'swf/PlayerVideoActive.swf?XMLURL=ServerXml.aspx%3FUserVideoID={0}', '80', '100');</script>", drv["ID"].ToString());
                     StrSwfContent += "</div>";
 
@@ -111,13 +112,13 @@ namespace Arsenalcn.ClubSys.Web
 
                 if (ltrlGoalRankInfo != null)
                 {
-                    ltrlGoalRankInfo.Text = string.Format("<div class=\"ClubSys_PlayerLV\" style=\"width: {0}px;\" title=\"视频等级\"></div>",
-                        ((int)(Convert.ToInt16(drv["GoalRank"]) * 20)).ToString());
+                    ltrlGoalRankInfo.Text =
+                        $"<div class=\"ClubSys_PlayerLV\" style=\"width: {((int) (Convert.ToInt16(drv["GoalRank"])*20)).ToString()}px;\" title=\"视频等级\"></div>";
                 }
 
                 if (btnSwfView != null)
                 {
-                    btnSwfView.OnClientClick = string.Format("ShowVideoPreview('{0}'); return false", drv["VideoGuid"].ToString());
+                    btnSwfView.OnClientClick = $"ShowVideoPreview('{drv["VideoGuid"].ToString()}'); return false";
                 }
             }
         }

@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
-
 using Arsenalcn.Core;
 
 namespace Arsenal.Service
@@ -19,10 +17,10 @@ namespace Arsenal.Service
 
         public static bool IsPluginAdmin(int userid)
         {
-            string[] admins = ConfigGlobal.PluginAdmin;
+            var admins = ConfigGlobal.PluginAdmin;
             if (userid > 0 && admins.Length > 0)
             {
-                foreach (string a in admins)
+                foreach (var a in admins)
                 {
                     if (a == userid.ToString())
                         return true;
@@ -93,7 +91,7 @@ namespace Arsenal.Service
         {
             get
             {
-                string admins = ConfigDictionary["PluginAdmin"];
+                var admins = ConfigDictionary["PluginAdmin"];
                 return admins.Split('|');
             }
         }
@@ -173,7 +171,7 @@ namespace Arsenal.Service
             {
                 try
                 {
-                    string tmpID = ConfigDictionary["ArsenalTeamGuid"];
+                    var tmpID = ConfigDictionary["ArsenalTeamGuid"];
 
                     if (!string.IsNullOrEmpty(tmpID))
                     { return new Guid(tmpID); }
@@ -191,7 +189,7 @@ namespace Arsenal.Service
         {
             get
             {
-                string tmpUrl = ConfigDictionary["ArsenalVideoUrl"];
+                var tmpUrl = ConfigDictionary["ArsenalVideoUrl"];
 
                 if (!string.IsNullOrEmpty(tmpUrl))
                     return tmpUrl;

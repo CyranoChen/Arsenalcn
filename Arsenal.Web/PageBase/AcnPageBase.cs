@@ -70,7 +70,7 @@ namespace Arsenal.Web
 
                 Response.Clear();
 
-                string loginURL = string.Format("{0}?api_key={1}&next={2}", ConfigGlobal.APILoginURL, ConfigGlobal.APIAppKey, Request.Url.PathAndQuery);
+                var loginURL = string.Format("{0}?api_key={1}&next={2}", ConfigGlobal.APILoginURL, ConfigGlobal.APIAppKey, Request.Url.PathAndQuery);
 
                 Response.Redirect(loginURL, false);
 
@@ -80,7 +80,7 @@ namespace Arsenal.Web
             //Set Master Page Info
             if (this.Master != null && this.Master is DefaultMaster)
             {
-                DefaultMaster masterPage = this.Master as DefaultMaster;
+                var masterPage = this.Master as DefaultMaster;
 
                 masterPage.UserID = UID;
                 masterPage.UserName = Username;

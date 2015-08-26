@@ -9,9 +9,9 @@ namespace Arsenalcn.Common.DataAccess
     {
         public static DataRow GetDictionaryItemByID(int itemID)
         {
-            string sql = "SELECT * FROM dbo.Arsenalcn_DictionaryItem WHERE ID = @itemID";
+            var sql = "SELECT * FROM dbo.Arsenalcn_DictionaryItem WHERE ID = @itemID";
 
-            DataSet ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@itemID", itemID));
+            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@itemID", itemID));
 
             if (ds.Tables[0].Rows.Count == 0)
                 return null;
@@ -21,7 +21,7 @@ namespace Arsenalcn.Common.DataAccess
 
         public static void UpdateDictionaryItem(int itemID, int dictID, string code, string name, string description, string customCode, string spell, string shortSpell, int parentID, int orderNum)
         {
-            string sql = @"UPDATE dbo.Arsenalcn_DictionaryItem SET DictionaryID = @dictID, Code = @code, [Name] = @name, Description = @description, CustomCode = @customCode,
+            var sql = @"UPDATE dbo.Arsenalcn_DictionaryItem SET DictionaryID = @dictID, Code = @code, [Name] = @name, Description = @description, CustomCode = @customCode,
                             Spell = @spell, ShortSpell = @shortSpell, ParentID = @parentID, OrderNum = @orderNum WHERE ID = @itemID";
 
             SqlParameter[] para = { new SqlParameter("@itemID", itemID), new SqlParameter("@dictID", dictID), new SqlParameter("@code", code), new SqlParameter("@name", name), new SqlParameter("@description", description), new SqlParameter("@customCode", customCode), new SqlParameter("@spell", spell), new SqlParameter("@shortSpell", shortSpell), new SqlParameter("parentID", parentID), new SqlParameter("@orderNum", orderNum) };
@@ -31,7 +31,7 @@ namespace Arsenalcn.Common.DataAccess
 
         public static void InsertDictionaryItem(int dictID, string code, string name, string description, string customCode, string spell, string shortSpell, int parentID, int orderNum)
         {
-            string sql = @"INSERT INTO dbo.Arsenalcn_DictionaryItem (DictionaryID, Code, [Name], Description, CustomCode, Spell, ShortSpell, ParentID, OrderNum) 
+            var sql = @"INSERT INTO dbo.Arsenalcn_DictionaryItem (DictionaryID, Code, [Name], Description, CustomCode, Spell, ShortSpell, ParentID, OrderNum) 
                                VALUES (@dictID, @code, @name, @description, @customCode, @spell, @shortSpell, @parentID, @orderNum)";
 
             SqlParameter[] para = { new SqlParameter("@dictID", dictID), new SqlParameter("@code", code), new SqlParameter("@name", name), new SqlParameter("@description", description), new SqlParameter("@customCode", customCode), new SqlParameter("@spell", spell), new SqlParameter("@shortSpell", shortSpell), new SqlParameter("parentID", parentID), new SqlParameter("@orderNum", orderNum) };
@@ -41,7 +41,7 @@ namespace Arsenalcn.Common.DataAccess
 
         public static void DeleteDictionaryItem(int itemID)
         {
-            string sql = "DELETE dbo.Arsenalcn_DictionaryItem WHERE ID = @itemID";
+            var sql = "DELETE dbo.Arsenalcn_DictionaryItem WHERE ID = @itemID";
 
             SqlParameter[] para = { new SqlParameter("@itemID", itemID) };
 
@@ -50,9 +50,9 @@ namespace Arsenalcn.Common.DataAccess
 
         public static DataTable GetDictionaryItems()
         {
-            string sql = "SELECT ID, DictionaryID, Code, Name, Description, CustomCode, Spell, ShortSpell, ParentID, OrderNum FROM Arsenalcn_DictionaryItem ORDER BY ID";
+            var sql = "SELECT ID, DictionaryID, Code, Name, Description, CustomCode, Spell, ShortSpell, ParentID, OrderNum FROM Arsenalcn_DictionaryItem ORDER BY ID";
 
-            DataSet ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql);
+            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql);
 
             if (ds.Tables[0].Rows.Count == 0)
                 return null;

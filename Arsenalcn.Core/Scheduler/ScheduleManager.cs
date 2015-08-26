@@ -9,7 +9,7 @@ namespace Arsenalcn.Core.Scheduler
 {
     /// <summary>
     /// ScheduleManager is called from the EventHttpModule (or another means of scheduling a Timer). Its sole purpose
-    /// is to iterate over an array of schedules and deterimine of the Schedule's ISchedule should be processed. All schedules are
+    /// is to iterate over an array of schedules and determine of the Schedule's ISchedule should be processed. All schedules are
     /// added to the managed threadpool. 
     /// </summary>
     public static class ScheduleManager
@@ -27,34 +27,26 @@ namespace Arsenalcn.Core.Scheduler
 
             try
             {
-                var list = new List<Schedule>();
+                var list = !string.IsNullOrEmpty(assembly) ?
+                    Schedule.All().FindAll(x => x.IsActive && x.ScheduleType.Contains(assembly)) : Schedule.All().FindAll(x => x.IsActive);
 
-                if (!string.IsNullOrEmpty(assembly))
-                {
-                    list = Schedule.All().FindAll(x => x.IsActive && x.ScheduleType.Contains(assembly));
-                }
-                else
-                { 
-                    list = Schedule.All().FindAll(x => x.IsActive); 
-                }
-
-                if (list != null && list.Count > 0)
+                if (list.Count > 0)
                 {
                     foreach (var s in list)
                     {
                         if (s.ShouldExecute())
                         {
-                            /// Call this method BEFORE processing the ScheduledEvent. This will help protect against long running events 
-                            /// being fired multiple times. Note, it is not absolute protection. App restarts will cause events to look like
-                            /// they were completed, even if they were not. Again, ScheduledEvents are helpful...but not 100% reliable
+                            // Call this method BEFORE processing the ScheduledEvent. This will help protect against long running events 
+                            // being fired multiple times. Note, it is not absolute protection. App restarts will cause events to look like
+                            // they were completed, even if they were not. Again, ScheduledEvents are helpful...but not 100% reliable
 
-                            ISchedule instance = s.IScheduleInstance;
+                            var instance = s.IScheduleInstance;
                             ManagedThreadPool.QueueUserWorkItem(new WaitCallback(instance.Execute));
 
                             s.LastCompletedTime = DateTime.Now;
                             s.Update();
 
-                            log.Debug(string.Format("ISchedule: {0}", s.ScheduleType), logInfo);
+                            log.Debug($"ISchedule: {s.ScheduleType}", logInfo);
                         }
                     }
                 }
@@ -74,7 +66,7 @@ namespace Arsenalcn.Core.Scheduler
         /// <summary>The number of units alloted by this semaphore.</summary>
         private int _count;
         /// <summary>Lock for the semaphore.</summary>
-        private object _semLock = new object();
+        private readonly object _semLock = new object();
         #endregion
 
         #region Construction
@@ -82,11 +74,11 @@ namespace Arsenalcn.Core.Scheduler
         public Semaphore() : this(1) { }
 
         /// <summary> Initialize the semaphore as a counting semaphore.</summary>
-        /// <param name="count">可暂时理解为当前队列中要执行的任务数Initial number of threads that can take out units from this semaphore.</param>
+        /// <param name="count">Initial number of threads that can take out units from this semaphore.</param>
         /// <exception cref="ArgumentException">Throws if the count argument is less than 0.</exception>
         public Semaphore(int count)
         {
-            if (count < 0) throw new ArgumentException("Semaphore must have a count of at least 0.", "count");
+            if (count < 0) throw new ArgumentException("Semaphore must have a count of at least 0.", nameof(count));
             _count = count;
         }
         #endregion
@@ -142,7 +134,7 @@ namespace Arsenalcn.Core.Scheduler
     {
         #region Constants
         /// <summary>Maximum number of threads the thread pool has at its disposal.</summary>
-        private const int _maxWorkerThreads = 10;
+        private const int MaxWorkerThreads = 10;
         #endregion
 
         #region Member Variables
@@ -159,7 +151,7 @@ namespace Arsenalcn.Core.Scheduler
         /// <summary>Number of threads currently active.</summary>
         private static int _inUseThreads;
         /// <summary>Lockable object for the pool.</summary>
-        private static object _poolLock = new object();
+        private static readonly object PoolLock = new object();
         #endregion
 
         #region Construction and Finalization
@@ -171,7 +163,7 @@ namespace Arsenalcn.Core.Scheduler
         {
 
             // Create our thread stores; we handle synchronization ourself
-            // as we may run into situtations where multiple operations need to be atomic.
+            // as we may run into situations where multiple operations need to be atomic.
             // We keep track of the threads we've created just for good measure; not actually
             // needed for any core functionality.
             _waitingCallbacks = new Queue();
@@ -182,10 +174,10 @@ namespace Arsenalcn.Core.Scheduler
             _workerThreadNeeded = new Semaphore(0);
 
             // Create all of the worker threads
-            for (int i = 0; i < _maxWorkerThreads; i++)
+            for (var i = 0; i < MaxWorkerThreads; i++)
             {
                 // Create a new thread and add it to the list of threads.
-                Thread newThread = new Thread(new ThreadStart(ProcessQueuedItems));
+                var newThread = new Thread(new ThreadStart(ProcessQueuedItems));
                 _workerThreads.Add(newThread);
 
                 // Configure the new thread and start it
@@ -220,37 +212,44 @@ namespace Arsenalcn.Core.Scheduler
         {
             // Create a waiting callback that contains the delegate and its state.
             // At it to the processing queue, and signal that data is waiting.
-            WaitingCallback waiting = new WaitingCallback(callback, state);
-            lock (_poolLock) { _waitingCallbacks.Enqueue(waiting); }
+            var waiting = new WaitingCallback(callback, state);
+            lock (PoolLock) { _waitingCallbacks.Enqueue(waiting); }
             _workerThreadNeeded.AddOne();
         }
 
         /// <summary>Empties the work queue of any queued work items.  Resets all threads in the pool.</summary>
         public static void Reset()
         {
-            lock (_poolLock)
+            lock (PoolLock)
             {
                 // Cleanup any waiting callbacks
                 try
                 {
                     // Try to dispose of all remaining state
-                    foreach (object obj in _waitingCallbacks)
+                    foreach (var obj in _waitingCallbacks)
                     {
-                        WaitingCallback callback = (WaitingCallback)obj;
-                        if (callback.State is IDisposable) ((IDisposable)callback.State).Dispose();
+                        var callback = (WaitingCallback)obj;
+                        var state = callback.State as IDisposable;
+                        state?.Dispose();
                     }
                 }
-                catch { }
+                catch
+                {
+                    // ignored
+                }
 
                 // Shutdown all existing threads
                 try
                 {
                     foreach (Thread thread in _workerThreads)
                     {
-                        if (thread != null) thread.Abort("reset");
+                        thread?.Abort("reset");
                     }
                 }
-                catch { }
+                catch
+                {
+                    // ignored
+                }
 
                 // Reinitialize the pool (create new threads, etc.)
                 Initialize();
@@ -260,11 +259,13 @@ namespace Arsenalcn.Core.Scheduler
 
         #region Properties
         /// <summary>Gets the number of threads at the disposal of the thread pool.</summary>
-        public static int MaxThreads { get { return _maxWorkerThreads; } }
+        public static int MaxThreads => MaxWorkerThreads;
+
         /// <summary>Gets the number of currently active threads in the thread pool.</summary>
-        public static int ActiveThreads { get { return _inUseThreads; } }
+        public static int ActiveThreads => _inUseThreads;
+
         /// <summary>Gets the number of callback delegates currently waiting in the thread pool.</summary>
-        public static int WaitingCallbacks { get { lock (_poolLock) { return _waitingCallbacks.Count; } } }
+        public static int WaitingCallbacks { get { lock (PoolLock) { return _waitingCallbacks.Count; } } }
         #endregion
 
         #region Thread Processing
@@ -287,12 +288,15 @@ namespace Arsenalcn.Core.Scheduler
 
                 // Try to get the next callback available.  We need to lock on the 
                 // queue in order to make our count check and retrieval atomic.
-                lock (_poolLock)
+                lock (PoolLock)
                 {
                     if (_waitingCallbacks.Count > 0)
                     {
                         try { callback = (WaitingCallback)_waitingCallbacks.Dequeue(); }
-                        catch { } // make sure not to fail here
+                        catch
+                        {
+                            // ignored
+                        } // make sure not to fail here
                     }
                 }
 
@@ -305,7 +309,10 @@ namespace Arsenalcn.Core.Scheduler
                         Interlocked.Increment(ref _inUseThreads);
                         callback.Callback(callback.State);
                     }
-                    catch { }
+                    catch
+                    {
+                        // ignored
+                    }
                     finally
                     {
                         Interlocked.Decrement(ref _inUseThreads);
@@ -320,9 +327,9 @@ namespace Arsenalcn.Core.Scheduler
         {
             #region Member Variables
             /// <summary>Callback delegate for the callback.</summary>
-            private WaitCallback _callback;
+            private readonly WaitCallback _callback;
             /// <summary>State with which to call the callback delegate.</summary>
-            private object _state;
+            private readonly object _state;
             #endregion
 
             #region Construction
@@ -337,10 +344,12 @@ namespace Arsenalcn.Core.Scheduler
             #endregion
 
             #region Properties
-            /// <summary>Gets the callback delegate for the callback.</summary>
-            public WaitCallback Callback { get { return _callback; } }
-            /// <summary>Gets the state with which to call the callback delegate.</summary>
-            public object State { get { return _state; } }
+            // <summary>Gets the callback delegate for the callback.</summary>
+            public WaitCallback Callback => _callback;
+
+            // <summary>Gets the state with which to call the callback delegate.</summary>
+            public object State => _state;
+
             #endregion
         }
     }

@@ -30,7 +30,7 @@ namespace Arsenalcn.ClubSys.Web
 
             #endregion
 
-            int minPosts = ConfigGlobal.MinPostsToCreateClub;
+            var minPosts = ConfigGlobal.MinPostsToCreateClub;
             ltrlMinPosts.Text = minPosts.ToString();
             ltrlMinPosts1.Text = minPosts.ToString();
 
@@ -45,7 +45,7 @@ namespace Arsenalcn.ClubSys.Web
                 }
                 else
                 {
-                    ShortUserInfo userInfo = Users.GetShortUserInfo(userid);
+                    var userInfo = Users.GetShortUserInfo(userid);
 
                     if (userInfo.Posts < minPosts)
                     {
@@ -59,7 +59,7 @@ namespace Arsenalcn.ClubSys.Web
                         phContent.Visible = true;
 
                         //check if user has an application under approve
-                        Club club = ClubLogic.GetCreateClubApplicationByUserID(this.userid);
+                        var club = ClubLogic.GetCreateClubApplicationByUserID(this.userid);
 
                         if (club != null)
                         {
@@ -82,9 +82,9 @@ namespace Arsenalcn.ClubSys.Web
 
         protected void btnSave_Click(object sender, EventArgs e)
         {
-            Club club = ClubLogic.GetCreateClubApplicationByUserID(this.userid);
+            var club = ClubLogic.GetCreateClubApplicationByUserID(this.userid);
 
-            Club sameNameClub = ClubLogic.GetClubInfo(tbFullName.Text);
+            var sameNameClub = ClubLogic.GetClubInfo(tbFullName.Text);
 
             if (club != null)
             {
@@ -94,7 +94,7 @@ namespace Arsenalcn.ClubSys.Web
                 {
                     if (sameNameClub != null)
                     {
-                        string script = "alert('该球会名已被使用！');";
+                        var script = "alert('该球会名已被使用！');";
                         this.ClientScript.RegisterClientScriptBlock(typeof(string), "name_used", script, true);
                     }
                     else
@@ -105,25 +105,25 @@ namespace Arsenalcn.ClubSys.Web
             {
                 if (sameNameClub != null)
                 {
-                    string script = "alert('该球会名已被使用！');";
+                    var script = "alert('该球会名已被使用！');";
                     this.ClientScript.RegisterClientScriptBlock(typeof(string), "name_used", script, true);
                 }
                 else
                     ClubLogic.ApplyClub(tbFullName.Text, tbShortName.Text, tbSlogan.Text, tbDesc.Text, this.userid, this.username);
             }
 
-            string scriptSaved = "alert('申请已提交！'); window.location.href = window.location.href;";
+            var scriptSaved = "alert('申请已提交！'); window.location.href = window.location.href;";
             this.ClientScript.RegisterClientScriptBlock(typeof(string), "saved", scriptSaved, true);
         }
 
         protected void btnCancel_Click(object sender, EventArgs e)
         {
-            Club club = ClubLogic.GetCreateClubApplicationByUserID(this.userid);
+            var club = ClubLogic.GetCreateClubApplicationByUserID(this.userid);
 
             if( club != null )
                 ClubLogic.ApproveClub(club.ID.Value, false);
 
-            string script = "alert('申请已取消！');";
+            var script = "alert('申请已取消！');";
             this.ClientScript.RegisterClientScriptBlock(typeof(string), "canceled", script, true);
         }
     }

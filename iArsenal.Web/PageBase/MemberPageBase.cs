@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Linq;
 using System.Web;
 
@@ -52,7 +51,7 @@ namespace iArsenal.Web
                 // TODO: change to cache mode, LOGOUT
                 if (this.MID <= 0)
                 {
-                    Member m = repo.Query<Member>(x => x.AcnID == this.UID).FirstOrDefault();
+                    var m = repo.Query<Member>(x => x.AcnID == this.UID).FirstOrDefault();
 
                     if (m != null && m.ID > 0)
                     {
@@ -76,7 +75,7 @@ namespace iArsenal.Web
             //Set Master Page Info
             if (this.Master != null && this.Master is iArsenalMaster)
             {
-                iArsenalMaster masterPage = this.Master as iArsenalMaster;
+                var masterPage = this.Master as iArsenalMaster;
 
                 masterPage.MemberID = MID;
                 masterPage.MemberName = MemberName;

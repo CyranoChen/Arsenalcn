@@ -54,11 +54,11 @@ namespace iArsenal.Service
 
                 if (nation.Equals("中国"))
                 {
-                    string[] regions = region.Split('|');
-                    int itemID = int.MinValue;
+                    var regions = region.Split('|');
+                    var itemID = int.MinValue;
                     if (regions.Length > 1)
                     {
-                        foreach (string r in regions)
+                        foreach (var r in regions)
                         {
                             if (int.TryParse(r, out itemID))
                                 retValue += DictionaryItem.Cache.Load(itemID).Name;

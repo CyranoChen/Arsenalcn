@@ -37,7 +37,7 @@ namespace Arsenalcn.ClubSys.Web
             lstPlayer.DataValueField = "ID";
             lstPlayer.DataBind();
 
-            ListItem li = new ListItem("不发放球星卡", Guid.Empty.ToString());
+            var li = new ListItem("不发放球星卡", Guid.Empty.ToString());
             lstPlayer.Items.Insert(0, li);
         }
 
@@ -49,10 +49,10 @@ namespace Arsenalcn.ClubSys.Web
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
             //validate user id and user name
-            int awardUserID = int.Parse(tbUserID.Text);
-            ShortUserInfo sUser = AdminUsers.GetShortUserInfo(awardUserID);
+            var awardUserID = int.Parse(tbUserID.Text);
+            var sUser = AdminUsers.GetShortUserInfo(awardUserID);
 
-            string awardUserName = tbUserName.Text;
+            var awardUserName = tbUserName.Text;
 
             if (awardUserName == sUser.Username.Trim())
             {
@@ -60,7 +60,7 @@ namespace Arsenalcn.ClubSys.Web
                 float cashIncrement = 0;
                 float rp = 0;
                 Guid? videoGuid = null;
-                string AwardNotes = string.Empty;
+                var AwardNotes = string.Empty;
 
                 //precheck
                 if (tbCash.Text.Trim() != string.Empty)
@@ -99,16 +99,16 @@ namespace Arsenalcn.ClubSys.Web
                 }
 
                 //is actually something awarded?
-                bool realAwarded = false;
+                var realAwarded = false;
 
-                string awardMessageBody = "您获得奖励";
+                var awardMessageBody = "您获得奖励";
 
                 //add cash
                 if (cashIncrement != 0)
                 {
                     AdminUsers.UpdateUserExtCredits(awardUserID, 2, cashIncrement);
 
-                    awardMessageBody += string.Format(" 枪手币+{0}", cashIncrement);
+                    awardMessageBody += $" 枪手币+{cashIncrement}";
 
                     realAwarded = true;
                 }
@@ -118,7 +118,7 @@ namespace Arsenalcn.ClubSys.Web
                 {
                     AdminUsers.UpdateUserExtCredits(awardUserID, 4, rp);
 
-                    awardMessageBody += string.Format(" RP+{0}, ", rp);
+                    awardMessageBody += $" RP+{rp}, ";
 
                     realAwarded = true;
                 }
@@ -128,7 +128,7 @@ namespace Arsenalcn.ClubSys.Web
                 {
                     PlayerStrip.AddCard(awardUserID, awardUserName, new Guid(lstPlayer.SelectedValue), cbCardActive.Checked);
 
-                    awardMessageBody += string.Format(" 球星卡一张({0}激活)", cbCardActive.Checked ? string.Empty : "未");
+                    awardMessageBody += $" 球星卡一张({(cbCardActive.Checked ? string.Empty : "未")}激活)";
 
                     realAwarded = true;
                 }
@@ -141,7 +141,7 @@ namespace Arsenalcn.ClubSys.Web
                         //active
                         //UserVideo.InsertActiveVideo(awardUserID, awardUserName, videoGuid.Value);
 
-                        Entity.UserVideo uv = new Entity.UserVideo();
+                        var uv = new Entity.UserVideo();
                         uv.UserID = awardUserID;
                         uv.UserName = awardUserName;
                         uv.VideoGuid = videoGuid.Value;
@@ -157,21 +157,21 @@ namespace Arsenalcn.ClubSys.Web
                         PlayerStrip.AddCard(awardUserID, awardUserName, null, false);
                     }
 
-                    awardMessageBody += string.Format(" 视频卡一张({0}激活)", cbVideoActive.Checked ? string.Empty : "未");
+                    awardMessageBody += $" 视频卡一张({(cbVideoActive.Checked ? string.Empty : "未")}激活)";
 
                     realAwarded = true;
                 }
 
                 if (!string.IsNullOrEmpty(AwardNotes))
                 {
-                    awardMessageBody += string.Format(" 奖励原因：{0}", AwardNotes.ToString());
+                    awardMessageBody += $" 奖励原因：{AwardNotes.ToString()}";
                 }
 
                 if (realAwarded)
                 {
                     PlayerLog.LogHistory(awardUserID, awardUserName, PlayerHistoryType.Award, new AwardDesc(cashIncrement, rp, (!string.IsNullOrEmpty(lstPlayer.SelectedValue) && lstPlayer.SelectedValue != Guid.Empty.ToString()), videoGuid != null).Generate());
 
-                    PrivateMessageInfo pm = new PrivateMessageInfo();
+                    var pm = new PrivateMessageInfo();
 
                     pm.Msgfrom = ClubSysPrivateMessage.ClubSysAdminName;
                     pm.Msgfromid = 0;
@@ -199,9 +199,9 @@ namespace Arsenalcn.ClubSys.Web
 
         protected void BtnCheckUserID_Click(object sender, EventArgs e)
         {
-            int awardUserID = int.Parse(tbUserID.Text);
+            var awardUserID = int.Parse(tbUserID.Text);
 
-            ShortUserInfo sUser = AdminUsers.GetShortUserInfo(awardUserID);
+            var sUser = AdminUsers.GetShortUserInfo(awardUserID);
             tbUserName.Text = sUser.Username.Trim();
 
             InitDropDownList();
@@ -213,7 +213,7 @@ namespace Arsenalcn.ClubSys.Web
             {
                 var p = Player.Cache.Load(new Guid(li.Value));
 
-                li.Text = string.Format("(NO.{0}) - {1} - {2}", p.SquadNumber.ToString(), p.DisplayName, !p.IsLegend ? "在队" : "离队");
+                li.Text = $"(NO.{p.SquadNumber.ToString()}) - {p.DisplayName} - {(!p.IsLegend ? "在队" : "离队")}";
             }
         }
     }

@@ -15,13 +15,11 @@ namespace Arsenalcn.Core
 {
     public class Repository : IRepository
     {
-        private readonly string conn;
-        private readonly ILog log;
+        private readonly ILog _log;
 
         public Repository()
         {
-            conn = DataAccess.ConnectString;
-            log = new DaoLog();
+            _log = new DaoLog();
         }
 
         public T Single<T>(object key) where T : class, IViewer, new()
@@ -32,11 +30,11 @@ namespace Arsenalcn.Core
 
                 var attr = GetTableAttr<T>();
 
-                string sql = string.Format("SELECT * FROM {0} WHERE {1} = @key", attr.Name, attr.Key);
+                string sql = $"SELECT * FROM {attr.Name} WHERE {attr.Key} = @key";
 
                 SqlParameter[] para = { new SqlParameter("@key", key) };
 
-                DataSet ds = DataAccess.ExecuteDataset(sql, para);
+                var ds = DataAccess.ExecuteDataset(sql, para);
 
                 var dt = ds.Tables[0];
 
@@ -49,7 +47,7 @@ namespace Arsenalcn.Core
             }
             catch (Exception ex)
             {
-                log.Debug(ex, new LogInfo()
+                _log.Debug(ex, new LogInfo()
                 {
                     MethodInstance = MethodBase.GetCurrentMethod(),
                     ThreadInstance = Thread.CurrentThread
@@ -67,7 +65,7 @@ namespace Arsenalcn.Core
 
                 var attr = GetTableAttr<T>();
 
-                StringBuilder sql = new StringBuilder();
+                var sql = new StringBuilder();
                 sql.Append("SELECT * FROM " + attr.Name);
 
                 if (!string.IsNullOrEmpty(attr.Sort))
@@ -75,7 +73,7 @@ namespace Arsenalcn.Core
                     sql.Append(" ORDER BY " + attr.Sort);
                 }
 
-                DataSet ds = DataAccess.ExecuteDataset(sql.ToString());
+                var ds = DataAccess.ExecuteDataset(sql.ToString());
 
                 var dt = ds.Tables[0];
 
@@ -91,7 +89,7 @@ namespace Arsenalcn.Core
             }
             catch (Exception ex)
             {
-                log.Debug(ex, new LogInfo()
+                _log.Debug(ex, new LogInfo()
                 {
                     MethodInstance = MethodBase.GetCurrentMethod(),
                     ThreadInstance = Thread.CurrentThread
@@ -111,21 +109,21 @@ namespace Arsenalcn.Core
 
                 var attr = GetTableAttr<T>();
 
-                string _strOrderBy = !string.IsNullOrEmpty(attr.Sort) ? attr.Sort : attr.Key;
+                var strOrderBy = !string.IsNullOrEmpty(attr.Sort) ? attr.Sort : attr.Key;
 
                 if (!string.IsNullOrEmpty(orderBy))
                 {
-                    _strOrderBy = orderBy;
+                    strOrderBy = orderBy;
                 }
 
-                string innerSql = string.Format("(SELECT ROW_NUMBER() OVER(ORDER BY {1}) AS RowNo, * FROM {0})", attr.Name, _strOrderBy);
+                var innerSql = string.Format("(SELECT ROW_NUMBER() OVER(ORDER BY {1}) AS RowNo, * FROM {0})", attr.Name, strOrderBy);
 
-                string sql = string.Format("SELECT * FROM {0} AS t WHERE t.RowNo BETWEEN {1} AND {2};",
-                    innerSql, (pager.CurrentPage * pager.PagingSize).ToString(), ((pager.CurrentPage + 1) * pager.PagingSize - 1).ToString());
+                string sql =
+                    $"SELECT * FROM {innerSql} AS t WHERE t.RowNo BETWEEN {(pager.CurrentPage * pager.PagingSize).ToString()} AND {((pager.CurrentPage + 1) * pager.PagingSize - 1).ToString()};";
 
                 sql += string.Format("SELECT COUNT({1}) AS TotalCount FROM {0}", attr.Name, attr.Key);
 
-                DataSet ds = DataAccess.ExecuteDataset(sql);
+                var ds = DataAccess.ExecuteDataset(sql);
 
                 var dt = ds.Tables[0];
 
@@ -143,7 +141,7 @@ namespace Arsenalcn.Core
             }
             catch (Exception ex)
             {
-                log.Debug(ex, new LogInfo()
+                _log.Debug(ex, new LogInfo()
                 {
                     MethodInstance = MethodBase.GetCurrentMethod(),
                     ThreadInstance = Thread.CurrentThread
@@ -163,7 +161,7 @@ namespace Arsenalcn.Core
 
                 var attr = GetTableAttr<T>();
 
-                StringBuilder sql = new StringBuilder();
+                var sql = new StringBuilder();
                 sql.Append("SELECT * FROM " + attr.Name);
 
                 var condition = new ConditionBuilder();
@@ -180,7 +178,7 @@ namespace Arsenalcn.Core
                     sql.Append(" ORDER BY " + attr.Sort);
                 }
 
-                DataSet ds = null;
+                DataSet ds;
 
                 if (condition.SqlArguments != null && condition.SqlArguments.Count > 0)
                 {
@@ -205,7 +203,7 @@ namespace Arsenalcn.Core
             }
             catch (Exception ex)
             {
-                log.Debug(ex, new LogInfo()
+                _log.Debug(ex, new LogInfo()
                 {
                     MethodInstance = MethodBase.GetCurrentMethod(),
                     ThreadInstance = Thread.CurrentThread
@@ -231,31 +229,30 @@ namespace Arsenalcn.Core
                 condition.Build(whereBy.Body);
 
                 // Generate OrderBy Clause
-                string _strOrderBy = !string.IsNullOrEmpty(attr.Sort) ? attr.Sort : attr.Key;
+                var strOrderBy = !string.IsNullOrEmpty(attr.Sort) ? attr.Sort : attr.Key;
 
                 if (!string.IsNullOrEmpty(orderBy))
                 {
-                    _strOrderBy = orderBy;
+                    strOrderBy = orderBy;
                 }
 
                 // Build Sql and Execute
-                string innerSql = string.Format("(SELECT ROW_NUMBER() OVER(ORDER BY {1}) AS RowNo, * FROM {0} WHERE {2})",
-                    attr.Name, _strOrderBy, condition.Condition);
+                var innerSql = string.Format("(SELECT ROW_NUMBER() OVER(ORDER BY {1}) AS RowNo, * FROM {0} WHERE {2})",
+                    attr.Name, strOrderBy, condition.Condition);
 
-                string sql = string.Format("SELECT * FROM {0} AS t WHERE t.RowNo BETWEEN {1} AND {2}",
-                    innerSql, (pager.CurrentPage * pager.PagingSize).ToString(), ((pager.CurrentPage + 1) * pager.PagingSize - 1).ToString());
+                string sql = $"SELECT * FROM {innerSql} AS t WHERE t.RowNo BETWEEN {(pager.CurrentPage * pager.PagingSize)} AND {((pager.CurrentPage + 1) * pager.PagingSize - 1)}";
 
                 sql += string.Format("SELECT COUNT({1}) AS TotalCount FROM {0} WHERE {2}", attr.Name, attr.Key, condition.Condition);
 
-                DataSet ds = null;
+                DataSet ds;
 
                 if (condition.SqlArguments != null && condition.SqlArguments.Count > 0)
                 {
-                    ds = DataAccess.ExecuteDataset(sql.ToString(), condition.SqlArguments.ToArray());
+                    ds = DataAccess.ExecuteDataset(sql, condition.SqlArguments.ToArray());
                 }
                 else
                 {
-                    ds = DataAccess.ExecuteDataset(sql.ToString());
+                    ds = DataAccess.ExecuteDataset(sql);
                 }
 
                 var dt = ds.Tables[0];
@@ -274,7 +271,7 @@ namespace Arsenalcn.Core
             }
             catch (Exception ex)
             {
-                log.Debug(ex, new LogInfo()
+                _log.Debug(ex, new LogInfo()
                 {
                     MethodInstance = MethodBase.GetCurrentMethod(),
                     ThreadInstance = Thread.CurrentThread
@@ -290,9 +287,9 @@ namespace Arsenalcn.Core
             {
                 Contract.Requires(instance != null);
 
-                List<string> listCol = new List<string>();
-                List<string> listColPara = new List<string>();
-                List<SqlParameter> listPara = new List<SqlParameter>();
+                var listCol = new List<string>();
+                var listColPara = new List<string>();
+                var listPara = new List<SqlParameter>();
 
                 foreach (var pi in instance.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
                 {
@@ -300,17 +297,14 @@ namespace Arsenalcn.Core
 
                     if (attrCol != null)
                     {
-                        object _value = pi.GetValue(instance, null);
+                        var value = pi.GetValue(instance, null);
 
                         listCol.Add(attrCol.Name);
                         listColPara.Add("@" + attrCol.Name);
 
-                        SqlParameter _para = new SqlParameter("@" + attrCol.Name,
-                            _value != null ? _value : (object)DBNull.Value);
-                        listPara.Add(_para);
+                        var para = new SqlParameter("@" + attrCol.Name, value ?? DBNull.Value);
+                        listPara.Add(para);
                     }
-                    else
-                    { continue; }
                 }
 
                 var attr = GetTableAttr<T>();
@@ -320,15 +314,15 @@ namespace Arsenalcn.Core
                     // skip the property of the self-increase main-key
                     var primary = instance.GetType().GetProperty("ID");
 
-                    if (!primary.PropertyType.Equals(typeof(int)))
+                    if (primary.PropertyType != typeof(int))
                     {
                         listCol.Add(attr.Key);
                         listColPara.Add("@key");
                         listPara.Add(new SqlParameter("@key", primary.GetValue(instance, null)));
                     }
 
-                    string sql = string.Format("INSERT INTO {0} ({1}) VALUES ({2})", attr.Name,
-                        string.Join(", ", listCol.ToArray()), string.Join(", ", listColPara.ToArray()));
+                    string sql =
+                        $"INSERT INTO {attr.Name} ({string.Join(", ", listCol.ToArray())}) VALUES ({string.Join(", ", listColPara.ToArray())})";
 
                     if (trans != null)
                     {
@@ -343,7 +337,7 @@ namespace Arsenalcn.Core
             }
             catch (Exception ex)
             {
-                log.Debug(ex, new LogInfo()
+                _log.Debug(ex, new LogInfo()
                 {
                     MethodInstance = MethodBase.GetCurrentMethod(),
                     ThreadInstance = Thread.CurrentThread
@@ -359,9 +353,9 @@ namespace Arsenalcn.Core
             {
                 Contract.Requires(instance != null);
 
-                List<string> listCol = new List<string>();
-                List<string> listColPara = new List<string>();
-                List<SqlParameter> listPara = new List<SqlParameter>();
+                var listCol = new List<string>();
+                var listColPara = new List<string>();
+                var listPara = new List<SqlParameter>();
 
                 foreach (var pi in instance.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
                 {
@@ -369,28 +363,29 @@ namespace Arsenalcn.Core
 
                     if (attrCol != null)
                     {
-                        object _value = pi.GetValue(instance, null);
+                        var value = pi.GetValue(instance, null);
 
                         listCol.Add(attrCol.Name);
                         listColPara.Add("@" + attrCol.Name);
 
-                        SqlParameter _para = new SqlParameter("@" + attrCol.Name,
-                            _value != null ? _value : (object)DBNull.Value);
-                        listPara.Add(_para);
+                        var para = new SqlParameter("@" + attrCol.Name, value ?? DBNull.Value);
+                        listPara.Add(para);
                     }
                     else
-                    { continue; }
+                    {
+                    }
                 }
 
                 var attr = GetTableAttr<T>();
-                var sql = string.Empty;
 
                 if (listCol.Count > 0 && listColPara.Count > 0 && listPara.Count > 0)
                 {
                     // skip the property of the self-increase main-key
                     var primary = instance.GetType().GetProperty("ID");
 
-                    if (!primary.PropertyType.Equals(typeof(int)))
+                    string sql;
+
+                    if (primary.PropertyType != typeof(int))
                     {
                         listCol.Add(attr.Key);
                         listColPara.Add("@key");
@@ -398,8 +393,8 @@ namespace Arsenalcn.Core
                         key = primary.GetValue(instance, null);
                         listPara.Add(new SqlParameter("@key", key));
 
-                        sql = string.Format("INSERT INTO {0} ({1}) VALUES ({2})",
-                           attr.Name, string.Join(", ", listCol.ToArray()), string.Join(", ", listColPara.ToArray()));
+                        sql =
+                            $"INSERT INTO {attr.Name} ({string.Join(", ", listCol.ToArray())}) VALUES ({string.Join(", ", listColPara.ToArray())})";
 
                         if (trans != null)
                         {
@@ -412,17 +407,9 @@ namespace Arsenalcn.Core
                     }
                     else
                     {
-                        sql = string.Format("INSERT INTO {0} ({1}) VALUES ({2}); SELECT SCOPE_IDENTITY();",
-                           attr.Name, string.Join(", ", listCol.ToArray()), string.Join(", ", listColPara.ToArray()));
+                        sql = $"INSERT INTO {attr.Name} ({string.Join(", ", listCol.ToArray())}) VALUES ({string.Join(", ", listColPara.ToArray())}); SELECT SCOPE_IDENTITY();";
 
-                        if (trans != null)
-                        {
-                            key = DataAccess.ExecuteScalar(sql, listPara.ToArray(), trans);
-                        }
-                        else
-                        {
-                            key = DataAccess.ExecuteScalar(sql, listPara.ToArray());
-                        }
+                        key = trans != null ? DataAccess.ExecuteScalar(sql, listPara.ToArray(), trans) : DataAccess.ExecuteScalar(sql, listPara.ToArray());
                     }
                 }
                 else
@@ -432,7 +419,7 @@ namespace Arsenalcn.Core
             }
             catch (Exception ex)
             {
-                log.Debug(ex, new LogInfo()
+                _log.Debug(ex, new LogInfo()
                 {
                     MethodInstance = MethodBase.GetCurrentMethod(),
                     ThreadInstance = Thread.CurrentThread
@@ -448,8 +435,8 @@ namespace Arsenalcn.Core
             {
                 Contract.Requires(instance != null);
 
-                List<string> listCol = new List<string>();
-                List<SqlParameter> listPara = new List<SqlParameter>();
+                var listCol = new List<string>();
+                var listPara = new List<SqlParameter>();
 
                 foreach (var pi in instance.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
                 {
@@ -457,24 +444,24 @@ namespace Arsenalcn.Core
 
                     if (attrCol != null)
                     {
-                        object _value = pi.GetValue(instance, null);
+                        var value = pi.GetValue(instance, null);
 
                         listCol.Add(string.Format("{0} = @{0}", attrCol.Name));
 
-                        SqlParameter _para = new SqlParameter("@" + attrCol.Name,
-                            _value != null ? _value : (object)DBNull.Value);
-                        listPara.Add(_para);
+                        var para = new SqlParameter("@" + attrCol.Name, value ?? DBNull.Value);
+                        listPara.Add(para);
                     }
                     else
-                    { continue; }
+                    {
+                    }
                 }
 
                 var attr = GetTableAttr<T>();
 
                 if (listCol.Count > 0 && listPara.Count > 0)
                 {
-                    string sql = string.Format("UPDATE {0} SET {1} WHERE {2} = @key",
-                        attr.Name, string.Join(", ", listCol.ToArray()), attr.Key);
+                    string sql =
+                        $"UPDATE {attr.Name} SET {string.Join(", ", listCol.ToArray())} WHERE {attr.Key} = @key";
 
                     var primary = instance.GetType().GetProperty("ID");
 
@@ -493,7 +480,7 @@ namespace Arsenalcn.Core
             }
             catch (Exception ex)
             {
-                log.Debug(ex, new LogInfo()
+                _log.Debug(ex, new LogInfo()
                 {
                     MethodInstance = MethodBase.GetCurrentMethod(),
                     ThreadInstance = Thread.CurrentThread
@@ -511,7 +498,7 @@ namespace Arsenalcn.Core
 
                 var attr = GetTableAttr<T>();
 
-                string sql = string.Format("DELETE {0} WHERE {1} = @key", attr.Name, attr.Key);
+                string sql = $"DELETE {attr.Name} WHERE {attr.Key} = @key";
 
                 SqlParameter[] para = { new SqlParameter("@key", key) };
 
@@ -526,7 +513,7 @@ namespace Arsenalcn.Core
             }
             catch (Exception ex)
             {
-                log.Debug(ex, new LogInfo()
+                _log.Debug(ex, new LogInfo()
                 {
                     MethodInstance = MethodBase.GetCurrentMethod(),
                     ThreadInstance = Thread.CurrentThread
@@ -539,8 +526,6 @@ namespace Arsenalcn.Core
         public void Delete<T>(T instance, SqlTransaction trans = null) where T : class, IEntity
         {
             Contract.Requires(instance != null);
-
-            var attr = (DbSchema)Attribute.GetCustomAttribute(typeof(T), typeof(DbSchema));
 
             var key = instance.GetType().GetProperty("ID").GetValue(instance, null);
 
@@ -569,9 +554,11 @@ namespace Arsenalcn.Core
         {
             var name = string.Empty;
 
-            if (expr.Body is UnaryExpression)
+            var body = expr.Body as UnaryExpression;
+
+            if (body != null)
             {
-                name = ((MemberExpression)((UnaryExpression)expr.Body).Operand).Member.Name;
+                name = ((MemberExpression)body.Operand).Member.Name;
             }
             else if (expr.Body is MemberExpression)
             {

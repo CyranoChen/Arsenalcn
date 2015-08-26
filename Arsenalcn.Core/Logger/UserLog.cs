@@ -11,11 +11,11 @@ namespace Arsenalcn.Core.Logger
         {
             if (para != null)
             {
-                Logging(this.GetType().Name, DateTime.Now, LogLevel.Debug, message, string.Empty, para.UserClient);
+                Logging(GetType().Name, DateTime.Now, LogLevel.Debug, message, string.Empty, para.UserClient);
             }
             else
             {
-                Logging(this.GetType().Name, DateTime.Now, LogLevel.Debug, message, string.Empty);
+                Logging(GetType().Name, DateTime.Now, LogLevel.Debug, message, string.Empty);
             }
         }
 
@@ -25,11 +25,11 @@ namespace Arsenalcn.Core.Logger
 
             if (para != null)
             {
-                Logging(this.GetType().Name, DateTime.Now, LogLevel.Debug, ex.Message, ex.StackTrace, para.UserClient);
+                Logging(GetType().Name, DateTime.Now, LogLevel.Debug, ex.Message, ex.StackTrace, para.UserClient);
             }
             else
             {
-                Logging(this.GetType().Name, DateTime.Now, LogLevel.Debug, ex.Message, ex.StackTrace);
+                Logging(GetType().Name, DateTime.Now, LogLevel.Debug, ex.Message, ex.StackTrace);
             }
         }
 
@@ -37,11 +37,11 @@ namespace Arsenalcn.Core.Logger
         {
             if (para != null)
             {
-                Logging(this.GetType().Name, DateTime.Now, LogLevel.Info, message, string.Empty, para.UserClient);
+                Logging(GetType().Name, DateTime.Now, LogLevel.Info, message, string.Empty, para.UserClient);
             }
             else
             {
-                Logging(this.GetType().Name, DateTime.Now, LogLevel.Info, message, string.Empty);
+                Logging(GetType().Name, DateTime.Now, LogLevel.Info, message, string.Empty);
             }
         }
 
@@ -51,11 +51,11 @@ namespace Arsenalcn.Core.Logger
 
             if (para != null)
             {
-                Logging(this.GetType().Name, DateTime.Now, LogLevel.Info, ex.Message, ex.StackTrace, para.UserClient);
+                Logging(GetType().Name, DateTime.Now, LogLevel.Info, ex.Message, ex.StackTrace, para.UserClient);
             }
             else
             {
-                Logging(this.GetType().Name, DateTime.Now, LogLevel.Info, ex.Message, ex.StackTrace);
+                Logging(GetType().Name, DateTime.Now, LogLevel.Info, ex.Message, ex.StackTrace);
             }
         }
 
@@ -63,11 +63,11 @@ namespace Arsenalcn.Core.Logger
         {
             if (para != null)
             {
-                Logging(this.GetType().Name, DateTime.Now, LogLevel.Warn, message, string.Empty, para.UserClient);
+                Logging(GetType().Name, DateTime.Now, LogLevel.Warn, message, string.Empty, para.UserClient);
             }
             else
             {
-                Logging(this.GetType().Name, DateTime.Now, LogLevel.Warn, message, string.Empty);
+                Logging(GetType().Name, DateTime.Now, LogLevel.Warn, message, string.Empty);
             }
         }
 
@@ -77,11 +77,11 @@ namespace Arsenalcn.Core.Logger
 
             if (para != null)
             {
-                Logging(this.GetType().Name, DateTime.Now, LogLevel.Warn, ex.Message, ex.StackTrace, para.UserClient);
+                Logging(GetType().Name, DateTime.Now, LogLevel.Warn, ex.Message, ex.StackTrace, para.UserClient);
             }
             else
             {
-                Logging(this.GetType().Name, DateTime.Now, LogLevel.Warn, ex.Message, ex.StackTrace);
+                Logging(GetType().Name, DateTime.Now, LogLevel.Warn, ex.Message, ex.StackTrace);
             }
         }
 
@@ -89,11 +89,11 @@ namespace Arsenalcn.Core.Logger
         {
             if (para != null)
             {
-                Logging(this.GetType().Name, DateTime.Now, LogLevel.Error, message, string.Empty, para.UserClient);
+                Logging(GetType().Name, DateTime.Now, LogLevel.Error, message, string.Empty, para.UserClient);
             }
             else
             {
-                Logging(this.GetType().Name, DateTime.Now, LogLevel.Error, message, string.Empty);
+                Logging(GetType().Name, DateTime.Now, LogLevel.Error, message, string.Empty);
             }
         }
 
@@ -103,11 +103,11 @@ namespace Arsenalcn.Core.Logger
 
             if (para != null)
             {
-                Logging(this.GetType().Name, DateTime.Now, LogLevel.Error, ex.Message, ex.StackTrace, para.UserClient);
+                Logging(GetType().Name, DateTime.Now, LogLevel.Error, ex.Message, ex.StackTrace, para.UserClient);
             }
             else
             {
-                Logging(this.GetType().Name, DateTime.Now, LogLevel.Error, ex.Message, ex.StackTrace);
+                Logging(GetType().Name, DateTime.Now, LogLevel.Error, ex.Message, ex.StackTrace);
             }
         }
 
@@ -115,11 +115,11 @@ namespace Arsenalcn.Core.Logger
         {
             if (para != null)
             {
-                Logging(this.GetType().Name, DateTime.Now, LogLevel.Fatal, message, string.Empty, para.UserClient);
+                Logging(GetType().Name, DateTime.Now, LogLevel.Fatal, message, string.Empty, para.UserClient);
             }
             else
             {
-                Logging(this.GetType().Name, DateTime.Now, LogLevel.Fatal, message, string.Empty);
+                Logging(GetType().Name, DateTime.Now, LogLevel.Fatal, message, string.Empty);
             }
         }
 
@@ -129,11 +129,11 @@ namespace Arsenalcn.Core.Logger
 
             if (para != null)
             {
-                Logging(this.GetType().Name, DateTime.Now, LogLevel.Fatal, ex.Message, ex.StackTrace, para.UserClient);
+                Logging(GetType().Name, DateTime.Now, LogLevel.Fatal, ex.Message, ex.StackTrace, para.UserClient);
             }
             else
             {
-                Logging(this.GetType().Name, DateTime.Now, LogLevel.Fatal, ex.Message, ex.StackTrace);
+                Logging(GetType().Name, DateTime.Now, LogLevel.Fatal, ex.Message, ex.StackTrace);
             }
         }
     }

@@ -66,7 +66,7 @@ namespace iArsenal.Web
 
                     #endregion
 
-                    Member m = repo.Single<Member>(o.MemberID);
+                    var m = repo.Single<Member>(o.MemberID);
 
                     lblOrderMobile.Text = string.Format("<em>{0}</em>", o.Mobile);
 
@@ -77,10 +77,10 @@ namespace iArsenal.Web
                         {
                             lblMemberRegion.Text = "中国 ";
 
-                            string[] region = m.Region.Split('|');
-                            int _regionID = int.MinValue;
+                            var region = m.Region.Split('|');
+                            var _regionID = int.MinValue;
 
-                            for (int i = 0; i < region.Length; i++)
+                            for (var i = 0; i < region.Length; i++)
                             {
                                 if (int.TryParse(region[i], out _regionID))
                                 {
@@ -122,8 +122,8 @@ namespace iArsenal.Web
                     }
 
                     // Should be Calculator in this Page
-                    double price = default(double);
-                    string priceInfo = string.Empty;
+                    var price = default(double);
+                    var priceInfo = string.Empty;
 
                     // Whether Core or Premier MemberShip
                     OrdrItmMemberShip oiMemberShip = null;
@@ -141,7 +141,7 @@ namespace iArsenal.Web
                         throw new Exception("此订单未登记会籍信息");
                     }
 
-                    Product p = Product.Cache.Load(oiMemberShip.ProductGuid);
+                    var p = Product.Cache.Load(oiMemberShip.ProductGuid);
 
                     if (p != null)
                     {
@@ -155,8 +155,8 @@ namespace iArsenal.Web
                         throw new Exception("无相关会籍可申请，请联系管理员");
                     }
 
-                    bool isUpgrade = oiMemberShip.AlterMethod.Equals("Upgrade", StringComparison.OrdinalIgnoreCase);
-                    bool isRenew = oiMemberShip.AlterMethod.Equals("Renew", StringComparison.OrdinalIgnoreCase); ;
+                    var isUpgrade = oiMemberShip.AlterMethod.Equals("Upgrade", StringComparison.OrdinalIgnoreCase);
+                    var isRenew = oiMemberShip.AlterMethod.Equals("Renew", StringComparison.OrdinalIgnoreCase); ;
 
                     // Set Order Price
 
@@ -214,7 +214,7 @@ namespace iArsenal.Web
             {
                 if (OrderID > 0)
                 {
-                    Order o = repo.Single<Order>(OrderID);
+                    var o = repo.Single<Order>(OrderID);
 
                     if (o == null || !o.MemberID.Equals(MID) || !o.IsActive)
                         throw new Exception("此订单无效或非当前用户订单");
@@ -244,7 +244,7 @@ namespace iArsenal.Web
             {
                 if (OrderID > 0)
                 {
-                    Order o = repo.Single<Order>(OrderID);
+                    var o = repo.Single<Order>(OrderID);
 
                     if (o == null || !o.MemberID.Equals(MID) || !o.IsActive)
                         throw new Exception("此订单无效或非当前用户订单");
@@ -268,7 +268,7 @@ namespace iArsenal.Web
             {
                 if (OrderID > 0)
                 {
-                    Order o = repo.Single<Order>(OrderID);
+                    var o = repo.Single<Order>(OrderID);
 
                     if (o == null || !o.MemberID.Equals(MID) || !o.IsActive)
                         throw new Exception("此订单无效或非当前用户订单");
@@ -294,10 +294,10 @@ namespace iArsenal.Web
 
         protected void btnGenMemberPeriod_Click(object sender, EventArgs e)
         {
-            using (SqlConnection conn = new SqlConnection(DataAccess.ConnectString))
+            using (var conn = new SqlConnection(DataAccess.ConnectString))
             {
                 conn.Open();
-                SqlTransaction trans = conn.BeginTransaction();
+                var trans = conn.BeginTransaction();
 
                 try
                 {
@@ -323,7 +323,7 @@ namespace iArsenal.Web
                                 throw new Exception("此订单未登记会籍信息");
                             }
 
-                            Product p = Product.Cache.Load(oiMemberShip.ProductGuid);
+                            var p = Product.Cache.Load(oiMemberShip.ProductGuid);
 
                             if (p == null)
                             {
@@ -334,7 +334,7 @@ namespace iArsenal.Web
                             var list = repo.Query<MemberPeriod>(x => 
                                 x.IsActive == true && x.StartDate <= DateTime.Now && x.EndDate >= DateTime.Now);
 
-                            bool _updateFlag = false;
+                            var _updateFlag = false;
 
                             // Valiate the Member Period Information
                             if (list != null && list.Count > 0)
@@ -363,7 +363,7 @@ namespace iArsenal.Web
                             if (_updateFlag && oiMemberShip.AlterMethod.Equals("Upgrade", StringComparison.OrdinalIgnoreCase))
                             {
                                 // Level up the core member to premier for current season
-                                MemberPeriod mpCore = list.SingleOrDefault(x =>
+                                var mpCore = list.SingleOrDefault(x =>
                                     x.MemberID.Equals(o.MemberID) && x.MemberName.Equals(o.MemberName)
                                     && x.MemberClass.Equals(MemberClassType.Core));
 
@@ -384,7 +384,7 @@ namespace iArsenal.Web
                             else
                             {
                                 // Insert new Member Period for current season
-                                MemberPeriod mp = new MemberPeriod();
+                                var mp = new MemberPeriod();
 
                                 mp.MemberID = o.MemberID;
                                 mp.MemberName = o.MemberName;

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace iArsenal.Service
+﻿namespace iArsenal.Service
 {
     public class TravelOption
     {

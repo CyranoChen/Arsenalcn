@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data;
 using System.Collections.Generic;
 using System.Web.UI.WebControls;
 
@@ -20,13 +19,13 @@ namespace Arsenalcn.ClubSys.Web.Control
 
             if (clubID > 0)
             {
-                int haveVideoCount = 0;
-                int totalVideoCount = Video.Cache.GetAvailableVideosByRank(GRank, TRank).Count;
+                var haveVideoCount = 0;
+                var totalVideoCount = Video.Cache.GetAvailableVideosByRank(GRank, TRank).Count;
 
                 //load data
                 //DataTable dt = UserVideo.GetUserVideoByClubID(clubID);
 
-                List<Entity.UserVideo> list = Entity.UserVideo.GetUserVideosByClubID(clubID);
+                var list = Entity.UserVideo.GetUserVideosByClubID(clubID);
 
                 if (list != null && list.Count > 0)
                 {
@@ -64,7 +63,8 @@ namespace Arsenalcn.ClubSys.Web.Control
                     rptVideo.DataBind();
                 }
 
-                ltlVideoCount.Text = string.Format("<span title=\"GRank:{0} | TRank:{1}\">已获得(总共)视频:<em>{2}/{3}</em></span>", GRank.ToString(), TRank.ToString(), haveVideoCount.ToString(), totalVideoCount.ToString());
+                ltlVideoCount.Text =
+                    $"<span title=\"GRank:{GRank.ToString()} | TRank:{TRank.ToString()}\">已获得(总共)视频:<em>{haveVideoCount.ToString()}/{totalVideoCount.ToString()}</em></span>";
             }
         }
 
@@ -88,7 +88,7 @@ namespace Arsenalcn.ClubSys.Web.Control
                     return tmp;
                 else
                 {
-                    Response.Redirect(string.Format("ClubVideo.aspx?ClubID={0}", clubID.ToString()));
+                    Response.Redirect($"ClubVideo.aspx?ClubID={clubID.ToString()}");
 
                     return 0;
                 }
@@ -114,14 +114,15 @@ namespace Arsenalcn.ClubSys.Web.Control
             if ((e.Item.ItemType == ListItemType.Item) || (e.Item.ItemType == ListItemType.AlternatingItem))
             {
                 //DataRowView drv = e.Item.DataItem as DataRowView;
-                Entity.UserVideo uv = e.Item.DataItem as Entity.UserVideo;
+                var uv = e.Item.DataItem as Entity.UserVideo;
 
-                Label lblPlayerVideoID = e.Item.FindControl("lblPlayerVideoID") as Label;
-                Label lblPlayerVideoPath = e.Item.FindControl("lblPlayerVideoPath") as Label;
-                LinkButton btnSwfView = e.Item.FindControl("btnSwfView") as LinkButton;
+                var lblPlayerVideoID = e.Item.FindControl("lblPlayerVideoID") as Label;
+                var lblPlayerVideoPath = e.Item.FindControl("lblPlayerVideoPath") as Label;
+                var btnSwfView = e.Item.FindControl("btnSwfView") as LinkButton;
 
                 lblPlayerVideoID.Text = uv.UserVideoID.ToString();
-                lblPlayerVideoPath.Text = string.Format("swf/PlayerVideoActive.swf?XMLURL=ServerXml.aspx%3FUserVideoID={0}", uv.UserVideoID.ToString());
+                lblPlayerVideoPath.Text =
+                    $"swf/PlayerVideoActive.swf?XMLURL=ServerXml.aspx%3FUserVideoID={uv.UserVideoID.ToString()}";
 
                 btnSwfView.OnClientClick = "GenFlashFrame('swf/ShowVideoRoom.swf?XMLURL=ServerXml.aspx%3FUserVideoID=" + uv.UserVideoID.ToString() + "', '480', '300', true); return false";
             }

@@ -4,7 +4,6 @@ using System.Web.Security;
 
 using Arsenal.MvcWeb.Models;
 using Arsenalcn.Core;
-using Arsenal.Service;
 
 namespace Arsenal.MvcWeb.Controllers
 {

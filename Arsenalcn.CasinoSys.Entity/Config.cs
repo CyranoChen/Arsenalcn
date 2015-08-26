@@ -25,7 +25,7 @@ namespace Arsenalcn.CasinoSys.Entity
         {
             get
             {
-                string admins = ConfigDictionary["PluginAdmin"];
+                var admins = ConfigDictionary["PluginAdmin"];
                 return admins.Split('|');
             }
         }
@@ -98,7 +98,7 @@ namespace Arsenalcn.CasinoSys.Entity
             {
                 try
                 {
-                    string tmpID = ConfigDictionary["DefaultBankerID"];
+                    var tmpID = ConfigDictionary["DefaultBankerID"];
                     if (!string.IsNullOrEmpty(tmpID))
                         return new Guid(tmpID);
                     else
@@ -117,7 +117,7 @@ namespace Arsenalcn.CasinoSys.Entity
             {
                 try
                 {
-                    string tmpID = ConfigDictionary["DefaultLeagueID"];
+                    var tmpID = ConfigDictionary["DefaultLeagueID"];
 
                     if (!string.IsNullOrEmpty(tmpID))
                         return new Guid(tmpID);
@@ -236,10 +236,10 @@ namespace Arsenalcn.CasinoSys.Entity
     {
         public static bool IsPluginAdmin(int userid)
         {
-            string[] admins = ConfigGlobal.PluginAdmin;
+            var admins = ConfigGlobal.PluginAdmin;
             if (userid > 0 && admins.Length > 0)
             {
-                foreach (string a in admins)
+                foreach (var a in admins)
                 {
                     if (a == userid.ToString())
                         return true;

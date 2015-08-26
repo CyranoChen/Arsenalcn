@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Data;
-using System.Configuration;
-using System.Web;
 using System.Collections.Generic;
 
 namespace Arsenalcn.ClubSys.Entity
@@ -385,8 +383,8 @@ namespace Arsenalcn.ClubSys.Entity
 
         public int Compare(Club x, Club y)
         {
-            int xFortune = 0;
-            int yFortune = 0;
+            var xFortune = 0;
+            var yFortune = 0;
 
             if( x.Fortune.HasValue )
                 xFortune = x.Fortune.Value;

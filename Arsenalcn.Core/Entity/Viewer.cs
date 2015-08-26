@@ -12,104 +12,6 @@ namespace Arsenalcn.Core
     {
         protected Viewer() { }
 
-        //protected Viewer(DataRow dr)
-        //{
-        //    try
-        //    {
-        //        Contract.Requires(dr != null);
-
-        //        foreach (var pi in this.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
-        //        {
-        //            var attrCol = Repository.GetColumnAttr(pi);
-
-        //            // skip not db column
-        //            if (attrCol == null) { continue; }
-
-        //            var type = Nullable.GetUnderlyingType(pi.PropertyType) ?? pi.PropertyType;
-
-        //            // skip IEnumerable property
-        //            if (type.BaseType == null) { continue; }
-
-        //            if (type.BaseType.Equals(typeof(Entity<Guid>)) || type.BaseType.Equals(typeof(Entity<int>)))
-        //            {
-        //                // skip inner object not be included
-        //                if (dr.Table.Columns.Contains("@include"))
-        //                {
-        //                    var includeTypes = dr["@include"].ToString().Split('|');
-
-        //                    if (!includeTypes.Any(x => x.Equals(type.FullName))) { continue; }
-        //                }
-
-        //                if (!Convert.IsDBNull(dr[attrCol.Key]))
-        //                {
-        //                    // new inner object instance
-        //                    object instance = Activator.CreateInstance(type);
-
-        //                    // set the primary key of inner object
-        //                    var piKey = instance.GetType().GetProperty("ID");
-
-        //                    piKey.SetValue(instance, Convert.ChangeType(dr[attrCol.Key],
-        //                        Nullable.GetUnderlyingType(piKey.PropertyType) ?? piKey.PropertyType), null);
-
-        //                    foreach (var piInner in instance.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
-        //                    {
-        //                        var attrColInner = Repository.GetColumnAttr(piInner);
-
-        //                        // skip not db column
-        //                        if (attrColInner == null) { continue; }
-
-        //                        var columnName = string.Format("{0}_{1}", attrCol.Name, attrColInner.Name);
-
-        //                        if (dr.Table.Columns.Contains(columnName))
-        //                        {
-        //                            this.SetPropertyValue(instance, piInner, dr[columnName]);
-        //                        }
-        //                    }
-
-        //                    pi.SetValue(this, Convert.ChangeType(instance, type), null);
-        //                }
-        //            }
-        //            else
-        //            {
-        //                if (dr.Table.Columns.Contains(attrCol.Name))
-        //                {
-        //                    this.SetPropertyValue(this, pi, dr[attrCol.Name]);
-        //                }
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        log.Debug(ex, new LogInfo()
-        //        {
-        //            MethodInstance = MethodBase.GetCurrentMethod(),
-        //            ThreadInstance = Thread.CurrentThread
-        //        });
-
-        //        throw;
-        //    }
-        //}
-
-        //private void SetPropertyValue(object instance, PropertyInfo property, object value)
-        //{
-        //    if (!Convert.IsDBNull(value))
-        //    {
-        //        var type = Nullable.GetUnderlyingType(property.PropertyType) ?? property.PropertyType;
-
-        //        // SetValue for EnumType
-        //        if (type.BaseType.Equals(typeof(Enum)))
-        //        {
-        //            object valEnum = Enum.Parse(type, value.ToString(), true);
-
-        //            property.SetValue(instance, Convert.ChangeType(valEnum, type), null);
-        //        }
-        //        else
-        //        {
-        //            property.SetValue(instance, Convert.ChangeType(value, type), null);
-        //        }
-        //    }
-        //}
-
         #region Members and Properties
 
         [Unique, StringLength(50)]
@@ -139,7 +41,7 @@ namespace Arsenalcn.Core
                 return Generate(Guid.NewGuid().ToString("D").Substring(24));
             }
 
-            public static string Generate(string input)
+            private static string Generate(string input)
             {
                 Contract.Requires(!string.IsNullOrWhiteSpace(input));
                 return HttpUtility.UrlEncode(input.Replace(" ", "_").Replace("-", "_").Replace("&", "and"));
@@ -149,9 +51,8 @@ namespace Arsenalcn.Core
         public virtual void Many<T>(Expression<Func<T, bool>> whereBy) where T : class, IViewer, new()
         {
             // Get the property which matches IEnumerable<T>
-            var property = this.GetType().GetProperties()
-                .Where(x => (Nullable.GetUnderlyingType(x.PropertyType) ?? x.PropertyType).Equals(typeof(IEnumerable<T>)))
-                .FirstOrDefault();
+            var property = GetType().GetProperties()
+                .FirstOrDefault(x => (Nullable.GetUnderlyingType(x.PropertyType) ?? x.PropertyType) == typeof(IEnumerable<T>));
 
             //var propertyName = string.Format("List{0}", typeof(T).Name);
             //var property = this.GetType().GetProperty(propertyName, typeof(IEnumerable<T>));
@@ -160,7 +61,7 @@ namespace Arsenalcn.Core
             {
                 IRepository repo = new Repository();
 
-                var list = repo.Query<T>(whereBy);
+                var list = repo.Query(whereBy);
 
                 if (list != null && list.Count > 0)
                 {

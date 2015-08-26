@@ -10,7 +10,7 @@ namespace Arsenalcn.CasinoSys.Entity
 
         protected override void BuildDetail()
         {
-            DataRow dr = DataAccess.MatchResult.GetMatchResult(ItemGuid.Value);
+            var dr = DataAccess.MatchResult.GetMatchResult(ItemGuid.Value);
 
             if (dr != null)
             {
@@ -32,7 +32,7 @@ namespace Arsenalcn.CasinoSys.Entity
             {
                 //insert
 
-                Guid newGuid = base.Save(trans);
+                var newGuid = base.Save(trans);
 
                 DataAccess.MatchResult.InsertMatchResult(newGuid, trans);
 
@@ -71,7 +71,7 @@ namespace Arsenalcn.CasinoSys.Entity
         {
             foreach (DataRow dr in dt.Rows)
             {
-                string detailName = dr["DetailName"].ToString();
+                var detailName = dr["DetailName"].ToString();
 
                 if (detailName == BetDetailHomeName)
                 {

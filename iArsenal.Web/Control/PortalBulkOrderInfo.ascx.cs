@@ -8,7 +8,7 @@ namespace iArsenal.Web.Control
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            string[] strBulkOrderInfo = ConfigGlobal.BulkOrderInfo;
+            var strBulkOrderInfo = ConfigGlobal.BulkOrderInfo;
 
             if (!strBulkOrderInfo[0].Equals(string.Empty) && strBulkOrderInfo.Length > 0)
             {

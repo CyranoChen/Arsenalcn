@@ -25,7 +25,7 @@ namespace Arsenalcn.CasinoSys.Web.Control
 
             if (UserID > 0)
             {
-                Entity.Gambler currentGamlber = new Entity.Gambler(UserID);
+                var currentGamlber = new Entity.Gambler(UserID);
 
                 ltrlTotalBet.Text = currentGamlber.TotalBet.ToString("N2");
                 ltrlWin.Text = currentGamlber.Win.ToString();
@@ -37,7 +37,7 @@ namespace Arsenalcn.CasinoSys.Web.Control
                 ltrlRP.Text = AdminUsers.GetUserExtCredits(UserID, 4).ToString("f0");
 
                 //UserInfo userInfo = AdminUsers.GetUserInfo(UserID);
-                string myAvatar = Avatars.GetAvatarUrl(UserID, AvatarSize.Small);
+                var myAvatar = Avatars.GetAvatarUrl(UserID, AvatarSize.Small);
                 //if (userInfo.Avatar == string.Empty)
                 //{
                 //    imgAvatar.ImageUrl = "/images/common/noavatar_small.gif";

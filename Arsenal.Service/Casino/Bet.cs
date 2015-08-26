@@ -22,10 +22,10 @@ namespace Arsenal.Service.Casino
         // Place Bet of SingleChoice
         public void Place(Guid matchGuid, string selectedOption)
         {
-            using (SqlConnection conn = new SqlConnection(DataAccess.ConnectString))
+            using (var conn = new SqlConnection(DataAccess.ConnectString))
             {
                 conn.Open();
-                SqlTransaction trans = conn.BeginTransaction();
+                var trans = conn.BeginTransaction();
 
                 try
                 {
@@ -128,10 +128,10 @@ namespace Arsenal.Service.Casino
         // Place Bet of MatchResult
         public void Place(Guid matchGuid, short resultHome, short resultAway)
         {
-            using (SqlConnection conn = new SqlConnection(DataAccess.ConnectString))
+            using (var conn = new SqlConnection(DataAccess.ConnectString))
             {
                 conn.Open();
-                SqlTransaction trans = conn.BeginTransaction();
+                var trans = conn.BeginTransaction();
 
                 try
                 {
@@ -212,7 +212,7 @@ namespace Arsenal.Service.Casino
         public static void Clean(SqlTransaction trans = null)
         {
             //DELETE FROM dbo.AcnCasino_Bet WHERE (CasinoItemGuid NOT IN(SELECT CasinoItemGuid FROM dbo.AcnCasino_CasinoItem))
-            string sql = string.Format(@"DELETE FROM {0} WHERE (CasinoItemGuid NOT IN (SELECT CasinoItemGuid FROM {1}))",
+            var sql = string.Format(@"DELETE FROM {0} WHERE (CasinoItemGuid NOT IN (SELECT CasinoItemGuid FROM {1}))",
                    Repository.GetTableAttr<Bet>().Name,
                    Repository.GetTableAttr<CasinoItem>().Name);
 

@@ -58,11 +58,11 @@ namespace Arsenal.Service
 
                 var attr = Repository.GetTableAttr<Player>();
 
-                string sql = string.Format("SELECT * FROM {0} WHERE {1} = @key", attr.Name, attr.Key);
+                var sql = string.Format("SELECT * FROM {0} WHERE {1} = @key", attr.Name, attr.Key);
 
                 System.Data.SqlClient.SqlParameter[] para = { new System.Data.SqlClient.SqlParameter("@key", guid) };
 
-                DataSet ds = DataAccess.ExecuteDataset(sql, para);
+                var ds = DataAccess.ExecuteDataset(sql, para);
 
                 if (ds.Tables[0].Rows.Count == 0)
                 { return null; }

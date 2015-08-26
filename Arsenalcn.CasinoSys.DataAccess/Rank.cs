@@ -11,9 +11,9 @@ namespace Arsenalcn.CasinoSys.DataAccess
     {
         public static DataTable GetAllRanks(int rankYear, int rankMonth)
         {
-            string sql = "SELECT * FROM AcnCasino_Rank WHERE RankYear = @rankYear and RankMonth = @rankMonth";
+            var sql = "SELECT * FROM AcnCasino_Rank WHERE RankYear = @rankYear and RankMonth = @rankMonth";
 
-            DataSet ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@rankYear", rankYear), new SqlParameter("@rankMonth", rankMonth));
+            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@rankYear", rankYear), new SqlParameter("@rankMonth", rankMonth));
 
             if (ds.Tables[0].Rows.Count == 0)
                 return null;
@@ -23,7 +23,7 @@ namespace Arsenalcn.CasinoSys.DataAccess
 
         public static void InsertRank(int rankYear, int rankMonth, int winnerUserID, string winnerUserName, float winnerProfit, float winnerTotalBet, int loserUserID, string loserUserName, float loserProfit, float loserTotalBet, int rpUserID, string rpUserName, int rpAmount)
         {
-            string sql = @"INSERT INTO AcnCasino_Rank VALUES (
+            var sql = @"INSERT INTO AcnCasino_Rank VALUES (
                                 @rankYear, @rankMonth, @winnerUserID, @winnerUserName, @winnerProfit, @winnerTotalBet, 
                                 @loserUserID, @loserUserName, @loserProfit, @loserTotalBet, @rpUserID, @rpUserName, @rpAmount)";
 
@@ -45,7 +45,7 @@ namespace Arsenalcn.CasinoSys.DataAccess
 
         public static void UpdateRank(int rankYear, int rankMonth, int winnerUserID, string winnerUserName, float winnerProfit, float winnerTotalBet, int loserUserID, string loserUserName, float loserProfit, float loserTotalBet, int rpUserID, string rpUserName, int rpAmount)
         {
-            string sql = @"UPDATE AcnCasino_Rank SET WinnerUserID = @winnerUserID, WinnerUserName = @winnerUserName, 
+            var sql = @"UPDATE AcnCasino_Rank SET WinnerUserID = @winnerUserID, WinnerUserName = @winnerUserName, 
                                 WinnerProfit = @winnerProfit, WinnerTotalBet = @winnerTotalBet, LoserUserID = @loserUserID, 
                                 LoserUserName = @loserUserName, LoserProfit = @loserProfit, LoserTotalBet = @loserTotalBet,
                                 RPUserID = @rpUserID, RPUserName = @rpUserName, RPAmount = @rpAmount  
@@ -69,9 +69,9 @@ namespace Arsenalcn.CasinoSys.DataAccess
 
         public static DataTable GetTopGamblerMonthly()
         {
-            string sql = @"SELECT * FROM dbo.AcnCasino_Rank ORDER BY RankYear DESC, RankMonth DESC";
+            var sql = @"SELECT * FROM dbo.AcnCasino_Rank ORDER BY RankYear DESC, RankMonth DESC";
 
-            DataSet ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql);
+            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql);
 
             if (ds.Tables[0].Rows.Count > 0)
                 return ds.Tables[0];
@@ -81,11 +81,11 @@ namespace Arsenalcn.CasinoSys.DataAccess
 
         public static DataTable GetTopGamblerMonthly(bool isWinner, DateTime today)
         {
-            string sql = string.Empty;
-            string strOrder = string.Empty;
+            var sql = string.Empty;
+            var strOrder = string.Empty;
 
-            DateTime monthStart = today.AddDays(1 - today.Day);
-            DateTime nextStart = monthStart.AddMonths(1);
+            var monthStart = today.AddDays(1 - today.Day);
+            var nextStart = monthStart.AddMonths(1);
 
             if (isWinner)
                 strOrder = "DESC";
@@ -94,7 +94,7 @@ namespace Arsenalcn.CasinoSys.DataAccess
                                   FROM dbo.AcnCasino_Bet WHERE (Earning IS NOT NULL) AND (Bet IS NOT NULL) AND (BetTime >= '{0}') AND (BetTime < '{1}')
                                   GROUP BY UserID, UserName ORDER BY Profit {2}, TotalBet DESC", monthStart, nextStart, strOrder);
 
-            DataSet ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql);
+            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql);
 
             if (ds.Tables[0].Rows.Count > 0)
                 return ds.Tables[0];
@@ -104,11 +104,11 @@ namespace Arsenalcn.CasinoSys.DataAccess
 
         public static DataTable GetTopGamblerMonthly(bool isWinner, DateTime today, bool isRP)
         {
-            string sql = string.Empty;
-            string strOrder = string.Empty;
+            var sql = string.Empty;
+            var strOrder = string.Empty;
 
-            DateTime monthStart = today.AddDays(1 - today.Day);
-            DateTime nextStart = monthStart.AddMonths(1);
+            var monthStart = today.AddDays(1 - today.Day);
+            var nextStart = monthStart.AddMonths(1);
 
             if (isWinner)
                 strOrder = "DESC";
@@ -118,7 +118,7 @@ namespace Arsenalcn.CasinoSys.DataAccess
                          WHERE (dbo.AcnCasino_Bet.Earning = 0) AND (dbo.AcnCasino_Bet.EarningDesc = 'RP+1') AND (dbo.AcnCasino_Bet.IsWin = 1) AND (BetTime >= '{0}') AND (BetTime < '{1}')
                          GROUP BY dbo.AcnCasino_Gambler.UserID, dbo.AcnCasino_Gambler.UserName ORDER BY RPBonus {2}", monthStart, nextStart, strOrder);
 
-            DataSet ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql);
+            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql);
 
             if (ds.Tables[0].Rows.Count > 0)
                 return ds.Tables[0];
@@ -128,19 +128,19 @@ namespace Arsenalcn.CasinoSys.DataAccess
 
         public static DataTable GetTopGamblerProfit(out int months)
         {
-            DateTime iDay = DateTime.Today;
+            var iDay = DateTime.Today;
             months = 0;
             do
             {
-                DateTime monthStart = iDay.AddDays(1 - iDay.Day);
-                DateTime nextStart = monthStart.AddMonths(1);
+                var monthStart = iDay.AddDays(1 - iDay.Day);
+                var nextStart = monthStart.AddMonths(1);
 
-                string sql = string.Format(@"SELECT TOP 5 * FROM dbo.AcnCasino_Gambler gambler INNER JOIN 
+                var sql = string.Format(@"SELECT TOP 5 * FROM dbo.AcnCasino_Gambler gambler INNER JOIN 
                         (SELECT UserID, SUM(ISNULL(Earning, 0) - ISNULL(Bet, 0)) AS profit FROM dbo.AcnCasino_Bet 
                         WHERE (Earning IS NOT NULL) AND (Bet IS NOT NULL) AND (BetTime >= '{0}') AND (BetTime < '{1}')
                         GROUP BY UserID) bet ON gambler.UserID = bet.UserID ORDER BY Profit DESC", monthStart, nextStart);
 
-                DataSet ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql);
+                var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql);
 
                 if (ds.Tables[0].Rows.Count > 0 || months < -12)
                     return ds.Tables[0];
@@ -155,19 +155,19 @@ namespace Arsenalcn.CasinoSys.DataAccess
 
         public static DataTable GetTopGamblerTotalBet(out int months)
         {
-            DateTime iDay = DateTime.Today;
+            var iDay = DateTime.Today;
             months = 0;
             do
             {
-                DateTime monthStart = iDay.AddDays(1 - iDay.Day);
-                DateTime nextStart = monthStart.AddMonths(1);
+                var monthStart = iDay.AddDays(1 - iDay.Day);
+                var nextStart = monthStart.AddMonths(1);
 
-                string sql = string.Format(@"SELECT TOP 5 * FROM dbo.AcnCasino_Gambler gambler INNER JOIN
+                var sql = string.Format(@"SELECT TOP 5 * FROM dbo.AcnCasino_Gambler gambler INNER JOIN
                         (SELECT UserID, SUM(ISNULL(Bet, 0)) AS TotalBetMonthly FROM dbo.AcnCasino_Bet 
                         WHERE (Bet IS NOT NULL) AND (BetTime >= '{0}') AND (BetTime < '{1}')
                         GROUP BY UserID) bet ON gambler.UserID = bet.UserID ORDER BY TotalBetMonthly DESC", monthStart, nextStart);
 
-                DataSet ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql);
+                var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql);
 
                 if (ds.Tables[0].Rows.Count > 0 || months < -12)
                     return ds.Tables[0];
@@ -182,19 +182,19 @@ namespace Arsenalcn.CasinoSys.DataAccess
 
         public static DataTable GetTopGamblerRP(out int months)
         {
-            DateTime iDay = DateTime.Today;
+            var iDay = DateTime.Today;
             months = 0;
             do
             {
-                DateTime monthStart = iDay.AddDays(1 - iDay.Day);
-                DateTime nextStart = monthStart.AddMonths(1);
+                var monthStart = iDay.AddDays(1 - iDay.Day);
+                var nextStart = monthStart.AddMonths(1);
 
-                string sql = string.Format(@"SELECT TOP 5 dbo.AcnCasino_Gambler.UserID, dbo.AcnCasino_Gambler.UserName, COUNT(*) AS RPBonus
+                var sql = string.Format(@"SELECT TOP 5 dbo.AcnCasino_Gambler.UserID, dbo.AcnCasino_Gambler.UserName, COUNT(*) AS RPBonus
                          FROM dbo.AcnCasino_Gambler INNER JOIN dbo.AcnCasino_Bet ON dbo.AcnCasino_Gambler.UserID = dbo.AcnCasino_Bet.UserID
                          WHERE (dbo.AcnCasino_Bet.Earning = 0) AND (dbo.AcnCasino_Bet.EarningDesc = 'RP+1') AND (dbo.AcnCasino_Bet.IsWin = 1) AND (BetTime >= '{0}') AND (BetTime < '{1}')
                          GROUP BY dbo.AcnCasino_Gambler.UserID, dbo.AcnCasino_Gambler.UserName ORDER BY RPBonus DESC", monthStart, nextStart);
 
-                DataSet ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql);
+                var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql);
 
                 if (ds.Tables[0].Rows.Count > 0 || months < -12)
                     return ds.Tables[0];

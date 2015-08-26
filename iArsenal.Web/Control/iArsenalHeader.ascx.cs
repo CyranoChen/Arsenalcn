@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Web;
-
 using iArsenal.Service;
 using Arsenalcn.Core;
 
@@ -78,7 +75,7 @@ namespace iArsenal.Web.Control
                 pnlAnonymousUser.Visible = false;
                 pnlLoginUser.Visible = true;
 
-                Member m = Member.Cache.LoadByAcnID(_userId);
+                var m = Member.Cache.LoadByAcnID(_userId);
 
                 if (m != null && m.ID > 0)
                 {

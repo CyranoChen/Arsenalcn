@@ -9,11 +9,11 @@ namespace Arsenalcn.ClubSys.Service
     {
         public static void LogHistory(int userId, string userName, AdvHistoryType type, string advURL, string clientIP)
         {
-            string sql = "INSERT INTO dbo.AcnClub_LogAdv VALUES (@userid, @username, @typeCode, @advURL, @clientIP, getdate());";
+            var sql = "INSERT INTO dbo.AcnClub_LogAdv VALUES (@userid, @username, @typeCode, @advURL, @clientIP, getdate());";
 
-            using (SqlConnection con = SQLConn.GetConnection())
+            using (var con = SQLConn.GetConnection())
             {
-                SqlCommand com = new SqlCommand(sql, con);
+                var com = new SqlCommand(sql, con);
                 com.Parameters.Add(new SqlParameter("@userid", userId));
                 com.Parameters.Add(new SqlParameter("@username", userName));
                 com.Parameters.Add(new SqlParameter("@typeCode", (int)type));

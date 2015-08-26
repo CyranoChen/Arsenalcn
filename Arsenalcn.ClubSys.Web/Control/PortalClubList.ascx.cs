@@ -1,13 +1,6 @@
 ﻿using System;
-using System.Collections;
-using System.Configuration;
-using System.Data;
 using System.Web;
-using System.Web.Security;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
 using System.Collections.Generic;
 
 using Arsenalcn.ClubSys.Service;
@@ -106,29 +99,32 @@ namespace Arsenalcn.ClubSys.Web.Control
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                Club club = (Club)e.Row.DataItem;
+                var club = (Club)e.Row.DataItem;
 
-                int count = ClubLogic.GetClubMembers(club.ID.Value).Count;
+                var count = ClubLogic.GetClubMembers(club.ID.Value).Count;
 
-                Literal ltrlMemberCount = e.Row.FindControl("ltrlMemberCount") as Literal;
+                var ltrlMemberCount = e.Row.FindControl("ltrlMemberCount") as Literal;
                 ltrlMemberCount.Text = count.ToString();
 
-                Literal ltrlClubLogo = e.Row.FindControl("ltrlClubLogo") as Literal;
-                Literal ltrlClubName = e.Row.FindControl("ltrlClubName") as Literal;
-                Literal ltrlClubRank = e.Row.FindControl("ltrlClubRank") as Literal;
+                var ltrlClubLogo = e.Row.FindControl("ltrlClubLogo") as Literal;
+                var ltrlClubName = e.Row.FindControl("ltrlClubName") as Literal;
+                var ltrlClubRank = e.Row.FindControl("ltrlClubRank") as Literal;
 
-                Literal ltrlActionText = e.Row.FindControl("ltrlActionText") as Literal;
-                Literal ltrlStatus = e.Row.FindControl("ltrlStatus") as Literal;
+                var ltrlActionText = e.Row.FindControl("ltrlActionText") as Literal;
+                var ltrlStatus = e.Row.FindControl("ltrlStatus") as Literal;
                 //Literal ltrlButtonDisplay = e.Row.FindControl("ltrlButtonDisplay") as Literal;
-                Literal ltrlIsAppliable = e.Row.FindControl("ltrlIsAppliable") as Literal;
+                var ltrlIsAppliable = e.Row.FindControl("ltrlIsAppliable") as Literal;
 
-                Literal ltrlEquipmentCount = e.Row.FindControl("ltrlEquipmentCount") as Literal;
+                var ltrlEquipmentCount = e.Row.FindControl("ltrlEquipmentCount") as Literal;
 
                 ltrlClubLogo.Text = string.Format("<a href=\"ClubView.aspx?ClubID={0}\" title=\"{2}\"><img src=\"UploadFiles/{1}\" alt=\"{2}\" width=\"80\" height=\"80\" /></a>", club.ID.ToString(), club.LogoName.ToString(), club.FullName.ToString());
-                ltrlClubName.Text = string.Format("<a href=\"ClubView.aspx?ClubID={0}\" class=\"StrongLink\" title=\"{1}\">{2}</a>", club.ID.ToString(), HttpUtility.HtmlEncode(club.Slogan).Replace("'", "\""), club.FullName.ToString());
-                ltrlClubRank.Text = string.Format("<a href=\"ClubRank.aspx?ClubID={0}\" class=\"StrongLink\">RPos:{1}</a><div class=\"ClubSys_Rank\" style=\"width: {2}px;\"></div>", club.ID.ToString(), club.RankScore.ToString(), (club.RankLevel * 20).ToString());
+                ltrlClubName.Text =
+                    $"<a href=\"ClubView.aspx?ClubID={club.ID.ToString()}\" class=\"StrongLink\" title=\"{HttpUtility.HtmlEncode(club.Slogan).Replace("'", "\"")}\">{club.FullName.ToString()}</a>";
+                ltrlClubRank.Text =
+                    $"<a href=\"ClubRank.aspx?ClubID={club.ID.ToString()}\" class=\"StrongLink\">RPos:{club.RankScore.ToString()}</a><div class=\"ClubSys_Rank\" style=\"width: {(club.RankLevel*20).ToString()}px;\"></div>";
 
-                ltrlEquipmentCount.Text = string.Format("<em title=\"卡片数C|视频数V(今日库存)\">{0}|{1}({2})</em>", PlayerStrip.GetClubMemberCardCount(club.ID.Value).ToString(), PlayerStrip.GetClubMemberVideoCount(club.ID.Value).ToString(), PlayerStrip.GetClubRemainingEquipment(club.ID.Value));
+                ltrlEquipmentCount.Text =
+                    $"<em title=\"卡片数C|视频数V(今日库存)\">{PlayerStrip.GetClubMemberCardCount(club.ID.Value).ToString()}|{PlayerStrip.GetClubMemberVideoCount(club.ID.Value).ToString()}({PlayerStrip.GetClubRemainingEquipment(club.ID.Value)})</em>";
 
                 if (!club.IsAppliable.Value)
                     ltrlIsAppliable.Visible = true;
@@ -137,7 +133,8 @@ namespace Arsenalcn.ClubSys.Web.Control
 
                 if (ConfigGlobal.ChampionsClubID > 0 && club.ID == ConfigGlobal.ChampionsClubID)
                 {
-                    ltrlClubName.Text = string.Format("<div class=\"ClubSys_Crown\" title=\"{0}\"></div><div>{1}</div>", ConfigGlobal.ChampionsTitle, ltrlClubName.Text);
+                    ltrlClubName.Text =
+                        $"<div class=\"ClubSys_Crown\" title=\"{ConfigGlobal.ChampionsTitle}\"></div><div>{ltrlClubName.Text}</div>";
                 }
 
                 //if (userid == -1 || club.ManagerUid == userid)
@@ -179,12 +176,12 @@ namespace Arsenalcn.ClubSys.Web.Control
                 //        break;
                 //}
 
-                Repeater rptLeader = e.Row.FindControl("rptClubLeads") as Repeater;
+                var rptLeader = e.Row.FindControl("rptClubLeads") as Repeater;
                 if (rptLeader != null)
                 {
-                    List<UserClub> uc = ClubLogic.GetClubLeads(club.ID.Value);
+                    var uc = ClubLogic.GetClubLeads(club.ID.Value);
 
-                    foreach (UserClub userClub in uc)
+                    foreach (var userClub in uc)
                     {
                         userClub.AdditionalData = ClubLogic.TranslateResponsibility(userClub.Responsibility.Value);
 

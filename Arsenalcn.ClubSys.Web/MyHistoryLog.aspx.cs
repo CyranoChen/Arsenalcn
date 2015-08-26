@@ -44,9 +44,9 @@ namespace Arsenalcn.ClubSys.Web
             {
                 history = ClubLogic.GetUserClubHistory(username);
 
-                foreach (Arsenalcn.ClubSys.Entity.ClubHistory ch in history)
+                foreach (var ch in history)
                 {
-                    ClubHistoryActionType actionType = (ClubHistoryActionType)Enum.Parse(typeof(ClubHistoryActionType), ch.ActionType);
+                    var actionType = (ClubHistoryActionType)Enum.Parse(typeof(ClubHistoryActionType), ch.ActionType);
                     switch (actionType)
                     {
                         case ClubHistoryActionType.JoinClub:
@@ -69,11 +69,11 @@ namespace Arsenalcn.ClubSys.Web
                             break;
                         case ClubHistoryActionType.LuckyPlayer:
                             ch.AdditionalData = "ClubSys_Agree";
-                            ch.ActionDescription = string.Format("<em>{0}</em>", ch.ActionDescription);
+                            ch.ActionDescription = $"<em>{ch.ActionDescription}</em>";
                             break;
                         case ClubHistoryActionType.TransferExtcredit:
                             ch.AdditionalData = "ClubSys_Agree";
-                            ch.ActionDescription = string.Format("<em>{0}</em>", ch.ActionDescription);
+                            ch.ActionDescription = $"<em>{ch.ActionDescription}</em>";
                             break;
                         default:
                             ch.AdditionalData = "ClubSys_Agree";
@@ -83,13 +83,13 @@ namespace Arsenalcn.ClubSys.Web
                     ch.AdditionalData2 = ClubLogic.TranslateClubHistoryActionType(actionType);
                 }
 
-                List<BingoHistory> bingoHistory = PlayerStrip.GetUserBingoHistory(this.userid);
+                var bingoHistory = PlayerStrip.GetUserBingoHistory(this.userid);
 
-                foreach (BingoHistory bh in bingoHistory)
+                foreach (var bh in bingoHistory)
                 {
-                    Arsenalcn.ClubSys.Entity.ClubHistory current = new Arsenalcn.ClubSys.Entity.ClubHistory();
+                    var current = new Arsenalcn.ClubSys.Entity.ClubHistory();
 
-                    BingoResult br = new BingoResult(bh.Result, bh.ResultDetail);
+                    var br = new BingoResult(bh.Result, bh.ResultDetail);
 
                     current.OperatorUserName = this.username;
                     current.ClubID = bh.ClubID;
@@ -112,7 +112,8 @@ namespace Arsenalcn.ClubSys.Web
                             if (br.ResultDetail == "legend")
                                 current.ActionDescription = "获得一张视频卡";
                             else
-                                current.ActionDescription = string.Format("获得球员卡: {0}", Player.Cache.Load(new Guid(br.ResultDetail)).DisplayName);
+                                current.ActionDescription =
+                                    $"获得球员卡: {Player.Cache.Load(new Guid(br.ResultDetail)).DisplayName}";
                             break;
                         case BingoResultType.Cash:
                             current.AdditionalData = "ClubSys_Agree";
@@ -130,22 +131,22 @@ namespace Arsenalcn.ClubSys.Web
 
                     if (br.Result != BingoResultType.Null)
                     {
-                        current.ActionDescription = string.Format("<em>{0}</em>", current.ActionDescription);
+                        current.ActionDescription = $"<em>{current.ActionDescription}</em>";
                     }
 
                     history.Add(current);
                 }
 
-                List<GamerHistory> playerHistory = PlayerLog.GetUserPlayerHistory(this.userid);
+                var playerHistory = PlayerLog.GetUserPlayerHistory(this.userid);
 
-                foreach (GamerHistory ph in playerHistory)
+                foreach (var ph in playerHistory)
                 {
-                    Arsenalcn.ClubSys.Entity.ClubHistory current = new Arsenalcn.ClubSys.Entity.ClubHistory();
+                    var current = new Arsenalcn.ClubSys.Entity.ClubHistory();
 
                     current.OperatorUserName = this.username;
                     current.ClubID = ClubLogic.GetActiveUserClubs(this.userid)[0].ID.Value;
                     current.AdditionalData = "ClubSys_Star";
-                    current.ActionDescription = string.Format("<em>{0}</em>", ph.TypeDesc);
+                    current.ActionDescription = $"<em>{ph.TypeDesc}</em>";
                     current.ActionDate = ph.ActionDate;
 
                     history.Add(current);
@@ -169,13 +170,13 @@ namespace Arsenalcn.ClubSys.Web
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                Arsenalcn.ClubSys.Entity.ClubHistory ch = (Arsenalcn.ClubSys.Entity.ClubHistory)e.Row.DataItem;
+                var ch = (Arsenalcn.ClubSys.Entity.ClubHistory)e.Row.DataItem;
 
-                Club club = ClubLogic.GetClubInfo(ch.ClubID);
+                var club = ClubLogic.GetClubInfo(ch.ClubID);
 
                 if (club != null)
                 {
-                    Literal ltrlClubName = e.Row.FindControl("ltrlClubName") as Literal;
+                    var ltrlClubName = e.Row.FindControl("ltrlClubName") as Literal;
 
                     if (ltrlClubName != null)
                     {

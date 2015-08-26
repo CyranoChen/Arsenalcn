@@ -63,8 +63,8 @@ namespace Arsenalcn.ClubSys.Service
 
         public static List<Video> GetVideos()
         {
-            DataTable dt = DataAccess.Video.GetVideos();
-            List<Video> list = new List<Video>();
+            var dt = DataAccess.Video.GetVideos();
+            var list = new List<Video>();
 
             if (dt != null)
             {
@@ -161,7 +161,7 @@ namespace Arsenalcn.ClubSys.Service
             public static List<Video> GetAvailableVideosByRank(int GRank, int TRank)
             {
                 // User can only get the Arsenal Player Video GoalRank <= 3 by usual way
-                List<Video> list = VideoList_Legend.FindAll(x => Convert.ToInt16(x.GoalRank) <= 3);
+                var list = VideoList_Legend.FindAll(x => Convert.ToInt16(x.GoalRank) <= 3);
 
                 list = list.FindAll(x => 
                 {

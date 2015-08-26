@@ -47,15 +47,15 @@ namespace Arsenalcn.ClubSys.Web
             #endregion
 
             #region Callback Reference
-            string callbackReference = Page.ClientScript.GetCallbackEventReference(this, "arg", "GetResult", "context");
+            var callbackReference = Page.ClientScript.GetCallbackEventReference(this, "arg", "GetResult", "context");
 
-            string callbackScript = string.Format("function ApproveJoin(arg, context){{ {0} }};", callbackReference);
+            var callbackScript = $"function ApproveJoin(arg, context){{ {callbackReference} }};";
 
             Page.ClientScript.RegisterClientScriptBlock(typeof(string), "action", callbackScript, true);
 
             #endregion
 
-            Club club = ClubLogic.GetClubInfo(ClubID);
+            var club = ClubLogic.GetClubInfo(ClubID);
 
             if (club != null && this.Title.IndexOf("{0}") >= 0)
                 this.Title = string.Format(this.Title, club.FullName);
@@ -79,7 +79,7 @@ namespace Arsenalcn.ClubSys.Web
             }
             else
             {
-                UserClub userClub = ClubLogic.GetActiveUserClub(this.userid, ClubID);
+                var userClub = ClubLogic.GetActiveUserClub(this.userid, ClubID);
 
                 if (userClub != null && userClub.Responsibility.HasValue)
                 {
@@ -120,15 +120,15 @@ namespace Arsenalcn.ClubSys.Web
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                ApplyHistory ah = e.Row.DataItem as ApplyHistory;
+                var ah = e.Row.DataItem as ApplyHistory;
                 if (ah != null)
                 {
-                    UserInfo userInfo = AdminUsers.GetUserInfo(ah.Userid);
+                    var userInfo = AdminUsers.GetUserInfo(ah.Userid);
                     if (userInfo != null)
                     {
                         #region set avatar
 
-                        Image imgAvatar = e.Row.FindControl("imgAvatar") as Image;
+                        var imgAvatar = e.Row.FindControl("imgAvatar") as Image;
 
                         if (imgAvatar != null)
                         {
@@ -149,7 +149,7 @@ namespace Arsenalcn.ClubSys.Web
                             //    imgAvatar.ImageUrl = string.Format("/{0}", userInfo.Avatar);
                             //}
 
-                            string myAvatar = Avatars.GetAvatarUrl(ah.Userid, AvatarSize.Small);
+                            var myAvatar = Avatars.GetAvatarUrl(ah.Userid, AvatarSize.Small);
                             imgAvatar.ImageUrl = myAvatar;
 
                             imgAvatar.AlternateText = userInfo.Username.Trim();
@@ -159,10 +159,10 @@ namespace Arsenalcn.ClubSys.Web
 
                         #region set user group
 
-                        Literal ltrlUserGroup = e.Row.FindControl("ltrlUserGroup") as Literal;
+                        var ltrlUserGroup = e.Row.FindControl("ltrlUserGroup") as Literal;
                         if (ltrlUserGroup != null)
                         {
-                            UserGroupInfo groupInfo = UserGroups.GetUserGroupInfo(userInfo.Groupid);
+                            var groupInfo = UserGroups.GetUserGroupInfo(userInfo.Groupid);
 
                             if (groupInfo != null)
                                 ltrlUserGroup.Text = groupInfo.Grouptitle;
@@ -172,7 +172,7 @@ namespace Arsenalcn.ClubSys.Web
 
                         #region set user credits
 
-                        Literal ltrlUserCredit = e.Row.FindControl("ltrlUserCredit") as Literal;
+                        var ltrlUserCredit = e.Row.FindControl("ltrlUserCredit") as Literal;
                         if (ltrlUserCredit != null)
                         {
                             ltrlUserCredit.Text = userInfo.Credits.ToString();
@@ -182,7 +182,7 @@ namespace Arsenalcn.ClubSys.Web
 
                         #region set user fortune
 
-                        Literal ltrlUserFortune = e.Row.FindControl("ltrlUserFortune") as Literal;
+                        var ltrlUserFortune = e.Row.FindControl("ltrlUserFortune") as Literal;
                         if (ltrlUserFortune != null)
                         {
                             ltrlUserFortune.Text = userInfo.Extcredits2.ToString();
@@ -192,7 +192,7 @@ namespace Arsenalcn.ClubSys.Web
 
                         #region set user posts
 
-                        Literal ltrlUserPosts = e.Row.FindControl("ltrlUserPosts") as Literal;
+                        var ltrlUserPosts = e.Row.FindControl("ltrlUserPosts") as Literal;
                         if (ltrlUserPosts != null)
                         {
                             ltrlUserPosts.Text = userInfo.Posts.ToString();
@@ -217,11 +217,11 @@ namespace Arsenalcn.ClubSys.Web
         {
             if (applyHistoryID > 0)
             {
-                ApplyHistory ah = ClubLogic.GetApplyHistory(applyHistoryID);
+                var ah = ClubLogic.GetApplyHistory(applyHistoryID);
                 if (ah != null && ah.IsAccepted == null)
                 {
-                    int count = ClubLogic.GetClubMemberCount(ClubID);
-                    int quota = ClubLogic.GetClubMemberQuota(ClubID);
+                    var count = ClubLogic.GetClubMemberCount(ClubID);
+                    var quota = ClubLogic.GetClubMemberQuota(ClubID);
 
                     if (!approved)
                     {
@@ -234,13 +234,13 @@ namespace Arsenalcn.ClubSys.Web
                     UserClubLogic.ApproveJoinClub(ah.ID.Value, approved, this.username);
 
                     //check if user joined clubs count has reached max count, if true, cancel all applications of this user
-                    List<Club> myClubs = ClubLogic.GetActiveUserClubs(this.userid);
+                    var myClubs = ClubLogic.GetActiveUserClubs(this.userid);
                     if (myClubs.Count >= ConfigGlobal.SingleUserMaxClubCount)
                     {
                         //cancel
-                        List<ApplyHistory> applications = ClubLogic.GetActiveUserApplications(ah.Userid);
+                        var applications = ClubLogic.GetActiveUserApplications(ah.Userid);
 
-                        foreach (ApplyHistory apply in applications)
+                        foreach (var apply in applications)
                         {
                             UserClubLogic.ApproveJoinClub(apply.ID.Value, false, ClubSysPrivateMessage.ClubSysAdminName);
                         }
@@ -259,7 +259,7 @@ namespace Arsenalcn.ClubSys.Web
         bool approved = true;
         public void RaiseCallbackEvent(string eventArgument)
         {
-            string[] args = eventArgument.Split(';');
+            var args = eventArgument.Split(';');
 
             if (args.Length == 2)
             {

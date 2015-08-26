@@ -39,11 +39,11 @@ namespace iArsenal.Web
             {
                 if (gvSchedule.SelectedIndex != -1)
                 {
-                    string key = gvSchedule.DataKeys[gvSchedule.SelectedIndex].Value.ToString();
+                    var key = gvSchedule.DataKeys[gvSchedule.SelectedIndex].Value.ToString();
 
-                    Schedule s = Schedule.Single(key);
+                    var s = Schedule.Single(key);
 
-                    ISchedule instance = s.IScheduleInstance;
+                    var instance = s.IScheduleInstance;
                     ManagedThreadPool.QueueUserWorkItem(new WaitCallback(instance.Execute));
 
                     s.LastCompletedTime = DateTime.Now;
@@ -75,18 +75,18 @@ namespace iArsenal.Web
 
         protected void gvSchedule_RowUpdating(object sender, GridViewUpdateEventArgs e)
         {
-            TextBox tbScheduleType = gvSchedule.Rows[gvSchedule.EditIndex].Cells[1].Controls[0] as TextBox;
-            TextBox tbDailyTime = gvSchedule.Rows[gvSchedule.EditIndex].Cells[3].Controls[0] as TextBox;
-            TextBox tbMinutes = gvSchedule.Rows[gvSchedule.EditIndex].Cells[4].Controls[0] as TextBox;
-            TextBox tbIsSystem = gvSchedule.Rows[gvSchedule.EditIndex].Cells[6].Controls[0] as TextBox;
-            TextBox tbIsActive = gvSchedule.Rows[gvSchedule.EditIndex].Cells[7].Controls[0] as TextBox;
+            var tbScheduleType = gvSchedule.Rows[gvSchedule.EditIndex].Cells[1].Controls[0] as TextBox;
+            var tbDailyTime = gvSchedule.Rows[gvSchedule.EditIndex].Cells[3].Controls[0] as TextBox;
+            var tbMinutes = gvSchedule.Rows[gvSchedule.EditIndex].Cells[4].Controls[0] as TextBox;
+            var tbIsSystem = gvSchedule.Rows[gvSchedule.EditIndex].Cells[6].Controls[0] as TextBox;
+            var tbIsActive = gvSchedule.Rows[gvSchedule.EditIndex].Cells[7].Controls[0] as TextBox;
 
             if (tbScheduleType != null && tbDailyTime != null && tbMinutes != null
                 && tbIsSystem != null && tbIsActive != null)
             {
                 try
                 {
-                    Schedule s = Schedule.Single(gvSchedule.DataKeys[gvSchedule.EditIndex].Value.ToString());
+                    var s = Schedule.Single(gvSchedule.DataKeys[gvSchedule.EditIndex].Value.ToString());
 
                     s.ScheduleType = tbScheduleType.Text.Trim();
                     s.DailyTime = Convert.ToInt32(tbDailyTime.Text.Trim());

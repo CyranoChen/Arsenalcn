@@ -1,7 +1,7 @@
 ﻿@model Arsenalcn.Core.Criteria
 @{
-    string controllerName = ViewContext.RouteData.Values["controller"].ToString();
-    string actionName = ViewContext.RouteData.Values["action"].ToString();
+    var controllerName = ViewContext.RouteData.Values["controller"].ToString();
+    var actionName = ViewContext.RouteData.Values["action"].ToString();
 }
 
 <style type="text/css">

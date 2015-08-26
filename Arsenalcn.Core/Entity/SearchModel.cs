@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 
@@ -16,11 +15,11 @@ namespace Arsenalcn.Core
 
             if (Criteria.TotalCount > Criteria.PagingSize && Criteria.MaxPage >= 0)
             {
-                this.Data = data.Page(Criteria.CurrentPage, Criteria.PagingSize);
+                Data = data.Page(Criteria.CurrentPage, Criteria.PagingSize);
             }
             else
             {
-                this.Data = data;
+                Data = data;
             }
         }
 

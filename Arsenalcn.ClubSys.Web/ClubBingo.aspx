@@ -1,7 +1,5 @@
 ﻿<%@ Page Language="C#" MasterPageFile="DefaultMaster.master" CodeBehind="ClubBingo.aspx.cs"
     Inherits="Arsenalcn.ClubSys.Web.ClubGetStrip" Title="{0} 获取球员装备" EnableViewState="false" %>
-
-<%@ Import Namespace="Arsenalcn.ClubSys.Service" %>
 <%@ Register Src="Control/LeftPanel.ascx" TagName="LeftPanel" TagPrefix="uc1" %>
 <%@ Register Src="Control/FieldToolBar.ascx" TagName="FieldToolBar" TagPrefix="uc2" %>
 <%@ Register Src="Control/PlayerHeader.ascx" TagName="PlayerHeader" TagPrefix="uc4" %>

@@ -20,7 +20,7 @@ namespace Arsenalcn.Core
         }
     }
 
-    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
     public class DbColumn : Attribute
     {
         public string Name;
@@ -37,22 +37,22 @@ namespace Arsenalcn.Core
         }
     }
 
-    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
     public class UniqueAttribute : RequiredAttribute { }
 
-    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
     public class DomainAttribute : ValidationAttribute
     {
-        public IEnumerable<string> Values { get; private set; }
+        public IEnumerable<string> Values { get; }
 
         public DomainAttribute(string value)
         {
-            this.Values = new string[] { value };
+            Values = new[] { value };
         }
 
         public DomainAttribute(params string[] values)
         {
-            this.Values = values;
+            Values = values;
         }
 
         public override bool IsValid(object value)
@@ -61,13 +61,13 @@ namespace Arsenalcn.Core
             {
                 return true;
             }
-            return this.Values.Any(item => value.ToString() == item);
+            return Values.Any(item => value.ToString() == item);
         }
 
         public override string FormatErrorMessage(string name)
         {
-            string[] values = this.Values.Select(value => string.Format("'{0}'", value)).ToArray();
-            return string.Format(base.ErrorMessageString, name, string.Join(",", values));
+            var values = Values.Select(value => $"'{value}'").ToArray();
+            return string.Format(ErrorMessageString, name, string.Join(",", values));
         }
     }
 }

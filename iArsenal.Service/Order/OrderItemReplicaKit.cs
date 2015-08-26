@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data;
 
 namespace iArsenal.Service
 {
@@ -17,7 +16,7 @@ namespace iArsenal.Service
             if (ProductGuid == null)
                 throw new Exception("Loading OrderItem failed.");
 
-            Product p = Product.Cache.Load(ProductGuid);
+            var p = Product.Cache.Load(ProductGuid);
 
             if (!p.ProductType.Equals(ProductType.ReplicaKitHome))
                 throw new Exception("The OrderItem is not the type of ReplicaKitHome.");
@@ -25,7 +24,7 @@ namespace iArsenal.Service
 
         public void Place(Member m, System.Data.SqlClient.SqlTransaction trans = null)
         {
-            Product product = Product.Cache.ProductList.Find(p =>
+            var product = Product.Cache.ProductList.Find(p =>
                 p.ProductType.Equals(ProductType.ReplicaKitHome));
 
             base.Place(m, product, trans);
@@ -41,7 +40,7 @@ namespace iArsenal.Service
             if (ProductGuid == null)
                 throw new Exception("Loading OrderItem failed.");
 
-            Product p = Product.Cache.Load(ProductGuid);
+            var p = Product.Cache.Load(ProductGuid);
 
             if (!p.ProductType.Equals(ProductType.ReplicaKitAway))
                 throw new Exception("The OrderItem is not the type of ReplicaKitAway.");
@@ -49,7 +48,7 @@ namespace iArsenal.Service
 
         public void Place(Member m, System.Data.SqlClient.SqlTransaction trans = null)
         {
-            Product product = Product.Cache.ProductList.Find(p =>
+            var product = Product.Cache.ProductList.Find(p =>
                 p.ProductType.Equals(ProductType.ReplicaKitAway));
 
             base.Place(m, product, trans);
@@ -65,7 +64,7 @@ namespace iArsenal.Service
             if (ProductGuid == null)
                 throw new Exception("Loading OrderItem failed.");
 
-            Product p = Product.Cache.Load(ProductGuid);
+            var p = Product.Cache.Load(ProductGuid);
 
             if (!p.ProductType.Equals(ProductType.ReplicaKitCup))
                 throw new Exception("The OrderItem is not the type of ReplicaKitCup.");
@@ -73,7 +72,7 @@ namespace iArsenal.Service
 
         public void Place(Member m, System.Data.SqlClient.SqlTransaction trans = null)
         {
-            Product product = Product.Cache.ProductList.Find(p =>
+            var product = Product.Cache.ProductList.Find(p =>
                 p.ProductType.Equals(ProductType.ReplicaKitCup));
 
             base.Place(m, product, trans);
@@ -89,7 +88,7 @@ namespace iArsenal.Service
             if (ProductGuid == null)
                 throw new Exception("Loading OrderItem failed.");
 
-            Product p = Product.Cache.Load(ProductGuid);
+            var p = Product.Cache.Load(ProductGuid);
 
             if (!p.ProductType.Equals(ProductType.PlayerNumber))
                 throw new Exception("The OrderItem is not the type of PlayerNumber.");
@@ -97,7 +96,7 @@ namespace iArsenal.Service
 
         public void Place(Member m, System.Data.SqlClient.SqlTransaction trans = null)
         {
-            Product product = Product.Cache.ProductList.Find(p =>
+            var product = Product.Cache.ProductList.Find(p =>
                 p.ProductType.Equals(ProductType.PlayerNumber));
 
             base.Place(m, product, trans);
@@ -138,7 +137,7 @@ namespace iArsenal.Service
             if (ProductGuid == null)
                 throw new Exception("Loading OrderItem failed.");
 
-            Product p = Product.Cache.Load(ProductGuid);
+            var p = Product.Cache.Load(ProductGuid);
 
             if (!p.ProductType.Equals(ProductType.PlayerName))
                 throw new Exception("The OrderItem is not the type of PlayerName.");
@@ -146,7 +145,7 @@ namespace iArsenal.Service
 
         public void Place(Member m, System.Data.SqlClient.SqlTransaction trans = null)
         {
-            Product product = Product.Cache.ProductList.Find(p =>
+            var product = Product.Cache.ProductList.Find(p =>
                 p.ProductType.Equals(ProductType.PlayerName));
 
             base.Place(m, product, trans);
@@ -187,7 +186,7 @@ namespace iArsenal.Service
             if (ProductGuid == null)
                 throw new Exception("Loading OrderItem failed.");
 
-            Product p = Product.Cache.Load(ProductGuid);
+            var p = Product.Cache.Load(ProductGuid);
 
             if (!p.ProductType.Equals(ProductType.ArsenalFont))
                 throw new Exception("The OrderItem is not the type of ArsenalFont.");
@@ -195,7 +194,7 @@ namespace iArsenal.Service
 
         public void Place(Member m, System.Data.SqlClient.SqlTransaction trans = null)
         {
-            Product product = Product.Cache.ProductList.Find(p =>
+            var product = Product.Cache.ProductList.Find(p =>
                 p.ProductType.Equals(ProductType.ArsenalFont));
 
             base.Place(m, product, trans);
@@ -211,7 +210,7 @@ namespace iArsenal.Service
             if (ProductGuid == null)
                 throw new Exception("Loading OrderItem failed.");
 
-            Product p = Product.Cache.Load(ProductGuid);
+            var p = Product.Cache.Load(ProductGuid);
 
             if (!p.ProductType.Equals(ProductType.PremiershipPatch))
                 throw new Exception("The OrderItem is not the type of PremiershipPatch.");
@@ -219,7 +218,7 @@ namespace iArsenal.Service
 
         public void Place(Member m, System.Data.SqlClient.SqlTransaction trans = null)
         {
-            Product product = Product.Cache.ProductList.Find(p =>
+            var product = Product.Cache.ProductList.Find(p =>
                 p.ProductType.Equals(ProductType.PremiershipPatch));
 
             base.Place(m, product, trans);
@@ -235,7 +234,7 @@ namespace iArsenal.Service
             if (ProductGuid == null)
                 throw new Exception("Loading OrderItem failed.");
 
-            Product p = Product.Cache.Load(ProductGuid);
+            var p = Product.Cache.Load(ProductGuid);
 
             if (!p.ProductType.Equals(ProductType.ChampionshipPatch))
                 throw new Exception("The OrderItem is not the type of ChampionshipPatch.");
@@ -243,7 +242,7 @@ namespace iArsenal.Service
 
         public void Place(Member m, System.Data.SqlClient.SqlTransaction trans = null)
         {
-            Product product = Product.Cache.ProductList.Find(p =>
+            var product = Product.Cache.ProductList.Find(p =>
                 p.ProductType.Equals(ProductType.ChampionshipPatch));
 
             base.Place(m, product, trans);

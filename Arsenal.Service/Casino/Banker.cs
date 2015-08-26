@@ -16,7 +16,7 @@ namespace Arsenal.Service.Casino
         {
             Contract.Requires(this.ID != null && !this.ID.Equals(Guid.Empty));
 
-            string sql = string.Format(@"SELECT ISNULL(SUM(b.Bet), 0) - ISNULL(SUM(b.Earning), 0) AS BankerCash
+            var sql = string.Format(@"SELECT ISNULL(SUM(b.Bet), 0) - ISNULL(SUM(b.Earning), 0) AS BankerCash
                            FROM {0} c INNER JOIN {1} b ON c.CasinoItemGuid = b.CasinoItemGuid
                            WHERE (c.BankerID = @key)",
                    Repository.GetTableAttr<CasinoItem>().Name,
@@ -24,7 +24,7 @@ namespace Arsenal.Service.Casino
 
             SqlParameter[] para = { new SqlParameter("@key", this.ID) };
 
-            DataSet ds = DataAccess.ExecuteDataset(sql, para);
+            var ds = DataAccess.ExecuteDataset(sql, para);
 
             if (ds.Tables[0].Rows.Count > 0)
             {

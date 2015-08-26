@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data;
 using System.Web.Script.Serialization;
 
 namespace iArsenal.Service
@@ -13,7 +12,7 @@ namespace iArsenal.Service
             if (ProductGuid == null)
                 throw new Exception("Loading OrderItem failed.");
 
-            Product p = Product.Cache.Load(ProductGuid);
+            var p = Product.Cache.Load(ProductGuid);
 
             if (!p.ProductType.Equals(ProductType.TravelPlan))
                 throw new Exception("The OrderItem is not the type of TravelPlan.");
@@ -28,8 +27,8 @@ namespace iArsenal.Service
         {
             base.Init();
 
-            DateTime _date = DateTime.MinValue;
-            String[] _arrDate = Size.Split('|');
+            var _date = DateTime.MinValue;
+            var _arrDate = Size.Split('|');
 
             if (!string.IsNullOrEmpty(_arrDate[0]) && DateTime.TryParse(_arrDate[0], out _date))
             {
@@ -72,7 +71,7 @@ namespace iArsenal.Service
                 this.Remark = string.Empty;
             }
 
-            Product product = Product.Cache.Load("iETPL");
+            var product = Product.Cache.Load("iETPL");
 
             base.Place(m, product, trans);
         }
@@ -110,7 +109,7 @@ namespace iArsenal.Service
             {
                 try
                 {
-                    JavaScriptSerializer jsonSerializer = new JavaScriptSerializer();
+                    var jsonSerializer = new JavaScriptSerializer();
                     TravelOption = jsonSerializer.Deserialize<TravelOption>(Remark);
 
                 }
@@ -128,7 +127,7 @@ namespace iArsenal.Service
 
             if (TravelOption != null)
             {
-                JavaScriptSerializer jsonSerializer = new JavaScriptSerializer();
+                var jsonSerializer = new JavaScriptSerializer();
                 this.Remark = jsonSerializer.Serialize(TravelOption);
             }
             else
@@ -136,7 +135,7 @@ namespace iArsenal.Service
                 this.Remark = string.Empty;
             }
 
-            Product product = Product.Cache.Load("2015ATPL");
+            var product = Product.Cache.Load("2015ATPL");
 
             base.Place(m, product, trans);
         }
@@ -160,7 +159,7 @@ namespace iArsenal.Service
             {
                 try
                 {
-                    JavaScriptSerializer jsonSerializer = new JavaScriptSerializer();
+                    var jsonSerializer = new JavaScriptSerializer();
                     Partner = jsonSerializer.Deserialize<Partner>(Remark);
 
                 }
@@ -174,7 +173,7 @@ namespace iArsenal.Service
             if (ProductGuid == null)
                 throw new Exception("Loading OrderItem failed.");
 
-            Product p = Product.Cache.Load(ProductGuid);
+            var p = Product.Cache.Load(ProductGuid);
 
             if (!p.ProductType.Equals(ProductType.TravelPartner))
                 throw new Exception("The OrderItem is not the type of TravelPartner.");
@@ -184,7 +183,7 @@ namespace iArsenal.Service
         {
             if (Partner != null)
             {
-                JavaScriptSerializer jsonSerializer = new JavaScriptSerializer();
+                var jsonSerializer = new JavaScriptSerializer();
                 this.Remark = jsonSerializer.Serialize(Partner);
             }
             else

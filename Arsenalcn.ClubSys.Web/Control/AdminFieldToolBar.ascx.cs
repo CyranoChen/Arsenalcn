@@ -1,6 +1,4 @@
 ﻿using System;
-
-using Arsenalcn.ClubSys.Service;
 using Arsenalcn.ClubSys.Entity;
 
 namespace Arsenalcn.ClubSys.Web.Control
@@ -9,7 +7,7 @@ namespace Arsenalcn.ClubSys.Web.Control
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            ltrlAdminInfo.Text = string.Format("<strong>欢迎<em>{0}</em>, 进入{1} 后台管理</strong>", AdminUserName, ConfigGlobal.PluginDisplayName);
+            ltrlAdminInfo.Text = $"<strong>欢迎<em>{AdminUserName}</em>, 进入{ConfigGlobal.PluginDisplayName} 后台管理</strong>";
         }
 
         public string AdminUserName

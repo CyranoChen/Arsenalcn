@@ -12,19 +12,19 @@ namespace iArsenal.Web
     {
         public void ProcessRequest(HttpContext context)
         {
-            string responseText = string.Empty;
+            var responseText = string.Empty;
 
             if (!string.IsNullOrEmpty(context.Request.QueryString["ProductCode"]))
             {
                 try
                 {
-                    string code = context.Request.QueryString["ProductCode"];
+                    var code = context.Request.QueryString["ProductCode"];
 
-                    Product p = Product.Cache.Load(code);
+                    var p = Product.Cache.Load(code);
 
                     if (p != null)
                     {
-                        JavaScriptSerializer jsonSerializer = new JavaScriptSerializer();
+                        var jsonSerializer = new JavaScriptSerializer();
                         responseText = jsonSerializer.Serialize(p);
                     }
                     else
@@ -42,13 +42,13 @@ namespace iArsenal.Web
             {
                 try
                 {
-                    Guid guid = new Guid(context.Request.QueryString["ProductGuid"]);
+                    var guid = new Guid(context.Request.QueryString["ProductGuid"]);
 
-                    Product p = Product.Cache.Load(guid);
+                    var p = Product.Cache.Load(guid);
 
                     if (p != null)
                     {
-                        JavaScriptSerializer jsonSerializer = new JavaScriptSerializer();
+                        var jsonSerializer = new JavaScriptSerializer();
                         responseText = jsonSerializer.Serialize(p);
                     }
                     else
@@ -66,19 +66,19 @@ namespace iArsenal.Web
             {
                 try
                 {
-                    bool _isActive = bool.Parse(context.Request.QueryString["IsActive"]);
-                    int _productType = int.Parse(context.Request.QueryString["ProductType"]);
+                    var _isActive = bool.Parse(context.Request.QueryString["IsActive"]);
+                    var _productType = int.Parse(context.Request.QueryString["ProductType"]);
 
-                    List<Product> list = Product.Cache.ProductList.FindAll(
+                    var list = Product.Cache.ProductList.FindAll(
                         p => p.IsActive.Equals(_isActive) && ((int)p.ProductType).Equals(_productType)); ;
 
                     if (list != null && list.Count > 0)
                     {
-                        ArrayList alCode = new ArrayList();
+                        var alCode = new ArrayList();
 
-                        foreach (Product p in list) { alCode.Add(p.Code); }
+                        foreach (var p in list) { alCode.Add(p.Code); }
 
-                        JavaScriptSerializer jsonSerializer = new JavaScriptSerializer();
+                        var jsonSerializer = new JavaScriptSerializer();
                         responseText = jsonSerializer.Serialize(alCode);
                     }
                     else

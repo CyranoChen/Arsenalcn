@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Web.UI.WebControls;
-using System.Linq;
-
 using Arsenal.Service;
 using Arsenalcn.Core;
 
@@ -43,8 +41,8 @@ namespace Arsenal.Web
         {
             var list = repo.All<League>().FindAll(x =>
                 {
-                    Boolean returnValue = true;
-                    string tmpString = string.Empty;
+                    var returnValue = true;
+                    var tmpString = string.Empty;
 
                     if (ViewState["LeagueName"] != null)
                     {
@@ -73,7 +71,7 @@ namespace Arsenal.Web
             #region set GridView Selected PageIndex
             if (LeagueGuid.HasValue && !LeagueGuid.Value.Equals(Guid.Empty))
             {
-                int i = list.FindIndex(x => x.ID.Equals(LeagueGuid));
+                var i = list.FindIndex(x => x.ID.Equals(LeagueGuid));
 
                 if (i >= 0)
                 {

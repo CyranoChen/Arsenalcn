@@ -32,7 +32,7 @@
             <a href="iArsenalMemberRegister.aspx">
                 <img src="uploadfiles/banner/banner20120511.png" alt="阿森纳中国官方球迷会实名认证" /></a>
             <a href="iArsenalOrder_ReplicaKit.aspx">
-                <img src="uploadfiles/banner/banner20150616.png" alt="阿森纳新赛季主客场球衣许愿单" /></a>
+                <img src="uploadfiles/banner/banner20150826.png" alt="阿森纳新赛季主客场球衣许愿单" /></a>
             <!-- a href="iArsenalOrder_AsiaTrophy2015.aspx">
                 <img src="uploadfiles/banner/banner20150503.png" alt="2015英超亚洲杯阿森纳观赛团" /></a -->
             <!-- a href="iArsenalOrder_LondonTravel.aspx">

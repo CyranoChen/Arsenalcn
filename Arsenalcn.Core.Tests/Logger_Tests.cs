@@ -33,8 +33,8 @@ namespace Arsenalcn.Core.Tests
         {
             try
             {
-                var _str = "0000-0000";
-                var g = new Guid(_str);
+                var str = "0000-0000";
+                var g = new Guid(str);
             }
             catch (Exception ex)
             {

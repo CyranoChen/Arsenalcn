@@ -5,8 +5,8 @@
 <%@ Register Src="Control/PortalSitePath.ascx" TagName="PortalSitePath" TagPrefix="uc1" %>
 <%@ Register Src="Control/PortalBulkOrderInfo.ascx" TagName="PortalBulkOrderInfo" TagPrefix="uc2" %>
 <asp:Content ID="cphHead" ContentPlaceHolderID="cphHead" runat="server">
-    <link href="Scripts/jquery.ui/jquery-ui.min.css" type="text/css" rel="stylesheet" />
-    <script type="text/javascript" src="Scripts/jquery-ui-1.10.4.min.js"></script>
+    <link href="Content/themes/base/all.css" type="text/css" rel="stylesheet" />
+    <script type="text/javascript" src="Scripts/jquery-ui-1.11.4.min.js"></script>
     <script type="text/javascript" src="Scripts/json2.js"></script>
     <script type="text/javascript">
         var cacheProductCodeList = {};

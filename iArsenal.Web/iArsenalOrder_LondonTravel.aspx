@@ -4,8 +4,8 @@
 
 <%@ Register Src="Control/PortalSitePath.ascx" TagName="PortalSitePath" TagPrefix="uc1" %>
 <asp:Content ID="cphHead" ContentPlaceHolderID="cphHead" runat="server">
-    <link href="Scripts/jquery.ui/jquery-ui.min.css" type="text/css" rel="stylesheet" />
-    <script type="text/javascript" src="Scripts/jquery-ui-1.10.4.min.js"></script>
+    <link href="Content/themes/base/all.css" type="text/css" rel="stylesheet" />
+    <script type="text/javascript" src="Scripts/jquery-ui-1.11.4.min.js"></script>
     <style type="text/css">
         input.Region1, input.Region2 {
             display: none;

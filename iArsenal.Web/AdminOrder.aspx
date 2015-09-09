@@ -5,8 +5,8 @@
 <%@ Register Src="Control/AdminFieldToolBar.ascx" TagName="AdminFieldToolBar" TagPrefix="uc2" %>
 <%@ Register Src="Control/CustomPagerInfo.ascx" TagName="CustomPagerInfo" TagPrefix="uc3" %>
 <asp:Content ID="cphHead" ContentPlaceHolderID="cphHead" runat="server">
-    <link href="Scripts/jquery.ui/jquery-ui.min.css" type="text/css" rel="stylesheet" />
-    <script type="text/javascript" src="Scripts/jquery-ui-1.10.4.min.js"></script>
+    <link href="Content/themes/base/all.css" type="text/css" rel="stylesheet" />
+    <script type="text/javascript" src="Scripts/jquery-ui-1.11.4.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             $.datepicker.setDefaults({ dateFormat: 'yy-mm-dd', changeMonth: true, changeYear: true });

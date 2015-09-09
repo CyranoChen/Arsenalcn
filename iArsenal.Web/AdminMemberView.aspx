@@ -5,8 +5,8 @@
 <%@ Register Src="Control/AdminPanel.ascx" TagName="AdminPanel" TagPrefix="uc1" %>
 <%@ Register Src="Control/AdminFieldToolBar.ascx" TagName="AdminFieldToolBar" TagPrefix="uc2" %>
 <asp:Content ID="cphHead" ContentPlaceHolderID="cphhead" runat="server">
-    <link href="Scripts/jquery.ui/jquery-ui.min.css" type="text/css" rel="stylesheet" />
-    <script type="text/javascript" src="Scripts/jquery-ui-1.10.4.min.js"></script>
+    <link href="Content/themes/base/all.css" type="text/css" rel="stylesheet" />
+    <script type="text/javascript" src="Scripts/jquery-ui-1.11.4.min.js"></script>
     <style type="text/css">
         input.AcnSessionKey, input.Region1, input.Region2 {
             display: none;

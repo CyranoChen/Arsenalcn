@@ -39,7 +39,7 @@ namespace Arsenalcn.CasinoSys.Entity
             {
                 var itemType = (CasinoType)Enum.Parse(typeof(CasinoType), Convert.ToString(dr["ItemType"]));
 
-                var item = CasinoItem.CreateInstance(itemType);
+                var item = CreateInstance(itemType);
 
                 item.ItemGuid = itemID;
 
@@ -122,7 +122,7 @@ namespace Arsenalcn.CasinoSys.Entity
             {
                 foreach (DataRow dr in dt.Rows)
                 {
-                    var item = CasinoItem.GetCasinoItem((Guid)dr["CasinoItemGuid"]);
+                    var item = GetCasinoItem((Guid)dr["CasinoItemGuid"]);
                     item.Earning = DataAccess.Bet.GetTotalEarningByCasinoItemGuid((Guid)dr["CasinoItemGuid"]);
 
                     item.Save(null);

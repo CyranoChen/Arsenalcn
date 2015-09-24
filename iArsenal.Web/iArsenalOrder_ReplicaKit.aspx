@@ -233,20 +233,18 @@
                             <asp:RadioButtonList ID="rblPremierPatch" runat="server" RepeatDirection="Horizontal"
                                 RepeatLayout="Flow" CssClass="RadioButtonList">
                                 <asp:ListItem Text="无需" Value="0" Selected="True"></asp:ListItem>
-                                <asp:ListItem Text="1个" Value="1" Enabled="false"></asp:ListItem>
                                 <asp:ListItem Text="2个" Value="2"></asp:ListItem>
                             </asp:RadioButtonList>
                             <asp:Label ID="lblPricePremierPatch" runat="server"></asp:Label>
                         </td>
                     </tr>
-                    <tr class="AlternatingRow" style="display: none">
+                    <tr class="AlternatingRow">
                         <td class="FieldHeader">欧冠袖标：
                         </td>
                         <td class="FieldColspan" colspan="3" id="tdChampionPatch">
                             <asp:RadioButtonList ID="rblChampionPatch" runat="server" RepeatDirection="Horizontal"
                                 RepeatLayout="Flow" CssClass="RadioButtonList">
                                 <asp:ListItem Text="无需" Value="0" Selected="True"></asp:ListItem>
-                                <asp:ListItem Text="1个" Value="1" Enabled="false"></asp:ListItem>
                                 <asp:ListItem Text="2个（R章）" Value="2"></asp:ListItem>
                             </asp:RadioButtonList>
                             <asp:Label ID="lblPriceChampionPatch" runat="server"></asp:Label>

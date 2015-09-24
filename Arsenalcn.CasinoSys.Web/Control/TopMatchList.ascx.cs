@@ -13,7 +13,7 @@ namespace Arsenalcn.CasinoSys.Web.Control
             #region Top Match Earning
             var rank = 1;
             var months = 0;
-            var dtTopEarning = Entity.CasinoItem.GetTopMatchEarning(out months);
+            var dtTopEarning = CasinoItem.GetTopMatchEarning(out months);
 
             if (dtTopEarning != null)
             {
@@ -28,13 +28,13 @@ namespace Arsenalcn.CasinoSys.Web.Control
             rptMatchEarning.DataSource = dtTopEarning;
             rptMatchEarning.DataBind();
 
-            this.ltrlEarning.Text = string.Format("盈余排行({0}月)", DateTime.Today.AddMonths(months).Month.ToString());
+            ltrlEarning.Text = $"盈余排行({DateTime.Today.AddMonths(months).Month}月)";
             #endregion
 
             #region Top Match Loss
             rank = 1;
             months = 0;
-            var dtTopLoss = Entity.CasinoItem.GetTopMatchLoss(out months);
+            var dtTopLoss = CasinoItem.GetTopMatchLoss(out months);
 
             if (dtTopLoss != null)
             {
@@ -49,11 +49,11 @@ namespace Arsenalcn.CasinoSys.Web.Control
             rptMatchLoss.DataSource = dtTopLoss;
             rptMatchLoss.DataBind();
 
-            this.ltrlLoss.Text = string.Format("亏损排行({0}月)", DateTime.Today.AddMonths(months).Month.ToString());
+            ltrlLoss.Text = $"亏损排行({DateTime.Today.AddMonths(months).Month}月)";
             #endregion
         }
 
-        protected void rptMatchEarning_ItemDataBound(object sender, System.Web.UI.WebControls.RepeaterItemEventArgs e)
+        protected void rptMatchEarning_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
             if ((e.Item.ItemType == ListItemType.Item) || (e.Item.ItemType == ListItemType.AlternatingItem))
             {
@@ -68,16 +68,16 @@ namespace Arsenalcn.CasinoSys.Web.Control
                     var tHome = Team.Cache.Load(m.Home);
                     var tAway = Team.Cache.Load(m.Away);
 
-                    var _strMatchInfo = "<li class=\"IconTop{0}\"><a href=\"CasinoBetLog.aspx?Match={1}\" title=\"{2} {3}\">{4} <em>vs</em> {5}</a><em title=\"比赛盈余\"  class=\"CasinoSys_TopRankEM\">{6}</em></li>";
+                    var strMatchInfo = "<li class=\"IconTop{0}\"><a href=\"CasinoBetLog.aspx?Match={1}\" title=\"{2} {3}\">{4} <em>vs</em> {5}</a><em title=\"比赛盈余\"  class=\"CasinoSys_TopRankEM\">{6}</em></li>";
 
-                    ltrlMatchInfo.Text = string.Format(_strMatchInfo, drv["Rank"].ToString(), m.MatchGuid.ToString(), m.LeagueName,
+                    ltrlMatchInfo.Text = string.Format(strMatchInfo, drv["Rank"], m.MatchGuid, m.LeagueName,
                         m.PlayTime.ToString("yyyy-MM-dd HH:mm"), tHome.TeamDisplayName, tAway.TeamDisplayName,
                         Convert.ToSingle(drv["Earning"]).ToString("N2"));
                 }
             }
         }
 
-        protected void rptMatchLoss_ItemDataBound(object sender, System.Web.UI.WebControls.RepeaterItemEventArgs e)
+        protected void rptMatchLoss_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
             if ((e.Item.ItemType == ListItemType.Item) || (e.Item.ItemType == ListItemType.AlternatingItem))
             {
@@ -92,9 +92,9 @@ namespace Arsenalcn.CasinoSys.Web.Control
                     var tHome = Team.Cache.Load(m.Home);
                     var tAway = Team.Cache.Load(m.Away);
 
-                    var _strMatchInfo = "<li class=\"IconTop{0}\"><a href=\"CasinoBetLog.aspx?Match={1}\" title=\"{2} {3}\">{4} <em>vs</em> {5}</a><em title=\"比赛亏损\"  class=\"CasinoSys_TopRankEM\">{6}</em></li>";
+                    var strMatchInfo = "<li class=\"IconTop{0}\"><a href=\"CasinoBetLog.aspx?Match={1}\" title=\"{2} {3}\">{4} <em>vs</em> {5}</a><em title=\"比赛亏损\"  class=\"CasinoSys_TopRankEM\">{6}</em></li>";
 
-                    ltrlMatchInfo.Text = string.Format(_strMatchInfo, drv["Rank"].ToString(), m.MatchGuid.ToString(), m.LeagueName,
+                    ltrlMatchInfo.Text = string.Format(strMatchInfo, drv["Rank"], m.MatchGuid, m.LeagueName,
                         m.PlayTime.ToString("yyyy-MM-dd HH:mm"), tHome.TeamDisplayName, tAway.TeamDisplayName,
                         Convert.ToSingle(drv["Earning"]).ToString("N2"));
                 }

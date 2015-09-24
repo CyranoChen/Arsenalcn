@@ -17,19 +17,19 @@ namespace Arsenalcn.CasinoSys.Web
         {
             #region Assign Control Property
 
-            ctrlLeftPanel.UserID = userid;
+            ctrlLeftPanel.UserId = userid;
             ctrlLeftPanel.UserName = username;
 
-            ctrlFieldTooBar.UserID = userid;
+            ctrlFieldTooBar.UserId = userid;
 
-            ctrlMenuTabBar.CurrentMenu = Arsenalcn.CasinoSys.Web.Control.CasinoMenuType.CasinoPortal;
+            ctrlMenuTabBar.CurrentMenu = Control.CasinoMenuType.CasinoPortal;
 
-            ctrlGamblerHeader.UserID = userid;
+            ctrlGamblerHeader.UserId = userid;
             ctrlGamblerHeader.UserName = username;
 
             #endregion
 
-            var qsb = AdminUsers.GetUserExtCredits(userid, 2);
+            var qsb = Users.GetUserExtCredits(userid, 2);
 
             ltrlUserQSB.Text = qsb.ToString("N2");
             ltrlUserCash.Text = CurrentGambler.Cash.ToString("N2");
@@ -46,11 +46,11 @@ namespace Arsenalcn.CasinoSys.Web
             else
                 rvToCash.MaximumValue = "10";
 
-            var maxQSB = (int)(CurrentGambler.Cash * (1 - Entity.ConfigGlobal.ExchangeFee) / Entity.ConfigGlobal.ExchangeRate);
-            ltrlMaxQSB.Text = maxQSB.ToString("N0");
+            var maxQsb = (int)(CurrentGambler.Cash * (1 - Entity.ConfigGlobal.ExchangeFee) / Entity.ConfigGlobal.ExchangeRate);
+            ltrlMaxQSB.Text = maxQsb.ToString("N0");
 
-            if (maxQSB >= 1)
-                rvMaxQSB.MaximumValue = maxQSB.ToString();
+            if (maxQsb >= 1)
+                rvMaxQSB.MaximumValue = maxQsb.ToString();
             else
                 rvMaxQSB.MaximumValue = "1";
         }
@@ -65,7 +65,7 @@ namespace Arsenalcn.CasinoSys.Web
 
                 var qsb = (int)(Convert.ToInt32(tbCash.Text) / Entity.ConfigGlobal.ExchangeRate);
 
-                if (qsb > AdminUsers.GetUserExtCredits(userid, 2) || qsb <= 0)
+                if (qsb > Users.GetUserExtCredits(userid, 2) || qsb <= 0)
                     throw new Exception("Insufficient Founds");
 
                 CurrentGambler.Cash += Convert.ToInt32(tbCash.Text.Trim());
@@ -75,13 +75,13 @@ namespace Arsenalcn.CasinoSys.Web
                 banker.Cash += qsb * Entity.ConfigGlobal.ExchangeFee * Entity.ConfigGlobal.ExchangeRate;
                 banker.Update(null);
 
-                AdminUsers.UpdateUserExtCredits(userid, 2, -qsb);
+                Users.UpdateUserExtCredits(userid, 2, -qsb);
 
-                this.ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('充值博彩币成功');window.location.href = window.location.href;", true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('充值博彩币成功');window.location.href = window.location.href;", true);
             }
             catch
             {
-                this.ClientScript.RegisterClientScriptBlock(typeof(string), "failed", "alert('充值失败');", true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", "alert('充值失败');", true);
             }
         }
 
@@ -101,12 +101,12 @@ namespace Arsenalcn.CasinoSys.Web
                 banker.Cash += cash * Entity.ConfigGlobal.ExchangeFee;
                 banker.Update(null);
 
-                AdminUsers.UpdateUserExtCredits(userid, 2, Convert.ToInt32(tbQSB.Text));
-                this.ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('套现枪手币成功');window.location.href = window.location.href;", true);
+                Users.UpdateUserExtCredits(userid, 2, Convert.ToInt32(tbQSB.Text));
+                ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('套现枪手币成功');window.location.href = window.location.href;", true);
             }
             catch
             {
-                this.ClientScript.RegisterClientScriptBlock(typeof(string), "failed", "alert('套现失败');", true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", "alert('套现失败');", true);
             }
         }
     }

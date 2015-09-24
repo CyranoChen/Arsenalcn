@@ -11,7 +11,7 @@ namespace Arsenal.Scheduler
 {
     class RefreshCache : ISchedule
     {
-        private readonly ILog log = new AppLog();
+        private readonly ILog _log = new AppLog();
 
         public void Execute(object state)
         {
@@ -25,7 +25,7 @@ namespace Arsenal.Scheduler
 
             try
             {
-                log.Info("Scheduler Start: (RefreshCache)", logInfo);
+                _log.Info("Scheduler Start: (RefreshCache)", logInfo);
 
                 Config.Cache.RefreshCache();
 
@@ -38,11 +38,11 @@ namespace Arsenal.Scheduler
                 Team.Cache.RefreshCache();
                 Video.Cache.RefreshCache();
 
-                log.Info("Scheduler End: (RefreshCache)", logInfo);
+                _log.Info("Scheduler End: (RefreshCache)", logInfo);
             }
             catch (Exception ex)
             {
-                log.Warn(ex, logInfo);
+                _log.Warn(ex, logInfo);
             }
         }
     }

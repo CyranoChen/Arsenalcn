@@ -17,10 +17,10 @@ namespace Arsenalcn.CasinoSys.Web.Common
         public bool AnonymousRedirect
         { get; set; }
 
-        public Entity.Gambler CurrentGambler
+        public Gambler CurrentGambler
         { get; set; }
 
-        protected bool _adminPage = false;
+        protected bool AdminPage = false;
 
         protected override void OnInitComplete(EventArgs e)
         {
@@ -28,7 +28,7 @@ namespace Arsenalcn.CasinoSys.Web.Common
 
             if (!ConfigGlobal.PluginActive && Request.Url.LocalPath.ToLower().IndexOf("default.aspx") < 0)
             {
-                if (!_adminPage)
+                if (!AdminPage)
                     Response.Redirect("Default.aspx");
             }
 
@@ -36,11 +36,11 @@ namespace Arsenalcn.CasinoSys.Web.Common
                 Response.Redirect("/login.aspx");
 
             //Set Master Page Info
-            if (this.Master != null && this.Master is DefaultMaster)
+            if (Master != null && Master is DefaultMaster)
             {
-                var masterPage = this.Master as DefaultMaster;
+                var masterPage = Master as DefaultMaster;
 
-                masterPage.UserID = userid;
+                masterPage.UserId = userid;
                 masterPage.UserName = username;
                 masterPage.UserKey = userkey;
             }

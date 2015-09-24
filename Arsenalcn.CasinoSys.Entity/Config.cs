@@ -17,7 +17,7 @@ namespace Arsenalcn.CasinoSys.Entity
         {
             get
             {
-                return Config.GetDictionaryByConfigSystem(currSystem);
+                return GetDictionaryByConfigSystem(currSystem);
             }
         }
 

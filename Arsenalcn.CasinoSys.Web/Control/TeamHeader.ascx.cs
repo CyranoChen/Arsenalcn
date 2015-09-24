@@ -45,19 +45,19 @@ namespace Arsenalcn.CasinoSys.Web.Control
                     }
                     matchCount = wonCount + lostCount + drawCount;
 
-                    ltrlMatchCount.Text = "<em>" + matchCount.ToString() + "</em>";
-                    ltrlWonCount.Text = "<em>" + wonCount.ToString() + "</em>";
-                    ltrlDrawCount.Text = "<em>" + drawCount.ToString() + "</em>";
-                    ltrlLostCount.Text = "<em>" + lostCount.ToString() + "</em>";
+                    ltrlMatchCount.Text = "<em>" + matchCount + "</em>";
+                    ltrlWonCount.Text = "<em>" + wonCount + "</em>";
+                    ltrlDrawCount.Text = "<em>" + drawCount + "</em>";
+                    ltrlLostCount.Text = "<em>" + lostCount + "</em>";
                 }
                 else
                     pnlHistoryResult.Visible = false;
 
-                ltrlTeamDisplayName.Text = string.Format("<em>{0}({1})</em>", t.TeamDisplayName, t.TeamEnglishName);
+                ltrlTeamDisplayName.Text = $"<em>{t.TeamDisplayName}({t.TeamEnglishName})</em>";
                 ltrlTeamLogo.Text = string.Format("<img src=\"{0}\" alt=\"{1}\" title=\"{1}\" />", t.TeamLogo, t.TeamDisplayName);
                 ltrlTeamCoach.Text = "<em>" + t.Manager + "</em>";
                 ltrlGround.Text = "<em>" + t.Ground + "</em>";
-                ltrlCapacity.Text = "<em>" + t.Capacity.ToString() + "</em>";
+                ltrlCapacity.Text = "<em>" + t.Capacity + "</em>";
             }
         }
 

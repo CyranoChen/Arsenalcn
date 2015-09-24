@@ -37,7 +37,7 @@ namespace Arsenalcn.CasinoSys.Web {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Arsenalcn.CasinoSys.Web.Control.DNTHeader ctrlHeader;
+        protected global::Arsenalcn.CasinoSys.Web.Control.DntHeader ctrlHeader;
         
         /// <summary>
         /// cphMain control.
@@ -55,6 +55,6 @@ namespace Arsenalcn.CasinoSys.Web {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Arsenalcn.CasinoSys.Web.Control.DNTFooter ctrlFooter;
+        protected global::Arsenalcn.CasinoSys.Web.Control.DntFooter ctrlFooter;
     }
 }

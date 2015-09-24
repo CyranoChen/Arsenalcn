@@ -10,7 +10,7 @@
             <li class="LiTitle">
                 <a onclick="$(this).parent().parent().siblings('ul').hide();$('ul#ContestUpper').show();">上半赛区</a> |
                 <a onclick="$(this).parent().parent().siblings('ul').hide();$('ul#ContestLower').show();">下半赛区</a> |
-                <a href="http://bbs.arsenalcn.com/showtopic-107283.aspx" target="_blank"><em style="font-size: 12px; text-decoration: none">【规则】</em></a>
+                <a href="http://bbs.arsenalcn.com/showtopic-108147.aspx" target="_blank"><em style="font-size: 12px; text-decoration: none">【规则】</em></a>
             </li>
         </ul>
         <asp:Repeater ID="rptContestUpper" runat="server" OnItemDataBound="rptContestUpper_ItemDataBound">

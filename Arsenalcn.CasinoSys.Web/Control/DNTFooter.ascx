@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" CodeBehind="DNTFooter.ascx.cs" Inherits="Arsenalcn.CasinoSys.Web.Control.DNTFooter" %>
+﻿<%@ Control Language="C#" CodeBehind="DNTFooter.ascx.cs" Inherits="Arsenalcn.CasinoSys.Web.Control.DntFooter" %>
 <%@ OutputCache Duration="3600" VaryByParam="none" %>
 <div id="footer">
     <div id="footlinks">
@@ -13,11 +13,11 @@
             - <a href="/archiver/index.aspx" target="_blank">简洁版本</a>
         </p>
     </div>
-    <img alt="ACN Logo" title="Powered by <%= pluginName %>" src="/App_Themes/arsenalcn/images/ACN_Logo.gif" />
+    <img alt="ACN Logo" title="Powered by <%= PluginName %>" src="/App_Themes/arsenalcn/images/ACN_Logo.gif" />
     <p id="copyright">
-        Powered by <a href="default.aspx" title="<%= pluginName %> <%=pluginVersion %> (.NET Framework 2.0)">
-            <%= pluginName %></a> <em>
-                <%=pluginVersion %></em> &copy; 2003-2014 <a href="http://www.arsenalcn.com" target="_blank">
+        Powered by <a href="default.aspx" title="<%= PluginName %> <%=PluginVersion %> (.NET Framework 2.0)">
+            <%= PluginName %></a> <em>
+                <%=PluginVersion %></em> &copy; 2003-2014 <a href="http://www.arsenalcn.com" target="_blank">
                     ArsenalCN.com</a>
     </p>
     <p id="debuginfo">

@@ -28,7 +28,7 @@ namespace Arsenalcn.CasinoSys.Entity
             {
                 #region Insert new Gambler for new user
                 UserID = userID;
-                UserName = AdminUsers.GetShortUserInfo(userID).Username.Trim();
+                UserName = Users.GetShortUserInfo(userID).Username.Trim();
                 Cash = 0f;
                 TotalBet = 0f;
                 Win = 0;
@@ -42,7 +42,7 @@ namespace Arsenalcn.CasinoSys.Entity
                 Description = string.Empty;
                 Remark = string.Empty;
 
-                this.Insert(trans);
+                Insert(trans);
                 #endregion
             }
         }
@@ -182,7 +182,7 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public static void GamblerStatistics()
         {
-            var listGambler = Gambler.GetGamblers();
+            var listGambler = GetGamblers();
             var listCasinoGambler = CasinoGambler.GetCasinoGamblers();
 
             var listCasinoCamblerContest = CasinoGambler.GetCasinoGamblers(ConfigGlobal.DefaultLeagueID);

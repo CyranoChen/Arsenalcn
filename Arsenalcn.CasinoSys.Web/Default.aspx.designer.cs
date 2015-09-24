@@ -10,7 +10,7 @@
 namespace Arsenalcn.CasinoSys.Web {
     
     
-    public partial class _Default {
+    public partial class Default {
         
         /// <summary>
         /// ltrlPluginName control.

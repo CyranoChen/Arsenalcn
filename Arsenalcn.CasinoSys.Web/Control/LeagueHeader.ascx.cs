@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Web.UI.WebControls;
 
 using Arsenalcn.CasinoSys.Entity;
@@ -10,31 +9,31 @@ namespace Arsenalcn.CasinoSys.Web.Control
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            var list = Entity.League.Cache.LeagueList_Active;
+            var list = League.Cache.LeagueList_Active;
 
             rptLeague.DataSource = list;
             rptLeague.DataBind();
         }
 
-        private Guid currLeagueGuid = Guid.Empty;
+        private Guid _currLeagueGuid = Guid.Empty;
         public Guid CurrLeagueGuid
         {
             get
             {
-                return currLeagueGuid;
+                return _currLeagueGuid;
             }
             set
             {
-                currLeagueGuid = value;
+                _currLeagueGuid = value;
             }
         }
 
-        private string pageURL = string.Empty;
-        public string PageURL
+        private string _pageUrl = string.Empty;
+        public string PageUrl
         {
             set
             {
-                pageURL = value;
+                _pageUrl = value;
             }
         }
 
@@ -45,9 +44,12 @@ namespace Arsenalcn.CasinoSys.Web.Control
                 var l = e.Item.DataItem as League;
                 var ltrlLeagueInfo = e.Item.FindControl("ltrlLeagueInfo") as Literal;
 
-                var href = string.Format("{0}?League={1}", pageURL, l.ID.ToString());
+                if (l != null && ltrlLeagueInfo != null)
+                {
+                    var href = $"{_pageUrl}?League={l.ID}";
 
-                ltrlLeagueInfo.Text = string.Format("<li id=\"{0}\"><a href=\"{1}\" target=\"_self\" title=\"{3}\"><img src=\"{2}\" alt=\"{3}\" /></a></li>", l.ID.ToString(), href, l.LeagueLogo.ToString(), l.LeagueName.ToString());
+                    ltrlLeagueInfo.Text = string.Format("<li id=\"{0}\"><a href=\"{1}\" target=\"_self\" title=\"{3}\"><img src=\"{2}\" alt=\"{3}\" /></a></li>", l.ID, href, l.LeagueLogo, l.LeagueName);
+                }
             }
         }
     }

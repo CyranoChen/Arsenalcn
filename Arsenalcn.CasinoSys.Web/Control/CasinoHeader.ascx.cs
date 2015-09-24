@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-
 using Arsenalcn.CasinoSys.Entity;
 
 namespace Arsenalcn.CasinoSys.Web.Control
@@ -19,9 +17,9 @@ namespace Arsenalcn.CasinoSys.Web.Control
             {
                 var m = new Match(MatchGuid);
 
-                var leagueDisplay = m.LeagueName.ToString();
+                var leagueDisplay = m.LeagueName;
                 if (m.Round.HasValue)
-                    leagueDisplay += string.Format(" 第{0}轮", m.Round.ToString());
+                    leagueDisplay += $" 第{m.Round}轮";
 
                 ltrlLeagueSeason.Text = leagueDisplay;
 
@@ -33,21 +31,21 @@ namespace Arsenalcn.CasinoSys.Web.Control
 
                 ltrlPlayTime.Text = m.PlayTime.ToString("yyyy-MM-dd HH:mm");
 
-                var guid = Entity.CasinoItem.GetCasinoItemGuidByMatch(MatchGuid, CasinoType.SingleChoice);
+                var guid = CasinoItem.GetCasinoItemGuidByMatch(MatchGuid, CasinoType.SingleChoice);
 
                 var matchTotalBet = 0f;
 
                 if (guid.HasValue)
                 {
-                    var item = Entity.CasinoItem.GetCasinoItem(guid.Value);
+                    var item = CasinoItem.GetCasinoItem(guid.Value);
 
                     if (item != null)
                     {
-                        var options = ((Entity.SingleChoice)item).Options;
+                        var options = ((SingleChoice)item).Options;
 
-                        var winOption = options.Find(delegate(ChoiceOption option) { return option.OptionValue == MatchChoiceOption.HomeWinValue; });
-                        var drawOption = options.Find(delegate(ChoiceOption option) { return option.OptionValue == MatchChoiceOption.DrawValue; });
-                        var loseOption = options.Find(delegate(ChoiceOption option) { return option.OptionValue == MatchChoiceOption.AwayWinValue; });
+                        var winOption = options.Find(delegate (ChoiceOption option) { return option.OptionValue == MatchChoiceOption.HomeWinValue; });
+                        var drawOption = options.Find(delegate (ChoiceOption option) { return option.OptionValue == MatchChoiceOption.DrawValue; });
+                        var loseOption = options.Find(delegate (ChoiceOption option) { return option.OptionValue == MatchChoiceOption.AwayWinValue; });
 
                         if (string.IsNullOrEmpty(winOption.OptionValue) || string.IsNullOrEmpty(drawOption.OptionValue) || string.IsNullOrEmpty(loseOption.OptionValue))
                             throw new Exception("该比赛没有赔率");
@@ -59,13 +57,13 @@ namespace Arsenalcn.CasinoSys.Web.Control
                             var rateDraw = Math.Round(drawOption.OptionRate.Value, 2).ToString("f2");
                             var rateLose = Math.Round(loseOption.OptionRate.Value, 2).ToString("f2");
 
-                            var totalBetWin = Entity.ChoiceOption.GetOptionTotalBet(guid.Value, winOption.OptionValue).ToString("N0");
-                            var totalBetDraw = Entity.ChoiceOption.GetOptionTotalBet(guid.Value, drawOption.OptionValue).ToString("N0");
-                            var totalBetLose = Entity.ChoiceOption.GetOptionTotalBet(guid.Value, loseOption.OptionValue).ToString("N0");
+                            var totalBetWin = ChoiceOption.GetOptionTotalBet(guid.Value, winOption.OptionValue).ToString("N0");
+                            var totalBetDraw = ChoiceOption.GetOptionTotalBet(guid.Value, drawOption.OptionValue).ToString("N0");
+                            var totalBetLose = ChoiceOption.GetOptionTotalBet(guid.Value, loseOption.OptionValue).ToString("N0");
 
-                            var betCountWin = Entity.ChoiceOption.GetOptionTotalCount(guid.Value, winOption.OptionValue).ToString();
-                            var betCountDraw = Entity.ChoiceOption.GetOptionTotalCount(guid.Value, drawOption.OptionValue).ToString();
-                            var betCountLose = Entity.ChoiceOption.GetOptionTotalCount(guid.Value, loseOption.OptionValue).ToString();
+                            var betCountWin = ChoiceOption.GetOptionTotalCount(guid.Value, winOption.OptionValue).ToString();
+                            var betCountDraw = ChoiceOption.GetOptionTotalCount(guid.Value, drawOption.OptionValue).ToString();
+                            var betCountLose = ChoiceOption.GetOptionTotalCount(guid.Value, loseOption.OptionValue).ToString();
 
                             ltrlWin.Text = string.Format(txtString, betCountWin, totalBetWin, rateWin);
                             ltrlDraw.Text = string.Format(txtString, betCountDraw, totalBetDraw, rateDraw);
@@ -75,7 +73,7 @@ namespace Arsenalcn.CasinoSys.Web.Control
                         }
                     }
 
-                    var betList = Entity.Bet.GetMatchAllBet(MatchGuid);
+                    var betList = Bet.GetMatchAllBet(MatchGuid);
 
                     if (betList != null && betList.Count > 0)
                         ltrlMatchBetCount.Text = betList.Count.ToString();
@@ -88,22 +86,23 @@ namespace Arsenalcn.CasinoSys.Web.Control
                     {
                         pnlHistoryResult.Visible = false;
 
-                        if (item.Earning != null)
+                        if (item?.Earning != null)
                             ltrlEarning.Text = Convert.ToSingle(item.Earning).ToString("N2");
 
-                        ltrlTopBet.Text = Entity.Bet.GetMatchTopBet(MatchGuid).ToString("N0");
-                        ltrlTopEarning.Text = Entity.Bet.GetMatchTopEarning(MatchGuid).ToString("N2");
+                        ltrlTopBet.Text = Bet.GetMatchTopBet(MatchGuid).ToString("N0");
+                        ltrlTopEarning.Text = Bet.GetMatchTopEarning(MatchGuid).ToString("N2");
 
-                        var matchResultGuid = Entity.CasinoItem.GetCasinoItemGuidByMatch(MatchGuid, CasinoType.MatchResult);
+                        var matchResultGuid = CasinoItem.GetCasinoItemGuidByMatch(MatchGuid, CasinoType.MatchResult);
 
                         if (matchResultGuid.HasValue)
                         {
-                            var matchResultItem = Entity.CasinoItem.GetCasinoItem(matchResultGuid.Value);
+                            var matchResultItem = CasinoItem.GetCasinoItem(matchResultGuid.Value);
 
-                            if (matchResultItem != null && ((MatchResult)matchResultItem).Home.HasValue && ((MatchResult)matchResultItem).Away.HasValue)
+                            if (((MatchResult)matchResultItem)?.Home != null && ((MatchResult)matchResultItem).Away.HasValue)
                             {
                                 pnlMatchResult.Visible = true;
-                                ltrlMatchResult.Text = string.Format("{0}:{1}", ((MatchResult)matchResultItem).Home, ((MatchResult)matchResultItem).Away);
+                                ltrlMatchResult.Text =
+                                    $"{((MatchResult)matchResultItem).Home}:{((MatchResult)matchResultItem).Away}";
                             }
                             else
                             {
@@ -118,7 +117,7 @@ namespace Arsenalcn.CasinoSys.Web.Control
                         pnlHistoryResult.Visible = true;
                         pnlMatchResult.Visible = false;
 
-                        var historyResultArr = Entity.CasinoItem.GetHistoryResultByMatch(MatchGuid);
+                        var historyResultArr = CasinoItem.GetHistoryResultByMatch(MatchGuid);
 
                         ltrlMatchCount.Text = historyResultArr[0].ToString();
                         ltrlHomeWon.Text = historyResultArr[1].ToString();
@@ -141,7 +140,7 @@ namespace Arsenalcn.CasinoSys.Web.Control
             set;
         }
 
-        public int UserID
+        public int UserId
         { get; set; }
     }
 }

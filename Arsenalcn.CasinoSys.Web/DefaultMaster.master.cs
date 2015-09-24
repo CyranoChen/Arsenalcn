@@ -20,7 +20,7 @@ namespace Arsenalcn.CasinoSys.Web
         /// <summary>
         /// Current User ID
         /// </summary>
-        public int UserID
+        public int UserId
         {
             set
             {
@@ -42,9 +42,9 @@ namespace Arsenalcn.CasinoSys.Web
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            ctrlHeader.UserID = this._userId;
-            ctrlHeader.UserName = this._userName;
-            ctrlHeader.UserKey = this._userKey;
+            ctrlHeader.UserId = _userId;
+            ctrlHeader.UserName = _userName;
+            ctrlHeader.UserKey = _userKey;
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
 
 using Arsenalcn.Common;
 
@@ -21,7 +20,7 @@ namespace Arsenalcn.CasinoSys.Entity
                 InitMatch(dr);
         }
 
-        protected Match(DataRow dr)
+        private Match(DataRow dr)
         {
             InitMatch(dr);
         }
@@ -78,7 +77,7 @@ namespace Arsenalcn.CasinoSys.Entity
                     DataAccess.Match.InsertMatch(MatchGuid, Home, Away, PlayTime, LeagueGuid, LeagueName, Round, GroupGuid, trans);
 
                     //add matchResult
-                    var itemMatchResult = (MatchResult)Entity.CasinoItem.CreateInstance(CasinoType.MatchResult);
+                    var itemMatchResult = (MatchResult)CasinoItem.CreateInstance(CasinoType.MatchResult);
                     itemMatchResult.MatchGuid = MatchGuid;
                     itemMatchResult.CreateTime = DateTime.Now;
                     itemMatchResult.PublishTime = DateTime.Now;
@@ -92,13 +91,13 @@ namespace Arsenalcn.CasinoSys.Entity
                     itemMatchResult.Save(trans);
 
                     //add singleChoice
-                    var itemSingleChoice = (SingleChoice)Entity.CasinoItem.CreateInstance(CasinoType.SingleChoice);
+                    var itemSingleChoice = (SingleChoice)CasinoItem.CreateInstance(CasinoType.SingleChoice);
                     itemSingleChoice.MatchGuid = MatchGuid;
                     itemSingleChoice.CreateTime = DateTime.Now;
                     itemSingleChoice.PublishTime = DateTime.Now;
                     itemSingleChoice.CloseTime = PlayTime;
                     itemSingleChoice.BankerID = Banker.DefaultBankerID;
-                    itemSingleChoice.BankerName = new Banker(Entity.Banker.DefaultBankerID).BankerName;
+                    itemSingleChoice.BankerName = new Banker(Banker.DefaultBankerID).BankerName;
                     itemSingleChoice.Earning = null;
                     itemSingleChoice.OwnerID = userID;
                     itemSingleChoice.OwnerUserName = username;
@@ -164,22 +163,22 @@ namespace Arsenalcn.CasinoSys.Entity
 
                         var dtMatchBet = DataAccess.Bet.GetMatchAllBet(MatchGuid);
 
-                        var TotalBet = 0f;
+                        var totalBet = 0f;
 
                         foreach (DataRow dr in dtMatchBet.Rows)
                         {
                             if (!Convert.IsDBNull(dr["Bet"]))
                             {
-                                var gambler = new Entity.Gambler(Convert.ToInt32(dr["UserID"]), trans);
+                                var gambler = new Gambler(Convert.ToInt32(dr["UserID"]), trans);
                                 gambler.Cash += Convert.ToSingle(dr["Bet"]);
                                 gambler.TotalBet -= Convert.ToSingle(dr["Bet"]);
                                 gambler.Update(trans);
 
-                                TotalBet += Convert.ToSingle(dr["Bet"]);
+                                totalBet += Convert.ToSingle(dr["Bet"]);
                             }
                         }
 
-                        banker.Cash -= TotalBet;
+                        banker.Cash -= totalBet;
                         banker.Update(trans);
 
                         DataAccess.Bet.DeleteBetByMatchGuid(MatchGuid, trans);
@@ -216,12 +215,12 @@ namespace Arsenalcn.CasinoSys.Entity
                     if (itemGuid.HasValue)
                     {
                         //single choice bonus
-                        var item = Entity.CasinoItem.GetCasinoItem(itemGuid.Value);
-                        var banker = new Entity.Banker(item.BankerID);
+                        var item = CasinoItem.GetCasinoItem(itemGuid.Value);
+                        var banker = new Banker(item.BankerID);
 
                         var totalEarning = 0f;
 
-                        var betList = Entity.Bet.GetBetByCasinoItemGuid(itemGuid.Value, trans);
+                        var betList = Bet.GetBetByCasinoItemGuid(itemGuid.Value, trans);
 
                         foreach (var bet in betList)
                         {
@@ -229,7 +228,7 @@ namespace Arsenalcn.CasinoSys.Entity
 
                             if (dt != null)
                             {
-                                var gambler = new Arsenalcn.CasinoSys.Entity.Gambler(bet.UserID, trans);
+                                var gambler = new Gambler(bet.UserID, trans);
 
                                 if (bet.IsWin == null)
                                 {
@@ -251,7 +250,7 @@ namespace Arsenalcn.CasinoSys.Entity
                                     if (isWin)
                                     {
                                         bet.Earning = bet.BetAmount * bet.BetRate;
-                                        bet.EarningDesc = string.Format("{0:N2}", bet.Earning.Value);
+                                        bet.EarningDesc = $"{bet.Earning.Value:N2}";
 
                                         totalEarning -= bet.Earning.Value;
 
@@ -287,15 +286,15 @@ namespace Arsenalcn.CasinoSys.Entity
                     if (itemGuid.HasValue)
                     {
                         //match result bonus
-                        var betList = Entity.Bet.GetBetByCasinoItemGuid(itemGuid.Value, trans);
+                        var betList = Bet.GetBetByCasinoItemGuid(itemGuid.Value, trans);
 
-                        var item = Entity.CasinoItem.GetCasinoItem(itemGuid.Value);
+                        var item = CasinoItem.GetCasinoItem(itemGuid.Value);
                         item.Earning = 0;
                         item.Save(trans);
 
                         foreach (var bet in betList)
                         {
-                            var gambler = new Arsenalcn.CasinoSys.Entity.Gambler(bet.UserID, trans);
+                            var gambler = new Gambler(bet.UserID, trans);
 
                             var dt = DataAccess.BetDetail.GetBetDetailByBetID(bet.ID);
 
@@ -314,7 +313,7 @@ namespace Arsenalcn.CasinoSys.Entity
 
                                     //update user rp
 
-                                    AdminUsers.UpdateUserExtCredits(bet.UserID, 4, 1);
+                                    Users.UpdateUserExtCredits(bet.UserID, 4, 1);
                                 }
                                 else
                                 {

@@ -25,28 +25,28 @@ namespace Arsenalcn.CasinoSys.Web.Control
             rptGamblerProfit.DataSource = dtTopProfit;
             rptGamblerProfit.DataBind();
 
-            this.ltrlProfit.Text = string.Format("收益({0}月)", DateTime.Today.AddMonths(months).Month.ToString());
+            ltrlProfit.Text = $"收益({DateTime.Today.AddMonths(months).Month}月)";
             #endregion
 
             #region Top Gambler RP
             rank = 1;
             months = 0;
-            var dtTopRP = Entity.Rank.GetTopGamblerRP(out months);
+            var dtTopRp = Entity.Rank.GetTopGamblerRP(out months);
 
-            if (dtTopRP != null)
+            if (dtTopRp != null)
             {
-                dtTopRP.Columns.Add("Rank", typeof(int));
-                foreach (DataRow dr in dtTopRP.Rows)
+                dtTopRp.Columns.Add("Rank", typeof(int));
+                foreach (DataRow dr in dtTopRp.Rows)
                 {
                     dr["Rank"] = rank;
                     rank++;
                 }
             }
 
-            rptGamblerRP.DataSource = dtTopRP;
+            rptGamblerRP.DataSource = dtTopRp;
             rptGamblerRP.DataBind();
 
-            this.ltrlRP.Text = string.Format("RP({0}月)", DateTime.Today.AddMonths(months).Month.ToString());
+            ltrlRP.Text = $"RP({DateTime.Today.AddMonths(months).Month}月)";
             #endregion
 
             #region Top Gambler Bet
@@ -67,7 +67,7 @@ namespace Arsenalcn.CasinoSys.Web.Control
             rptGamblerBet.DataSource = dtTopBet;
             rptGamblerBet.DataBind();
 
-            this.ltrlBet.Text = string.Format("投注({0}月)", DateTime.Today.AddMonths(months).Month.ToString());
+            ltrlBet.Text = $"投注({DateTime.Today.AddMonths(months).Month}月)";
             #endregion
         }
     }

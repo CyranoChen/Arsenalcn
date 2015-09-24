@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Web.UI.WebControls;
 
@@ -13,12 +12,12 @@ namespace Arsenalcn.CasinoSys.Web
         {
             #region Assign Control Property
 
-            ctrlLeftPanel.UserID = userid;
+            ctrlLeftPanel.UserId = userid;
             ctrlLeftPanel.UserName = username;
 
-            ctrlFieldTooBar.UserID = userid;
+            ctrlFieldTooBar.UserId = userid;
 
-            ctrlMenuTabBar.CurrentMenu = Arsenalcn.CasinoSys.Web.Control.CasinoMenuType.CasinoGame;
+            ctrlMenuTabBar.CurrentMenu = Control.CasinoMenuType.CasinoGame;
 
             #endregion
 
@@ -31,14 +30,14 @@ namespace Arsenalcn.CasinoSys.Web
 
             if (CurrentTeam != Guid.Empty)
             {
-                dt = Entity.CasinoItem.GetEndViewByTeam(CurrentTeam);
+                dt = CasinoItem.GetEndViewByTeam(CurrentTeam);
                 ctrlTeamHeader.TeamGuid = CurrentTeam;
                 ctrlTeamHeader.Visible = true;
                 ctrlCasinoHeader.Visible = false;
             }
             else if (CurrentMatch != Guid.Empty)
             {
-                dt = Entity.CasinoItem.GetHistoryViewByMatch(CurrentMatch);
+                dt = CasinoItem.GetHistoryViewByMatch(CurrentMatch);
                 ctrlCasinoHeader.MatchGuid = CurrentMatch;
                 ctrlCasinoHeader.IsHistoryView = true;
                 ctrlCasinoHeader.Visible = true;
@@ -104,70 +103,72 @@ namespace Arsenalcn.CasinoSys.Web
             {
                 var drv = e.Row.DataItem as DataRowView;
 
-                var m = new Match((Guid)drv["MatchGuid"]);
-
-                var ltrlLeagueInfo = e.Row.FindControl("ltrlLeagueInfo") as Literal;
-
-                if (ltrlLeagueInfo != null)
+                if (drv != null)
                 {
-                    var _strLeague = "<a href=\"CasinoGame.aspx?League={0}\" title=\"{1}\"><img src=\"{2}\" alt=\"{1}\" class=\"CasinoSys_CategoryImg\" /></a>";
+                    var m = new Match((Guid)drv["MatchGuid"]);
 
-                    var _strLeagueName = string.Format("{0}{1}", m.LeagueName, m.Round.HasValue ?
-                        string.Format(" 第{0}轮", m.Round.ToString()) : string.Empty);
+                    var ltrlLeagueInfo = e.Row.FindControl("ltrlLeagueInfo") as Literal;
 
-                    ltrlLeagueInfo.Text = string.Format(_strLeague, m.LeagueGuid.ToString(), _strLeagueName,
-                        League.Cache.Load(m.LeagueGuid).LeagueLogo);
-                }
+                    if (ltrlLeagueInfo != null)
+                    {
+                        var strLeague = "<a href=\"CasinoGame.aspx?League={0}\" title=\"{1}\"><img src=\"{2}\" alt=\"{1}\" class=\"CasinoSys_CategoryImg\" /></a>";
 
-                var lblHome = e.Row.FindControl("lblHome") as Label;
-                var lblAway = e.Row.FindControl("lblAway") as Label;
-                var hlVersus = e.Row.FindControl("hlVersus") as HyperLink;
-                var ltrlResult = e.Row.FindControl("ltrlResult") as Literal;
+                        var strLeagueName = $"{m.LeagueName}{(m.Round.HasValue ? $" 第{m.Round}轮" : string.Empty)}";
 
-                if (lblHome != null && lblAway != null && hlVersus != null)
-                {
-                    var tHome = Team.Cache.Load(m.Home);
-                    var tAway = Team.Cache.Load(m.Away);
+                        ltrlLeagueInfo.Text = string.Format(strLeague, m.LeagueGuid, strLeagueName,
+                            League.Cache.Load(m.LeagueGuid).LeagueLogo);
+                    }
 
-                    var _strTeamName = "<a class=\"StrongLink\" href=\"CasinoTeam.aspx?Team={0}\"  title=\"{1}\">{2}</a> ";
-                    var _strTeamLogo = "<img src=\"{3}\" alt=\"{1}\" /> ";
+                    var lblHome = e.Row.FindControl("lblHome") as Label;
+                    var lblAway = e.Row.FindControl("lblAway") as Label;
+                    var hlVersus = e.Row.FindControl("hlVersus") as HyperLink;
+                    var ltrlResult = e.Row.FindControl("ltrlResult") as Literal;
 
-                    lblHome.Text = string.Format(_strTeamName + _strTeamLogo,
-                        tHome.ID.ToString(), tHome.TeamEnglishName, tHome.TeamDisplayName, tHome.TeamLogo);
-                    lblAway.Text = string.Format(_strTeamLogo + _strTeamName,
-                        tAway.ID.ToString(), tAway.TeamEnglishName, tAway.TeamDisplayName, tAway.TeamLogo);
+                    if (lblHome != null && lblAway != null && hlVersus != null)
+                    {
+                        var tHome = Team.Cache.Load(m.Home);
+                        var tAway = Team.Cache.Load(m.Away);
 
-                    hlVersus.NavigateUrl = string.Format("CasinoTeam.aspx?Match={0}", m.MatchGuid.ToString());
-                    hlVersus.Text = string.Format("<em title=\"{0}{1}\">vs</em>", tHome.Ground,
-                        tHome.Capacity.HasValue ? ("(" + tHome.Capacity.Value.ToString() + ")") : string.Empty);
-                }
+                        var strTeamName = "<a class=\"StrongLink\" href=\"CasinoTeam.aspx?Team={0}\"  title=\"{1}\">{2}</a> ";
+                        var strTeamLogo = "<img src=\"{3}\" alt=\"{1}\" /> ";
 
-                if (ltrlResult != null)
-                {
-                    ltrlResult.Text = string.Format("{0} : {1}", m.ResultHome.Value.ToString(), m.ResultAway.Value.ToString());
-                }
+                        lblHome.Text = string.Format(strTeamName + strTeamLogo,
+                            tHome.ID, tHome.TeamEnglishName, tHome.TeamDisplayName, tHome.TeamLogo);
+                        lblAway.Text = string.Format(strTeamLogo + strTeamName,
+                            tAway.ID, tAway.TeamEnglishName, tAway.TeamDisplayName, tAway.TeamLogo);
 
-                var ltrlTotalBetCount = e.Row.FindControl("ltrlTotalBetCount") as Literal;
-                var ltrlTotalBetCash = e.Row.FindControl("ltrlTotalBetCash") as Literal;
-                var ltrlTotalWin = e.Row.FindControl("ltrlTotalWin") as Literal;
+                        hlVersus.NavigateUrl = $"CasinoTeam.aspx?Match={m.MatchGuid}";
+                        hlVersus.Text =
+                            $"<em title=\"{tHome.Ground}{(tHome.Capacity.HasValue ? ("(" + tHome.Capacity.Value + ")") : string.Empty)}\">vs</em>";
+                    }
 
-                var betList = Entity.Bet.GetMatchAllBet(m.MatchGuid);
+                    if (ltrlResult != null && m.ResultHome.HasValue && m.ResultAway.HasValue)
+                    {
+                        ltrlResult.Text = $"{m.ResultHome.Value} : {m.ResultAway.Value}";
+                    }
 
-                if (ltrlTotalBetCount != null)
-                { ltrlTotalBetCount.Text = betList.Count.ToString(); }
+                    var ltrlTotalBetCount = e.Row.FindControl("ltrlTotalBetCount") as Literal;
+                    var ltrlTotalBetCash = e.Row.FindControl("ltrlTotalBetCash") as Literal;
+                    var ltrlTotalWin = e.Row.FindControl("ltrlTotalWin") as Literal;
 
-                if (ltrlTotalBetCash != null)
-                {
-                    float _totalbetCash = 0;
-                    betList.ForEach(delegate(Entity.Bet bet) { _totalbetCash += bet.BetAmount.GetValueOrDefault(0f); });
-                    ltrlTotalBetCash.Text = _totalbetCash.ToString("N0");
-                }
+                    var betList = Bet.GetMatchAllBet(m.MatchGuid);
 
-                if (ltrlTotalWin != null)
-                {
-                    float _totalWin = 0;
-                    betList.ForEach(delegate(Entity.Bet bet) { _totalWin += (bet.BetAmount.GetValueOrDefault(0f) - bet.Earning.GetValueOrDefault(0f)); });
-                    ltrlTotalWin.Text = _totalWin.ToString("N2");
+                    if (ltrlTotalBetCount != null)
+                    { ltrlTotalBetCount.Text = betList.Count.ToString(); }
+
+                    if (ltrlTotalBetCash != null)
+                    {
+                        float totalbetCash = 0;
+                        betList.ForEach(delegate(Bet bet) { totalbetCash += bet.BetAmount.GetValueOrDefault(0f); });
+                        ltrlTotalBetCash.Text = totalbetCash.ToString("N0");
+                    }
+
+                    if (ltrlTotalWin != null)
+                    {
+                        float totalWin = 0;
+                        betList.ForEach(delegate(Bet bet) { totalWin += (bet.BetAmount.GetValueOrDefault(0f) - bet.Earning.GetValueOrDefault(0f)); });
+                        ltrlTotalWin.Text = totalWin.ToString("N2");
+                    }
                 }
             }
         }

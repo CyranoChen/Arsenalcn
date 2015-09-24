@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
 using System.Web.UI.WebControls;
 
 using Arsenalcn.CasinoSys.Entity;
@@ -11,11 +9,11 @@ namespace Arsenalcn.CasinoSys.Web
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            ctrlAdminFieldToolBar.AdminUserName = this.username;
+            ctrlAdminFieldToolBar.AdminUserName = username;
 
             if (!IsPostBack)
             {
-                var list = Entity.League.Cache.LeagueList_Active;
+                var list = League.Cache.LeagueList_Active;
 
                 ddlLeague.DataSource = list;
                 ddlLeague.DataTextField = "LeagueNameInfo";
@@ -32,7 +30,7 @@ namespace Arsenalcn.CasinoSys.Web
 
         protected void ddlLeague_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var list = Entity.Team.Cache.GetTeamsByLeagueGuid(new Guid(ddlLeague.SelectedValue));
+            var list = Team.Cache.GetTeamsByLeagueGuid(new Guid(ddlLeague.SelectedValue));
 
             if (list != null && list.Count > 0)
             {
@@ -53,7 +51,7 @@ namespace Arsenalcn.CasinoSys.Web
             }
 
 
-            var dtGroups = Entity.Group.GetGroupByLeague(new Guid(ddlLeague.SelectedValue), false);
+            var dtGroups = Group.GetGroupByLeague(new Guid(ddlLeague.SelectedValue), false);
 
             if (dtGroups != null)
             {
@@ -74,13 +72,14 @@ namespace Arsenalcn.CasinoSys.Web
         {
             try
             {
-                var m = new Match();
-
-                m.MatchGuid = Guid.NewGuid();
-                m.Home = new Guid(ddlHomeTeam.SelectedValue);
-                m.Away = new Guid(ddlAwayTeam.SelectedValue);
-                m.PlayTime = Convert.ToDateTime(tbPlayTime.Text);
-                m.LeagueGuid = new Guid(ddlLeague.SelectedValue);
+                var m = new Match
+                {
+                    MatchGuid = Guid.NewGuid(),
+                    Home = new Guid(ddlHomeTeam.SelectedValue),
+                    Away = new Guid(ddlAwayTeam.SelectedValue),
+                    PlayTime = Convert.ToDateTime(tbPlayTime.Text),
+                    LeagueGuid = new Guid(ddlLeague.SelectedValue)
+                };
 
                 var l = League.Cache.Load(m.LeagueGuid);
                 m.LeagueName = l.LeagueNameInfo;
@@ -95,17 +94,17 @@ namespace Arsenalcn.CasinoSys.Web
                 else
                     m.GroupGuid = null;
 
-                var winRate = Convert.ToSingle(tbWinRate.Text);
-                var drawRate = Convert.ToSingle(tbDrawRate.Text);
-                var loseRate = Convert.ToSingle(tbLoseRate.Text);
+                //var winRate = Convert.ToSingle(tbWinRate.Text);
+                //var drawRate = Convert.ToSingle(tbDrawRate.Text);
+                //var loseRate = Convert.ToSingle(tbLoseRate.Text);
 
-                m.Insert(this.userid, this.username, Convert.ToSingle(tbWinRate.Text), Convert.ToSingle(tbDrawRate.Text), Convert.ToSingle(tbLoseRate.Text));
+                m.Insert(userid, username, Convert.ToSingle(tbWinRate.Text), Convert.ToSingle(tbDrawRate.Text), Convert.ToSingle(tbLoseRate.Text));
 
-                this.ClientScript.RegisterClientScriptBlock(typeof(string), "save", "alert('比赛添加成功');", true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "save", "alert('比赛添加成功');", true);
             }
             catch (Exception ex)
             {
-                this.ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}');", ex.Message.ToString()), true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message}');", true);
             }
         }
     }

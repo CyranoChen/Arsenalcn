@@ -35,8 +35,8 @@
             <div class="Clear">
             </div>
         </div>
-        <asp:GridView ID="gvGamlber" runat="server" PageSize="20"
-            OnPageIndexChanging="gvGamlber_PageIndexChanging" OnRowDataBound="gvGamlber_RowDataBound">
+        <asp:GridView ID="gvGambler" runat="server" PageSize="20"
+            OnPageIndexChanging="gvGambler_PageIndexChanging" OnRowDataBound="gvGambler_RowDataBound">
             <Columns>
                 <asp:TemplateField HeaderText="排行">
                     <ItemTemplate>

@@ -227,7 +227,7 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public void Update()
         {
-            DataAccess.Group.UpdateRelationGroupTeam(this.GroupGuid, TeamGuid, PositionNo, TotalPlayed, HomeWon, HomeDraw, HomeLost, HomeGoalFor, HomeGoalAgainst, HomeGoalDiff, HomePoints, AwayWon, AwayDraw, AwayLost, AwayGoalFor, AwayGoalAgainst, AwayGoalDiff, AwayPoints, TotalPoints);
+            DataAccess.Group.UpdateRelationGroupTeam(GroupGuid, TeamGuid, PositionNo, TotalPlayed, HomeWon, HomeDraw, HomeLost, HomeGoalFor, HomeGoalAgainst, HomeGoalDiff, HomePoints, AwayWon, AwayDraw, AwayLost, AwayGoalFor, AwayGoalAgainst, AwayGoalDiff, AwayPoints, TotalPoints);
         }
 
         public Guid GroupGuid

@@ -16,7 +16,7 @@ namespace Arsenal.MvcWeb
 
     public class MvcApplication : System.Web.HttpApplication
     {
-        static Timer eventTimer;
+        static Timer _eventTimer;
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
@@ -25,9 +25,9 @@ namespace Arsenal.MvcWeb
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
-            if (eventTimer == null && ConfigGlobal.SchedulerActive)
+            if (_eventTimer == null && ConfigGlobal.SchedulerActive)
             {
-                eventTimer = new Timer(new TimerCallback(SchedulerCallback), null, 60 * 1000, ScheduleManager.TimerMinutesInterval * 60 * 1000);
+                _eventTimer = new Timer(new TimerCallback(SchedulerCallback), null, 60 * 1000, ScheduleManager.TimerMinutesInterval * 60 * 1000);
             }
         }
 

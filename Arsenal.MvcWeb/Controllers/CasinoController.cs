@@ -15,8 +15,8 @@ namespace Arsenal.MvcWeb.Controllers
     [Authorize]
     public class CasinoController : Controller
     {
-        private readonly int acnID = UserDto.GetSession() != null ? UserDto.GetSession().AcnID.Value : 0;
-        private IRepository repo = new Repository();
+        private readonly int _acnId = UserDto.GetSession() != null ? UserDto.GetSession().AcnID.Value : 0;
+        private IRepository _repo = new Repository();
 
         // 可投注比赛
         // GET: /Casino
@@ -26,7 +26,7 @@ namespace Arsenal.MvcWeb.Controllers
             var model = new IndexDto();
             var days = 7;
 
-            var query = repo.Query<MatchView>(
+            var query = _repo.Query<MatchView>(
                 x => x.PlayTime > DateTime.Now && x.PlayTime < DateTime.Now.AddDays(days))
                 .FindAll(x => !x.ResultHome.HasValue && !x.ResultHome.HasValue)
                 .OrderBy(x => x.PlayTime)
@@ -49,7 +49,7 @@ namespace Arsenal.MvcWeb.Controllers
         {
             var model = new MyBetDto();
 
-            var query = repo.Query<BetView>(criteria, x => x.UserID == this.acnID)
+            var query = _repo.Query<BetView>(criteria, x => x.UserID == _acnId)
                 .Many<BetView, BetDetail, int>(t => t.ID);
 
             BetDto.CreateMap();
@@ -79,7 +79,7 @@ namespace Arsenal.MvcWeb.Controllers
         {
             var model = new ResultDto();
 
-            var query = repo.Query<MatchView>(criteria, x => x.ResultHome.HasValue && x.ResultAway.HasValue);
+            var query = _repo.Query<MatchView>(criteria, x => x.ResultHome.HasValue && x.ResultAway.HasValue);
 
             var map = Mapper.CreateMap<MatchView, MatchDto>();
 
@@ -109,7 +109,7 @@ namespace Arsenal.MvcWeb.Controllers
 
             model.Match = MatchDto.Single(id);
 
-            var query = repo.Query<BetView>(x => x.CasinoItem.MatchGuid == id)
+            var query = _repo.Query<BetView>(x => x.CasinoItem.MatchGuid == id)
                 .Many<BetView, BetDetail, int>(t => t.ID);
 
             BetDto.CreateMap();
@@ -128,14 +128,14 @@ namespace Arsenal.MvcWeb.Controllers
         {
             var model = new GameBetDto();
 
-            var gambler = repo.Query<Gambler>(x => x.UserID == this.acnID).FirstOrDefault();
-            model.MyCash = gambler != null ? gambler.Cash : 0f;
+            var gambler = _repo.Query<Gambler>(x => x.UserID == _acnId).FirstOrDefault();
+            model.MyCash = gambler?.Cash ?? 0f;
 
             model.Match = MatchDto.Single(id);
 
             // model.MyBets
-            var betsQuery = repo.Query<BetView>(x =>
-                x.UserID == this.acnID && x.CasinoItem.MatchGuid == id)
+            var betsQuery = _repo.Query<BetView>(x =>
+                x.UserID == _acnId && x.CasinoItem.MatchGuid == id)
                 .Many<BetView, BetDetail, int>(t => t.ID);
 
             BetDto.CreateMap();
@@ -145,9 +145,9 @@ namespace Arsenal.MvcWeb.Controllers
             model.MyBets = bList;
 
             // model.HistoryMatches
-            var match = repo.Single<Arsenal.Service.Casino.Match>(id);
+            var match = _repo.Single<Match>(id);
 
-            var matchesQuery = repo.Query<MatchView>(x => x.ResultHome.HasValue && x.ResultAway.HasValue)
+            var matchesQuery = _repo.Query<MatchView>(x => x.ResultHome.HasValue && x.ResultAway.HasValue)
                 .FindAll(x => x.Home.ID.Equals(match.Home) && x.Away.ID.Equals(match.Away) ||
                 x.Home.ID.Equals(match.Away) && x.Away.ID.Equals(match.Home));
 
@@ -176,8 +176,8 @@ namespace Arsenal.MvcWeb.Controllers
         {
             var model = new SingleChoiceDto();
 
-            var gambler = repo.Query<Gambler>(x => x.UserID == this.acnID).FirstOrDefault();
-            model.MyCash = gambler != null ? gambler.Cash : 0f;
+            var gambler = _repo.Query<Gambler>(x => x.UserID == _acnId).FirstOrDefault();
+            model.MyCash = gambler?.Cash ?? 0f;
 
             model.BetLimit = model.MyCash < 50000f ? model.MyCash : 50000f;
 
@@ -214,18 +214,19 @@ namespace Arsenal.MvcWeb.Controllers
                     //    }
                     //}
 
-                    var bet = new Bet();
-                    bet.UserID = this.acnID;
-                    bet.UserName = User.Identity.Name;
-                    //bet.CasinoItemGuid = item.ID;
-                    bet.BetAmount = model.BetAmount;
+                    var bet = new Bet
+                    {
+                        UserID = _acnId,
+                        UserName = User.Identity.Name,
+                        BetAmount = model.BetAmount
+                    };
 
                     bet.Place(id, model.SelectedOption);
 
                     //投注成功
 
-                    TempData["DataUrl"] = string.Format("data-url=/Casino/GameBet/{0}", id.ToString());
-                    return RedirectToAction("GameBet", new { id = id });
+                    TempData["DataUrl"] = $"data-url=/Casino/GameBet/{id}";
+                    return RedirectToAction("GameBet", new { id });
                 }
                 catch (Exception ex)
                 {
@@ -300,17 +301,18 @@ namespace Arsenal.MvcWeb.Controllers
                     //            bet.Insert(matchResult);
 
 
-                    var bet = new Bet();
-                    bet.UserID = this.acnID;
-                    bet.UserName = User.Identity.Name;
-                    //bet.CasinoItemGuid = item.ID;
+                    var bet = new Bet
+                    {
+                        UserID = _acnId,
+                        UserName = User.Identity.Name
+                    };
 
                     bet.Place(id, model.ResultHome, model.ResultAway);
 
                     //投注成功
 
-                    TempData["DataUrl"] = string.Format("data-url=/Casino/GameBet/{0}", id.ToString());
-                    return RedirectToAction("GameBet", new { id = id });
+                    TempData["DataUrl"] = $"data-url=/Casino/GameBet/{id}";
+                    return RedirectToAction("GameBet", new { id });
                 }
                 catch (Exception ex)
                 {

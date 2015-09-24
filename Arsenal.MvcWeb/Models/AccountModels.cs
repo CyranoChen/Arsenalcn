@@ -22,13 +22,13 @@ namespace Arsenal.MvcWeb.Models
 {
     public class MembershipDto : Membership
     {
-        private readonly ILog log = new AppLog();
+        private readonly ILog _log = new AppLog();
 
         public MembershipDto() : base() { }
 
         private void Init()
         {
-            var _defaultMinDate = Convert.ToDateTime(SqlDateTime.MinValue.ToString());
+            var defaultMinDate = Convert.ToDateTime(SqlDateTime.MinValue.ToString());
 
             UserName = string.Empty;
             Password = string.Empty;
@@ -42,12 +42,12 @@ namespace Arsenal.MvcWeb.Models
             IsLockedOut = false;
             CreateDate = DateTime.Now;
             LastLoginDate = DateTime.Now;
-            LastPasswordChangedDate = _defaultMinDate;
-            LastLockoutDate = _defaultMinDate;
+            LastPasswordChangedDate = defaultMinDate;
+            LastLockoutDate = defaultMinDate;
             FailedPasswordAttemptCount = 0;
-            FailedPasswordAttemptWindowStart = _defaultMinDate;
+            FailedPasswordAttemptWindowStart = defaultMinDate;
             FailedPasswordAnswerAttemptCount = 0;
-            FailedPasswordAnswerAttemptWindowsStart = _defaultMinDate;
+            FailedPasswordAnswerAttemptWindowsStart = defaultMinDate;
             Remark = string.Empty;
         }
 
@@ -150,7 +150,7 @@ namespace Arsenal.MvcWeb.Models
             return Convert.ToInt32(uid.Replace("\"", "")) > 0;
         }
 
-        public static int GetAcnID(string username)
+        public static int GetAcnId(string username)
         {
             var client = new DiscuzApiClient();
 
@@ -182,14 +182,14 @@ namespace Arsenal.MvcWeb.Models
             var jlist = JArray.Parse(responseResult);
             var json = jlist[0];
 
-            this.Init();
+            Init();
 
-            this.UserName = json["user_name"].ToString();
-            this.Password = json["password"].ToString();
-            this.Mobile = json["mobile"].ToString();
-            this.Email = json["email"].ToString();
-            this.CreateDate = Convert.ToDateTime(json["join_date"].ToString());
-            this.Remark = string.Format("{{\"AcnID\": {0}}}", uid);
+            UserName = json["user_name"].ToString();
+            Password = json["password"].ToString();
+            Mobile = json["mobile"].ToString();
+            Email = json["email"].ToString();
+            CreateDate = Convert.ToDateTime(json["join_date"].ToString());
+            Remark = $"{{\"AcnID\": {uid}}}";
             #endregion
 
             using (var conn = new SqlConnection(DataAccess.ConnectString))
@@ -206,11 +206,11 @@ namespace Arsenal.MvcWeb.Models
                     var user = new User();
 
                     user.ID = (Guid)providerUserKey;
-                    user.UserName = this.UserName;
+                    user.UserName = UserName;
                     user.IsAnonymous = false;
                     user.LastActivityDate = DateTime.Now;
                     user.AcnID = uid;
-                    user.AcnUserName = this.UserName;
+                    user.AcnUserName = UserName;
                     user.MemberID = null;
                     user.MemberName = string.Empty;
                     user.WeChatOpenID = null;
@@ -248,7 +248,7 @@ namespace Arsenal.MvcWeb.Models
         //   System.Web.Security.MembershipCreateUserException:
         //     The user was not created. Check the System.Web.Security.MembershipCreateUserException.StatusCode
         //     property for a System.Web.Security.MembershipCreateStatus value.
-        public void CreateUser(string username, string password, out object providerUserKey, out MembershipCreateStatus status)
+        public void CreateUser(string username, string email, string password, out object providerUserKey, out MembershipCreateStatus status)
         {
             using (var conn = new SqlConnection(DataAccess.ConnectString))
             {
@@ -260,7 +260,7 @@ namespace Arsenal.MvcWeb.Models
                     IRepository repo = new Repository();
                     providerUserKey = null;
 
-                    this.Init();
+                    Init();
 
                     #region Check username
 
@@ -270,7 +270,13 @@ namespace Arsenal.MvcWeb.Models
                         return;
                     }
 
-                    if (ConfigGlobal.AcnSync && GetAcnID(username) > 0)
+                    if (string.IsNullOrEmpty(email))
+                    {
+                        status = MembershipCreateStatus.InvalidEmail;
+                        return;
+                    }
+
+                    if (ConfigGlobal.AcnSync && GetAcnId(username) > 0)
                     {
                         status = MembershipCreateStatus.DuplicateUserName;
                         return;
@@ -282,13 +288,13 @@ namespace Arsenal.MvcWeb.Models
                         return;
                     }
 
-                    this.UserName = username;
+                    UserName = username;
 
                     #endregion
 
-                    this.Password = Encrypt.GetMd5Hash(password);
-                    this.Mobile = string.Empty;
-                    this.Email = string.Empty;
+                    Password = Encrypt.GetMd5Hash(password);
+                    Mobile = string.Empty;
+                    Email = email;
 
                     repo.Insert<Membership>(this, out providerUserKey, trans);
 
@@ -305,7 +311,7 @@ namespace Arsenal.MvcWeb.Models
                     var user = new User();
 
                     user.ID = (Guid)providerUserKey;
-                    user.UserName = this.UserName;
+                    user.UserName = UserName;
                     user.IsAnonymous = false;
                     user.LastActivityDate = DateTime.Now;
 
@@ -314,10 +320,10 @@ namespace Arsenal.MvcWeb.Models
                     {
                         var client = new DiscuzApiClient();
 
-                        var uid = client.AuthRegister(this.UserName, this.Password, this.Email);
+                        var uid = client.AuthRegister(UserName, Password, Email);
 
                         user.AcnID = Convert.ToInt32(uid.Replace("\"", ""));
-                        user.AcnUserName = this.UserName;
+                        user.AcnUserName = UserName;
                     }
                     else
                     {
@@ -341,7 +347,7 @@ namespace Arsenal.MvcWeb.Models
                 {
                     trans.Rollback();
 
-                    log.Error(ex, new LogInfo()
+                    _log.Error(ex, new LogInfo()
                     {
                         MethodInstance = MethodBase.GetCurrentMethod(),
                         ThreadInstance = Thread.CurrentThread
@@ -426,11 +432,11 @@ namespace Arsenal.MvcWeb.Models
 
                     return true;
                 }
-                catch (Exception ex)
+                catch
                 {
                     trans.Rollback();
 
-                    throw ex;
+                    throw;
                 }
             }
         }
@@ -446,12 +452,7 @@ namespace Arsenal.MvcWeb.Models
 
             IRepository repo = new Repository();
 
-            var user = repo.Single<User>(providerUserKey);
-
-            if (user != null)
-            { return user; }
-            else
-            { return null; }
+            return repo.Single<User>(providerUserKey);
         }
 
         public static User GetSession()
@@ -494,6 +495,7 @@ namespace Arsenal.MvcWeb.Models
         private static int UserGamblerSync(object providerUserKey)
         {
             Contract.Requires(providerUserKey != null);
+
             object gamblerKey = null;
 
             var user = GetUser(providerUserKey);
@@ -514,7 +516,7 @@ namespace Arsenal.MvcWeb.Models
                 {
                     // Create new gambler instance
                     var gambler = new Gambler();
-                    gambler.UserID = user.AcnID.Value;
+                    if (user.AcnID != null) gambler.UserID = user.AcnID.Value;
                     gambler.UserName = user.AcnUserName.Trim();
                     gambler.Cash = 1000f;
                     gambler.TotalBet = 0f;
@@ -595,6 +597,11 @@ namespace Arsenal.MvcWeb.Models
         [Required(ErrorMessage = "请填写{0}")]
         [Display(Name = "用户名")]
         public string UserName { get; set; }
+
+        [Required(ErrorMessage = "请填写{0}")]
+        [Display(Name = "邮箱")]
+        [DataType(DataType.EmailAddress, ErrorMessage = "请正确填写{0}")]
+        public string Email { get; set; }
 
         [Required(ErrorMessage = "请填写{0}")]
         [StringLength(100, ErrorMessage = "{0}长度至少需要{2}位", MinimumLength = 7)]

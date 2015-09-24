@@ -4,7 +4,7 @@ using Arsenalcn.CasinoSys.Entity;
 
 namespace Arsenalcn.CasinoSys.Web.Control
 {
-    public partial class DNTHeader : System.Web.UI.UserControl
+    public partial class DntHeader : System.Web.UI.UserControl
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -13,8 +13,8 @@ namespace Arsenalcn.CasinoSys.Web.Control
                 phAnonymous.Visible = false;
                 phAthenticated.Visible = true;
 
-                ltrlUserName.Text = this._userName;
-                linkLogout.NavigateUrl = string.Format("{0}{1}", linkLogout.NavigateUrl, this._userKey);
+                ltrlUserName.Text = _userName;
+                linkLogout.NavigateUrl = $"{linkLogout.NavigateUrl}{_userKey}";
             }
             else
             {
@@ -22,7 +22,8 @@ namespace Arsenalcn.CasinoSys.Web.Control
                 phAthenticated.Visible = false;
             }
 
-            ltrlTitle.Text = string.Format("<a href=\"/index.aspx\">{0}</a> &raquo; <a href=\"default.aspx\">{1}</a> &raquo; <strong>{2}</strong>", "阿森纳中国官方球迷会", ConfigGlobal.PluginDisplayName, this.Page.Title);
+            ltrlTitle.Text =
+                $"<a href=\"/index.aspx\">{"阿森纳中国官方球迷会"}</a> &raquo; <a href=\"default.aspx\">{ConfigGlobal.PluginDisplayName}</a> &raquo; <strong>{Page.Title}</strong>";
 
             ltrlGamblerCount.Text = Gambler.Cache.GamblerList.Count.ToString();
             ltrlGameCount.Text = (CasinoItem.GetMatchCasinoItemCount() + CasinoItem.GetOtherCasinoItemCount()).ToString();
@@ -47,7 +48,7 @@ namespace Arsenalcn.CasinoSys.Web.Control
         /// <summary>
         /// Current User ID
         /// </summary>
-        public int UserID
+        public int UserId
         {
             set
             {

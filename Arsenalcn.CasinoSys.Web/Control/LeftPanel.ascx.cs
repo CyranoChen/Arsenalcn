@@ -6,7 +6,7 @@ namespace Arsenalcn.CasinoSys.Web.Control
 {
     public partial class LeftPanel : System.Web.UI.UserControl
     {
-        public int UserID
+        public int UserId
         { get; set; }
 
         public string UserName
@@ -14,7 +14,7 @@ namespace Arsenalcn.CasinoSys.Web.Control
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (UserID <= 0)
+            if (UserId <= 0)
             {
                 pnlMyCasino.Visible = false;
             }
@@ -22,21 +22,20 @@ namespace Arsenalcn.CasinoSys.Web.Control
             {
                 pnlMyCasino.Visible = true;
 
-                var g = new Gambler(UserID);
+                var g = new Gambler(UserId);
 
                 if (g != null)
                 {
-                    var _strRP = g.RPBonus.HasValue ? string.Format("(RP: {0}) ", g.RPBonus.Value) : string.Empty;
-                    var _strRank = g.ContestRank.HasValue ? string.Format("(Rank: {0}) ", g.ContestRank.Value) : string.Empty;
+                    var strRp = g.RPBonus.HasValue ? $"(RP: {g.RPBonus.Value}) " : string.Empty;
+                    var strRank = g.ContestRank.HasValue ? $"(Rank: {g.ContestRank.Value}) " : string.Empty;
 
-                    ltrlMyGamblerInfo.Text = string.Format("<li class=\"LiTitle\">博彩币:<em style=\"font-size: 12px; margin: 0 2px\">{0}</em>{1}</li>", g.Cash.ToString("N2"),
-                        string.IsNullOrEmpty(_strRP) && string.IsNullOrEmpty(_strRank)
-                        ? string.Empty : string.Format("<br /><em style=\"font-size: 12px; margin: 0 2px\" title=\"博彩获得RP | 当前赛季总排名\">{0}{1}</em>", _strRP, _strRank));
+                    ltrlMyGamblerInfo.Text =
+                        $"<li class=\"LiTitle\">博彩币:<em style=\"font-size: 12px; margin: 0 2px\">{g.Cash.ToString("N2")}</em>{(string.IsNullOrEmpty(strRp) && string.IsNullOrEmpty(strRank) ? string.Empty : $"<br /><em style=\"font-size: 12px; margin: 0 2px\" title=\"博彩获得RP | 当前赛季总排名\">{strRp}{strRank}</em>")}</li>";
                 }
             }
 
             #region HideCasinoSysNotice
-            if (string.IsNullOrEmpty(Entity.ConfigGlobal.SysNotice))
+            if (string.IsNullOrEmpty(ConfigGlobal.SysNotice))
             {
                 pnlNotice.Visible = false;
             }

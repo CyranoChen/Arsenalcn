@@ -90,7 +90,7 @@ namespace Arsenalcn.CasinoSys.Entity
                             gambler.Cash -= BetAmount.GetValueOrDefault(0f);
                         gambler.Update(trans);
 
-                        var banker = new Banker(Entity.CasinoItem.GetCasinoItem(CasinoItemGuid).BankerID);
+                        var banker = new Banker(CasinoItem.GetCasinoItem(CasinoItemGuid).BankerID);
                         banker.Cash += BetAmount.GetValueOrDefault(0f);
                         banker.Update(trans);
 
@@ -129,12 +129,12 @@ namespace Arsenalcn.CasinoSys.Entity
                             gambler.Cash -= BetAmount.GetValueOrDefault(0f);
                         gambler.Update(trans);
 
-                        var banker = new Banker(Entity.CasinoItem.GetCasinoItem(CasinoItemGuid).BankerID);
+                        var banker = new Banker(CasinoItem.GetCasinoItem(CasinoItemGuid).BankerID);
                         banker.Cash += BetAmount.GetValueOrDefault(0f);
                         banker.Update(trans);
 
                         var betID = DataAccess.Bet.InsertBet(UserID, UserName, CasinoItemGuid, BetAmount, BetRate, trans);
-                        Entity.MatchChoiceOption.SaveMatchChoiceOption(betID, optionValue, trans);
+                        MatchChoiceOption.SaveMatchChoiceOption(betID, optionValue, trans);
 
                         trans.Commit();
                     }
@@ -197,7 +197,7 @@ namespace Arsenalcn.CasinoSys.Entity
                     }
                     else if (!bet.BetAmount.HasValue && !bet.Earning.HasValue && bet.EarningDesc == "RP+1")
                     {
-                        AdminUsers.UpdateUserExtCredits(bet.UserID, 4, -1);
+                        Users.UpdateUserExtCredits(bet.UserID, 4, -1);
                     }
 
                     DataAccess.Bet.DeleteBetByID(betID, trans);
@@ -216,7 +216,7 @@ namespace Arsenalcn.CasinoSys.Entity
         public bool BetCheck(SqlTransaction trans = null)
         {
             //check close time
-            var item = Entity.CasinoItem.GetCasinoItem(CasinoItemGuid);
+            var item = CasinoItem.GetCasinoItem(CasinoItemGuid);
 
             if (item == null)
                 return false;

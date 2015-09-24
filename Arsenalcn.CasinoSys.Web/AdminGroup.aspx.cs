@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Web.UI.WebControls;
 
@@ -11,11 +10,11 @@ namespace Arsenalcn.CasinoSys.Web
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            ctrlAdminFieldToolBar.AdminUserName = this.username;
+            ctrlAdminFieldToolBar.AdminUserName = username;
 
             if (!IsPostBack)
             {
-                var list = Entity.League.Cache.LeagueList_Active;
+                var list = League.Cache.LeagueList_Active;
 
                 var item = new ListItem("--请选择分类--", Guid.Empty.ToString());
 
@@ -42,7 +41,7 @@ namespace Arsenalcn.CasinoSys.Web
 
         private void BindGroupData()
         {
-            var dtGroup = Entity.Group.GetGroupByLeague(SelectedLeague);
+            var dtGroup = Group.GetGroupByLeague(SelectedLeague);
             DataTable dtGroupTeam;
 
             if (dtGroup != null)
@@ -63,13 +62,13 @@ namespace Arsenalcn.CasinoSys.Web
                     dr["LeagueSeason"] = l.LeagueSeason;
 
                     var groupTeamCount = 0;
-                    dtGroupTeam = Entity.Group.GetRelationGroupTeam((Guid)dr["GroupGuid"]);
+                    dtGroupTeam = Group.GetRelationGroupTeam((Guid)dr["GroupGuid"]);
 
                     if (dtGroupTeam != null)
                     {
                         foreach (DataRow drTeam in dtGroupTeam.Rows)
                         {
-                            dr["GroupTeamList"] += string.Format("{0},", Team.Cache.Load((Guid)drTeam["TeamGuid"]).TeamDisplayName.ToString());
+                            dr["GroupTeamList"] += $"{Team.Cache.Load((Guid)drTeam["TeamGuid"]).TeamDisplayName},";
                             groupTeamCount++;
                         }
                         dr["GroupTeamCount"] = groupTeamCount;
@@ -77,11 +76,11 @@ namespace Arsenalcn.CasinoSys.Web
                     else
                         dr["GroupTeamCount"] = 0;
 
-                    var allMatchCount = Entity.Group.GetAllMatchCount((Guid)dr["GroupGuid"]);
-                    var resultMatchCount = Entity.Group.GetResultMatchCount((Guid)dr["GroupGuid"]);
+                    var allMatchCount = Group.GetAllMatchCount((Guid)dr["GroupGuid"]);
+                    var resultMatchCount = Group.GetResultMatchCount((Guid)dr["GroupGuid"]);
 
                     dr["GroupAllMatchCount"] = allMatchCount;
-                    dr["GroupMatchCount"] = string.Format("{0}({1})", allMatchCount.ToString(), resultMatchCount.ToString());
+                    dr["GroupMatchCount"] = $"{allMatchCount}({resultMatchCount})";
                 }
             }
 
@@ -107,7 +106,7 @@ namespace Arsenalcn.CasinoSys.Web
 
         private void BindGroupTeam()
         {
-            var list = Entity.Team.Cache.GetTeamsByLeagueGuid(new Guid(ddlGroupLeague.SelectedValue));
+            var list = Team.Cache.GetTeamsByLeagueGuid(new Guid(ddlGroupLeague.SelectedValue));
 
             lbLeagueTeam.DataSource = list;
             lbLeagueTeam.DataTextField = "TeamDisplayName";
@@ -119,7 +118,7 @@ namespace Arsenalcn.CasinoSys.Web
             {
                 foreach (ListItem item in lbLeagueTeam.Items)
                 {
-                    if (Entity.GroupTeam.IsExistRelationGroupTeam(SelectedGroup, new Guid(item.Value)))
+                    if (GroupTeam.IsExistRelationGroupTeam(SelectedGroup, new Guid(item.Value)))
                         item.Selected = true;
                 }
             }
@@ -135,13 +134,15 @@ namespace Arsenalcn.CasinoSys.Web
                 var btnResetGroupTable = e.Row.FindControl("btnResetGroupTable") as LinkButton;
                 var btnResetGroupMatch = e.Row.FindControl("btnResetGroupMatch") as LinkButton;
 
-                if (btnResetGroupTable != null)
+                if (drv != null && btnResetGroupTable != null && btnResetGroupMatch != null)
+                {
                     btnResetGroupTable.CommandArgument = drv["GroupGuid"].ToString();
 
-                if (btnResetGroupMatch != null && !(bool)drv["IsTable"])
-                    btnResetGroupMatch.CommandArgument = drv["GroupGuid"].ToString();
-                else
-                    btnResetGroupMatch.Visible = false;
+                    if (!(bool)drv["IsTable"])
+                        btnResetGroupMatch.CommandArgument = drv["GroupGuid"].ToString();
+                    else
+                        btnResetGroupMatch.Visible = false;
+                }
             }
         }
 
@@ -196,9 +197,9 @@ namespace Arsenalcn.CasinoSys.Web
                 var group = new Group(SelectedGroup);
 
                 lblGroupGuid.Text = group.GroupGuid.ToString();
-                tbGroupName.Text = group.GroupName.ToString();
+                tbGroupName.Text = @group.GroupName;
                 tbGroupOrder.Text = group.GroupOrder.ToString();
-                cbIsTable.Checked = (bool)group.IsTable;
+                cbIsTable.Checked = group.IsTable;
 
                 ddlGroupLeague.SelectedValue = group.LeagueGuid.ToString();
                 BindGroupTeam();
@@ -213,20 +214,20 @@ namespace Arsenalcn.CasinoSys.Web
             try
             {
                 var groupGuid = new Guid(lblGroupGuid.Text);
-                var leagueGuid = Guid.Empty;
-                var teamGuid = Guid.Empty;
+                Guid leagueGuid;
+                Guid teamGuid;
 
                 #region ListBox Multiple Value for RelationGroupTeam
                 if (ddlGroupLeague.SelectedValue != Guid.Empty.ToString())
                 {
-                    Entity.Group.RemoveRelationGroupAllTeam(groupGuid);
+                    Group.RemoveRelationGroupAllTeam(groupGuid);
 
-                    leagueGuid = new Guid(ddlGroupLeague.SelectedValue.ToString());
+                    leagueGuid = new Guid(ddlGroupLeague.SelectedValue);
 
                     foreach (ListItem item in lbLeagueTeam.Items)
                     {
                         teamGuid = new Guid(item.Value);
-                        if ((item.Selected) && (!Entity.GroupTeam.IsExistRelationGroupTeam(groupGuid, teamGuid)))
+                        if ((item.Selected) && (!GroupTeam.IsExistRelationGroupTeam(groupGuid, teamGuid)))
                         {
                             var gt = new GroupTeam();
                             gt.GroupGuid = groupGuid;
@@ -235,7 +236,7 @@ namespace Arsenalcn.CasinoSys.Web
                         }
                     }
 
-                    this.ClientScript.RegisterClientScriptBlock(typeof(string), "updated", "alert('保存分组球队列表');", true);
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "updated", "alert('保存分组球队列表');", true);
                 }
                 else
                     leagueGuid = SelectedLeague;
@@ -254,12 +255,12 @@ namespace Arsenalcn.CasinoSys.Web
                 if (gvGroup.SelectedIndex != -1)
                 {
                     group.Update();
-                    this.ClientScript.RegisterClientScriptBlock(typeof(string), "success", "alert('更新分组成功');", true);
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "success", "alert('更新分组成功');", true);
                 }
                 else
                 {
                     group.Insert();
-                    this.ClientScript.RegisterClientScriptBlock(typeof(string), "success", "alert('添加分组成功');", true);
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "success", "alert('添加分组成功');", true);
                 }
 
                 gvGroup.SelectedIndex = -1;
@@ -271,9 +272,9 @@ namespace Arsenalcn.CasinoSys.Web
             catch
             {
                 if (SelectedLeague == Guid.Empty)
-                    this.ClientScript.RegisterClientScriptBlock(typeof(string), "failed", "alert('没有选择当前分类');", true);
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "failed", "alert('没有选择当前分类');", true);
                 else
-                    this.ClientScript.RegisterClientScriptBlock(typeof(string), "failed", "alert('添加/更新分组失败');", true);
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "failed", "alert('添加/更新分组失败');", true);
             }
         }
 
@@ -298,18 +299,18 @@ namespace Arsenalcn.CasinoSys.Web
                     var groupGuid = (Guid)gvGroup.DataKeys[e.RowIndex].Value;
                     //Guid leagueGuid = new Guid(ddlLeague.SelectedValue);
 
-                    Entity.Group.RemoveGroup(groupGuid);
+                    Group.RemoveGroup(groupGuid);
 
-                    this.ClientScript.RegisterClientScriptBlock(typeof(string), "success", "alert('删除分组成功');", true);
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "success", "alert('删除分组成功');", true);
                 }
                 catch
                 {
-                    this.ClientScript.RegisterClientScriptBlock(typeof(string), "failed", "alert('删除分组失败');", true);
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "failed", "alert('删除分组失败');", true);
                 }
             }
             else
             {
-                this.ClientScript.RegisterClientScriptBlock(typeof(string), "failed", "alert('没有选择当前分类');", true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", "alert('没有选择当前分类');", true);
             }
 
             BindGroupData();
@@ -323,13 +324,13 @@ namespace Arsenalcn.CasinoSys.Web
                 //Guid groupGuid = new Guid(gvGroup.SelectedDataKey.Value.ToString());
                 try
                 {
-                    Entity.Group.GroupTableStatistics(groupGuid);
+                    Group.GroupTableStatistics(groupGuid);
 
-                    this.ClientScript.RegisterClientScriptBlock(typeof(string), "success", "alert('统计积分榜成功');", true);
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "success", "alert('统计积分榜成功');", true);
                 }
                 catch
                 {
-                    this.ClientScript.RegisterClientScriptBlock(typeof(string), "failed", "alert('统计积分榜失败');", true);
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "failed", "alert('统计积分榜失败');", true);
                 }
             }
 
@@ -339,13 +340,13 @@ namespace Arsenalcn.CasinoSys.Web
 
                 try
                 {
-                    Entity.Group.SetGroupMatch(groupGuid);
+                    Group.SetGroupMatch(groupGuid);
 
-                    this.ClientScript.RegisterClientScriptBlock(typeof(string), "success", "alert('绑定比赛成功');", true);
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "success", "alert('绑定比赛成功');", true);
                 }
                 catch
                 {
-                    this.ClientScript.RegisterClientScriptBlock(typeof(string), "failed", "alert('绑定比赛失败');", true);
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "failed", "alert('绑定比赛失败');", true);
                 }
             }
         }

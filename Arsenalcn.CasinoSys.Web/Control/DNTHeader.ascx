@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" CodeBehind="DNTHeader.ascx.cs" Inherits="Arsenalcn.CasinoSys.Web.Control.DNTHeader" %>
+﻿<%@ Control Language="C#" CodeBehind="DNTHeader.ascx.cs" Inherits="Arsenalcn.CasinoSys.Web.Control.DntHeader" %>
 <div id="header">
     <h2>
         <a href="/index.aspx" title="阿森纳中国官方球迷会">

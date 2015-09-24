@@ -55,12 +55,12 @@ namespace Arsenalcn.ClubSys.Service
                 Opponent = dr["Opponent"].ToString();
 
                 // Generate Video File Path
-                string.Format("{0}{1}.{2}", Entity.ConfigGlobal.ArsenalVideoUrl, ID.ToString(), VideoType.ToString().ToLower());
+                VideoFilePath = string.Format("{0}{1}.{2}", Entity.ConfigGlobal.ArsenalVideoUrl, ID, VideoType.ToString().ToLower());
             }
             else
                 throw new Exception("Unable to init Video.");
         }
-
+        
         public static List<Video> GetVideos()
         {
             var dt = DataAccess.Video.GetVideos();
@@ -144,7 +144,7 @@ namespace Arsenalcn.ClubSys.Service
             private static void InitCache()
             {
                 VideoList = GetVideos();
-                VideoList_Legend = VideoList.FindAll(x => 
+                VideoList_Legend = VideoList.FindAll(x =>
                 {
                     if (x.GoalPlayerGuid.HasValue)
                         return Player.Cache.Load(x.GoalPlayerGuid.Value).IsLegend;
@@ -163,7 +163,7 @@ namespace Arsenalcn.ClubSys.Service
                 // User can only get the Arsenal Player Video GoalRank <= 3 by usual way
                 var list = VideoList_Legend.FindAll(x => Convert.ToInt16(x.GoalRank) <= 3);
 
-                list = list.FindAll(x => 
+                list = list.FindAll(x =>
                 {
                     if (GRank > 0 && TRank > 0)
                     {

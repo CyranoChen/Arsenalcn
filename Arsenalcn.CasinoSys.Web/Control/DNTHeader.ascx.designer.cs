@@ -10,7 +10,7 @@
 namespace Arsenalcn.CasinoSys.Web.Control {
     
     
-    public partial class DNTHeader {
+    public partial class DntHeader {
         
         /// <summary>
         /// phAnonymous control.

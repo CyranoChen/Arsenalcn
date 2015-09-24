@@ -100,7 +100,7 @@ namespace Arsenalcn.CasinoSys.Entity
         {
             if (orderKeyword.Equals("ProfitRate", StringComparison.OrdinalIgnoreCase))
             {
-                list.Sort(delegate (Entity.CasinoGambler cg1, Entity.CasinoGambler cg2)
+                list.Sort(delegate (CasinoGambler cg1, CasinoGambler cg2)
                 {
                     return !cg2.ProfitRate.Equals(cg1.ProfitRate) ?
                         cg2.ProfitRate.CompareTo(cg1.ProfitRate) : cg2.Profit.CompareTo(cg1.Profit);
@@ -108,7 +108,7 @@ namespace Arsenalcn.CasinoSys.Entity
             }
             else if (orderKeyword.Equals("TotalBet", StringComparison.OrdinalIgnoreCase))
             {
-                list.Sort(delegate (Entity.CasinoGambler cg1, Entity.CasinoGambler cg2)
+                list.Sort(delegate (CasinoGambler cg1, CasinoGambler cg2)
                 {
                     return !cg2.TotalBet.Equals(cg1.TotalBet) ?
                         cg2.TotalBet.CompareTo(cg1.TotalBet) : cg2.Profit.CompareTo(cg1.Profit);
@@ -116,7 +116,7 @@ namespace Arsenalcn.CasinoSys.Entity
             }
             else if (orderKeyword.Equals("RPBonus", StringComparison.OrdinalIgnoreCase))
             {
-                list.Sort(delegate (Entity.CasinoGambler cg1, Entity.CasinoGambler cg2)
+                list.Sort(delegate (CasinoGambler cg1, CasinoGambler cg2)
                 {
                     if (!cg1.RPBonus.HasValue && !cg2.RPBonus.HasValue)
                     {
@@ -139,7 +139,7 @@ namespace Arsenalcn.CasinoSys.Entity
             }
             else
             {
-                list.Sort(delegate (Entity.CasinoGambler cg1, Entity.CasinoGambler cg2)
+                list.Sort(delegate (CasinoGambler cg1, CasinoGambler cg2)
                 {
                     return cg2.Profit.CompareTo(cg1.Profit);
                 });

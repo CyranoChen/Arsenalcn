@@ -10,6 +10,6 @@
 namespace Arsenalcn.CasinoSys.Web.Control {
     
     
-    public partial class DNTFooter {
+    public partial class DntFooter {
     }
 }

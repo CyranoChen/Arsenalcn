@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" MasterPageFile="DefaultMaster.master" CodeBehind="Default.aspx.cs"
-    Inherits="Arsenalcn.CasinoSys.Web._Default" Title="ACN博彩系统"  %>
+    Inherits="Arsenalcn.CasinoSys.Web.Default" Title="ACN博彩系统"  %>
 
 <asp:Content ID="cphHead" ContentPlaceHolderID="cphHead" runat="server">
 </asp:Content>

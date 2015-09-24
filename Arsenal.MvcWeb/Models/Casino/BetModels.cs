@@ -44,28 +44,28 @@ namespace Arsenal.MvcWeb.Models.Casino
 
             map.ForMember(d => d.BetIcon, opt => opt.ResolveUsing(s =>
             {
-                var _icon = BetIconType.none;
+                var icon = BetIconType.none;
 
                 if (s.IsWin.HasValue)
                 {
                     if (s.IsWin.Value)
                     {
                         if (s.CasinoItem.ItemType.Equals(CasinoType.SingleChoice))
-                        { _icon = BetIconType.star; }
+                        { icon = BetIconType.star; }
                         else
-                        { _icon = BetIconType.check; }
+                        { icon = BetIconType.check; }
                     }
                     else
                     {
-                        _icon = BetIconType.delete;
+                        icon = BetIconType.delete;
                     }
                 }
                 else
                 {
-                    _icon = BetIconType.back;
+                    icon = BetIconType.back;
                 }
 
-                return _icon;
+                return icon;
             }));
         }
 

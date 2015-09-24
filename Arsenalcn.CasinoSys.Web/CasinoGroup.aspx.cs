@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Web.UI.WebControls;
 
@@ -13,15 +12,15 @@ namespace Arsenalcn.CasinoSys.Web
         {
             #region Assign Control Property
 
-            ctrlLeftPanel.UserID = userid;
+            ctrlLeftPanel.UserId = userid;
             ctrlLeftPanel.UserName = username;
 
-            ctrlFieldTooBar.UserID = userid;
+            ctrlFieldTooBar.UserId = userid;
 
-            ctrlMenuTabBar.CurrentMenu = Arsenalcn.CasinoSys.Web.Control.CasinoMenuType.CasinoGroup;
+            ctrlMenuTabBar.CurrentMenu = Control.CasinoMenuType.CasinoGroup;
 
             ctrlLeagueHeader.CurrLeagueGuid = CurrentLeague;
-            ctrlLeagueHeader.PageURL = "CasinoGroup.aspx";
+            ctrlLeagueHeader.PageUrl = "CasinoGroup.aspx";
 
             #endregion
 
@@ -30,7 +29,7 @@ namespace Arsenalcn.CasinoSys.Web
                 if (CurrentLeague != Guid.Empty)
                 {
                     //Bind ddlSeason
-                    var list = Entity.League.Cache.GetSeasonsByLeagueGuid(CurrentLeague);
+                    var list = League.Cache.GetSeasonsByLeagueGuid(CurrentLeague);
 
                     ddlSeason.DataSource = list;
                     ddlSeason.DataTextField = "LeagueSeason";
@@ -39,7 +38,7 @@ namespace Arsenalcn.CasinoSys.Web
                     ddlSeason.SelectedValue = CurrentLeague.ToString();
 
                     // Bind ddlGroup
-                    var dtGroup = Entity.Group.GetGroupByLeague(CurrentLeague);
+                    var dtGroup = Group.GetGroupByLeague(CurrentLeague);
 
                     if (dtGroup != null)
                     {
@@ -76,9 +75,9 @@ namespace Arsenalcn.CasinoSys.Web
             }
             else
             {
-                if (Entity.Group.IsExistGroupByLeague(CurrentLeague, false))
+                if (Group.IsExistGroupByLeague(CurrentLeague, false))
                 {
-                    var dtGroup = Entity.Group.GetGroupByLeague(CurrentLeague);
+                    var dtGroup = Group.GetGroupByLeague(CurrentLeague);
                     rptGroup.DataSource = dtGroup;
                     rptGroup.DataBind();
 
@@ -86,9 +85,9 @@ namespace Arsenalcn.CasinoSys.Web
                     gvGroupTable.Visible = false;
                     btnGroupMatch.Visible = false;
                 }
-                else if (Entity.Group.IsExistGroupByLeague(CurrentLeague, true))
+                else if (Group.IsExistGroupByLeague(CurrentLeague, true))
                 {
-                    var dtTable = Entity.Group.GetGroupByLeague(CurrentLeague);
+                    var dtTable = Group.GetGroupByLeague(CurrentLeague);
                     var drTable = dtTable.Rows[0];
 
                     BindGroupData(gvGroupTable, (Guid)drTable["GroupGuid"]);
@@ -107,9 +106,10 @@ namespace Arsenalcn.CasinoSys.Web
 
         private void BindGroupData(GridView gv, Guid groupGuid)
         {
-            var dt = Entity.Group.GetTableGroupTeam(groupGuid);
+            var dt = Group.GetTableGroupTeam(groupGuid);
 
-            gv.Columns[1].HeaderText = string.Format("<a href=\"CasinoGroup.aspx?Group={0}\">&lt;{1}&gt;</a>", groupGuid.ToString(), new Group(groupGuid).GroupName);
+            gv.Columns[1].HeaderText =
+                $"<a href=\"CasinoGroup.aspx?Group={groupGuid}\">&lt;{new Group(groupGuid).GroupName}&gt;</a>";
 
             gv.DataSource = dt;
             gv.DataBind();
@@ -127,7 +127,7 @@ namespace Arsenalcn.CasinoSys.Web
                     }
                     catch
                     {
-                        return Entity.ConfigGlobal.DefaultLeagueID;
+                        return ConfigGlobal.DefaultLeagueID;
                     }
                 }
                 else if (CurrentGroup != Guid.Empty)
@@ -138,11 +138,11 @@ namespace Arsenalcn.CasinoSys.Web
                     }
                     catch
                     {
-                        return Entity.ConfigGlobal.DefaultLeagueID;
+                        return ConfigGlobal.DefaultLeagueID;
                     }
                 }
                 else
-                    return Entity.ConfigGlobal.DefaultLeagueID;
+                    return ConfigGlobal.DefaultLeagueID;
             }
         }
 
@@ -168,15 +168,15 @@ namespace Arsenalcn.CasinoSys.Web
 
         protected void ddlSeason_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Response.Redirect(string.Format("CasinoGroup.aspx?League={0}", ddlSeason.SelectedValue.ToString()));
+            Response.Redirect($"CasinoGroup.aspx?League={ddlSeason.SelectedValue}");
         }
 
         protected void ddlGroup_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (ddlGroup.SelectedValue != Guid.Empty.ToString())
-                Response.Redirect(string.Format("CasinoGroup.aspx?Group={0}", ddlGroup.SelectedValue.ToString()));
+                Response.Redirect($"CasinoGroup.aspx?Group={ddlGroup.SelectedValue}");
             else
-                Response.Redirect(string.Format("CasinoGroup.aspx?League={0}", ddlSeason.SelectedValue.ToString()));
+                Response.Redirect($"CasinoGroup.aspx?League={ddlSeason.SelectedValue}");
         }
 
         protected void rptGroup_ItemDataBound(object sender, RepeaterItemEventArgs e)
@@ -186,13 +186,13 @@ namespace Arsenalcn.CasinoSys.Web
                 var dr = e.Item.DataItem as DataRowView;
                 var gvGroupTeam = e.Item.FindControl("gvGroupTeam") as GridView;
 
-                BindGroupData(gvGroupTeam, (Guid)dr["GroupGuid"]);
+                if (dr != null) BindGroupData(gvGroupTeam, (Guid)dr["GroupGuid"]);
             }
         }
 
         protected void btnGroupMatch_Click(object sender, EventArgs e)
         {
-            Response.Redirect("CasinoGame.aspx?Group=" + CurrentGroup.ToString());
+            Response.Redirect("CasinoGame.aspx?Group=" + CurrentGroup);
         }
 
         protected void gvGroupTable_RowDataBound(object sender, GridViewRowEventArgs e)
@@ -205,23 +205,27 @@ namespace Arsenalcn.CasinoSys.Web
                 var hlTeamInfo = e.Row.FindControl("hlTeamInfo") as HyperLink;
                 var ltrlGoalDiff = e.Row.FindControl("ltrlGoalDiff") as Literal;
 
-                if (ltrlTeamLogo != null && hlTeamInfo != null)
+                if (drv != null)
                 {
-                    var t = Team.Cache.Load((Guid)drv["TeamGuid"]);
+                    if (ltrlTeamLogo != null && hlTeamInfo != null)
+                    {
 
-                    ltrlTeamLogo.Text = string.Format("<span class=\"CasinoSys_GameName\" title=\"{0}\"><img src=\"{1}\" alt=\"{0}\" /></span>",
-                        t.TeamEnglishName, t.TeamLogo);
+                        var t = Team.Cache.Load((Guid)drv["TeamGuid"]);
 
-                    hlTeamInfo.Text = string.Format("<em>{0}</em>", t.TeamDisplayName);
-                    hlTeamInfo.NavigateUrl = string.Format("CasinoTeam.aspx?Team={0}", t.ID.ToString());
-                }
+                        ltrlTeamLogo.Text = string.Format("<span class=\"CasinoSys_GameName\" title=\"{0}\"><img src=\"{1}\" alt=\"{0}\" /></span>",
+                            t.TeamEnglishName, t.TeamLogo);
 
-                if (ltrlGoalDiff != null)
-                {
-                    var _goalDiff = (short)drv["TotalGoalDiff"];
+                        hlTeamInfo.Text = $"<em>{t.TeamDisplayName}</em>";
+                        hlTeamInfo.NavigateUrl = $"CasinoTeam.aspx?Team={t.ID}";
 
-                    ltrlGoalDiff.Text = string.Format("<em>{0}</em>",
-                        _goalDiff > 0 ? ("+" + _goalDiff.ToString()) : _goalDiff.ToString());
+                    }
+
+                    if (ltrlGoalDiff != null)
+                    {
+                        var goalDiff = (short)drv["TotalGoalDiff"];
+
+                        ltrlGoalDiff.Text = $"<em>{(goalDiff > 0 ? ("+" + goalDiff) : goalDiff.ToString())}</em>";
+                    }
                 }
             }
         }
@@ -234,17 +238,17 @@ namespace Arsenalcn.CasinoSys.Web
 
                 var ltrlTeamLogo = e.Row.FindControl("ltrlTeamLogo") as Literal;
                 var hlTeamInfo = e.Row.FindControl("hlTeamInfo") as HyperLink;
-                var ltrlGoalDiff = e.Row.FindControl("ltrlGoalDiff") as Literal;
+                //var ltrlGoalDiff = e.Row.FindControl("ltrlGoalDiff") as Literal;
 
-                if (ltrlTeamLogo != null && hlTeamInfo != null)
+                if (drv != null && ltrlTeamLogo != null && hlTeamInfo != null)
                 {
                     var t = Team.Cache.Load((Guid)drv["TeamGuid"]);
 
                     ltrlTeamLogo.Text = string.Format("<span class=\"CasinoSys_GameName\" title=\"{0}\"><img src=\"{1}\" alt=\"{0}\" /></span>",
                         t.TeamEnglishName, t.TeamLogo);
 
-                    hlTeamInfo.Text = string.Format("<em>{0}</em>", t.TeamDisplayName);
-                    hlTeamInfo.NavigateUrl = string.Format("CasinoTeam.aspx?Team={0}", t.ID.ToString());
+                    hlTeamInfo.Text = $"<em>{t.TeamDisplayName}</em>";
+                    hlTeamInfo.NavigateUrl = $"CasinoTeam.aspx?Team={t.ID}";
                 }
             }
         }

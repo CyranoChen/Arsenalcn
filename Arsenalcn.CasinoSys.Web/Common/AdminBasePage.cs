@@ -8,12 +8,12 @@ namespace Arsenalcn.CasinoSys.Web.Common
     {
         protected override void OnInitComplete(EventArgs e)
         {
-            _adminPage = true;
+            AdminPage = true;
             AnonymousRedirect = true;
 
             base.OnInitComplete(e);
 
-            if (!ConfigAdmin.IsPluginAdmin(this.userid))
+            if (!ConfigAdmin.IsPluginAdmin(userid))
             {
                 Response.Redirect("CasinoPortal.aspx");
             }

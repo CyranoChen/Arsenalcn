@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
 using System.Web.UI.WebControls;
 
 using Arsenalcn.CasinoSys.Entity;
@@ -11,7 +9,7 @@ namespace Arsenalcn.CasinoSys.Web
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            ctrlAdminFieldToolBar.AdminUserName = this.username;
+            ctrlAdminFieldToolBar.AdminUserName = username;
 
             if (!IsPostBack)
             {
@@ -19,27 +17,16 @@ namespace Arsenalcn.CasinoSys.Web
             }
         }
 
-        private string home = string.Empty;
-        private string away = string.Empty;
-
         private void BindData()
         {
-            List<Entity.Bet> betList;
-
             //display all based on time diff
-            betList = Bet.GetAllBetByTimeDiff(TimeDiff);
+            var betList = Bet.GetAllBetByTimeDiff(TimeDiff);
             gvBet.DataSource = betList;
             gvBet.DataBind();
 
         }
 
-        public int TimeDiff
-        {
-            get
-            {
-                return int.Parse(ddlTimeDiff.SelectedValue);
-            }
-        }
+        private int TimeDiff => int.Parse(ddlTimeDiff.SelectedValue);
 
         protected void gvBet_RowDataBound(object sender, GridViewRowEventArgs e)
         {
@@ -51,56 +38,67 @@ namespace Arsenalcn.CasinoSys.Web
                 var ltrlAway = e.Row.FindControl("ltrlAway") as Literal;
                 var btnReturnBet = e.Row.FindControl("btnReturnBet") as LinkButton;
 
-                var item = Entity.CasinoItem.GetCasinoItem(bet.CasinoItemGuid);
-
-                var m = new Match(item.MatchGuid.Value);
-                if (m != null)
+                if (bet != null)
                 {
-                    var homeT = Team.Cache.Load(m.Home);
-                    var awayT = Team.Cache.Load(m.Away);
+                    var item = CasinoItem.GetCasinoItem(bet.CasinoItemGuid);
 
-                    ltrlHome.Text = homeT.TeamDisplayName;
-                    ltrlAway.Text = awayT.TeamDisplayName;
-                }
-
-                var ltrlResult = e.Row.FindControl("ltrlResult") as Literal;
-                var dt = Entity.BetDetail.GetBetDetailByBetID(bet.ID);
-
-                if (dt != null)
-                {
-                    var dr = dt.Rows[0];
-
-                    switch (item.ItemType)
+                    if (item.MatchGuid != null)
                     {
-                        case CasinoType.SingleChoice:
-                            if (dr["DetailName"].ToString() == MatchChoiceOption.HomeWinValue)
-                                ltrlResult.Text = "主队胜";
-                            else if (dr["DetailName"].ToString() == MatchChoiceOption.DrawValue)
-                                ltrlResult.Text = "双方平";
-                            else if (dr["DetailName"].ToString() == MatchChoiceOption.AwayWinValue)
-                                ltrlResult.Text = "客队胜";
+                        var m = new Match(item.MatchGuid.Value);
+                        {
+                            var homeT = Team.Cache.Load(m.Home);
+                            var awayT = Team.Cache.Load(m.Away);
 
-                            break;
-                        case CasinoType.MatchResult:
-                            var betDetail = new MatchResultBetDetail(dt);
-                            ltrlResult.Text = string.Format("{0}：{1}", betDetail.Home, betDetail.Away);
-                            break;
+                            if (ltrlHome != null) ltrlHome.Text = homeT.TeamDisplayName;
+                            if (ltrlAway != null) ltrlAway.Text = awayT.TeamDisplayName;
+                        }
+                    }
+
+                    var ltrlResult = e.Row.FindControl("ltrlResult") as Literal;
+                    var dt = BetDetail.GetBetDetailByBetID(bet.ID);
+
+                    if (dt != null && ltrlResult != null)
+                    {
+                        var dr = dt.Rows[0];
+
+                        switch (item.ItemType)
+                        {
+                            case CasinoType.SingleChoice:
+                                if (dr["DetailName"].ToString() == MatchChoiceOption.HomeWinValue)
+                                {
+                                    ltrlResult.Text = "主队胜";
+                                }
+                                else if (dr["DetailName"].ToString() == MatchChoiceOption.DrawValue)
+                                {
+                                    ltrlResult.Text = "双方平";
+                                }
+                                else if (dr["DetailName"].ToString() == MatchChoiceOption.AwayWinValue)
+                                {
+                                    ltrlResult.Text = "客队胜";
+                                }
+
+                                break;
+                            case CasinoType.MatchResult:
+                                var betDetail = new MatchResultBetDetail(dt);
+                                ltrlResult.Text = $"{betDetail.Home}：{betDetail.Away}";
+                                break;
+                        }
                     }
                 }
 
                 var ltrlBetRate = e.Row.FindControl("ltrlBetRate") as Literal;
 
-                if (bet.BetRate.HasValue)
+                if (bet != null)
                 {
-                    ltrlBetRate.Text = Convert.ToSingle(bet.BetRate).ToString("f2");
-                }
-                else
-                {
-                    ltrlBetRate.Text = "/";
-                }
+                    if (ltrlBetRate != null)
+                        ltrlBetRate.Text = bet.BetRate.HasValue ? Convert.ToSingle(bet.BetRate).ToString("f2") : "/";
 
-                btnReturnBet.Visible = true;
-                btnReturnBet.CommandArgument = bet.ID.ToString();
+                    if (btnReturnBet != null)
+                    {
+                        btnReturnBet.Visible = true;
+                        btnReturnBet.CommandArgument = bet.ID.ToString();
+                    }
+                }
             }
         }
 
@@ -127,11 +125,11 @@ namespace Arsenalcn.CasinoSys.Web
                 try
                 {
                     Bet.ReturnBet(bet.ID);
-                    this.ClientScript.RegisterClientScriptBlock(typeof(string), "success", "alert('投注退还成功');window.location.href=window.location.href", true);
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "success", "alert('投注退还成功');window.location.href=window.location.href", true);
                 }
                 catch (Exception ex)
                 {
-                    this.ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}');", ex.Message.ToString()), true);
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message}');", true);
                 }
 
                 BindData();

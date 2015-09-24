@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Web.UI.WebControls;
 
 using Arsenalcn.CasinoSys.Entity;
@@ -12,7 +11,7 @@ namespace Arsenalcn.CasinoSys.Web
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            ctrlAdminFieldToolBar.AdminUserName = this.username;
+            ctrlAdminFieldToolBar.AdminUserName = username;
 
             if (!IsPostBack)
             {
@@ -23,10 +22,11 @@ namespace Arsenalcn.CasinoSys.Web
         private void BindData()
         {
             var queryUsername = string.Empty;
+
             if (ViewState["username"] != null)
                 queryUsername = ViewState["username"].ToString();
 
-            var list = Entity.Gambler.GetGamblers().FindAll(delegate(Gambler g)
+            var list = Gambler.GetGamblers().FindAll(delegate (Gambler g)
             {
                 var returnValue = true;
                 var tmpString = string.Empty;
@@ -51,8 +51,8 @@ namespace Arsenalcn.CasinoSys.Web
             {
                 var g = e.Row.DataItem as Gambler;
 
-                var lblQSB = e.Row.FindControl("lblQSB") as Label;
-                var lblRP = e.Row.FindControl("lblRP") as Label;
+                var lblQsb = e.Row.FindControl("lblQSB") as Label;
+                var lblRp = e.Row.FindControl("lblRP") as Label;
                 var lblCash = e.Row.FindControl("lblCash") as Label;
                 var lblWin = e.Row.FindControl("lblWin") as Label;
                 var lblLose = e.Row.FindControl("lblLose") as Label;
@@ -63,41 +63,44 @@ namespace Arsenalcn.CasinoSys.Web
 
                 var btnResetGambler = e.Row.FindControl("btnResetGambler") as LinkButton;
 
-                if (AdminUsers.GetUserInfo(g.UserID) != null && lblQSB != null && lblRP != null)
+                if (g != null)
                 {
-                    lblQSB.Text = AdminUsers.GetUserExtCredits(g.UserID, 2).ToString("N2");
-                    lblRP.Text = AdminUsers.GetUserExtCredits(g.UserID, 4).ToString();
-                }
+                    if (Users.GetUserInfo(g.UserID) != null && lblQsb != null && lblRp != null)
+                    {
+                        lblQsb.Text = Users.GetUserExtCredits(g.UserID, 2).ToString("N2");
+                        lblRp.Text = Users.GetUserExtCredits(g.UserID, 4).ToString("N0");
+                    }
 
-                if (lblCash != null)
-                {
-                    lblCash.Text = string.Format("<em>{0}<em>", g.Cash.ToString("N2"));
-                }
-                else if (tbCash != null)
-                {
-                    tbCash.Text = g.Cash.ToString("N2");
-                }
+                    if (lblCash != null)
+                    {
+                        lblCash.Text = $"<em>{g.Cash.ToString("N2")}<em>";
+                    }
+                    else if (tbCash != null)
+                    {
+                        tbCash.Text = g.Cash.ToString("N2");
+                    }
 
-                if (lblWin != null)
-                {
-                    lblWin.Text = string.Format("<em>{0}</em>", g.Win.ToString());
-                }
-                else if (tbWin != null)
-                {
-                    tbWin.Text = g.Win.ToString();
-                }
+                    if (lblWin != null)
+                    {
+                        lblWin.Text = $"<em>{g.Win}</em>";
+                    }
+                    else if (tbWin != null)
+                    {
+                        tbWin.Text = g.Win.ToString();
+                    }
 
-                if (lblLose != null)
-                {
-                    lblLose.Text = string.Format("<em>{0}</em>", g.Lose.ToString());
-                }
-                else if (tbLose != null)
-                {
-                    tbLose.Text = g.Lose.ToString();
-                }
+                    if (lblLose != null)
+                    {
+                        lblLose.Text = $"<em>{g.Lose}</em>";
+                    }
+                    else if (tbLose != null)
+                    {
+                        tbLose.Text = g.Lose.ToString();
+                    }
 
-                if (btnResetGambler != null)
-                    btnResetGambler.CommandArgument = g.UserID.ToString();
+                    if (btnResetGambler != null)
+                        btnResetGambler.CommandArgument = g.UserID.ToString();
+                }
             }
         }
 
@@ -107,9 +110,9 @@ namespace Arsenalcn.CasinoSys.Web
             var tbWin = gvGambler.Rows[gvGambler.EditIndex].FindControl("tbWin") as TextBox;
             var tbLose = gvGambler.Rows[gvGambler.EditIndex].FindControl("tbLose") as TextBox;
 
-            var gambler = new Entity.Gambler((int)gvGambler.DataKeys[gvGambler.EditIndex].Value);
+            var gambler = new Gambler((int)gvGambler.DataKeys[gvGambler.EditIndex].Value);
 
-            if (gambler != null && tbCash != null && tbWin != null && tbLose != null)
+            if (tbCash != null && tbWin != null && tbLose != null)
             {
                 try
                 {
@@ -117,13 +120,13 @@ namespace Arsenalcn.CasinoSys.Web
                     gambler.Win = Convert.ToInt16(tbWin.Text);
                     gambler.Lose = Convert.ToInt16(tbLose.Text);
 
-                    gambler.Update(null);
+                    gambler.Update();
 
-                    this.ClientScript.RegisterClientScriptBlock(typeof(string), "success", "alert('修改玩家信息成功');", true);
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "success", "alert('修改玩家信息成功');", true);
                 }
                 catch
                 {
-                    this.ClientScript.RegisterClientScriptBlock(typeof(string), "failed", "alert('修改玩家信息失败');", true);
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "failed", "alert('修改玩家信息失败');", true);
                 }
             }
 
@@ -152,13 +155,13 @@ namespace Arsenalcn.CasinoSys.Web
             {
                 try
                 {
-                    Entity.Gambler.GamblerStatistics(Convert.ToInt32(e.CommandArgument));
+                    Gambler.GamblerStatistics(Convert.ToInt32(e.CommandArgument));
 
-                    this.ClientScript.RegisterClientScriptBlock(typeof(string), "success", "alert('统计玩家信息成功');", true);
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "success", "alert('统计玩家信息成功');", true);
                 }
                 catch (Exception ex)
                 {
-                    this.ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}');", ex.Message), true);
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message}');", true);
                 }
             }
         }

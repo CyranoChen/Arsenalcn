@@ -10,12 +10,12 @@ namespace Arsenalcn.CasinoSys.Web
         {
             #region Assign Control Property
 
-            ctrlLeftPanel.UserID = userid;
+            ctrlLeftPanel.UserId = userid;
             ctrlLeftPanel.UserName = username;
 
-            ctrlFieldTooBar.UserID = userid;
+            ctrlFieldTooBar.UserId = userid;
 
-            ctrlMenuTabBar.CurrentMenu = Arsenalcn.CasinoSys.Web.Control.CasinoMenuType.CasinoRank;
+            ctrlMenuTabBar.CurrentMenu = Control.CasinoMenuType.CasinoRank;
 
             #endregion
 
@@ -32,11 +32,11 @@ namespace Arsenalcn.CasinoSys.Web
                 foreach (DataRow dr in dt.Rows)
                 {
                     if (dr["RankMonth"].ToString().Length == 1)
-                        rMonth = string.Format("0{0}", dr["RankMonth"].ToString());
+                        rMonth = $"0{dr["RankMonth"]}";
                     else
                         rMonth = dr["RankMonth"].ToString();
 
-                    dr["RankDate"] = string.Format("{0}/{1}", dr["RankYear"].ToString(), rMonth);
+                    dr["RankDate"] = $"{dr["RankYear"]}/{rMonth}";
                     dr["WinnerProfitRate"] = Convert.ToSingle(dr["WinnerProfit"]) / Convert.ToSingle(dr["WinnerTotalBet"]) * 100;
                     dr["LoserProfitRate"] = Convert.ToSingle(dr["LoserProfit"]) / Convert.ToSingle(dr["LoserTotalBet"]) * 100;
                 }

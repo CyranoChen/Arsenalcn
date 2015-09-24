@@ -132,14 +132,14 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public static void ActiveGroupTableStatistics()
         {
-            var list = Group.GetGroups().FindAll((Predicate<Group>)delegate (Group g)
+            var list = GetGroups().FindAll((Predicate<Group>)delegate (Group g)
             { return League.Cache.Load(g.LeagueGuid).IsActive; });
 
             if (list != null && list.Count > 0)
             {
                 foreach (var g in list)
                 {
-                    Entity.Group.GroupTableStatistics(g.GroupGuid);
+                    GroupTableStatistics(g.GroupGuid);
                 }
             }
         }

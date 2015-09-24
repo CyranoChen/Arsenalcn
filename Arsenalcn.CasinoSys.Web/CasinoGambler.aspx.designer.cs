@@ -67,12 +67,12 @@ namespace Arsenalcn.CasinoSys.Web {
         protected global::System.Web.UI.WebControls.HyperLink hlGamblerLeagueView;
         
         /// <summary>
-        /// gvGamlber control.
+        /// gvGambler control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gvGamlber;
+        protected global::System.Web.UI.WebControls.GridView gvGambler;
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Web.UI.WebControls;
 
 using Arsenalcn.CasinoSys.Entity;
@@ -13,20 +12,20 @@ namespace Arsenalcn.CasinoSys.Web
         {
             #region Assign Control Property
 
-            ctrlLeftPanel.UserID = userid;
+            ctrlLeftPanel.UserId = userid;
             ctrlLeftPanel.UserName = username;
 
-            ctrlFieldTooBar.UserID = userid;
+            ctrlFieldTooBar.UserId = userid;
 
-            ctrlMenuTabBar.CurrentMenu = Arsenalcn.CasinoSys.Web.Control.CasinoMenuType.CasinoBetLog;
+            ctrlMenuTabBar.CurrentMenu = Control.CasinoMenuType.CasinoBetLog;
 
             if (CurrentMatch != Guid.Empty)
             {
-                ctrlCasinoHeader.UserID = userid;
+                ctrlCasinoHeader.UserId = userid;
                 ctrlCasinoHeader.MatchGuid = CurrentMatch;
                 ctrlCasinoHeader.IsHistoryView = false;
 
-                hlBetClubLog.NavigateUrl = string.Format("CasinoBetClubLog.aspx?Match={0}", CurrentMatch.ToString());
+                hlBetClubLog.NavigateUrl = $"CasinoBetClubLog.aspx?Match={CurrentMatch}";
                 hlBetClubLog.Target = "_self";
                 hlBetClubLog.Visible = true;
             }
@@ -41,19 +40,19 @@ namespace Arsenalcn.CasinoSys.Web
             BindData();
         }
 
-        private string home = string.Empty;
-        private string away = string.Empty;
+        private string _home = string.Empty;
+        private string _away = string.Empty;
 
         private void BindData()
         {
-            List<Entity.Bet> betList;
+            List<Bet> betList;
 
             if (CurrentMatch == Guid.Empty)
             {
                 //display all based on time diff
                 ddlTimeDiff.Visible = true;
 
-                betList = Entity.Bet.GetAllBetByTimeDiff(TimeDiff);
+                betList = Bet.GetAllBetByTimeDiff(TimeDiff);
             }
             else
             {
@@ -64,17 +63,17 @@ namespace Arsenalcn.CasinoSys.Web
 
                 var homeT = Team.Cache.Load(m.Home);
                 var awayT = Team.Cache.Load(m.Away);
-                home = homeT.TeamDisplayName;
-                away = awayT.TeamDisplayName;
+                _home = homeT.TeamDisplayName;
+                _away = awayT.TeamDisplayName;
 
-                betList = Entity.Bet.GetMatchAllBet(CurrentMatch);
+                betList = Bet.GetMatchAllBet(CurrentMatch);
             }
 
-            ltrlSingleChoiceCount.Text = betList.FindAll(delegate(Entity.Bet bet) { return bet.BetAmount.HasValue; }).Count.ToString();
-            ltrlMatchResultCount.Text = betList.FindAll(delegate(Entity.Bet bet) { return !bet.BetAmount.HasValue; }).Count.ToString();
+            ltrlSingleChoiceCount.Text = betList.FindAll(delegate (Bet bet) { return bet.BetAmount.HasValue; }).Count.ToString();
+            ltrlMatchResultCount.Text = betList.FindAll(delegate (Bet bet) { return !bet.BetAmount.HasValue; }).Count.ToString();
 
             float totalBetCount = 0;
-            betList.ForEach(delegate(Entity.Bet bet) { totalBetCount += bet.BetAmount.GetValueOrDefault(0f); });
+            betList.ForEach(delegate (Bet bet) { totalBetCount += bet.BetAmount.GetValueOrDefault(0f); });
             ltrlTotalBetCount.Text = totalBetCount.ToString("N0");
 
             gvBet.DataSource = betList;
@@ -130,85 +129,100 @@ namespace Arsenalcn.CasinoSys.Web
 
                 var ltrlHome = e.Row.FindControl("ltrlHome") as Literal;
                 var ltrlAway = e.Row.FindControl("ltrlAway") as Literal;
-                var ltrlVS = e.Row.FindControl("ltrlVS") as Literal;
+                var ltrlVs = e.Row.FindControl("ltrlVS") as Literal;
 
-                var item = Entity.CasinoItem.GetCasinoItem(bet.CasinoItemGuid);
-
-                if (CurrentMatch != Guid.Empty)
+                if (bet != null && ltrlHome != null && ltrlAway != null && ltrlVs != null)
                 {
-                    ltrlHome.Text = home;
-                    ltrlAway.Text = away;
-                }
-                else
-                {
-                    var m = new Match(item.MatchGuid.Value);
+                    var item = CasinoItem.GetCasinoItem(bet.CasinoItemGuid);
 
-                    var homeT = Team.Cache.Load(m.Home);
-                    var awayT = Team.Cache.Load(m.Away);
-
-                    ltrlHome.Text = string.Format("<a class=\"StrongLink\" href=\"CasinoTeam.aspx?Team={0}\">{1}</a>", homeT.ID.ToString(), homeT.TeamDisplayName);
-                    ltrlAway.Text = string.Format("<a class=\"StrongLink\" href=\"CasinoTeam.aspx?Team={0}\">{1}</a>", awayT.ID.ToString(), awayT.TeamDisplayName);
-
-                    ltrlVS.Text = string.Format("<a href=\"CasinoTeam.aspx?Match={0}\"><em title=\"{1}({2})\">vs</em></a>", m.MatchGuid.ToString(), homeT.Ground, homeT.Capacity.ToString());
-                }
-
-                var ltrlResult = e.Row.FindControl("ltrlResult") as Literal;
-                var dt = Entity.BetDetail.GetBetDetailByBetID(bet.ID);
-
-                if (dt != null)
-                {
-                    var dr = dt.Rows[0];
-
-                    switch (item.ItemType)
+                    if (CurrentMatch != Guid.Empty)
                     {
-                        case CasinoType.SingleChoice:
-                            if (dr["DetailName"].ToString() == MatchChoiceOption.HomeWinValue)
-                                ltrlResult.Text = "主队胜";
-                            else if (dr["DetailName"].ToString() == MatchChoiceOption.DrawValue)
-                                ltrlResult.Text = "双方平";
-                            else if (dr["DetailName"].ToString() == MatchChoiceOption.AwayWinValue)
-                                ltrlResult.Text = "客队胜";
-
-                            break;
-                        case CasinoType.MatchResult:
-                            var betDetail = new MatchResultBetDetail(dt);
-                            ltrlResult.Text = string.Format("{0}：{1}", betDetail.Home, betDetail.Away);
-                            break;
-                    }
-                }
-
-                var ltrlBetResult = e.Row.FindControl("ltrlBetResult") as Literal;
-
-                if (!bet.IsWin.HasValue)
-                {
-                    ltrlBetResult.Text = string.Empty;
-                }
-                else
-                {
-                    if (bet.IsWin.Value)
-                    {
-                        if (item.ItemType == CasinoType.SingleChoice)
-                            ltrlBetResult.Text = "<span class=\"CasinoSys_True\" title=\"猜对输赢\"></span>";
-                        else if (item.ItemType == CasinoType.MatchResult)
-                            ltrlBetResult.Text = "<span class=\"CasinoSys_Good\" title=\"猜对比分\"></span>";
-
-                        e.Row.CssClass = "RowCasinoSys_True";
+                        ltrlHome.Text = _home;
+                        ltrlAway.Text = _away;
                     }
                     else
                     {
-                        ltrlBetResult.Text = "<span class=\"CasinoSys_False\" title=\"失败\"></span>";
+                        if (item.MatchGuid != null)
+                        {
+                            var m = new Match(item.MatchGuid.Value);
+
+                            var homeT = Team.Cache.Load(m.Home);
+                            var awayT = Team.Cache.Load(m.Away);
+
+                            ltrlHome.Text =
+                                $"<a class=\"StrongLink\" href=\"CasinoTeam.aspx?Team={homeT.ID}\">{homeT.TeamDisplayName}</a>";
+                            ltrlAway.Text =
+                                $"<a class=\"StrongLink\" href=\"CasinoTeam.aspx?Team={awayT.ID}\">{awayT.TeamDisplayName}</a>";
+
+                            ltrlVs.Text =
+                                $"<a href=\"CasinoTeam.aspx?Match={m.MatchGuid}\"><em title=\"{homeT.Ground}({homeT.Capacity})\">vs</em></a>";
+                        }
                     }
-                }
 
-                var ltrlBetRate = e.Row.FindControl("ltrlBetRate") as Literal;
+                    var ltrlResult = e.Row.FindControl("ltrlResult") as Literal;
+                    var dt = BetDetail.GetBetDetailByBetID(bet.ID);
 
-                if (bet.BetRate.HasValue)
-                {
-                    ltrlBetRate.Text = Convert.ToSingle(bet.BetRate).ToString("f2");
-                }
-                else
-                {
-                    ltrlBetRate.Text = "/";
+                    if (dt != null && ltrlResult != null)
+                    {
+                        var dr = dt.Rows[0];
+
+                        switch (item.ItemType)
+                        {
+                            case CasinoType.SingleChoice:
+                                if (dr["DetailName"].ToString() == MatchChoiceOption.HomeWinValue)
+                                    ltrlResult.Text = "主队胜";
+                                else if (dr["DetailName"].ToString() == MatchChoiceOption.DrawValue)
+                                    ltrlResult.Text = "双方平";
+                                else if (dr["DetailName"].ToString() == MatchChoiceOption.AwayWinValue)
+                                    ltrlResult.Text = "客队胜";
+
+                                break;
+                            case CasinoType.MatchResult:
+                                var betDetail = new MatchResultBetDetail(dt);
+                                ltrlResult.Text = $"{betDetail.Home}：{betDetail.Away}";
+                                break;
+                        }
+                    }
+
+                    var ltrlBetResult = e.Row.FindControl("ltrlBetResult") as Literal;
+
+                    if (ltrlBetResult != null)
+                    {
+                        if (!bet.IsWin.HasValue)
+                        {
+                            ltrlBetResult.Text = string.Empty;
+                        }
+                        else
+                        {
+                            if (bet.IsWin != null && bet.IsWin.Value)
+                            {
+                                if (item.ItemType == CasinoType.SingleChoice)
+                                    ltrlBetResult.Text = "<span class=\"CasinoSys_True\" title=\"猜对输赢\"></span>";
+                                else if (item.ItemType == CasinoType.MatchResult)
+                                    ltrlBetResult.Text = "<span class=\"CasinoSys_Good\" title=\"猜对比分\"></span>";
+
+                                e.Row.CssClass = "RowCasinoSys_True";
+                            }
+                            else
+                            {
+                                ltrlBetResult.Text = "<span class=\"CasinoSys_False\" title=\"失败\"></span>";
+                            }
+                        }
+                    }
+
+                    var ltrlBetRate = e.Row.FindControl("ltrlBetRate") as Literal;
+
+                    if (ltrlBetRate != null)
+                    {
+                        if (bet.BetRate.HasValue)
+                        {
+                            ltrlBetRate.Text = Convert.ToSingle(bet.BetRate).ToString("f2");
+                        }
+                        else
+                        {
+                            ltrlBetRate.Text = "/";
+                        }
+                    }
                 }
             }
         }

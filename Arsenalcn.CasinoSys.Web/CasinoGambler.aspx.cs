@@ -12,12 +12,12 @@ namespace Arsenalcn.CasinoSys.Web
         {
             #region Assign Control Property
 
-            ctrlLeftPanel.UserID = userid;
+            ctrlLeftPanel.UserId = userid;
             ctrlLeftPanel.UserName = username;
 
-            ctrlFieldTooBar.UserID = userid;
+            ctrlFieldTooBar.UserId = userid;
 
-            ctrlMenuTabBar.CurrentMenu = Arsenalcn.CasinoSys.Web.Control.CasinoMenuType.CasinoGambler;
+            ctrlMenuTabBar.CurrentMenu = Control.CasinoMenuType.CasinoGambler;
 
             #endregion
 
@@ -52,7 +52,7 @@ namespace Arsenalcn.CasinoSys.Web
                 if (CurrentLeague != Guid.Empty)
                     return CurrentLeague;
                 else
-                    return Entity.ConfigGlobal.DefaultLeagueID;
+                    return ConfigGlobal.DefaultLeagueID;
             }
         }
 
@@ -88,25 +88,25 @@ namespace Arsenalcn.CasinoSys.Web
 
             if (l != null)
             {
-                hlGamblerLeagueView.Text = string.Format("{0}{1}排行榜", l.LeagueName.ToString(), l.LeagueSeason.ToString());
-                hlGamblerLeagueView.NavigateUrl = string.Format("CasinoGambler.aspx?League={0}", ContestLeague.ToString());
+                hlGamblerLeagueView.Text = $"{l.LeagueName}{l.LeagueSeason}排行榜";
+                hlGamblerLeagueView.NavigateUrl = $"CasinoGambler.aspx?League={ContestLeague}";
                 hlGamblerLeagueView.Target = "_self";
             }
 
-            List<Entity.CasinoGambler> list = null;
+            List<Entity.CasinoGambler> list;
 
             if (!CurrentLeague.Equals(Guid.Empty))
             {
                 if (ContestArea > 0)
                 {
-                    var _tbs = ConfigGlobal.TotalBetStandard;
+                    var tbs = ConfigGlobal.TotalBetStandard;
 
-                    list = Entity.CasinoGambler.GetCasinoGamblers(CurrentLeague).FindAll(delegate(Entity.CasinoGambler cg)
+                    list = Entity.CasinoGambler.GetCasinoGamblers(CurrentLeague).FindAll(delegate (Entity.CasinoGambler cg)
                     {
                         if (ContestArea == 1)
-                            return cg.TotalBet >= _tbs;
+                            return cg.TotalBet > tbs;
                         else if (ContestArea == 2)
-                            return cg.TotalBet < _tbs;
+                            return cg.TotalBet <= tbs;
                         else
                             return true;
                     });
@@ -127,42 +127,36 @@ namespace Arsenalcn.CasinoSys.Web
 
             if (list != null && list.Count > 0)
             {
-                if (!string.IsNullOrEmpty(ddlOrderClause.SelectedValue))
-                {
-                    list = Entity.CasinoGambler.SortCasinoGambler(list, ddlOrderClause.SelectedValue);
-                }
-                else
-                {
-                    list = Entity.CasinoGambler.SortCasinoGambler(list);
-                }
+                list = !string.IsNullOrEmpty(ddlOrderClause.SelectedValue) ?
+                    Entity.CasinoGambler.SortCasinoGambler(list, ddlOrderClause.SelectedValue) : Entity.CasinoGambler.SortCasinoGambler(list);
             }
 
-            gvGamlber.DataSource = list;
-            gvGamlber.DataBind();
+            gvGambler.DataSource = list;
+            gvGambler.DataBind();
         }
 
-        protected void gvGamlber_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        protected void gvGambler_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
-            gvGamlber.PageIndex = e.NewPageIndex;
+            gvGambler.PageIndex = e.NewPageIndex;
 
             BindData();
         }
 
         protected void ddlOrderClause_SelectedIndexChanged(object sender, EventArgs e)
         {
-            gvGamlber.PageIndex = 0;
+            gvGambler.PageIndex = 0;
 
             BindData();
         }
 
         protected void ddlContestArea_SelectedIndexChanged(object sender, EventArgs e)
         {
-            gvGamlber.PageIndex = 0;
+            gvGambler.PageIndex = 0;
 
             BindData();
         }
 
-        protected void gvGamlber_RowDataBound(object sender, GridViewRowEventArgs e)
+        protected void gvGambler_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
@@ -170,17 +164,11 @@ namespace Arsenalcn.CasinoSys.Web
 
                 var lblRank = e.Row.FindControl("lblRank") as Label;
 
-                if (lblRank != null)
-                {
-                    if (!string.IsNullOrEmpty(ddlOrderClause.SelectedValue))
-                    {
-                        lblRank.Text = string.Format("<em>{0}</em>", cg.Rank.ToString());
-                    }
-                    else
-                    {
-                        lblRank.Text = string.Format("<em>{0}</em>({1})", cg.Rank.ToString(), cg.Credit.ToString());
-                    }
-                }
+                if (lblRank == null) return;
+
+                if (cg != null)
+                    lblRank.Text = !string.IsNullOrEmpty(ddlOrderClause.SelectedValue) ? $"<em>{cg.Rank}</em>"
+                        : $"<em>{cg.Rank}</em>({cg.Credit})";
             }
         }
     }

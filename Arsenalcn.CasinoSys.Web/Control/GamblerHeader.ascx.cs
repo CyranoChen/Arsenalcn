@@ -13,8 +13,8 @@ namespace Arsenalcn.CasinoSys.Web.Control
                 BtnBet.Visible = false;
                 BtnViewBet.Visible = true;
                 BtnViewBonus.Visible = true;
-                BtnViewBet.OnClientClick = string.Format("window.location.href='MyBetLog.aspx?userid={0}'; return false;", UserID);
-                BtnViewBonus.OnClientClick = string.Format("window.location.href='MyBonusLog.aspx?userid={0}'; return false;", UserID);
+                BtnViewBet.OnClientClick = $"window.location.href='MyBetLog.aspx?userid={UserId}'; return false;";
+                BtnViewBonus.OnClientClick = $"window.location.href='MyBonusLog.aspx?userid={UserId}'; return false;";
             }
             else
             {
@@ -23,21 +23,21 @@ namespace Arsenalcn.CasinoSys.Web.Control
                 BtnViewBonus.Visible = false;
             }
 
-            if (UserID > 0)
+            if (UserId > 0)
             {
-                var currentGamlber = new Entity.Gambler(UserID);
+                var currentGamlber = new Entity.Gambler(UserId);
 
                 ltrlTotalBet.Text = currentGamlber.TotalBet.ToString("N2");
                 ltrlWin.Text = currentGamlber.Win.ToString();
                 ltrlLose.Text = currentGamlber.Lose.ToString();
-                ltrlEarning.Text = Entity.Bet.GetUserTotalWinCash(UserID).ToString("N2");
+                ltrlEarning.Text = Entity.Bet.GetUserTotalWinCash(UserId).ToString("N2");
                 ltrlCash.Text = currentGamlber.Cash.ToString("N2");
 
-                ltrlQSB.Text = AdminUsers.GetUserExtCredits(UserID, 2).ToString("N2");
-                ltrlRP.Text = AdminUsers.GetUserExtCredits(UserID, 4).ToString("f0");
+                ltrlQSB.Text = Users.GetUserExtCredits(UserId, 2).ToString("N2");
+                ltrlRP.Text = Users.GetUserExtCredits(UserId, 4).ToString("f0");
 
                 //UserInfo userInfo = AdminUsers.GetUserInfo(UserID);
-                var myAvatar = Avatars.GetAvatarUrl(UserID, AvatarSize.Small);
+                var myAvatar = Avatars.GetAvatarUrl(UserId, AvatarSize.Small);
                 //if (userInfo.Avatar == string.Empty)
                 //{
                 //    imgAvatar.ImageUrl = "/images/common/noavatar_small.gif";
@@ -55,13 +55,13 @@ namespace Arsenalcn.CasinoSys.Web.Control
                 //    imgAvatar.ImageUrl = string.Format("/{0}", userInfo.Avatar);
                 //}
                 imgAvatar.ImageUrl = myAvatar;
-                imgAvatar.AlternateText = UserName.ToString();
+                imgAvatar.AlternateText = UserName;
 
-                hlUserName.Text = UserName.ToString();
+                hlUserName.Text = UserName;
             }
         }
 
-        public int UserID
+        public int UserId
         { get; set; }
 
         public string UserName

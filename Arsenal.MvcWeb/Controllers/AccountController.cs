@@ -10,7 +10,7 @@ namespace Arsenal.MvcWeb.Controllers
     [Authorize]
     public class AccountController : Controller
     {
-        private IRepository repo = new Repository();
+        private IRepository _repo = new Repository();
 
         //
         // GET: /Account/Index
@@ -61,7 +61,7 @@ namespace Arsenal.MvcWeb.Controllers
                 {
                     // not in SSO, but in Acn Users
                     // Sync the user info, register SSO and then log in
-                    var acnUid = MembershipDto.GetAcnID(model.UserName);
+                    var acnUid = MembershipDto.GetAcnId(model.UserName);
 
                     if (acnUid > 0)
                     {
@@ -135,7 +135,7 @@ namespace Arsenal.MvcWeb.Controllers
                 object userKey;
                 MembershipCreateStatus createStatus;
 
-                user.CreateUser(model.UserName, model.Password, providerUserKey: out userKey, status: out createStatus);
+                user.CreateUser(model.UserName, model.Email, model.Password, providerUserKey: out userKey, status: out createStatus);
 
                 if (createStatus.Equals(MembershipCreateStatus.Success))
                 {
@@ -192,8 +192,8 @@ namespace Arsenal.MvcWeb.Controllers
                         membership.Email = model.Email;
                         membership.Mobile = model.Mobile;
 
-                        repo.Update(user);
-                        repo.Update(membership);
+                        _repo.Update(user);
+                        _repo.Update(membership);
 
                         TempData["DataUrl"] = "data-url=/";
                         return RedirectToAction("Index", "Account");

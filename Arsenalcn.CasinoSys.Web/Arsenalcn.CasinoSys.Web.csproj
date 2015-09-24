@@ -23,6 +23,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -560,6 +561,7 @@
     <Content Include="UploadFiles\Team\UEFA\Ajax.gif" />
     <Content Include="UploadFiles\Team\UEFA\Anderlecht.gif" />
     <Content Include="UploadFiles\Team\UEFA\APOEL.gif" />
+    <Content Include="UploadFiles\Team\UEFA\Astana.gif" />
     <Content Include="UploadFiles\Team\UEFA\AustriaVienna.gif" />
     <Content Include="UploadFiles\Team\UEFA\AZ.gif" />
     <Content Include="UploadFiles\Team\UEFA\Basel.gif" />
@@ -575,13 +577,16 @@
     <Content Include="UploadFiles\Team\UEFA\DebreceniVSC.gif" />
     <Content Include="UploadFiles\Team\UEFA\DinamoZagreb.gif" />
     <Content Include="UploadFiles\Team\UEFA\Dkyiv.gif" />
+    <Content Include="UploadFiles\Team\UEFA\Eindhoven.gif" />
     <Content Include="UploadFiles\Team\UEFA\Fenerbahce.gif" />
     <Content Include="UploadFiles\Team\UEFA\Galatasaray.gif" />
     <Content Include="UploadFiles\Team\UEFA\Genk.gif" />
+    <Content Include="UploadFiles\Team\UEFA\Gent.gif" />
     <Content Include="UploadFiles\Team\UEFA\Hapoel.gif" />
     <Content Include="UploadFiles\Team\UEFA\Legia.gif" />
     <Content Include="UploadFiles\Team\UEFA\Ludogorets.gif" />
     <Content Include="UploadFiles\Team\UEFA\MaccabiHaifa.gif" />
+    <Content Include="UploadFiles\Team\UEFA\MaccabiTelAviv.gif" />
     <Content Include="UploadFiles\Team\UEFA\Malmo.gif" />
     <Content Include="UploadFiles\Team\UEFA\Maribor.gif" />
     <Content Include="UploadFiles\Team\UEFA\Neusiedl.gif" />

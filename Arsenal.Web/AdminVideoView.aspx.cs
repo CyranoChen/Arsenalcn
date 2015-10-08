@@ -185,7 +185,7 @@ namespace Arsenal.Web
                 else
                 {
                     repo.Insert(v);
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('添加成功');window.location.href = 'AdminVideo.aspx'", true);
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('添加成功');window.location.href = window.location.href", true);
                 }
             }
             catch (Exception ex)

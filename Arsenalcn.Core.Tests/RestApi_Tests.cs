@@ -16,7 +16,7 @@ namespace Arsenalcn.Core.Tests
         [TestInitialize]
         public void MyTestInitialize()
         {
-            HttpContext.Current = new HttpContext(new HttpRequest("", "http://localhost", ""), new HttpResponse(new StringWriter(new StringBuilder())));
+            HttpContext.Current = new HttpContext(new HttpRequest("", "http://windows10", ""), new HttpResponse(new StringWriter(new StringBuilder())));
         }
 
         [TestMethod()]
@@ -26,7 +26,7 @@ namespace Arsenalcn.Core.Tests
             //string nextURL = "/default.aspx";
             var gotoURL = string.Empty;
 
-            var _apiServiceUrl = "http://vm-win2008r2/services/restserver.aspx";
+            var _apiServiceUrl = "http://windows10/services/restserver.aspx";
             var _apiAppKey = "e5b551b11b65fd03bf8e9afe14a092c5";
             var _apiCryptographicKey = "68a9b3a904bc09ce89a62310e9ebbd3c";
             var _method = "auth.validate";

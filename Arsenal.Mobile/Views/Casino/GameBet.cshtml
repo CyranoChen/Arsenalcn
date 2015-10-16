@@ -1,0 +1,62 @@
+﻿@model Arsenal.Mobile.Models.Casino.GameBetDto
+@{
+    ViewBag.Title = "比赛投注";
+}
+
+@section Header {
+    <div data-role="header" data-position="fixed">
+        @Html.ActionLink("返回", "Index", "Casino", null,
+            new { data_icon = "arrow-l", data_transition = "slide", data_direction = "reverse", data_iconpos = "notext" })
+        <h1>博彩币：@Model.MyCash.ToString("N2")</h1>
+    </div>
+}
+
+@if (Model.Match.PlayTime > DateTime.Now)
+{
+    @section Footer {
+        <div data-role="footer" data-position="fixed">
+            <div data-role="controlgroup" data-type="horizontal">
+                <a href="@Url.Action("SingleChoice", "Casino", new { id = Model.Match.ID })" data-role="button" data-icon="plus" data-rel="dialog" data-transition="pop">投输赢</a>
+                <a href="@Url.Action("MatchResult", "Casino", new { id = Model.Match.ID })" data-role="button" data-icon="plus" data-rel="dialog" data-transition="pop">猜比分</a>
+            </div>
+        </div>
+    }
+}
+
+<div data-role="content">
+    @Html.Partial("Casino/_MatchInfoPartial", Model.Match)
+    <div data-role="collapsible-set">
+        <div data-role="collapsible">
+            <h3>历史交锋<span class="ui-li-count">@Model.HistoryMatches.Count()</span></h3>
+            <ul id="pnlMatchList" data-role="listview" data-inset="true">
+                @if (Model.HistoryMatches != null && Model.HistoryMatches.Count() > 0)
+                {
+                    foreach (var m in Model.HistoryMatches)
+                    {
+                        <li>
+                            <a data-transition="slide" data-role="button" href="@Url.Action("Detail", "Casino", new { id = m.ID.ToString() })">
+                                @Html.Partial("Casino/_MatchInfoLitePartial", m)
+                            </a>
+                        </li>
+                    }
+                }
+            </ul>
+        </div>
+        <div data-role="collapsible">
+            <h3>我的投注<span class="ui-li-count">@Model.MyBets.Count()</span></h3>
+            <ul id="pnlBetList" data-role="listview" data-inset="true">
+                @if (Model.MyBets != null && Model.MyBets.Count() > 0)
+                {
+                    foreach (var m in Model.MyBets)
+                    {
+                        @Html.Partial("Casino/_BetInfoLitePartial", m)
+                    }
+                }
+            </ul>
+        </div>
+        <div data-role="collapsible">
+            <h3>互动留言<span class="ui-li-count">/</span></h3>
+            <ul id="pnlMessageList" data-role="listview" data-inset="true"></ul>
+        </div>
+    </div>
+</div>

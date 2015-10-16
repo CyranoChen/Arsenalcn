@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 
-using Arsenal.MvcWeb.Models.Casino;
+
 using Arsenal.Service.Casino;
 using AutoMapper;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -71,20 +71,20 @@ namespace Arsenalcn.Core.Tests
             public string LeagueSeason { get; set; }
         }
 
-        [TestMethod]
-        public void AutoMapper_Collections_Test()
-        {
-            IRepository repo = new Repository();
+        //[TestMethod]
+        //public void AutoMapper_Collections_Test()
+        //{
+        //    IRepository repo = new Repository();
 
-            var query = repo.All<MatchView>().FindAll(x => x.ResultHome.HasValue && x.ResultAway.HasValue)
-                .Many<MatchView, ChoiceOption>((tSource, t) => tSource.CasinoItem.ID.Equals(t.CasinoItemGuid));
+        //    var query = repo.All<MatchView>().FindAll(x => x.ResultHome.HasValue && x.ResultAway.HasValue)
+        //        .Many<MatchView, ChoiceOption>((tSource, t) => tSource.CasinoItem.ID.Equals(t.CasinoItemGuid));
 
-            MatchDto.CreateMap();
+        //    MatchDto.CreateMap();
 
-            var result = Mapper.Map<IEnumerable<MatchDto>>(source: query.AsEnumerable());
+        //    var result = Mapper.Map<IEnumerable<MatchDto>>(source: query.AsEnumerable());
 
-            Assert.IsNotNull(result);
-        }
+        //    Assert.IsNotNull(result);
+        //}
 
         [TestMethod]
         public void AutoMapper_DataReader_Test()

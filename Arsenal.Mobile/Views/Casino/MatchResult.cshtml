@@ -1,0 +1,66 @@
+﻿@model Arsenal.Mobile.Models.Casino.MatchResultDto
+@{
+    ViewBag.Title = "猜比分";
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(function () {
+            $("#btnSubmit").click(function () {
+                if ($("#formGameBet").valid()) {
+                    document.forms["formGameBet"].submit();
+                }
+            });
+
+            $(".match-versus input").each(function () {
+                $(this).focus(function () {
+                    $(this).val("");
+                });
+            });
+        });
+    </script>
+}
+@section Header {
+    <div data-role="header">
+        <h1>@Model.Match.LeagueName</h1>
+    </div>
+}
+@section Footer {
+    <div data-role="footer">
+        <input type="button" id="btnSubmit" value="提交投注" />
+    </div>
+}
+<div data-role="content">
+    @using (Html.BeginForm("MatchResult", "Casino", FormMethod.Post, new { id = "formGameBet" }))
+    {
+        <fieldset data-role="controlgroup" class="match-versus">
+            <div class="ui-grid-b">
+                <div class="ui-block-a">
+                    <img src="http://bbs.arsenalcn.com/plugin/acncasino/@Model.Match.TeamHomeLogo" />
+                    <h2>@Model.Match.TeamHomeName</h2>
+                </div>
+                <div class="ui-block-b">
+                    @if (Model.Match.Round.HasValue)
+                    {
+                        <p>第 @Model.Match.Round.Value 轮</p>
+                    }
+                    <p>
+                        @Html.TextBoxFor(m => m.ResultHome)
+                        <span>vs</span>
+                        @Html.TextBoxFor(m => m.ResultAway)
+                    </p>
+                    <p>@Model.Match.PlayTime.ToString("yyyy-MM-dd HH:mm")</p>
+                </div>
+                <div class="ui-block-c">
+                    <img src="http://bbs.arsenalcn.com/plugin/acncasino/@Model.Match.TeamAwayLogo" />
+                    <h2>@Model.Match.TeamAwayName</h2>
+                </div>
+            </div>
+        </fieldset>
+
+        @Html.HiddenFor(m => m.MatchGuid)
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary()
+    }
+</div>

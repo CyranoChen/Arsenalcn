@@ -1,0 +1,44 @@
+﻿@model Arsenal.Mobile.Models.LoginModel
+
+@{
+    ViewBag.Title = "用户登录";
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+@section Header {
+    <div data-role="header" data-position="fixed">
+        @Html.ActionLink("返回", "Index", "Home", null, new { data_icon = "arrow-l", data_rel = "back" })
+        <h1>@ViewBag.Title</h1>
+    </div>
+}
+
+<div data-role="content">
+    @using (Html.BeginForm())
+    {
+        <ul data-role="listview" data-inset="true">
+            <li data-role="list-divider">
+                请使用ACN论坛帐号登录，如没有帐号，可点击 @Html.ActionLink("这里", "Register") 注册
+            </li>
+            <li data-role="fieldcontain">
+                @Html.LabelFor(m => m.UserName)
+                @Html.TextBoxFor(m => m.UserName)
+            </li>
+            <li data-role="fieldcontain">
+                @Html.LabelFor(m => m.Password)
+                @Html.PasswordFor(m => m.Password)
+            </li>
+            <li data-role="fieldcontain">
+                @Html.LabelFor(m => m.RememberMe)
+                @Html.CheckBoxFor(m => m.RememberMe)
+            </li>
+            <li>
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary()
+            </li>
+        </ul>
+        <input type="submit" id="btnSubmit" value="登录" />
+    }
+</div>

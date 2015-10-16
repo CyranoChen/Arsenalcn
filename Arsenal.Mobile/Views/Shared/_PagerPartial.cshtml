@@ -1,0 +1,81 @@
+﻿@model Arsenalcn.Core.Criteria
+@{
+    var controllerName = ViewContext.RouteData.Values["controller"].ToString();
+    var actionName = ViewContext.RouteData.Values["action"].ToString();
+}
+
+<style type="text/css">
+    .pager {
+        text-align: center;
+    }
+
+        .pager input {
+            text-align: center;
+        }
+
+        .pager a#pagePrev {
+            float: left;
+            margin-left: 5px;
+        }
+
+        .pager a#pageNext {
+            float: right;
+            margin-right: 5px;
+        }
+
+        .pager div.ui-input-text {
+            width: 60px;
+            display: inline-block;
+        }
+
+        .pager div.ui-select {
+            width: 60px;
+            display: inline-block;
+        }
+</style>
+<script type="text/javascript">
+
+    $(function () {
+        $("#currentPage").change(function () {
+            SubmitForm();
+        });
+        $("#pagingSize").change(function () {
+            SubmitForm();
+        });
+        $("#pagePrev").click(function () {
+            var currentPage = $("#currentPage").val();
+            if (currentPage != null && currentPage > 0) {
+                currentPage--;
+                $("#currentPage").val(currentPage);
+            }
+            SubmitForm();
+        });
+        $("#pageNext").click(function () {
+            var currentPage = $("#currentPage").val();
+            if (currentPage) {
+                currentPage++;
+                $("#currentPage").val(currentPage);
+            }
+            SubmitForm();
+        });
+    });
+    function SubmitForm() {
+        document.forms["formPager"].submit();
+    }
+</script>
+@using (Html.BeginForm(actionName, controllerName, method: FormMethod.Post, htmlAttributes: new { id = "formPager" }))
+{
+    if (Model.CurrentPage > 0)
+    {
+        <a id="pagePrev" data-role="button" data-icon="arrow-l" data-iconpos="notext">上页</a>
+    }
+
+    @Html.TextBoxFor(m => m.CurrentPage, htmlAttributes: new { id = "currentPage" })
+    <span> / @Model.MaxPage</span>
+    @Html.TextBoxFor(m => m.PagingSize, htmlAttributes: new { id = "pagingSize" })
+
+    if (Model.CurrentPage < Model.MaxPage)
+    {
+        <a id="pageNext" data-role="button" data-icon="arrow-r" data-iconpos="notext">下页</a>
+    }
+}

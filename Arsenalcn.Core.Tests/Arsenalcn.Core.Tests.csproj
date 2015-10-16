@@ -73,10 +73,6 @@
     <Compile Include="AutoMapper_Test.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Arsenal.MvcWeb\Arsenal.MvcWeb.csproj">
-      <Project>{dbfabb35-a675-4a03-93fc-12fbade3e916}</Project>
-      <Name>Arsenal.MvcWeb</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Arsenal.Service\Arsenal.Service.csproj">
       <Project>{852e458a-6cbd-42d1-ba22-8f6eda353aa7}</Project>
       <Name>Arsenal.Service</Name>

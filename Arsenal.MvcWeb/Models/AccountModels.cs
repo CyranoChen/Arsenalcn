@@ -75,10 +75,7 @@ namespace Arsenal.MvcWeb.Models
 
             var membership = repo.Single<Membership>(providerUserKey);
 
-            if (membership != null)
-            { return membership; }
-            else
-            { return null; }
+            return membership;
         }
 
         public static Membership GetMembership(string username)
@@ -89,14 +86,7 @@ namespace Arsenal.MvcWeb.Models
 
             var query = repo.Query<Membership>(x => x.UserName == username);
 
-            if (query.Count > 0)
-            {
-                return query[0];
-            }
-            else
-            {
-                return null;
-            }
+            return query.Count > 0 ? query[0] : null;
         }
 
         //

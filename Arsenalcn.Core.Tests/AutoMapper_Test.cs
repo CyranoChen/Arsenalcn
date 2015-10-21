@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-
-
+using System.Reflection;
+using Arsenal.Service;
 using Arsenal.Service.Casino;
 using AutoMapper;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Arsenal.Service;
 
 namespace Arsenalcn.Core.Tests
 {
@@ -54,7 +53,7 @@ namespace Arsenalcn.Core.Tests
             var list = new List<Person>();
             list.Add(new Person { LeagueGuid = Guid.Empty, LeagueName = "cyrano", LeagueSeason = "good" });
 
-            var map = AutoMapper.Mapper.CreateMap<Person, League>()
+            var map = Mapper.CreateMap<Person, League>()
                 .AfterMap((s, d) => d.LeagueNameInfo = "test");
 
             map.ForMember(d => d.ID, opt => opt.MapFrom(s => s.LeagueGuid));
@@ -102,7 +101,7 @@ namespace Arsenalcn.Core.Tests
                 // db float? -> c# double?
                 // Error on Enum?
                 var mapper = typeof(CasinoItem).GetMethod("CreateMap",
-                    System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
+                    BindingFlags.Static | BindingFlags.Public);
 
                 if (mapper != null)
                 {

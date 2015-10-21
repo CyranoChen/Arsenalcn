@@ -11,7 +11,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Arsenalcn.Core.Tests
 {
     [TestClass]
-    public class AutoMapper_Test
+    public class AutoMapperTest
     {
         [TestMethod]
         public void DataColumn_DefautValue_Test()
@@ -58,7 +58,7 @@ namespace Arsenalcn.Core.Tests
 
             map.ForMember(d => d.ID, opt => opt.MapFrom(s => s.LeagueGuid));
 
-            var instance = Mapper.Map<List<League>>(list).FirstOrDefault();
+            var instance = Mapper.Map<List<League>>(list).First();
 
             Assert.AreEqual(instance.LeagueNameInfo, "test");
         }

@@ -18,7 +18,7 @@
             比赛投注中奖查询
             <span class="ui-li-count">@Model.Bets.Count()</span>
         </li>
-        @if (Model.Bets != null && Model.Bets.Count() > 0)
+        @if (Model.Bets != null && Model.Bets.Any())
         {
             foreach (var m in Model.Bets)
             {

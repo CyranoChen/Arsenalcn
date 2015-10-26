@@ -11,15 +11,16 @@
 <div data-role="content">
     <ul data-role="listview" data-inset="true">
         <li data-role="list-divider">
-            博彩系统（与ACN论坛同步）
+            博彩系统 (与ACN论坛同步)
             <span class="ui-li-count">Arsenalcn.Casino</span>
         </li>
+        @*<li><a href="/Casino" data-transition="slide"><img src="/Content/images/icons-png/video-black.png" alt="USA" class="ui-li-icon" />可投注比赛<span class="ui-li-count">NEW</span></a></li>*@
         <li>@Html.ActionLink("可投注比赛", "Index", "Casino", routeValues: null, htmlAttributes: new { data_transition = "slide" })</li>
         <li>@Html.ActionLink("比赛结果查询", "Result", "Casino", routeValues: null, htmlAttributes: new { data_transition = "slide" })</li>
         <li>@Html.ActionLink("我的投注记录", "MyBet", "Casino", routeValues: null, htmlAttributes: new { data_transition = "slide" })</li>
         <li>@Html.ActionLink("我的盈亏记录", "MyBonus", "Casino", routeValues: null, htmlAttributes: new { data_transition = "slide" })</li>
         <li data-role="list-divider">
-            球会系统（与ACN论坛同步）
+            球会系统 (与ACN论坛同步)
             <span class="ui-li-count">Arsenalcn.Club</span>
         </li>
         <li>@Html.ActionLink("每日签到", "About", "Home", routeValues: null, htmlAttributes: new { data_transition = "slide" })</li>

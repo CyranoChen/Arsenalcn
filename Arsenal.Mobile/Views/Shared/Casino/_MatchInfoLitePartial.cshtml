@@ -14,9 +14,9 @@
         <div class="ui-block-c" style="width: 20%;  text-align: center">
             @if (Model.ResultHome.HasValue && Model.ResultAway.HasValue)
             {
-                <span style="font-size: 22px; font-family: Tahoma; font-weight: bolder">@Model.ResultHome.Value</span>
-                <span style="font-size: 18px; font-family: Tahoma; font-weight: bolder">vs</span>
-                <span style="font-size: 22px; font-family: Tahoma; font-weight: bolder">@Model.ResultAway.Value</span>
+                <span style="font-size: 22px; font-weight: bolder">@Model.ResultHome.Value</span>
+                <span style="font-size: 18px; font-weight: bolder; margin: 0 5px">vs</span>
+                <span style="font-size: 22px; font-weight: bolder">@Model.ResultAway.Value</span>
             }
             else
             {

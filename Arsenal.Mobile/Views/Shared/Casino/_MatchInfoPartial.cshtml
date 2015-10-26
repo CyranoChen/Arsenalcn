@@ -11,14 +11,14 @@
             @if (Model.ResultHome.HasValue && Model.ResultAway.HasValue)
             {
                 <p>
-                    <span style="font-size: 22px; font-family: Tahoma; font-weight: bolder">@Model.ResultHome.Value</span>
-                    <span style="font-size: 22px; font-family: Tahoma; font-weight: bolder">vs</span>
-                    <span style="font-size: 22px; font-family: Tahoma; font-weight: bolder">@Model.ResultAway.Value</span>
+                    <span style="font-size: 30px; font-weight: bolder">@Model.ResultHome.Value</span>
+                    <span style="font-size: 20px; font-weight: bolder; margin: 0 10px">vs</span>
+                    <span style="font-size: 30px; font-weight: bolder">@Model.ResultAway.Value</span>
                 </p>
             }
             else
             {
-                <p style="font-size: 22px; font-family: Tahoma; font-weight: bolder">vs</p>
+                <p style="font-size: 20px; font-family: Tahoma; font-weight: bolder">vs</p>
             }
             <p>@Model.PlayTime.ToString("yyyy-MM-dd HH:mm")</p>
         </div>

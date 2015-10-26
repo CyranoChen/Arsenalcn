@@ -1,5 +1,5 @@
 ﻿/* CSS Version Default */
-/* Version: 0.1 (Arsenal.Mobile) */
+/* Version: 0.3 (Arsenal.Mobile) */
 /* Cascading Style Sheets Level 2 Revision 1 */
 
 /* Styles for validation helpers
@@ -32,13 +32,50 @@
 
 /* jQuery mobile styles
 -----------------------------------------------------------*/
-.ui-header, .ui-footer, .ui-footer .ui-controlgroup {
+.ui-overlay-c {
+    background: #666666 url("images/site-background.jpg") 50% 0 no-repeat fixed;
+}
+
+
+.ui-page-theme-c {
+    background: #eaeaea url("images/page-background.jpg") 50% 0 repeat-y;
+    -webkit-filter: Alpha(Opacity=92);
+    -moz-filter: Alpha(Opacity=92);
+    -o-filter: Alpha(Opacity=92);
+    filter: Alpha(Opacity=92);
+    -ms-opacity: .92;
+    opacity: .92;
+}
+
+.ui-page-theme-c .ui-listview li .ui-btn-active {
+        background: #fef1f0 !important;
+        color: #aa0000 !important;
+        -ms-text-shadow: none !important;
+        text-shadow: none !important;
+    }
+
+.ui-page-theme-c .ui-header-fixed {
+        border-bottom: 4px #9c824a solid !important;
+        background: #d60000 url("images/bar-background.png") right top no-repeat !important;
+    }
+
+    .ui-page-theme-c .ui-footer-fixed {
+        border-top: 4px #9c824a solid !important;
+        background: #d60000 url("images/bar-background.png") right top no-repeat !important;
+    }
+
+    .ui-page-theme-c .ui-li-divider {
+        border-bottom: 2px #9c824a solid !important;
+    }
+
+.ui-header, .ui-footer, .ui-controlgroup {
     text-align: center;
 }
 
     .ui-header h1 {
         overflow: visible;
     }
+
 
 /* Make listview buttons fill the whole horizontal width of the screen */
 .ui-li .ui-btn-inner a.ui-link-inherit, .ui-li-static.ui-li {
@@ -51,13 +88,8 @@
 .ui-bar-d, .ui-body-d, .ui-btn-up-d, .ui-btn-hover-d, .ui-btn-down-d,
 .ui-bar-e, .ui-body-e, .ui-btn-up-e, .ui-btn-hover-e, .ui-btn-down-e,
 .ui-btn-active {
+    -ms-text-shadow: none;
     text-shadow: none;
-}
-
-/* Set default font 
------------------------------------------------------------*/
-body, button, input, select, textarea, h1, h2, h3, h4, h5, h6, p, span, a, .ui-btn {
-    font-family: Microsoft YaHei, Tahoma, Helvetica, Arial, sans-serif;
 }
 
 

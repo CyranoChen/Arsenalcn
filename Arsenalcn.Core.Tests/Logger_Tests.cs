@@ -1,25 +1,23 @@
 ﻿using System;
 using System.Reflection;
 using System.Threading;
-
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 using Arsenalcn.Core.Logger;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Arsenalcn.Core.Tests
 {
-    [TestClass()]
+    [TestClass]
     public class Logger_Tests
     {
 
-        [TestMethod()]
+        [TestMethod]
         public void Logger_Test()
         {
             var sql = "INSERT XXX INTO XXX";
 
             ILog log1 = new DaoLog();
 
-            log1.Debug(sql, new LogInfo() { MethodInstance = MethodBase.GetCurrentMethod(), ThreadInstance = Thread.CurrentThread });
+            log1.Debug(sql, new LogInfo { MethodInstance = MethodBase.GetCurrentMethod(), ThreadInstance = Thread.CurrentThread });
 
             //ILog log2 = new UserLog();
 
@@ -28,7 +26,7 @@ namespace Arsenalcn.Core.Tests
             Assert.IsTrue(true);
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void LoggerException_Test()
         {
             try
@@ -40,7 +38,7 @@ namespace Arsenalcn.Core.Tests
             {
                 ILog log = new DaoLog();
 
-                log.Debug(ex, new LogInfo() { MethodInstance = MethodBase.GetCurrentMethod(), ThreadInstance = Thread.CurrentThread });
+                log.Debug(ex, new LogInfo { MethodInstance = MethodBase.GetCurrentMethod(), ThreadInstance = Thread.CurrentThread });
             }
 
             Assert.IsTrue(true);

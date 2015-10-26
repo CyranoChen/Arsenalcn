@@ -2,15 +2,14 @@
 using System.IO;
 using System.Net;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-using Arsenal.Service;
 using System.Web;
+using Arsenal.Service;
 using Arsenalcn.Core.Utility;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Arsenalcn.Core.Tests
 {
-    [TestClass()]
+    [TestClass]
     public class RestApi_Tests
     {
         [TestInitialize]
@@ -19,7 +18,7 @@ namespace Arsenalcn.Core.Tests
             HttpContext.Current = new HttpContext(new HttpRequest("", "http://windows10", ""), new HttpResponse(new StringWriter(new StringBuilder())));
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void ApiValidate_Test()
         {
             var authToken = string.Empty;
@@ -99,10 +98,6 @@ namespace Arsenalcn.Core.Tests
 
                         //Console.WriteLine(responseResult);
                     }
-                    else
-                    {
-                        //gotoURL = string.Format("{0}?api_key={1}&next={2}", ConfigGlobal.APILoginURL, ConfigGlobal.APIAppKey, nextURL);
-                    }
 
                     //context.Response.Redirect(gotoURL, false);
                     //context.ApplicationInstance.CompleteRequest();
@@ -117,7 +112,7 @@ namespace Arsenalcn.Core.Tests
             }
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void ApiUsersGetID_Test()
         {
             var client = new DiscuzApiClient();
@@ -127,7 +122,7 @@ namespace Arsenalcn.Core.Tests
             Assert.AreEqual("\"443\"", responseResult);
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void ApiAuthValidate_Test()
         {
             var client = new DiscuzApiClient();
@@ -137,7 +132,7 @@ namespace Arsenalcn.Core.Tests
             Assert.AreEqual(443, Convert.ToInt32(uid.Replace("\"", "")));
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void ApiUsersGetInfo_Test()
         {
             var client = new DiscuzApiClient();
@@ -150,7 +145,7 @@ namespace Arsenalcn.Core.Tests
             Assert.IsNotNull(responseResult);
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void WeChatGetAccessToken()
         {
             var client1 = new WeChatApiClient();

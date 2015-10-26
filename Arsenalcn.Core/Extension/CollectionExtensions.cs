@@ -75,7 +75,7 @@ namespace Arsenalcn.Core
                 var attr = Repository.GetTableAttr<TMany>();
                 var attrCol = Repository.GetColumnAttr(property);
 
-                if (attr != null && attrCol != null && !string.IsNullOrEmpty(attrCol.ForeignKey))
+                if (attr != null && !string.IsNullOrEmpty(attrCol?.ForeignKey))
                 {
                     var list = new List<TMany>();
 

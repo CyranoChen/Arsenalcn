@@ -56,7 +56,7 @@ namespace Microsoft.ApplicationBlocks.Data
         /// <param name="commandParameters">An array of SqlParameters to be added to command</param>
         private static void AttachParameters(SqlCommand command, SqlParameter[] commandParameters)
         {
-            if (command == null) throw new ArgumentNullException("command");
+            if (command == null) throw new ArgumentNullException(nameof(command));
             if (commandParameters != null)
             {
                 foreach (var p in commandParameters)

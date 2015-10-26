@@ -116,14 +116,22 @@ namespace Arsenalcn.Core
                     strOrderBy = orderBy;
                 }
 
+                // Get TotalCount First
+                var countSql = string.Format("SELECT COUNT({1}) AS TotalCount FROM {0}", attr.Name, attr.Key);
+
+                var ds = DataAccess.ExecuteDataset(countSql);
+
+                pager.SetTotalCount((int)ds.Tables[0].Rows[0]["TotalCount"]);
+
+                // Get Query Result
                 var innerSql = string.Format("(SELECT ROW_NUMBER() OVER(ORDER BY {1}) AS RowNo, * FROM {0})", attr.Name, strOrderBy);
 
                 string sql =
-                    $"SELECT * FROM {innerSql} AS t WHERE t.RowNo BETWEEN {(pager.CurrentPage * pager.PagingSize).ToString()} AND {((pager.CurrentPage + 1) * pager.PagingSize - 1).ToString()};";
+                    $"SELECT * FROM {innerSql} AS t WHERE t.RowNo BETWEEN {(pager.CurrentPage * pager.PagingSize + 1)} AND {((pager.CurrentPage + 1) * pager.PagingSize)};";
 
-                sql += string.Format("SELECT COUNT({1}) AS TotalCount FROM {0}", attr.Name, attr.Key);
+                //sql += string.Format("SELECT COUNT({1}) AS TotalCount FROM {0}", attr.Name, attr.Key);
 
-                var ds = DataAccess.ExecuteDataset(sql);
+                ds = DataAccess.ExecuteDataset(sql);
 
                 var dt = ds.Tables[0];
 
@@ -135,7 +143,7 @@ namespace Arsenalcn.Core
                     }
                 }
 
-                pager.SetTotalCount((int)ds.Tables[1].Rows[0]["TotalCount"]);
+                //pager.SetTotalCount((int)ds.Tables[1].Rows[0]["TotalCount"]);
 
                 return list;
             }
@@ -236,15 +244,29 @@ namespace Arsenalcn.Core
                     strOrderBy = orderBy;
                 }
 
+                // Get TotalCount First
+                var countSql = string.Format("SELECT COUNT({1}) AS TotalCount FROM {0} WHERE {2}", attr.Name, attr.Key, condition.Condition);
+
+                DataSet ds;
+
+                if (condition.SqlArguments != null && condition.SqlArguments.Count > 0)
+                {
+                    ds = DataAccess.ExecuteDataset(countSql, condition.SqlArguments.ToArray());
+                }
+                else
+                {
+                    ds = DataAccess.ExecuteDataset(countSql);
+                }
+
+                pager.SetTotalCount((int)ds.Tables[0].Rows[0]["TotalCount"]);
+
                 // Build Sql and Execute
                 var innerSql = string.Format("(SELECT ROW_NUMBER() OVER(ORDER BY {1}) AS RowNo, * FROM {0} WHERE {2})",
                     attr.Name, strOrderBy, condition.Condition);
 
-                string sql = $"SELECT * FROM {innerSql} AS t WHERE t.RowNo BETWEEN {(pager.CurrentPage * pager.PagingSize)} AND {((pager.CurrentPage + 1) * pager.PagingSize - 1)}";
+                string sql = $"SELECT * FROM {innerSql} AS t WHERE t.RowNo BETWEEN {(pager.CurrentPage * pager.PagingSize + 1)} AND {((pager.CurrentPage + 1) * pager.PagingSize)}";
 
-                sql += string.Format("SELECT COUNT({1}) AS TotalCount FROM {0} WHERE {2}", attr.Name, attr.Key, condition.Condition);
-
-                DataSet ds;
+                //sql += string.Format("SELECT COUNT({1}) AS TotalCount FROM {0} WHERE {2}", attr.Name, attr.Key, condition.Condition);
 
                 if (condition.SqlArguments != null && condition.SqlArguments.Count > 0)
                 {
@@ -265,7 +287,7 @@ namespace Arsenalcn.Core
                     }
                 }
 
-                pager.SetTotalCount((int)ds.Tables[1].Rows[0]["TotalCount"]);
+                //pager.SetTotalCount((int)ds.Tables[1].Rows[0]["TotalCount"]);
 
                 return list;
             }

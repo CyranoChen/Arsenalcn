@@ -17,6 +17,16 @@ namespace Arsenal.Service
             map.ForMember(d => d.ID, opt => opt.MapFrom(s => (Guid)s.GetValue("UserGuid")));
         }
 
+        public object SignIn()
+        {
+            IRepository repo = new Repository();
+
+            LastLoginDate = DateTime.Now;
+            repo.Update<Membership>(this);
+
+            return ID;
+        }
+
         #region Members and Properties
 
         [DbColumn("UserName")]

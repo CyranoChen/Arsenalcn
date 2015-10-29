@@ -4,6 +4,7 @@ using System.Web.Security;
 
 using Arsenal.Mobile.Models;
 using Arsenalcn.Core;
+using Arsenalcn.Core.Utility;
 
 namespace Arsenal.Mobile.Controllers
 {
@@ -39,41 +40,49 @@ namespace Arsenal.Mobile.Controllers
         {
             if (ModelState.IsValid)
             {
-                object userKey;
+                Service.Membership mem;
+                int acnUid;
 
-                if (MembershipDto.ValidateUser(model.UserName, model.Password, providerUserKey: out userKey))
+                if (MembershipDto.ValidateUser(model.UserName, membership: out mem))
                 {
-                    FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
-                    UserDto.SetSession(userKey);
-
-                    if (Url.IsLocalUrl(returnUrl))
+                    if (mem.Password.Equals(Encrypt.GetMd5Hash(model.Password)))
                     {
-                        TempData["DataUrl"] = string.Format("data-url={0}", returnUrl);
-                        return Redirect(returnUrl);
+                        // Sign in
+                        FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
+                        UserDto.SetSession(mem.SignIn());
+
+                        if (Url.IsLocalUrl(returnUrl))
+                        {
+                            TempData["DataUrl"] = $"data-url={returnUrl}";
+                            return Redirect(returnUrl);
+                        }
+                        else
+                        {
+                            TempData["DataUrl"] = "data-url=/";
+                            return RedirectToAction("Index", "Home");
+                        }
                     }
                     else
                     {
-                        TempData["DataUrl"] = "data-url=/";
-                        return RedirectToAction("Index", "Home");
+                        ModelState.AddModelError("Warn", "用户名或密码不正确");
                     }
                 }
-                else if (MembershipDto.ValidateAcnUser(model.UserName, model.Password))
+                else if (MembershipDto.ValidateAcnUser(model.UserName, model.Password, out acnUid))
                 {
                     // not in SSO, but in Acn Users
                     // Sync the user info, register SSO and then log in
-                    var acnUid = MembershipDto.GetAcnId(model.UserName);
 
                     if (acnUid > 0)
                     {
-                        var user = new MembershipDto();
+                        var membership = new MembershipDto();
 
                         MembershipCreateStatus createStatus;
-                        user.CreateAcnUser(acnUid, providerUserKey: out userKey, status: out createStatus);
+                        membership.CreateAcnUser(acnUid, status: out createStatus);
 
                         if (createStatus.Equals(MembershipCreateStatus.Success))
                         {
                             FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
-                            UserDto.SetSession(userKey);
+                            UserDto.SetSession(membership.SignIn());
 
                             TempData["DataUrl"] = "data-url=/";
                             return RedirectToAction("Index", "Home");
@@ -90,7 +99,7 @@ namespace Arsenal.Mobile.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("Warn", "用户名或密码不正确");
+                    ModelState.AddModelError("Warn", "用户名不存在或密码不正确");
                 }
             }
 
@@ -250,14 +259,14 @@ namespace Arsenal.Mobile.Controllers
                     }
                     else
                     {
-                        changePasswordSucceeded = false;
+                        //changePasswordSucceeded = false;
 
                         ModelState.AddModelError("Warn", "当前用户不存在");
                     }
                 }
                 catch (Exception ex)
                 {
-                    changePasswordSucceeded = false;
+                    //changePasswordSucceeded = false;
 
                     ModelState.AddModelError("Warn", ex.Message);
                 }

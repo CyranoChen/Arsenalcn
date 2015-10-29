@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Data.SqlClient;
 using System.Data.SqlTypes;
 using System.Diagnostics.Contracts;
+using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Web;
@@ -88,6 +89,38 @@ namespace Arsenal.Mobile.Models
             return query.Count > 0 ? query[0] : null;
         }
 
+        public object SignIn(Membership membership)
+        {
+            IRepository repo = new Repository();
+
+            membership.LastLoginDate = DateTime.Now;
+            repo.Update(membership);
+
+            UserDto.SetSession(membership.ID);
+
+            return membership.ID;
+        }
+
+        public static bool ValidateUser(string username, out Membership membership)
+        {
+            Contract.Requires(!string.IsNullOrEmpty(username));
+
+            IRepository repo = new Repository();
+
+            var query = repo.Query<Membership>(x => x.UserName == username);
+
+            if (query.Any())
+            {
+                membership = query[0];
+            }
+            else
+            {
+                membership = null;
+            }
+
+            return query.Any();
+        }
+
         //
         // Summary:
         //     Verifies that the supplied user name and password are valid.
@@ -101,60 +134,72 @@ namespace Arsenal.Mobile.Models
         //
         // Returns:
         //     true if the supplied user name and password are valid; otherwise, false.
-        public static bool ValidateUser(string username, string password, out object providerUserKey)
+        //public static bool ValidateUser(string username, string password, out object providerUserKey)
+        //{
+        //    Contract.Requires(!string.IsNullOrEmpty(username));
+        //    Contract.Requires(!string.IsNullOrEmpty(password));
+
+        //    IRepository repo = new Repository();
+
+        //    var query = repo.Query<Membership>(x =>
+        //        x.UserName == username && x.Password == Encrypt.GetMd5Hash(password));
+
+        //    if (query.Count > 0)
+        //    {
+        //        var membership = query[0];
+
+        //        providerUserKey = membership.ID;
+
+        //        membership.LastLoginDate = DateTime.Now;
+        //        repo.Update(membership);
+        //    }
+        //    else
+        //    {
+        //        providerUserKey = null;
+        //    }
+
+        //    return query.Count > 0;
+        //}
+
+        public static bool ValidateAcnUser(string username, string password, out int acnUid)
         {
-            Contract.Requires(!string.IsNullOrEmpty(username));
-            Contract.Requires(!string.IsNullOrEmpty(password));
+            acnUid = -1;
 
-            IRepository repo = new Repository();
-
-            var query = repo.Query<Membership>(x =>
-                x.UserName == username && x.Password == Encrypt.GetMd5Hash(password));
-
-            if (query.Count > 0)
-            {
-                var membership = query[0];
-
-                providerUserKey = membership.ID;
-
-                membership.LastLoginDate = DateTime.Now;
-                repo.Update(membership);
-            }
-            else
-            {
-                providerUserKey = null;
-            }
-
-            return query.Count > 0;
-        }
-
-        public static bool ValidateAcnUser(string username, string password)
-        {
             if (!ConfigGlobal.AcnSync) { return false; }
 
             var client = new DiscuzApiClient();
 
             var uid = client.AuthValidate(username, Encrypt.GetMd5Hash(password));
 
-            return Convert.ToInt32(uid.Replace("\"", "")) > 0;
+            return Int32.TryParse(uid.Replace("\"", ""), out acnUid);
         }
 
         public static int GetAcnId(string username)
         {
+            if (!ConfigGlobal.AcnSync) { return -1; }
+
             var client = new DiscuzApiClient();
 
             var uid = client.UsersGetID(username);
 
-            return Convert.ToInt32(uid.Replace("\"", ""));
+            int acnUid;
+
+            if (Int32.TryParse(uid.Replace("\"", ""), out acnUid))
+            {
+                return acnUid;
+            }
+            else
+            {
+                return 0;
+            }
         }
 
         // Summary:
         //     Adds a new user to the data store by exist Acn user.
         //
-        public void CreateAcnUser(int uid, out object providerUserKey, out MembershipCreateStatus status)
+        public void CreateAcnUser(int uid, out MembershipCreateStatus status)
         {
             status = MembershipCreateStatus.UserRejected;
-            providerUserKey = null;
 
             if (!ConfigGlobal.AcnSync) { return; }
 
@@ -190,20 +235,24 @@ namespace Arsenal.Mobile.Models
                 {
                     IRepository repo = new Repository();
 
+                    object providerUserKey;
+
                     repo.Insert<Membership>(this, out providerUserKey, trans);
 
-                    var user = new User();
+                    var user = new User
+                    {
+                        ID = (Guid)providerUserKey,
+                        UserName = UserName,
+                        IsAnonymous = false,
+                        LastActivityDate = DateTime.Now,
+                        AcnID = uid,
+                        AcnUserName = UserName,
+                        MemberID = null,
+                        MemberName = string.Empty,
+                        WeChatOpenID = null,
+                        WeChatNickName = string.Empty
+                    };
 
-                    user.ID = (Guid)providerUserKey;
-                    user.UserName = UserName;
-                    user.IsAnonymous = false;
-                    user.LastActivityDate = DateTime.Now;
-                    user.AcnID = uid;
-                    user.AcnUserName = UserName;
-                    user.MemberID = null;
-                    user.MemberName = string.Empty;
-                    user.WeChatOpenID = null;
-                    user.WeChatNickName = string.Empty;
 
                     repo.Insert(user, trans);
 

@@ -7,10 +7,10 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Arsenal.Web")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Arsenal.cn")]
-[assembly: AssemblyProduct("Arsenal.Web")]
-[assembly: AssemblyCopyright("Copyright © Arsenal.cn 2012")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCompany("Arsenal China Official Supporters Club")]
+[assembly: AssemblyProduct("Arsenal.cn")]
+[assembly: AssemblyCopyright("Copyright © 2012")]
+[assembly: AssemblyTrademark("ArsenalCN")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
@@ -30,5 +30,5 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("1.3.6.0")]
-[assembly: AssemblyFileVersion("1.3.6.0")]
+[assembly: AssemblyVersion("1.8.*")]
+[assembly: AssemblyFileVersion("1.8.2")]

@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Arsenalcn.Common")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyDescription("沪ICP备12045527号")]
+[assembly: AssemblyConfiguration("webmaster@arsenalcn.com")]
 [assembly: AssemblyCompany("Arsenalcn.com")]
 [assembly: AssemblyProduct("Arsenalcn.Common")]
-[assembly: AssemblyCopyright("Copyright © Arsenalcn.com 2012-2014")]
+[assembly: AssemblyCopyright("© Arsenalcn.com 2012-2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

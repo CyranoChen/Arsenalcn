@@ -27,7 +27,9 @@ namespace Arsenal.Scheduler
             {
                 log.Info("Scheduler Start: (RefreshCache)", logInfo);
 
-                Config.Cache.RefreshCache();
+                Config.UpdateAssemblyInfo(Assembly.GetExecutingAssembly(), ConfigSystem.Arsenal);
+
+                ConfigGlobal.Refresh();
 
                 RelationLeagueTeam.Clean();
                 RelationLeagueTeam.Cache.RefreshCache();

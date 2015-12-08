@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // 控制。更改这些属性值可修改
 // 与程序集关联的信息。
 [assembly: AssemblyTitle("Arsenalcn.ClubSys.Web")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyDescription("沪ICP备12045527号")]
+[assembly: AssemblyConfiguration("webmaster@arsenalcn.com")]
 [assembly: AssemblyCompany("Arsenal China Official Supporters Club")]
 [assembly: AssemblyProduct("Arsenalcn.com")]
-[assembly: AssemblyCopyright("Copyright © 2009")]
+[assembly: AssemblyCopyright("© 2009")]
 [assembly: AssemblyTrademark("ArsenalCN")]
 [assembly: AssemblyCulture("")]
 

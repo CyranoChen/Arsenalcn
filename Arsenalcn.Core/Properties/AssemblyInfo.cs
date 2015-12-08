@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Arsenalcn.Core")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyDescription("沪ICP备12045527号")]
+[assembly: AssemblyConfiguration("webmaster@arsenalcn.com")]
 [assembly: AssemblyCompany("Arsenal China Official Supporters Club")]
 [assembly: AssemblyProduct("Arsenalcn.com")]
-[assembly: AssemblyCopyright("Copyright © 2015")]
+[assembly: AssemblyCopyright("© 2015")]
 [assembly: AssemblyTrademark("ArsenalCN")]
 [assembly: AssemblyCulture("")]
 
@@ -32,4 +32,4 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.8.*")]
-[assembly: AssemblyFileVersion("1.8.2")]
+[assembly: AssemblyFileVersion("1.8.3")]

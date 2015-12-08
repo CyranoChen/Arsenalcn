@@ -6,18 +6,42 @@ namespace iArsenal.Service
 {
     public static class ConfigGlobal
     {
-        public static Dictionary<string, string> ConfigDictionary
+        static ConfigGlobal()
         {
-            get
-            {
-                var currSystem = ConfigSystem.iArsenal;
-                return Config.Cache.GetDictionaryByConfigSystem(currSystem);
-            }
+            Init();
         }
+
+        public static void Refresh()
+        {
+            Init();
+        }
+
+        private static void Init()
+        {
+            Config.Cache.RefreshCache();
+            ConfigDictionary = Config.Cache.GetDictionaryByConfigSystem(ConfigSystem.iArsenal);
+
+            Assembly = new AssemblyInfo()
+            {
+                Title = ConfigDictionary["AssemblyTitle"],
+                Description = ConfigDictionary["AssemblyDescription"],
+                Configuration = ConfigDictionary["AssemblyConfiguration"],
+                Company = ConfigDictionary["AssemblyCompany"],
+                Product = ConfigDictionary["AssemblyProduct"],
+                Copyright = ConfigDictionary["AssemblyCopyright"],
+                Trademark = ConfigDictionary["AssemblyTrademark"],
+                Culture = ConfigDictionary["AssemblyCulture"],
+                Version = ConfigDictionary["AssemblyVersion"],
+                FileVersion = ConfigDictionary["AssemblyFileVersion"]
+            };
+        }
+
+        private static Dictionary<string, string> ConfigDictionary { get; set; }
+        public static AssemblyInfo Assembly { get; set; }
 
         public static bool IsPluginAdmin(int userid)
         {
-            var admins = ConfigGlobal.PluginAdmin;
+            var admins = PluginAdmin;
             if (userid > 0 && admins.Length > 0)
             {
                 foreach (var a in admins)
@@ -163,96 +187,6 @@ namespace iArsenal.Service
                 return ConfigDictionary["SysNotice"];
             }
         }
-
-        //public static string CodePlayerNumber
-        //{
-        //    get
-        //    {
-        //        return ConfigDictionary["CodePlayerNumber"];
-        //    }
-        //}
-
-        //public static string CodePlayerName
-        //{
-        //    get
-        //    {
-        //        return ConfigDictionary["CodePlayerName"];
-        //    }
-        //}
-
-        //public static string CodeChampionshipPatch
-        //{
-        //    get
-        //    {
-        //        return ConfigDictionary["CodeChampionshipPatch"];
-        //    }
-        //}
-
-        //public static string CodePremiershipPatch
-        //{
-        //    get
-        //    {
-        //        return ConfigDictionary["CodePremiershipPatch"];
-        //    }
-        //}
-
-        //public static string CodeArsenalFont
-        //{
-        //    get
-        //    {
-        //        return ConfigDictionary["CodeArsenalFont"];
-        //    }
-        //}
-
-        //public static string[] CodeReplicaKitHome
-        //{
-        //    get
-        //    {
-        //        string configValue = ConfigDictionary["CodeReplicaKitHome"];
-
-        //        return configValue.Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
-        //    }
-        //}
-
-        //public static string[] CodeReplicaKitAway
-        //{
-        //    get
-        //    {
-        //        string configValue = ConfigDictionary["CodeReplicaKitAway"];
-
-        //        return configValue.Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
-        //    }
-        //}
-
-        //public static string[] CodeTicketBeijing
-        //{
-        //    get
-        //    {
-        //        string configValue = ConfigDictionary["CodeTicketBeijing"];
-
-        //        return configValue.Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
-        //    }
-        //}
-
-        //public static string[] CodeEmirateTravel
-        //{
-        //    get
-        //    {
-        //        string configValue = ConfigDictionary["CodeEmirateTravel"];
-
-        //        return configValue.Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
-        //    }
-        //}
-
-        //public static string[] CodeMatchTicket
-        //{
-        //    get
-        //    {
-        //        string configValue = ConfigDictionary["CodeMatchTicket"];
-
-        //        return configValue.Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
-        //    }
-        //}
 
         public static string[] BulkOrderInfo
         {

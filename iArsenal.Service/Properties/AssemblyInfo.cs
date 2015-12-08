@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("iArsenal.Service")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyDescription("沪ICP备12045527号")]
+[assembly: AssemblyConfiguration("webmaster@arsenalcn.com")]
 [assembly: AssemblyCompany("Arsenal China Official Supporters Club")]
 [assembly: AssemblyProduct("iArsenal.com")]
-[assembly: AssemblyCopyright("Copyright © 2011")]
+[assembly: AssemblyCopyright("© 2011")]
 [assembly: AssemblyTrademark("ArsenalCN")]
 [assembly: AssemblyCulture("")]
 
@@ -31,5 +31,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("2.4.*")]
-[assembly: AssemblyFileVersion("2.4.7")]
+[assembly: AssemblyVersion("2.5.*")]
+[assembly: AssemblyFileVersion("2.5.0")]

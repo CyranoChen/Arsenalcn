@@ -14,7 +14,7 @@
 
         $(function () {
             var $btnSubmit = $(".FooterBtnBar .SubmitBtn");
-            $btnSubmit.click(function () { return PackageWishOrderItemList($('tbody.ArsenalDirect_WishList')); });
+            //$btnSubmit.click(function () { return PackageWishOrderItemList($('tbody.ArsenalDirect_WishList')); });
 
             $.getJSON("ServerOrderItemCheck.ashx", { OrderItem: "0" }, function (data, status, xhr) {
                 if (status == "success" && data != null) {
@@ -144,7 +144,7 @@
             </table>
             <div class="FooterBtnBar">
                 <asp:Button ID="btnSubmit" runat="server" Text="保存订单信息" CssClass="InputBtn SubmitBtn"
-                    OnClick="btnSubmit_Click" />
+                    OnClick="btnSubmit_Click" OnClientClick="return PackageWishOrderItemList($('tbody.ArsenalDirect_WishList'));" />
                 <input id="btnReset" type="reset" value="重置表单" class="InputBtn" />
             </div>
         </div>

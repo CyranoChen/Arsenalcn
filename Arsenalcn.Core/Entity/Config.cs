@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Reflection;
 
 namespace Arsenalcn.Core
 {
@@ -111,8 +112,7 @@ namespace Arsenalcn.Core
         {
             Contract.Requires(Any());
 
-            var sql =
-                $"UPDATE {Repository.GetTableAttr<Config>().Name} SET ConfigValue = @configValue WHERE ConfigSystem = @configSystem AND ConfigKey = @configKey";
+            var sql = $"UPDATE {Repository.GetTableAttr<Config>().Name} SET ConfigValue = @configValue WHERE ConfigSystem = @configSystem AND ConfigKey = @configKey";
 
             SqlParameter[] para = {
                                       new SqlParameter("@configSystem", ConfigSystem.ToString()),
@@ -120,6 +120,117 @@ namespace Arsenalcn.Core
                                       new SqlParameter("@configValue", ConfigValue) };
 
             DataAccess.ExecuteNonQuery(sql, para, trans);
+        }
+
+        public void Save(SqlTransaction trans = null)
+        {
+            if (Any())
+            {
+                Update();
+            }
+            else
+            {
+                var sql = $"INSERT INTO {Repository.GetTableAttr<Config>().Name} (ConfigValue, ConfigSystem, ConfigKey) VALUES (@configValue, @configSystem, @configKey)";
+
+                SqlParameter[] para = {
+                                      new SqlParameter("@configSystem", ConfigSystem.ToString()),
+                                      new SqlParameter("@configKey", ConfigKey),
+                                      new SqlParameter("@configValue", ConfigValue) };
+
+                DataAccess.ExecuteNonQuery(sql, para, trans);
+            }
+        }
+
+        public static void UpdateAssemblyInfo(Assembly assembly, ConfigSystem configSystem)
+        {
+            if (assembly != null)
+            {
+                //[assembly: AssemblyTitle("Arsenalcn.Core")]
+                //[assembly: AssemblyDescription("沪ICP备12045527号")]
+                //[assembly: AssemblyConfiguration("webmaster@arsenalcn.com")]
+                //[assembly: AssemblyCompany("Arsenal China Official Supporters Club")]
+                //[assembly: AssemblyProduct("Arsenalcn.com")]
+                //[assembly: AssemblyCopyright("© 2015")]
+                //[assembly: AssemblyTrademark("ArsenalCN")]
+                //[assembly: AssemblyCulture("")]
+                //[assembly: AssemblyVersion("1.8.*")]
+                //[assembly: AssemblyFileVersion("1.8.2")]
+
+                var c = new Config();
+                c.ConfigSystem = configSystem;
+
+                //AssemblyTitle
+                c.ConfigKey = "AssemblyTitle";
+                c.ConfigValue =
+                    ((AssemblyTitleAttribute)Attribute.GetCustomAttribute(assembly, typeof(AssemblyTitleAttribute)))?.Title;
+
+                c.Save();
+
+                //AssemblyDescription
+                c.ConfigKey = "AssemblyDescription";
+                c.ConfigValue =
+                    ((AssemblyDescriptionAttribute)Attribute.GetCustomAttribute(assembly, typeof(AssemblyDescriptionAttribute)))?.Description;
+
+                c.Save();
+
+                //AssemblyConfiguration
+                c.ConfigKey = "AssemblyConfiguration";
+                c.ConfigValue =
+                    ((AssemblyConfigurationAttribute)Attribute.GetCustomAttribute(assembly, typeof(AssemblyConfigurationAttribute)))?.Configuration;
+
+                c.Save();
+
+                //AssemblyCompany
+                c.ConfigKey = "AssemblyCompany";
+                c.ConfigValue =
+                    ((AssemblyCompanyAttribute)Attribute.GetCustomAttribute(assembly, typeof(AssemblyCompanyAttribute)))?.Company;
+
+                c.Save();
+
+                //AssemblyProduct
+                c.ConfigKey = "AssemblyProduct";
+                c.ConfigValue =
+                    ((AssemblyProductAttribute)Attribute.GetCustomAttribute(assembly, typeof(AssemblyProductAttribute)))?.Product;
+
+                c.Save();
+
+                //AssemblyCopyright
+                c.ConfigKey = "AssemblyCopyright";
+                c.ConfigValue =
+                    ((AssemblyCopyrightAttribute)Attribute.GetCustomAttribute(assembly, typeof(AssemblyCopyrightAttribute)))?.Copyright;
+
+                c.Save();
+
+                //AssemblyTrademark
+                c.ConfigKey = "AssemblyTrademark";
+                c.ConfigValue =
+                    ((AssemblyTrademarkAttribute)Attribute.GetCustomAttribute(assembly, typeof(AssemblyTrademarkAttribute)))?.Trademark;
+
+                c.Save();
+
+                //AssemblyCulture
+                c.ConfigKey = "AssemblyCulture";
+                c.ConfigValue =
+                    ((AssemblyCultureAttribute)Attribute.GetCustomAttribute(assembly, typeof(AssemblyCultureAttribute)))?.Culture;
+
+                c.Save();
+
+                //AssemblyVersion
+                var assemblyName = assembly.GetName();
+                var version = assemblyName.Version;
+
+                c.ConfigKey = "AssemblyVersion";
+                c.ConfigValue = version?.ToString();
+
+                c.Save();
+
+                //AssemblyFileVersion
+                c.ConfigKey = "AssemblyFileVersion";
+                c.ConfigValue =
+                    ((AssemblyFileVersionAttribute)Attribute.GetCustomAttribute(assembly, typeof(AssemblyFileVersionAttribute)))?.Version;
+
+                c.Save();
+            }
         }
 
         public static class Cache

@@ -407,6 +407,7 @@
     <Content Include="Views\Shared\Casino\_MatchInfoLitePartial.cshtml" />
     <Content Include="Views\Shared\Casino\_MatchInfoPartial.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Casino\ReturnBet.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

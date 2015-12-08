@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entity\Assembly.cs" />
     <Compile Include="Entity\Attribute.cs" />
     <Compile Include="Entity\Condition.cs" />
     <Compile Include="Entity\Config.cs" />

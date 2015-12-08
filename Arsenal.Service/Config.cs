@@ -6,14 +6,38 @@ namespace Arsenal.Service
 {
     public static class ConfigGlobal
     {
-        public static Dictionary<string, string> ConfigDictionary
+        static ConfigGlobal()
         {
-            get
-            {
-                var currSystem = ConfigSystem.Arsenal;
-                return Config.Cache.GetDictionaryByConfigSystem(currSystem);
-            }
+            Init();
         }
+
+        public static void Refresh()
+        {
+            Init();
+        }
+
+        private static void Init()
+        {
+            Config.Cache.RefreshCache();
+            ConfigDictionary = Config.Cache.GetDictionaryByConfigSystem(ConfigSystem.Arsenal);
+
+            Assembly = new AssemblyInfo()
+            {
+                Title = ConfigDictionary["AssemblyTitle"],
+                Description = ConfigDictionary["AssemblyDescription"],
+                Configuration = ConfigDictionary["AssemblyConfiguration"],
+                Company = ConfigDictionary["AssemblyCompany"],
+                Product = ConfigDictionary["AssemblyProduct"],
+                Copyright = ConfigDictionary["AssemblyCopyright"],
+                Trademark = ConfigDictionary["AssemblyTrademark"],
+                Culture = ConfigDictionary["AssemblyCulture"],
+                Version = ConfigDictionary["AssemblyVersion"],
+                FileVersion = ConfigDictionary["AssemblyFileVersion"]
+            };
+        }
+
+        private static Dictionary<string, string> ConfigDictionary { get; set; }
+        public static AssemblyInfo Assembly { get; set; }
 
         public static bool IsPluginAdmin(int userid)
         {

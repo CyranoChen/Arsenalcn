@@ -37,6 +37,13 @@ namespace Arsenal.Mobile.Models.Casino
         public MatchDto Match { get; set; }
     }
 
+    public class ReturnBetDto
+    {
+        public BetDto MyBet { get; set; }
+
+        public MatchDto Match { get; set; }
+    }
+
     public class MatchResultDto
     {
         [Required(ErrorMessage = "请填写{0}")]

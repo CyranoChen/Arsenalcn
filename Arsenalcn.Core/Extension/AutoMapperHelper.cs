@@ -78,7 +78,7 @@ namespace Arsenalcn.Core
         public static IEnumerable<T> DataReaderMapTo<T>(this IDataReader reader)
             where T : class, IViewer, new()
         {
-            Mapper.Reset();
+            //Mapper.Reset();
 
             var mapper = typeof(T).GetMethod("CreateMap",
                     System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);

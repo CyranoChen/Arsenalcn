@@ -27,7 +27,9 @@ namespace iArsenal.Scheduler
             {
                 log.Info("Scheduler Start: (RefreshCache)", logInfo);
 
-                Config.Cache.RefreshCache();
+                Config.UpdateAssemblyInfo(Assembly.GetExecutingAssembly(), ConfigSystem.iArsenal);
+
+                ConfigGlobal.Refresh();
 
                 Arsenal_Match.Cache.RefreshCache();
                 Arsenal_Player.Cache.RefreshCache();

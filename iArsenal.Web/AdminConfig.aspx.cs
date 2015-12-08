@@ -11,7 +11,7 @@ namespace iArsenal.Web
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            ctrlAdminFieldToolBar.AdminUserName = this.Username;
+            ctrlAdminFieldToolBar.AdminUserName = Username;
 
             if (!IsPostBack)
             {
@@ -41,15 +41,16 @@ namespace iArsenal.Web
                 if (tbConfigValue != null)
                 {
 
-                    var c = new Config();
+                    var c = new Config
+                    {
+                        ConfigSystem = ConfigSystem.iArsenal,
+                        ConfigKey = gvSysConfig.DataKeys[gvSysConfig.EditIndex]?.Value.ToString(),
+                        ConfigValue = tbConfigValue.Text.Trim()
+                    };
 
-                    c.ConfigSystem = ConfigSystem.iArsenal;
-                    c.ConfigKey = gvSysConfig.DataKeys[gvSysConfig.EditIndex].Value.ToString();
+                    c.Save();
 
-                    c.ConfigValue = tbConfigValue.Text.Trim();
-
-                    c.Update();
-                    Config.Cache.RefreshCache();
+                    ConfigGlobal.Refresh();
                 }
 
                 gvSysConfig.EditIndex = -1;
@@ -58,7 +59,7 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                this.ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}');", ex.Message.ToString()), true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message}');", true);
             }
         }
 
@@ -80,7 +81,7 @@ namespace iArsenal.Web
         {
             try
             {
-                Config.Cache.RefreshCache();
+                ConfigGlobal.Refresh();
 
                 Arsenal_Match.Cache.RefreshCache();
                 Arsenal_Player.Cache.RefreshCache();
@@ -96,7 +97,7 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                this.ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}');", ex.Message.ToString()), true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message}');", true);
             }
         }
     }

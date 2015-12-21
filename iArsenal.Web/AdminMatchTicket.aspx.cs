@@ -185,7 +185,8 @@ namespace iArsenal.Web
         {
             if (gvMatchTicket.SelectedIndex != -1)
             {
-                Response.Redirect(string.Format("AdminMatchTicketView.aspx?MatchGuid={0}", gvMatchTicket.DataKeys[gvMatchTicket.SelectedIndex].Value.ToString()));
+                Response.Redirect(
+                    $"AdminMatchTicketView.aspx?MatchGuid={gvMatchTicket.DataKeys[gvMatchTicket.SelectedIndex].Value.ToString()}");
             }
         }
 

@@ -120,7 +120,8 @@ namespace iArsenal.Web
         {
             if (gvProductOrder.SelectedIndex != -1)
             {
-                Response.Redirect(string.Format("AdminOrderView.aspx?OrderID={0}", gvProductOrder.DataKeys[gvProductOrder.SelectedIndex].Value.ToString()));
+                Response.Redirect(
+                    $"AdminOrderView.aspx?OrderID={gvProductOrder.DataKeys[gvProductOrder.SelectedIndex].Value.ToString()}");
             }
         }
 
@@ -136,7 +137,7 @@ namespace iArsenal.Web
                 if (lblOrderStatus != null)
                 {
                     if (o.Status.Equals(OrderStatusType.Confirmed))
-                        _strStatus = string.Format("<em>{0}</em>", o.StatusInfo);
+                        _strStatus = $"<em>{o.StatusInfo}</em>";
                     else
                         _strStatus = o.StatusInfo;
 
@@ -209,7 +210,7 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}')", ex.Message.ToString()), true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message.ToString()}')", true);
             }
         }
 
@@ -242,7 +243,7 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}')", ex.Message.ToString()), true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message.ToString()}')", true);
             }
         }
     }

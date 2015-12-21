@@ -34,7 +34,7 @@ namespace iArsenal.Web
         {
             try
             {
-                lblMemberName.Text = string.Format("<b>{0}</b> (<em>NO.{1}</em>)", this.MemberName, this.MID.ToString());
+                lblMemberName.Text = $"<b>{this.MemberName}</b> (<em>NO.{this.MID.ToString()}</em>)";
 
                 var _isMemberCouldPurchase = true;
 
@@ -45,7 +45,7 @@ namespace iArsenal.Web
                     // For Vincent Song to View the MatchTickets Confirmation Page
                     if (ConfigGlobal.IsPluginAdmin(UID) || (UID.Equals(33067) && (int)o.Status >= 3) && o != null)
                     {
-                        lblMemberName.Text = string.Format("<b>{0}</b> (<em>NO.{1}</em>)", o.MemberName, o.MemberID.ToString());
+                        lblMemberName.Text = $"<b>{o.MemberName}</b> (<em>NO.{o.MemberID.ToString()}</em>)";
                     }
                     else
                     {
@@ -57,7 +57,7 @@ namespace iArsenal.Web
 
                     if (ucPortalWorkflowInfo != null)
                     {
-                        ucPortalWorkflowInfo.JSONOrderStatusList = string.Format("[ {0} ]", string.Join(",", o.StatusWorkflowInfo));
+                        ucPortalWorkflowInfo.JSONOrderStatusList = $"[ {string.Join(",", o.StatusWorkflowInfo)} ]";
                         ucPortalWorkflowInfo.CurrOrderStatus = o.Status;
                     }
 
@@ -65,7 +65,7 @@ namespace iArsenal.Web
 
                     var m = repo.Single<Member>(o.MemberID);
 
-                    lblOrderMobile.Text = string.Format("<em>{0}</em>", o.Mobile);
+                    lblOrderMobile.Text = $"<em>{o.Mobile}</em>";
 
                     #region Set Member Nation & Region
                     if (!string.IsNullOrEmpty(m.Nation))
@@ -101,10 +101,10 @@ namespace iArsenal.Web
                     lblMemberIDCardNo.Text = m.IDCardNo;
                     lblMemberPassportNo.Text = m.PassportNo;
                     lblMemberPassportName.Text = m.PassportName;
-                    lblMemberQQ.Text = string.Format("<em>{0}</em>", m.QQ);
-                    lblMemberEmail.Text = string.Format("<em>{0}</em>", m.Email);
+                    lblMemberQQ.Text = $"<em>{m.QQ}</em>";
+                    lblMemberEmail.Text = $"<em>{m.Email}</em>";
 
-                    lblOrderID.Text = string.Format("<em>{0}</em>", o.ID.ToString());
+                    lblOrderID.Text = $"<em>{o.ID.ToString()}</em>";
                     lblOrderCreateTime.Text = o.CreateTime.ToString("yyyy-MM-dd HH:mm");
                     lblOrderDescription.Text = o.Description;
 
@@ -149,13 +149,15 @@ namespace iArsenal.Web
                             }
                             else
                             {
-                                lblMatchTicketInfo.Text = string.Format("<em>【{0}】{1}({2})</em>", mt.LeagueName, mt.TeamName, Arsenal_Team.Cache.Load(mt.TeamGuid).TeamEnglishName);
-                                lblMatchTicketPlayTime.Text = string.Format("<em>【伦敦】{0}</em>", mt.PlayTimeLocal.ToString("yyyy-MM-dd HH:mm"));
+                                lblMatchTicketInfo.Text =
+                                    $"<em>【{mt.LeagueName}】{mt.TeamName}({Arsenal_Team.Cache.Load(mt.TeamGuid).TeamEnglishName})</em>";
+                                lblMatchTicketPlayTime.Text =
+                                    $"<em>【伦敦】{mt.PlayTimeLocal.ToString("yyyy-MM-dd HH:mm")}</em>";
 
                                 var _strRank = mt.ProductInfo.Trim();
                                 if (lblMatchTicketRank != null && !string.IsNullOrEmpty(_strRank))
                                 {
-                                    lblMatchTicketRank.Text = string.Format("<em>{0}</em>", _strRank.Substring(_strRank.Length - 7, 7));
+                                    lblMatchTicketRank.Text = $"<em>{_strRank.Substring(_strRank.Length - 7, 7)}</em>";
                                 }
                                 else
                                 {
@@ -197,7 +199,7 @@ namespace iArsenal.Web
                         Product.Cache.Load(oiMatchTicket.ProductGuid).DisplayName);
 
                     tbOrderPrice.Text = price.ToString();
-                    lblOrderPrice.Text = string.Format("{0} = <em>{1}</em>元", priceInfo, price.ToString("f2"));
+                    lblOrderPrice.Text = $"{priceInfo} = <em>{price.ToString("f2")}</em>元";
 
                     if (o.Status.Equals(OrderStatusType.Draft))
                     {
@@ -234,7 +236,8 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}');window.location.href = 'iArsenalOrder.aspx'", ex.Message.ToString()), true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed",
+                    $"alert('{ex.Message.ToString()}');window.location.href = 'iArsenalOrder.aspx'", true);
             }
         }
 
@@ -255,7 +258,8 @@ namespace iArsenal.Web
 
                     repo.Update(o);
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", string.Format("alert('谢谢您的订购，您的订单已经提交成功。\\r\\n请尽快付款以完成订单确认，订单号为：{0}'); window.location.href = window.location.href", o.ID.ToString()), true);
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
+                        $"alert('谢谢您的订购，您的订单已经提交成功。\\r\\n请尽快付款以完成订单确认，订单号为：{o.ID.ToString()}'); window.location.href = window.location.href", true);
                 }
                 else
                 {
@@ -264,7 +268,7 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}');", ex.Message.ToString()), true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message.ToString()}');", true);
             }
         }
 
@@ -279,7 +283,8 @@ namespace iArsenal.Web
                     if (o == null || !o.MemberID.Equals(MID) || !o.IsActive)
                         throw new Exception("此订单无效或非当前用户订单");
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", string.Format("window.location.href = 'iArsenalOrder_MatchTicket.aspx?OrderID={0}'", o.ID.ToString()), true);
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
+                        $"window.location.href = 'iArsenalOrder_MatchTicket.aspx?OrderID={o.ID.ToString()}'", true);
                 }
                 else
                 {
@@ -288,7 +293,7 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}');", ex.Message.ToString()), true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message.ToString()}');", true);
             }
         }
 
@@ -309,7 +314,8 @@ namespace iArsenal.Web
 
                     repo.Update(o);
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", string.Format("alert('此订单({0})已经取消');window.location.href = 'iArsenalOrder.aspx'", o.ID.ToString()), true);
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
+                        $"alert('此订单({o.ID.ToString()})已经取消');window.location.href = 'iArsenalOrder.aspx'", true);
                 }
                 else
                 {
@@ -318,7 +324,7 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}');", ex.Message.ToString()), true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message.ToString()}');", true);
             }
         }
     }

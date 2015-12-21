@@ -38,8 +38,8 @@ namespace iArsenal.Web
         {
             try
             {
-                lblMemberName.Text = string.Format("<b>{0}</b> (<em>NO.{1}</em>)", this.MemberName, this.MID.ToString());
-                lblMemberACNInfo.Text = string.Format("<b>{0}</b> (<em>ID.{1}</em>)", this.Username, this.UID.ToString());
+                lblMemberName.Text = $"<b>{this.MemberName}</b> (<em>NO.{this.MID.ToString()}</em>)";
+                lblMemberACNInfo.Text = $"<b>{this.Username}</b> (<em>ID.{this.UID.ToString()}</em>)";
 
                 if (OrderID > 0)
                 {
@@ -49,7 +49,7 @@ namespace iArsenal.Web
 
                     if (ConfigGlobal.IsPluginAdmin(UID) || o.MemberID.Equals(MID))
                     {
-                        lblMemberName.Text = string.Format("<b>{0}</b> (<em>NO.{1}</em>)", o.MemberName, o.MemberID.ToString());
+                        lblMemberName.Text = $"<b>{o.MemberName}</b> (<em>NO.{o.MemberID.ToString()}</em>)";
 
                         var m = repo.Single<Member>(o.MemberID);
 
@@ -59,7 +59,7 @@ namespace iArsenal.Web
                         }
                         else
                         {
-                            lblMemberACNInfo.Text = string.Format("<b>{0}</b> (<em>ID.{1}</em>)", m.AcnName, m.AcnID.ToString());
+                            lblMemberACNInfo.Text = $"<b>{m.AcnName}</b> (<em>ID.{m.AcnID.ToString()}</em>)";
                             tbEmail.Text = m.Email;
                         }
                     }
@@ -97,7 +97,8 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}');window.location.href = 'Default.aspx'", ex.Message.ToString()), true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed",
+                    $"alert('{ex.Message.ToString()}');window.location.href = 'Default.aspx'", true);
             }
         }
 
@@ -114,7 +115,7 @@ namespace iArsenal.Web
                     { throw new Exception("请填写订购纪念品信息"); }
 
                     // Convert ProductListInfo to List<OrderItem>
-                    var _strWishOrderItemListInfo = string.Format("[ {0} ]", tbWishOrderItemListInfo.Text.Trim());
+                    var _strWishOrderItemListInfo = $"[ {tbWishOrderItemListInfo.Text.Trim()} ]";
 
                     var jsonSerializer = new JavaScriptSerializer();
 
@@ -265,7 +266,8 @@ namespace iArsenal.Web
                 {
                     trans.Rollback();
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}');window.location.href = window.location.href", ex.Message.ToString()), true);
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "failed",
+                        $"alert('{ex.Message.ToString()}');window.location.href = window.location.href", true);
                 }
 
                 //conn.Close();

@@ -127,7 +127,8 @@ namespace iArsenal.Web
         {
             if (gvOrderItem.SelectedIndex != -1)
             {
-                Response.Redirect(string.Format("AdminOrderItemView.aspx?OrderItemID={0}", gvOrderItem.DataKeys[gvOrderItem.SelectedIndex].Value.ToString()));
+                Response.Redirect(
+                    $"AdminOrderItemView.aspx?OrderItemID={gvOrderItem.DataKeys[gvOrderItem.SelectedIndex].Value.ToString()}");
             }
         }
 
@@ -190,7 +191,7 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}')", ex.Message.ToString()), true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message.ToString()}')", true);
             }
         }
 
@@ -204,7 +205,8 @@ namespace iArsenal.Web
 
                     o.CalcOrderPrice();
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", string.Format("alert('重新计算总价为{0}元');window.location.href=window.location.href", o.Price.ToString("f2")), true);
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
+                        $"alert('重新计算总价为{o.Price.ToString("f2")}元');window.location.href=window.location.href", true);
                 }
                 else
                 {
@@ -213,7 +215,7 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}')", ex.Message.ToString()), true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message.ToString()}')", true);
             }
         }
 
@@ -239,7 +241,8 @@ namespace iArsenal.Web
 
                     repo.Delete<Order>(OrderID);
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", string.Format("alert('删除成功(包括{0}个许愿)');window.location.href='AdminOrder.aspx'", count.ToString()), true);
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
+                        $"alert('删除成功(包括{count.ToString()}个许愿)');window.location.href='AdminOrder.aspx'", true);
                 }
                 else
                 {
@@ -248,7 +251,7 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}')", ex.Message.ToString()), true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message.ToString()}')", true);
             }
         }
     }

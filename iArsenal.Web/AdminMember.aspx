@@ -33,6 +33,11 @@
                     <asp:ListItem Text="干事" Value="3"></asp:ListItem>
                     <asp:ListItem Text="团购" Value="4"></asp:ListItem>
                 </asp:DropDownList>
+                <asp:DropDownList ID="ddlEvalution" runat="server">
+                    <asp:ListItem Text="--全部--" Value="0" Selected="True"></asp:ListItem>
+                    <asp:ListItem Text="黑名单" Value="1"></asp:ListItem>
+                    <asp:ListItem Text="白名单" Value="2"></asp:ListItem>
+                </asp:DropDownList>
                 <asp:LinkButton ID="btnFilter" runat="server" Text="搜索会员" CssClass="LinkBtn" OnClick="btnFilter_Click"></asp:LinkButton>
             </div>
             <div class="DivFloatRight">

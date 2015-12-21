@@ -79,11 +79,11 @@ namespace iArsenal.Web.Control
 
                 if (m != null && m.ID > 0)
                 {
-                    lblUserInfo.Text = string.Format("欢迎访问，<b>{0}</b> (<em>NO.{1}</em>)", m.Name, m.ID.ToString());
+                    lblUserInfo.Text = $"欢迎访问，<b>{m.Name}</b> (<em>NO.{m.ID.ToString()}</em>)";
                 }
                 else
                 {
-                    lblUserInfo.Text = string.Format("欢迎访问，<b>{0}</b> (<em>ID.{1}</em>)", _userName, _userId.ToString());
+                    lblUserInfo.Text = $"欢迎访问，<b>{_userName}</b> (<em>ID.{_userId.ToString()}</em>)";
                 }
 
                 if (ConfigGlobal.IsPluginAdmin(_userId))
@@ -100,7 +100,8 @@ namespace iArsenal.Web.Control
                 pnlAnonymousUser.Visible = true;
                 pnlLoginUser.Visible = false;
 
-                hlLogin.NavigateUrl = string.Format("{0}?api_key={1}&next={2}", ConfigGlobal.APILoginURL, ConfigGlobal.APIAppKey, Request.Url.PathAndQuery);
+                hlLogin.NavigateUrl =
+                    $"{ConfigGlobal.APILoginURL}?api_key={ConfigGlobal.APIAppKey}&next={Request.Url.PathAndQuery}";
             }
         }
     }

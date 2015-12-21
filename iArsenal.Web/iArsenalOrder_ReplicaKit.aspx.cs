@@ -115,19 +115,19 @@ namespace iArsenal.Web
                 {
                     Page.Title = "阿森纳2015/16赛季客场PUMA球衣许愿单";
                     hlReplicaKitPage.NavigateUrl = "http://arsenaldirect.arsenal.com/puma-kit/puma-away-kit/icat/pumaaway";
-                    ltrlBannerImage.Text = string.Format("<img src=\"uploadfiles/banner/banner20150714.png\" alt=\"{0}\" />", Page.Title);
+                    ltrlBannerImage.Text = $"<img src=\"uploadfiles/banner/banner20150714.png\" alt=\"{Page.Title}\" />";
                 }
                 else if (_pt.Equals(ProductType.ReplicaKitCup))
                 {
                     Page.Title = "阿森纳2015/16赛季杯赛PUMA球衣许愿单";
                     hlReplicaKitPage.NavigateUrl = "http://arsenaldirect.arsenal.com/puma-kit/puma-cup-kit/icat/pumacup";
-                    ltrlBannerImage.Text = string.Format("<img src=\"uploadfiles/banner/banner20150813.png\" alt=\"{0}\" />", Page.Title);
+                    ltrlBannerImage.Text = $"<img src=\"uploadfiles/banner/banner20150813.png\" alt=\"{Page.Title}\" />";
                 }
                 else
                 {
                     Page.Title = "阿森纳2015/16赛季主场PUMA球衣许愿单";
                     hlReplicaKitPage.NavigateUrl = "http://arsenaldirect.arsenal.com/puma-kit/puma-home-kit/icat/pumahome";
-                    ltrlBannerImage.Text = string.Format("<img src=\"uploadfiles/banner/banner20150715.png\" alt=\"{0}\" />", Page.Title);
+                    ltrlBannerImage.Text = $"<img src=\"uploadfiles/banner/banner20150715.png\" alt=\"{Page.Title}\" />";
                 }
 
                 return _pt;
@@ -138,8 +138,8 @@ namespace iArsenal.Web
         {
             try
             {
-                lblMemberName.Text = string.Format("<b>{0}</b> (<em>NO.{1}</em>)", this.MemberName, this.MID.ToString());
-                lblMemberACNInfo.Text = string.Format("<b>{0}</b> (<em>ID.{1}</em>)", this.Username, this.UID.ToString());
+                lblMemberName.Text = $"<b>{this.MemberName}</b> (<em>NO.{this.MID.ToString()}</em>)";
+                lblMemberACNInfo.Text = $"<b>{this.Username}</b> (<em>ID.{this.UID.ToString()}</em>)";
 
                 var _list = Product.Cache.ProductList;
 
@@ -153,14 +153,14 @@ namespace iArsenal.Web
                 {
                     var pricePlayerDetail = pNumber.PriceCNY + pName.PriceCNY;
 
-                    lblPricePlayerDetail.Text = string.Format("<em>{0}</em>元", pricePlayerDetail.ToString("f2"));
+                    lblPricePlayerDetail.Text = $"<em>{pricePlayerDetail.ToString("f2")}</em>元";
 
                     // HARD CODE FOR HONGKONG HOME KIT
                     //lblPricePlayerDetailSale.Text = string.Format("<em>{0}</em>元", "122.00");
 
-                    lblPriceArsenalFont.Text = string.Format("<em>{0}</em>元", pFont.PriceCNY.ToString("f2"));
-                    lblPricePremierPatch.Text = string.Format("<em>{0}</em>元/个", pPremierPatch.PriceCNY.ToString("f2"));
-                    lblPriceChampionPatch.Text = string.Format("<em>{0}</em>元/个", pChampionPatch.PriceCNY.ToString("f2"));
+                    lblPriceArsenalFont.Text = $"<em>{pFont.PriceCNY.ToString("f2")}</em>元";
+                    lblPricePremierPatch.Text = $"<em>{pPremierPatch.PriceCNY.ToString("f2")}</em>元/个";
+                    lblPriceChampionPatch.Text = $"<em>{pChampionPatch.PriceCNY.ToString("f2")}</em>元/个";
                 }
                 else
                 {
@@ -195,7 +195,7 @@ namespace iArsenal.Web
 
                     if (ConfigGlobal.IsPluginAdmin(UID) || o.MemberID.Equals(MID))
                     {
-                        lblMemberName.Text = string.Format("<b>{0}</b> (<em>NO.{1}</em>)", o.MemberName, o.MemberID.ToString());
+                        lblMemberName.Text = $"<b>{o.MemberName}</b> (<em>NO.{o.MemberID.ToString()}</em>)";
 
                         var m = repo.Single<Member>(o.MemberID);
 
@@ -205,7 +205,7 @@ namespace iArsenal.Web
                         }
                         else
                         {
-                            lblMemberACNInfo.Text = string.Format("<b>{0}</b> (<em>ID.{1}</em>)", m.AcnName, m.AcnID.ToString());
+                            lblMemberACNInfo.Text = $"<b>{m.AcnName}</b> (<em>ID.{m.AcnID.ToString()}</em>)";
                         }
                     }
                     else
@@ -253,7 +253,8 @@ namespace iArsenal.Web
 
                     var p = Product.Cache.Load(oiReplicaKit.ProductGuid);
 
-                    ddlReplicaKit.Items.Insert(0, new ListItem(string.Format("({0}) {1} - 售价{2}元", p.Code, p.DisplayName, oiReplicaKit.UnitPrice.ToString("f2")), oiReplicaKit.ProductGuid.ToString()));
+                    ddlReplicaKit.Items.Insert(0, new ListItem(
+                        $"({p.Code}) {p.DisplayName} - 售价{oiReplicaKit.UnitPrice.ToString("f2")}元", oiReplicaKit.ProductGuid.ToString()));
                     tbOrderItemSize.Text = oiReplicaKit.Size;
                     hlReplicaKitPage.Visible = false;
 
@@ -380,7 +381,8 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}');window.location.href = 'Default.aspx'", ex.Message.ToString()), true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed",
+                    $"alert('{ex.Message.ToString()}');window.location.href = 'Default.aspx'", true);
             }
         }
 
@@ -663,7 +665,7 @@ namespace iArsenal.Web
                 {
                     trans.Rollback();
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}')", ex.Message.ToString()), true);
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message.ToString()}')", true);
                 }
 
                 //conn.Close();
@@ -676,7 +678,7 @@ namespace iArsenal.Web
             {
                 var p = Product.Cache.Load(new Guid(li.Value));
 
-                li.Text = string.Format("({0}) {1} - 售价 ￥{2}", p.Code, p.DisplayName, p.PriceCNY.ToString("f2"));
+                li.Text = $"({p.Code}) {p.DisplayName} - 售价 ￥{p.PriceCNY.ToString("f2")}";
             }
         }
 

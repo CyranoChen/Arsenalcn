@@ -34,7 +34,7 @@ namespace iArsenal.Web
         {
             try
             {
-                lblMemberName.Text = string.Format("<b>{0}</b> (<em>NO.{1}</em>)", this.MemberName, this.MID.ToString());
+                lblMemberName.Text = $"<b>{this.MemberName}</b> (<em>NO.{this.MID.ToString()}</em>)";
 
                 if (OrderID > 0)
                 {
@@ -62,7 +62,7 @@ namespace iArsenal.Web
 
                     if (ConfigGlobal.IsPluginAdmin(UID) && o != null)
                     {
-                        lblMemberName.Text = string.Format("<b>{0}</b> (<em>NO.{1}</em>)", o.MemberName, o.MemberID.ToString());
+                        lblMemberName.Text = $"<b>{o.MemberName}</b> (<em>NO.{o.MemberID.ToString()}</em>)";
                     }
                     else
                     {
@@ -74,17 +74,17 @@ namespace iArsenal.Web
 
                     if (ucPortalWorkflowInfo != null)
                     {
-                        ucPortalWorkflowInfo.JSONOrderStatusList = string.Format("[ {0} ]", string.Join(",", o.StatusWorkflowInfo));
+                        ucPortalWorkflowInfo.JSONOrderStatusList = $"[ {string.Join(",", o.StatusWorkflowInfo)} ]";
                         ucPortalWorkflowInfo.CurrOrderStatus = o.Status;
                     }
 
                     #endregion
 
-                    lblOrderMobile.Text = string.Format("<em>{0}</em>", o.Mobile);
+                    lblOrderMobile.Text = $"<em>{o.Mobile}</em>";
                     lblOrderPayment.Text = o.PaymentInfo;
                     lblOrderAddress.Text = o.Address;
                     lblOrderDescription.Text = o.Description;
-                    lblOrderID.Text = string.Format("<em>{0}</em>", o.ID.ToString());
+                    lblOrderID.Text = $"<em>{o.ID.ToString()}</em>";
                     lblOrderCreateTime.Text = o.CreateTime.ToString("yyyy-MM-dd HH:mm");
 
                     if (!string.IsNullOrEmpty(o.Remark))
@@ -107,29 +107,29 @@ namespace iArsenal.Web
                     var oiPremierPatch = o.OIPremiershipPatch;
                     var oiChampionPatch = o.OIChampionshipPatch;
 
-                    lblOrderItem_ReplicaKit.Text = string.Format("<em>{0}</em>", oiReplicaKit.ProductName);
+                    lblOrderItem_ReplicaKit.Text = $"<em>{oiReplicaKit.ProductName}</em>";
                     tbOrderItem_ReplicaKit.Text = oiReplicaKit.ProductGuid.ToString();
                     lblOrderItem_ReplicaKitSize.Text = oiReplicaKit.Size;
 
                     price = oiReplicaKit.TotalPrice;
-                    priceInfo = string.Format("<合计> 球衣：{0}", oiReplicaKit.TotalPrice.ToString("f2"));
+                    priceInfo = $"<合计> 球衣：{oiReplicaKit.TotalPrice.ToString("f2")}";
 
                     if (oiNumber != null && oiNumber.IsActive && oiName != null && oiName.IsActive)
                     {
                         if (oiFont != null && oiFont.IsActive)
                         {
-                            lblOrderItem_PlayerDetail.Text = string.Format("{0} ({1}) <em>【{2}】</em>",
-                                oiName.Size, oiNumber.Size, Product.Cache.Load(oiFont.ProductGuid).DisplayName);
+                            lblOrderItem_PlayerDetail.Text =
+                                $"{oiName.Size} ({oiNumber.Size}) <em>【{Product.Cache.Load(oiFont.ProductGuid).DisplayName}】</em>";
 
                             price += oiFont.TotalPrice;
-                            priceInfo += string.Format(" + 印字号(特殊)：{0}", oiFont.TotalPrice.ToString("f2"));
+                            priceInfo += $" + 印字号(特殊)：{oiFont.TotalPrice.ToString("f2")}";
                         }
                         else
                         {
-                            lblOrderItem_PlayerDetail.Text = string.Format("{0} ({1})", oiName.Size, oiNumber.Size);
+                            lblOrderItem_PlayerDetail.Text = $"{oiName.Size} ({oiNumber.Size})";
 
                             price += oiNumber.TotalPrice + oiName.TotalPrice;
-                            priceInfo += string.Format(" + 印字号：{0}", (oiNumber.TotalPrice + oiName.TotalPrice).ToString("f2"));
+                            priceInfo += $" + 印字号：{(oiNumber.TotalPrice + oiName.TotalPrice).ToString("f2")}";
                         }
                     }
                     else
@@ -139,21 +139,24 @@ namespace iArsenal.Web
 
                     if (oiPremierPatch != null && oiPremierPatch.IsActive && oiChampionPatch != null && oiChampionPatch.IsActive)
                     {
-                        lblOrderItem_Patch.Text = string.Format("{0} | {1}", oiPremierPatch.ProductName, oiChampionPatch.ProductName);
+                        lblOrderItem_Patch.Text = $"{oiPremierPatch.ProductName} | {oiChampionPatch.ProductName}";
                         price += (oiPremierPatch.TotalPrice + oiChampionPatch.TotalPrice);
-                        priceInfo += string.Format(" + 袖标：{0}", (oiPremierPatch.TotalPrice + oiChampionPatch.TotalPrice).ToString("f2"));
+                        priceInfo += $" + 袖标：{(oiPremierPatch.TotalPrice + oiChampionPatch.TotalPrice).ToString("f2")}";
                     }
                     else if (oiPremierPatch != null && oiPremierPatch.IsActive && oiChampionPatch == null)
                     {
-                        lblOrderItem_Patch.Text = string.Format("{0} × {1}", oiPremierPatch.ProductName, oiPremierPatch.Quantity.ToString());
+                        lblOrderItem_Patch.Text = $"{oiPremierPatch.ProductName} × {oiPremierPatch.Quantity.ToString()}";
                         price += oiPremierPatch.TotalPrice;
-                        priceInfo += string.Format(" + 袖标：{0}×{1}", oiPremierPatch.UnitPrice.ToString("f2"), oiPremierPatch.Quantity.ToString());
+                        priceInfo +=
+                            $" + 袖标：{oiPremierPatch.UnitPrice.ToString("f2")}×{oiPremierPatch.Quantity.ToString()}";
                     }
                     else if (oiPremierPatch == null && oiChampionPatch != null && oiChampionPatch.IsActive)
                     {
-                        lblOrderItem_Patch.Text = string.Format("{0} × {1}", oiChampionPatch.ProductName, oiChampionPatch.Quantity.ToString());
+                        lblOrderItem_Patch.Text =
+                            $"{oiChampionPatch.ProductName} × {oiChampionPatch.Quantity.ToString()}";
                         price += oiChampionPatch.TotalPrice;
-                        priceInfo += string.Format(" + 袖标：{0}×{1}", oiChampionPatch.UnitPrice.ToString("f2"), oiChampionPatch.Quantity.ToString());
+                        priceInfo +=
+                            $" + 袖标：{oiChampionPatch.UnitPrice.ToString("f2")}×{oiChampionPatch.Quantity.ToString()}";
                     }
                     else
                     {
@@ -163,13 +166,14 @@ namespace iArsenal.Web
                     if (o.Postage > 0)
                     {
                         price += o.Postage;
-                        priceInfo += string.Format(" + 快递费：{0}", o.Postage.ToString("f2"));
+                        priceInfo += $" + 快递费：{o.Postage.ToString("f2")}";
                     }
 
                     if (!o.Sale.HasValue)
-                        lblOrderPrice.Text = string.Format("{0} = <em>{1}</em>元 (CNY)", priceInfo, price.ToString("f2"));
+                        lblOrderPrice.Text = $"{priceInfo} = <em>{price.ToString("f2")}</em>元 (CNY)";
                     else
-                        lblOrderPrice.Text = string.Format("{0} = <em>{1}</em>元<br /><结算价>：<em>{2}</em>元 (CNY)", priceInfo, price.ToString("f2"), o.Sale.Value.ToString("f2"));
+                        lblOrderPrice.Text =
+                            $"{priceInfo} = <em>{price.ToString("f2")}</em>元<br /><结算价>：<em>{o.Sale.Value.ToString("f2")}</em>元 (CNY)";
 
                     tbOrderPrice.Text = price.ToString();
 
@@ -205,7 +209,8 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}');window.location.href = 'iArsenalOrder.aspx'", ex.Message.ToString()), true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed",
+                    $"alert('{ex.Message.ToString()}');window.location.href = 'iArsenalOrder.aspx'", true);
             }
         }
 
@@ -226,7 +231,8 @@ namespace iArsenal.Web
 
                     repo.Update(o);
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", string.Format("alert('谢谢您的订购，您的订单已经提交成功。\\r\\n请尽快通过支付宝或银行转帐付款，以完成订单确认。\\r\\n订单号为：{0}'); window.location.href = window.location.href", o.ID.ToString()), true);
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
+                        $"alert('谢谢您的订购，您的订单已经提交成功。\\r\\n请尽快通过支付宝或银行转帐付款，以完成订单确认。\\r\\n订单号为：{o.ID.ToString()}'); window.location.href = window.location.href", true);
                 }
                 else
                 {
@@ -235,7 +241,7 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}');", ex.Message.ToString()), true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message.ToString()}');", true);
             }
         }
 
@@ -250,7 +256,8 @@ namespace iArsenal.Web
                     if (o == null || !o.MemberID.Equals(MID) || !o.IsActive)
                         throw new Exception("此订单无效或非当前用户订单");
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", string.Format("window.location.href = 'iArsenalOrder_ReplicaKit.aspx?OrderID={0}'", o.ID.ToString()), true);
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
+                        $"window.location.href = 'iArsenalOrder_ReplicaKit.aspx?OrderID={o.ID.ToString()}'", true);
                 }
                 else
                 {
@@ -259,7 +266,7 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}');", ex.Message.ToString()), true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message.ToString()}');", true);
             }
         }
 
@@ -280,7 +287,8 @@ namespace iArsenal.Web
                     
                     repo.Update(o);
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", string.Format("alert('此订单({0})已经取消');window.location.href = 'iArsenalOrder.aspx'", o.ID.ToString()), true);
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
+                        $"alert('此订单({o.ID.ToString()})已经取消');window.location.href = 'iArsenalOrder.aspx'", true);
                 }
                 else
                 {
@@ -289,7 +297,7 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}');", ex.Message.ToString()), true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message.ToString()}');", true);
             }
         }
     }

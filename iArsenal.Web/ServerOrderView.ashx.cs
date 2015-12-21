@@ -22,7 +22,7 @@ namespace iArsenal.Web
                     {
                         if (!string.IsNullOrEmpty(o.UrlOrderView))
                         {
-                            context.Response.Redirect(string.Format("{0}?OrderID={1}", o.UrlOrderView, o.ID.ToString()), false);
+                            context.Response.Redirect($"{o.UrlOrderView}?OrderID={o.ID.ToString()}", false);
                             context.ApplicationInstance.CompleteRequest();
                         }
                         else

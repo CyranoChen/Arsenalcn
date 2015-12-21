@@ -74,13 +74,15 @@ namespace iArsenal.Web
 
                 if (_pt.Equals(ProductType.MemberShipCore))
                 {
-                    Page.Title = string.Format("ACN{0}/{1}赛季普通(Core)会员登记", CurrSeasonDeadline.AddYears(-1).Year.ToString(), CurrSeasonDeadline.ToString("yy"));
+                    Page.Title =
+                        $"ACN{CurrSeasonDeadline.AddYears(-1).Year.ToString()}/{CurrSeasonDeadline.ToString("yy")}赛季普通(Core)会员登记";
                     pnlMemberCore.Visible = true;
                     pnlMemberPremier.Visible = false;
                 }
                 else
                 {
-                    Page.Title = string.Format("ACN{0}/{1}赛季高级(Premier)会员登记", CurrSeasonDeadline.AddYears(-1).Year.ToString(), CurrSeasonDeadline.ToString("yy"));
+                    Page.Title =
+                        $"ACN{CurrSeasonDeadline.AddYears(-1).Year.ToString()}/{CurrSeasonDeadline.ToString("yy")}赛季高级(Premier)会员登记";
                     pnlMemberCore.Visible = false;
                     pnlMemberPremier.Visible = true;
                 }
@@ -148,8 +150,8 @@ namespace iArsenal.Web
         {
             try
             {
-                lblMemberName.Text = string.Format("<b>{0}</b> (<em>NO.{1}</em>)", this.MemberName, this.MID.ToString());
-                lblMemberACNInfo.Text = string.Format("<b>{0}</b> (<em>ID.{1}</em>)", this.Username, this.UID.ToString());
+                lblMemberName.Text = $"<b>{this.MemberName}</b> (<em>NO.{this.MID.ToString()}</em>)";
+                lblMemberACNInfo.Text = $"<b>{this.Username}</b> (<em>ID.{this.UID.ToString()}</em>)";
 
                 if (OrderID > 0)
                 {
@@ -159,7 +161,7 @@ namespace iArsenal.Web
 
                     if (ConfigGlobal.IsPluginAdmin(UID) || o.MemberID.Equals(MID))
                     {
-                        lblMemberName.Text = string.Format("<b>{0}</b> (<em>NO.{1}</em>)", o.MemberName, o.MemberID.ToString());
+                        lblMemberName.Text = $"<b>{o.MemberName}</b> (<em>NO.{o.MemberID.ToString()}</em>)";
 
                         var m = repo.Single<Member>(o.MemberID);
 
@@ -169,7 +171,7 @@ namespace iArsenal.Web
                         }
                         else
                         {
-                            lblMemberACNInfo.Text = string.Format("<b>{0}</b> (<em>ID.{1}</em>)", m.AcnName, m.AcnID.ToString());
+                            lblMemberACNInfo.Text = $"<b>{m.AcnName}</b> (<em>ID.{m.AcnID.ToString()}</em>)";
 
                             #region Set Member Nation & Region
                             if (!string.IsNullOrEmpty(m.Nation))
@@ -241,11 +243,11 @@ namespace iArsenal.Web
                     if (pMemberShip != null)
                     {
                         tbMemberClass.Text = ((int)pMemberShip.ProductType).ToString();
-                        lblMemberClass.Text = string.Format("<em>ACN {0}赛季【{1}】- 售价 {2}</em>",
-                            oiMemberShip.Season, pMemberShip.DisplayName, pMemberShip.PriceInfo);
+                        lblMemberClass.Text =
+                            $"<em>ACN {oiMemberShip.Season}赛季【{pMemberShip.DisplayName}】- 售价 {pMemberShip.PriceInfo}</em>";
 
                         tbMemberCardNo.Text = oiMemberShip.MemberCardNo;
-                        lblEndDate.Text = string.Format("<em>{0}</em>", CurrSeasonDeadline.ToString("yyyy-MM-dd"));
+                        lblEndDate.Text = $"<em>{CurrSeasonDeadline.ToString("yyyy-MM-dd")}</em>";
                     }
                     else
                     {
@@ -303,11 +305,10 @@ namespace iArsenal.Web
                     if (pMemberShip != null)
                     {
                         tbMemberClass.Text = ((int)pMemberShip.ProductType).ToString();
-                        lblMemberClass.Text = string.Format("<em>ACN {0}/{1}赛季【{2}】- 售价 {3}</em>",
-                            CurrSeasonDeadline.AddYears(-1).Year.ToString(), CurrSeasonDeadline.ToString("yy"),
-                            pMemberShip.DisplayName, pMemberShip.PriceInfo);
+                        lblMemberClass.Text =
+                            $"<em>ACN {CurrSeasonDeadline.AddYears(-1).Year.ToString()}/{CurrSeasonDeadline.ToString("yy")}赛季【{pMemberShip.DisplayName}】- 售价 {pMemberShip.PriceInfo}</em>";
 
-                        lblEndDate.Text = string.Format("<em>{0}</em>", CurrSeasonDeadline.ToString("yyyy-MM-dd"));
+                        lblEndDate.Text = $"<em>{CurrSeasonDeadline.ToString("yyyy-MM-dd")}</em>";
                     }
                     else
                     {
@@ -324,8 +325,8 @@ namespace iArsenal.Web
                         tbMemberCardNo.Text = CurrentCardNo;
 
                         tbSale.Text = _sale.ToString("f0");
-                        lblSaleInfo.Text = string.Format("您只需支付<em>￥{0}</em>，即可将您的会籍升级为<em>【{1}】</em>",
-                            _sale.ToString("f2"), pPremier.DisplayName);
+                        lblSaleInfo.Text =
+                            $"您只需支付<em>￥{_sale.ToString("f2")}</em>，即可将您的会籍升级为<em>【{pPremier.DisplayName}】</em>";
 
                         phSaleInfo.Visible = true;
                     }
@@ -337,8 +338,7 @@ namespace iArsenal.Web
                         tbMemberCardNo.Text = CurrentCardNo;
 
                         tbSale.Text = _sale.ToString("f0");
-                        lblSaleInfo.Text = string.Format("您只需支付<em>￥{0}</em>，即可完成本赛季<em>同等会籍续期</em>",
-                            _sale.ToString("f2"));
+                        lblSaleInfo.Text = $"您只需支付<em>￥{_sale.ToString("f2")}</em>，即可完成本赛季<em>同等会籍续期</em>";
 
                         phSaleInfo.Visible = true;
                     }
@@ -346,7 +346,8 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}');window.location.href = 'iArsenalMemberPeriod.aspx'", ex.Message.ToString()), true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed",
+                    $"alert('{ex.Message.ToString()}');window.location.href = 'iArsenalMemberPeriod.aspx'", true);
             }
         }
 
@@ -375,7 +376,7 @@ namespace iArsenal.Web
                             {
                                 if (!string.IsNullOrEmpty(tbRegion2.Text.Trim()))
                                 {
-                                    m.Region = string.Format("{0}|{1}", tbRegion1.Text.Trim(), tbRegion2.Text.Trim());
+                                    m.Region = $"{tbRegion1.Text.Trim()}|{tbRegion2.Text.Trim()}";
                                 }
                                 else
                                 {
@@ -554,7 +555,7 @@ namespace iArsenal.Web
                 {
                     trans.Rollback();
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}')", ex.Message.ToString()), true);
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message.ToString()}')", true);
                 }
 
                 //conn.Close();

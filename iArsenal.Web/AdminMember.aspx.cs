@@ -78,6 +78,13 @@ namespace iArsenal.Web
                         returnValue = returnValue && ((int)x.MemberType).ToString().Equals(tmpString);
                 }
 
+                if (ViewState["Evalution"] != null)
+                {
+                    tmpString = ViewState["Evalution"].ToString();
+                    if (!string.IsNullOrEmpty(tmpString) && tmpString != "0")
+                        returnValue = returnValue && ((int)x.Evalution).ToString().Equals(tmpString);
+                }
+
                 return returnValue;
             });
 
@@ -146,7 +153,8 @@ namespace iArsenal.Web
         {
             if (gvMember.SelectedIndex != -1)
             {
-                Response.Redirect(string.Format("AdminMemberView.aspx?MemberID={0}", gvMember.DataKeys[gvMember.SelectedIndex].Value.ToString()));
+                Response.Redirect(
+                    $"AdminMemberView.aspx?MemberID={gvMember.DataKeys[gvMember.SelectedIndex].Value.ToString()}");
             }
         }
 
@@ -184,6 +192,11 @@ namespace iArsenal.Web
             else
                 ViewState["MemberType"] = string.Empty;
 
+            if (!string.IsNullOrEmpty(ddlEvalution.SelectedValue) && !ddlEvalution.SelectedValue.Equals("0"))
+                ViewState["Evalution"] = ddlEvalution.SelectedValue;
+            else
+                ViewState["Evalution"] = string.Empty;
+
             MemberID = 0;
             gvMember.PageIndex = 0;
 
@@ -211,11 +224,11 @@ namespace iArsenal.Web
                                 m.Name, "asc_memberName_whiteList");
                             break;
                         default:
-                            hlName.Text = string.Format("<em>{0}</em>", m.Name);
+                            hlName.Text = $"<em>{m.Name}</em>";
                             break;
                     }
 
-                    hlName.NavigateUrl = string.Format("AdminOrder.aspx?MemberID={0}", m.ID);
+                    hlName.NavigateUrl = $"AdminOrder.aspx?MemberID={m.ID}";
                 }
 
             }

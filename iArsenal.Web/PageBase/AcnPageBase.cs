@@ -70,7 +70,8 @@ namespace iArsenal.Web
 
                 Response.Clear();
 
-                var loginURL = string.Format("{0}?api_key={1}&next={2}", ConfigGlobal.APILoginURL, ConfigGlobal.APIAppKey, Request.Url.PathAndQuery);
+                var loginURL =
+                    $"{ConfigGlobal.APILoginURL}?api_key={ConfigGlobal.APIAppKey}&next={Request.Url.PathAndQuery}";
 
                 Response.Redirect(loginURL, false);
 

@@ -184,7 +184,8 @@ namespace iArsenal.Web
         {
             if (gvOrder.SelectedIndex != -1)
             {
-                Response.Redirect(string.Format("AdminOrderView.aspx?OrderID={0}", gvOrder.DataKeys[gvOrder.SelectedIndex].Value.ToString()));
+                Response.Redirect(
+                    $"AdminOrderView.aspx?OrderID={gvOrder.DataKeys[gvOrder.SelectedIndex].Value.ToString()}");
             }
         }
 
@@ -347,7 +348,7 @@ namespace iArsenal.Web
                                 }
                                 else
                                 {
-                                    throw new Exception(string.Format("此订单未购买球衣商品(OrderID:{0})", oReplicaKit.ID.ToString()));
+                                    throw new Exception($"此订单未购买球衣商品(OrderID:{oReplicaKit.ID.ToString()})");
                                 }
 
                                 var oiNumber = oReplicaKit.OIPlayerNumber;
@@ -363,8 +364,8 @@ namespace iArsenal.Web
                                 p = Product.Cache.Load(oiReplicaKit.ProductGuid);
 
                                 var dr = dt.NewRow();
-                                dr["User"] = string.Format("{0}({1})", m.AcnName, m.AcnID.ToString());
-                                dr["Member"] = string.Format("{0}({1})", o.MemberName, o.MemberID.ToString());
+                                dr["User"] = $"{m.AcnName}({m.AcnID.ToString()})";
+                                dr["Member"] = $"{o.MemberName}({o.MemberID.ToString()})";
                                 dr["Contact"] = o.Mobile;
 
                                 dr["OID"] = o.ID;
@@ -563,8 +564,8 @@ namespace iArsenal.Web
 
                                         if (_listCount.Equals(0))
                                         {
-                                            dr["User"] = string.Format("{0}({1})", m.AcnName, m.AcnID.ToString());
-                                            dr["Member"] = string.Format("{0}({1})", o.MemberName, o.MemberID.ToString());
+                                            dr["User"] = $"{m.AcnName}({m.AcnID.ToString()})";
+                                            dr["Member"] = $"{o.MemberName}({o.MemberID.ToString()})";
                                             dr["Contact"] = o.Mobile;
 
                                             dr["OID"] = o.ID;
@@ -634,7 +635,7 @@ namespace iArsenal.Web
                 {
                     // Export DataTable
                     var gvw = new GridView();
-                    var fileName = string.Format("AdminOrderExport-{0}.xls", DateTime.Now.ToString("yyyyMMdd-HHmmss"));
+                    var fileName = $"AdminOrderExport-{DateTime.Now.ToString("yyyyMMdd-HHmmss")}.xls";
 
                     gvw.AutoGenerateColumns = true;
 
@@ -650,7 +651,7 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}')", ex.Message.ToString()), true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message.ToString()}')", true);
             }
         }
 
@@ -671,7 +672,7 @@ namespace iArsenal.Web
                     cbOrderID.Text = o.ID.ToString();
 
                     hlOrderID.Text = o.ID.ToString();
-                    hlOrderID.NavigateUrl = string.Format("ServerOrderView.ashx?OrderID={0}", o.ID.ToString());
+                    hlOrderID.NavigateUrl = $"ServerOrderView.ashx?OrderID={o.ID.ToString()}";
                 }
 
                 if (hlName != null)
@@ -689,17 +690,16 @@ namespace iArsenal.Web
                                 o.MemberName, "asc_memberName_whiteList");
                             break;
                         default:
-                            hlName.Text = string.Format("<em>{0}</em>", o.MemberName);
+                            hlName.Text = $"<em>{o.MemberName}</em>";
                             break;
                     }
 
-                    hlName.NavigateUrl = string.Format("AdminOrder.aspx?MemberID={0}", o.MemberID);
+                    hlName.NavigateUrl = $"AdminOrder.aspx?MemberID={o.MemberID}";
                 }
 
                 if (lblOrderType != null && !o.OrderType.Equals(OrderBaseType.None))
                 {
-                    lblOrderType.Text = string.Format("<em>{0}</em>",
-                        ddlOrderType.Items.FindByValue(o.OrderType.ToString()).Text);
+                    lblOrderType.Text = $"<em>{ddlOrderType.Items.FindByValue(o.OrderType.ToString()).Text}</em>";
                 }
                 else
                 {
@@ -711,7 +711,7 @@ namespace iArsenal.Web
                     var _strStatus = string.Empty;
 
                     if (o.Status.Equals(OrderStatusType.Confirmed))
-                        _strStatus = string.Format("<em>{0}</em>", o.StatusInfo);
+                        _strStatus = $"<em>{o.StatusInfo}</em>";
                     else
                         _strStatus = o.StatusInfo;
 

@@ -14,7 +14,7 @@ namespace iArsenal.Web.Control
 
         public void InitComponent()
         {
-            ltrlPagerInfo.Text = string.Format("Rows: {0} | Pages: {1} | Goto: ", RowCount.ToString(), PageCount.ToString());
+            ltrlPagerInfo.Text = $"Rows: {RowCount.ToString()} | Pages: {PageCount.ToString()} | Goto: ";
             tbPagerIndex.Text = (PageIndex + 1).ToString();
         }
 

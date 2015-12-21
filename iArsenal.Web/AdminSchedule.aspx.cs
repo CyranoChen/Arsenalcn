@@ -49,7 +49,7 @@ namespace iArsenal.Web
                     s.LastCompletedTime = DateTime.Now;
                     s.Update();
 
-                    log.Info(string.Format("ISchedule Manually: {0}", s.ScheduleType), logInfo);
+                    log.Info($"ISchedule Manually: {s.ScheduleType}", logInfo);
 
                     //this.ClientScript.RegisterClientScriptBlock(typeof(string), "success", string.Format("任务：{0}执行成功');", s.ScheduleType), true);
                 }
@@ -98,7 +98,8 @@ namespace iArsenal.Web
                 }
                 catch (Exception ex)
                 {
-                    this.ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}');", ex.Message.ToString()), true);
+                    this.ClientScript.RegisterClientScriptBlock(typeof(string), "failed",
+                        $"alert('{ex.Message.ToString()}');", true);
                 }
             }
 

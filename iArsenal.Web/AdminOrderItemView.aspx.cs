@@ -38,7 +38,7 @@ namespace iArsenal.Web
             {
                 var oi = repo.Single<OrderItem>(OrderItemID);
 
-                lblOrderItemInfo.Text = string.Format("更新会员的许愿单 ID:<em>{0}</em>", OrderItemID.ToString());
+                lblOrderItemInfo.Text = $"更新会员的许愿单 ID:<em>{OrderItemID.ToString()}</em>";
 
                 tbMemberID.Text = oi.MemberID.ToString();
                 tbMemberName.Text = oi.MemberName;
@@ -131,7 +131,7 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}')", ex.Message.ToString()), true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message.ToString()}')", true);
             }
         }
 
@@ -172,7 +172,7 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}')", ex.Message.ToString()), true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message.ToString()}')", true);
             }
         }
     }

@@ -8,7 +8,8 @@ namespace iArsenal.Web.Control
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            ltrlTitle.Text = string.Format("<a href=\"http://www.arsenalcn.com\">{0}</a> &raquo; <a href=\"default.aspx\">{1}</a> &raquo; <em>{2}</em>", "阿森纳中国官方球迷会", ConfigGlobal.PluginDisplayName, this.Page.Title);
+            ltrlTitle.Text =
+                $"<a href=\"http://www.arsenalcn.com\">{"阿森纳中国官方球迷会"}</a> &raquo; <a href=\"default.aspx\">{ConfigGlobal.PluginDisplayName}</a> &raquo; <em>{this.Page.Title}</em>";
         }
     }
 }

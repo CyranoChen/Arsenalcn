@@ -32,10 +32,12 @@ namespace iArsenal.Web
                     req.ContentType = "application/x-www-form-urlencoded";
 
                     //Gen Digital Signature
-                    var sig = string.Format("api_key={0}call_id={1}fields={2}method={3}session_key={4}uids={5}{6}", ConfigGlobal.APIAppKey, callID.ToString(), fields, "users.getInfo", sessionKey, acnID, ConfigGlobal.APICryptographicKey);
+                    var sig =
+                        $"api_key={ConfigGlobal.APIAppKey}call_id={callID.ToString()}fields={fields}method={"users.getInfo"}session_key={sessionKey}uids={acnID}{ConfigGlobal.APICryptographicKey}";
 
                     //Set WebRequest Parameter
-                    var para = string.Format("method={0}&api_key={1}&session_key={2}&call_id={3}&uids={4}&fields={5}&sig={6}", "users.getInfo", ConfigGlobal.APIAppKey, sessionKey, callID.ToString(), acnID, fields, getMd5Hash(sig));
+                    var para =
+                        $"method={"users.getInfo"}&api_key={ConfigGlobal.APIAppKey}&session_key={sessionKey}&call_id={callID.ToString()}&uids={acnID}&fields={fields}&sig={getMd5Hash(sig)}";
 
                     var encodedBytes = Encoding.UTF8.GetBytes(para);
                     req.ContentLength = encodedBytes.Length;
@@ -60,13 +62,14 @@ namespace iArsenal.Web
                             //Build ACNUser Information
                             if (xml.HasChildNodes && !xml.FirstChild.NextSibling.Name.Equals("error_response"))
                             {
-                                responseText = string.Format("{{  \"result\": \"success\",  \"username\": \"{0}\" }}", xml.GetElementsByTagName("user_name").Item(0).InnerText);
+                                responseText =
+                                    $"{{  \"result\": \"success\",  \"username\": \"{xml.GetElementsByTagName("user_name").Item(0).InnerText}\" }}";
                             }
                             else
                             {
                                 var error_code = xml.GetElementsByTagName("error_code").Item(0).InnerText;
                                 var error_msg = xml.GetElementsByTagName("error_msg").Item(0).InnerText;
-                                throw new Exception(string.Format("({0}) {1}", error_code, error_msg));
+                                throw new Exception($"({error_code}) {error_msg}");
                             }
                         }
                         else
@@ -78,7 +81,7 @@ namespace iArsenal.Web
                 }
                 catch (Exception ex)
                 {
-                    responseText = string.Format("{{  \"result\": \"error\", \"error_msg\": \"{0}\" }}", ex.Message);
+                    responseText = $"{{  \"result\": \"error\", \"error_msg\": \"{ex.Message}\" }}";
                 }
             }
 

@@ -34,7 +34,7 @@ namespace iArsenal.Web
                 }
                 catch (Exception ex)
                 {
-                    responseText = string.Format("{{  \"result\": \"error\", \"error_msg\": \"{0}\" }}", ex.Message);
+                    responseText = $"{{  \"result\": \"error\", \"error_msg\": \"{ex.Message}\" }}";
                 }
             }
 
@@ -58,7 +58,7 @@ namespace iArsenal.Web
                 }
                 catch (Exception ex)
                 {
-                    responseText = string.Format("{{  \"result\": \"error\", \"error_msg\": \"{0}\" }}", ex.Message);
+                    responseText = $"{{  \"result\": \"error\", \"error_msg\": \"{ex.Message}\" }}";
                 }
             }
 
@@ -88,7 +88,7 @@ namespace iArsenal.Web
                 }
                 catch (Exception ex)
                 {
-                    responseText = string.Format("{{  \"result\": \"error\", \"error_msg\": \"{0}\" }}", ex.Message);
+                    responseText = $"{{  \"result\": \"error\", \"error_msg\": \"{ex.Message}\" }}";
                 }
             }
 

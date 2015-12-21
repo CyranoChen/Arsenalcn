@@ -108,7 +108,7 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}')", ex.Message.ToString()), true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message.ToString()}')", true);
             }
         }
 
@@ -139,7 +139,7 @@ namespace iArsenal.Web
 
                 if (o != null)
                 {
-                    Response.Redirect(string.Format("ServerOrderView.ashx?OrderID={0}", o.ID.ToString()));
+                    Response.Redirect($"ServerOrderView.ashx?OrderID={o.ID.ToString()}");
                 }
             }
         }
@@ -175,8 +175,7 @@ namespace iArsenal.Web
 
                 if (lblOrderType != null && !o.OrderType.Equals(OrderBaseType.None))
                 {
-                    lblOrderType.Text = string.Format("<em>{0}</em>",
-                        ddlOrderType.Items.FindByValue(o.OrderType.ToString()).Text);
+                    lblOrderType.Text = $"<em>{ddlOrderType.Items.FindByValue(o.OrderType.ToString()).Text}</em>";
                 }
                 else
                 {
@@ -186,7 +185,7 @@ namespace iArsenal.Web
                 if (lblOrderStatus != null)
                 {
                     if (o.Status.Equals(OrderStatusType.Confirmed))
-                        _strStatus = string.Format("<em>{0}</em>", o.StatusInfo);
+                        _strStatus = $"<em>{o.StatusInfo}</em>";
                     else
                         _strStatus = o.StatusInfo;
 
@@ -204,7 +203,7 @@ namespace iArsenal.Web
                         lblPriceInfo.CssClass = string.Empty;
                     }
 
-                    lblPriceInfo.Text = string.Format("<em>￥{0}</em>", o.PriceInfo);
+                    lblPriceInfo.Text = $"<em>￥{o.PriceInfo}</em>";
                 }
             }
         }

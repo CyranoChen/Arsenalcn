@@ -132,7 +132,8 @@ namespace iArsenal.Web
         {
             if (gvOrderItem.SelectedIndex != -1)
             {
-                Response.Redirect(string.Format("AdminOrderItemView.aspx?OrderItemID={0}", gvOrderItem.DataKeys[gvOrderItem.SelectedIndex].Value.ToString()));
+                Response.Redirect(
+                    $"AdminOrderItemView.aspx?OrderItemID={gvOrderItem.DataKeys[gvOrderItem.SelectedIndex].Value.ToString()}");
             }
         }
 

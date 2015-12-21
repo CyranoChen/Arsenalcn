@@ -43,7 +43,7 @@ namespace iArsenal.Web
 
         private void InitForm()
         {
-            lblACNInfo.Text = string.Format("<em>(ACN ID: {0})</em> ", Username);
+            lblACNInfo.Text = $"<em>(ACN ID: {Username})</em> ";
 
             if (MemberID > 0)
             {

@@ -107,7 +107,7 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}')", ex.Message.ToString()), true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message.ToString()}')", true);
             }
         }
 
@@ -145,7 +145,8 @@ namespace iArsenal.Web
 
                 if (ltrlTeamInfo != null)
                 {
-                    ltrlTeamInfo.Text = string.Format("<span class=\"MatchTicket_TeamInfo\"><img src=\"{0}\" alt=\"{1}\" /></span>", ConfigGlobal.AcnCasinoURL + at.TeamLogo, at.TeamEnglishName);
+                    ltrlTeamInfo.Text =
+                        $"<span class=\"MatchTicket_TeamInfo\"><img src=\"{ConfigGlobal.AcnCasinoURL + at.TeamLogo}\" alt=\"{at.TeamEnglishName}\" /></span>";
                 }
                 else
                 {
@@ -163,11 +164,11 @@ namespace iArsenal.Web
 
                 if (lblMatchDeadlineOrResult != null && !string.IsNullOrEmpty(mt.ResultInfo))
                 {
-                    lblMatchDeadlineOrResult.Text = string.Format("<em>{0}</em>", mt.ResultInfo);
+                    lblMatchDeadlineOrResult.Text = $"<em>{mt.ResultInfo}</em>";
                 }
                 else
                 {
-                    lblMatchDeadlineOrResult.Text = string.Format("<em>{0}</em>", mt.Deadline.ToString("yyyy-MM-dd"));
+                    lblMatchDeadlineOrResult.Text = $"<em>{mt.Deadline.ToString("yyyy-MM-dd")}</em>";
                 }
 
                 if (hlAllowMemberClass != null && mt.AllowMemberClass.HasValue)
@@ -198,7 +199,7 @@ namespace iArsenal.Web
 
                 if (hlTicketApply != null && mt.Deadline > DateTime.Now)
                 {
-                    hlTicketApply.NavigateUrl = string.Format("iArsenalOrder_MatchTicket.aspx?MatchGuid={0}", mt.ID.ToString());
+                    hlTicketApply.NavigateUrl = $"iArsenalOrder_MatchTicket.aspx?MatchGuid={mt.ID.ToString()}";
                     hlTicketApply.Target = "_self";
                     hlTicketApply.Visible = true;
                 }

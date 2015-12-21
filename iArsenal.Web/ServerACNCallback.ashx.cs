@@ -35,10 +35,12 @@ namespace iArsenal.Web
                 req.ContentType = "application/x-www-form-urlencoded";
 
                 //Gen Digital Signature
-                var sig = string.Format("api_key={0}auth_token={1}method={2}{3}", ConfigGlobal.APIAppKey, authToken, "auth.getSession", ConfigGlobal.APICryptographicKey);
+                var sig =
+                    $"api_key={ConfigGlobal.APIAppKey}auth_token={authToken}method={"auth.getSession"}{ConfigGlobal.APICryptographicKey}";
 
                 //Set WebRequest Parameter
-                var para = string.Format("method={0}&api_key={1}&auth_token={2}&sig={3}", "auth.getSession", ConfigGlobal.APIAppKey, authToken, getMd5Hash(sig));
+                var para =
+                    $"method={"auth.getSession"}&api_key={ConfigGlobal.APIAppKey}&auth_token={authToken}&sig={getMd5Hash(sig)}";
 
                 var encodedBytes = Encoding.UTF8.GetBytes(para);
                 req.ContentLength = encodedBytes.Length;
@@ -71,14 +73,14 @@ namespace iArsenal.Web
                         {
                             var error_code = xml.GetElementsByTagName("error_code").Item(0).InnerText;
                             var error_msg = xml.GetElementsByTagName("error_msg").Item(0).InnerText;
-                            throw new Exception(string.Format("({0}) {1}", error_code, error_msg));
+                            throw new Exception($"({error_code}) {error_msg}");
                         }
 
                         gotoURL = nextURL.Contains("default.aspx?method=logout") ? "/default.aspx" : nextURL;
                     }
                     else
                     {
-                        gotoURL = string.Format("{0}?api_key={1}&next={2}", ConfigGlobal.APILoginURL, ConfigGlobal.APIAppKey, nextURL);
+                        gotoURL = $"{ConfigGlobal.APILoginURL}?api_key={ConfigGlobal.APIAppKey}&next={nextURL}";
                     }
 
                     context.Response.Redirect(gotoURL, false);

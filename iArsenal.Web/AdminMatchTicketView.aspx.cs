@@ -61,12 +61,12 @@ namespace iArsenal.Web
                 lblMatchGuid.Text = mt.ID.ToString();
 
                 if (mt.LeagueGuid.HasValue && !string.IsNullOrEmpty(mt.LeagueName))
-                    lblLeagueName.Text = string.Format("<em>{0}</em>", mt.LeagueName);
+                    lblLeagueName.Text = $"<em>{mt.LeagueName}</em>";
                 else
                     lblLeagueName.Text = "无";
 
                 if (mt.TeamGuid != null && !string.IsNullOrEmpty(mt.TeamName))
-                    lblTeamName.Text = string.Format("<em>{0}</em>", mt.TeamName);
+                    lblTeamName.Text = $"<em>{mt.TeamName}</em>";
                 else
                     lblTeamName.Text = "无";
 
@@ -77,8 +77,8 @@ namespace iArsenal.Web
                 else
                     lblRound.Text = "/";
 
-                lblPlayTime.Text = string.Format("<em>{0}</em>", mt.PlayTimeLocal.ToString("yyyy-MM-dd HH:mm"));
-                lblResultInfo.Text = string.Format("<em>{0}</em>", mt.ResultInfo);
+                lblPlayTime.Text = $"<em>{mt.PlayTimeLocal.ToString("yyyy-MM-dd HH:mm")}</em>";
+                lblResultInfo.Text = $"<em>{mt.ResultInfo}</em>";
 
                 // Get Ticket Info
 
@@ -130,7 +130,8 @@ namespace iArsenal.Web
         {
             if (gvMatchOrder.SelectedIndex != -1)
             {
-                Response.Redirect(string.Format("AdminOrderView.aspx?OrderID={0}", gvMatchOrder.DataKeys[gvMatchOrder.SelectedIndex].Value.ToString()));
+                Response.Redirect(
+                    $"AdminOrderView.aspx?OrderID={gvMatchOrder.DataKeys[gvMatchOrder.SelectedIndex].Value.ToString()}");
             }
         }
 
@@ -158,11 +159,11 @@ namespace iArsenal.Web
                                 o.MemberName, "asc_memberName_whiteList");
                             break;
                         default:
-                            hlName.Text = string.Format("<em>{0}</em>", o.MemberName);
+                            hlName.Text = $"<em>{o.MemberName}</em>";
                             break;
                     }
 
-                    hlName.NavigateUrl = string.Format("AdminOrder.aspx?MemberID={0}", o.MemberID);
+                    hlName.NavigateUrl = $"AdminOrder.aspx?MemberID={o.MemberID}";
                 }
 
                 if (lblOrderStatus != null)
@@ -170,7 +171,7 @@ namespace iArsenal.Web
                     var _strStatus = string.Empty;
 
                     if (o.Status.Equals(OrderStatusType.Confirmed))
-                        _strStatus = string.Format("<em>{0}</em>", o.StatusInfo);
+                        _strStatus = $"<em>{o.StatusInfo}</em>";
                     else
                         _strStatus = o.StatusInfo;
 
@@ -227,7 +228,7 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}')", ex.Message.ToString()), true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message.ToString()}')", true);
             }
         }
 
@@ -262,7 +263,7 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}')", ex.Message.ToString()), true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message.ToString()}')", true);
             }
         }
     }

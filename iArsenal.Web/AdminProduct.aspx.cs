@@ -148,7 +148,8 @@ namespace iArsenal.Web
         {
             if (gvProduct.SelectedIndex != -1)
             {
-                Response.Redirect(string.Format("AdminProductView.aspx?ProductGuid={0}", gvProduct.DataKeys[gvProduct.SelectedIndex].Value.ToString()));
+                Response.Redirect(
+                    $"AdminProductView.aspx?ProductGuid={gvProduct.DataKeys[gvProduct.SelectedIndex].Value.ToString()}");
             }
         }
 

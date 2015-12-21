@@ -124,7 +124,7 @@ namespace iArsenal.Web
                     var list = repo.Query<MemberPeriod>(x => x.MemberID == mp.MemberID);
 
                     if (list.Any(x => x.StartDate <= mp.StartDate && x.EndDate >= mp.EndDate))
-                        throw new Exception(string.Format("The Member Period in active for this Member(No.{0})", mp.MemberID.ToString()));
+                        throw new Exception($"The Member Period in active for this Member(No.{mp.MemberID.ToString()})");
 
                     repo.Insert(mp);
 
@@ -133,7 +133,7 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}')", ex.Message.ToString()), true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message.ToString()}')", true);
             }
         }
 
@@ -174,7 +174,7 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}')", ex.Message.ToString()), true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message.ToString()}')", true);
             }
         }
     }

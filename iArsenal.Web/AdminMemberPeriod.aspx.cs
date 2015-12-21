@@ -67,7 +67,7 @@ namespace iArsenal.Web
                 if (ViewState["MemberClass"] != null)
                 {
                     tmpString = ViewState["MemberClass"].ToString();
-                    if (!string.IsNullOrEmpty(tmpString))
+                    if (!string.IsNullOrEmpty(tmpString) && tmpString != "0")
                         returnValue = returnValue && ((int)x.MemberClass).ToString().Equals(tmpString);
                 }
 
@@ -139,7 +139,8 @@ namespace iArsenal.Web
         {
             if (gvMemberPeriod.SelectedIndex != -1)
             {
-                Response.Redirect(string.Format("AdminMemberPeriodView.aspx?MemberPeriodID={0}", gvMemberPeriod.DataKeys[gvMemberPeriod.SelectedIndex].Value.ToString()));
+                Response.Redirect(
+                    $"AdminMemberPeriodView.aspx?MemberPeriodID={gvMemberPeriod.DataKeys[gvMemberPeriod.SelectedIndex].Value.ToString()}");
             }
         }
 
@@ -194,11 +195,11 @@ namespace iArsenal.Web
                                 m.Name, "asc_memberName_whiteList");
                             break;
                         default:
-                            hlName.Text = string.Format("<em>{0}</em>", m.Name);
+                            hlName.Text = $"<em>{m.Name}</em>";
                             break;
                     }
 
-                    hlName.NavigateUrl = string.Format("AdminMemberView.aspx?MemberID={0}", m.ID);
+                    hlName.NavigateUrl = $"AdminMemberView.aspx?MemberID={m.ID}";
                 }
 
             }

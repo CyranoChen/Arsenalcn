@@ -20,7 +20,7 @@ namespace iArsenal.Web.Control
                     var _strLeagueInfo = mt.LeagueName.ToString();
 
                     if (mt.Round.HasValue)
-                        _strLeagueInfo += string.Format(" 第{0}轮", mt.Round.Value.ToString());
+                        _strLeagueInfo += $" 第{mt.Round.Value.ToString()}轮";
 
                     lblLeagueSeason.Text = _strLeagueInfo;
 

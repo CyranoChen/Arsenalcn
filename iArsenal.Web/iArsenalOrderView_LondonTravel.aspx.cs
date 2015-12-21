@@ -35,7 +35,7 @@ namespace iArsenal.Web
         {
             try
             {
-                lblMemberName.Text = string.Format("<b>{0}</b> (<em>NO.{1}</em>)", this.MemberName, this.MID.ToString());
+                lblMemberName.Text = $"<b>{this.MemberName}</b> (<em>NO.{this.MID.ToString()}</em>)";
 
                 if (OrderID > 0)
                 {
@@ -43,7 +43,7 @@ namespace iArsenal.Web
 
                     if (ConfigGlobal.IsPluginAdmin(UID) && o != null)
                     {
-                        lblMemberName.Text = string.Format("<b>{0}</b> (<em>NO.{1}</em>)", o.MemberName, o.MemberID.ToString());
+                        lblMemberName.Text = $"<b>{o.MemberName}</b> (<em>NO.{o.MemberID.ToString()}</em>)";
                     }
                     else
                     {
@@ -55,7 +55,7 @@ namespace iArsenal.Web
 
                     if (ucPortalWorkflowInfo != null)
                     {
-                        ucPortalWorkflowInfo.JSONOrderStatusList = string.Format("[ {0} ]", string.Join(",", o.StatusWorkflowInfo));
+                        ucPortalWorkflowInfo.JSONOrderStatusList = $"[ {string.Join(",", o.StatusWorkflowInfo)} ]";
                         ucPortalWorkflowInfo.CurrOrderStatus = o.Status;
                     }
 
@@ -63,7 +63,7 @@ namespace iArsenal.Web
 
                     var m = repo.Single<Member>(o.MemberID);
 
-                    lblOrderMobile.Text = string.Format("<em>{0}</em>", o.Mobile);
+                    lblOrderMobile.Text = $"<em>{o.Mobile}</em>";
 
                     #region Set Member Nation & Region
                     if (!string.IsNullOrEmpty(m.Nation))
@@ -99,10 +99,10 @@ namespace iArsenal.Web
                     lblMemberIDCardNo.Text = m.IDCardNo;
                     lblMemberPassportNo.Text = m.PassportNo;
                     lblMemberPassportName.Text = m.PassportName;
-                    lblMemberQQ.Text = string.Format("<em>{0}</em>", m.QQ);
-                    lblMemberEmail.Text = string.Format("<em>{0}</em>", m.Email);
+                    lblMemberQQ.Text = $"<em>{m.QQ}</em>";
+                    lblMemberEmail.Text = $"<em>{m.Email}</em>";
 
-                    lblOrderID.Text = string.Format("<em>{0}</em>", o.ID.ToString());
+                    lblOrderID.Text = $"<em>{o.ID.ToString()}</em>";
                     lblOrderCreateTime.Text = o.CreateTime.ToString("yyyy-MM-dd HH:mm");
                     lblOrderDescription.Text = o.Description;
 
@@ -126,8 +126,8 @@ namespace iArsenal.Web
                     if (oiLondon.IsActive)
                     {
                         // Set Order Travel Date
-                        lblOrderItem_TravelInfo.Text = string.Format("希望在 <em>{0}</em> 至 <em>{1}</em> 出行",
-                            oiLondon.TravelFromDate.ToString("yyyy年MM月dd日"), oiLondon.TravelToDate.ToString("yyyy年MM月dd日"));
+                        lblOrderItem_TravelInfo.Text =
+                            $"希望在 <em>{oiLondon.TravelFromDate.ToString("yyyy年MM月dd日")}</em> 至 <em>{oiLondon.TravelToDate.ToString("yyyy年MM月dd日")}</em> 出行";
 
                         // Set Order Travel Option
                         if (oiLondon.TravelOption != null && oiLondon.TravelOption.Length > 0)
@@ -195,15 +195,15 @@ namespace iArsenal.Web
                         var oiPartner = listPartner[0];
 
                         price = oiPartner.TotalPrice + oiLondon.TotalPrice;
-                        priceInfo = string.Format("观赛团预订定金：{0}+ 同伴定金：{1} = <em>{2}</em>元 (CNY)",
-                            oiLondon.TotalPrice.ToString("f0"), oiPartner.TotalPrice.ToString("f0"), price.ToString("f2"));
+                        priceInfo =
+                            $"观赛团预订定金：{oiLondon.TotalPrice.ToString("f0")}+ 同伴定金：{oiPartner.TotalPrice.ToString("f0")} = <em>{price.ToString("f2")}</em>元 (CNY)";
 
                         phOrderPrice.Visible = true;
                     }
                     else
                     {
                         price = oiLondon.TotalPrice;
-                        priceInfo = string.Format("观赛团预订定金：<em>{0}</em>元 (CNY)", price.ToString("f2"));
+                        priceInfo = $"观赛团预订定金：<em>{price.ToString("f2")}</em>元 (CNY)";
 
                         phOrderPrice.Visible = true;
                     }
@@ -241,7 +241,8 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}');window.location.href = 'iArsenalOrder.aspx'", ex.Message.ToString()), true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed",
+                    $"alert('{ex.Message.ToString()}');window.location.href = 'iArsenalOrder.aspx'", true);
             }
         }
 
@@ -262,7 +263,8 @@ namespace iArsenal.Web
 
                     repo.Update(o);
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", string.Format("alert('谢谢您的预订报名，您的订单已经提交成功。\\r\\n请耐心等待审核，并由观赛组织人会与您联系。\\r\\n订单号为：{0}'); window.location.href = window.location.href", o.ID.ToString()), true);
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
+                        $"alert('谢谢您的预订报名，您的订单已经提交成功。\\r\\n请耐心等待审核，并由观赛组织人会与您联系。\\r\\n订单号为：{o.ID.ToString()}'); window.location.href = window.location.href", true);
                 }
                 else
                 {
@@ -271,7 +273,7 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}');", ex.Message.ToString()), true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message.ToString()}');", true);
             }
         }
 
@@ -286,7 +288,8 @@ namespace iArsenal.Web
                     if (o == null || !o.MemberID.Equals(MID) || !o.IsActive)
                         throw new Exception("此订单无效或非当前用户订单");
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", string.Format("window.location.href = 'iArsenalOrder_LondonTravel.aspx?OrderID={0}'", o.ID.ToString()), true);
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
+                        $"window.location.href = 'iArsenalOrder_LondonTravel.aspx?OrderID={o.ID.ToString()}'", true);
                 }
                 else
                 {
@@ -295,7 +298,7 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}');", ex.Message.ToString()), true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message.ToString()}');", true);
             }
         }
 
@@ -316,7 +319,8 @@ namespace iArsenal.Web
 
                     repo.Update(o);
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", string.Format("alert('此订单({0})已经取消');window.location.href = 'iArsenalOrder.aspx'", o.ID.ToString()), true);
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
+                        $"alert('此订单({o.ID.ToString()})已经取消');window.location.href = 'iArsenalOrder.aspx'", true);
                 }
                 else
                 {
@@ -325,7 +329,7 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}');", ex.Message.ToString()), true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message.ToString()}');", true);
             }
         }
     }

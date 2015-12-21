@@ -178,7 +178,7 @@ namespace iArsenal.Web
 
                 if (ltrlException != null && !string.IsNullOrEmpty(l.StackTrace))
                 {
-                    ltrlException.Text = string.Format("<em style=\"cursor: pointer\" title=\"{0}\">Exception</em>", l.StackTrace);
+                    ltrlException.Text = $"<em style=\"cursor: pointer\" title=\"{l.StackTrace}\">Exception</em>";
                 }
             }
         }
@@ -206,7 +206,7 @@ namespace iArsenal.Web
         {
             if (gvLog.SelectedIndex != -1)
             {
-                Response.Redirect(string.Format("AdminLogView.aspx?LogID={0}", gvLog.DataKeys[gvLog.SelectedIndex].Value.ToString()));
+                Response.Redirect($"AdminLogView.aspx?LogID={gvLog.DataKeys[gvLog.SelectedIndex].Value.ToString()}");
             }
         }
 

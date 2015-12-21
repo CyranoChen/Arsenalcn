@@ -39,7 +39,7 @@ namespace iArsenal.Web
             {
                 var l = repo.Single<Log>(LogID);
 
-                ltrlLogID.Text = string.Format("详细日志查 <em>({0})</em>", LogID.ToString());
+                ltrlLogID.Text = $"详细日志查 <em>({LogID.ToString()})</em>";
                 tbLogger.Text = l.Logger;
                 tbCreateTime.Text = l.CreateTime.ToString("yyyy-MM-dd HH:mm:ss");
                 tbLevel.Text = l.Level.ToString();

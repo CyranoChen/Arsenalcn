@@ -42,7 +42,7 @@ namespace iArsenal.Web
             {
                 var m = repo.Single<Member>(MemberID);
 
-                lblMemberInfo.Text = string.Format("会员姓名<em>({0})</em>:", MemberID.ToString());
+                lblMemberInfo.Text = $"会员姓名<em>({MemberID.ToString()})</em>:";
 
                 tbName.Text = m.Name;
                 cbIsActive.Checked = m.IsActive;
@@ -136,7 +136,8 @@ namespace iArsenal.Web
         {
             if (gvMemberPeriod.SelectedIndex != -1)
             {
-                Response.Redirect(string.Format("AdminMemberPeriodView.aspx?MemberPeriodID={0}", gvMemberPeriod.DataKeys[gvMemberPeriod.SelectedIndex].Value.ToString()));
+                Response.Redirect(
+                    $"AdminMemberPeriodView.aspx?MemberPeriodID={gvMemberPeriod.DataKeys[gvMemberPeriod.SelectedIndex].Value.ToString()}");
             }
         }
 
@@ -197,7 +198,7 @@ namespace iArsenal.Web
                         {
                             if (!string.IsNullOrEmpty(tbRegion2.Text.Trim()))
                             {
-                                m.Region = string.Format("{0}|{1}", tbRegion1.Text.Trim(), tbRegion2.Text.Trim());
+                                m.Region = $"{tbRegion1.Text.Trim()}|{tbRegion2.Text.Trim()}";
                             }
                             else
                             {
@@ -259,10 +260,11 @@ namespace iArsenal.Web
                 {
                     if (tmpMID > 0)
                     {
-                        var msg = string.Format("if (confirm('该会员的AcnID已经注册,是否跳转?')) {{ window.location.href = 'AdminMemberView.aspx?MemberID={0}'; }}", tmpMID.ToString());
+                        var msg =
+                            $"if (confirm('该会员的AcnID已经注册,是否跳转?')) {{ window.location.href = 'AdminMemberView.aspx?MemberID={tmpMID.ToString()}'; }}";
                         ClientScript.RegisterClientScriptBlock(typeof(string), "failed", msg, true);
                         //ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("JumpToMemberViewer('{0}')", tmpMID.ToString()), true);
-                        throw new Exception(string.Format("AcnID in use for Member(No.{0})", tmpMID.ToString()));
+                        throw new Exception($"AcnID in use for Member(No.{tmpMID.ToString()})");
                     }
                     else
                     {
@@ -275,7 +277,7 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}')", ex.Message.ToString()), true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message.ToString()}')", true);
             }
         }
 
@@ -308,7 +310,7 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}')", ex.Message.ToString()), true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message.ToString()}')", true);
             }
         }
     }

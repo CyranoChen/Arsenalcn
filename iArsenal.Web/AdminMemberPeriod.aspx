@@ -26,7 +26,7 @@
                 <asp:TextBox ID="tbMemberName" runat="server" Text="--会员姓名--" CssClass="TextBox" Width="100px"></asp:TextBox>
                 <asp:TextBox ID="tbMemberCardNo" runat="server" Text="--会员卡号--" CssClass="TextBox" Width="100px"></asp:TextBox>
                 <asp:DropDownList ID="ddlMemberClass" runat="server">
-                    <asp:ListItem Text="--全部--" Selected="True"></asp:ListItem>
+                    <asp:ListItem Text="--全部--" Value="0" Selected="True"></asp:ListItem>
                     <asp:ListItem Text="普通会员" Value="1"></asp:ListItem>
                     <asp:ListItem Text="高级会员" Value="2"></asp:ListItem>
                 </asp:DropDownList>

@@ -6,6 +6,8 @@ using System.Reflection;
 using Arsenal.Service;
 using Arsenal.Service.Casino;
 using AutoMapper;
+using AutoMapper.Data;
+using AutoMapper.Mappers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Arsenalcn.Core.Tests
@@ -100,17 +102,35 @@ namespace Arsenalcn.Core.Tests
             {
                 // db float? -> c# double?
                 // Error on Enum?
-                var mapper = typeof(CasinoItem).GetMethod("CreateMap",
-                    BindingFlags.Static | BindingFlags.Public);
 
-                if (mapper != null)
+                //var mapper = typeof(CasinoItem).GetMethod("CreateMap",
+                //    BindingFlags.Static | BindingFlags.Public);
+
+                //if (mapper != null)
+                //{
+                //    mapper.Invoke(null, null);
+                //}
+                //else
+                //{
+                //    Mapper.CreateMap<IDataReader, CasinoItem>();
+                //}
+
+                Mapper.Initialize(cfg =>
                 {
-                    mapper.Invoke(null, null);
-                }
-                else
-                {
-                    Mapper.CreateMap<IDataReader, CasinoItem>();
-                }
+                    MapperRegistry.Mappers.Insert(0, new DataReaderMapper { YieldReturnEnabled = false });
+
+                    var mapper = typeof(CasinoItem).GetMethod("CreateMap", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
+
+                    if (mapper != null)
+                    {
+                        mapper.Invoke(null, null);
+                    }
+                    else
+                    {
+                        cfg.CreateMap<IDataReader, CasinoItem>();
+                    }
+
+                });
 
                 list = Mapper.Map<IDataReader, IEnumerable<CasinoItem>>(dt.CreateDataReader()).ToList();
             }

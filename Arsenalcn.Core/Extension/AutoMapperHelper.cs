@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Data;
 
 using AutoMapper;
+using AutoMapper.Data;
+using AutoMapper.Mappers;
 
 namespace Arsenalcn.Core
 {
@@ -80,17 +82,22 @@ namespace Arsenalcn.Core
         {
             //Mapper.Reset();
 
-            var mapper = typeof(T).GetMethod("CreateMap",
-                    System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
+            Mapper.Initialize(cfg =>
+            {
+                MapperRegistry.Mappers.Insert(0, new DataReaderMapper { YieldReturnEnabled = false });
 
-            if (mapper != null)
-            {
-                mapper.Invoke(null, null);
-            }
-            else
-            {
-                Mapper.CreateMap<IDataReader, T>();
-            }
+                var mapper = typeof(T).GetMethod("CreateMap", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
+
+                if (mapper != null)
+                {
+                    mapper.Invoke(null, null);
+                }
+                else
+                {
+                    cfg.CreateMap<IDataReader, T>();
+                }
+
+            });
 
             return Mapper.Map<IDataReader, IEnumerable<T>>(reader);
         }

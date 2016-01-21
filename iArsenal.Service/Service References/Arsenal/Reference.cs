@@ -23,7 +23,7 @@ namespace iArsenal.Service.Arsenal {
     
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.81.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1055.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Web.Services.WebServiceBindingAttribute(Name="ServiceArsenalSoap", Namespace="http://www.arsenal.cn/")]
@@ -101,7 +101,7 @@ namespace iArsenal.Service.Arsenal {
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://www.arsenal.cn/GetMatchs", RequestNamespace="http://www.arsenal.cn/", ResponseNamespace="http://www.arsenal.cn/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public Match[] GetMatchs() {
-            var results = this.Invoke("GetMatchs", new object[0]);
+            object[] results = this.Invoke("GetMatchs", new object[0]);
             return ((Match[])(results[0]));
         }
         
@@ -120,7 +120,7 @@ namespace iArsenal.Service.Arsenal {
         
         private void OnGetMatchsOperationCompleted(object arg) {
             if ((this.GetMatchsCompleted != null)) {
-                var invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
                 this.GetMatchsCompleted(this, new GetMatchsCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
@@ -128,7 +128,7 @@ namespace iArsenal.Service.Arsenal {
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://www.arsenal.cn/GetPlayers", RequestNamespace="http://www.arsenal.cn/", ResponseNamespace="http://www.arsenal.cn/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public Player[] GetPlayers() {
-            var results = this.Invoke("GetPlayers", new object[0]);
+            object[] results = this.Invoke("GetPlayers", new object[0]);
             return ((Player[])(results[0]));
         }
         
@@ -147,7 +147,7 @@ namespace iArsenal.Service.Arsenal {
         
         private void OnGetPlayersOperationCompleted(object arg) {
             if ((this.GetPlayersCompleted != null)) {
-                var invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
                 this.GetPlayersCompleted(this, new GetPlayersCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
@@ -155,7 +155,7 @@ namespace iArsenal.Service.Arsenal {
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://www.arsenal.cn/GetTeams", RequestNamespace="http://www.arsenal.cn/", ResponseNamespace="http://www.arsenal.cn/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public Team[] GetTeams() {
-            var results = this.Invoke("GetTeams", new object[0]);
+            object[] results = this.Invoke("GetTeams", new object[0]);
             return ((Team[])(results[0]));
         }
         
@@ -174,7 +174,7 @@ namespace iArsenal.Service.Arsenal {
         
         private void OnGetTeamsOperationCompleted(object arg) {
             if ((this.GetTeamsCompleted != null)) {
-                var invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
                 this.GetTeamsCompleted(this, new GetTeamsCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
@@ -182,7 +182,7 @@ namespace iArsenal.Service.Arsenal {
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://www.arsenal.cn/GetTeamsByLeagueGuid", RequestNamespace="http://www.arsenal.cn/", ResponseNamespace="http://www.arsenal.cn/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public Team[] GetTeamsByLeagueGuid(System.Guid guid) {
-            var results = this.Invoke("GetTeamsByLeagueGuid", new object[] {
+            object[] results = this.Invoke("GetTeamsByLeagueGuid", new object[] {
                         guid});
             return ((Team[])(results[0]));
         }
@@ -203,7 +203,7 @@ namespace iArsenal.Service.Arsenal {
         
         private void OnGetTeamsByLeagueGuidOperationCompleted(object arg) {
             if ((this.GetTeamsByLeagueGuidCompleted != null)) {
-                var invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
                 this.GetTeamsByLeagueGuidCompleted(this, new GetTeamsByLeagueGuidCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
@@ -211,7 +211,7 @@ namespace iArsenal.Service.Arsenal {
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://www.arsenal.cn/GetLeagues", RequestNamespace="http://www.arsenal.cn/", ResponseNamespace="http://www.arsenal.cn/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public League[] GetLeagues() {
-            var results = this.Invoke("GetLeagues", new object[0]);
+            object[] results = this.Invoke("GetLeagues", new object[0]);
             return ((League[])(results[0]));
         }
         
@@ -230,7 +230,7 @@ namespace iArsenal.Service.Arsenal {
         
         private void OnGetLeaguesOperationCompleted(object arg) {
             if ((this.GetLeaguesCompleted != null)) {
-                var invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
                 this.GetLeaguesCompleted(this, new GetLeaguesCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
@@ -238,7 +238,7 @@ namespace iArsenal.Service.Arsenal {
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://www.arsenal.cn/GetVideos", RequestNamespace="http://www.arsenal.cn/", ResponseNamespace="http://www.arsenal.cn/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public Video[] GetVideos() {
-            var results = this.Invoke("GetVideos", new object[0]);
+            object[] results = this.Invoke("GetVideos", new object[0]);
             return ((Video[])(results[0]));
         }
         
@@ -257,7 +257,7 @@ namespace iArsenal.Service.Arsenal {
         
         private void OnGetVideosOperationCompleted(object arg) {
             if ((this.GetVideosCompleted != null)) {
-                var invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
                 this.GetVideosCompleted(this, new GetVideosCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
@@ -272,7 +272,7 @@ namespace iArsenal.Service.Arsenal {
                         || (url == string.Empty))) {
                 return false;
             }
-            var wsUri = new System.Uri(url);
+            System.Uri wsUri = new System.Uri(url);
             if (((wsUri.Port >= 1024) 
                         && (string.Compare(wsUri.Host, "localHost", System.StringComparison.OrdinalIgnoreCase) == 0))) {
                 return true;
@@ -282,7 +282,7 @@ namespace iArsenal.Service.Arsenal {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.81.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1055.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -506,7 +506,7 @@ namespace iArsenal.Service.Arsenal {
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(Team))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(Player))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(Match))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.81.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1055.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -533,7 +533,7 @@ namespace iArsenal.Service.Arsenal {
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(Team))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(Player))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(Match))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.81.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1055.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -554,7 +554,7 @@ namespace iArsenal.Service.Arsenal {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.81.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1055.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -746,7 +746,7 @@ namespace iArsenal.Service.Arsenal {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.81.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1055.0")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.arsenal.cn/")]
     public enum VideoFileType {
@@ -759,7 +759,7 @@ namespace iArsenal.Service.Arsenal {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.81.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1055.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -876,7 +876,7 @@ namespace iArsenal.Service.Arsenal {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.81.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1055.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1018,7 +1018,7 @@ namespace iArsenal.Service.Arsenal {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.81.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1055.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1317,7 +1317,7 @@ namespace iArsenal.Service.Arsenal {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.81.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1055.0")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.arsenal.cn/")]
     public enum PlayerPositionType {
@@ -1342,11 +1342,11 @@ namespace iArsenal.Service.Arsenal {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.81.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1055.0")]
     public delegate void GetMatchsCompletedEventHandler(object sender, GetMatchsCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.81.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1055.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class GetMatchsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -1368,11 +1368,11 @@ namespace iArsenal.Service.Arsenal {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.81.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1055.0")]
     public delegate void GetPlayersCompletedEventHandler(object sender, GetPlayersCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.81.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1055.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class GetPlayersCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -1394,11 +1394,11 @@ namespace iArsenal.Service.Arsenal {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.81.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1055.0")]
     public delegate void GetTeamsCompletedEventHandler(object sender, GetTeamsCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.81.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1055.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class GetTeamsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -1420,11 +1420,11 @@ namespace iArsenal.Service.Arsenal {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.81.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1055.0")]
     public delegate void GetTeamsByLeagueGuidCompletedEventHandler(object sender, GetTeamsByLeagueGuidCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.81.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1055.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class GetTeamsByLeagueGuidCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -1446,11 +1446,11 @@ namespace iArsenal.Service.Arsenal {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.81.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1055.0")]
     public delegate void GetLeaguesCompletedEventHandler(object sender, GetLeaguesCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.81.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1055.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class GetLeaguesCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -1472,11 +1472,11 @@ namespace iArsenal.Service.Arsenal {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.81.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1055.0")]
     public delegate void GetVideosCompletedEventHandler(object sender, GetVideosCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.81.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1055.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class GetVideosCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {

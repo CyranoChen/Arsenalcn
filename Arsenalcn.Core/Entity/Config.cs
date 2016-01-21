@@ -5,6 +5,9 @@ using System.Data.SqlClient;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Reflection;
+using AutoMapper;
+using AutoMapper.Data;
+using AutoMapper.Mappers;
 
 namespace Arsenalcn.Core
 {
@@ -94,7 +97,12 @@ namespace Arsenalcn.Core
             {
                 using (var reader = dt.CreateDataReader())
                 {
-                    CreateMap();
+                    Mapper.Initialize(cfg =>
+                    {
+                        MapperRegistry.Mappers.Insert(0, new DataReaderMapper { YieldReturnEnabled = false });
+
+                        CreateMap();
+                    });
 
                     list = AutoMapper.Mapper.Map<IDataReader, List<Config>>(reader);
                 }

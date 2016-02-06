@@ -116,7 +116,7 @@
     <Content Include="UploadFiles\StripFace\%2427.jpg" />
     <Content Include="UploadFiles\StripFace\%2432.jpg" />
     <Content Include="UploadFiles\StripFace\00.jpg" />
-    <Content Include="UploadFiles\StripFace\02.jpg" />
+    <Content Include="UploadFiles\StripFace\%2402.jpg" />
     <Content Include="UploadFiles\StripFace\03.jpg" />
     <Content Include="UploadFiles\StripFace\04.jpg" />
     <Content Include="UploadFiles\StripFace\05.jpg" />
@@ -140,6 +140,7 @@
     <Content Include="UploadFiles\StripFace\28.jpg" />
     <Content Include="UploadFiles\StripFace\33.jpg" />
     <Content Include="UploadFiles\StripFace\34.jpg" />
+    <Content Include="UploadFiles\StripFace\%2435.jpg" />
     <Content Include="UploadFiles\StripFace\35.jpg" />
     <Content Include="UploadFiles\StripFace\Legend.jpg" />
     <Content Include="UploadFiles\StripLegend\Adams.jpg" />
@@ -240,7 +241,7 @@
     <Content Include="UploadFiles\StripPhoto\%2427.jpg" />
     <Content Include="UploadFiles\StripPhoto\%2432.jpg" />
     <Content Include="UploadFiles\StripPhoto\00.jpg" />
-    <Content Include="UploadFiles\StripPhoto\02.jpg" />
+    <Content Include="UploadFiles\StripPhoto\%2402.jpg" />
     <Content Include="UploadFiles\StripPhoto\03.jpg" />
     <Content Include="UploadFiles\StripPhoto\04.jpg" />
     <Content Include="UploadFiles\StripPhoto\05.jpg" />
@@ -264,6 +265,7 @@
     <Content Include="UploadFiles\StripPhoto\28.jpg" />
     <Content Include="UploadFiles\StripPhoto\33.jpg" />
     <Content Include="UploadFiles\StripPhoto\34.jpg" />
+    <Content Include="UploadFiles\StripPhoto\%2435.jpg" />
     <Content Include="UploadFiles\StripPhoto\35.jpg" />
   </ItemGroup>
   <ItemGroup>

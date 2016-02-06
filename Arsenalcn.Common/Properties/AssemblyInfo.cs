@@ -8,10 +8,10 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Arsenalcn.Common")]
 [assembly: AssemblyDescription("沪ICP备12045527号")]
 [assembly: AssemblyConfiguration("webmaster@arsenalcn.com")]
-[assembly: AssemblyCompany("Arsenalcn.com")]
-[assembly: AssemblyProduct("Arsenalcn.Common")]
-[assembly: AssemblyCopyright("© Arsenalcn.com 2012-2014")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCompany("Arsenal China Official Supporters Club")]
+[assembly: AssemblyProduct("Arsenalcn.com")]
+[assembly: AssemblyCopyright("© 2008")]
+[assembly: AssemblyTrademark("ArsenalCN")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
@@ -36,4 +36,4 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 
 [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyFileVersion("1.0.0")]
+[assembly: AssemblyFileVersion("1.0.1")]

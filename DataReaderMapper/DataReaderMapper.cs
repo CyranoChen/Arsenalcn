@@ -7,26 +7,34 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Reflection.Emit;
-
-using AutoMapper;
-using AutoMapper.Internal;
-using AutoMapper.Mappers;
+using DataReaderMapper.Internal;
+using DataReaderMapper.Mappers;
 
 #if DOTNET
     using IDataRecord = System.Data.Common.DbDataReader;
     using IDataReader = System.Data.Common.DbDataReader;
 #endif
 
-namespace Arsenalcn.Core
+namespace DataReaderMapper
 {
     public class DataReaderMapper : IObjectMapper
     {
+        private static readonly ConcurrentDictionary<BuilderKey, Build> _builderCache =
+            new ConcurrentDictionary<BuilderKey, Build>();
+
+        private static readonly ConcurrentDictionary<Type, CreateEnumerableAdapter> _enumerableAdapterCache =
+            new ConcurrentDictionary<Type, CreateEnumerableAdapter>();
+
+        private static readonly MethodInfo getValueMethod = typeof (IDataRecord).GetMethod("get_Item",
+            new[] {typeof (int)});
+
+        private static readonly MethodInfo isDBNullMethod = typeof (IDataRecord).GetMethod("IsDBNull",
+            new[] {typeof (int)});
+
         static DataReaderMapper()
         {
-            FeatureDetector.IsIDataRecordType = t => typeof(IDataRecord).IsAssignableFrom(t);
+            FeatureDetector.IsIDataRecordType = t => typeof (IDataRecord).IsAssignableFrom(t);
         }
-        private static ConcurrentDictionary<BuilderKey, Build> _builderCache = new ConcurrentDictionary<BuilderKey, Build>();
-        private static ConcurrentDictionary<Type, CreateEnumerableAdapter> _enumerableAdapterCache = new ConcurrentDictionary<Type, CreateEnumerableAdapter>();
 
         public bool YieldReturnEnabled { get; set; }
 
@@ -58,16 +66,23 @@ namespace Arsenalcn.Core
             return null;
         }
 
-        static IEnumerable MapDataReaderToEnumerable(ResolutionContext context, IMappingEngineRunner mapper, Type destinationElementType, bool useYieldReturn)
+        public bool IsMatch(ResolutionContext context)
         {
-            var dataReader = (IDataReader)context.SourceValue;
+            return IsDataReader(context) || IsDataRecord(context);
+        }
+
+        private static IEnumerable MapDataReaderToEnumerable(ResolutionContext context, IMappingEngineRunner mapper,
+            Type destinationElementType, bool useYieldReturn)
+        {
+            var dataReader = (IDataReader) context.SourceValue;
             var resolveUsingContext = context;
 
             if (context.TypeMap == null)
             {
                 var configurationProvider = mapper.ConfigurationProvider;
-                TypeMap typeMap = configurationProvider.FindTypeMapFor(context.SourceType, destinationElementType);
-                resolveUsingContext = new ResolutionContext(typeMap, context.SourceValue, context.SourceType, destinationElementType, new MappingOperationOptions(), (IMappingEngine)mapper);
+                var typeMap = configurationProvider.FindTypeMapFor(context.SourceType, destinationElementType);
+                resolveUsingContext = new ResolutionContext(typeMap, context.SourceValue, context.SourceType,
+                    destinationElementType, new MappingOperationOptions(), (IMappingEngine) mapper);
             }
 
             var buildFrom = CreateBuilder(destinationElementType, dataReader);
@@ -78,7 +93,8 @@ namespace Arsenalcn.Core
             return LoadDataReaderViaList(dataReader, mapper, buildFrom, resolveUsingContext, destinationElementType);
         }
 
-        static IEnumerable LoadDataReaderViaList(IDataReader dataReader, IMappingEngineRunner mapper, Build buildFrom, ResolutionContext resolveUsingContext, Type elementType)
+        private static IEnumerable LoadDataReaderViaList(IDataReader dataReader, IMappingEngineRunner mapper,
+            Build buildFrom, ResolutionContext resolveUsingContext, Type elementType)
         {
             var list = ObjectCreator.CreateList(elementType);
 
@@ -92,7 +108,8 @@ namespace Arsenalcn.Core
             return list;
         }
 
-        static IEnumerable LoadDataReaderViaYieldReturn(IDataReader dataReader, IMappingEngineRunner mapper, Build buildFrom, ResolutionContext resolveUsingContext)
+        private static IEnumerable LoadDataReaderViaYieldReturn(IDataReader dataReader, IMappingEngineRunner mapper,
+            Build buildFrom, ResolutionContext resolveUsingContext)
         {
             while (dataReader.Read())
             {
@@ -102,32 +119,28 @@ namespace Arsenalcn.Core
             }
         }
 
-        public bool IsMatch(ResolutionContext context)
-        {
-            return IsDataReader(context) || IsDataRecord(context);
-        }
-
         private static bool IsDataReader(ResolutionContext context)
         {
-            return typeof(IDataReader).IsAssignableFrom(context.SourceType) &&
+            return typeof (IDataReader).IsAssignableFrom(context.SourceType) &&
                    context.DestinationType.IsEnumerableType();
         }
 
         private static bool IsDataRecord(ResolutionContext context)
         {
-            return typeof(IDataRecord).IsAssignableFrom(context.SourceType);
+            return typeof (IDataRecord).IsAssignableFrom(context.SourceType);
         }
 
         private static Build CreateBuilder(Type destinationType, IDataRecord dataRecord)
         {
             Build builder;
-            BuilderKey builderKey = new BuilderKey(destinationType, dataRecord);
+            var builderKey = new BuilderKey(destinationType, dataRecord);
             if (_builderCache.TryGetValue(builderKey, out builder))
             {
                 return builder;
             }
 
-            var method = new DynamicMethod("DynamicCreate", destinationType, new[] { typeof(IDataRecord) }, destinationType, true);
+            var method = new DynamicMethod("DynamicCreate", destinationType, new[] {typeof (IDataRecord)},
+                destinationType, true);
             var generator = method.GetILGenerator();
 
             var result = generator.DeclareLocal(destinationType);
@@ -136,7 +149,8 @@ namespace Arsenalcn.Core
 
             for (var i = 0; i < dataRecord.FieldCount; i++)
             {
-                var propertyInfo = destinationType.GetProperty(dataRecord.GetName(i), BindingFlags.Public | BindingFlags.IgnoreCase | BindingFlags.Instance);
+                var propertyInfo = destinationType.GetProperty(dataRecord.GetName(i),
+                    BindingFlags.Public | BindingFlags.IgnoreCase | BindingFlags.Instance);
                 var endIfLabel = generator.DefineLabel();
 
                 if (propertyInfo != null && propertyInfo.GetSetMethod(true) != null)
@@ -152,7 +166,7 @@ namespace Arsenalcn.Core
                     generator.Emit(OpCodes.Callvirt, getValueMethod);
 
                     if (propertyInfo.PropertyType.IsGenericType()
-                        && propertyInfo.PropertyType.GetGenericTypeDefinition().Equals(typeof(Nullable<>))
+                        && propertyInfo.PropertyType.GetGenericTypeDefinition().Equals(typeof (Nullable<>))
                         )
                     {
                         var nullableType = propertyInfo.PropertyType.GetGenericTypeDefinition().GetGenericArguments()[0];
@@ -177,7 +191,7 @@ namespace Arsenalcn.Core
             generator.Emit(OpCodes.Ldloc, result);
             generator.Emit(OpCodes.Ret);
 
-            builder = (Build)method.CreateDelegate(typeof(Build));
+            builder = (Build) method.CreateDelegate(typeof (Build));
             _builderCache[builderKey] = builder;
             return builder;
         }
@@ -194,7 +208,7 @@ namespace Arsenalcn.Core
         }
 
         private static void MapPropertyValue(ResolutionContext context, IMappingEngineRunner mapper,
-                                             object mappedObject, PropertyMap propertyMap)
+            object mappedObject, PropertyMap propertyMap)
         {
             if (!propertyMap.CanResolveValue())
                 return;
@@ -230,21 +244,21 @@ namespace Arsenalcn.Core
                 return builder;
             }
 
-            var adapterType = typeof(EnumerableAdapter<>).MakeGenericType(elementType);
-            var adapterCtor = adapterType.GetConstructor(new[] { typeof(IEnumerable) });
-            var adapterCtorArg = Expression.Parameter(typeof(IEnumerable), "items");
+            var adapterType = typeof (EnumerableAdapter<>).MakeGenericType(elementType);
+            var adapterCtor = adapterType.GetConstructor(new[] {typeof (IEnumerable)});
+            var adapterCtorArg = Expression.Parameter(typeof (IEnumerable), "items");
             var adapterCtorExpression = Expression.New(adapterCtor, adapterCtorArg);
-            builder = (CreateEnumerableAdapter)Expression.Lambda(typeof(CreateEnumerableAdapter), adapterCtorExpression, adapterCtorArg).Compile();
+            builder =
+                (CreateEnumerableAdapter)
+                    Expression.Lambda(typeof (CreateEnumerableAdapter), adapterCtorExpression, adapterCtorArg).Compile();
 
             _enumerableAdapterCache[elementType] = builder;
             return builder;
         }
 
         private delegate object Build(IDataRecord dataRecord);
-        private delegate object CreateEnumerableAdapter(IEnumerable items);
 
-        private static readonly MethodInfo getValueMethod = typeof(IDataRecord).GetMethod("get_Item", new[] { typeof(int) });
-        private static readonly MethodInfo isDBNullMethod = typeof(IDataRecord).GetMethod("IsDBNull", new[] { typeof(int) });
+        private delegate object CreateEnumerableAdapter(IEnumerable items);
 
         private class BuilderKey
         {
@@ -255,7 +269,7 @@ namespace Arsenalcn.Core
             {
                 _destinationType = destinationType;
                 _dataRecordNames = new List<string>(record.FieldCount);
-                for (int i = 0; i < record.FieldCount; i++)
+                for (var i = 0; i < record.FieldCount; i++)
                 {
                     _dataRecordNames.Add(record.GetName(i));
                 }
@@ -263,10 +277,10 @@ namespace Arsenalcn.Core
 
             public override int GetHashCode()
             {
-                int hash = _destinationType.GetHashCode();
+                var hash = _destinationType.GetHashCode();
                 foreach (var name in _dataRecordNames)
                 {
-                    hash = hash * 37 + name.GetHashCode();
+                    hash = hash*37 + name.GetHashCode();
                 }
                 return hash;
             }
@@ -283,9 +297,9 @@ namespace Arsenalcn.Core
                 if (_destinationType != builderKey._destinationType)
                     return false;
 
-                for (int i = 0; i < _dataRecordNames.Count; i++)
+                for (var i = 0; i < _dataRecordNames.Count; i++)
                 {
-                    if (this._dataRecordNames[i] != builderKey._dataRecordNames[i])
+                    if (_dataRecordNames[i] != builderKey._dataRecordNames[i])
                         return false;
                 }
                 return true;
@@ -294,7 +308,7 @@ namespace Arsenalcn.Core
 
         private class EnumerableAdapter<Item> : IEnumerable<Item>
         {
-            IEnumerable<Item> _items;
+            private readonly IEnumerable<Item> _items;
 
             public EnumerableAdapter(IEnumerable items)
             {

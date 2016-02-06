@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using Arsenal.Service;
 using Arsenal.Service.Casino;
-
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Arsenalcn.Core.Tests
@@ -398,7 +396,7 @@ namespace Arsenalcn.Core.Tests
             IRepository repo = new Repository();
 
             var query = repo.Query<MatchView>(x => x.ResultHome.HasValue && x.ResultAway.HasValue &&
-                x.ResultHome >= 0 && x.ResultAway >= 0 && x.PlayTime < DateTime.Now);
+            x.ResultHome >= 0 && x.ResultAway >= 0 && x.PlayTime < DateTime.Now);
 
             Assert.IsNotNull(query);
             Assert.IsInstanceOfType(query, typeof(List<MatchView>));
@@ -533,7 +531,7 @@ namespace Arsenalcn.Core.Tests
                 IsActive = true
             };
 
-            repo.Update<League>(l);
+            repo.Update(l);
         }
 
         [TestMethod]
@@ -543,7 +541,7 @@ namespace Arsenalcn.Core.Tests
             IRepository repo = new Repository();
 
             repo.Delete<League>(null);
-            repo.Delete<League>(key: (object)null);
+            repo.Delete<League>(null);
         }
 
         [TestMethod]

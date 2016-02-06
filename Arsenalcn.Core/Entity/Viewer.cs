@@ -2,27 +2,36 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.Contracts;
-using System.Web;
-using System.Linq.Expressions;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Web;
 
 namespace Arsenalcn.Core
 {
     public abstract class Viewer : IViewer
     {
-        protected Viewer() { }
-
-        #region Members and Properties
-
-        [Unique, StringLength(50)]
-        public virtual string Key
+        public virtual void Many<T>(Expression<Func<T, bool>> whereBy) where T : class, IViewer, new()
         {
-            get { return _key = _key ?? GenerateKey(); }
-            protected set { _key = value; }
-        }
-        private string _key;
+            // Get the property which matches IEnumerable<T>
+            var property = GetType().GetProperties()
+                .FirstOrDefault(
+                    x => (Nullable.GetUnderlyingType(x.PropertyType) ?? x.PropertyType) == typeof (IEnumerable<T>));
 
-        #endregion
+            //var propertyName = string.Format("List{0}", typeof(T).Name);
+            //var property = this.GetType().GetProperty(propertyName, typeof(IEnumerable<T>));
+
+            if (property != null)
+            {
+                IRepository repo = new Repository();
+
+                var list = repo.Query(whereBy);
+
+                if (list != null && list.Count > 0)
+                {
+                    property.SetValue(this, list, null);
+                }
+            }
+        }
 
         protected virtual string GenerateKey()
         {
@@ -48,36 +57,27 @@ namespace Arsenalcn.Core
             }
         }
 
-        public virtual void Many<T>(Expression<Func<T, bool>> whereBy) where T : class, IViewer, new()
+        #region Members and Properties
+
+        [Unique, StringLength(50)]
+        public virtual string Key
         {
-            // Get the property which matches IEnumerable<T>
-            var property = GetType().GetProperties()
-                .FirstOrDefault(x => (Nullable.GetUnderlyingType(x.PropertyType) ?? x.PropertyType) == typeof(IEnumerable<T>));
-
-            //var propertyName = string.Format("List{0}", typeof(T).Name);
-            //var property = this.GetType().GetProperty(propertyName, typeof(IEnumerable<T>));
-
-            if (property != null)
-            {
-                IRepository repo = new Repository();
-
-                var list = repo.Query(whereBy);
-
-                if (list != null && list.Count > 0)
-                {
-                    property.SetValue(this, list, null);
-                }
-            }
+            get { return _key = _key ?? GenerateKey(); }
+            protected set { _key = value; }
         }
+
+        private string _key;
+
+        #endregion
     }
 
     public interface IViewer
     {
         /// <summary>
-        /// The entity's unique (and URL-safe) public identifier
+        ///     The entity's unique (and URL-safe) public identifier
         /// </summary>
         /// <remarks>
-        /// This is the identifier that should be exposed via the web, etc.
+        ///     This is the identifier that should be exposed via the web, etc.
         /// </remarks>
         string Key { get; }
 

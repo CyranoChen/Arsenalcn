@@ -8,8 +8,8 @@ namespace Arsenalcn.Core
     [AttributeUsage(AttributeTargets.Class)]
     public class DbSchema : Attribute
     {
-        public string Name;
         public string Key;
+        public string Name;
         public string Sort;
 
         public DbSchema(string name)
@@ -23,10 +23,10 @@ namespace Arsenalcn.Core
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
     public class DbColumn : Attribute
     {
-        public string Name;
+        public string ForeignKey;
         public bool IsKey;
         public string Key;
-        public string ForeignKey;
+        public string Name;
 
         public DbColumn(string name)
         {
@@ -38,22 +38,24 @@ namespace Arsenalcn.Core
     }
 
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
-    public class UniqueAttribute : RequiredAttribute { }
+    public class UniqueAttribute : RequiredAttribute
+    {
+    }
 
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
     public class DomainAttribute : ValidationAttribute
     {
-        public IEnumerable<string> Values { get; }
-
         public DomainAttribute(string value)
         {
-            Values = new[] { value };
+            Values = new[] {value};
         }
 
         public DomainAttribute(params string[] values)
         {
             Values = values;
         }
+
+        public IEnumerable<string> Values { get; }
 
         public override bool IsValid(object value)
         {

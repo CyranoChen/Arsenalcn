@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace Arsenalcn.Core
@@ -7,12 +6,12 @@ namespace Arsenalcn.Core
     [DbSchema("Arsenalcn_Dictionary", Sort = "ID")]
     public class Dictionary : Entity<int>
     {
-        public Dictionary() : base() { }
-
         //public Dictionary(DataRow dr) : base(dr) { }
 
         public static class Cache
         {
+            public static List<Dictionary> DictionaryList;
+
             static Cache()
             {
                 InitCache();
@@ -34,39 +33,30 @@ namespace Arsenalcn.Core
             {
                 return DictionaryList.Find(x => x.ID.Equals(id));
             }
-
-            public static List<Dictionary> DictionaryList;
         }
 
         #region Members and Properties
 
         [DbColumn("Name")]
-        public string Name
-        { get; set; }
+        public string Name { get; set; }
 
         [DbColumn("DisplayName")]
-        public string DisplayName
-        { get; set; }
+        public string DisplayName { get; set; }
 
         [DbColumn("StandardLevel")]
-        public string StandardLevel
-        { get; set; }
+        public string StandardLevel { get; set; }
 
         [DbColumn("BusinessField")]
-        public string BusinessField
-        { get; set; }
+        public string BusinessField { get; set; }
 
         [DbColumn("StandardCode")]
-        public string StandardCode
-        { get; set; }
+        public string StandardCode { get; set; }
 
         [DbColumn("IsTreeDictionary")]
-        public Boolean IsTreeDictionary
-        { get; set; }
+        public bool IsTreeDictionary { get; set; }
 
         [DbColumn("Description")]
-        public string Description
-        { get; set; }
+        public string Description { get; set; }
 
         #endregion
     }
@@ -74,12 +64,12 @@ namespace Arsenalcn.Core
     [DbSchema("Arsenalcn_DictionaryItem", Sort = "OrderNum")]
     public class DictionaryItem : Entity<int>
     {
-        public DictionaryItem() : base() { }
-
         //public DictionaryItem(DataRow dr) : base(dr) { }
 
         public static class Cache
         {
+            public static List<DictionaryItem> DictionaryItemList_Region;
+
             static Cache()
             {
                 InitCache();
@@ -101,47 +91,36 @@ namespace Arsenalcn.Core
             {
                 return DictionaryItemList_Region.Find(x => x.ID.Equals(id));
             }
-
-            public static List<DictionaryItem> DictionaryItemList_Region;
         }
 
         #region Members and Properties
 
         [DbColumn("Code")]
-        public string Code
-        { get; set; }
+        public string Code { get; set; }
 
         [DbColumn("Name")]
-        public string Name
-        { get; set; }
+        public string Name { get; set; }
 
         [DbColumn("Description")]
-        public string Description
-        { get; set; }
+        public string Description { get; set; }
 
         [DbColumn("CustomCode")]
-        public string CustomCode
-        { get; set; }
+        public string CustomCode { get; set; }
 
         [DbColumn("Spell")]
-        public string Spell
-        { get; set; }
+        public string Spell { get; set; }
 
         [DbColumn("ShortSpell")]
-        public string ShortSpell
-        { get; set; }
+        public string ShortSpell { get; set; }
 
         [DbColumn("ParentID")]
-        public int ParentID
-        { get; set; }
+        public int ParentID { get; set; }
 
         [DbColumn("OrderNum")]
-        public int OrderNum
-        { get; set; }
+        public int OrderNum { get; set; }
 
         [DbColumn("DictionaryID")]
-        public int DictionaryID
-        { get; set; }
+        public int DictionaryID { get; set; }
 
         #endregion
     }

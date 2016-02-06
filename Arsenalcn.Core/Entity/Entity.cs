@@ -5,37 +5,12 @@ namespace Arsenalcn.Core
 {
     public abstract class Entity<TKey> : Viewer, IEntity where TKey : struct
     {
-        protected Entity() : base() { }
-
-        #region Members and Properties
-
-        [Key]
-        public virtual TKey ID
-        {
-            get
-            {
-                if (typeof(TKey) == typeof(Guid))
-                {
-                    if (_id == null || (_id != null && _id.Equals(Guid.Empty)))
-                    {
-                        _id = Guid.NewGuid();
-                    }
-                }
-
-                return (TKey?) _id ?? default(TKey);
-            }
-            set { _id = value; }
-        }
-        private object _id;
-
-        #endregion
-
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != typeof(Entity<TKey>)) return false;
-            return Equals((Entity<TKey>)obj);
+            if (obj.GetType() != typeof (Entity<TKey>)) return false;
+            return Equals((Entity<TKey>) obj);
         }
 
         public bool Equals(Entity<TKey> other)
@@ -55,7 +30,7 @@ namespace Arsenalcn.Core
             unchecked
             {
                 if (default(TKey).Equals(ID))
-                    return Key.GetHashCode() * 397;
+                    return Key.GetHashCode()*397;
 
                 return ID.GetHashCode();
             }
@@ -70,15 +45,39 @@ namespace Arsenalcn.Core
         {
             return !Equals(left, right);
         }
+
+        #region Members and Properties
+
+        [Key]
+        public virtual TKey ID
+        {
+            get
+            {
+                if (typeof (TKey) == typeof (Guid))
+                {
+                    if (_id == null || (_id != null && _id.Equals(Guid.Empty)))
+                    {
+                        _id = Guid.NewGuid();
+                    }
+                }
+
+                return (TKey?) _id ?? default(TKey);
+            }
+            set { _id = value; }
+        }
+
+        private object _id;
+
+        #endregion
     }
 
     public interface IEntity
     {
         /// <summary>
-        /// The entity's unique (and URL-safe) public identifier
+        ///     The entity's unique (and URL-safe) public identifier
         /// </summary>
         /// <remarks>
-        /// This is the identifier that should be exposed via the web, etc.
+        ///     This is the identifier that should be exposed via the web, etc.
         /// </remarks>
         string Key { get; }
     }

@@ -5,8 +5,6 @@ namespace Arsenalcn.Core.Logger
 {
     public class DaoLog : Log, ILog
     {
-        public DaoLog() { }
-
         public void Debug(string message, LogInfo para = null)
         {
             if (para != null)

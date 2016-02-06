@@ -15,8 +15,9 @@ namespace Arsenalcn.Core
             Contract.Requires(func != null);
 
             // Get the property which matches IEnumerable<TMany>
-            var property = typeof(TOne).GetProperties()
-                .FirstOrDefault(x => (Nullable.GetUnderlyingType(x.PropertyType) ?? x.PropertyType) == typeof(IEnumerable<TMany>));
+            var property = typeof (TOne).GetProperties()
+                .FirstOrDefault(
+                    x => (Nullable.GetUnderlyingType(x.PropertyType) ?? x.PropertyType) == typeof (IEnumerable<TMany>));
 
             if (source != null && source.Any() && property != null)
             {
@@ -32,12 +33,16 @@ namespace Arsenalcn.Core
                     var list = repo.All<TMany>();
 
                     #region Package each property Ts in TSource
+
                     if (list != null && list.Count > 0)
                     {
                         foreach (var instance in source)
                         {
-                            var pi = instance.GetType().GetProperty(property.Name, typeof(IEnumerable<TMany>));
-                            if (pi == null) { continue; }
+                            var pi = instance.GetType().GetProperty(property.Name, typeof (IEnumerable<TMany>));
+                            if (pi == null)
+                            {
+                                continue;
+                            }
 
                             var predicate = new Predicate<TMany>(t => func(instance, t));
 
@@ -49,6 +54,7 @@ namespace Arsenalcn.Core
                             }
                         }
                     }
+
                     #endregion
                 }
             }
@@ -56,7 +62,8 @@ namespace Arsenalcn.Core
             return source;
         }
 
-        public static IEnumerable<TOne> Many<TOne, TMany, TOneKey>(this IEnumerable<TOne> source, Func<TOne, TOneKey> keySelector)
+        public static IEnumerable<TOne> Many<TOne, TMany, TOneKey>(this IEnumerable<TOne> source,
+            Func<TOne, TOneKey> keySelector)
             where TMany : class, IViewer, new()
             where TOne : class, IViewer, new()
             where TOneKey : struct
@@ -64,8 +71,9 @@ namespace Arsenalcn.Core
             Contract.Requires(keySelector != null);
 
             // Get the property which matches IEnumerable<TMany>
-            var property = typeof(TOne).GetProperties()
-                .FirstOrDefault(x => (Nullable.GetUnderlyingType(x.PropertyType) ?? x.PropertyType) == typeof(IEnumerable<TMany>));
+            var property = typeof (TOne).GetProperties()
+                .FirstOrDefault(
+                    x => (Nullable.GetUnderlyingType(x.PropertyType) ?? x.PropertyType) == typeof (IEnumerable<TMany>));
 
             if (source != null && source.Any() && property != null)
             {
@@ -80,6 +88,7 @@ namespace Arsenalcn.Core
                     var list = new List<TMany>();
 
                     #region Get All T instances where ForeignKey in T.PrimaryKeys
+
                     var keys = source.Select(keySelector).ToArray();
                     var names = new List<string>();
                     var paras = new List<SqlParameter>();
@@ -103,18 +112,26 @@ namespace Arsenalcn.Core
                             list = reader.DataReaderMapTo<TMany>().ToList();
                         }
                     }
+
                     #endregion
 
                     #region Package each property Ts in TSource
+
                     if (list.Count > 0)
                     {
                         foreach (var instance in source)
                         {
-                            var pi = instance.GetType().GetProperty(property.Name, typeof(IEnumerable<TMany>));
-                            if (pi == null) { continue; }
+                            var pi = instance.GetType().GetProperty(property.Name, typeof (IEnumerable<TMany>));
+                            if (pi == null)
+                            {
+                                continue;
+                            }
 
-                            var fKey = typeof(TMany).GetProperty(attrCol.ForeignKey);
-                            if (fKey == null) { break; }
+                            var fKey = typeof (TMany).GetProperty(attrCol.ForeignKey);
+                            if (fKey == null)
+                            {
+                                break;
+                            }
 
                             var keyValue = keySelector(instance);
 
@@ -129,6 +146,7 @@ namespace Arsenalcn.Core
                             }
                         }
                     }
+
                     #endregion
                 }
             }
@@ -143,7 +161,7 @@ namespace Arsenalcn.Core
             Contract.Requires(pageIndex >= 0);
             Contract.Requires(pageSize >= 0);
 
-            var skip = pageIndex * pageSize;
+            var skip = pageIndex*pageSize;
 
             if (skip > 0)
                 source = source.Skip(skip);
@@ -184,7 +202,8 @@ namespace Arsenalcn.Core
             }
         }
 
-        public static IEnumerable<TKey> DistinctOrderBy<T, TKey>(this IEnumerable<T> instances, Func<T, TKey> keySelector)
+        public static IEnumerable<TKey> DistinctOrderBy<T, TKey>(this IEnumerable<T> instances,
+            Func<T, TKey> keySelector)
         {
             return instances.DistinctBy(keySelector).OrderBy(keySelector).Select(keySelector);
         }

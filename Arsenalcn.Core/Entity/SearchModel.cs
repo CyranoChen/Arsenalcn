@@ -6,6 +6,10 @@ namespace Arsenalcn.Core
 {
     public abstract class SearchModel<T>
     {
+        public Criteria Criteria { get; set; }
+
+        public IEnumerable<T> Data { get; set; }
+
         public virtual void Search(IEnumerable<T> data)
         {
             Contract.Requires(Criteria != null);
@@ -22,9 +26,5 @@ namespace Arsenalcn.Core
                 Data = data;
             }
         }
-
-        public Criteria Criteria { get; set; }
-
-        public IEnumerable<T> Data { get; set; }
     }
 }

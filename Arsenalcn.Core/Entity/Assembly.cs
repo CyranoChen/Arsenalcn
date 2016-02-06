@@ -2,8 +2,6 @@
 {
     public class AssemblyInfo
     {
-        public AssemblyInfo() { }
-
         public string Title { get; set; }
         public string Description { get; set; }
         public string Configuration { get; set; }

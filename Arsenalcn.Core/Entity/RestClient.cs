@@ -3,26 +3,25 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;
-
 using Arsenalcn.Core.Utility;
 
 namespace Arsenalcn.Core
 {
     public class RestClient
     {
-        public RestClient() { }
-
-        protected virtual string GetResponse(RequestMethod method = RequestMethod.POST, string contentType = "application/x-www-form-urlencoded")
+        protected virtual string GetResponse(RequestMethod method = RequestMethod.POST,
+            string contentType = "application/x-www-form-urlencoded")
         {
             //New HttpWebRequest for DiscuzNT Service API
-            HttpWebRequest req = (HttpWebRequest)WebRequest.Create(ServiceUrl);
+            var req = (HttpWebRequest) WebRequest.Create(ServiceUrl);
 
             req.Method = method.ToString();
             req.ContentType = contentType;
 
             #region Set Signature & PostParas
-            StringBuilder sig = new StringBuilder();
-            StringBuilder postData = new StringBuilder();
+
+            var sig = new StringBuilder();
+            var postData = new StringBuilder();
 
             foreach (var para in Parameters)
             {
@@ -35,15 +34,15 @@ namespace Arsenalcn.Core
 
             sig.Append(CryptographicKey);
 
-            var _strParameter = string.Format("sig={0}{1}", Encrypt.GetMd5Hash(sig.ToString()), postData.ToString());
+            var _strParameter = string.Format("sig={0}{1}", Encrypt.GetMd5Hash(sig.ToString()), postData);
 
             #endregion
 
-            byte[] encodedBytes = Encoding.UTF8.GetBytes(_strParameter);
+            var encodedBytes = Encoding.UTF8.GetBytes(_strParameter);
             req.ContentLength = encodedBytes.Length;
 
             // Write encoded data into request stream
-            Stream requestStream = req.GetRequestStream();
+            var requestStream = req.GetRequestStream();
             requestStream.Write(encodedBytes, 0, encodedBytes.Length);
             requestStream.Close();
 
@@ -61,38 +60,42 @@ namespace Arsenalcn.Core
             Parameters = new SortedDictionary<string, string>();
 
             if (!string.IsNullOrEmpty(AppKey))
-            { Parameters.Add("api_key", AppKey); }
+            {
+                Parameters.Add("api_key", AppKey);
+            }
             else
-            { throw new Exception("AppKey is null"); }
+            {
+                throw new Exception("AppKey is null");
+            }
 
             if (!string.IsNullOrEmpty(Method))
-            { Parameters.Add("method", Method); }
+            {
+                Parameters.Add("method", Method);
+            }
             else
-            { throw new Exception("Method is null"); }
+            {
+                throw new Exception("Method is null");
+            }
 
             if (!string.IsNullOrEmpty(Format.ToString()))
-            { Parameters.Add("format", Format.ToString()); }
+            {
+                Parameters.Add("format", Format.ToString());
+            }
         }
 
-
         #region Members and Properties
-        public string ServiceUrl
-        { get; set; }
 
-        public string AppKey
-        { get; set; }
+        public string ServiceUrl { get; set; }
 
-        public string CryptographicKey
-        { get; set; }
+        public string AppKey { get; set; }
 
-        public string Method
-        { get; set; }
+        public string CryptographicKey { get; set; }
 
-        public ResponseType Format
-        { get; set; }
+        public string Method { get; set; }
 
-        public SortedDictionary<string, string> Parameters
-        { get; set; }
+        public ResponseType Format { get; set; }
+
+        public SortedDictionary<string, string> Parameters { get; set; }
 
         #endregion
     }

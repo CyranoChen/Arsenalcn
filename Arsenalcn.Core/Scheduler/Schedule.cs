@@ -4,45 +4,52 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using DataReaderMapper;
 
 namespace Arsenalcn.Core.Scheduler
 {
     [DbSchema("Arsenalcn_Schedule", Key = "ScheduleKey", Sort = "IsSystem, ScheduleKey")]
     public class Schedule
     {
-        public Schedule() { }
+        private ISchedule _ischedule;
+
+        /// <summary>
+        ///     The current implementation of IScheduler
+        /// </summary>
+        public ISchedule IScheduleInstance
+        {
+            get
+            {
+                InitISchedule();
+                return _ischedule;
+            }
+        }
 
         private static void CreateMap()
         {
-            var map = AutoMapper.Mapper.CreateMap<IDataReader, Schedule>();
+            var map = Mapper.CreateMap<IDataReader, Schedule>();
 
             map.ForMember(d => d.ScheduleKey, opt => opt.MapFrom(s => s.GetValue("ScheduleKey").ToString()));
 
             map.ForMember(d => d.Minutes, opt => opt.ResolveUsing(s =>
             {
-                var mins = (int)s.GetValue("Minutes");
+                var mins = (int) s.GetValue("Minutes");
                 if (mins > 0 & mins < ScheduleManager.TimerMinutesInterval)
                 {
                     return ScheduleManager.TimerMinutesInterval;
                 }
-                else
-                {
-                    return mins;
-                }
+                return mins;
             }));
 
             map.ForMember(d => d.ExecuteTimeInfo, opt => opt.ResolveUsing(s =>
             {
-                var dailyTime = (int)s.GetValue("DailyTime");
+                var dailyTime = (int) s.GetValue("DailyTime");
 
                 if (dailyTime >= 0)
                 {
                     return $"Run at {dailyTime/60}:{dailyTime%60}";
                 }
-                else
-                {
-                    return $"Run By {s.GetValue("Minutes").ToString()} mins";
-                }
+                return $"Run By {s.GetValue("Minutes").ToString()} mins";
             }));
         }
 
@@ -95,17 +102,20 @@ namespace Arsenalcn.Core.Scheduler
         {
             var sql = $"SELECT * FROM {Repository.GetTableAttr<Schedule>().Name} WHERE ScheduleKey = @key";
 
-            SqlParameter[] para = { new SqlParameter("@key", key) };
+            SqlParameter[] para = {new SqlParameter("@key", key)};
 
             var ds = DataAccess.ExecuteDataset(sql, para);
 
             var dt = ds.Tables[0];
 
-            if (dt.Rows.Count == 0) { return null; }
+            if (dt.Rows.Count == 0)
+            {
+                return null;
+            }
 
             using (var reader = dt.CreateDataReader())
             {
-                return AutoMapper.Mapper.Map<IDataReader, IEnumerable<Schedule>>(reader).FirstOrDefault();
+                return Mapper.Map<IDataReader, IEnumerable<Schedule>>(reader).FirstOrDefault();
             }
         }
 
@@ -113,7 +123,7 @@ namespace Arsenalcn.Core.Scheduler
         {
             var sql = $"SELECT * FROM {Repository.GetTableAttr<Schedule>().Name} WHERE ScheduleKey = @key";
 
-            SqlParameter[] para = { new SqlParameter("@key", ScheduleKey) };
+            SqlParameter[] para = {new SqlParameter("@key", ScheduleKey)};
 
             var ds = DataAccess.ExecuteDataset(sql, para);
 
@@ -138,7 +148,7 @@ namespace Arsenalcn.Core.Scheduler
                 {
                     CreateMap();
 
-                    list = AutoMapper.Mapper.Map<IDataReader, List<Schedule>>(reader);
+                    list = Mapper.Map<IDataReader, List<Schedule>>(reader);
                 }
             }
 
@@ -155,101 +165,23 @@ namespace Arsenalcn.Core.Scheduler
                              LastCompletedTime = @lastCompletedTime, IsSystem = @isSystem, IsActive = @isActive, Remark = @remark 
                              WHERE ScheduleKey = @key";
 
-            SqlParameter[] para = {
-                                      new SqlParameter("@scheduleType", ScheduleType),
-                                      new SqlParameter("@dailyTime", DailyTime),
-                                      new SqlParameter("@minutes", Minutes),
-                                      new SqlParameter("@lastCompletedTime", LastCompletedTime),
-                                      new SqlParameter("@isSystem", IsSystem),
-                                      new SqlParameter("@isActive", IsActive),
-                                      new SqlParameter("@remark", Remark),
-                                      new SqlParameter("@key", ScheduleKey) };
+            SqlParameter[] para =
+            {
+                new SqlParameter("@scheduleType", ScheduleType),
+                new SqlParameter("@dailyTime", DailyTime),
+                new SqlParameter("@minutes", Minutes),
+                new SqlParameter("@lastCompletedTime", LastCompletedTime),
+                new SqlParameter("@isSystem", IsSystem),
+                new SqlParameter("@isActive", IsActive),
+                new SqlParameter("@remark", Remark),
+                new SqlParameter("@key", ScheduleKey)
+            };
 
             DataAccess.ExecuteNonQuery(sql, para, trans);
         }
 
-        #region Members and Properties
-
-        [DbColumn("ScheduleKey", IsKey = true)]
-        public string ScheduleKey
-        { get; set; }
-
         /// <summary>
-        /// The Type of class which implements IScheduler
-        /// </summary>
-        [DbColumn("ScheduleType")]
-        public string ScheduleType
-        { get; set; }
-
-        /// <summary>
-        /// Absolute time in mintues from midnight. Can be used to assure event is only 
-        /// executed once per-day and as close to the specified
-        /// time as possible. Example times: 0 = midnight, 27 = 12:27 am, 720 = Noon
-        /// </summary>
-        [DbColumn("DailyTime")]
-        public int DailyTime
-        { get; set; }
-
-        /// <summary>
-        /// The scheduled event interval time in minutes. If TimeOfDay has a value >= 0, Minutes will be ignored. 
-        /// This values should not be less than the Timer interval.
-        /// </summary>
-        [DbColumn("Minutes")]
-        public int Minutes
-        { get; set; }
-
-        /// <summary>
-        /// Last Date and Time this scheduler was processed/completed.
-        /// </summary>
-        [DbColumn("LastCompletedTime")]
-        public DateTime LastCompletedTime
-        { get; set; }
-
-        //public DateTime LastCompletedTime
-        //{
-        //    get { return LastCompletedTime; }
-        //    set
-        //    {
-        //        dateWasSet = true;
-        //        LastCompletedTime = value;
-        //    }
-        //}
-
-        //internal testing variable
-        //bool dateWasSet = false;
-
-        [DbColumn("IsSystem")]
-        public bool IsSystem
-        { get; set; }
-
-        [DbColumn("IsActive")]
-        public bool IsActive
-        { get; set; }
-
-        [DbColumn("Remark")]
-        public string Remark
-        { get; set; }
-
-        public string ExecuteTimeInfo
-        { get; set; }
-
-        #endregion
-
-        private ISchedule _ischedule = null;
-        /// <summary>
-        /// The current implementation of IScheduler
-        /// </summary>
-        public ISchedule IScheduleInstance
-        {
-            get
-            {
-                InitISchedule();
-                return _ischedule;
-            }
-        }
-
-        /// <summary>
-        /// Private method for loading an instance of ISchedule
+        ///     Private method for loading an instance of ISchedule
         /// </summary>
         private void InitISchedule()
         {
@@ -268,7 +200,7 @@ namespace Arsenalcn.Core.Scheduler
                 }
                 else
                 {
-                    _ischedule = (ISchedule)Activator.CreateInstance(type);
+                    _ischedule = (ISchedule) Activator.CreateInstance(type);
 
                     if (_ischedule == null)
                     {
@@ -284,18 +216,73 @@ namespace Arsenalcn.Core.Scheduler
             if (DailyTime > -1)
             {
                 //Now
-                var dtNow = DateTime.Now;  //now
+                var dtNow = DateTime.Now; //now
                 //We are looking for the current day @ 12:00 am
                 var dtCompare = new DateTime(dtNow.Year, dtNow.Month, dtNow.Day);
                 //Check to see if the LastCompleted date is less than the 12:00 am + TimeOfDay minutes
-                return LastCompletedTime < dtCompare.AddMinutes(DailyTime) && dtCompare.AddMinutes(DailyTime) <= DateTime.Now;
-
+                return LastCompletedTime < dtCompare.AddMinutes(DailyTime) &&
+                       dtCompare.AddMinutes(DailyTime) <= DateTime.Now;
             }
-            else
-            {
-                //Is the LastCompleted date + the Minutes interval less than now?
-                return LastCompletedTime.AddMinutes(Minutes) < DateTime.Now;
-            }
+            //Is the LastCompleted date + the Minutes interval less than now?
+            return LastCompletedTime.AddMinutes(Minutes) < DateTime.Now;
         }
+
+        #region Members and Properties
+
+        [DbColumn("ScheduleKey", IsKey = true)]
+        public string ScheduleKey { get; set; }
+
+        /// <summary>
+        ///     The Type of class which implements IScheduler
+        /// </summary>
+        [DbColumn("ScheduleType")]
+        public string ScheduleType { get; set; }
+
+        /// <summary>
+        ///     Absolute time in mintues from midnight. Can be used to assure event is only
+        ///     executed once per-day and as close to the specified
+        ///     time as possible. Example times: 0 = midnight, 27 = 12:27 am, 720 = Noon
+        /// </summary>
+        [DbColumn("DailyTime")]
+        public int DailyTime { get; set; }
+
+        /// <summary>
+        ///     The scheduled event interval time in minutes. If TimeOfDay has a value >= 0, Minutes will be ignored.
+        ///     This values should not be less than the Timer interval.
+        /// </summary>
+        [DbColumn("Minutes")]
+        public int Minutes { get; set; }
+
+        /// <summary>
+        ///     Last Date and Time this scheduler was processed/completed.
+        /// </summary>
+        [DbColumn("LastCompletedTime")]
+        public DateTime LastCompletedTime { get; set; }
+
+        //public DateTime LastCompletedTime
+        //{
+        //    get { return LastCompletedTime; }
+        //    set
+        //    {
+        //        dateWasSet = true;
+        //        LastCompletedTime = value;
+        //    }
+        //}
+
+        //internal testing variable
+        //bool dateWasSet = false;
+
+        [DbColumn("IsSystem")]
+        public bool IsSystem { get; set; }
+
+        [DbColumn("IsActive")]
+        public bool IsActive { get; set; }
+
+        [DbColumn("Remark")]
+        public string Remark { get; set; }
+
+        public string ExecuteTimeInfo { get; set; }
+
+        #endregion
     }
 }

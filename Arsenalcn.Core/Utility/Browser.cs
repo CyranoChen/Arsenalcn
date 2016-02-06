@@ -7,7 +7,10 @@ namespace Arsenalcn.Core.Utility
     {
         public static string GetBrowser()
         {
-            if (HttpContext.Current == null) { return string.Empty; }
+            if (HttpContext.Current == null)
+            {
+                return string.Empty;
+            }
 
             var bc = HttpContext.Current.Request.Browser;
 
@@ -16,10 +19,14 @@ namespace Arsenalcn.Core.Utility
             retValue.Append(bc.Type);
 
             if (!bc.MobileDeviceManufacturer.ToLower().Equals("unknown"))
-            { retValue.AppendFormat(", {0}", bc.MobileDeviceManufacturer); }
+            {
+                retValue.AppendFormat(", {0}", bc.MobileDeviceManufacturer);
+            }
 
             if (!bc.MobileDeviceModel.ToLower().Equals("unknown"))
-            { retValue.AppendFormat(", {0}", bc.MobileDeviceModel); }
+            {
+                retValue.AppendFormat(", {0}", bc.MobileDeviceModel);
+            }
 
             return retValue.ToString();
         }

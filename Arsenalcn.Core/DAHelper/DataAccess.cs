@@ -5,7 +5,6 @@ using System.Data.SqlClient;
 using System.Diagnostics.Contracts;
 using System.Reflection;
 using System.Threading;
-
 using Arsenalcn.Core.Logger;
 using Microsoft.ApplicationBlocks.Data;
 
@@ -30,7 +29,7 @@ namespace Arsenalcn.Core
 
                 var ds = SqlHelper.ExecuteDataset(ConnectString, CommandType.Text, sql, para);
 
-                log.Debug(sql, new LogInfo()
+                log.Debug(sql, new LogInfo
                 {
                     MethodInstance = MethodBase.GetCurrentMethod(),
                     ThreadInstance = Thread.CurrentThread
@@ -40,7 +39,7 @@ namespace Arsenalcn.Core
             }
             catch (Exception ex)
             {
-                log.Debug(ex, new LogInfo()
+                log.Debug(ex, new LogInfo
                 {
                     MethodInstance = MethodBase.GetCurrentMethod(),
                     ThreadInstance = Thread.CurrentThread
@@ -67,7 +66,7 @@ namespace Arsenalcn.Core
                     SqlHelper.ExecuteNonQuery(ConnectString, CommandType.Text, sql, para);
                 }
 
-                log.Debug(sql, new LogInfo()
+                log.Debug(sql, new LogInfo
                 {
                     MethodInstance = MethodBase.GetCurrentMethod(),
                     ThreadInstance = Thread.CurrentThread
@@ -75,7 +74,7 @@ namespace Arsenalcn.Core
             }
             catch (Exception ex)
             {
-                log.Debug(ex, new LogInfo()
+                log.Debug(ex, new LogInfo
                 {
                     MethodInstance = MethodBase.GetCurrentMethod(),
                     ThreadInstance = Thread.CurrentThread

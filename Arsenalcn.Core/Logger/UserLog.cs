@@ -5,8 +5,6 @@ namespace Arsenalcn.Core.Logger
 {
     public class UserLog : Log, ILog
     {
-        public UserLog() { }
-
         public void Debug(string message, LogInfo para = null)
         {
             if (para != null)

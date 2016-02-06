@@ -6,7 +6,6 @@ using System.Reflection;
 using Arsenal.Service;
 using Arsenal.Service.Casino;
 using AutoMapper;
-using AutoMapper.Data;
 using AutoMapper.Mappers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

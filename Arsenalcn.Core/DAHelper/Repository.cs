@@ -8,7 +8,6 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 using System.Threading;
-
 using Arsenalcn.Core.Logger;
 
 namespace Arsenalcn.Core
@@ -32,13 +31,16 @@ namespace Arsenalcn.Core
 
                 string sql = $"SELECT * FROM {attr.Name} WHERE {attr.Key} = @key";
 
-                SqlParameter[] para = { new SqlParameter("@key", key) };
+                SqlParameter[] para = {new SqlParameter("@key", key)};
 
                 var ds = DataAccess.ExecuteDataset(sql, para);
 
                 var dt = ds.Tables[0];
 
-                if (dt.Rows.Count == 0) { return null; }
+                if (dt.Rows.Count == 0)
+                {
+                    return null;
+                }
 
                 using (var reader = dt.CreateDataReader())
                 {
@@ -47,7 +49,7 @@ namespace Arsenalcn.Core
             }
             catch (Exception ex)
             {
-                _log.Debug(ex, new LogInfo()
+                _log.Debug(ex, new LogInfo
                 {
                     MethodInstance = MethodBase.GetCurrentMethod(),
                     ThreadInstance = Thread.CurrentThread
@@ -89,7 +91,7 @@ namespace Arsenalcn.Core
             }
             catch (Exception ex)
             {
-                _log.Debug(ex, new LogInfo()
+                _log.Debug(ex, new LogInfo
                 {
                     MethodInstance = MethodBase.GetCurrentMethod(),
                     ThreadInstance = Thread.CurrentThread
@@ -121,13 +123,14 @@ namespace Arsenalcn.Core
 
                 var ds = DataAccess.ExecuteDataset(countSql);
 
-                pager.SetTotalCount((int)ds.Tables[0].Rows[0]["TotalCount"]);
+                pager.SetTotalCount((int) ds.Tables[0].Rows[0]["TotalCount"]);
 
                 // Get Query Result
-                var innerSql = string.Format("(SELECT ROW_NUMBER() OVER(ORDER BY {1}) AS RowNo, * FROM {0})", attr.Name, strOrderBy);
+                var innerSql = string.Format("(SELECT ROW_NUMBER() OVER(ORDER BY {1}) AS RowNo, * FROM {0})", attr.Name,
+                    strOrderBy);
 
                 string sql =
-                    $"SELECT * FROM {innerSql} AS t WHERE t.RowNo BETWEEN {(pager.CurrentPage * pager.PagingSize + 1)} AND {((pager.CurrentPage + 1) * pager.PagingSize)};";
+                    $"SELECT * FROM {innerSql} AS t WHERE t.RowNo BETWEEN {(pager.CurrentPage*pager.PagingSize + 1)} AND {((pager.CurrentPage + 1)*pager.PagingSize)};";
 
                 //sql += string.Format("SELECT COUNT({1}) AS TotalCount FROM {0}", attr.Name, attr.Key);
 
@@ -149,7 +152,7 @@ namespace Arsenalcn.Core
             }
             catch (Exception ex)
             {
-                _log.Debug(ex, new LogInfo()
+                _log.Debug(ex, new LogInfo
                 {
                     MethodInstance = MethodBase.GetCurrentMethod(),
                     ThreadInstance = Thread.CurrentThread
@@ -211,7 +214,7 @@ namespace Arsenalcn.Core
             }
             catch (Exception ex)
             {
-                _log.Debug(ex, new LogInfo()
+                _log.Debug(ex, new LogInfo
                 {
                     MethodInstance = MethodBase.GetCurrentMethod(),
                     ThreadInstance = Thread.CurrentThread
@@ -221,7 +224,8 @@ namespace Arsenalcn.Core
             }
         }
 
-        public List<T> Query<T>(IPager pager, Expression<Func<T, bool>> whereBy, string orderBy = null) where T : class, IViewer, new()
+        public List<T> Query<T>(IPager pager, Expression<Func<T, bool>> whereBy, string orderBy = null)
+            where T : class, IViewer, new()
         {
             try
             {
@@ -245,7 +249,8 @@ namespace Arsenalcn.Core
                 }
 
                 // Get TotalCount First
-                var countSql = string.Format("SELECT COUNT({1}) AS TotalCount FROM {0} WHERE {2}", attr.Name, attr.Key, condition.Condition);
+                var countSql = string.Format("SELECT COUNT({1}) AS TotalCount FROM {0} WHERE {2}", attr.Name, attr.Key,
+                    condition.Condition);
 
                 DataSet ds;
 
@@ -258,13 +263,14 @@ namespace Arsenalcn.Core
                     ds = DataAccess.ExecuteDataset(countSql);
                 }
 
-                pager.SetTotalCount((int)ds.Tables[0].Rows[0]["TotalCount"]);
+                pager.SetTotalCount((int) ds.Tables[0].Rows[0]["TotalCount"]);
 
                 // Build Sql and Execute
                 var innerSql = string.Format("(SELECT ROW_NUMBER() OVER(ORDER BY {1}) AS RowNo, * FROM {0} WHERE {2})",
                     attr.Name, strOrderBy, condition.Condition);
 
-                string sql = $"SELECT * FROM {innerSql} AS t WHERE t.RowNo BETWEEN {(pager.CurrentPage * pager.PagingSize + 1)} AND {((pager.CurrentPage + 1) * pager.PagingSize)}";
+                string sql =
+                    $"SELECT * FROM {innerSql} AS t WHERE t.RowNo BETWEEN {(pager.CurrentPage*pager.PagingSize + 1)} AND {((pager.CurrentPage + 1)*pager.PagingSize)}";
 
                 //sql += string.Format("SELECT COUNT({1}) AS TotalCount FROM {0} WHERE {2}", attr.Name, attr.Key, condition.Condition);
 
@@ -293,7 +299,7 @@ namespace Arsenalcn.Core
             }
             catch (Exception ex)
             {
-                _log.Debug(ex, new LogInfo()
+                _log.Debug(ex, new LogInfo
                 {
                     MethodInstance = MethodBase.GetCurrentMethod(),
                     ThreadInstance = Thread.CurrentThread
@@ -336,7 +342,7 @@ namespace Arsenalcn.Core
                     // skip the property of the self-increase main-key
                     var primary = instance.GetType().GetProperty("ID");
 
-                    if (primary.PropertyType != typeof(int))
+                    if (primary.PropertyType != typeof (int))
                     {
                         listCol.Add(attr.Key);
                         listColPara.Add("@key");
@@ -355,11 +361,14 @@ namespace Arsenalcn.Core
                         DataAccess.ExecuteNonQuery(sql, listPara.ToArray());
                     }
                 }
-                else { throw new Exception("Unable to find any valid DB columns"); }
+                else
+                {
+                    throw new Exception("Unable to find any valid DB columns");
+                }
             }
             catch (Exception ex)
             {
-                _log.Debug(ex, new LogInfo()
+                _log.Debug(ex, new LogInfo
                 {
                     MethodInstance = MethodBase.GetCurrentMethod(),
                     ThreadInstance = Thread.CurrentThread
@@ -393,9 +402,6 @@ namespace Arsenalcn.Core
                         var para = new SqlParameter("@" + attrCol.Name, value ?? DBNull.Value);
                         listPara.Add(para);
                     }
-                    else
-                    {
-                    }
                 }
 
                 var attr = GetTableAttr<T>();
@@ -407,7 +413,7 @@ namespace Arsenalcn.Core
 
                     string sql;
 
-                    if (primary.PropertyType != typeof(int))
+                    if (primary.PropertyType != typeof (int))
                     {
                         listCol.Add(attr.Key);
                         listColPara.Add("@key");
@@ -429,9 +435,12 @@ namespace Arsenalcn.Core
                     }
                     else
                     {
-                        sql = $"INSERT INTO {attr.Name} ({string.Join(", ", listCol.ToArray())}) VALUES ({string.Join(", ", listColPara.ToArray())}); SELECT SCOPE_IDENTITY();";
+                        sql =
+                            $"INSERT INTO {attr.Name} ({string.Join(", ", listCol.ToArray())}) VALUES ({string.Join(", ", listColPara.ToArray())}); SELECT SCOPE_IDENTITY();";
 
-                        key = trans != null ? DataAccess.ExecuteScalar(sql, listPara.ToArray(), trans) : DataAccess.ExecuteScalar(sql, listPara.ToArray());
+                        key = trans != null
+                            ? DataAccess.ExecuteScalar(sql, listPara.ToArray(), trans)
+                            : DataAccess.ExecuteScalar(sql, listPara.ToArray());
                     }
                 }
                 else
@@ -441,7 +450,7 @@ namespace Arsenalcn.Core
             }
             catch (Exception ex)
             {
-                _log.Debug(ex, new LogInfo()
+                _log.Debug(ex, new LogInfo
                 {
                     MethodInstance = MethodBase.GetCurrentMethod(),
                     ThreadInstance = Thread.CurrentThread
@@ -473,9 +482,6 @@ namespace Arsenalcn.Core
                         var para = new SqlParameter("@" + attrCol.Name, value ?? DBNull.Value);
                         listPara.Add(para);
                     }
-                    else
-                    {
-                    }
                 }
 
                 var attr = GetTableAttr<T>();
@@ -498,11 +504,14 @@ namespace Arsenalcn.Core
                         DataAccess.ExecuteNonQuery(sql, listPara.ToArray());
                     }
                 }
-                else { throw new Exception("Unable to find any valid DB columns"); }
+                else
+                {
+                    throw new Exception("Unable to find any valid DB columns");
+                }
             }
             catch (Exception ex)
             {
-                _log.Debug(ex, new LogInfo()
+                _log.Debug(ex, new LogInfo
                 {
                     MethodInstance = MethodBase.GetCurrentMethod(),
                     ThreadInstance = Thread.CurrentThread
@@ -522,7 +531,7 @@ namespace Arsenalcn.Core
 
                 string sql = $"DELETE {attr.Name} WHERE {attr.Key} = @key";
 
-                SqlParameter[] para = { new SqlParameter("@key", key) };
+                SqlParameter[] para = {new SqlParameter("@key", key)};
 
                 if (trans != null)
                 {
@@ -535,7 +544,7 @@ namespace Arsenalcn.Core
             }
             catch (Exception ex)
             {
-                _log.Debug(ex, new LogInfo()
+                _log.Debug(ex, new LogInfo
                 {
                     MethodInstance = MethodBase.GetCurrentMethod(),
                     ThreadInstance = Thread.CurrentThread
@@ -556,20 +565,20 @@ namespace Arsenalcn.Core
 
         public static DbSchema GetTableAttr<T>() where T : class
         {
-            var attr = Attribute.GetCustomAttribute(typeof(T), typeof(DbSchema)) as DbSchema;
-            return attr ?? new DbSchema(typeof(T).Name);
+            var attr = Attribute.GetCustomAttribute(typeof (T), typeof (DbSchema)) as DbSchema;
+            return attr ?? new DbSchema(typeof (T).Name);
         }
 
         public static DbColumn GetColumnAttr(PropertyInfo pi)
         {
-            return (DbColumn)Attribute.GetCustomAttribute(pi, typeof(DbColumn));
+            return (DbColumn) Attribute.GetCustomAttribute(pi, typeof (DbColumn));
         }
 
         public static DbColumn GetColumnAttr<T>(string name) where T : class
         {
             Contract.Requires(!string.IsNullOrEmpty(name));
 
-            return GetColumnAttr(typeof(T).GetProperty(name));
+            return GetColumnAttr(typeof (T).GetProperty(name));
         }
 
         public static DbColumn GetColumnAttr<T>(Expression<Func<T, object>> expr) where T : class
@@ -580,15 +589,15 @@ namespace Arsenalcn.Core
 
             if (body != null)
             {
-                name = ((MemberExpression)body.Operand).Member.Name;
+                name = ((MemberExpression) body.Operand).Member.Name;
             }
             else if (expr.Body is MemberExpression)
             {
-                name = ((MemberExpression)expr.Body).Member.Name;
+                name = ((MemberExpression) expr.Body).Member.Name;
             }
             else if (expr.Body is ParameterExpression)
             {
-                name = ((ParameterExpression)expr.Body).Type.Name;
+                name = ((ParameterExpression) expr.Body).Type.Name;
             }
 
             return GetColumnAttr<T>(name);

@@ -5,23 +5,20 @@ using System.Data.SqlClient;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Reflection;
-using AutoMapper;
-using AutoMapper.Data;
-using AutoMapper.Mappers;
+using DataReaderMapper;
+using DataReaderMapper.Mappers;
 
 namespace Arsenalcn.Core
 {
     [DbSchema("Arsenalcn_Config", Key = "", Sort = "ConfigSystem, ConfigKey")]
     public class Config
     {
-        public Config() { }
-
         private static void CreateMap()
         {
-            var map = AutoMapper.Mapper.CreateMap<IDataReader, Config>();
+            var map = Mapper.CreateMap<IDataReader, Config>();
 
             map.ForMember(d => d.ConfigSystem, opt => opt.MapFrom(s =>
-               (ConfigSystem)Enum.Parse(typeof(ConfigSystem), s.GetValue("ConfigSystem").ToString())));
+                (ConfigSystem) Enum.Parse(typeof (ConfigSystem), s.GetValue("ConfigSystem").ToString())));
         }
 
         //public Config(DataRow dr)
@@ -63,10 +60,11 @@ namespace Arsenalcn.Core
             var sql =
                 $"SELECT * FROM {Repository.GetTableAttr<Config>().Name} WHERE ConfigSystem = @configSystem AND ConfigKey = @configKey";
 
-            SqlParameter[] para = {
-                                      new SqlParameter("@configSystem", ConfigSystem.ToString()),
-                                      new SqlParameter("@configKey", ConfigKey)
-                                  };
+            SqlParameter[] para =
+            {
+                new SqlParameter("@configSystem", ConfigSystem.ToString()),
+                new SqlParameter("@configKey", ConfigKey)
+            };
 
             var ds = DataAccess.ExecuteDataset(sql, para);
 
@@ -99,12 +97,13 @@ namespace Arsenalcn.Core
                 {
                     Mapper.Initialize(cfg =>
                     {
-                        MapperRegistry.Mappers.Insert(0, new DataReaderMapper { YieldReturnEnabled = false });
+                        MapperRegistry.Mappers.Insert(0,
+                            new DataReaderMapper.DataReaderMapper {YieldReturnEnabled = false});
 
                         CreateMap();
                     });
 
-                    list = AutoMapper.Mapper.Map<IDataReader, List<Config>>(reader);
+                    list = Mapper.Map<IDataReader, List<Config>>(reader);
                 }
             }
 
@@ -120,12 +119,15 @@ namespace Arsenalcn.Core
         {
             Contract.Requires(Any());
 
-            var sql = $"UPDATE {Repository.GetTableAttr<Config>().Name} SET ConfigValue = @configValue WHERE ConfigSystem = @configSystem AND ConfigKey = @configKey";
+            var sql =
+                $"UPDATE {Repository.GetTableAttr<Config>().Name} SET ConfigValue = @configValue WHERE ConfigSystem = @configSystem AND ConfigKey = @configKey";
 
-            SqlParameter[] para = {
-                                      new SqlParameter("@configSystem", ConfigSystem.ToString()),
-                                      new SqlParameter("@configKey", ConfigKey),
-                                      new SqlParameter("@configValue", ConfigValue) };
+            SqlParameter[] para =
+            {
+                new SqlParameter("@configSystem", ConfigSystem.ToString()),
+                new SqlParameter("@configKey", ConfigKey),
+                new SqlParameter("@configValue", ConfigValue)
+            };
 
             DataAccess.ExecuteNonQuery(sql, para, trans);
         }
@@ -138,12 +140,15 @@ namespace Arsenalcn.Core
             }
             else
             {
-                var sql = $"INSERT INTO {Repository.GetTableAttr<Config>().Name} (ConfigValue, ConfigSystem, ConfigKey) VALUES (@configValue, @configSystem, @configKey)";
+                var sql =
+                    $"INSERT INTO {Repository.GetTableAttr<Config>().Name} (ConfigValue, ConfigSystem, ConfigKey) VALUES (@configValue, @configSystem, @configKey)";
 
-                SqlParameter[] para = {
-                                      new SqlParameter("@configSystem", ConfigSystem.ToString()),
-                                      new SqlParameter("@configKey", ConfigKey),
-                                      new SqlParameter("@configValue", ConfigValue) };
+                SqlParameter[] para =
+                {
+                    new SqlParameter("@configSystem", ConfigSystem.ToString()),
+                    new SqlParameter("@configKey", ConfigKey),
+                    new SqlParameter("@configValue", ConfigValue)
+                };
 
                 DataAccess.ExecuteNonQuery(sql, para, trans);
             }
@@ -170,56 +175,64 @@ namespace Arsenalcn.Core
                 //AssemblyTitle
                 c.ConfigKey = "AssemblyTitle";
                 c.ConfigValue =
-                    ((AssemblyTitleAttribute)Attribute.GetCustomAttribute(assembly, typeof(AssemblyTitleAttribute)))?.Title;
+                    ((AssemblyTitleAttribute) Attribute.GetCustomAttribute(assembly, typeof (AssemblyTitleAttribute)))?
+                        .Title;
 
                 c.Save();
 
                 //AssemblyDescription
                 c.ConfigKey = "AssemblyDescription";
                 c.ConfigValue =
-                    ((AssemblyDescriptionAttribute)Attribute.GetCustomAttribute(assembly, typeof(AssemblyDescriptionAttribute)))?.Description;
+                    ((AssemblyDescriptionAttribute)
+                        Attribute.GetCustomAttribute(assembly, typeof (AssemblyDescriptionAttribute)))?.Description;
 
                 c.Save();
 
                 //AssemblyConfiguration
                 c.ConfigKey = "AssemblyConfiguration";
                 c.ConfigValue =
-                    ((AssemblyConfigurationAttribute)Attribute.GetCustomAttribute(assembly, typeof(AssemblyConfigurationAttribute)))?.Configuration;
+                    ((AssemblyConfigurationAttribute)
+                        Attribute.GetCustomAttribute(assembly, typeof (AssemblyConfigurationAttribute)))?.Configuration;
 
                 c.Save();
 
                 //AssemblyCompany
                 c.ConfigKey = "AssemblyCompany";
                 c.ConfigValue =
-                    ((AssemblyCompanyAttribute)Attribute.GetCustomAttribute(assembly, typeof(AssemblyCompanyAttribute)))?.Company;
+                    ((AssemblyCompanyAttribute)
+                        Attribute.GetCustomAttribute(assembly, typeof (AssemblyCompanyAttribute)))?.Company;
 
                 c.Save();
 
                 //AssemblyProduct
                 c.ConfigKey = "AssemblyProduct";
                 c.ConfigValue =
-                    ((AssemblyProductAttribute)Attribute.GetCustomAttribute(assembly, typeof(AssemblyProductAttribute)))?.Product;
+                    ((AssemblyProductAttribute)
+                        Attribute.GetCustomAttribute(assembly, typeof (AssemblyProductAttribute)))?.Product;
 
                 c.Save();
 
                 //AssemblyCopyright
                 c.ConfigKey = "AssemblyCopyright";
                 c.ConfigValue =
-                    ((AssemblyCopyrightAttribute)Attribute.GetCustomAttribute(assembly, typeof(AssemblyCopyrightAttribute)))?.Copyright;
+                    ((AssemblyCopyrightAttribute)
+                        Attribute.GetCustomAttribute(assembly, typeof (AssemblyCopyrightAttribute)))?.Copyright;
 
                 c.Save();
 
                 //AssemblyTrademark
                 c.ConfigKey = "AssemblyTrademark";
                 c.ConfigValue =
-                    ((AssemblyTrademarkAttribute)Attribute.GetCustomAttribute(assembly, typeof(AssemblyTrademarkAttribute)))?.Trademark;
+                    ((AssemblyTrademarkAttribute)
+                        Attribute.GetCustomAttribute(assembly, typeof (AssemblyTrademarkAttribute)))?.Trademark;
 
                 c.Save();
 
                 //AssemblyCulture
                 c.ConfigKey = "AssemblyCulture";
                 c.ConfigValue =
-                    ((AssemblyCultureAttribute)Attribute.GetCustomAttribute(assembly, typeof(AssemblyCultureAttribute)))?.Culture;
+                    ((AssemblyCultureAttribute)
+                        Attribute.GetCustomAttribute(assembly, typeof (AssemblyCultureAttribute)))?.Culture;
 
                 c.Save();
 
@@ -235,7 +248,8 @@ namespace Arsenalcn.Core
                 //AssemblyFileVersion
                 c.ConfigKey = "AssemblyFileVersion";
                 c.ConfigValue =
-                    ((AssemblyFileVersionAttribute)Attribute.GetCustomAttribute(assembly, typeof(AssemblyFileVersionAttribute)))?.Version;
+                    ((AssemblyFileVersionAttribute)
+                        Attribute.GetCustomAttribute(assembly, typeof (AssemblyFileVersionAttribute)))?.Version;
 
                 c.Save();
             }
@@ -243,6 +257,8 @@ namespace Arsenalcn.Core
 
         public static class Cache
         {
+            public static List<Config> ConfigList;
+
             static Cache()
             {
                 InitCache();
@@ -290,28 +306,20 @@ namespace Arsenalcn.Core
 
                     return dict;
                 }
-                else
-                {
-                    return null;
-                }
+                return null;
             }
-
-            public static List<Config> ConfigList;
         }
 
         #region Members and Properties
 
         [DbColumn("ConfigSystem", IsKey = true)]
-        public ConfigSystem ConfigSystem
-        { get; set; }
+        public ConfigSystem ConfigSystem { get; set; }
 
         [DbColumn("ConfigKey", IsKey = true)]
-        public string ConfigKey
-        { get; set; }
+        public string ConfigKey { get; set; }
 
         [DbColumn("ConfigValue")]
-        public string ConfigValue
-        { get; set; }
+        public string ConfigValue { get; set; }
 
         #endregion
     }
@@ -325,5 +333,3 @@ namespace Arsenalcn.Core
         Arsenal
     }
 }
-
-

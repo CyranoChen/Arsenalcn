@@ -1,7 +1,7 @@
 namespace Arsenalcn.Core.Scheduler
 {
     /// <summary>
-    /// Interface for defining an schedule.
+    ///     Interface for defining an schedule.
     /// </summary>
     public interface ISchedule
     {

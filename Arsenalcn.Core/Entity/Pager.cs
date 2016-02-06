@@ -2,12 +2,6 @@
 {
     public class Pager : IPager
     {
-        public short PagingSize { get; set; }
-        public int CurrentPage { get; set; }
-
-        public int MaxPage { get; private set; }
-        public int TotalCount { get; private set; }
-
         public Pager()
         {
             PagingSize = 10;
@@ -20,9 +14,18 @@
             CurrentPage = index;
         }
 
+        public short PagingSize { get; set; }
+        public int CurrentPage { get; set; }
+
+        public int MaxPage { get; private set; }
+        public int TotalCount { get; private set; }
+
         public void GetPageSize()
         {
-            if (PagingSize <= 0) { PagingSize = 10; }
+            if (PagingSize <= 0)
+            {
+                PagingSize = 10;
+            }
         }
 
         public void SetTotalCount(int value)
@@ -31,10 +34,12 @@
 
             GetPageSize();
 
-            MaxPage = TotalCount / PagingSize;
+            MaxPage = TotalCount/PagingSize;
 
             if (CurrentPage > MaxPage)
-            { CurrentPage = MaxPage; }
+            {
+                CurrentPage = MaxPage;
+            }
         }
     }
 
@@ -49,5 +54,4 @@
         void GetPageSize();
         void SetTotalCount(int value);
     }
-
 }

@@ -1,19 +1,17 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
-
 using Arsenalcn.Core;
+using DataReaderMapper;
 
 namespace Arsenal.Service.Casino
 {
     [DbSchema("AcnCasino_ChoiceOption", Sort = "CasinoItemGuid, OrderID")]
     public class ChoiceOption : Entity<int>
     {
-        public ChoiceOption() : base() { }
-
         public static void CreateMap()
         {
-            var map = AutoMapper.Mapper.CreateMap<IDataReader, ChoiceOption>();
+            var map = Mapper.CreateMap<IDataReader, ChoiceOption>();
 
             map.ForMember(d => d.OptionName,
                 opt => opt.MapFrom(s => s.GetValue("OptionValue")));
@@ -26,8 +24,8 @@ namespace Arsenal.Service.Casino
         {
             //DELETE FROM AcnCasino_ChoiceOption WHERE (CasinoItemGuid NOT IN(SELECT CasinoItemGuid FROM AcnCasino_CasinoItem))
             var sql = string.Format(@"DELETE FROM {0} WHERE (CasinoItemGuid NOT IN (SELECT CasinoItemGuid FROM {1}))",
-                   Repository.GetTableAttr<ChoiceOption>().Name,
-                   Repository.GetTableAttr<CasinoItem>().Name);
+                Repository.GetTableAttr<ChoiceOption>().Name,
+                Repository.GetTableAttr<CasinoItem>().Name);
 
             DataAccess.ExecuteNonQuery(sql, null, trans);
         }
@@ -35,24 +33,19 @@ namespace Arsenal.Service.Casino
         #region Members and Properties
 
         [DbColumn("CasinoItemGuid")]
-        public Guid CasinoItemGuid
-        { get; set; }
+        public Guid CasinoItemGuid { get; set; }
 
         [DbColumn("OptionValue")]
-        public string OptionName
-        { get; set; }
+        public string OptionName { get; set; }
 
         [DbColumn("OptionDisplay")]
-        public string OptionDisplay
-        { get; set; }
+        public string OptionDisplay { get; set; }
 
         [DbColumn("OptionRate")]
-        public float OptionRate
-        { get; set; }
+        public float OptionRate { get; set; }
 
         [DbColumn("OrderID")]
-        public int OptionOrder
-        { get; set; }
+        public int OptionOrder { get; set; }
 
         #endregion
     }

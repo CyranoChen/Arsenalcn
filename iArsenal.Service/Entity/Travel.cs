@@ -20,22 +20,16 @@
 
     public class Partner
     {
-        public string Name
-        { get; set; }
+        public string Name { get; set; }
 
-        public int Relation
-        { get; set; }
+        public int Relation { get; set; }
 
-        public bool Gender
-        { get; set; }
+        public bool Gender { get; set; }
 
-        public string IDCardNo
-        { get; set; }
+        public string IDCardNo { get; set; }
 
-        public string PassportNo
-        { get; set; }
+        public string PassportNo { get; set; }
 
-        public string PassportName
-        { get; set; }
+        public string PassportName { get; set; }
     }
 }

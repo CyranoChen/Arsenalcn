@@ -1,18 +1,18 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
     <title>@ViewBag.Title</title>
     <meta name="viewport" content="width=480, user-scalable=no">
     <!--meta name="viewport" content="target-densitydpi=device-dpi, width=480, user-scalable=no"-->
-    <link href="http://www.arsenalcn.com/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <link href="http://www.arsenalcn.com/favicon.ico" rel="shortcut icon" type="image/x-icon"/>
     @Styles.Render("~/Content/mobileCss", "~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
 
     <script type="text/javascript">
         // must run before bundles/jquerymobile
-        $(document).on("mobileinit", function () {
+        $(document).on("mobileinit", function() {
             $.mobile.ajaxEnabled = true;
 
             //var DEFAULT_WIDTH = 480, // 页面的默认宽度
@@ -29,7 +29,7 @@
             //}
         });
 
-        $(document).on("click", "div[data-role='header']>h1", function () {
+        $(document).on("click", "div[data-role='header']>h1", function() {
             $("body, html").animate({ scrollTop: 0 }, 500);
             return false;
         });
@@ -38,25 +38,25 @@
     @Scripts.Render("~/bundles/jquerymobile")
 </head>
 <body>
-    <div data-role="page" data-theme="c" @TempData["DataUrl"]>
-        @if (IsSectionDefined("Header"))
-        {
-            @RenderSection("Header")
-        }
-        else
-        {
-            <div data-role="header" data-position="fixed">
-                @Html.Partial("_LoginPartial")
-                <h1>@ViewBag.Title</h1>
-                @Html.ActionLink("首页", "Index", "Home", routeValues: null, htmlAttributes: new { data_role = "button", data_icon = "grid", data_iconpos = "notext" })
-            </div>
-        }
-        @RenderBody()
-        @RenderSection("Scripts", required: false)
-        @if (IsSectionDefined("Footer"))
-        {
-            @RenderSection("Footer")
-        }
-    </div>
+<div data-role="page" data-theme="c" @TempData["DataUrl"]>
+    @if (IsSectionDefined("Header"))
+    {
+        @RenderSection("Header")
+    }
+    else
+    {
+        <div data-role="header" data-position="fixed">
+            @Html.Partial("_LoginPartial")
+            <h1>@ViewBag.Title</h1>
+            @Html.ActionLink("首页", "Index", "Home", null, new {data_role = "button", data_icon = "grid", data_iconpos = "notext"})
+        </div>
+    }
+    @RenderBody()
+    @RenderSection("Scripts", false)
+    @if (IsSectionDefined("Footer"))
+    {
+        @RenderSection("Footer")
+    }
+</div>
 </body>
 </html>

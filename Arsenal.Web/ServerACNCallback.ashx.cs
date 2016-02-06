@@ -5,7 +5,6 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Web;
 using System.Xml;
-
 using Arsenal.Service;
 
 namespace Arsenal.Web
@@ -29,16 +28,18 @@ namespace Arsenal.Web
                     nextURL = context.Request.QueryString["next"];
 
                 //New HttpWebRequest for DiscuzNT Service API
-                var req = (HttpWebRequest)WebRequest.Create(ConfigGlobal.APIServiceURL);
+                var req = (HttpWebRequest) WebRequest.Create(ConfigGlobal.APIServiceURL);
 
                 req.Method = "POST";
                 req.ContentType = "application/x-www-form-urlencoded";
 
                 //Gen Digital Signature
-                var sig = string.Format("api_key={0}auth_token={1}method={2}{3}", ConfigGlobal.APIAppKey, authToken, "auth.getSession", ConfigGlobal.APICryptographicKey);
+                var sig = string.Format("api_key={0}auth_token={1}method={2}{3}", ConfigGlobal.APIAppKey, authToken,
+                    "auth.getSession", ConfigGlobal.APICryptographicKey);
 
                 //Set WebRequest Parameter
-                var para = string.Format("method={0}&api_key={1}&auth_token={2}&sig={3}", "auth.getSession", ConfigGlobal.APIAppKey, authToken, getMd5Hash(sig));
+                var para = string.Format("method={0}&api_key={1}&auth_token={2}&sig={3}", "auth.getSession",
+                    ConfigGlobal.APIAppKey, authToken, getMd5Hash(sig));
 
                 var encodedBytes = Encoding.UTF8.GetBytes(para);
                 req.ContentLength = encodedBytes.Length;
@@ -63,9 +64,12 @@ namespace Arsenal.Web
                         //Build Member & ACNUser Cookie Information
                         if (xml.HasChildNodes && !xml.FirstChild.NextSibling.Name.Equals("error_response"))
                         {
-                            context.Response.SetCookie(new HttpCookie("session_key", xml.GetElementsByTagName("session_key").Item(0).InnerText));
-                            context.Response.SetCookie(new HttpCookie("uid", xml.GetElementsByTagName("uid").Item(0).InnerText));
-                            context.Response.SetCookie(new HttpCookie("user_name", HttpUtility.UrlEncode(xml.GetElementsByTagName("user_name").Item(0).InnerText)));
+                            context.Response.SetCookie(new HttpCookie("session_key",
+                                xml.GetElementsByTagName("session_key").Item(0).InnerText));
+                            context.Response.SetCookie(new HttpCookie("uid",
+                                xml.GetElementsByTagName("uid").Item(0).InnerText));
+                            context.Response.SetCookie(new HttpCookie("user_name",
+                                HttpUtility.UrlEncode(xml.GetElementsByTagName("user_name").Item(0).InnerText)));
                         }
                         else
                         {
@@ -78,7 +82,8 @@ namespace Arsenal.Web
                     }
                     else
                     {
-                        gotoURL = string.Format("{0}?api_key={1}&next={2}", ConfigGlobal.APILoginURL, ConfigGlobal.APIAppKey, nextURL);
+                        gotoURL = string.Format("{0}?api_key={1}&next={2}", ConfigGlobal.APILoginURL,
+                            ConfigGlobal.APIAppKey, nextURL);
                     }
 
                     context.Response.Redirect(gotoURL, false);
@@ -87,9 +92,14 @@ namespace Arsenal.Web
             }
             catch (Exception ex)
             {
-                var errorMsg = ex.Message.ToString();
+                var errorMsg = ex.Message;
                 context.Response.Redirect(nextURL);
             }
+        }
+
+        public bool IsReusable
+        {
+            get { return true; }
         }
 
         private string getMd5Hash(string input)
@@ -113,14 +123,6 @@ namespace Arsenal.Web
 
             // Return the hexadecimal string.
             return sBuilder.ToString();
-        }
-
-        public bool IsReusable
-        {
-            get
-            {
-                return true;
-            }
         }
     }
 }

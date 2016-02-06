@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="DailyVideoExhibit.ascx.cs"
-    Inherits="Arsenalcn.ClubSys.Web.Control.DailyVideoExhibit" %>
+Inherits="Arsenalcn.ClubSys.Web.Control.DailyVideoExhibit" %>
 <%@ OutputCache Duration="3600" VaryByParam="none" %>
 
 <asp:Panel ID="pnlVideoExhibit" runat="server" CssClass="InfoPanel">

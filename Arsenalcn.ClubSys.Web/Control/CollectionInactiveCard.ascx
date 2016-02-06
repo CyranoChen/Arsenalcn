@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="C#" CodeBehind="CollectionInactiveCard.ascx.cs" Inherits="Arsenalcn.ClubSys.Web.Control.CollectionInactiveCard"
-    EnableViewState="false" %>
+EnableViewState="false" %>
 <div id="CollectionInfo" class="ClubSys_CollectionInfo">
     <asp:Repeater ID="rptCard" runat="server" OnItemDataBound="rptCard_ItemDataBound">
         <HeaderTemplate>

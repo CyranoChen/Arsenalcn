@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Web.UI;
 using System.Web.UI.WebControls;
-
 using Arsenalcn.CasinoSys.Entity;
 
 namespace Arsenalcn.CasinoSys.Web.Control
 {
-    public partial class TopContestList : System.Web.UI.UserControl
+    public partial class TopContestList : UserControl
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -17,12 +17,12 @@ namespace Arsenalcn.CasinoSys.Web.Control
                 var tbs = ConfigGlobal.TotalBetStandard;
 
                 var listUpper =
-                    Entity.CasinoGambler.GetCasinoGamblers(l.ID).FindAll(delegate (Entity.CasinoGambler cg)
-                    { return cg.TotalBet >= tbs; });
+                    Entity.CasinoGambler.GetCasinoGamblers(l.ID)
+                        .FindAll(delegate(Entity.CasinoGambler cg) { return cg.TotalBet >= tbs; });
 
                 var listLower =
-                    Entity.CasinoGambler.GetCasinoGamblers(l.ID).FindAll(delegate (Entity.CasinoGambler cg)
-                    { return cg.TotalBet < tbs; });
+                    Entity.CasinoGambler.GetCasinoGamblers(l.ID)
+                        .FindAll(delegate(Entity.CasinoGambler cg) { return cg.TotalBet < tbs; });
 
                 if (listUpper.Count == 0 && listLower.Count == 0)
                 {
@@ -56,8 +56,10 @@ namespace Arsenalcn.CasinoSys.Web.Control
                 var ltrlUpperGamblerRank = e.Item.FindControl("ltrlUpperGamblerRank") as Literal;
 
                 if (ltrlUpperGamblerRank != null && cg != null)
-                    ltrlUpperGamblerRank.Text = string.Format("<li class=\"IconTop{0}\"><em title=\"竞赛积分\">{0}</em><a href=\"MyBonusLog.aspx?UserID={1}\">{2}</a></li>",
-                        cg.Rank, cg.UserID, cg.UserName.Trim());
+                    ltrlUpperGamblerRank.Text =
+                        string.Format(
+                            "<li class=\"IconTop{0}\"><em title=\"竞赛积分\">{0}</em><a href=\"MyBonusLog.aspx?UserID={1}\">{2}</a></li>",
+                            cg.Rank, cg.UserID, cg.UserName.Trim());
             }
         }
 
@@ -70,8 +72,10 @@ namespace Arsenalcn.CasinoSys.Web.Control
                 var ltrlLowerGamblerRank = e.Item.FindControl("ltrlLowerGamblerRank") as Literal;
 
                 if (ltrlLowerGamblerRank != null && cg != null)
-                    ltrlLowerGamblerRank.Text = string.Format("<li class=\"IconTop{0}\"><em title=\"竞赛积分\">{0}</em><a href=\"MyBonusLog.aspx?UserID={1}\">{2}</a></li>",
-                        cg.Rank, cg.UserID, cg.UserName.Trim());
+                    ltrlLowerGamblerRank.Text =
+                        string.Format(
+                            "<li class=\"IconTop{0}\"><em title=\"竞赛积分\">{0}</em><a href=\"MyBonusLog.aspx?UserID={1}\">{2}</a></li>",
+                            cg.Rank, cg.UserID, cg.UserName.Trim());
             }
         }
     }

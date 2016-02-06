@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Web;
-
 using Arsenalcn.Core;
 using Arsenalcn.Core.Utility;
 using iArsenal.Service;
@@ -21,10 +20,7 @@ namespace iArsenal.Web
                     //already login
                     return int.Parse(Request.Cookies["mid"].Value);
                 }
-                else
-                {
-                    return -1;
-                }
+                return -1;
             }
         }
 
@@ -32,10 +28,10 @@ namespace iArsenal.Web
         {
             get
             {
-                if (Request.Cookies["member_name"] != null && !string.IsNullOrEmpty(Request.Cookies["member_name"].Value))
+                if (Request.Cookies["member_name"] != null &&
+                    !string.IsNullOrEmpty(Request.Cookies["member_name"].Value))
                     return HttpUtility.UrlDecode(Request.Cookies["member_name"].Value);
-                else
-                    return string.Empty;
+                return string.Empty;
             }
         }
 
@@ -49,14 +45,14 @@ namespace iArsenal.Web
             if (UID > 0)
             {
                 // TODO: change to cache mode, LOGOUT
-                if (this.MID <= 0)
+                if (MID <= 0)
                 {
-                    var m = repo.Query<Member>(x => x.AcnID == this.UID).FirstOrDefault();
+                    var m = repo.Query<Member>(x => x.AcnID == UID).FirstOrDefault();
 
                     if (m != null && m.ID > 0)
                     {
                         Response.SetCookie(new HttpCookie("mid", m.ID.ToString()));
-                        Response.SetCookie(new HttpCookie("member_name", HttpUtility.UrlEncode(m.Name.ToString())));
+                        Response.SetCookie(new HttpCookie("member_name", HttpUtility.UrlEncode(m.Name)));
 
                         m.IP = IPLocation.GetIP();
                         m.LastLoginTime = DateTime.Now;
@@ -73,9 +69,9 @@ namespace iArsenal.Web
             }
 
             //Set Master Page Info
-            if (this.Master != null && this.Master is iArsenalMaster)
+            if (Master != null && Master is iArsenalMaster)
             {
-                var masterPage = this.Master as iArsenalMaster;
+                var masterPage = Master as iArsenalMaster;
 
                 masterPage.MemberID = MID;
                 masterPage.MemberName = MemberName;

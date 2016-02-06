@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using Arsenalcn.ClubSys.Entity;
-
 using Discuz.Entity;
 using Discuz.Forum;
 
@@ -31,7 +29,7 @@ namespace Arsenalcn.ClubSys.Service
 
         public static void SendMessage(int clubID, string userName, ClubSysMessageType messageType, params string[] para)
         {
-            var userID = AdminUsers.GetUserId(userName);
+            var userID = Users.GetUserId(userName);
             var club = ClubLogic.GetClubInfo(clubID);
 
             PrivateMessageInfo pm;
@@ -50,7 +48,7 @@ namespace Arsenalcn.ClubSys.Service
                         pm.Message = string.Format(ApplyClub_Message, userName, club.FullName);
 
                         pm.Msgtoid = Convert.ToInt32(aID);
-                        pm.Msgto = AdminUsers.GetUserInfo(aID).Username.Trim();
+                        pm.Msgto = Users.GetUserInfo(aID).Username.Trim();
                         pm.New = 1;
                         pm.Postdatetime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                         pm.Subject = string.Format(ApplyClub_Subject, userName);
@@ -172,7 +170,7 @@ namespace Arsenalcn.ClubSys.Service
                     pm = new PrivateMessageInfo();
 
                     pm.Msgfrom = para[0];
-                    pm.Msgfromid = AdminUsers.GetUserId(para[0]);
+                    pm.Msgfromid = Users.GetUserId(para[0]);
 
                     pm.Folder = 0;
                     pm.Message = string.Format(TransferExtcredit_Message, para[0], para[1], para[2]);
@@ -188,7 +186,6 @@ namespace Arsenalcn.ClubSys.Service
                 default:
                     break;
             }
-            
         }
     }
 

@@ -3,10 +3,10 @@
 /* Cascading Style Sheets Level 2 Revision 1 */
 
 body {
+    font-family: Tahoma, Verdana;
+    font-size: 12px;
     margin: 0;
     padding: 0;
-    font-size: 12px;
-    font-family: Tahoma, Verdana;
 }
 
 form {
@@ -15,16 +15,17 @@ form {
 }
 
 a {
-    font-size: 12px;
     font-family: Tahoma, Verdana;
+    font-size: 12px;
     text-decoration: none;
 }
 
-    a:hover {
-        font-size: 12px;
-        font-family: Tahoma, Verdana;
-        text-decoration: underline;
-    }
+a:hover {
+    font-family: Tahoma, Verdana;
+    font-size: 12px;
+    text-decoration: underline;
+}
+
 /*a:link
 {
     text-decoration: none;
@@ -37,29 +38,32 @@ a:visited
     font-size: 12px;
     font-family: Tahoma, Verdana;
 }*/
-img {
-    border: none;
-}
+
+img { border: none; }
 
 /*** Web 2.0 ***/
+
 /*** Table ***/
+
 table {
-    font-size: 12px;
-    font-family: Tahoma, Verdana;
-    empty-cells: show;
     border-collapse: separate;
+    empty-cells: show;
+    font-family: Tahoma, Verdana;
+    font-size: 12px;
 }
 
 td {
-    font-size: 12px;
     font-family: Tahoma, Verdana;
+    font-size: 12px;
 }
 
 th {
-    font-size: 12px;
     font-family: Tahoma, Verdana;
+    font-size: 12px;
 }
+
 /*** Div ***/
+
 div {
     margin: 0;
     padding: 0;
@@ -71,16 +75,14 @@ ul {
 }
 
 li {
+    list-style-position: outside;
     margin: auto;
     padding: 0;
-    list-style-position: outside;
 }
 
 #Frame {
-    position: relative;
     margin: auto;
+    position: relative;
 }
 
-.Clear {
-    clear: both;
-}
+.Clear { clear: both; }

@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-
-using iArsenal.Service.Arsenal;
 using Arsenalcn.Core;
 
 namespace iArsenal.Service
@@ -12,7 +10,9 @@ namespace iArsenal.Service
     [DbSchema("iArsenal_MatchTicket", Key = "MatchGuid", Sort = "Deadline DESC")]
     public class MatchTicket
     {
-        public MatchTicket() { }
+        public MatchTicket()
+        {
+        }
 
         private MatchTicket(DataRow dr)
         {
@@ -43,9 +43,9 @@ namespace iArsenal.Service
             if (ResultHome.HasValue && ResultAway.HasValue)
             {
                 if (IsHome)
-                    ResultInfo = ResultHome.Value.ToString() + "：" + ResultAway.Value.ToString();
+                    ResultInfo = ResultHome.Value + "：" + ResultAway.Value;
                 else
-                    ResultInfo = ResultAway.Value.ToString() + "：" + ResultHome.Value.ToString();
+                    ResultInfo = ResultAway.Value + "：" + ResultHome.Value;
             }
             else
                 ResultInfo = string.Empty;
@@ -59,9 +59,10 @@ namespace iArsenal.Service
                 ProductCode = dr["ProductCode"].ToString();
 
                 ProductInfo = Product.Cache.Load(ProductCode) != null
-                    ? Product.Cache.Load(ProductCode).Name : string.Empty;
+                    ? Product.Cache.Load(ProductCode).Name
+                    : string.Empty;
 
-                Deadline = (DateTime)dr["Deadline"];
+                Deadline = (DateTime) dr["Deadline"];
 
                 if (!Convert.IsDBNull(dr["AllowMemberClass"]))
                     AllowMemberClass = Convert.ToInt16(dr["AllowMemberClass"]);
@@ -93,9 +94,10 @@ namespace iArsenal.Service
             var sql = string.Format("SELECT * FROM {0} WHERE MatchGuid = @key",
                 Repository.GetTableAttr<MatchTicket>().Name);
 
-            SqlParameter[] para = {
-                                      new SqlParameter("@key", ID),
-                                  };
+            SqlParameter[] para =
+            {
+                new SqlParameter("@key", ID)
+            };
 
             var ds = DataAccess.ExecuteDataset(sql, para);
 
@@ -114,7 +116,7 @@ namespace iArsenal.Service
             var sql = string.Format("SELECT * FROM {0} WHERE MatchGuid = @key",
                 Repository.GetTableAttr<MatchTicket>().Name);
 
-            SqlParameter[] para = { new SqlParameter("@key", ID), };
+            SqlParameter[] para = {new SqlParameter("@key", ID)};
 
             var ds = DataAccess.ExecuteDataset(sql, para);
 
@@ -136,7 +138,7 @@ namespace iArsenal.Service
                 if (ds.Tables[0].Rows.Count > 0)
                 {
                     var dt = ds.Tables[0];
-                    dt.PrimaryKey = new DataColumn[] { dt.Columns["MatchGuid"] };
+                    dt.PrimaryKey = new[] {dt.Columns["MatchGuid"]};
                 }
 
                 var list = new List<MatchTicket>();
@@ -161,48 +163,51 @@ namespace iArsenal.Service
 
                 return list;
             }
-            else
-            {
-                return null;
-            }
+            return null;
         }
 
         public void Create(SqlTransaction trans = null)
         {
-            var sql = @"INSERT INTO {0} (MatchGuid, ProductCode, Deadline, AllowMemberClass, TicketCount, IsActive, Remark) 
+            var sql =
+                @"INSERT INTO {0} (MatchGuid, ProductCode, Deadline, AllowMemberClass, TicketCount, IsActive, Remark) 
                                VALUES (@key, @productCode, @deadline, @allowMemberClass, @ticketCount, @isActive, @remark)";
 
             sql = string.Format(sql, Repository.GetTableAttr<MatchTicket>().Name);
 
-            SqlParameter[] para = {
-                                      new SqlParameter("@key", ID),
-                                      new SqlParameter("@productCode", ProductCode),
-                                      new SqlParameter("@deadline", Deadline),
-                                      new SqlParameter("@allowMemberClass", !AllowMemberClass.HasValue ? (object)DBNull.Value : (object)AllowMemberClass.Value),
-                                      new SqlParameter("@TicketCount", !TicketCount.HasValue ? (object)DBNull.Value : (object)TicketCount.Value),
-                                      new SqlParameter("@isActive", IsActive),
-                                      new SqlParameter("@remark", Remark)
-                                  };
+            SqlParameter[] para =
+            {
+                new SqlParameter("@key", ID),
+                new SqlParameter("@productCode", ProductCode),
+                new SqlParameter("@deadline", Deadline),
+                new SqlParameter("@allowMemberClass",
+                    !AllowMemberClass.HasValue ? DBNull.Value : (object) AllowMemberClass.Value),
+                new SqlParameter("@TicketCount", !TicketCount.HasValue ? DBNull.Value : (object) TicketCount.Value),
+                new SqlParameter("@isActive", IsActive),
+                new SqlParameter("@remark", Remark)
+            };
 
             DataAccess.ExecuteNonQuery(sql, para, trans);
         }
 
         public void Update(SqlTransaction trans = null)
         {
-            var sql = @"UPDATE {0} SET ProductCode = @productCode, Deadline = @deadline, AllowMemberClass = @allowMemberClass,
+            var sql =
+                @"UPDATE {0} SET ProductCode = @productCode, Deadline = @deadline, AllowMemberClass = @allowMemberClass,
                                   TicketCount = @ticketCount, IsActive = @isActive, Remark = @remark WHERE MatchGuid = @key";
 
             sql = string.Format(sql, Repository.GetTableAttr<MatchTicket>().Name);
 
-            SqlParameter[] para = {
-                                      new SqlParameter("@key", ID),
-                                      new SqlParameter("@productCode", ProductCode),
-                                      new SqlParameter("@deadline", Deadline),
-                                      new SqlParameter("@allowMemberClass", !AllowMemberClass.HasValue ? (object)DBNull.Value : (object)AllowMemberClass.Value),
-                                      new SqlParameter("@TicketCount", !TicketCount.HasValue ? (object)DBNull.Value : (object)TicketCount.Value),
-                                      new SqlParameter("@isActive", IsActive),
-                                      new SqlParameter("@remark", Remark)
-                                  };
+            SqlParameter[] para =
+            {
+                new SqlParameter("@key", ID),
+                new SqlParameter("@productCode", ProductCode),
+                new SqlParameter("@deadline", Deadline),
+                new SqlParameter("@allowMemberClass",
+                    !AllowMemberClass.HasValue ? DBNull.Value : (object) AllowMemberClass.Value),
+                new SqlParameter("@TicketCount", !TicketCount.HasValue ? DBNull.Value : (object) TicketCount.Value),
+                new SqlParameter("@isActive", IsActive),
+                new SqlParameter("@remark", Remark)
+            };
 
             DataAccess.ExecuteNonQuery(sql, para, trans);
         }
@@ -212,23 +217,24 @@ namespace iArsenal.Service
             var sql = string.Format("DELETE FROM {0} WHERE MatchGuid = @key",
                 Repository.GetTableAttr<MatchTicket>().Name);
 
-            SqlParameter[] para = { new SqlParameter("@key", ID) };
+            SqlParameter[] para = {new SqlParameter("@key", ID)};
 
             DataAccess.ExecuteNonQuery(sql, para, trans);
         }
 
         public static void MatchTicketCountStatistics()
         {
-            var list = MatchTicket.Cache.MatchTicketList.FindAll(mt => mt.IsActive);
+            var list = Cache.MatchTicketList.FindAll(mt => mt.IsActive);
 
             if (list != null && list.Count > 0)
             {
                 IRepository repo = new Repository();
 
                 var oQuery = repo.Query<Order>(o =>
-                    o.IsActive == true && o.OrderType == OrderBaseType.Ticket).FindAll(o => !o.Status.Equals(OrderStatusType.Error));
+                    o.IsActive && o.OrderType == OrderBaseType.Ticket)
+                    .FindAll(o => !o.Status.Equals(OrderStatusType.Error));
                 var oiQuery = repo.Query<OrderItem>(oi =>
-                    oi.IsActive == true && oi.Remark != string.Empty);
+                    oi.IsActive && oi.Remark != string.Empty);
 
                 foreach (var mt in list)
                 {
@@ -251,7 +257,7 @@ namespace iArsenal.Service
                     mt.Update();
                 }
 
-                MatchTicket.Cache.RefreshCache();
+                Cache.RefreshCache();
             }
         }
 
@@ -261,12 +267,12 @@ namespace iArsenal.Service
             var endDST = new DateTime(date.Year, 11, 1);
 
             if (begDST.DayOfWeek != DayOfWeek.Sunday)
-                begDST = begDST.AddDays(-((int)begDST.DayOfWeek));
+                begDST = begDST.AddDays(-((int) begDST.DayOfWeek));
 
             if (endDST.DayOfWeek == DayOfWeek.Sunday)
                 endDST = endDST.AddDays(-7);
             else
-                endDST = endDST.AddDays(-((int)endDST.DayOfWeek));
+                endDST = endDST.AddDays(-((int) endDST.DayOfWeek));
 
             if (date.AddHours(-7) > begDST && date.AddHours(-7) < endDST)
             {
@@ -282,23 +288,19 @@ namespace iArsenal.Service
 
             if (AllowMemberClass.HasValue)
             {
-                if (mp != null && mp.IsActive && (int)mp.MemberClass >= AllowMemberClass.Value)
+                if (mp != null && mp.IsActive && (int) mp.MemberClass >= AllowMemberClass.Value)
                 {
                     return true;
                 }
-                else
-                {
-                    return false;
-                }
+                return false;
             }
-            else
-            {
-                return true;
-            }
+            return true;
         }
 
         public static class Cache
         {
+            public static List<MatchTicket> MatchTicketList;
+
             static Cache()
             {
                 InitCache();
@@ -318,79 +320,58 @@ namespace iArsenal.Service
             {
                 return MatchTicketList.Find(x => x.ID.Equals(guid));
             }
-
-            public static List<MatchTicket> MatchTicketList;
         }
 
         #region Members and Properties
 
         // Match Info Properties
         [DbColumn("MatchGuid", IsKey = true)]
-        public Guid ID
-        { get; set; }
+        public Guid ID { get; set; }
 
-        public Guid TeamGuid
-        { get; set; }
+        public Guid TeamGuid { get; set; }
 
-        public string TeamName
-        { get; set; }
+        public string TeamName { get; set; }
 
-        public Boolean IsHome
-        { get; set; }
+        public bool IsHome { get; set; }
 
-        public int? ResultHome
-        { get; set; }
+        public int? ResultHome { get; set; }
 
-        public int? ResultAway
-        { get; set; }
+        public int? ResultAway { get; set; }
 
-        public string ResultInfo
-        { get; set; }
+        public string ResultInfo { get; set; }
 
 
-        public DateTime PlayTime
-        { get; set; }
+        public DateTime PlayTime { get; set; }
 
-        public DateTime PlayTimeLocal
-        { get; set; }
+        public DateTime PlayTimeLocal { get; set; }
 
-        public Guid? LeagueGuid
-        { get; set; }
+        public Guid? LeagueGuid { get; set; }
 
-        public string LeagueName
-        { get; set; }
+        public string LeagueName { get; set; }
 
-        public int? Round
-        { get; set; }
+        public int? Round { get; set; }
 
         // Ticket Info Properties
 
         [DbColumn("ProductCode")]
-        public string ProductCode
-        { get; set; }
+        public string ProductCode { get; set; }
 
-        public string ProductInfo
-        { get; set; }
+        public string ProductInfo { get; set; }
 
         [DbColumn("Deadline")]
-        public DateTime Deadline
-        { get; set; }
+        public DateTime Deadline { get; set; }
 
         [DbColumn("AllowMemberClass")]
-        public int? AllowMemberClass
-        { get; set; }
+        public int? AllowMemberClass { get; set; }
 
         [DbColumn("TicketCount")]
-        public int? TicketCount
-        { get; set; }
+        public int? TicketCount { get; set; }
 
         [DbColumn("IsActive")]
-        public Boolean IsActive
-        { get; set; }
+        public bool IsActive { get; set; }
 
         [DbColumn("Remark")]
-        public string Remark
-        { get; set; }
+        public string Remark { get; set; }
 
         #endregion
     }

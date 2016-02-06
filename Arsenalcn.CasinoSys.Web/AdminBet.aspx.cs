@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Web.UI.WebControls;
-
 using Arsenalcn.CasinoSys.Entity;
+using Arsenalcn.CasinoSys.Web.Common;
 
 namespace Arsenalcn.CasinoSys.Web
 {
-    public partial class AdminBet : Common.AdminBasePage
+    public partial class AdminBet : AdminBasePage
     {
+        private int TimeDiff => int.Parse(ddlTimeDiff.SelectedValue);
+
         protected void Page_Load(object sender, EventArgs e)
         {
             ctrlAdminFieldToolBar.AdminUserName = username;
@@ -23,10 +25,7 @@ namespace Arsenalcn.CasinoSys.Web
             var betList = Bet.GetAllBetByTimeDiff(TimeDiff);
             gvBet.DataSource = betList;
             gvBet.DataBind();
-
         }
-
-        private int TimeDiff => int.Parse(ddlTimeDiff.SelectedValue);
 
         protected void gvBet_RowDataBound(object sender, GridViewRowEventArgs e)
         {
@@ -125,11 +124,12 @@ namespace Arsenalcn.CasinoSys.Web
                 try
                 {
                     Bet.ReturnBet(bet.ID);
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "success", "alert('投注退还成功');window.location.href=window.location.href", true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "success",
+                        "alert('投注退还成功');window.location.href=window.location.href", true);
                 }
                 catch (Exception ex)
                 {
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message}');", true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "failed", $"alert('{ex.Message}');", true);
                 }
 
                 BindData();

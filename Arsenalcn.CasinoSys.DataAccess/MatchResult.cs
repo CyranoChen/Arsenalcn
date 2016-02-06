@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
-
 using Arsenalcn.Common;
 using Microsoft.ApplicationBlocks.Data;
 
@@ -13,12 +12,12 @@ namespace Arsenalcn.CasinoSys.DataAccess
         {
             var sql = "SELECT * FROM dbo.AcnCasino_MatchResult WHERE CasinoItemGuid = @guid";
 
-            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@guid", casinoItemGuid));
+            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql,
+                new SqlParameter("@guid", casinoItemGuid));
 
             if (ds.Tables[0].Rows.Count == 0)
                 return null;
-            else
-                return ds.Tables[0].Rows[0];
+            return ds.Tables[0].Rows[0];
         }
 
         public static void InsertMatchResult(Guid casinoItemGuid, SqlTransaction trans)
@@ -28,12 +27,11 @@ namespace Arsenalcn.CasinoSys.DataAccess
             if (trans != null)
             {
                 SqlHelper.ExecuteNonQuery(trans, CommandType.Text, sql, new SqlParameter("@guid", casinoItemGuid));
-
             }
             else
             {
-                SqlHelper.ExecuteNonQuery(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@guid", casinoItemGuid));
-
+                SqlHelper.ExecuteNonQuery(SQLConn.GetConnection(), CommandType.Text, sql,
+                    new SqlParameter("@guid", casinoItemGuid));
             }
         }
 
@@ -41,7 +39,11 @@ namespace Arsenalcn.CasinoSys.DataAccess
         {
             var sql = "UPDATE dbo.AcnCasino_MatchResult SET Home = @home, Away = @away WHERE CasinoItemGuid = @guid";
 
-            SqlParameter[] para = { new SqlParameter("@home", home), new SqlParameter("@away", away), new SqlParameter("@guid", casinoItemGuid) };
+            SqlParameter[] para =
+            {
+                new SqlParameter("@home", home), new SqlParameter("@away", away),
+                new SqlParameter("@guid", casinoItemGuid)
+            };
 
             if (trans != null)
                 SqlHelper.ExecuteNonQuery(trans, CommandType.Text, sql, para);

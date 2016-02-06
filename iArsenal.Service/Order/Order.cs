@@ -3,19 +3,18 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-
 using Arsenalcn.Core;
+using AutoMapper;
+using Mapper = DataReaderMapper.Mapper;
 
 namespace iArsenal.Service
 {
     [DbSchema("iArsenal_Order", Sort = "ID DESC")]
     public class Order : Entity<int>
     {
-        public Order() : base() { }
-
         public static void CreateMap()
         {
-            var map = AutoMapper.Mapper.CreateMap<IDataReader, Order>();
+            var map = Mapper.CreateMap<IDataReader, Order>();
 
             map.ForMember(d => d.UrlOrderView, opt => opt.UseValue(string.Empty));
 
@@ -25,6 +24,7 @@ namespace iArsenal.Service
             map.ForMember(d => d.PaymentInfo, opt => opt.ResolveUsing(s =>
             {
                 #region Generate Order Payment Info
+
                 var retValue = string.Empty;
                 var payment = s.GetValue("Payment").ToString();
 
@@ -49,22 +49,26 @@ namespace iArsenal.Service
                 }
 
                 return retValue;
+
                 #endregion
             }));
 
             map.ForMember(d => d.PriceInfo, opt => opt.ResolveUsing(s =>
             {
                 #region Generate Order Price Info
+
                 var sale = (double?)s.GetValue("Sale");
                 var price = (double)s.GetValue("Price");
 
                 return sale.HasValue ? sale.Value.ToString("f2") : price.ToString("f2");
+
                 #endregion
             }));
 
             map.ForMember(d => d.StatusInfo, opt => opt.ResolveUsing(s =>
             {
                 #region Generate Order Status Info
+
                 var retValue = string.Empty;
 
                 switch ((OrderStatusType)((int)s.GetValue("Status")))
@@ -96,6 +100,7 @@ namespace iArsenal.Service
                 }
 
                 return retValue;
+
                 #endregion
             }));
         }
@@ -106,9 +111,9 @@ namespace iArsenal.Service
 
             IRepository repo = new Repository();
 
-            var query = repo.Query<OrderItem>(x => x.OrderID == this.ID && x.IsActive == true);
+            var query = repo.Query<OrderItem>(x => x.OrderID == ID).FindAll(x => x.IsActive);
 
-            if (query != null && query.Count > 0)
+            if (query.Any())
             {
                 foreach (var oi in query)
                 {
@@ -116,7 +121,7 @@ namespace iArsenal.Service
                 }
             }
 
-            this.Price = price + Postage;
+            Price = price + Postage;
 
             repo.Update(this, trans);
         }
@@ -132,30 +137,30 @@ namespace iArsenal.Service
                 switch (o.OrderType)
                 {
                     case OrderBaseType.ReplicaKit:
-                        AutoMapper.Mapper.CreateMap<Order, OrdrReplicaKit>()
-                            .AfterMap((s, d) => d.Init());
-                        return AutoMapper.Mapper.Map<OrdrReplicaKit>(o);
+                        var mapperReplicaKit = new MapperConfiguration(cfg =>
+                            cfg.CreateMap<Order, OrdrReplicaKit>().AfterMap((s, d) => d.Init())).CreateMapper();
+                        return mapperReplicaKit.Map<OrdrReplicaKit>(o);
                     case OrderBaseType.Ticket:
-                        AutoMapper.Mapper.CreateMap<Order, OrdrTicket>()
-                            .AfterMap((s, d) => d.Init());
-                        return AutoMapper.Mapper.Map<OrdrTicket>(o);
+                        var mapperTicket = new MapperConfiguration(cfg =>
+                            cfg.CreateMap<Order, OrdrTicket>().AfterMap((s, d) => d.Init())).CreateMapper();
+                        return mapperTicket.Map<OrdrTicket>(o);
                     case OrderBaseType.Travel:
-                        AutoMapper.Mapper.CreateMap<Order, OrdrTravel>()
-                            .AfterMap((s, d) => d.Init());
-                        return AutoMapper.Mapper.Map<OrdrTravel>(o);
+                        var mapperTravel = new MapperConfiguration(cfg =>
+                            cfg.CreateMap<Order, OrdrTravel>().AfterMap((s, d) => d.Init())).CreateMapper();
+                        return mapperTravel.Map<OrdrTravel>(o);
                     case OrderBaseType.Wish:
-                        AutoMapper.Mapper.CreateMap<Order, OrdrWish>()
-                            .AfterMap((s, d) => d.Init());
-                        return AutoMapper.Mapper.Map<OrdrWish>(o);
+                        var mapperWish = new MapperConfiguration(cfg =>
+                            cfg.CreateMap<Order, OrdrWish>().AfterMap((s, d) => d.Init())).CreateMapper();
+                        return mapperWish.Map<OrdrWish>(o);
                     case OrderBaseType.MemberShip:
-                        AutoMapper.Mapper.CreateMap<Order, OrdrMembership>()
-                            .AfterMap((s, d) => d.Init());
-                        return AutoMapper.Mapper.Map<OrdrMembership>(o);
+                        var mapperMemberShip = new MapperConfiguration(cfg =>
+                            cfg.CreateMap<Order, OrdrMembership>().AfterMap((s, d) => d.Init())).CreateMapper();
+                        return mapperMemberShip.Map<OrdrMembership>(o);
                     default:
                         return o;
                 }
             }
-            else { return null; }
+            return null;
         }
 
         public void RefreshOrderType()
@@ -175,12 +180,13 @@ namespace iArsenal.Service
             if (list.Any(delegate (OrderItem x)
             {
                 var _type = Product.Cache.Load(x.ProductGuid).ProductType;
-                return _type.Equals(ProductType.ReplicaKitHome) || _type.Equals(ProductType.ReplicaKitAway) || _type.Equals(ProductType.ReplicaKitCup);
+                return _type.Equals(ProductType.ReplicaKitHome) || _type.Equals(ProductType.ReplicaKitAway) ||
+                       _type.Equals(ProductType.ReplicaKitCup);
             }))
             {
                 return OrderBaseType.ReplicaKit;
             }
-            else if (list.Any(delegate (OrderItem x)
+            if (list.Any(delegate (OrderItem x)
             {
                 var _type = Product.Cache.Load(x.ProductGuid).ProductType;
                 return _type.Equals(ProductType.MatchTicket) || _type.Equals(ProductType.TicketBeijing);
@@ -188,25 +194,22 @@ namespace iArsenal.Service
             {
                 return OrderBaseType.Ticket;
             }
-            else if (list.Any(x => Product.Cache.Load(x.ProductGuid).ProductType.Equals(ProductType.TravelPlan)))
+            if (list.Any(x => Product.Cache.Load(x.ProductGuid).ProductType.Equals(ProductType.TravelPlan)))
             {
                 return OrderBaseType.Travel;
             }
-            else if (list.Any(delegate (OrderItem x)
+            if (list.Any(delegate (OrderItem x)
             {
                 if (!x.ProductGuid.Equals(Guid.Empty))
                 {
                     return Product.Cache.Load(x.ProductGuid).ProductType.Equals(ProductType.Other);
                 }
-                else
-                {
-                    return true;
-                }
+                return true;
             }))
             {
                 return OrderBaseType.Wish;
             }
-            else if (list.Any(delegate (OrderItem x)
+            if (list.Any(delegate (OrderItem x)
             {
                 var _type = Product.Cache.Load(x.ProductGuid).ProductType;
                 return _type.Equals(ProductType.MemberShipCore) || _type.Equals(ProductType.MemberShipPremier);
@@ -214,10 +217,7 @@ namespace iArsenal.Service
             {
                 return OrderBaseType.MemberShip;
             }
-            else
-            {
-                return OrderBaseType.None;
-            }
+            return OrderBaseType.None;
         }
 
         // Don't place LINQ to Foreach, first ToList(), then use list.FindAll to improve performance
@@ -244,8 +244,6 @@ namespace iArsenal.Service
                             repo.Update(o);
                         }
                     }
-                    else
-                    { continue; }
                 }
             }
         }
@@ -253,87 +251,65 @@ namespace iArsenal.Service
         #region Members and Properties
 
         [DbColumn("MemberID")]
-        public int MemberID
-        { get; set; }
+        public int MemberID { get; set; }
 
         [DbColumn("MemberName")]
-        public string MemberName
-        { get; set; }
+        public string MemberName { get; set; }
 
         [DbColumn("Mobile")]
-        public string Mobile
-        { get; set; }
+        public string Mobile { get; set; }
 
         [DbColumn("Address")]
-        public string Address
-        { get; set; }
+        public string Address { get; set; }
 
         [DbColumn("Payment")]
-        public string Payment
-        { get; set; }
+        public string Payment { get; set; }
 
         [DbColumn("Price")]
-        public double Price
-        { get; set; }
+        public double Price { get; set; }
 
         [DbColumn("Sale")]
-        public double? Sale
-        { get; set; }
+        public double? Sale { get; set; }
 
         [DbColumn("Deposit")]
-        public double? Deposit
-        { get; set; }
+        public double? Deposit { get; set; }
 
         [DbColumn("Postage")]
-        public float Postage
-        { get; set; }
+        public double Postage { get; set; }
 
         [DbColumn("Status")]
-        public OrderStatusType Status
-        { get; set; }
+        public OrderStatusType Status { get; set; }
 
         [DbColumn("Rate")]
-        public short Rate
-        { get; set; }
+        public short Rate { get; set; }
 
         [DbColumn("CreateTime")]
-        public DateTime CreateTime
-        { get; set; }
+        public DateTime CreateTime { get; set; }
 
         [DbColumn("UpdateTime")]
-        public DateTime UpdateTime
-        { get; set; }
+        public DateTime UpdateTime { get; set; }
 
         [DbColumn("IsActive")]
-        public Boolean IsActive
-        { get; set; }
+        public bool IsActive { get; set; }
 
         [DbColumn("Description")]
-        public string Description
-        { get; set; }
+        public string Description { get; set; }
 
         [DbColumn("Remark")]
-        public string Remark
-        { get; set; }
+        public string Remark { get; set; }
 
-        public string PriceInfo
-        { get; set; }
+        public string PriceInfo { get; set; }
 
-        public string PaymentInfo
-        { get; set; }
+        public string PaymentInfo { get; set; }
 
-        public string StatusInfo
-        { get; set; }
+        public string StatusInfo { get; set; }
 
-        public string[] StatusWorkflowInfo
-        { get; set; }
+        public string[] StatusWorkflowInfo { get; set; }
 
         [DbColumn("OrderType")]
-        public OrderBaseType OrderType
-        { get; set; }
+        public OrderBaseType OrderType { get; set; }
 
-        public string UrlOrderView
-        { get; set; }
+        public string UrlOrderView { get; set; }
 
         #endregion
     }

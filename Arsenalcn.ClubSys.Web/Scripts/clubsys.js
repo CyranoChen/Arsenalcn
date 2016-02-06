@@ -2,7 +2,7 @@
 /* Version: 1.7.0 || Date: 2014-08-21 || Author:cao262,Cyrano */
 /* type="text/javascript" */
 
-$(function () {
+$(function() {
     if ($.cookie("leftPanel") != null) {
         $("#LeftPanel").hide();
         $("#MainPanel").width("100%");
@@ -17,47 +17,46 @@ $(function () {
 
 function SwitchLeftPanel(className) {
     if (className == "CtrlLeftPanelCol") {
-        $('#MainPanel').width('100%');
-        $.cookie('leftPanel', 'hidden', { expires: 30 });
-    }
-    else {
-        $('#MainPanel').width('78%');
-        $.cookie('leftPanel', null);
+        $("#MainPanel").width("100%");
+        $.cookie("leftPanel", "hidden", { expires: 30 });
+    } else {
+        $("#MainPanel").width("78%");
+        $.cookie("leftPanel", null);
     }
 }
 
 // override jQuery Cookie
 
-jQuery.cookie = function (name, value, options) {
-    if (typeof value != 'undefined') {
+jQuery.cookie = function(name, value, options) {
+    if (typeof value != "undefined") {
         options = options || {};
         if (value === null) {
-            value = '';
+            value = "";
             options = $.extend({}, options);
             options.expires = -1;
         }
-        var expires = '';
-        if (options.expires && (typeof options.expires == 'number' || options.expires.toUTCString)) {
+        var expires = "";
+        if (options.expires && (typeof options.expires == "number" || options.expires.toUTCString)) {
             var date;
-            if (typeof options.expires == 'number') {
+            if (typeof options.expires == "number") {
                 date = new Date();
                 date.setTime(date.getTime() + (options.expires * 24 * 60 * 60 * 1000));
             } else {
                 date = options.expires;
             }
-            expires = '; expires=' + date.toUTCString();
+            expires = "; expires=" + date.toUTCString();
         }
-        var path = options.path ? '; path=' + (options.path) : '';
-        var domain = options.domain ? '; domain=' + (options.domain) : '';
-        var secure = options.secure ? '; secure' : '';
-        document.cookie = [name, '=', encodeURIComponent(value), expires, path, domain, secure].join('');
+        var path = options.path ? "; path=" + (options.path) : "";
+        var domain = options.domain ? "; domain=" + (options.domain) : "";
+        var secure = options.secure ? "; secure" : "";
+        document.cookie = [name, "=", encodeURIComponent(value), expires, path, domain, secure].join("");
     } else {
         var cookieValue = null;
-        if (document.cookie && document.cookie != '') {
-            var cookies = document.cookie.split(';');
+        if (document.cookie && document.cookie != "") {
+            var cookies = document.cookie.split(";");
             for (var i = 0; i < cookies.length; i++) {
                 var cookie = jQuery.trim(cookies[i]);
-                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                if (cookie.substring(0, name.length + 1) == (name + "=")) {
                     cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
                     break;
                 }
@@ -79,13 +78,11 @@ function UserClubAction(clubID) {
     if (status == "2") {
         if (window.confirm("您是否要退出该球会?"))
             Action(param);
-    }
-    else if (status == "1") {
+    } else if (status == "1") {
         if (window.confirm("您是否要取消申请?"))
             Action(param);
 
-    }
-    else if (status == "0") {
+    } else if (status == "0") {
         if (window.confirm("您是否要申请加入该球会?"))
             Action(param);
     }
@@ -93,7 +90,7 @@ function UserClubAction(clubID) {
 
 function GetResult(res) {
     //alert(res);
-    var arrParam = res.split(';');
+    var arrParam = res.split(";");
 
     if (arrParam.length == 2) {
         var clubID = arrParam[0];
@@ -103,11 +100,9 @@ function GetResult(res) {
         var object = document.getElementById(id);
 
         ChangeButtonStyle(object, clubID, status);
-    }
-    else if (res == "Not Appliable") {
+    } else if (res == "Not Appliable") {
         alert("该球会暂时不接收申请！");
-    }
-    else {
+    } else {
         window.location.href = window.location.href;
     }
 }
@@ -130,20 +125,17 @@ function ChangeButtonStyle(targetObject, clubID, status) {
         window.location.href = window.location.href;
 
         return;
-    }
-    else if (status == 1) {
+    } else if (status == 1) {
         message = "您的申请已提交";
         targetObject.value = "取消申请";
-    }
-    else if (status == 0) {
+    } else if (status == 0) {
         if (preStatus == "2") {
             message = "您已退出球会";
             alert(message);
 
             window.location.href = window.location.href;
             return;
-        }
-        else if (preStatus == "1")
+        } else if (preStatus == "1")
             message = "您的申请已取消";
 
         targetObject.value = "申请加入";
@@ -164,13 +156,13 @@ function GenSwfObject(swfID, swfSrc, swfWidth, swfHeight) {
 
 function GenSwfString(swfID, swfSrc, swfWidth, swfHeight) {
     var swf = "";
-    swf += '<object id="' + swfID + '" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="' + swfWidth + '" height="' + swfHeight + '">';
-    swf += '<param name="movie" value="' + swfSrc + '" />';
-    swf += '<param name="quality" value="high" />';
-    swf += '<param name="menu" value="false" />';
-    swf += '<param name="wmode" value="transparent" />';
-    swf += '<embed name="' + swfID + '" width="' + swfWidth + '" height="' + swfHeight + '" type="application/x-shockwave-flash" wmode="transparent" quality="high" src="' + swfSrc + '" />';
-    swf += '</object>';
+    swf += "<object id=\"" + swfID + "\" classid=\"clsid:D27CDB6E-AE6D-11cf-96B8-444553540000\" width=\"" + swfWidth + "\" height=\"" + swfHeight + "\">";
+    swf += "<param name=\"movie\" value=\"" + swfSrc + "\" />";
+    swf += "<param name=\"quality\" value=\"high\" />";
+    swf += "<param name=\"menu\" value=\"false\" />";
+    swf += "<param name=\"wmode\" value=\"transparent\" />";
+    swf += "<embed name=\"" + swfID + "\" width=\"" + swfWidth + "\" height=\"" + swfHeight + "\" type=\"application/x-shockwave-flash\" wmode=\"transparent\" quality=\"high\" src=\"" + swfSrc + "\" />";
+    swf += "</object>";
     return swf;
 }
 
@@ -192,8 +184,8 @@ function GenConllectInfoItem(obj) {
     var $dataItem = $("<div class='ClubSys_ItemPH ClubSys_ItemPH_Border'></div>");
     var $swf = $(GenSwfString(swf_id, swf_src, swf_width, swf_height));
 
-    $dataItem.mouseover(function () { $(this).find("a").show(); });
-    $dataItem.mouseout(function () { $(this).find("a").hide(); });
+    $dataItem.mouseover(function() { $(this).find("a").show(); });
+    $dataItem.mouseout(function() { $(this).find("a").hide(); });
 
     $dataItem.append($swf);
 
@@ -218,7 +210,7 @@ function ShowVideoPreview(guid) {
     var $pnlVideo = $("#PageCoverLayoutAjax");
 
     if ($pnlVideo.length == 0) {
-        $.getJSON("ServerVideoPreview.ashx", { VideoGuid: guid }, function (data, status, xhr) {
+        $.getJSON("ServerVideoPreview.ashx", { VideoGuid: guid }, function(data, status, xhr) {
             if (status == "success" && data != null) {
                 if (data.result != "error") {
                     if (data.Video.VideoType.toLowerCase() == "flv") {
@@ -257,66 +249,66 @@ function GenVideoFrame(jsonObject) {
         document.body.appendChild(divVideo);
     }
 
-    var _videoHtml = ' ' +
-        '<div class="ClubSys_Video">' +
-            '<div class="VideoToolbar">' +
-                '<span></span>' +
-                '<div class="BtnClose"></div>' +
-                '<div class="BtnMin"></div>' +
-                '<div class="Clear"></div>' +
-            '</div>' +
-            '<div class="VideoPoster">' +
-                '<div class="GoalFrame">' +
-                    '<div class="Star"><span></span></div>' +
-                    '<div class="PlayerPhoto"><img /></div>' +
-                    '<div class="PlayerName"><span></span></div>' +
-                '</div>' +
-                '<div class="MatchFrame">' +
-                    '<div class="HomeTeamLogo"><img /></div>' +
-                    '<div class="HomeTeamName"><span></span></div>' +
-                    '<div class="MatchResult"><span>/span></div>' +
-                    '<div class="MatchInfo"><span></span></div>' +
-                    '<div class="AwayTeamName"><span></span></div>' +
-                    '<div class="AwayTeamLogo"><img /></div>' +
-                '</div>' +
-                '<div class="TeamworkFrame">' +
-                    '<div class="Star"><span></span></div>' +
-                    '<div class="PlayerPhoto"><img  /></div>' +
-                    '<div class="PlayerName"><span></span></div>' +
-                '</div>' +
-                '<div class="Clear"></div>' +
-            '</div>' +
-            '<div class="VideoFrame">' +
-                '<video controls="controls" preload="auto">' +
-                    '<source type="video/mp4">' +
-                    'Your browser does not support the video tag.' +
-                '</video>' +
-            '</div>' +
-        '</div>';
+    var _videoHtml = " " +
+        "<div class=\"ClubSys_Video\">" +
+        "<div class=\"VideoToolbar\">" +
+        "<span></span>" +
+        "<div class=\"BtnClose\"></div>" +
+        "<div class=\"BtnMin\"></div>" +
+        "<div class=\"Clear\"></div>" +
+        "</div>" +
+        "<div class=\"VideoPoster\">" +
+        "<div class=\"GoalFrame\">" +
+        "<div class=\"Star\"><span></span></div>" +
+        "<div class=\"PlayerPhoto\"><img /></div>" +
+        "<div class=\"PlayerName\"><span></span></div>" +
+        "</div>" +
+        "<div class=\"MatchFrame\">" +
+        "<div class=\"HomeTeamLogo\"><img /></div>" +
+        "<div class=\"HomeTeamName\"><span></span></div>" +
+        "<div class=\"MatchResult\"><span>/span></div>" +
+        "<div class=\"MatchInfo\"><span></span></div>" +
+        "<div class=\"AwayTeamName\"><span></span></div>" +
+        "<div class=\"AwayTeamLogo\"><img /></div>" +
+        "</div>" +
+        "<div class=\"TeamworkFrame\">" +
+        "<div class=\"Star\"><span></span></div>" +
+        "<div class=\"PlayerPhoto\"><img  /></div>" +
+        "<div class=\"PlayerName\"><span></span></div>" +
+        "</div>" +
+        "<div class=\"Clear\"></div>" +
+        "</div>" +
+        "<div class=\"VideoFrame\">" +
+        "<video controls=\"controls\" preload=\"auto\">" +
+        "<source type=\"video/mp4\">" +
+        "Your browser does not support the video tag." +
+        "</video>" +
+        "</div>" +
+        "</div>";
 
     var $pnlVideo = $(_videoHtml);
     var $pnlVideoToolbar = $pnlVideo.find(".VideoToolbar");
     var $pnlVideoPoster = $pnlVideo.find(".VideoPoster");
     var $pnlVideoFrame = $pnlVideo.find(".VideoFrame");
 
-    $pnlVideo.mouseover(function () { $pnlVideoToolbar.show(); })
-        .mouseout(function () { $pnlVideoToolbar.hide(); });
+    $pnlVideo.mouseover(function() { $pnlVideoToolbar.show(); })
+        .mouseout(function() { $pnlVideoToolbar.hide(); });
 
     // DIV VideoToolbar DataBind
 
     $pnlVideoToolbar.find("span").text(jsonObject.Video.VideoGuid);
 
-    $pnlVideoToolbar.find(".BtnClose").click(function () {
+    $pnlVideoToolbar.find(".BtnClose").click(function() {
         HideFrame();
     });
 
-    $pnlVideoToolbar.find(".BtnMin").click(function () {
+    $pnlVideoToolbar.find(".BtnMin").click(function() {
         $pnlVideoFrame.fadeOut(1000);
     });
 
     // DIV VideoPoster DataBind
 
-    $pnlVideoPoster.click(function () {
+    $pnlVideoPoster.click(function() {
         $pnlVideoFrame.fadeIn(1000);
     });
 
@@ -379,11 +371,11 @@ function GenVideoFrame(jsonObject) {
     // DIV VideoFrame DataBind
 
     var $video = $pnlVideoFrame.find("video")
-        .bind("contextmenu", function () { return false; })
+        .bind("contextmenu", function() { return false; })
         .attr("class", "DPI" + jsonObject.Video.VideoHeight.toString())
         .find("source")
-            .attr("src", jsonObject.Video.VideoFilePath)
-            .attr("type", "video/" + jsonObject.Video.VideoType);
+        .attr("src", jsonObject.Video.VideoFilePath)
+        .attr("type", "video/" + jsonObject.Video.VideoType);
 
     $(divVideo).append($pnlVideo).hide();
 
@@ -409,13 +401,13 @@ function GenFlashFrame(swfSrc, swfWidth, swfHeight, showClose) {
         document.body.appendChild(divSwf);
     }
 
-    var swf = '<object id="Frameswf" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="' + swfWidth + '" height="' + swfHeight + '">';
-    swf = swf + '<param name="movie" value="' + swfSrc + '" />';
-    swf = swf + '<param name="quality" value="high" />';
-    swf = swf + '<param name="menu" value="false" />';
-    swf = swf + '<param name="wmode" value="transparent" />';
-    swf = swf + '<embed name="Frameswf" width="' + swfWidth + '" height="' + swfHeight + '" type="application/x-shockwave-flash" wmode="transparent" quality="high" src="' + swfSrc + '" />';
-    swf = swf + '</object>';
+    var swf = "<object id=\"Frameswf\" classid=\"clsid:D27CDB6E-AE6D-11cf-96B8-444553540000\" width=\"" + swfWidth + "\" height=\"" + swfHeight + "\">";
+    swf = swf + "<param name=\"movie\" value=\"" + swfSrc + "\" />";
+    swf = swf + "<param name=\"quality\" value=\"high\" />";
+    swf = swf + "<param name=\"menu\" value=\"false\" />";
+    swf = swf + "<param name=\"wmode\" value=\"transparent\" />";
+    swf = swf + "<embed name=\"Frameswf\" width=\"" + swfWidth + "\" height=\"" + swfHeight + "\" type=\"application/x-shockwave-flash\" wmode=\"transparent\" quality=\"high\" src=\"" + swfSrc + "\" />";
+    swf = swf + "</object>";
 
     divSwf.innerHTML = swf;
 
@@ -454,7 +446,7 @@ function ShowFrame() {
 
     $pnlFrame.css("top", _offsetTop + "px").fadeIn(1000);
 
-    $(window).scroll(function () {
+    $(window).scroll(function() {
         $pnlFrame.css("top", ($(this).scrollTop() + 20) + "px");
     });
 }
@@ -472,8 +464,7 @@ function SwitchClubRank(showID) {
         if (obj != null) {
             if (IDs[i] == showID) {
                 obj.style.display = "";
-            }
-            else {
+            } else {
                 obj.style.display = "none";
             }
         }
@@ -492,8 +483,7 @@ function SwitchPlayerRank(showID) {
         if (obj != null) {
             if (IDs[i] == showID) {
                 obj.style.display = "";
-            }
-            else {
+            } else {
                 obj.style.display = "none";
             }
         }

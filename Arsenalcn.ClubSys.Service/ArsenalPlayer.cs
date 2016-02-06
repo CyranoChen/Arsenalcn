@@ -6,7 +6,9 @@ namespace Arsenalcn.ClubSys.Service
 {
     public class Player
     {
-        public Player() { }
+        public Player()
+        {
+        }
 
         private Player(DataRow dr)
         {
@@ -17,12 +19,12 @@ namespace Arsenalcn.ClubSys.Service
         {
             if (dr != null)
             {
-                ID = (Guid)dr["PlayerGuid"];
+                ID = (Guid) dr["PlayerGuid"];
                 FirstName = dr["FirstName"].ToString();
                 LastName = dr["LastName"].ToString();
                 DisplayName = dr["DisplayName"].ToString();
                 PrintingName = dr["PrintingName"].ToString();
-                Position = (PlayerPositionType)Enum.Parse(typeof(PlayerPositionType), dr["PlayerPosition"].ToString());
+                Position = (PlayerPositionType) Enum.Parse(typeof (PlayerPositionType), dr["PlayerPosition"].ToString());
                 SquadNumber = Convert.ToInt32(dr["SquadNumber"]);
                 FaceURL = dr["FaceURL"].ToString();
                 PhotoURL = dr["PhotoURL"].ToString();
@@ -73,87 +75,10 @@ namespace Arsenalcn.ClubSys.Service
             return list;
         }
 
-        #region Members and Properties
-
-        public Guid ID
-        { get; set; }
-
-        public string FirstName
-        { get; set; }
-
-        public string LastName
-        { get; set; }
-
-        public string DisplayName
-        { get; set; }
-
-        public string PrintingName
-        { get; set; }
-
-        public PlayerPositionType Position
-        { get; set; }
-
-        public int SquadNumber
-        { get; set; }
-
-        public string FaceURL
-        { get; set; }
-
-        public string PhotoURL
-        { get; set; }
-
-        public int Offset
-        { get; set; }
-
-        public bool IsLegend
-        { get; set; }
-
-        public bool IsLoan
-        { get; set; }
-
-        public DateTime? Birthday
-        { get; set; }
-
-        public string Born
-        { get; set; }
-
-        public int Starts
-        { get; set; }
-
-        public int Subs
-        { get; set; }
-
-        public int Apps
-        { get; set; }
-
-        public int Goals
-        { get; set; }
-
-        public DateTime? JoinDate
-        { get; set; }
-
-        public string Joined
-        { get; set; }
-
-        public string LeftYear
-        { get; set; }
-
-        public string Debut
-        { get; set; }
-
-        public string FirstGoal
-        { get; set; }
-
-        public string PreviousClubs
-        { get; set; }
-
-        public string Profile
-        { get; set; }
-
-        #endregion
-
         public static class Cache
         {
+            public static List<Player> PlayerList;
+
             static Cache()
             {
                 InitCache();
@@ -167,16 +92,67 @@ namespace Arsenalcn.ClubSys.Service
             private static void InitCache()
             {
                 PlayerList = GetPlayers();
-
             }
 
             public static Player Load(Guid guid)
             {
                 return PlayerList.Find(x => x.ID.Equals(guid));
             }
-
-            public static List<Player> PlayerList;
         }
+
+        #region Members and Properties
+
+        public Guid ID { get; set; }
+
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
+
+        public string DisplayName { get; set; }
+
+        public string PrintingName { get; set; }
+
+        public PlayerPositionType Position { get; set; }
+
+        public int SquadNumber { get; set; }
+
+        public string FaceURL { get; set; }
+
+        public string PhotoURL { get; set; }
+
+        public int Offset { get; set; }
+
+        public bool IsLegend { get; set; }
+
+        public bool IsLoan { get; set; }
+
+        public DateTime? Birthday { get; set; }
+
+        public string Born { get; set; }
+
+        public int Starts { get; set; }
+
+        public int Subs { get; set; }
+
+        public int Apps { get; set; }
+
+        public int Goals { get; set; }
+
+        public DateTime? JoinDate { get; set; }
+
+        public string Joined { get; set; }
+
+        public string LeftYear { get; set; }
+
+        public string Debut { get; set; }
+
+        public string FirstGoal { get; set; }
+
+        public string PreviousClubs { get; set; }
+
+        public string Profile { get; set; }
+
+        #endregion
     }
 
     public enum PlayerPositionType

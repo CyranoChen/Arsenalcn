@@ -1,14 +1,39 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Web.UI.WebControls;
-
 using Arsenalcn.ClubSys.Service;
-
+using Arsenalcn.ClubSys.Web.Common;
+using UserVideo = Arsenalcn.ClubSys.Entity.UserVideo;
 
 namespace Arsenalcn.ClubSys.Web.Control
 {
-    public partial class CollectionVideo : Common.CollectionBase
+    public partial class CollectionVideo : CollectionBase
     {
+        public int GRank
+        {
+            get
+            {
+                int tmp;
+                if (int.TryParse(ddlGoalRank.SelectedValue, out tmp))
+                    return tmp;
+                if (int.TryParse(Request.QueryString["GRank"], out tmp))
+                    return tmp;
+                return 0;
+            }
+        }
+
+        public int TRank
+        {
+            get
+            {
+                int tmp;
+                if (int.TryParse(ddlTeamRank.SelectedValue, out tmp))
+                    return tmp;
+                if (int.TryParse(Request.QueryString["TRank"], out tmp))
+                    return tmp;
+                return 0;
+            }
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (GRank > 0)
@@ -24,7 +49,7 @@ namespace Arsenalcn.ClubSys.Web.Control
 
                 //load data
                 //DataTable dt = UserVideo.GetUserVideo(ProfileUserID);
-                var list = Entity.UserVideo.GetUserVideosByUserID(ProfileUserID);
+                var list = UserVideo.GetUserVideosByUserID(ProfileUserID);
 
                 if (list != null && list.Count > 0)
                 {
@@ -33,13 +58,17 @@ namespace Arsenalcn.ClubSys.Web.Control
                     if (GRank > 0 && TRank <= 0)
                     {
                         //expression = string.Format("GoalRank = {0}", GRank.ToString());
-                        list = list.FindAll(delegate(Entity.UserVideo uv)
-                        { return Video.Cache.Load(uv.VideoGuid).GoalRank.Equals(GRank.ToString()); });
+                        list =
+                            list.FindAll(
+                                delegate(UserVideo uv)
+                                {
+                                    return Video.Cache.Load(uv.VideoGuid).GoalRank.Equals(GRank.ToString());
+                                });
                     }
                     else if (GRank > 0 && TRank > 0)
                     {
                         //expression = string.Format("GoalRank = {0} AND TeamworkRank = {1}", GRank.ToString(), TRank.ToString());
-                        list = list.FindAll(delegate(Entity.UserVideo uv)
+                        list = list.FindAll(delegate(UserVideo uv)
                         {
                             var v = Video.Cache.Load(uv.VideoGuid);
                             return v.GoalRank.Equals(GRank.ToString()) && v.TeamworkRank.Equals(TRank.ToString());
@@ -48,13 +77,17 @@ namespace Arsenalcn.ClubSys.Web.Control
                     else if (GRank <= 0 && TRank > 0)
                     {
                         //expression = string.Format("TeamworkRank = {0}", TRank.ToString());
-                        list = list.FindAll(delegate(Entity.UserVideo uv)
-                        { return Video.Cache.Load(uv.VideoGuid).TeamworkRank.Equals(TRank.ToString()); });
+                        list =
+                            list.FindAll(
+                                delegate(UserVideo uv)
+                                {
+                                    return Video.Cache.Load(uv.VideoGuid).TeamworkRank.Equals(TRank.ToString());
+                                });
                     }
 
                     //DataRow[] dr = dt.Select(expression, "ActiveDate DESC");
-                    list.Sort(delegate(Entity.UserVideo uv1, Entity.UserVideo uv2)
-                        { return uv2.ActiveDate.CompareTo(uv1.ActiveDate); });
+                    list.Sort(
+                        delegate(UserVideo uv1, UserVideo uv2) { return uv2.ActiveDate.CompareTo(uv1.ActiveDate); });
 
                     haveVideoCount = list.Count;
 
@@ -63,35 +96,7 @@ namespace Arsenalcn.ClubSys.Web.Control
                 }
 
                 ltlVideoCount.Text =
-                    $"<span title=\"GRank:{GRank.ToString()} | TRank:{TRank.ToString()}\">已获得(总共)视频:<em>{haveVideoCount.ToString()}/{totalVideoCount.ToString()}</em></span>";
-            }
-        }
-
-        public int GRank
-        {
-            get
-            {
-                int tmp;
-                if (int.TryParse(ddlGoalRank.SelectedValue, out tmp))
-                    return tmp;
-                else if (int.TryParse(Request.QueryString["GRank"], out tmp))
-                    return tmp;
-                else
-                    return 0;
-            }
-        }
-
-        public int TRank
-        {
-            get
-            {
-                int tmp;
-                if (int.TryParse(ddlTeamRank.SelectedValue, out tmp))
-                    return tmp;
-                else if (int.TryParse(Request.QueryString["TRank"], out tmp))
-                    return tmp;
-                else
-                    return 0;
+                    $"<span title=\"GRank:{GRank} | TRank:{TRank}\">已获得(总共)视频:<em>{haveVideoCount}/{totalVideoCount}</em></span>";
             }
         }
 
@@ -100,23 +105,23 @@ namespace Arsenalcn.ClubSys.Web.Control
             if ((e.Item.ItemType == ListItemType.Item) || (e.Item.ItemType == ListItemType.AlternatingItem))
             {
                 //DataRow dr = e.Item.DataItem as DataRow;
-                var uv = e.Item.DataItem as Entity.UserVideo;
+                var uv = e.Item.DataItem as UserVideo;
 
                 var lblPlayerVideoID = e.Item.FindControl("lblPlayerVideoID") as Label;
                 var lblPlayerVideoPath = e.Item.FindControl("lblPlayerVideoPath") as Label;
 
                 lblPlayerVideoID.Text = uv.UserVideoID.ToString();
                 lblPlayerVideoPath.Text =
-                    $"swf/PlayerVideoActive.swf?XMLURL=ServerXml.aspx%3FUserVideoID={uv.UserVideoID.ToString()}";
+                    $"swf/PlayerVideoActive.swf?XMLURL=ServerXml.aspx%3FUserVideoID={uv.UserVideoID}";
 
                 var btnSwfView = e.Item.FindControl("btnSwfView") as LinkButton;
 
-                btnSwfView.OnClientClick = $"ShowVideoPreview('{uv.VideoGuid.ToString()}'); return false";
+                btnSwfView.OnClientClick = $"ShowVideoPreview('{uv.VideoGuid}'); return false";
 
                 var btnSetCurrent = e.Item.FindControl("btnSetCurrent") as LinkButton;
                 var lblCurrent = e.Item.FindControl("lblSetCurrent") as Label;
 
-                if (!this.ProfileUserID.Equals(this.CurrentUserID))
+                if (!ProfileUserID.Equals(CurrentUserID))
                 {
                     btnSetCurrent.Visible = false;
                 }
@@ -153,35 +158,37 @@ namespace Arsenalcn.ClubSys.Web.Control
 
             if (e.CommandName == "SetCurrent")
             {
-                if (Entity.UserVideo.GetUserVideosByUserID(this.ProfileUserID).FindAll(
-                    delegate(Entity.UserVideo uv) { return uv.IsPublic; }).Count >= 3)
+                if (UserVideo.GetUserVideosByUserID(ProfileUserID).FindAll(
+                    delegate(UserVideo uv) { return uv.IsPublic; }).Count >= 3)
                 {
-                    this.Page.ClientScript.RegisterClientScriptBlock(typeof(string), "cannotsetcurrent", "alert('集锦使用数量上限为3个，请取消其他已使用的集锦。');", true);
+                    Page.ClientScript.RegisterClientScriptBlock(typeof (string), "cannotsetcurrent",
+                        "alert('集锦使用数量上限为3个，请取消其他已使用的集锦。');", true);
                 }
                 else
                 {
-                    var uv = new Entity.UserVideo();
+                    var uv = new UserVideo();
                     uv.UserVideoID = id;
                     uv.Select();
 
                     uv.IsPublic = true;
                     uv.Update();
 
-                    this.Page.ClientScript.RegisterClientScriptBlock(typeof(string), "cannotsetcurrent", "alert('该集锦已使用。');window.location.href = window.location.href;", true);
+                    Page.ClientScript.RegisterClientScriptBlock(typeof (string), "cannotsetcurrent",
+                        "alert('该集锦已使用。');window.location.href = window.location.href;", true);
                 }
             }
             else if (e.CommandName == "CancelCurrent")
             {
-                var uv = new Entity.UserVideo();
+                var uv = new UserVideo();
                 uv.UserVideoID = id;
                 uv.Select();
 
                 uv.IsPublic = false;
                 uv.Update();
 
-                this.Page.ClientScript.RegisterClientScriptBlock(typeof(string), "cannotsetcurrent", "alert('该集锦取消使用。');window.location.href = window.location.href;", true);
+                Page.ClientScript.RegisterClientScriptBlock(typeof (string), "cannotsetcurrent",
+                    "alert('该集锦取消使用。');window.location.href = window.location.href;", true);
             }
         }
-
     }
 }

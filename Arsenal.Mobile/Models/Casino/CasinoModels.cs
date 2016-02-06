@@ -1,7 +1,6 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
-
+using System.ComponentModel.DataAnnotations;
 using Arsenalcn.Core;
 
 namespace Arsenal.Mobile.Models.Casino
@@ -26,9 +25,17 @@ namespace Arsenal.Mobile.Models.Casino
         public MatchDto Match { get; set; }
     }
 
-    public class MyBetDto : SearchModel<BetDto> { }
-    public class MyBonusDto : SearchModel<BetDto> { }
-    public class ResultDto : SearchModel<MatchDto> { }
+    public class MyBetDto : SearchModel<BetDto>
+    {
+    }
+
+    public class MyBonusDto : SearchModel<BetDto>
+    {
+    }
+
+    public class ResultDto : SearchModel<MatchDto>
+    {
+    }
 
     public class DetailDto
     {

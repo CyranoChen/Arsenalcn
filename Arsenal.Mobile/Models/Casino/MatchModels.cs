@@ -1,31 +1,34 @@
 ﻿using System;
 using System.Linq;
-
-using AutoMapper;
-
 using Arsenal.Service.Casino;
 using Arsenalcn.Core;
+using AutoMapper;
 
 namespace Arsenal.Mobile.Models.Casino
 {
     public class MatchDto
     {
-        public MatchDto() { }
-
-        public static void CreateMap()
+        public static MapperConfiguration ConfigMapper()
         {
-            var map = Mapper.CreateMap<MatchView, MatchDto>();
+            var config = new MapperConfiguration(cfg => cfg.CreateMap<MatchView, MatchDto>()
+                .ConstructUsing(s => new MatchDto
+                {
+                    TeamHomeName = s.Home.TeamDisplayName,
+                    TeamHomeLogo = s.Home.TeamLogo,
+                    TeamAwayName = s.Away.TeamDisplayName,
+                    TeamAwayLogo = s.Away.TeamLogo,
+                    HomeRate =
+                        s.ChoiceOptions.SingleOrDefault(
+                            x => x.OptionName.Equals("home", StringComparison.OrdinalIgnoreCase)).OptionRate,
+                    DrawRate =
+                        s.ChoiceOptions.SingleOrDefault(
+                            x => x.OptionName.Equals("draw", StringComparison.OrdinalIgnoreCase)).OptionRate,
+                    AwayRate =
+                        s.ChoiceOptions.SingleOrDefault(
+                            x => x.OptionName.Equals("away", StringComparison.OrdinalIgnoreCase)).OptionRate
+                }));
 
-            map.ConstructUsing(s => new MatchDto
-            {
-                TeamHomeName = s.Home.TeamDisplayName,
-                TeamHomeLogo = s.Home.TeamLogo,
-                TeamAwayName = s.Away.TeamDisplayName,
-                TeamAwayLogo = s.Away.TeamLogo,
-                HomeRate = s.ChoiceOptions.SingleOrDefault(x => x.OptionName.Equals("home", StringComparison.OrdinalIgnoreCase)).OptionRate,
-                DrawRate = s.ChoiceOptions.SingleOrDefault(x => x.OptionName.Equals("draw", StringComparison.OrdinalIgnoreCase)).OptionRate,
-                AwayRate = s.ChoiceOptions.SingleOrDefault(x => x.OptionName.Equals("away", StringComparison.OrdinalIgnoreCase)).OptionRate,
-            });
+            return config;
         }
 
         public static MatchDto Single(object key)
@@ -35,9 +38,9 @@ namespace Arsenal.Mobile.Models.Casino
             var instance = repo.Single<MatchView>(key);
             instance.Many<ChoiceOption>(x => x.CasinoItemGuid == instance.CasinoItem.ID);
 
-            CreateMap();
+            var mapper = ConfigMapper().CreateMapper();
 
-            return Mapper.Map<MatchDto>(instance);
+            return mapper.Map<MatchDto>(instance);
         }
 
         #region Members and Properties

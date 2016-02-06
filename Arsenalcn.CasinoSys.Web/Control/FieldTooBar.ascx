@@ -1,6 +1,6 @@
 ﻿<%@ Control Language="C#" CodeBehind="FieldTooBar.ascx.cs" Inherits="Arsenalcn.CasinoSys.Web.Control.FieldTooBar" %>
 <div class="FieldToolBar">
-    <div class="CtrlLeftPanelExp" onclick="$(this).toggleClass('CtrlLeftPanelExp'); $(this).toggleClass('CtrlLeftPanelCol'); $('#LeftPanel').toggle(); SwitchLeftPanel($(this).attr('class'))">
+    <div class="CtrlLeftPanelExp" onclick="$(this).toggleClass('CtrlLeftPanelExp'); $(this).toggleClass('CtrlLeftPanelCol'); $('#LeftPanel').toggle(); SwitchLeftPanel($(this).attr('class'));">
         <asp:Literal ID="ltrlToolBarTip" runat="server"></asp:Literal>
     </div>
     <asp:Panel ID="pnlFuncLink" runat="server" CssClass="HeaderBtnBar">

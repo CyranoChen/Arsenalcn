@@ -1,9 +1,18 @@
 ﻿using System;
+using System.Web.UI;
 
 namespace iArsenal.Web.Control
 {
-    public partial class CustomPagerInfo : System.Web.UI.UserControl
+    public partial class CustomPagerInfo : UserControl
     {
+        public delegate void PageChangedEventHandler(object sender, DataNavigatorEventArgs e);
+
+        public int PageIndex { get; set; }
+
+        public int PageCount { get; set; }
+
+        public int RowCount { get; set; }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -14,7 +23,7 @@ namespace iArsenal.Web.Control
 
         public void InitComponent()
         {
-            ltrlPagerInfo.Text = $"Rows: {RowCount.ToString()} | Pages: {PageCount.ToString()} | Goto: ";
+            ltrlPagerInfo.Text = $"Rows: {RowCount} | Pages: {PageCount} | Goto: ";
             tbPagerIndex.Text = (PageIndex + 1).ToString();
         }
 
@@ -29,31 +38,15 @@ namespace iArsenal.Web.Control
             PageChanged(this, args);
         }
 
-        public int PageIndex
-        { get; set; }
-
-        public int PageCount
-        { get; set; }
-
-        public int RowCount
-        { get; set; }
-
         public event PageChangedEventHandler PageChanged;
-
-        public delegate void PageChangedEventHandler(object sender, DataNavigatorEventArgs e);
 
         public class DataNavigatorEventArgs : EventArgs
         {
-            public DataNavigatorEventArgs() { }
+            public int PageIndex { get; set; }
 
-            public int PageIndex
-            { get; set; }
+            public int PageCount { get; set; }
 
-            public int PageCount
-            { get; set; }
-
-            public int PageSize
-            { get; set; }
+            public int PageSize { get; set; }
         }
     }
 }

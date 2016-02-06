@@ -1,46 +1,39 @@
 ﻿using System;
-
+using System.Web.UI;
 using Arsenalcn.ClubSys.Entity;
 using Arsenalcn.ClubSys.Service;
 
 namespace Arsenalcn.ClubSys.Web.Control
 {
-    public partial class DNTHeader : System.Web.UI.UserControl
+    public partial class DNTHeader : UserControl
     {
+        private int _userId = -1;
+
+        private string _userKey = string.Empty;
         private string _userName = string.Empty;
+
         /// <summary>
-        /// Current User Name
+        ///     Current User Name
         /// </summary>
         public string UserName
         {
-            set
-            {
-                _userName = value;
-            }
+            set { _userName = value; }
         }
 
-        private int _userId = -1;
         /// <summary>
-        /// Current User ID
+        ///     Current User ID
         /// </summary>
         public int UserID
         {
-            set
-            {
-                _userId = value;
-            }
+            set { _userId = value; }
         }
 
-        private string _userKey = string.Empty;
         /// <summary>
-        /// Current User Key
+        ///     Current User Key
         /// </summary>
         public string UserKey
         {
-            set
-            {
-                _userKey = value;
-            }
+            set { _userKey = value; }
         }
 
         protected void Page_Load(object sender, EventArgs e)
@@ -50,8 +43,8 @@ namespace Arsenalcn.ClubSys.Web.Control
                 phAnonymous.Visible = false;
                 phAthenticated.Visible = true;
 
-                ltrlUserName.Text = this._userName;
-                linkLogout.NavigateUrl = $"{linkLogout.NavigateUrl}{this._userKey}";
+                ltrlUserName.Text = _userName;
+                linkLogout.NavigateUrl = $"{linkLogout.NavigateUrl}{_userKey}";
             }
             else
             {
@@ -60,7 +53,7 @@ namespace Arsenalcn.ClubSys.Web.Control
             }
 
             ltrlTitle.Text =
-                $"<a href=\"/index.aspx\">{"阿森纳中国官方球迷会"}</a> &raquo; <a href=\"default.aspx\">{ConfigGlobal.PluginDisplayName}</a> &raquo; <strong>{this.Page.Title}</strong>";
+                $"<a href=\"/index.aspx\">{"阿森纳中国官方球迷会"}</a> &raquo; <a href=\"default.aspx\">{ConfigGlobal.PluginDisplayName}</a> &raquo; <strong>{Page.Title}</strong>";
 
             ltrlClubCount.Text = ClubLogic.GetActiveClubCount().ToString();
             ltrlUserCount.Text = ClubLogic.GetActiveUserCount().ToString();

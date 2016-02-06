@@ -1,21 +1,22 @@
 ﻿using System;
 using System.Reflection;
 using System.Threading;
-
 using Arsenal.Service;
+using Arsenal.Service.Casino;
 using Arsenalcn.Core;
 using Arsenalcn.Core.Logger;
 using Arsenalcn.Core.Scheduler;
+using Match = Arsenal.Service.Match;
 
 namespace Arsenal.Scheduler
 {
-    class RefreshCache : ISchedule
+    internal class RefreshCache : ISchedule
     {
         private readonly ILog log = new AppLog();
 
         public void Execute(object state)
         {
-            var logInfo = new LogInfo()
+            var logInfo = new LogInfo
             {
                 MethodInstance = MethodBase.GetCurrentMethod(),
                 ThreadInstance = Thread.CurrentThread
@@ -41,10 +42,10 @@ namespace Arsenal.Scheduler
                 Video.Cache.RefreshCache();
 
                 //AcnCasino
-                Arsenal.Service.Casino.CasinoItem.Clean();
-                Arsenal.Service.Casino.ChoiceOption.Clean();
-                Arsenal.Service.Casino.Bet.Clean();
-                Arsenal.Service.Casino.BetDetail.Clean();
+                CasinoItem.Clean();
+                ChoiceOption.Clean();
+                Bet.Clean();
+                BetDetail.Clean();
 
                 // Clean Log
                 Log.Clean();

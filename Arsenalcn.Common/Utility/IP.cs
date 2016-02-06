@@ -1,12 +1,13 @@
 ﻿using System;
 using System.IO;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 
 namespace Arsenalcn.Common.Utility
 {
     /// <summary>
-    /// 获取IP地址信息
+    ///     获取IP地址信息
     /// </summary>
     public static class IPLocation
     {
@@ -54,21 +55,20 @@ namespace Arsenalcn.Common.Utility
         {
             if (ip.Contains(":"))
                 return ip.Substring(0, ip.LastIndexOf(":"));
-            else
-                return ip;
+            return ip;
         }
     }
 
     /// <summary>
-    /// 判断IP归属地类
+    ///     判断IP归属地类
     /// </summary>
     public class IpSearch
     {
-        private static object lockHelper = new object();
+        private static readonly object lockHelper = new object();
 
-        static PHCZIP pcz = new PHCZIP();
+        private static readonly PHCZIP pcz = new PHCZIP();
 
-        static string filePath = string.Empty;
+        private static readonly string filePath = string.Empty;
 
         static IpSearch()
         {
@@ -87,7 +87,7 @@ namespace Arsenalcn.Common.Utility
         }
 
         /// <summary>
-        /// 返回IP查找结果
+        ///     返回IP查找结果
         /// </summary>
         /// <param name="IPValue">要查找的IP地址</param>
         /// <returns></returns>
@@ -101,23 +101,39 @@ namespace Arsenalcn.Common.Utility
                 {
                     if (result.IndexOf("IANA") >= 0)
                         return "";
-                    else
-                        return result;
+                    return result;
                 }
-                else
-                    return null;
+                return null;
             }
         }
 
         /// <summary>
-        /// 辅助类，用于保存IP索引信息
+        ///     获得当前绝对路径
         /// </summary>
-        ///     
+        /// <param name="strPath">指定的路径</param>
+        /// <returns>绝对路径</returns>
+        protected static string GetMapPath(string strPath)
+        {
+            if (HttpContext.Current != null)
+            {
+                return HttpContext.Current.Server.MapPath(strPath);
+            }
+            strPath = strPath.Replace("/", "\\");
+            if (strPath.StartsWith("\\"))
+            {
+                strPath = strPath.Substring(strPath.IndexOf('\\', 1)).TrimStart('\\');
+            }
+            return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, strPath);
+        }
+
+        /// <summary>
+        ///     辅助类，用于保存IP索引信息
+        /// </summary>
         public class CZ_INDEX_INFO
         {
-            public UInt32 IpSet;
-            public UInt32 IpEnd;
-            public UInt32 Offset;
+            public uint IpEnd;
+            public uint IpSet;
+            public uint Offset;
 
             public CZ_INDEX_INFO()
             {
@@ -133,14 +149,14 @@ namespace Arsenalcn.Common.Utility
             protected bool bFilePathInitialized;
             protected string FilePath;
             protected FileStream FileStrm;
-            protected UInt32 Index_Set;
-            protected UInt32 Index_End;
-            protected UInt32 Index_Count;
-            protected UInt32 Search_Index_Set;
-            protected UInt32 Search_Index_End;
-            protected CZ_INDEX_INFO Search_Set;
-            protected CZ_INDEX_INFO Search_Mid;
+            protected uint Index_Count;
+            protected uint Index_End;
+            protected uint Index_Set;
             protected CZ_INDEX_INFO Search_End;
+            protected uint Search_Index_End;
+            protected uint Search_Index_Set;
+            protected CZ_INDEX_INFO Search_Mid;
+            protected CZ_INDEX_INFO Search_Set;
 
             public PHCZIP()
             {
@@ -198,7 +214,7 @@ namespace Arsenalcn.Common.Utility
                 Index_End = GetUInt32();
 
                 //得到总索引条数
-                Index_Count = (Index_End - Index_Set) / 7 + 1;
+                Index_Count = (Index_End - Index_Set)/7 + 1;
                 bFilePathInitialized = true;
 
                 return true;
@@ -214,7 +230,6 @@ namespace Arsenalcn.Common.Utility
 
                 while (true)
                 {
-
                     //首先初始化本轮查找的区间
 
                     //区间头
@@ -232,7 +247,7 @@ namespace Arsenalcn.Common.Utility
                         return ReadAddressInfoAtOffset(Search_End.Offset);
 
                     //计算出区间中点
-                    Search_Mid = IndexInfoAtPos((Search_Index_End + Search_Index_Set) / 2);
+                    Search_Mid = IndexInfoAtPos((Search_Index_End + Search_Index_Set)/2);
 
                     //判断IP是否在中点
                     if (ip >= Search_Mid.IpSet && ip <= Search_Mid.IpEnd)
@@ -241,18 +256,18 @@ namespace Arsenalcn.Common.Utility
                     //本轮没有找到，准备下一轮
                     if (ip < Search_Mid.IpSet)
                         //IP比区间中点要小，将区间尾设为现在的中点，将区间缩小1倍。
-                        Search_Index_End = (Search_Index_End + Search_Index_Set) / 2;
+                        Search_Index_End = (Search_Index_End + Search_Index_Set)/2;
                     else
-                        //IP比区间中点要大，将区间头设为现在的中点，将区间缩小1倍。
-                        Search_Index_Set = (Search_Index_End + Search_Index_Set) / 2;
+                    //IP比区间中点要大，将区间头设为现在的中点，将区间缩小1倍。
+                        Search_Index_Set = (Search_Index_End + Search_Index_Set)/2;
                 }
             }
 
-            private string ReadAddressInfoAtOffset(UInt32 Offset)
+            private string ReadAddressInfoAtOffset(uint Offset)
             {
                 var country = "";
                 var area = "";
-                UInt32 country_Offset = 0;
+                uint country_Offset = 0;
                 byte Tag = 0;
                 //跳过4字节，因这4个字节是该索引的IP区间上限。
                 FileStrm.Seek(Offset + 4, SeekOrigin.Begin);
@@ -285,7 +300,6 @@ namespace Arsenalcn.Common.Utility
                         FileStrm.Seek(-1, SeekOrigin.Current);
                         country = ReadString();
                         area = ReadArea();
-
                     }
                 }
                 else if (Tag == 0x02)
@@ -308,12 +322,12 @@ namespace Arsenalcn.Common.Utility
                 return country + " " + area;
             }
 
-            private UInt32 GetOffset()
+            private uint GetOffset()
             {
                 var TempByte4 = new byte[4];
-                TempByte4[0] = (byte)FileStrm.ReadByte();
-                TempByte4[1] = (byte)FileStrm.ReadByte();
-                TempByte4[2] = (byte)FileStrm.ReadByte();
+                TempByte4[0] = (byte) FileStrm.ReadByte();
+                TempByte4[1] = (byte) FileStrm.ReadByte();
+                TempByte4[2] = (byte) FileStrm.ReadByte();
                 TempByte4[3] = 0;
                 return BitConverter.ToUInt32(TempByte4, 0);
             }
@@ -332,27 +346,27 @@ namespace Arsenalcn.Common.Utility
 
             protected string ReadString()
             {
-                UInt32 Offset = 0;
+                uint Offset = 0;
                 var TempByteArray = new byte[256];
-                TempByteArray[Offset] = (byte)FileStrm.ReadByte();
+                TempByteArray[Offset] = (byte) FileStrm.ReadByte();
                 while (TempByteArray[Offset] != 0x00)
                 {
                     Offset += 1;
-                    TempByteArray[Offset] = (byte)FileStrm.ReadByte();
+                    TempByteArray[Offset] = (byte) FileStrm.ReadByte();
                 }
-                return System.Text.Encoding.GetEncoding("GB2312").GetString(TempByteArray).TrimEnd('\0');
+                return Encoding.GetEncoding("GB2312").GetString(TempByteArray).TrimEnd('\0');
             }
 
             protected byte GetTag()
             {
-                return (byte)FileStrm.ReadByte();
+                return (byte) FileStrm.ReadByte();
             }
 
-            protected CZ_INDEX_INFO IndexInfoAtPos(UInt32 Index_Pos)
+            protected CZ_INDEX_INFO IndexInfoAtPos(uint Index_Pos)
             {
                 var Index_Info = new CZ_INDEX_INFO();
                 //根据索引编号计算出在文件中在偏移位置
-                FileStrm.Seek(Index_Set + 7 * Index_Pos, SeekOrigin.Begin);
+                FileStrm.Seek(Index_Set + 7*Index_Pos, SeekOrigin.Begin);
                 Index_Info.IpSet = GetUInt32();
                 Index_Info.Offset = GetOffset();
                 FileStrm.Seek(Index_Info.Offset, SeekOrigin.Begin);
@@ -362,11 +376,11 @@ namespace Arsenalcn.Common.Utility
             }
 
             /// <summary>
-            /// 从IP转换为Int32
+            ///     从IP转换为Int32
             /// </summary>
             /// <param name="IpValue"></param>
             /// <returns></returns>
-            public UInt32 IPToUInt32(string IpValue)
+            public uint IPToUInt32(string IpValue)
             {
                 var IpByte = IpValue.Split('.');
                 var nUpperBound = IpByte.GetUpperBound(0);
@@ -381,52 +395,29 @@ namespace Arsenalcn.Common.Utility
                 for (var i = 0; i <= 3; i++)
                 {
                     if (IsNumeric(IpByte[i]))
-                        TempByte4[3 - i] = (byte)(Convert.ToInt32(IpByte[i]) & 0xff);
+                        TempByte4[3 - i] = (byte) (Convert.ToInt32(IpByte[i]) & 0xff);
                 }
 
                 return BitConverter.ToUInt32(TempByte4, 0);
             }
 
             /// <summary>
-            /// 判断是否为数字
+            ///     判断是否为数字
             /// </summary>
             /// <param name="str">待判断字符串</param>
             /// <returns></returns>
             protected bool IsNumeric(string str)
             {
-                if (str != null && System.Text.RegularExpressions.Regex.IsMatch(str, @"^-?\d+$"))
+                if (str != null && Regex.IsMatch(str, @"^-?\d+$"))
                     return true;
-                else
-                    return false;
+                return false;
             }
 
-            protected UInt32 GetUInt32()
+            protected uint GetUInt32()
             {
                 var TempByte4 = new byte[4];
                 FileStrm.Read(TempByte4, 0, 4);
                 return BitConverter.ToUInt32(TempByte4, 0);
-            }
-        }
-
-        /// <summary>
-        /// 获得当前绝对路径
-        /// </summary>
-        /// <param name="strPath">指定的路径</param>
-        /// <returns>绝对路径</returns>
-        protected static string GetMapPath(string strPath)
-        {
-            if (HttpContext.Current != null)
-            {
-                return HttpContext.Current.Server.MapPath(strPath);
-            }
-            else //非web程序引用
-            {
-                strPath = strPath.Replace("/", "\\");
-                if (strPath.StartsWith("\\"))
-                {
-                    strPath = strPath.Substring(strPath.IndexOf('\\', 1)).TrimStart('\\');
-                }
-                return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, strPath);
             }
         }
     }

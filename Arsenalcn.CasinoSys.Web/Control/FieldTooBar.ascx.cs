@@ -1,11 +1,13 @@
 ﻿using System;
-
+using System.Web.UI;
 using Arsenalcn.CasinoSys.Entity;
 
 namespace Arsenalcn.CasinoSys.Web.Control
 {
-    public partial class FieldTooBar : System.Web.UI.UserControl
+    public partial class FieldTooBar : UserControl
     {
+        public int UserId { get; set; }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (UserId == -1)
@@ -18,8 +20,5 @@ namespace Arsenalcn.CasinoSys.Web.Control
             else
                 pnlFuncLink.Visible = false;
         }
-
-        public int UserId
-        { get; set; }
     }
 }

@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Data;
 using System.Web.UI.WebControls;
-
 using Arsenalcn.CasinoSys.Entity;
+using Arsenalcn.CasinoSys.Web.Common;
+using Arsenalcn.CasinoSys.Web.Control;
 
 namespace Arsenalcn.CasinoSys.Web
 {
-    public partial class MyCoupon : Common.BasePage
+    public partial class MyCoupon : BasePage
     {
+        private bool _itemAvailable;
+
         protected override void OnInit(EventArgs e)
         {
             AnonymousRedirect = true;
@@ -24,7 +27,7 @@ namespace Arsenalcn.CasinoSys.Web
 
             ctrlFieldTooBar.UserId = userid;
 
-            ctrlMenuTabBar.CurrentMenu = Control.CasinoMenuType.CasinoPortal;
+            ctrlMenuTabBar.CurrentMenu = CasinoMenuType.CasinoPortal;
 
             ctrlGamblerHeader.UserId = userid;
             ctrlGamblerHeader.UserName = username;
@@ -63,8 +66,6 @@ namespace Arsenalcn.CasinoSys.Web
             }
         }
 
-        private bool _itemAvailable;
-
         protected void gvMatch_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
@@ -73,13 +74,14 @@ namespace Arsenalcn.CasinoSys.Web
 
                 if (drv != null)
                 {
-                    var m = new Match((Guid)drv["MatchGuid"]);
+                    var m = new Match((Guid) drv["MatchGuid"]);
 
                     var ltrlLeagueInfo = e.Row.FindControl("ltrlLeagueInfo") as Literal;
 
                     if (ltrlLeagueInfo != null)
                     {
-                        var strLeague = "<a href=\"CasinoGame.aspx?League={0}\" title=\"{1}\"><img src=\"{2}\" alt=\"{1}\" class=\"CasinoSys_CategoryImg\" /></a>";
+                        var strLeague =
+                            "<a href=\"CasinoGame.aspx?League={0}\" title=\"{1}\"><img src=\"{2}\" alt=\"{1}\" class=\"CasinoSys_CategoryImg\" /></a>";
 
                         var strLeagueName = $"{m.LeagueName}{(m.Round.HasValue ? $" 第{m.Round}轮" : string.Empty)}";
 
@@ -96,7 +98,8 @@ namespace Arsenalcn.CasinoSys.Web
                         var tHome = Team.Cache.Load(m.Home);
                         var tAway = Team.Cache.Load(m.Away);
 
-                        var strTeamName = "<a class=\"StrongLink\" href=\"CasinoTeam.aspx?Team={0}\"  title=\"{1}\">{2}</a> ";
+                        var strTeamName =
+                            "<a class=\"StrongLink\" href=\"CasinoTeam.aspx?Team={0}\"  title=\"{1}\">{2}</a> ";
                         var strTeamLogo = "<img src=\"{3}\" alt=\"{1}\" /> ";
 
                         lblHome.Text = string.Format(strTeamName + strTeamLogo,
@@ -117,13 +120,15 @@ namespace Arsenalcn.CasinoSys.Web
 
                         if (item != null)
                         {
-                            var options = ((SingleChoice)item).Options;
+                            var options = ((SingleChoice) item).Options;
 
                             var winOption = options.Find(option => option.OptionValue == MatchChoiceOption.HomeWinValue);
                             var drawOption = options.Find(option => option.OptionValue == MatchChoiceOption.DrawValue);
                             var loseOption = options.Find(option => option.OptionValue == MatchChoiceOption.AwayWinValue);
 
-                            if (!string.IsNullOrEmpty(winOption.OptionValue) && !string.IsNullOrEmpty(drawOption.OptionValue) && !string.IsNullOrEmpty(loseOption.OptionValue))
+                            if (!string.IsNullOrEmpty(winOption.OptionValue) &&
+                                !string.IsNullOrEmpty(drawOption.OptionValue) &&
+                                !string.IsNullOrEmpty(loseOption.OptionValue))
                             {
                                 var ltrlWinRate = e.Row.FindControl("ltrlWinRate") as Literal;
                                 var ltrlDrawRate = e.Row.FindControl("ltrlDrawRate") as Literal;
@@ -197,7 +202,7 @@ namespace Arsenalcn.CasinoSys.Web
 
                 if (tbHomeScore != null && tbAwayScore != null && gvMatch.DataKeys[row.RowIndex] != null)
                 {
-                    var matchGuid = (Guid)gvMatch.DataKeys[row.RowIndex].Value;
+                    var matchGuid = (Guid) gvMatch.DataKeys[row.RowIndex].Value;
 
                     var guid = CasinoItem.GetCasinoItemGuidByMatch(matchGuid, CasinoType.MatchResult);
 
@@ -212,46 +217,44 @@ namespace Arsenalcn.CasinoSys.Web
                             if (bets.Count != 0)
                             {
                                 //already bet
-                                continue;
                             }
-                            else
+                            short homeScore, awayScore;
+                            if (short.TryParse(tbHomeScore.Text, out homeScore) &&
+                                short.TryParse(tbAwayScore.Text, out awayScore))
                             {
-                                short homeScore, awayScore;
-                                if (short.TryParse(tbHomeScore.Text, out homeScore) && short.TryParse(tbAwayScore.Text, out awayScore))
+                                //save
+                                if (CasinoItem.GetCasinoItem(guid.Value).CloseTime < DateTime.Now)
                                 {
-                                    //save
-                                    if (CasinoItem.GetCasinoItem(guid.Value).CloseTime < DateTime.Now)
-                                    {
-                                        continue;
-                                    }
+                                    continue;
+                                }
 
-                                    if (homeScore < 0 || awayScore < 0)
-                                    {
-                                        continue;
-                                    }
+                                if (homeScore < 0 || awayScore < 0)
+                                {
+                                    continue;
+                                }
 
-                                    try
-                                    {
-                                        var bet = new Bet();
-                                        bet.BetAmount = null;
-                                        bet.BetRate = null;
-                                        bet.CasinoItemGuid = guid.Value;
-                                        bet.UserID = userid;
-                                        bet.UserName = username;
+                                try
+                                {
+                                    var bet = new Bet();
+                                    bet.BetAmount = null;
+                                    bet.BetRate = null;
+                                    bet.CasinoItemGuid = guid.Value;
+                                    bet.UserID = userid;
+                                    bet.UserName = username;
 
-                                        if (bet.BetCheck())
-                                        {
-                                            var matchResult = new MatchResultBetDetail();
-                                            matchResult.Home = homeScore;
-                                            matchResult.Away = awayScore;
-
-                                            bet.Insert(matchResult);
-                                        }
-                                    }
-                                    catch
+                                    if (bet.BetCheck())
                                     {
-                                        ClientScript.RegisterClientScriptBlock(typeof(string), "failed", "alert('投注失败'); window.location.href = window.location.href;", true);
+                                        var matchResult = new MatchResultBetDetail();
+                                        matchResult.Home = homeScore;
+                                        matchResult.Away = awayScore;
+
+                                        bet.Insert(matchResult);
                                     }
+                                }
+                                catch
+                                {
+                                    ClientScript.RegisterClientScriptBlock(typeof (string), "failed",
+                                        "alert('投注失败'); window.location.href = window.location.href;", true);
                                 }
                             }
                         }
@@ -259,7 +262,8 @@ namespace Arsenalcn.CasinoSys.Web
                 }
             }
 
-            ClientScript.RegisterClientScriptBlock(typeof(string), "failed", "alert('您的投注单已提交'); window.location.href = window.location.href;", true);
+            ClientScript.RegisterClientScriptBlock(typeof (string), "failed",
+                "alert('您的投注单已提交'); window.location.href = window.location.href;", true);
         }
     }
 }

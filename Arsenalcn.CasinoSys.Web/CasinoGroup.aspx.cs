@@ -1,13 +1,63 @@
 ﻿using System;
 using System.Data;
 using System.Web.UI.WebControls;
-
 using Arsenalcn.CasinoSys.Entity;
+using Arsenalcn.CasinoSys.Web.Common;
+using Arsenalcn.CasinoSys.Web.Control;
 
 namespace Arsenalcn.CasinoSys.Web
 {
-    public partial class CasinoGroup : Common.BasePage
+    public partial class CasinoGroup : BasePage
     {
+        public Guid CurrentLeague
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(Request.QueryString["League"]))
+                {
+                    try
+                    {
+                        return new Guid(Request.QueryString["League"]);
+                    }
+                    catch
+                    {
+                        return ConfigGlobal.DefaultLeagueID;
+                    }
+                }
+                if (CurrentGroup != Guid.Empty)
+                {
+                    try
+                    {
+                        return new Group(CurrentGroup).LeagueGuid;
+                    }
+                    catch
+                    {
+                        return ConfigGlobal.DefaultLeagueID;
+                    }
+                }
+                return ConfigGlobal.DefaultLeagueID;
+            }
+        }
+
+        public Guid CurrentGroup
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(Request.QueryString["Group"]))
+                {
+                    try
+                    {
+                        return new Guid(Request.QueryString["Group"]);
+                    }
+                    catch
+                    {
+                        return Guid.Empty;
+                    }
+                }
+                return Guid.Empty;
+            }
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             #region Assign Control Property
@@ -17,7 +67,7 @@ namespace Arsenalcn.CasinoSys.Web
 
             ctrlFieldTooBar.UserId = userid;
 
-            ctrlMenuTabBar.CurrentMenu = Control.CasinoMenuType.CasinoGroup;
+            ctrlMenuTabBar.CurrentMenu = CasinoMenuType.CasinoGroup;
 
             ctrlLeagueHeader.CurrLeagueGuid = CurrentLeague;
             ctrlLeagueHeader.PageUrl = "CasinoGroup.aspx";
@@ -90,7 +140,7 @@ namespace Arsenalcn.CasinoSys.Web
                     var dtTable = Group.GetGroupByLeague(CurrentLeague);
                     var drTable = dtTable.Rows[0];
 
-                    BindGroupData(gvGroupTable, (Guid)drTable["GroupGuid"]);
+                    BindGroupData(gvGroupTable, (Guid) drTable["GroupGuid"]);
 
                     pnlGroupList.Visible = false;
                     btnGroupMatch.Visible = false;
@@ -115,57 +165,6 @@ namespace Arsenalcn.CasinoSys.Web
             gv.DataBind();
         }
 
-        public Guid CurrentLeague
-        {
-            get
-            {
-                if (!string.IsNullOrEmpty(Request.QueryString["League"]))
-                {
-                    try
-                    {
-                        return new Guid(Request.QueryString["League"]);
-                    }
-                    catch
-                    {
-                        return ConfigGlobal.DefaultLeagueID;
-                    }
-                }
-                else if (CurrentGroup != Guid.Empty)
-                {
-                    try
-                    {
-                        return new Group(CurrentGroup).LeagueGuid;
-                    }
-                    catch
-                    {
-                        return ConfigGlobal.DefaultLeagueID;
-                    }
-                }
-                else
-                    return ConfigGlobal.DefaultLeagueID;
-            }
-        }
-
-        public Guid CurrentGroup
-        {
-            get
-            {
-                if (!string.IsNullOrEmpty(Request.QueryString["Group"]))
-                {
-                    try
-                    {
-                        return new Guid(Request.QueryString["Group"]);
-                    }
-                    catch
-                    {
-                        return Guid.Empty;
-                    }
-                }
-                else
-                    return Guid.Empty;
-            }
-        }
-
         protected void ddlSeason_SelectedIndexChanged(object sender, EventArgs e)
         {
             Response.Redirect($"CasinoGroup.aspx?League={ddlSeason.SelectedValue}");
@@ -186,7 +185,7 @@ namespace Arsenalcn.CasinoSys.Web
                 var dr = e.Item.DataItem as DataRowView;
                 var gvGroupTeam = e.Item.FindControl("gvGroupTeam") as GridView;
 
-                if (dr != null) BindGroupData(gvGroupTeam, (Guid)dr["GroupGuid"]);
+                if (dr != null) BindGroupData(gvGroupTeam, (Guid) dr["GroupGuid"]);
             }
         }
 
@@ -209,20 +208,20 @@ namespace Arsenalcn.CasinoSys.Web
                 {
                     if (ltrlTeamLogo != null && hlTeamInfo != null)
                     {
+                        var t = Team.Cache.Load((Guid) drv["TeamGuid"]);
 
-                        var t = Team.Cache.Load((Guid)drv["TeamGuid"]);
-
-                        ltrlTeamLogo.Text = string.Format("<span class=\"CasinoSys_GameName\" title=\"{0}\"><img src=\"{1}\" alt=\"{0}\" /></span>",
-                            t.TeamEnglishName, t.TeamLogo);
+                        ltrlTeamLogo.Text =
+                            string.Format(
+                                "<span class=\"CasinoSys_GameName\" title=\"{0}\"><img src=\"{1}\" alt=\"{0}\" /></span>",
+                                t.TeamEnglishName, t.TeamLogo);
 
                         hlTeamInfo.Text = $"<em>{t.TeamDisplayName}</em>";
                         hlTeamInfo.NavigateUrl = $"CasinoTeam.aspx?Team={t.ID}";
-
                     }
 
                     if (ltrlGoalDiff != null)
                     {
-                        var goalDiff = (short)drv["TotalGoalDiff"];
+                        var goalDiff = (short) drv["TotalGoalDiff"];
 
                         ltrlGoalDiff.Text = $"<em>{(goalDiff > 0 ? ("+" + goalDiff) : goalDiff.ToString())}</em>";
                     }
@@ -242,10 +241,12 @@ namespace Arsenalcn.CasinoSys.Web
 
                 if (drv != null && ltrlTeamLogo != null && hlTeamInfo != null)
                 {
-                    var t = Team.Cache.Load((Guid)drv["TeamGuid"]);
+                    var t = Team.Cache.Load((Guid) drv["TeamGuid"]);
 
-                    ltrlTeamLogo.Text = string.Format("<span class=\"CasinoSys_GameName\" title=\"{0}\"><img src=\"{1}\" alt=\"{0}\" /></span>",
-                        t.TeamEnglishName, t.TeamLogo);
+                    ltrlTeamLogo.Text =
+                        string.Format(
+                            "<span class=\"CasinoSys_GameName\" title=\"{0}\"><img src=\"{1}\" alt=\"{0}\" /></span>",
+                            t.TeamEnglishName, t.TeamLogo);
 
                     hlTeamInfo.Text = $"<em>{t.TeamDisplayName}</em>";
                     hlTeamInfo.NavigateUrl = $"CasinoTeam.aspx?Team={t.ID}";

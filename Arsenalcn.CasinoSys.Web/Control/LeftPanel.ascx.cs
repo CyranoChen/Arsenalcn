@@ -1,16 +1,14 @@
 ﻿using System;
-
+using System.Web.UI;
 using Arsenalcn.CasinoSys.Entity;
 
 namespace Arsenalcn.CasinoSys.Web.Control
 {
-    public partial class LeftPanel : System.Web.UI.UserControl
+    public partial class LeftPanel : UserControl
     {
-        public int UserId
-        { get; set; }
+        public int UserId { get; set; }
 
-        public string UserName
-        { get; set; }
+        public string UserName { get; set; }
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -35,12 +33,13 @@ namespace Arsenalcn.CasinoSys.Web.Control
             }
 
             #region HideCasinoSysNotice
+
             if (string.IsNullOrEmpty(ConfigGlobal.SysNotice))
             {
                 pnlNotice.Visible = false;
             }
-            #endregion
 
+            #endregion
         }
     }
 }

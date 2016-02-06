@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web.UI.WebControls;
-
-using Arsenalcn.ClubSys.Service;
 using Arsenalcn.ClubSys.Entity;
-
-
+using Arsenalcn.ClubSys.Service;
+using Arsenalcn.ClubSys.Web.Common;
 
 namespace Arsenalcn.ClubSys.Web
 {
-    public partial class MyApplyLog : Common.BasePage
+    public partial class MyApplyLog : BasePage
     {
+        private List<Entity.ClubHistory> history;
+
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -22,12 +22,12 @@ namespace Arsenalcn.ClubSys.Web
         {
             #region SetControlProperty
 
-            ctrlLeftPanel.UserID = this.userid;
-            ctrlLeftPanel.UserName = this.username;
-            ctrlLeftPanel.UserKey = this.userkey;
+            ctrlLeftPanel.UserID = userid;
+            ctrlLeftPanel.UserName = username;
+            ctrlLeftPanel.UserKey = userkey;
 
-            ctrlFieldToolBar.UserID = this.userid;
-            ctrlFieldToolBar.UserName = this.username;
+            ctrlFieldToolBar.UserID = userid;
+            ctrlFieldToolBar.UserName = username;
 
             #endregion
 
@@ -37,7 +37,6 @@ namespace Arsenalcn.ClubSys.Web
             }
         }
 
-        private List<Arsenalcn.ClubSys.Entity.ClubHistory> history = null;
         private void BindClubHistory()
         {
             if (history == null)
@@ -46,7 +45,7 @@ namespace Arsenalcn.ClubSys.Web
 
                 foreach (var ch in history)
                 {
-                    var actionType = (ClubHistoryActionType)Enum.Parse(typeof(ClubHistoryActionType), ch.ActionType);
+                    var actionType = (ClubHistoryActionType) Enum.Parse(typeof (ClubHistoryActionType), ch.ActionType);
                     switch (actionType)
                     {
                         case ClubHistoryActionType.JoinClub:
@@ -83,15 +82,15 @@ namespace Arsenalcn.ClubSys.Web
                     ch.AdditionalData2 = ClubLogic.TranslateClubHistoryActionType(actionType);
                 }
 
-                var bingoHistory = PlayerStrip.GetUserBingoHistory(this.userid);
+                var bingoHistory = PlayerStrip.GetUserBingoHistory(userid);
 
                 foreach (var bh in bingoHistory)
                 {
-                    var current = new Arsenalcn.ClubSys.Entity.ClubHistory();
+                    var current = new Entity.ClubHistory();
 
                     var br = new BingoResult(bh.Result, bh.ResultDetail);
 
-                    current.OperatorUserName = this.username;
+                    current.OperatorUserName = username;
                     current.ClubID = bh.ClubID;
                     current.AdditionalData2 = string.Empty;
                     current.ActionDate = bh.ActionDate;
@@ -117,7 +116,7 @@ namespace Arsenalcn.ClubSys.Web
                             break;
                         case BingoResultType.Cash:
                             current.AdditionalData = "ClubSys_Agree";
-                            current.ActionDescription = "获得枪手币: " + br.ResultDetail.ToString();
+                            current.ActionDescription = "获得枪手币: " + br.ResultDetail;
                             break;
                         case BingoResultType.Both:
                             current.AdditionalData = "ClubSys_Agree";
@@ -137,14 +136,14 @@ namespace Arsenalcn.ClubSys.Web
                     history.Add(current);
                 }
 
-                var playerHistory = PlayerLog.GetUserPlayerHistory(this.userid);
+                var playerHistory = PlayerLog.GetUserPlayerHistory(userid);
 
                 foreach (var ph in playerHistory)
                 {
-                    var current = new Arsenalcn.ClubSys.Entity.ClubHistory();
+                    var current = new Entity.ClubHistory();
 
-                    current.OperatorUserName = this.username;
-                    current.ClubID = ClubLogic.GetActiveUserClubs(this.userid)[0].ID.Value;
+                    current.OperatorUserName = username;
+                    current.ClubID = ClubLogic.GetActiveUserClubs(userid)[0].ID.Value;
                     current.AdditionalData = "ClubSys_Star";
                     current.ActionDescription = $"<em>{ph.TypeDesc}</em>";
                     current.ActionDate = ph.ActionDate;
@@ -170,7 +169,7 @@ namespace Arsenalcn.ClubSys.Web
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                var ch = (Arsenalcn.ClubSys.Entity.ClubHistory)e.Row.DataItem;
+                var ch = (Entity.ClubHistory) e.Row.DataItem;
 
                 var club = ClubLogic.GetClubInfo(ch.ClubID);
 

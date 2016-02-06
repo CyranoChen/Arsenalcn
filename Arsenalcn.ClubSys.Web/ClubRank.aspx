@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" MasterPageFile="DefaultMaster.master" CodeBehind="ClubRank.aspx.cs"
-    Inherits="Arsenalcn.ClubSys.Web.ClubRank" Title="{0} 等级评价" EnableViewState="false" %>
+Inherits="Arsenalcn.ClubSys.Web.ClubRank" Title="{0} 等级评价" EnableViewState="false" %>
 
 <%@ Register Src="Control/LeftPanel.ascx" TagName="LeftPanel" TagPrefix="uc1" %>
 <%@ Register Src="Control/FieldToolBar.ascx" TagName="FieldToolBar" TagPrefix="uc2" %>
@@ -8,16 +8,16 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="cphHead" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="cphMain" runat="server">
-    <uc1:LeftPanel ID="ctrlLeftPanel" runat="server" />
+    <uc1:LeftPanel ID="ctrlLeftPanel" runat="server"/>
     <div id="MainPanel">
-        <uc2:FieldToolBar ID="ctrlFieldToolBar" runat="server" />
-        <uc3:MenuTabBar ID="ctrlMenuTabBar" runat="server" />
-        <uc4:ClubSysHeader ID="ctrlClubSysHeader" runat="server" />
+        <uc2:FieldToolBar ID="ctrlFieldToolBar" runat="server"/>
+        <uc3:MenuTabBar ID="ctrlMenuTabBar" runat="server"/>
+        <uc4:ClubSysHeader ID="ctrlClubSysHeader" runat="server"/>
         <div class="ClubSys_RankInfo">
             <div class="RankChartPanel">
 
                 <script type="text/javascript">
-                    GenSwfObject('RankChart', 'swf/RankChart.swf?XMLURL=ServerXml.aspx%3FClubID=<%=ClubID %>', '220', '220');
+                    GenSwfObject('RankChart', 'swf/RankChart.swf?XMLURL=ServerXml.aspx%3FClubID=<%= ClubID %>', '220', '220');
                 </script>
 
             </div>
@@ -53,12 +53,15 @@
                         </label>
                         <asp:Literal ID="ltrlEquipmentCount" runat="server"></asp:Literal>
                     </dd>
-                    <dt><a onclick="document.getElementById('RankDetailPanel').style.display=''">指标详细说明...</a></dt>
+                    <dt>
+                        <a onclick="document.getElementById('RankDetailPanel').style.display = ''">指标详细说明...</a>
+                    </dt>
                 </dl>
             </div>
             <div class="RankPointPanel">
                 <div class="RankPoint">
-                    <asp:Literal ID="ltrlRankScore" runat="server"></asp:Literal></div>
+                    <asp:Literal ID="ltrlRankScore" runat="server"></asp:Literal>
+                </div>
             </div>
             <div class="Clear">
             </div>
@@ -66,7 +69,8 @@
         <div id="RankDetailPanel" class="ClubSys_RankInfo" style="display: none;">
             <div class="ClubSys_RankDetailPanel">
                 <p>
-                    球会等级LV由球会财富数决定;球会总评价分RP由5个指标的评价分决定(按权重)。5个指标是:</p>
+                    球会等级LV由球会财富数决定;球会总评价分RP由5个指标的评价分决定(按权重)。5个指标是:
+                </p>
                 <ul>
                     <li>1.会员数: 体现一个球会的人丁兴旺程度,等级将决定会员数上限。</li>
                     <li>2.财富数: 体现一个球会的经营能力与财富积累程度,直接影响等级。</li>

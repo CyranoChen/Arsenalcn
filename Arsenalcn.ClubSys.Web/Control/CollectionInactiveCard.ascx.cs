@@ -1,15 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Web.UI.WebControls;
-
-using Arsenalcn.ClubSys.Service;
 using Arsenalcn.ClubSys.Entity;
+using Arsenalcn.ClubSys.Service;
+using Arsenalcn.ClubSys.Web.Common;
 
 namespace Arsenalcn.ClubSys.Web.Control
 {
-    public partial class CollectionInactiveCard : Common.CollectionBase
+    public partial class CollectionInactiveCard : CollectionBase
     {
-        private Gamer _playerInfo = null;
+        private Gamer _playerInfo;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -25,6 +24,7 @@ namespace Arsenalcn.ClubSys.Web.Control
                 rptCard.DataBind();
             }
         }
+
         protected void rptCard_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
             if ((e.Item.ItemType == ListItemType.Item) || (e.Item.ItemType == ListItemType.AlternatingItem))
@@ -37,7 +37,7 @@ namespace Arsenalcn.ClubSys.Web.Control
 
                 lblPlayerInactiveCardID.Text = un.ID.ToString();
                 lblPlayerInactiveCardPath.Text =
-                    $"swf/PlayerCard.swf?XMLURL=ServerXml.aspx%3FPlayerGuid={un.ArsenalPlayerGuid.ToString()}";
+                    $"swf/PlayerCard.swf?XMLURL=ServerXml.aspx%3FPlayerGuid={un.ArsenalPlayerGuid}";
 
                 if (ProfileUserID == CurrentUserID)
                 {
@@ -56,14 +56,15 @@ namespace Arsenalcn.ClubSys.Web.Control
 
                             //postback to another url
                             //btnActive.PostBackUrl = "MyPlayerCardActive.aspx?unID=" + un.ID.ToString();
-                            btnActive.OnClientClick = "GenFlashFrame('swf/ShowCardActive.swf?XMLURL=ServerXml.aspx%3FCardID=" + un.ID.ToString() + "', '160', '200', true); return false";
+                            btnActive.OnClientClick =
+                                "GenFlashFrame('swf/ShowCardActive.swf?XMLURL=ServerXml.aspx%3FCardID=" + un.ID +
+                                "', '160', '200', true); return false";
                         }
                         else
                         {
                             btnActive.Visible = false;
                         }
                     }
-
                 }
                 else
                 {

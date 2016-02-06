@@ -1,19 +1,37 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Web.UI.WebControls;
 using System.Linq;
-
-using iArsenal.Service;
+using System.Web.UI.WebControls;
 using Arsenalcn.Core;
+using iArsenal.Service;
 
 namespace iArsenal.Web
 {
     public partial class AdminMatchTicketView : AdminPageBase
     {
         private readonly IRepository repo = new Repository();
+
+        private Guid MatchGuid
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(Request.QueryString["MatchGuid"]))
+                {
+                    try
+                    {
+                        return new Guid(Request.QueryString["MatchGuid"]);
+                    }
+                    catch
+                    {
+                        return Guid.Empty;
+                    }
+                }
+                return Guid.Empty;
+            }
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            ctrlAdminFieldToolBar.AdminUserName = this.Username;
+            ctrlAdminFieldToolBar.AdminUserName = Username;
 
             if (!IsPostBack)
             {
@@ -31,20 +49,6 @@ namespace iArsenal.Web
                 #endregion
 
                 InitForm();
-            }
-        }
-
-        private Guid MatchGuid
-        {
-            get
-            {
-                if (!string.IsNullOrEmpty(Request.QueryString["MatchGuid"]))
-                {
-                    try { return new Guid(Request.QueryString["MatchGuid"]); }
-                    catch { return Guid.Empty; }
-                }
-                else
-                    return Guid.Empty;
             }
         }
 
@@ -105,7 +109,8 @@ namespace iArsenal.Web
             }
             else
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('选定的比赛不存在');window.location.href = 'AdminMatchTicket.aspx'", true);
+                ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                    "alert('选定的比赛不存在');window.location.href = 'AdminMatchTicket.aspx'", true);
             }
         }
 
@@ -131,7 +136,7 @@ namespace iArsenal.Web
             if (gvMatchOrder.SelectedIndex != -1)
             {
                 Response.Redirect(
-                    $"AdminOrderView.aspx?OrderID={gvMatchOrder.DataKeys[gvMatchOrder.SelectedIndex].Value.ToString()}");
+                    $"AdminOrderView.aspx?OrderID={gvMatchOrder.DataKeys[gvMatchOrder.SelectedIndex].Value}");
             }
         }
 
@@ -189,7 +194,8 @@ namespace iArsenal.Web
                 mt.Single();
 
                 DateTime _deadline;
-                if (!string.IsNullOrEmpty(tbDeadline.Text.Trim()) && DateTime.TryParse(tbDeadline.Text.Trim(), out _deadline))
+                if (!string.IsNullOrEmpty(tbDeadline.Text.Trim()) &&
+                    DateTime.TryParse(tbDeadline.Text.Trim(), out _deadline))
                     mt.Deadline = _deadline;
                 else
                     mt.Deadline = mt.PlayTime.AddMonths(-2).AddDays(-7);
@@ -215,7 +221,8 @@ namespace iArsenal.Web
 
                     MatchTicket.Cache.RefreshCache();
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('更新成功');window.location.href=window.location.href", true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                        "alert('更新成功');window.location.href=window.location.href", true);
                 }
                 else
                 {
@@ -223,12 +230,13 @@ namespace iArsenal.Web
 
                     MatchTicket.Cache.RefreshCache();
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('添加成功');window.location.href = 'AdminMatchTicket.aspx'", true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                        "alert('添加成功');window.location.href = 'AdminMatchTicket.aspx'", true);
                 }
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message.ToString()}')", true);
+                ClientScript.RegisterClientScriptBlock(typeof (string), "failed", $"alert('{ex.Message}')", true);
             }
         }
 
@@ -236,7 +244,7 @@ namespace iArsenal.Web
         {
             if (MatchGuid != Guid.Empty)
             {
-                Response.Redirect("AdminMatchTicket.aspx?MatchGuid=" + MatchGuid.ToString());
+                Response.Redirect("AdminMatchTicket.aspx?MatchGuid=" + MatchGuid);
             }
             else
             {
@@ -254,7 +262,8 @@ namespace iArsenal.Web
                     mt.ID = MatchGuid;
                     mt.Delete();
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('删除成功');window.location.href='AdminMatchTicket.aspx'", true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                        "alert('删除成功');window.location.href='AdminMatchTicket.aspx'", true);
                 }
                 else
                 {
@@ -263,7 +272,7 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message.ToString()}')", true);
+                ClientScript.RegisterClientScriptBlock(typeof (string), "failed", $"alert('{ex.Message}')", true);
             }
         }
     }

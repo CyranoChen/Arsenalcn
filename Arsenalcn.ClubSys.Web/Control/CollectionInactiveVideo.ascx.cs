@@ -1,15 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Web.UI.WebControls;
-
-using Arsenalcn.ClubSys.Service;
 using Arsenalcn.ClubSys.Entity;
+using Arsenalcn.ClubSys.Service;
+using Arsenalcn.ClubSys.Web.Common;
 
 namespace Arsenalcn.ClubSys.Web.Control
 {
-    public partial class CollectionInactiveVideo : Common.CollectionBase
+    public partial class CollectionInactiveVideo : CollectionBase
     {
-        private Gamer _playerInfo = null;
+        private Gamer _playerInfo;
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (ProfileUserID > 0)
@@ -53,14 +53,15 @@ namespace Arsenalcn.ClubSys.Web.Control
 
                             //postback to another url
                             //btnActive.PostBackUrl = "MyPlayerCardActive.aspx?unID=" + un.ID.ToString();
-                            btnActive.OnClientClick = "GenFlashFrame('swf/ShowCardActive.swf?XMLURL=ServerXml.aspx%3FCardID=" + un.ID.ToString() + "', '160', '200', true); return false";
+                            btnActive.OnClientClick =
+                                "GenFlashFrame('swf/ShowCardActive.swf?XMLURL=ServerXml.aspx%3FCardID=" + un.ID +
+                                "', '160', '200', true); return false";
                         }
                         else
                         {
                             btnActive.Visible = false;
                         }
                     }
-
                 }
                 else
                 {

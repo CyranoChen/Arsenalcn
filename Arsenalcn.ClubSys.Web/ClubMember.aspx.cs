@@ -1,17 +1,20 @@
 ﻿using System;
-using System.Web.UI.WebControls;
 using System.Collections.Generic;
-
-using Arsenalcn.ClubSys.Service;
+using System.Web.UI.WebControls;
 using Arsenalcn.ClubSys.Entity;
-
-using Discuz.Entity;
+using Arsenalcn.ClubSys.Service;
+using Arsenalcn.ClubSys.Web.Common;
+using Arsenalcn.ClubSys.Web.Control;
 using Discuz.Forum;
 
 namespace Arsenalcn.ClubSys.Web
 {
-    public partial class ClubMember : Common.BasePage
+    public partial class ClubMember : BasePage
     {
+        private long _totalContribution;
+
+        private List<UserClub> clubMemberList;
+
         private int ClubID
         {
             get
@@ -19,12 +22,9 @@ namespace Arsenalcn.ClubSys.Web
                 int tmp;
                 if (int.TryParse(Request.QueryString["ClubID"], out tmp))
                     return tmp;
-                else
-                {
-                    Response.Redirect("ClubPortal.aspx");
+                Response.Redirect("ClubPortal.aspx");
 
-                    return -1;
-                }
+                return -1;
             }
         }
 
@@ -32,31 +32,30 @@ namespace Arsenalcn.ClubSys.Web
         {
             var club = ClubLogic.GetClubInfo(ClubID);
 
-            if (club != null && this.Title.IndexOf("{0}") >= 0)
-                this.Title = string.Format(this.Title, club.FullName);
+            if (club != null && Title.IndexOf("{0}") >= 0)
+                Title = string.Format(Title, club.FullName);
 
             #region SetControlProperty
 
-            ctrlLeftPanel.UserID = this.userid;
-            ctrlLeftPanel.UserName = this.username;
-            ctrlLeftPanel.UserKey = this.userkey;
+            ctrlLeftPanel.UserID = userid;
+            ctrlLeftPanel.UserName = username;
+            ctrlLeftPanel.UserKey = userkey;
 
-            ctrlFieldToolBar.UserID = this.userid;
-            ctrlFieldToolBar.UserName = this.username;
+            ctrlFieldToolBar.UserID = userid;
+            ctrlFieldToolBar.UserName = username;
 
-            ctrlMenuTabBar.CurrentMenu = Arsenalcn.ClubSys.Web.Control.ClubMenuItem.ClubMemeber;
+            ctrlMenuTabBar.CurrentMenu = ClubMenuItem.ClubMemeber;
             ctrlMenuTabBar.ClubID = ClubID;
 
-            ctrlClubSysHeader.UserID = this.userid;
+            ctrlClubSysHeader.UserID = userid;
             ctrlClubSysHeader.ClubID = ClubID;
-            ctrlClubSysHeader.UserName = this.username;
+            ctrlClubSysHeader.UserName = username;
 
             #endregion
 
             BindMemberList();
         }
 
-        private List<UserClub> clubMemberList = null;
         private void BindMemberList()
         {
             if (clubMemberList == null)
@@ -73,7 +72,7 @@ namespace Arsenalcn.ClubSys.Web
                 var uc = e.Row.DataItem as UserClub;
                 if (uc != null)
                 {
-                    var userInfo = AdminUsers.GetUserInfo(uc.Userid.Value);
+                    var userInfo = Users.GetUserInfo(uc.Userid.Value);
                     if (userInfo != null)
                     {
                         #region set avatar
@@ -112,7 +111,7 @@ namespace Arsenalcn.ClubSys.Web
                         var ltrlResponsibility = e.Row.FindControl("ltrlResponsibility") as Literal;
                         if (ltrlResponsibility != null)
                         {
-                            if (uc.Responsibility.Value == (int)Responsibility.Member)
+                            if (uc.Responsibility.Value == (int) Responsibility.Member)
                                 ltrlResponsibility.Text = string.Empty;
                             else
                                 ltrlResponsibility.Text =
@@ -128,7 +127,7 @@ namespace Arsenalcn.ClubSys.Web
                         {
                             var groupInfo = UserGroups.GetUserGroupInfo(userInfo.Groupid);
 
-                            if( groupInfo != null )
+                            if (groupInfo != null)
                                 ltrlUserGroup.Text =
                                     $"<span title=\"积分:{userInfo.Credits.ToString("N0")}\">{groupInfo.Grouptitle}</span>";
                         }
@@ -160,7 +159,7 @@ namespace Arsenalcn.ClubSys.Web
                         var ltrlDays = e.Row.FindControl("ltrlDays") as Literal;
                         if (ltrlDays != null)
                         {
-                            ltrlDays.Text = ((int)((DateTime.Now - uc.JoinClubDate.Value).TotalDays)).ToString();
+                            ltrlDays.Text = ((int) ((DateTime.Now - uc.JoinClubDate.Value).TotalDays)).ToString();
                         }
 
                         #endregion
@@ -175,14 +174,16 @@ namespace Arsenalcn.ClubSys.Web
 
                             var bonusRate = PlayerStrip.CalcPlayerContributionBonusRate(uc.Userid.Value);
 
-                            if( bonusRate != 0 )
+                            if (bonusRate != 0)
                                 ltrlContributeValue.Text = $"<em>{contribution}(*{1 + bonusRate}) 枪手币</em>";
                             else
                                 ltrlContributeValue.Text = $"<em>{contribution} 枪手币</em>";
 
-                            _totalContribution += (int)(contribution * (1 + bonusRate));
+                            _totalContribution += (int) (contribution*(1 + bonusRate));
                         }
-                        catch { }
+                        catch
+                        {
+                        }
 
                         #endregion
                     }
@@ -197,7 +198,6 @@ namespace Arsenalcn.ClubSys.Web
             BindMemberList();
         }
 
-        private long _totalContribution = 0;
         protected override void OnPreRender(EventArgs e)
         {
             ltrlMemberCount.Text = ClubLogic.GetClubMemberCount(ClubID).ToString();

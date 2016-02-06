@@ -1,13 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web.UI.WebControls;
-
 using Arsenalcn.CasinoSys.Entity;
+using Arsenalcn.CasinoSys.Web.Common;
+using Arsenalcn.CasinoSys.Web.Control;
 
 namespace Arsenalcn.CasinoSys.Web
 {
-    public partial class CasinoBetLog : Common.BasePage
+    public partial class CasinoBetLog : BasePage
     {
+        private string _away = string.Empty;
+
+        private string _home = string.Empty;
+
+        public int TimeDiff
+        {
+            get { return int.Parse(ddlTimeDiff.SelectedValue); }
+        }
+
+        public Guid CurrentMatch
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(Request.QueryString["Match"]))
+                {
+                    try
+                    {
+                        return new Guid(Request.QueryString["Match"]);
+                    }
+                    catch
+                    {
+                        return Guid.Empty;
+                    }
+                }
+                return Guid.Empty;
+            }
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             #region Assign Control Property
@@ -17,7 +46,7 @@ namespace Arsenalcn.CasinoSys.Web
 
             ctrlFieldTooBar.UserId = userid;
 
-            ctrlMenuTabBar.CurrentMenu = Control.CasinoMenuType.CasinoBetLog;
+            ctrlMenuTabBar.CurrentMenu = CasinoMenuType.CasinoBetLog;
 
             if (CurrentMatch != Guid.Empty)
             {
@@ -39,9 +68,6 @@ namespace Arsenalcn.CasinoSys.Web
 
             BindData();
         }
-
-        private string _home = string.Empty;
-        private string _away = string.Empty;
 
         private void BindData()
         {
@@ -69,11 +95,13 @@ namespace Arsenalcn.CasinoSys.Web
                 betList = Bet.GetMatchAllBet(CurrentMatch);
             }
 
-            ltrlSingleChoiceCount.Text = betList.FindAll(delegate (Bet bet) { return bet.BetAmount.HasValue; }).Count.ToString();
-            ltrlMatchResultCount.Text = betList.FindAll(delegate (Bet bet) { return !bet.BetAmount.HasValue; }).Count.ToString();
+            ltrlSingleChoiceCount.Text =
+                betList.FindAll(delegate(Bet bet) { return bet.BetAmount.HasValue; }).Count.ToString();
+            ltrlMatchResultCount.Text =
+                betList.FindAll(delegate(Bet bet) { return !bet.BetAmount.HasValue; }).Count.ToString();
 
             float totalBetCount = 0;
-            betList.ForEach(delegate (Bet bet) { totalBetCount += bet.BetAmount.GetValueOrDefault(0f); });
+            betList.ForEach(delegate(Bet bet) { totalBetCount += bet.BetAmount.GetValueOrDefault(0f); });
             ltrlTotalBetCount.Text = totalBetCount.ToString("N0");
 
             gvBet.DataSource = betList;
@@ -90,34 +118,6 @@ namespace Arsenalcn.CasinoSys.Web
                 gvBet.Columns[2].Visible = true;
                 gvBet.Columns[3].Visible = true;
                 gvBet.Columns[4].Visible = true;
-            }
-        }
-
-        public int TimeDiff
-        {
-            get
-            {
-                return int.Parse(ddlTimeDiff.SelectedValue);
-            }
-        }
-
-        public Guid CurrentMatch
-        {
-            get
-            {
-                if (!string.IsNullOrEmpty(Request.QueryString["Match"]))
-                {
-                    try
-                    {
-                        return new Guid(Request.QueryString["Match"]);
-                    }
-                    catch
-                    {
-                        return Guid.Empty;
-                    }
-                }
-                else
-                    return Guid.Empty;
             }
         }
 

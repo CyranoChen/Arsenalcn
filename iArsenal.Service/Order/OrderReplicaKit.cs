@@ -1,81 +1,111 @@
 ﻿using System;
+using System.Linq;
 using Arsenalcn.Core;
+using AutoMapper;
 
 namespace iArsenal.Service
 {
     public class OrdrReplicaKit : Order
     {
-        public OrdrReplicaKit() { }
-
         public void Init()
         {
             IRepository repo = new Repository();
 
-            var list = repo.Query<OrderItem>(x => x.OrderID == ID && x.IsActive == true)
-                .FindAll(x => Product.Cache.Load(x.ProductGuid) != null);
+            var list = repo.Query<OrderItem>(x => x.OrderID == ID)
+                .FindAll(x => x.IsActive && Product.Cache.Load(x.ProductGuid) != null);
 
-            if (list != null && list.Count > 0)
+            if (list.Any())
             {
                 OrderItem oiBase = null;
 
                 oiBase = list.Find(x => Product.Cache.Load(x.ProductGuid).ProductType.Equals(ProductType.ReplicaKitHome));
                 if (oiBase != null)
                 {
-                    AutoMapper.Mapper.CreateMap<OrderItem, OrdrItmReplicaKitHome>().AfterMap((s, d) => d.Init());
-                    OIReplicaKitHome = AutoMapper.Mapper.Map<OrdrItmReplicaKitHome>(oiBase);
+                    var mapperReplicakitHome = new MapperConfiguration(cfg =>
+                        cfg.CreateMap<OrderItem, OrdrItmReplicaKitHome>().AfterMap((s, d) => d.Init()))
+                        .CreateMapper();
+
+                    OIReplicaKitHome = mapperReplicakitHome.Map<OrdrItmReplicaKitHome>(oiBase);
                 }
 
                 oiBase = list.Find(x => Product.Cache.Load(x.ProductGuid).ProductType.Equals(ProductType.ReplicaKitAway));
                 if (oiBase != null)
                 {
-                    AutoMapper.Mapper.CreateMap<OrderItem, OrdrItmReplicaKitAway>().AfterMap((s, d) => d.Init());
-                    OIReplicaKitAway = AutoMapper.Mapper.Map<OrdrItmReplicaKitAway>(oiBase);
+                    var mapperReplicakitAway = new MapperConfiguration(cfg =>
+                        cfg.CreateMap<OrderItem, OrdrItmReplicaKitAway>().AfterMap((s, d) => d.Init()))
+                        .CreateMapper();
+
+                    OIReplicaKitAway = mapperReplicakitAway.Map<OrdrItmReplicaKitAway>(oiBase);
                 }
 
                 oiBase = list.Find(x => Product.Cache.Load(x.ProductGuid).ProductType.Equals(ProductType.ReplicaKitCup));
                 if (oiBase != null)
                 {
-                    AutoMapper.Mapper.CreateMap<OrderItem, OrdrItmReplicaKitCup>().AfterMap((s, d) => d.Init());
-                    OIReplicaKitCup = AutoMapper.Mapper.Map<OrdrItmReplicaKitCup>(oiBase);
+                    var mapperReplicakitCup = new MapperConfiguration(cfg =>
+                        cfg.CreateMap<OrderItem, OrdrItmReplicaKitCup>().AfterMap((s, d) => d.Init()))
+                        .CreateMapper();
+
+                    OIReplicaKitCup = mapperReplicakitCup.Map<OrdrItmReplicaKitCup>(oiBase);
                 }
 
                 if (OIReplicaKitHome != null || OIReplicaKitAway != null || OIReplicaKitCup != null)
                 {
-                    base.UrlOrderView = "iArsenalOrderView_ReplicaKit.aspx";
+                    UrlOrderView = "iArsenalOrderView_ReplicaKit.aspx";
 
-                    oiBase = list.Find(x => Product.Cache.Load(x.ProductGuid).ProductType.Equals(ProductType.PlayerNumber));
+                    oiBase =
+                        list.Find(x => Product.Cache.Load(x.ProductGuid).ProductType.Equals(ProductType.PlayerNumber));
                     if (oiBase != null)
                     {
-                        AutoMapper.Mapper.CreateMap<OrderItem, OrdrItmPlayerNumber>().AfterMap((s, d) => d.Init());
-                        OIPlayerNumber = AutoMapper.Mapper.Map<OrdrItmPlayerNumber>(oiBase);
+                        var mapperPlayerNumber = new MapperConfiguration(cfg =>
+                            cfg.CreateMap<OrderItem, OrdrItmPlayerNumber>().AfterMap((s, d) => d.Init()))
+                            .CreateMapper();
+
+                        OIPlayerNumber = mapperPlayerNumber.Map<OrdrItmPlayerNumber>(oiBase);
                     }
 
                     oiBase = list.Find(x => Product.Cache.Load(x.ProductGuid).ProductType.Equals(ProductType.PlayerName));
                     if (oiBase != null)
                     {
-                        AutoMapper.Mapper.CreateMap<OrderItem, OrdrItmPlayerName>().AfterMap((s, d) => d.Init());
-                        OIPlayerName = AutoMapper.Mapper.Map<OrdrItmPlayerName>(oiBase);
+                        var mapperPlayerName = new MapperConfiguration(cfg =>
+                            cfg.CreateMap<OrderItem, OrdrItmPlayerName>().AfterMap((s, d) => d.Init()))
+                            .CreateMapper();
+
+                        OIPlayerName = mapperPlayerName.Map<OrdrItmPlayerName>(oiBase);
                     }
 
-                    oiBase = list.Find(x => Product.Cache.Load(x.ProductGuid).ProductType.Equals(ProductType.ArsenalFont));
+                    oiBase =
+                        list.Find(x => Product.Cache.Load(x.ProductGuid).ProductType.Equals(ProductType.ArsenalFont));
                     if (oiBase != null)
                     {
-                        AutoMapper.Mapper.CreateMap<OrderItem, OrdrItmArsenalFont>().AfterMap((s, d) => d.Init());
-                        OIArsenalFont = AutoMapper.Mapper.Map<OrdrItmArsenalFont>(oiBase);
+                        var mapperArsenalFont = new MapperConfiguration(cfg =>
+                            cfg.CreateMap<OrderItem, OrdrItmArsenalFont>().AfterMap((s, d) => d.Init()))
+                            .CreateMapper();
+
+                        OIArsenalFont = mapperArsenalFont.Map<OrdrItmArsenalFont>(oiBase);
                     }
 
-                    oiBase = list.Find(x => Product.Cache.Load(x.ProductGuid).ProductType.Equals(ProductType.PremiershipPatch));
+                    oiBase =
+                        list.Find(
+                            x => Product.Cache.Load(x.ProductGuid).ProductType.Equals(ProductType.PremiershipPatch));
                     if (oiBase != null)
                     {
-                        AutoMapper.Mapper.CreateMap<OrderItem, OrdrItmPremiershipPatch>().AfterMap((s, d) => d.Init());
-                        OIPremiershipPatch = AutoMapper.Mapper.Map<OrdrItmPremiershipPatch>(oiBase);
+                        var mapperPremiershipPatch = new MapperConfiguration(cfg =>
+                            cfg.CreateMap<OrderItem, OrdrItmPremiershipPatch>().AfterMap((s, d) => d.Init()))
+                            .CreateMapper();
+
+                        OIPremiershipPatch = mapperPremiershipPatch.Map<OrdrItmPremiershipPatch>(oiBase);
                     }
 
-                    oiBase = list.Find(x => Product.Cache.Load(x.ProductGuid).ProductType.Equals(ProductType.ChampionshipPatch));
+                    oiBase =
+                        list.Find(
+                            x => Product.Cache.Load(x.ProductGuid).ProductType.Equals(ProductType.ChampionshipPatch));
                     if (oiBase != null)
                     {
-                        AutoMapper.Mapper.CreateMap<OrderItem, OrdrItmChampionshipPatch>().AfterMap((s, d) => d.Init());
-                        OIChampionshipPatch = AutoMapper.Mapper.Map<OrdrItmChampionshipPatch>(oiBase);
+                        var mapperChampionshipPatch = new MapperConfiguration(cfg =>
+                            cfg.CreateMap<OrderItem, OrdrItmChampionshipPatch>().AfterMap((s, d) => d.Init()))
+                            .CreateMapper();
+
+                        OIChampionshipPatch = mapperChampionshipPatch.Map<OrdrItmChampionshipPatch>(oiBase);
                     }
                 }
                 else
@@ -88,18 +118,18 @@ namespace iArsenal.Service
 
             var _strWorkflow = "{{ \"StatusType\": \"{0}\", \"StatusInfo\": \"{1}\" }}";
 
-            string[] _workflowInfo = {
-                                      string.Format(_strWorkflow, ((int)OrderStatusType.Draft).ToString(), "未提交"),
-                                      string.Format(_strWorkflow, ((int)OrderStatusType.Submitted).ToString(), "审核中"),
-                                      string.Format(_strWorkflow, ((int)OrderStatusType.Confirmed).ToString(), "已确认"),
-                                      string.Format(_strWorkflow, ((int)OrderStatusType.Ordered).ToString(), "已下单"),
-                                      string.Format(_strWorkflow, ((int)OrderStatusType.Delivered).ToString(), "已发货")
-                                  };
+            string[] _workflowInfo =
+            {
+                string.Format(_strWorkflow, ((int) OrderStatusType.Draft), "未提交"),
+                string.Format(_strWorkflow, ((int) OrderStatusType.Submitted), "审核中"),
+                string.Format(_strWorkflow, ((int) OrderStatusType.Confirmed), "已确认"),
+                string.Format(_strWorkflow, ((int) OrderStatusType.Ordered), "已下单"),
+                string.Format(_strWorkflow, ((int) OrderStatusType.Delivered), "已发货")
+            };
 
-            base.StatusWorkflowInfo = _workflowInfo;
+            StatusWorkflowInfo = _workflowInfo;
 
             #endregion
-
         }
 
         #region Members and Properties
@@ -121,6 +151,5 @@ namespace iArsenal.Service
         public OrdrItmChampionshipPatch OIChampionshipPatch { get; set; }
 
         #endregion
-
     }
 }

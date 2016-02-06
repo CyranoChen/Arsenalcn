@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="C#" CodeBehind="CollectionVideo.ascx.cs" Inherits="Arsenalcn.ClubSys.Web.Control.CollectionVideo"
-    EnableViewState="false" %>
+EnableViewState="false" %>
 <div class="FunctionBar">
     <div class="DivFloatLeft">
         <asp:DropDownList ID="ddlGoalRank" runat="server" AutoPostBack="true">
@@ -27,7 +27,7 @@
 </div>
 <div id="CollectionInfo" class="ClubSys_CollectionInfo">
     <asp:Repeater ID="rptVideo" runat="server" OnItemDataBound="rptVideo_ItemDataBound"
-        OnItemCommand="rptVideo_ItemCommand">
+                  OnItemCommand="rptVideo_ItemCommand">
         <HeaderTemplate>
             <div class="Clear" style="border-bottom: 1px solid #000;">
             </div>

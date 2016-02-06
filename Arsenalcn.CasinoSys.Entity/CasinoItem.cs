@@ -6,7 +6,31 @@ namespace Arsenalcn.CasinoSys.Entity
 {
     public abstract class CasinoItem
     {
-        public CasinoItem() { }
+        public Guid? ItemGuid { get; set; }
+
+        public CasinoType ItemType { get; set; }
+
+        public Guid? MatchGuid { get; set; }
+
+        public string ItemTitle { get; set; }
+
+        public string ItemBody { get; set; }
+
+        public DateTime CreateTime { get; set; }
+
+        public DateTime PublishTime { get; set; }
+
+        public DateTime CloseTime { get; set; }
+
+        public Guid BankerID { get; set; }
+
+        public string BankerName { get; set; }
+
+        public float? Earning { get; set; }
+
+        public int OwnerID { get; set; }
+
+        public string OwnerUserName { get; set; }
 
         public static CasinoItem CreateInstance(CasinoType itemType)
         {
@@ -37,7 +61,7 @@ namespace Arsenalcn.CasinoSys.Entity
 
             if (dr != null)
             {
-                var itemType = (CasinoType)Enum.Parse(typeof(CasinoType), Convert.ToString(dr["ItemType"]));
+                var itemType = (CasinoType) Enum.Parse(typeof (CasinoType), Convert.ToString(dr["ItemType"]));
 
                 var item = CreateInstance(itemType);
 
@@ -48,7 +72,7 @@ namespace Arsenalcn.CasinoSys.Entity
                 if (Convert.IsDBNull(dr["MatchGuid"]))
                     item.MatchGuid = null;
                 else
-                    item.MatchGuid = (Guid)dr["MatchGuid"];
+                    item.MatchGuid = (Guid) dr["MatchGuid"];
 
                 if (Convert.IsDBNull(dr["ItemTitle"]))
                     item.ItemTitle = null;
@@ -64,7 +88,7 @@ namespace Arsenalcn.CasinoSys.Entity
                 item.PublishTime = Convert.ToDateTime(dr["PublishTime"]);
                 item.CloseTime = Convert.ToDateTime(dr["CloseTime"]);
 
-                item.BankerID = (Guid)dr["BankerID"];
+                item.BankerID = (Guid) dr["BankerID"];
                 item.BankerName = Convert.ToString(dr["BankerName"]);
 
                 if (Convert.IsDBNull(dr["Earning"]))
@@ -79,8 +103,7 @@ namespace Arsenalcn.CasinoSys.Entity
 
                 return item;
             }
-            else
-                return null;
+            return null;
         }
 
         public virtual Guid Save(SqlTransaction trans)
@@ -95,13 +118,11 @@ namespace Arsenalcn.CasinoSys.Entity
 
                 return ItemGuid.Value;
             }
-            else
-            {
-                //insert
-                var newGuid = DataAccess.CasinoItem.InsertCasinoItem((int)ItemType, MatchGuid, ItemTitle, ItemBody, PublishTime, CloseTime, BankerID, BankerName, OwnerID, OwnerUserName, trans);
+            //insert
+            var newGuid = DataAccess.CasinoItem.InsertCasinoItem((int) ItemType, MatchGuid, ItemTitle, ItemBody,
+                PublishTime, CloseTime, BankerID, BankerName, OwnerID, OwnerUserName, trans);
 
-                return newGuid;
-            }
+            return newGuid;
         }
 
         public static void UpdateCasinoItemCloseTime(Guid matchGuid, DateTime closeTime)
@@ -111,7 +132,7 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public static Guid? GetCasinoItemGuidByMatch(Guid matchGuid, CasinoType type)
         {
-            return DataAccess.CasinoItem.GetCasinoItemGuidByMatch(matchGuid, (int)type, null);
+            return DataAccess.CasinoItem.GetCasinoItemGuidByMatch(matchGuid, (int) type, null);
         }
 
         public static void ActiveCasinoItemStatistics()
@@ -122,8 +143,8 @@ namespace Arsenalcn.CasinoSys.Entity
             {
                 foreach (DataRow dr in dt.Rows)
                 {
-                    var item = GetCasinoItem((Guid)dr["CasinoItemGuid"]);
-                    item.Earning = DataAccess.Bet.GetTotalEarningByCasinoItemGuid((Guid)dr["CasinoItemGuid"]);
+                    var item = GetCasinoItem((Guid) dr["CasinoItemGuid"]);
+                    item.Earning = DataAccess.Bet.GetTotalEarningByCasinoItemGuid((Guid) dr["CasinoItemGuid"]);
 
                     item.Save(null);
                 }
@@ -218,7 +239,7 @@ namespace Arsenalcn.CasinoSys.Entity
             {
                 foreach (DataRow dr in dt.Rows)
                 {
-                    var historyMatch = new Match((Guid)dr["MatchGuid"]);
+                    var historyMatch = new Match((Guid) dr["MatchGuid"]);
 
                     if (match.Home == historyMatch.Home && match.Away == historyMatch.Away)
                     {
@@ -269,45 +290,6 @@ namespace Arsenalcn.CasinoSys.Entity
         {
             return DataAccess.CasinoItem.GetTopMatchLoss(out months);
         }
-
-        public Guid? ItemGuid
-        { get; set; }
-
-        public CasinoType ItemType
-        { get; set; }
-
-        public Guid? MatchGuid
-        { get; set; }
-
-        public string ItemTitle
-        { get; set; }
-
-        public string ItemBody
-        { get; set; }
-
-        public DateTime CreateTime
-        { get; set; }
-
-        public DateTime PublishTime
-        { get; set; }
-
-        public DateTime CloseTime
-        { get; set; }
-
-        public Guid BankerID
-        { get; set; }
-
-        public string BankerName
-        { get; set; }
-
-        public float? Earning
-        { get; set; }
-
-        public int OwnerID
-        { get; set; }
-
-        public string OwnerUserName
-        { get; set; }
     }
 
     public enum CasinoType

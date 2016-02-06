@@ -2,21 +2,19 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-
 using Arsenalcn.Core;
+using DataReaderMapper;
 
 namespace iArsenal.Service
 {
     [DbSchema("iArsenal_Product", Key = "ProductGuid", Sort = "Code")]
     public class Product : Entity<Guid>
     {
-        public Product() : base() { }
-
         public static void CreateMap()
         {
-            var map = AutoMapper.Mapper.CreateMap<IDataReader, Product>();
+            var map = Mapper.CreateMap<IDataReader, Product>();
 
-            map.ForMember(d => d.ID, opt => opt.MapFrom(s => (Guid)s.GetValue("ProductGuid")));
+            map.ForMember(d => d.ID, opt => opt.MapFrom(s => (Guid) s.GetValue("ProductGuid")));
 
             //map.ForMember(d => d.Size, opt => opt.MapFrom(s =>
             //    (ProductSizeType)Enum.Parse(typeof(ProductSizeType), s.GetValue("Size").ToString())));
@@ -27,9 +25,10 @@ namespace iArsenal.Service
             map.ForMember(d => d.ProductTypeInfo, opt => opt.ResolveUsing(s =>
             {
                 #region Generate Product Type Info
+
                 var retValue = string.Empty;
 
-                switch ((ProductType)((int)s.GetValue("ProductType")))
+                switch ((ProductType) ((int) s.GetValue("ProductType")))
                 {
                     case ProductType.ReplicaKitHome:
                         retValue = "主场球衣";
@@ -82,15 +81,17 @@ namespace iArsenal.Service
                 }
 
                 return retValue;
+
                 #endregion
             }));
 
             map.ForMember(d => d.CurrencyInfo, opt => opt.ResolveUsing(s =>
             {
                 #region Generate CurrencyInfo
+
                 var retValue = string.Empty;
 
-                switch ((ProductCurrencyType)((int)s.GetValue("Currency")))
+                switch ((ProductCurrencyType) ((int) s.GetValue("Currency")))
                 {
                     case ProductCurrencyType.GBP:
                         retValue = "￡";
@@ -104,15 +105,17 @@ namespace iArsenal.Service
                 }
 
                 return retValue;
+
                 #endregion
             }));
 
             map.ForMember(d => d.PriceCNY, opt => opt.ResolveUsing(s =>
             {
                 #region Generate PriceCNY
+
                 var retValue = default(double);
-                var sale = (double?)s.GetValue("Sale");
-                var price = (double)s.GetValue("Price");
+                var sale = (double?) s.GetValue("Sale");
+                var price = (double) s.GetValue("Price");
 
                 double _unitPrice;
 
@@ -125,31 +128,33 @@ namespace iArsenal.Service
                     _unitPrice = price;
                 }
 
-                switch ((ProductCurrencyType)((int)s.GetValue("Currency")))
+                switch ((ProductCurrencyType) ((int) s.GetValue("Currency")))
                 {
                     case ProductCurrencyType.GBP:
-                        retValue = _unitPrice * ConfigGlobal.ExchangeRateGBP;
+                        retValue = _unitPrice*ConfigGlobal.ExchangeRateGBP;
                         break;
                     case ProductCurrencyType.CNY:
                         retValue = _unitPrice;
                         break;
                     case ProductCurrencyType.USD:
-                        retValue = _unitPrice * ConfigGlobal.ExchangeRateUSD;
+                        retValue = _unitPrice*ConfigGlobal.ExchangeRateUSD;
                         break;
                 }
 
                 return retValue;
+
                 #endregion
             }));
 
             map.ForMember(d => d.PriceInfo, opt => opt.ResolveUsing(s =>
             {
                 #region Generate PriceInfo
+
                 var retValue = string.Empty;
-                var price = (double)s.GetValue("Price");
+                var price = (double) s.GetValue("Price");
                 var currencyIcon = string.Empty;
 
-                switch ((ProductCurrencyType)((int)s.GetValue("Currency")))
+                switch ((ProductCurrencyType) ((int) s.GetValue("Currency")))
                 {
                     case ProductCurrencyType.GBP:
                         currencyIcon = "￡";
@@ -167,20 +172,24 @@ namespace iArsenal.Service
                     retValue = currencyIcon + price.ToString("f2");
                 }
                 else
-                { retValue = string.Empty; }
+                {
+                    retValue = string.Empty;
+                }
 
                 return retValue;
+
                 #endregion
             }));
 
             map.ForMember(d => d.SaleInfo, opt => opt.ResolveUsing(s =>
             {
                 #region Generate SaleInfo
+
                 var retValue = string.Empty;
-                var sale = (double?)s.GetValue("Sale");
+                var sale = (double?) s.GetValue("Sale");
                 var currencyIcon = string.Empty;
 
-                switch ((ProductCurrencyType)((int)s.GetValue("Currency")))
+                switch ((ProductCurrencyType) ((int) s.GetValue("Currency")))
                 {
                     case ProductCurrencyType.GBP:
                         currencyIcon = "￡";
@@ -198,15 +207,20 @@ namespace iArsenal.Service
                     retValue = currencyIcon + sale.Value.ToString("f2");
                 }
                 else
-                { retValue = string.Empty; }
+                {
+                    retValue = string.Empty;
+                }
 
                 return retValue;
+
                 #endregion
             }));
         }
 
         public static class Cache
         {
+            public static List<Product> ProductList;
+
             static Cache()
             {
                 InitCache();
@@ -238,90 +252,67 @@ namespace iArsenal.Service
             {
                 return ProductList.FindAll(x => x.ProductType.Equals(pt));
             }
-
-            public static List<Product> ProductList;
         }
 
         #region Members and Properties
 
         [DbColumn("Code")]
-        public string Code
-        { get; set; }
+        public string Code { get; set; }
 
         [DbColumn("Name")]
-        public string Name
-        { get; set; }
+        public string Name { get; set; }
 
         [DbColumn("DisplayName")]
-        public string DisplayName
-        { get; set; }
+        public string DisplayName { get; set; }
 
         [DbColumn("ProductType")]
-        public ProductType ProductType
-        { get; set; }
+        public ProductType ProductType { get; set; }
 
         [DbColumn("ImageURL")]
-        public string ImageURL
-        { get; set; }
+        public string ImageURL { get; set; }
 
         [DbColumn("Material")]
-        public string Material
-        { get; set; }
+        public string Material { get; set; }
 
         [DbColumn("Colour")]
-        public string Colour
-        { get; set; }
+        public string Colour { get; set; }
 
         [DbColumn("Size")]
-        public ProductSizeType Size
-        { get; set; }
+        public ProductSizeType Size { get; set; }
 
         [DbColumn("Currency")]
-        public ProductCurrencyType Currency
-        { get; set; }
+        public ProductCurrencyType Currency { get; set; }
 
         [DbColumn("Price")]
-        public float Price
-        { get; set; }
+        public double Price { get; set; }
 
         [DbColumn("Sale")]
-        public double? Sale
-        { get; set; }
+        public double? Sale { get; set; }
 
         [DbColumn("CreateTime")]
-        public DateTime CreateTime
-        { get; set; }
+        public DateTime CreateTime { get; set; }
 
         [DbColumn("Stock")]
-        public int Stock
-        { get; set; }
+        public int Stock { get; set; }
 
         [DbColumn("IsActive")]
-        public Boolean IsActive
-        { get; set; }
+        public bool IsActive { get; set; }
 
         [DbColumn("Description")]
-        public string Description
-        { get; set; }
+        public string Description { get; set; }
 
         [DbColumn("Remark")]
-        public string Remark
-        { get; set; }
+        public string Remark { get; set; }
 
-        public string ProductTypeInfo
-        { get; set; }
+        public string ProductTypeInfo { get; set; }
 
-        public string CurrencyInfo
-        { get; set; }
+        public string CurrencyInfo { get; set; }
 
-        public float PriceCNY
-        { get; set; }
+        public double PriceCNY { get; set; }
 
-        public string PriceInfo
-        { get; set; }
+        public string PriceInfo { get; set; }
 
-        public string SaleInfo
-        { get; set; }
+        public string SaleInfo { get; set; }
 
         #endregion
     }

@@ -2,32 +2,33 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-
 using Arsenalcn.Core;
+using DataReaderMapper;
 
 namespace Arsenal.Service
 {
     [DbSchema("Arsenal_League", Key = "LeagueGuid", Sort = "LeagueOrder, LeagueOrgName")]
     public class League : Entity<Guid>
     {
-        public League() : base() { }
-
         public static void CreateMap()
         {
-            var map = AutoMapper.Mapper.CreateMap<IDataReader, League>();
+            var map = Mapper.CreateMap<IDataReader, League>();
 
-            map.ForMember(d => d.ID, opt => opt.MapFrom(s => (Guid)s.GetValue("LeagueGuid")));
+            map.ForMember(d => d.ID, opt => opt.MapFrom(s => (Guid) s.GetValue("LeagueGuid")));
 
             map.ForMember(d => d.LeagueNameInfo, opt => opt.MapFrom(s =>
                 string.Format("{0}{1}", s.GetValue("LeagueName").ToString(), s.GetValue("LeagueSeason").ToString())));
 
             map.ForMember(d => d.TeamCountInfo, opt => opt.MapFrom(s =>
                 RelationLeagueTeam.Cache.RelationLeagueTeamList.Count(x =>
-                x.LeagueGuid.Equals((Guid)s.GetValue("LeagueGuid")))));
+                    x.LeagueGuid.Equals((Guid) s.GetValue("LeagueGuid")))));
         }
 
         public static class Cache
         {
+            public static List<League> LeagueList;
+            public static List<League> LeagueList_Active;
+
             static Cache()
             {
                 InitCache();
@@ -50,46 +51,34 @@ namespace Arsenal.Service
             {
                 return LeagueList.Find(x => x.ID.Equals(guid));
             }
-
-            public static List<League> LeagueList;
-            public static List<League> LeagueList_Active;
         }
 
         #region Members and Properties
 
         [DbColumn("LeagueName")]
-        public string LeagueName
-        { get; set; }
+        public string LeagueName { get; set; }
 
         [DbColumn("LeagueOrgName")]
-        public string LeagueOrgName
-        { get; set; }
+        public string LeagueOrgName { get; set; }
 
         [DbColumn("LeagueSeason")]
-        public string LeagueSeason
-        { get; set; }
+        public string LeagueSeason { get; set; }
 
         [DbColumn("LeagueTime")]
-        public DateTime LeagueTime
-        { get; set; }
+        public DateTime LeagueTime { get; set; }
 
         [DbColumn("LeagueLogo")]
-        public string LeagueLogo
-        { get; set; }
+        public string LeagueLogo { get; set; }
 
         [DbColumn("LeagueOrder")]
-        public int LeagueOrder
-        { get; set; }
+        public int LeagueOrder { get; set; }
 
         [DbColumn("IsActive")]
-        public bool IsActive
-        { get; set; }
+        public bool IsActive { get; set; }
 
-        public int TeamCountInfo
-        { get; set; }
+        public int TeamCountInfo { get; set; }
 
-        public string LeagueNameInfo
-        { get; set; }
+        public string LeagueNameInfo { get; set; }
 
         #endregion
     }

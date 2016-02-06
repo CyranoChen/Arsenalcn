@@ -1,30 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web.UI.WebControls;
-
 using Arsenalcn.CasinoSys.Entity;
+using Arsenalcn.CasinoSys.Web.Common;
+using Arsenalcn.CasinoSys.Web.Control;
 
 namespace Arsenalcn.CasinoSys.Web
 {
-    public partial class CasinoGambler : Common.BasePage
+    public partial class CasinoGambler : BasePage
     {
-        protected void Page_Load(object sender, EventArgs e)
-        {
-            #region Assign Control Property
-
-            ctrlLeftPanel.UserId = userid;
-            ctrlLeftPanel.UserName = username;
-
-            ctrlFieldTooBar.UserId = userid;
-
-            ctrlMenuTabBar.CurrentMenu = Control.CasinoMenuType.CasinoGambler;
-
-            #endregion
-
-            if (!IsPostBack)
-                BindData();
-        }
-
         private Guid CurrentLeague
         {
             get
@@ -40,8 +24,7 @@ namespace Arsenalcn.CasinoSys.Web
                         return Guid.Empty;
                     }
                 }
-                else
-                    return Guid.Empty;
+                return Guid.Empty;
             }
         }
 
@@ -51,8 +34,7 @@ namespace Arsenalcn.CasinoSys.Web
             {
                 if (CurrentLeague != Guid.Empty)
                     return CurrentLeague;
-                else
-                    return ConfigGlobal.DefaultLeagueID;
+                return ConfigGlobal.DefaultLeagueID;
             }
         }
 
@@ -66,20 +48,31 @@ namespace Arsenalcn.CasinoSys.Web
                     {
                         return 1;
                     }
-                    else if (ddlContestArea.SelectedValue.Equals("Lower", StringComparison.OrdinalIgnoreCase))
+                    if (ddlContestArea.SelectedValue.Equals("Lower", StringComparison.OrdinalIgnoreCase))
                     {
                         return 2;
                     }
-                    else
-                    {
-                        return 0;
-                    }
-                }
-                else
-                {
                     return 0;
                 }
+                return 0;
             }
+        }
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            #region Assign Control Property
+
+            ctrlLeftPanel.UserId = userid;
+            ctrlLeftPanel.UserName = username;
+
+            ctrlFieldTooBar.UserId = userid;
+
+            ctrlMenuTabBar.CurrentMenu = CasinoMenuType.CasinoGambler;
+
+            #endregion
+
+            if (!IsPostBack)
+                BindData();
         }
 
         private void BindData()
@@ -101,15 +94,15 @@ namespace Arsenalcn.CasinoSys.Web
                 {
                     var tbs = ConfigGlobal.TotalBetStandard;
 
-                    list = Entity.CasinoGambler.GetCasinoGamblers(CurrentLeague).FindAll(delegate (Entity.CasinoGambler cg)
-                    {
-                        if (ContestArea == 1)
-                            return cg.TotalBet > tbs;
-                        else if (ContestArea == 2)
-                            return cg.TotalBet <= tbs;
-                        else
+                    list =
+                        Entity.CasinoGambler.GetCasinoGamblers(CurrentLeague).FindAll(delegate(Entity.CasinoGambler cg)
+                        {
+                            if (ContestArea == 1)
+                                return cg.TotalBet > tbs;
+                            if (ContestArea == 2)
+                                return cg.TotalBet <= tbs;
                             return true;
-                    });
+                        });
                 }
                 else
                 {
@@ -127,8 +120,9 @@ namespace Arsenalcn.CasinoSys.Web
 
             if (list != null && list.Count > 0)
             {
-                list = !string.IsNullOrEmpty(ddlOrderClause.SelectedValue) ?
-                    Entity.CasinoGambler.SortCasinoGambler(list, ddlOrderClause.SelectedValue) : Entity.CasinoGambler.SortCasinoGambler(list);
+                list = !string.IsNullOrEmpty(ddlOrderClause.SelectedValue)
+                    ? Entity.CasinoGambler.SortCasinoGambler(list, ddlOrderClause.SelectedValue)
+                    : Entity.CasinoGambler.SortCasinoGambler(list);
             }
 
             gvGambler.DataSource = list;
@@ -167,7 +161,8 @@ namespace Arsenalcn.CasinoSys.Web
                 if (lblRank == null) return;
 
                 if (cg != null)
-                    lblRank.Text = !string.IsNullOrEmpty(ddlOrderClause.SelectedValue) ? $"<em>{cg.Rank}</em>"
+                    lblRank.Text = !string.IsNullOrEmpty(ddlOrderClause.SelectedValue)
+                        ? $"<em>{cg.Rank}</em>"
                         : $"<em>{cg.Rank}</em>({cg.Credit})";
             }
         }

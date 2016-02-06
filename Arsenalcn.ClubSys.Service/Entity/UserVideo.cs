@@ -7,7 +7,9 @@ namespace Arsenalcn.ClubSys.Entity
 {
     public class UserVideo
     {
-        public UserVideo() { }
+        public UserVideo()
+        {
+        }
 
         private UserVideo(DataRow dr)
         {
@@ -21,7 +23,7 @@ namespace Arsenalcn.ClubSys.Entity
                 UserVideoID = Convert.ToInt32(dr["ID"]);
                 UserID = Convert.ToInt32(dr["UserID"]);
                 UserName = Convert.ToString(dr["UserName"]);
-                VideoGuid = (Guid)dr["VideoGuid"];
+                VideoGuid = (Guid) dr["VideoGuid"];
                 ActiveDate = Convert.ToDateTime(dr["ActiveDate"]);
                 UserDesc = dr["UserDesc"].ToString();
                 IsPublic = Convert.ToBoolean(dr["IsPublic"]);
@@ -40,12 +42,14 @@ namespace Arsenalcn.ClubSys.Entity
 
         public void Update(SqlTransaction trans = null)
         {
-            Service.UserVideo.UpdateUserVideo(UserVideoID, UserID, UserName, VideoGuid, ActiveDate, UserDesc, IsPublic, trans);
+            Service.UserVideo.UpdateUserVideo(UserVideoID, UserID, UserName, VideoGuid, ActiveDate, UserDesc, IsPublic,
+                trans);
         }
 
         public void Insert(SqlTransaction trans = null)
         {
-            Service.UserVideo.InsertUserVideo(UserVideoID, UserID, UserName, VideoGuid, ActiveDate, UserDesc, IsPublic, trans);
+            Service.UserVideo.InsertUserVideo(UserVideoID, UserID, UserName, VideoGuid, ActiveDate, UserDesc, IsPublic,
+                trans);
         }
 
         public void Delete(SqlTransaction trans = null)
@@ -92,26 +96,19 @@ namespace Arsenalcn.ClubSys.Entity
 
         #region Members and Properties
 
-        public int UserVideoID
-        { get; set; }
+        public int UserVideoID { get; set; }
 
-        public int UserID
-        { get; set; }
+        public int UserID { get; set; }
 
-        public string UserName
-        { get; set; }
+        public string UserName { get; set; }
 
-        public Guid VideoGuid
-        { get; set; }
+        public Guid VideoGuid { get; set; }
 
-        public DateTime ActiveDate
-        { get; set; }
+        public DateTime ActiveDate { get; set; }
 
-        public string UserDesc
-        { get; set; }
+        public string UserDesc { get; set; }
 
-        public bool IsPublic
-        { get; set; }
+        public bool IsPublic { get; set; }
 
         #endregion
     }

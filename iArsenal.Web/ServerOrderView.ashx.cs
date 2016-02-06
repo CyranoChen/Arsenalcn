@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Web;
-
 using iArsenal.Service;
 
 namespace iArsenal.Web
@@ -22,7 +21,7 @@ namespace iArsenal.Web
                     {
                         if (!string.IsNullOrEmpty(o.UrlOrderView))
                         {
-                            context.Response.Redirect($"{o.UrlOrderView}?OrderID={o.ID.ToString()}", false);
+                            context.Response.Redirect($"{o.UrlOrderView}?OrderID={o.ID}", false);
                             context.ApplicationInstance.CompleteRequest();
                         }
                         else
@@ -45,10 +44,7 @@ namespace iArsenal.Web
 
         public bool IsReusable
         {
-            get
-            {
-                return true;
-            }
+            get { return true; }
         }
     }
 }

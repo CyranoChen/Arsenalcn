@@ -1,5 +1,5 @@
 ﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="iArsenalMaster.Master.cs"
-    Inherits="iArsenal.Web.iArsenalMaster" %>
+Inherits="iArsenal.Web.iArsenalMaster" %>
 
 <%@ Register Src="Control/iArsenalHeader.ascx" TagName="iArsenalHeader" TagPrefix="uc1" %>
 <%@ Register Src="Control/iArsenalFooter.ascx" TagName="iArsenalFooter" TagPrefix="uc2" %>
@@ -7,27 +7,27 @@
 <html lang="en">
 <head id="masterHead" runat="server">
     <title>阿森纳中国官方球迷会 服务中心 iArsenal.cn</title>
-    <link rel="icon" href="http://www.arsenalcn.com/favicon.ico" type="image/x-icon" />
-    <link rel="shortcut icon" href="http://www.arsenalcn.com/favicon.ico" type="image/x-icon" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="keywords" content="Arsenal,Arsenalcn,ACN,iArsenal,阿森纳中国官方球迷会,阿森纳论坛,阿森纳,阿森纳球迷" />
-    <meta name="description" content="阿森纳中国球迷会,官方,官方球迷会,阿森纳中国,中国分会" />
-    <script type="text/javascript" src="scripts/jquery-2.1.4.js"></script>
+    <link rel="icon" href="http://www.arsenalcn.com/favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" href="http://www.arsenalcn.com/favicon.ico" type="image/x-icon"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="keywords" content="Arsenal,Arsenalcn,ACN,iArsenal,阿森纳中国官方球迷会,阿森纳论坛,阿森纳,阿森纳球迷"/>
+    <meta name="description" content="阿森纳中国球迷会,官方,官方球迷会,阿森纳中国,中国分会"/>
+    <script type="text/javascript" src="scripts/jquery-2.2.0.min.js"></script>
     <script type="text/javascript" src="scripts/iarsenal.js"></script>
     <asp:ContentPlaceHolder ID="cphHead" runat="server">
     </asp:ContentPlaceHolder>
 </head>
 <body>
-    <form id="form1" runat="server" defaultbutton="btnDefault">
+<form id="form1" runat="server" defaultbutton="btnDefault">
     <div id="ACN_Wrap">
-        <uc1:iArsenalHeader ID="ctrlHeader" runat="server" />
+        <uc1:iArsenalHeader ID="ctrlHeader" runat="server"/>
         <asp:ContentPlaceHolder ID="cphMain" runat="server">
         </asp:ContentPlaceHolder>
         <div class="Clear">
-            <asp:Button ID="btnDefault" runat="server" OnClientClick="return false" CssClass="BtnDefault" />
+            <asp:Button ID="btnDefault" runat="server" OnClientClick="return false" CssClass="BtnDefault"/>
         </div>
-        <uc2:iArsenalFooter ID="ctrlFooter" runat="server" />
+        <uc2:iArsenalFooter ID="ctrlFooter" runat="server"/>
     </div>
-    </form>
+</form>
 </body>
 </html>

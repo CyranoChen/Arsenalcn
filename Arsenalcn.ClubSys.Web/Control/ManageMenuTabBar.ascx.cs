@@ -1,26 +1,11 @@
 ﻿using System;
+using System.Web.UI;
 using Arsenalcn.ClubSys.Service;
-using Arsenalcn.ClubSys.Entity;
 
 namespace Arsenalcn.ClubSys.Web.Control
 {
-    public partial class ManageMenuTabBar : System.Web.UI.UserControl
+    public partial class ManageMenuTabBar : UserControl
     {
-        protected void Page_Load(object sender, EventArgs e)
-        {
-            var club = ClubLogic.GetClubInfo(ClubID);
-
-            if (club != null)
-            {
-                if (club.ManagerUid.Value != UserID)
-                    liManageClub.Visible = false;
-                else
-                    liManageClub.Visible = true;
-            }
-            else
-                Response.Redirect("ClubPortal.aspx");
-        }
-
         public ManageClubMenuItem CurrentMenu
         {
             set
@@ -50,26 +35,27 @@ namespace Arsenalcn.ClubSys.Web.Control
                 int tmp;
                 if (int.TryParse(Request.QueryString["ClubID"], out tmp))
                     return tmp;
-                else
-                {
-                    Response.Redirect("ClubPortal.aspx");
+                Response.Redirect("ClubPortal.aspx");
 
-                    return -1;
-                }
+                return -1;
             }
         }
 
-        private int userID = -1;
-        public int UserID
+        public int UserID { get; set; } = -1;
+
+        protected void Page_Load(object sender, EventArgs e)
         {
-            get
+            var club = ClubLogic.GetClubInfo(ClubID);
+
+            if (club != null)
             {
-                return userID;
+                if (club.ManagerUid.Value != UserID)
+                    liManageClub.Visible = false;
+                else
+                    liManageClub.Visible = true;
             }
-            set
-            {
-                userID = value;
-            }
+            else
+                Response.Redirect("ClubPortal.aspx");
         }
     }
 

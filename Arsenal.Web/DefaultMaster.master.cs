@@ -1,50 +1,44 @@
 ﻿using System;
+using System.Web.UI;
 
 namespace Arsenal.Web
 {
-    public partial class DefaultMaster : System.Web.UI.MasterPage
+    public partial class DefaultMaster : MasterPage
     {
+        private int _userId = -1;
+
+        private string _userKey = string.Empty;
         private string _userName = string.Empty;
+
         /// <summary>
-        /// Current User Name
+        ///     Current User Name
         /// </summary>
         public string UserName
         {
-            set
-            {
-                _userName = value;
-            }
+            set { _userName = value; }
         }
 
-        private int _userId = -1;
         /// <summary>
-        /// Current User ID
+        ///     Current User ID
         /// </summary>
         public int UserID
         {
-            set
-            {
-                _userId = value;
-            }
+            set { _userId = value; }
         }
 
-        private string _userKey = string.Empty;
         /// <summary>
-        /// Current User Key
+        ///     Current User Key
         /// </summary>
         public string UserKey
         {
-            set
-            {
-                _userKey = value;
-            }
+            set { _userKey = value; }
         }
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            ctrlHeader.UserID = this._userId;
-            ctrlHeader.UserName = this._userName;
-            ctrlHeader.UserKey = this._userKey;
+            ctrlHeader.UserID = _userId;
+            ctrlHeader.UserName = _userName;
+            ctrlHeader.UserKey = _userKey;
         }
     }
 }

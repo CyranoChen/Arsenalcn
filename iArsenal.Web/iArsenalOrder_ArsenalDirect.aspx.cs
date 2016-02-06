@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web.Script.Serialization;
-
 using Arsenalcn.Core;
 using iArsenal.Service;
 
@@ -12,6 +11,21 @@ namespace iArsenal.Web
     public partial class iArsenalOrder_ArsenalDirect : MemberPageBase
     {
         private readonly IRepository repo = new Repository();
+
+        private int OrderID
+        {
+            get
+            {
+                int _orderID;
+                if (!string.IsNullOrEmpty(Request.QueryString["OrderID"]) &&
+                    int.TryParse(Request.QueryString["OrderID"], out _orderID))
+                {
+                    return _orderID;
+                }
+                return int.MinValue;
+            }
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -20,36 +34,25 @@ namespace iArsenal.Web
             }
         }
 
-        private int OrderID
-        {
-            get
-            {
-                int _orderID;
-                if (!string.IsNullOrEmpty(Request.QueryString["OrderID"]) && int.TryParse(Request.QueryString["OrderID"], out _orderID))
-                {
-                    return _orderID;
-                }
-                else
-                    return int.MinValue;
-            }
-        }
-
         private void InitForm()
         {
             try
             {
-                lblMemberName.Text = $"<b>{this.MemberName}</b> (<em>NO.{this.MID.ToString()}</em>)";
-                lblMemberACNInfo.Text = $"<b>{this.Username}</b> (<em>ID.{this.UID.ToString()}</em>)";
+                lblMemberName.Text = $"<b>{MemberName}</b> (<em>NO.{MID}</em>)";
+                lblMemberACNInfo.Text = $"<b>{Username}</b> (<em>ID.{UID}</em>)";
 
                 if (OrderID > 0)
                 {
-                    var o = (OrdrWish)Order.Select(OrderID);
+                    var o = (OrdrWish) Order.Select(OrderID);
 
-                    if (o == null || !o.IsActive) { throw new Exception("此订单无效"); }
+                    if (o == null || !o.IsActive)
+                    {
+                        throw new Exception("此订单无效");
+                    }
 
                     if (ConfigGlobal.IsPluginAdmin(UID) || o.MemberID.Equals(MID))
                     {
-                        lblMemberName.Text = $"<b>{o.MemberName}</b> (<em>NO.{o.MemberID.ToString()}</em>)";
+                        lblMemberName.Text = $"<b>{o.MemberName}</b> (<em>NO.{o.MemberID}</em>)";
 
                         var m = repo.Single<Member>(o.MemberID);
 
@@ -57,11 +60,8 @@ namespace iArsenal.Web
                         {
                             throw new Exception("无此会员信息");
                         }
-                        else
-                        {
-                            lblMemberACNInfo.Text = $"<b>{m.AcnName}</b> (<em>ID.{m.AcnID.ToString()}</em>)";
-                            tbEmail.Text = m.Email;
-                        }
+                        lblMemberACNInfo.Text = $"<b>{m.AcnName}</b> (<em>ID.{m.AcnID}</em>)";
+                        tbEmail.Text = m.Email;
                     }
                     else
                     {
@@ -73,7 +73,7 @@ namespace iArsenal.Web
                     tbOrderDescription.Text = o.Description;
 
                     var query = repo.Query<OrderItem>(x =>
-                        x.OrderID == o.ID && x.IsActive == true).OrderBy(x => x.ID);
+                        x.OrderID == o.ID && x.IsActive).OrderBy(x => x.ID);
 
                     if (query != null && query.Count() > 0)
                     {
@@ -88,7 +88,7 @@ namespace iArsenal.Web
                 else
                 {
                     //Fill Member draft information into textbox
-                    var m = repo.Single<Member>(this.MID);
+                    var m = repo.Single<Member>(MID);
 
                     tbOrderMobile.Text = m.Mobile;
                     tbEmail.Text = m.Email;
@@ -97,8 +97,8 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed",
-                    $"alert('{ex.Message.ToString()}');window.location.href = 'Default.aspx'", true);
+                ClientScript.RegisterClientScriptBlock(typeof (string), "failed",
+                    $"alert('{ex.Message}');window.location.href = 'Default.aspx'", true);
             }
         }
 
@@ -112,7 +112,9 @@ namespace iArsenal.Web
                 try
                 {
                     if (string.IsNullOrEmpty(tbWishOrderItemListInfo.Text.Trim()))
-                    { throw new Exception("请填写订购纪念品信息"); }
+                    {
+                        throw new Exception("请填写订购纪念品信息");
+                    }
 
                     // Convert ProductListInfo to List<OrderItem>
                     var _strWishOrderItemListInfo = $"[ {tbWishOrderItemListInfo.Text.Trim()} ]";
@@ -128,7 +130,7 @@ namespace iArsenal.Web
                         {
                             throw new Exception("请填写订购纪念品的编号信息");
                         }
-                        else if (wishList.Exists(oi => (oi.Quantity <= 0)))
+                        if (wishList.Exists(oi => (oi.Quantity <= 0)))
                         {
                             throw new Exception("请正确填写订购纪念品的数量");
                         }
@@ -138,7 +140,7 @@ namespace iArsenal.Web
                         throw new Exception("请填写订购纪念品信息");
                     }
 
-                    var m = repo.Single<Member>(this.MID);
+                    var m = repo.Single<Member>(MID);
 
                     if (!string.IsNullOrEmpty(tbEmail.Text.Trim()))
                     {
@@ -259,15 +261,17 @@ namespace iArsenal.Web
 
                     trans.Commit();
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", string.Format("alert('订单({0})保存成功');window.location.href = 'iArsenalOrderView_ArsenalDirect.aspx?OrderID={0}'", _newID.ToString()), true);
-
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                        string.Format(
+                            "alert('订单({0})保存成功');window.location.href = 'iArsenalOrderView_ArsenalDirect.aspx?OrderID={0}'",
+                            _newID), true);
                 }
                 catch (Exception ex)
                 {
                     trans.Rollback();
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "failed",
-                        $"alert('{ex.Message.ToString()}');window.location.href = window.location.href", true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "failed",
+                        $"alert('{ex.Message}');window.location.href = window.location.href", true);
                 }
 
                 //conn.Close();

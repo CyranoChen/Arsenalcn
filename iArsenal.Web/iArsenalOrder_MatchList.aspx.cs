@@ -1,17 +1,40 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Web.UI.WebControls;
-
 using iArsenal.Service;
+using iArsenal.Web.Control;
 using ArsenalTeam = iArsenal.Service.Arsenal.Team;
 
 namespace iArsenal.Web
 {
     public partial class iArsenalOrder_MatchList : AcnPageBase
     {
+        private Guid? _leagueGuid;
+
+        private Guid? LeagueGuid
+        {
+            get
+            {
+                if (_leagueGuid.HasValue && _leagueGuid == Guid.Empty)
+                    return _leagueGuid;
+                if (!string.IsNullOrEmpty(Request.QueryString["LeagueGuid"]))
+                {
+                    try
+                    {
+                        return new Guid(Request.QueryString["LeagueGuid"]);
+                    }
+                    catch
+                    {
+                        return Guid.Empty;
+                    }
+                }
+                return null;
+            }
+            set { _leagueGuid = value; }
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            ctrlCustomPagerInfo.PageChanged += new Control.CustomPagerInfo.PageChangedEventHandler(ctrlCustomPagerInfo_PageChanged);
+            ctrlCustomPagerInfo.PageChanged += ctrlCustomPagerInfo_PageChanged;
             tbTeamName.Attributes["placeholder"] = "--对阵球队--";
 
             if (!IsPostBack)
@@ -33,24 +56,6 @@ namespace iArsenal.Web
             }
         }
 
-        private Guid? _leagueGuid = null;
-        private Guid? LeagueGuid
-        {
-            get
-            {
-                if (_leagueGuid.HasValue && _leagueGuid == Guid.Empty)
-                    return _leagueGuid;
-                else if (!string.IsNullOrEmpty(Request.QueryString["LeagueGuid"]))
-                {
-                    try { return new Guid(Request.QueryString["LeagueGuid"]); }
-                    catch { return Guid.Empty; }
-                }
-                else
-                    return null;
-            }
-            set { _leagueGuid = value; }
-        }
-
         private void BindData()
         {
             try
@@ -64,7 +69,8 @@ namespace iArsenal.Web
                     {
                         tmpString = ViewState["ProductCode"].ToString();
                         if (!string.IsNullOrEmpty(tmpString))
-                            returnValue = returnValue && mt.ProductCode.Equals(tmpString, StringComparison.OrdinalIgnoreCase);
+                            returnValue = returnValue &&
+                                          mt.ProductCode.Equals(tmpString, StringComparison.OrdinalIgnoreCase);
                     }
 
                     if (ViewState["TeamName"] != null)
@@ -89,6 +95,7 @@ namespace iArsenal.Web
                 gvMatch.DataBind();
 
                 #region set Control Custom Pager
+
                 if (gvMatch.BottomPagerRow != null)
                 {
                     gvMatch.BottomPagerRow.Visible = true;
@@ -103,11 +110,12 @@ namespace iArsenal.Web
                 {
                     ctrlCustomPagerInfo.Visible = false;
                 }
+
                 #endregion
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message.ToString()}')", true);
+                ClientScript.RegisterClientScriptBlock(typeof (string), "failed", $"alert('{ex.Message}')", true);
             }
         }
 
@@ -118,7 +126,7 @@ namespace iArsenal.Web
             BindData();
         }
 
-        protected void ctrlCustomPagerInfo_PageChanged(object sender, Control.CustomPagerInfo.DataNavigatorEventArgs e)
+        protected void ctrlCustomPagerInfo_PageChanged(object sender, CustomPagerInfo.DataNavigatorEventArgs e)
         {
             if (e.PageIndex > 0)
             {
@@ -199,7 +207,7 @@ namespace iArsenal.Web
 
                 if (hlTicketApply != null && mt.Deadline > DateTime.Now)
                 {
-                    hlTicketApply.NavigateUrl = $"iArsenalOrder_MatchTicket.aspx?MatchGuid={mt.ID.ToString()}";
+                    hlTicketApply.NavigateUrl = $"iArsenalOrder_MatchTicket.aspx?MatchGuid={mt.ID}";
                     hlTicketApply.Target = "_self";
                     hlTicketApply.Visible = true;
                 }

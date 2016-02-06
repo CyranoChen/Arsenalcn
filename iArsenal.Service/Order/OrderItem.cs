@@ -1,29 +1,28 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
-
 using Arsenalcn.Core;
+using DataReaderMapper;
 
 namespace iArsenal.Service
 {
     [DbSchema("iArsenal_OrderItem", Sort = "ID DESC")]
     public class OrderItem : Entity<int>
     {
-        public OrderItem() : base() { }
-
         public static void CreateMap()
         {
-            var map = AutoMapper.Mapper.CreateMap<IDataReader, OrderItem>();
+            var map = Mapper.CreateMap<IDataReader, OrderItem>();
 
-            map.ForMember(d => d.TotalPrice, opt => opt.ResolveUsing(s => 
+            map.ForMember(d => d.TotalPrice, opt => opt.ResolveUsing(s =>
             {
                 #region Generate OrderItem TotalPrice
-                var sale = (double?)s.GetValue("Sale");
+
+                var sale = (double?) s.GetValue("Sale");
 
                 if (sale.HasValue)
                     return sale.Value;
-                else
-                    return (double)s.GetValue("UnitPrice") * (int)s.GetValue("Quantity");
+                return (double) s.GetValue("UnitPrice")*(int) s.GetValue("Quantity");
+
                 #endregion
             }));
         }
@@ -53,59 +52,45 @@ namespace iArsenal.Service
         #region Members and Properties
 
         [DbColumn("MemberID")]
-        public int MemberID
-        { get; set; }
+        public int MemberID { get; set; }
 
         [DbColumn("MemberName")]
-        public string MemberName
-        { get; set; }
+        public string MemberName { get; set; }
 
         [DbColumn("OrderID")]
-        public int OrderID
-        { get; set; }
+        public int OrderID { get; set; }
 
         [DbColumn("ProductGuid")]
-        public Guid ProductGuid
-        { get; set; }
+        public Guid ProductGuid { get; set; }
 
         [DbColumn("Code")]
-        public string Code
-        { get; set; }
+        public string Code { get; set; }
 
         [DbColumn("ProductName")]
-        public string ProductName
-        { get; set; }
+        public string ProductName { get; set; }
 
         [DbColumn("Size")]
-        public string Size
-        { get; set; }
+        public string Size { get; set; }
 
         [DbColumn("UnitPrice")]
-        public float UnitPrice
-        { get; set; }
+        public double UnitPrice { get; set; }
 
         [DbColumn("Quantity")]
-        public int Quantity
-        { get; set; }
+        public int Quantity { get; set; }
 
         [DbColumn("Sale")]
-        public double? Sale
-        { get; set; }
+        public double? Sale { get; set; }
 
         [DbColumn("CreateTime")]
-        public DateTime CreateTime
-        { get; set; }
+        public DateTime CreateTime { get; set; }
 
         [DbColumn("IsActive")]
-        public Boolean IsActive
-        { get; set; }
+        public bool IsActive { get; set; }
 
         [DbColumn("Remark")]
-        public string Remark
-        { get; set; }
+        public string Remark { get; set; }
 
-        public double TotalPrice
-        { get; set; }
+        public double TotalPrice { get; set; }
 
         #endregion
     }

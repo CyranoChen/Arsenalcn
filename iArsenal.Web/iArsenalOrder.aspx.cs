@@ -1,16 +1,35 @@
 ﻿using System;
 using System.Web.UI.WebControls;
-using iArsenal.Service;
 using Arsenalcn.Core;
+using iArsenal.Service;
+using iArsenal.Web.Control;
 
 namespace iArsenal.Web
 {
     public partial class iArsenalOrder : MemberPageBase
     {
         private readonly IRepository repo = new Repository();
+
+        private int _orderID = int.MinValue;
+
+        private int OrderID
+        {
+            get
+            {
+                int _res;
+                if (_orderID == 0)
+                    return _orderID;
+                if (!string.IsNullOrEmpty(Request.QueryString["OrderID"]) &&
+                    int.TryParse(Request.QueryString["OrderID"], out _res))
+                    return _res;
+                return int.MinValue;
+            }
+            set { _orderID = value; }
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            ctrlCustomPagerInfo.PageChanged += new Control.CustomPagerInfo.PageChangedEventHandler(ctrlCustomPagerInfo_PageChanged);
+            ctrlCustomPagerInfo.PageChanged += ctrlCustomPagerInfo_PageChanged;
             tbOrderID.Attributes["placeholder"] = "--订单编号--";
 
             if (!IsPostBack)
@@ -19,27 +38,11 @@ namespace iArsenal.Web
             }
         }
 
-        private int _orderID = int.MinValue;
-        private int OrderID
-        {
-            get
-            {
-                int _res;
-                if (_orderID == 0)
-                    return _orderID;
-                else if (!string.IsNullOrEmpty(Request.QueryString["OrderID"]) && int.TryParse(Request.QueryString["OrderID"], out _res))
-                    return _res;
-                else
-                    return int.MinValue;
-            }
-            set { _orderID = value; }
-        }
-
         private void BindData()
         {
             try
             {
-                var list = repo.Query<Order>(x => x.MemberID == this.MID).FindAll(x =>
+                var list = repo.Query<Order>(x => x.MemberID == MID).FindAll(x =>
                 {
                     var returnValue = true;
                     var tmpString = string.Empty;
@@ -64,15 +67,15 @@ namespace iArsenal.Web
                     return returnValue;
                 });
 
-
                 #region set GridView Selected PageIndex
+
                 if (OrderID > 0)
                 {
                     var i = list.FindIndex(x => x.ID.Equals(OrderID));
                     if (i >= 0)
                     {
-                        gvOrder.PageIndex = i / gvOrder.PageSize;
-                        gvOrder.SelectedIndex = i % gvOrder.PageSize;
+                        gvOrder.PageIndex = i/gvOrder.PageSize;
+                        gvOrder.SelectedIndex = i%gvOrder.PageSize;
                     }
                     else
                     {
@@ -84,12 +87,14 @@ namespace iArsenal.Web
                 {
                     gvOrder.SelectedIndex = -1;
                 }
+
                 #endregion
 
                 gvOrder.DataSource = list;
                 gvOrder.DataBind();
 
                 #region set Control Custom Pager
+
                 if (gvOrder.BottomPagerRow != null)
                 {
                     gvOrder.BottomPagerRow.Visible = true;
@@ -104,11 +109,12 @@ namespace iArsenal.Web
                 {
                     ctrlCustomPagerInfo.Visible = false;
                 }
+
                 #endregion
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message.ToString()}')", true);
+                ClientScript.RegisterClientScriptBlock(typeof (string), "failed", $"alert('{ex.Message}')", true);
             }
         }
 
@@ -120,7 +126,7 @@ namespace iArsenal.Web
             BindData();
         }
 
-        protected void ctrlCustomPagerInfo_PageChanged(object sender, Control.CustomPagerInfo.DataNavigatorEventArgs e)
+        protected void ctrlCustomPagerInfo_PageChanged(object sender, CustomPagerInfo.DataNavigatorEventArgs e)
         {
             if (e.PageIndex > 0)
             {
@@ -135,11 +141,11 @@ namespace iArsenal.Web
         {
             if (gvOrder.SelectedIndex != -1)
             {
-                var o = repo.Single<Order>((int)gvOrder.DataKeys[gvOrder.SelectedIndex].Value);
+                var o = repo.Single<Order>((int) gvOrder.DataKeys[gvOrder.SelectedIndex].Value);
 
                 if (o != null)
                 {
-                    Response.Redirect($"ServerOrderView.ashx?OrderID={o.ID.ToString()}");
+                    Response.Redirect($"ServerOrderView.ashx?OrderID={o.ID}");
                 }
             }
         }

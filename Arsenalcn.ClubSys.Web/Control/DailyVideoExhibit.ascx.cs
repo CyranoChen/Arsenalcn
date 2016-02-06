@@ -1,10 +1,10 @@
 ﻿using System;
-
+using System.Web.UI;
 using Arsenalcn.ClubSys.Entity;
 
 namespace Arsenalcn.ClubSys.Web.Control
 {
-    public partial class DailyVideoExhibit : System.Web.UI.UserControl
+    public partial class DailyVideoExhibit : UserControl
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -17,9 +17,9 @@ namespace Arsenalcn.ClubSys.Web.Control
                     if (!guid.Equals(Guid.Empty))
                     {
                         ltrlVideo.Text =
-                            $"<script type=\"text/javascript\">GenSwfObject('PlayerVideoActive', 'swf/PlayerVideoActive.swf?XMLURL=ServerXml.aspx%3FVideoGuid={guid.ToString()}&ShowEffect=true', '160', '200');</script>";
+                            $"<script type=\"text/javascript\">GenSwfObject('PlayerVideoActive', 'swf/PlayerVideoActive.swf?XMLURL=ServerXml.aspx%3FVideoGuid={guid}&ShowEffect=true', '160', '200');</script>";
 
-                        btnSwfView.OnClientClick = $"ShowVideoPreview('{guid.ToString()}'); return false";
+                        btnSwfView.OnClientClick = $"ShowVideoPreview('{guid}'); return false";
 
                         pnlVideoExhibit.Visible = true;
                     }

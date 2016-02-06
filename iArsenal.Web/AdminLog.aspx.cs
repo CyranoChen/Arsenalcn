@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Web.UI.WebControls;
-
 using Arsenalcn.Core;
 using Arsenalcn.Core.Logger;
+using iArsenal.Web.Control;
 
 namespace iArsenal.Web
 {
@@ -10,10 +10,28 @@ namespace iArsenal.Web
     {
         private readonly IRepository repo = new Repository();
 
+
+        private int _logID = int.MinValue;
+
+        private int LogID
+        {
+            get
+            {
+                int _res;
+                if (_logID == 0)
+                    return _logID;
+                if (!string.IsNullOrEmpty(Request.QueryString["LogID"]) &&
+                    int.TryParse(Request.QueryString["LogID"], out _res))
+                    return _res;
+                return int.MinValue;
+            }
+            set { _logID = value; }
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            ctrlAdminFieldToolBar.AdminUserName = this.Username;
-            ctrlCustomPagerInfo.PageChanged += new Control.CustomPagerInfo.PageChangedEventHandler(ctrlCustomPagerInfo_PageChanged);
+            ctrlAdminFieldToolBar.AdminUserName = Username;
+            ctrlCustomPagerInfo.PageChanged += ctrlCustomPagerInfo_PageChanged;
 
             if (!IsPostBack)
             {
@@ -26,88 +44,74 @@ namespace iArsenal.Web
             }
         }
 
-
-        private int _logID = int.MinValue;
-        private int LogID
-        {
-            get
-            {
-                int _res;
-                if (_logID == 0)
-                    return _logID;
-                else if (!string.IsNullOrEmpty(Request.QueryString["LogID"]) && int.TryParse(Request.QueryString["LogID"], out _res))
-                    return _res;
-                else
-                    return int.MinValue;
-            }
-            set { _logID = value; }
-        }
-
         private void BindData()
         {
             var list = repo.All<Log>().FindAll(x =>
+            {
+                var returnValue = true;
+                var tmpString = string.Empty;
+
+                if (ViewState["Logger"] != null)
                 {
-                    var returnValue = true;
-                    var tmpString = string.Empty;
+                    tmpString = ViewState["Logger"].ToString();
+                    if (!string.IsNullOrEmpty(tmpString))
+                        returnValue = returnValue &&
+                                      x.Logger.ToString().Equals(tmpString, StringComparison.OrdinalIgnoreCase);
+                }
 
-                    if (ViewState["Logger"] != null)
-                    {
-                        tmpString = ViewState["Logger"].ToString();
-                        if (!string.IsNullOrEmpty(tmpString))
-                            returnValue = returnValue && x.Logger.ToString().Equals(tmpString, StringComparison.OrdinalIgnoreCase);
-                    }
+                if (ViewState["Level"] != null)
+                {
+                    tmpString = ViewState["Level"].ToString();
+                    if (!string.IsNullOrEmpty(tmpString))
+                        returnValue = returnValue &&
+                                      x.Level.ToString().Equals(tmpString, StringComparison.OrdinalIgnoreCase);
+                }
 
-                    if (ViewState["Level"] != null)
-                    {
-                        tmpString = ViewState["Level"].ToString();
-                        if (!string.IsNullOrEmpty(tmpString))
-                            returnValue = returnValue && x.Level.ToString().Equals(tmpString, StringComparison.OrdinalIgnoreCase);
-                    }
+                if (ViewState["Exception"] != null)
+                {
+                    tmpString = ViewState["Exception"].ToString();
+                    if (!string.IsNullOrEmpty(tmpString))
+                        returnValue = returnValue &&
+                                      !string.IsNullOrEmpty(x.StackTrace).Equals(Convert.ToBoolean(tmpString));
+                }
 
-                    if (ViewState["Exception"] != null)
-                    {
-                        tmpString = ViewState["Exception"].ToString();
-                        if (!string.IsNullOrEmpty(tmpString))
-                            returnValue = returnValue && !string.IsNullOrEmpty(x.StackTrace).Equals(Convert.ToBoolean(tmpString));
-                    }
+                if (ViewState["Method"] != null)
+                {
+                    tmpString = ViewState["Method"].ToString();
+                    if (!string.IsNullOrEmpty(tmpString) && tmpString != "--方法名称--")
+                        returnValue = returnValue && x.Method.ToLower().Contains(tmpString.ToLower());
+                }
 
-                    if (ViewState["Method"] != null)
-                    {
-                        tmpString = ViewState["Method"].ToString();
-                        if (!string.IsNullOrEmpty(tmpString) && tmpString != "--方法名称--")
-                            returnValue = returnValue && x.Method.ToLower().Contains(tmpString.ToLower());
-                    }
+                if (ViewState["UserID"] != null)
+                {
+                    tmpString = ViewState["UserID"].ToString();
+                    if (!string.IsNullOrEmpty(tmpString) && tmpString != "--ID--")
+                        returnValue = returnValue && x.UserID.Equals(Convert.ToInt32(tmpString));
+                }
 
-                    if (ViewState["UserID"] != null)
-                    {
-                        tmpString = ViewState["UserID"].ToString();
-                        if (!string.IsNullOrEmpty(tmpString) && tmpString != "--ID--")
-                            returnValue = returnValue && x.UserID.Equals(Convert.ToInt32(tmpString));
-                    }
+                if (ViewState["UserIP"] != null)
+                {
+                    tmpString = ViewState["UserIP"].ToString();
+                    if (!string.IsNullOrEmpty(tmpString) && tmpString != "--IP--")
+                        returnValue = returnValue && x.UserIP.ToLower().Contains(tmpString.ToLower());
+                }
 
-                    if (ViewState["UserIP"] != null)
-                    {
-                        tmpString = ViewState["UserIP"].ToString();
-                        if (!string.IsNullOrEmpty(tmpString) && tmpString != "--IP--")
-                            returnValue = returnValue && x.UserIP.ToLower().Contains(tmpString.ToLower());
-                    }
+                if (ViewState["UserBrowser"] != null)
+                {
+                    tmpString = ViewState["UserBrowser"].ToString();
+                    if (!string.IsNullOrEmpty(tmpString) && tmpString != "--浏览器--")
+                        returnValue = returnValue && x.UserBrowser.ToLower().Contains(tmpString.ToLower());
+                }
 
-                    if (ViewState["UserBrowser"] != null)
-                    {
-                        tmpString = ViewState["UserBrowser"].ToString();
-                        if (!string.IsNullOrEmpty(tmpString) && tmpString != "--浏览器--")
-                            returnValue = returnValue && x.UserBrowser.ToLower().Contains(tmpString.ToLower());
-                    }
+                if (ViewState["UserOS"] != null)
+                {
+                    tmpString = ViewState["UserOS"].ToString();
+                    if (!string.IsNullOrEmpty(tmpString) && tmpString != "--操作系统--")
+                        returnValue = returnValue && x.UserOS.ToLower().Contains(tmpString.ToLower());
+                }
 
-                    if (ViewState["UserOS"] != null)
-                    {
-                        tmpString = ViewState["UserOS"].ToString();
-                        if (!string.IsNullOrEmpty(tmpString) && tmpString != "--操作系统--")
-                            returnValue = returnValue && x.UserOS.ToLower().Contains(tmpString.ToLower());
-                    }
-
-                    return returnValue;
-                });
+                return returnValue;
+            });
 
             if (ddlLogger.SelectedValue.Equals("UserLog"))
             {
@@ -127,13 +131,14 @@ namespace iArsenal.Web
             }
 
             #region set GridView Selected PageIndex
+
             if (LogID > 0)
             {
                 var i = list.FindIndex(x => x.ID.Equals(LogID));
                 if (i >= 0)
                 {
-                    gvLog.PageIndex = i / gvLog.PageSize;
-                    gvLog.SelectedIndex = i % gvLog.PageSize;
+                    gvLog.PageIndex = i/gvLog.PageSize;
+                    gvLog.SelectedIndex = i%gvLog.PageSize;
                 }
                 else
                 {
@@ -145,12 +150,14 @@ namespace iArsenal.Web
             {
                 gvLog.SelectedIndex = -1;
             }
+
             #endregion
 
             gvLog.DataSource = list;
             gvLog.DataBind();
 
             #region set Control Custom Pager
+
             if (gvLog.BottomPagerRow != null)
             {
                 gvLog.BottomPagerRow.Visible = true;
@@ -165,6 +172,7 @@ namespace iArsenal.Web
             {
                 ctrlCustomPagerInfo.Visible = false;
             }
+
             #endregion
         }
 
@@ -191,7 +199,7 @@ namespace iArsenal.Web
             BindData();
         }
 
-        protected void ctrlCustomPagerInfo_PageChanged(object sender, Control.CustomPagerInfo.DataNavigatorEventArgs e)
+        protected void ctrlCustomPagerInfo_PageChanged(object sender, CustomPagerInfo.DataNavigatorEventArgs e)
         {
             if (e.PageIndex > 0)
             {
@@ -206,7 +214,7 @@ namespace iArsenal.Web
         {
             if (gvLog.SelectedIndex != -1)
             {
-                Response.Redirect($"AdminLogView.aspx?LogID={gvLog.DataKeys[gvLog.SelectedIndex].Value.ToString()}");
+                Response.Redirect($"AdminLogView.aspx?LogID={gvLog.DataKeys[gvLog.SelectedIndex].Value}");
             }
         }
 

@@ -1,6 +1,6 @@
 ﻿<%@ Page Language="C#" MasterPageFile="DefaultMaster.master" AutoEventWireup="true"
-    CodeBehind="CasinoPortal.aspx.cs" Inherits="Arsenalcn.CasinoSys.Web.CasinoPortal"
-    Title="ACN CasinoSys 博彩系统" %>
+CodeBehind="CasinoPortal.aspx.cs" Inherits="Arsenalcn.CasinoSys.Web.CasinoPortal"
+Title="ACN CasinoSys 博彩系统" %>
 
 <%@ Register Src="Control/LeftPanel.ascx" TagName="LeftPanel" TagPrefix="uc1" %>
 <%@ Register Src="Control/FieldTooBar.ascx" TagName="FieldTooBar" TagPrefix="uc2" %>
@@ -8,10 +8,10 @@
 <asp:Content ID="cphHead" ContentPlaceHolderID="cphHead" runat="server">
 </asp:Content>
 <asp:Content ID="cphMain" ContentPlaceHolderID="cphMain" runat="server">
-    <uc1:LeftPanel ID="ctrlLeftPanel" runat="server" />
+    <uc1:LeftPanel ID="ctrlLeftPanel" runat="server"/>
     <div id="MainPanel">
-        <uc2:FieldTooBar ID="ctrlFieldTooBar" runat="server" />
-        <uc3:MenuTabBar ID="ctrlMenuTabBar" runat="server" />
+        <uc2:FieldTooBar ID="ctrlFieldTooBar" runat="server"/>
+        <uc3:MenuTabBar ID="ctrlMenuTabBar" runat="server"/>
         <div class="FunctionBar">
             <div class="DivFloatLeft CasinoSys_Tip">
                 <span>只使用博彩币；单场可多次投注；赔率固定不变化；博彩按120分钟(如加时)计；</span>
@@ -41,7 +41,7 @@
                         <asp:Label ID="lblAway" runat="server" CssClass="CasinoSys_GameName"></asp:Label>
                     </ItemTemplate>
                 </asp:TemplateField>
-                <asp:BoundField DataField="PlayTime" HeaderText="比赛时间" DataFormatString="{0:yyyy-MM-dd HH:mm}" />
+                <asp:BoundField DataField="PlayTime" HeaderText="比赛时间" DataFormatString="{0:yyyy-MM-dd HH:mm}"/>
                 <asp:TemplateField HeaderText="主队胜">
                     <ItemTemplate>
                         <asp:Literal ID="ltrlWinRate" runat="server"></asp:Literal>

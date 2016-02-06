@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Web;
 using System.Web.Script.Serialization;
-
 using iArsenal.Service;
 
 namespace iArsenal.Web
@@ -20,7 +19,6 @@ namespace iArsenal.Web
 
                     var jsonSerializer = new JavaScriptSerializer();
                     responseText = jsonSerializer.Serialize(oi);
-
                 }
                 catch (Exception ex)
                 {
@@ -38,10 +36,7 @@ namespace iArsenal.Web
 
         public bool IsReusable
         {
-            get
-            {
-                return false;
-            }
+            get { return false; }
         }
     }
 }

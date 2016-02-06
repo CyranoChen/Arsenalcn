@@ -1,13 +1,28 @@
 ﻿using System;
 using System.Data;
 using System.Web.UI.WebControls;
-
 using Arsenalcn.CasinoSys.Entity;
+using Arsenalcn.CasinoSys.Web.Common;
 
 namespace Arsenalcn.CasinoSys.Web
 {
-    public partial class AdminGroup : Common.AdminBasePage
+    public partial class AdminGroup : AdminBasePage
     {
+        private Guid SelectedLeague
+        {
+            get { return new Guid(ddlLeague.SelectedValue); }
+        }
+
+        private Guid SelectedGroup
+        {
+            get
+            {
+                if (gvGroup.SelectedIndex == -1)
+                    return Guid.Empty;
+                return (Guid) gvGroup.DataKeys[gvGroup.SelectedIndex].Value;
+            }
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             ctrlAdminFieldToolBar.AdminUserName = username;
@@ -46,29 +61,29 @@ namespace Arsenalcn.CasinoSys.Web
 
             if (dtGroup != null)
             {
-                dtGroup.Columns.Add("LeagueName", typeof(string));
-                dtGroup.Columns.Add("LeagueSeason", typeof(string));
+                dtGroup.Columns.Add("LeagueName", typeof (string));
+                dtGroup.Columns.Add("LeagueSeason", typeof (string));
 
-                dtGroup.Columns.Add("GroupTeamCount", typeof(int));
-                dtGroup.Columns.Add("GroupTeamList", typeof(string));
-                dtGroup.Columns.Add("GroupMatchCount", typeof(string));
-                dtGroup.Columns.Add("GroupAllMatchCount", typeof(int));
+                dtGroup.Columns.Add("GroupTeamCount", typeof (int));
+                dtGroup.Columns.Add("GroupTeamList", typeof (string));
+                dtGroup.Columns.Add("GroupMatchCount", typeof (string));
+                dtGroup.Columns.Add("GroupAllMatchCount", typeof (int));
 
                 foreach (DataRow dr in dtGroup.Rows)
                 {
-                    var l = League.Cache.Load((Guid)dr["LeagueGuid"]);
+                    var l = League.Cache.Load((Guid) dr["LeagueGuid"]);
 
                     dr["LeagueName"] = l.LeagueName;
                     dr["LeagueSeason"] = l.LeagueSeason;
 
                     var groupTeamCount = 0;
-                    dtGroupTeam = Group.GetRelationGroupTeam((Guid)dr["GroupGuid"]);
+                    dtGroupTeam = Group.GetRelationGroupTeam((Guid) dr["GroupGuid"]);
 
                     if (dtGroupTeam != null)
                     {
                         foreach (DataRow drTeam in dtGroupTeam.Rows)
                         {
-                            dr["GroupTeamList"] += $"{Team.Cache.Load((Guid)drTeam["TeamGuid"]).TeamDisplayName},";
+                            dr["GroupTeamList"] += $"{Team.Cache.Load((Guid) drTeam["TeamGuid"]).TeamDisplayName},";
                             groupTeamCount++;
                         }
                         dr["GroupTeamCount"] = groupTeamCount;
@@ -76,8 +91,8 @@ namespace Arsenalcn.CasinoSys.Web
                     else
                         dr["GroupTeamCount"] = 0;
 
-                    var allMatchCount = Group.GetAllMatchCount((Guid)dr["GroupGuid"]);
-                    var resultMatchCount = Group.GetResultMatchCount((Guid)dr["GroupGuid"]);
+                    var allMatchCount = Group.GetAllMatchCount((Guid) dr["GroupGuid"]);
+                    var resultMatchCount = Group.GetResultMatchCount((Guid) dr["GroupGuid"]);
 
                     dr["GroupAllMatchCount"] = allMatchCount;
                     dr["GroupMatchCount"] = $"{allMatchCount}({resultMatchCount})";
@@ -114,6 +129,7 @@ namespace Arsenalcn.CasinoSys.Web
             lbLeagueTeam.DataBind();
 
             #region Set lbLeagueTeam Selected Items
+
             if (SelectedGroup != Guid.Empty)
             {
                 foreach (ListItem item in lbLeagueTeam.Items)
@@ -122,6 +138,7 @@ namespace Arsenalcn.CasinoSys.Web
                         item.Selected = true;
                 }
             }
+
             #endregion
         }
 
@@ -138,31 +155,10 @@ namespace Arsenalcn.CasinoSys.Web
                 {
                     btnResetGroupTable.CommandArgument = drv["GroupGuid"].ToString();
 
-                    if (!(bool)drv["IsTable"])
+                    if (!(bool) drv["IsTable"])
                         btnResetGroupMatch.CommandArgument = drv["GroupGuid"].ToString();
                     else
                         btnResetGroupMatch.Visible = false;
-                }
-            }
-        }
-
-        private Guid SelectedLeague
-        {
-            get
-            {
-                return new Guid(ddlLeague.SelectedValue);
-            }
-        }
-
-        private Guid SelectedGroup
-        {
-            get
-            {
-                if (gvGroup.SelectedIndex == -1)
-                    return Guid.Empty;
-                else
-                {
-                    return (Guid)gvGroup.DataKeys[gvGroup.SelectedIndex].Value;
                 }
             }
         }
@@ -218,6 +214,7 @@ namespace Arsenalcn.CasinoSys.Web
                 Guid teamGuid;
 
                 #region ListBox Multiple Value for RelationGroupTeam
+
                 if (ddlGroupLeague.SelectedValue != Guid.Empty.ToString())
                 {
                     Group.RemoveRelationGroupAllTeam(groupGuid);
@@ -236,10 +233,11 @@ namespace Arsenalcn.CasinoSys.Web
                         }
                     }
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "updated", "alert('保存分组球队列表');", true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "updated", "alert('保存分组球队列表');", true);
                 }
                 else
                     leagueGuid = SelectedLeague;
+
                 #endregion
 
                 if (leagueGuid == Guid.Empty)
@@ -255,12 +253,12 @@ namespace Arsenalcn.CasinoSys.Web
                 if (gvGroup.SelectedIndex != -1)
                 {
                     group.Update();
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "success", "alert('更新分组成功');", true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "success", "alert('更新分组成功');", true);
                 }
                 else
                 {
                     group.Insert();
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "success", "alert('添加分组成功');", true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "success", "alert('添加分组成功');", true);
                 }
 
                 gvGroup.SelectedIndex = -1;
@@ -272,9 +270,9 @@ namespace Arsenalcn.CasinoSys.Web
             catch
             {
                 if (SelectedLeague == Guid.Empty)
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "failed", "alert('没有选择当前分类');", true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "failed", "alert('没有选择当前分类');", true);
                 else
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "failed", "alert('添加/更新分组失败');", true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "failed", "alert('添加/更新分组失败');", true);
             }
         }
 
@@ -296,21 +294,21 @@ namespace Arsenalcn.CasinoSys.Web
             {
                 try
                 {
-                    var groupGuid = (Guid)gvGroup.DataKeys[e.RowIndex].Value;
+                    var groupGuid = (Guid) gvGroup.DataKeys[e.RowIndex].Value;
                     //Guid leagueGuid = new Guid(ddlLeague.SelectedValue);
 
                     Group.RemoveGroup(groupGuid);
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "success", "alert('删除分组成功');", true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "success", "alert('删除分组成功');", true);
                 }
                 catch
                 {
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "failed", "alert('删除分组失败');", true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "failed", "alert('删除分组失败');", true);
                 }
             }
             else
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", "alert('没有选择当前分类');", true);
+                ClientScript.RegisterClientScriptBlock(typeof (string), "failed", "alert('没有选择当前分类');", true);
             }
 
             BindGroupData();
@@ -326,11 +324,11 @@ namespace Arsenalcn.CasinoSys.Web
                 {
                     Group.GroupTableStatistics(groupGuid);
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "success", "alert('统计积分榜成功');", true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "success", "alert('统计积分榜成功');", true);
                 }
                 catch
                 {
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "failed", "alert('统计积分榜失败');", true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "failed", "alert('统计积分榜失败');", true);
                 }
             }
 
@@ -342,11 +340,11 @@ namespace Arsenalcn.CasinoSys.Web
                 {
                     Group.SetGroupMatch(groupGuid);
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "success", "alert('绑定比赛成功');", true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "success", "alert('绑定比赛成功');", true);
                 }
                 catch
                 {
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "failed", "alert('绑定比赛失败');", true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "failed", "alert('绑定比赛失败');", true);
                 }
             }
         }

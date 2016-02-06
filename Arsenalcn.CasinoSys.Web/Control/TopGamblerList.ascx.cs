@@ -1,20 +1,23 @@
 ﻿using System;
 using System.Data;
+using System.Web.UI;
+using Arsenalcn.CasinoSys.Entity;
 
 namespace Arsenalcn.CasinoSys.Web.Control
 {
-    public partial class TopGamblerList : System.Web.UI.UserControl
+    public partial class TopGamblerList : UserControl
     {
         protected void Page_Load(object sender, EventArgs e)
         {
             #region Top Gambler Profit
+
             var rank = 1;
             var months = 0;
-            var dtTopProfit = Entity.Rank.GetTopGamblerProfit(out months);
+            var dtTopProfit = Rank.GetTopGamblerProfit(out months);
 
             if (dtTopProfit != null)
             {
-                dtTopProfit.Columns.Add("Rank", typeof(int));
+                dtTopProfit.Columns.Add("Rank", typeof (int));
                 foreach (DataRow dr in dtTopProfit.Rows)
                 {
                     dr["Rank"] = rank;
@@ -26,16 +29,18 @@ namespace Arsenalcn.CasinoSys.Web.Control
             rptGamblerProfit.DataBind();
 
             ltrlProfit.Text = $"收益({DateTime.Today.AddMonths(months).Month}月)";
+
             #endregion
 
             #region Top Gambler RP
+
             rank = 1;
             months = 0;
-            var dtTopRp = Entity.Rank.GetTopGamblerRP(out months);
+            var dtTopRp = Rank.GetTopGamblerRP(out months);
 
             if (dtTopRp != null)
             {
-                dtTopRp.Columns.Add("Rank", typeof(int));
+                dtTopRp.Columns.Add("Rank", typeof (int));
                 foreach (DataRow dr in dtTopRp.Rows)
                 {
                     dr["Rank"] = rank;
@@ -47,16 +52,18 @@ namespace Arsenalcn.CasinoSys.Web.Control
             rptGamblerRP.DataBind();
 
             ltrlRP.Text = $"RP({DateTime.Today.AddMonths(months).Month}月)";
+
             #endregion
 
             #region Top Gambler Bet
+
             rank = 1;
             months = 0;
-            var dtTopBet = Entity.Rank.GetTopGamblerTotalBet(out months);
+            var dtTopBet = Rank.GetTopGamblerTotalBet(out months);
 
             if (dtTopBet != null)
             {
-                dtTopBet.Columns.Add("Rank", typeof(int));
+                dtTopBet.Columns.Add("Rank", typeof (int));
                 foreach (DataRow dr in dtTopBet.Rows)
                 {
                     dr["Rank"] = rank;
@@ -68,6 +75,7 @@ namespace Arsenalcn.CasinoSys.Web.Control
             rptGamblerBet.DataBind();
 
             ltrlBet.Text = $"投注({DateTime.Today.AddMonths(months).Month}月)";
+
             #endregion
         }
     }

@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Data;
 using System.Web.UI.WebControls;
-
-using Arsenalcn.ClubSys.Entity;
 using Arsenalcn.ClubSys.Service;
+using Arsenalcn.ClubSys.Web.Common;
+using Arsenalcn.ClubSys.Web.Control;
 
 namespace Arsenalcn.ClubSys.Web
 {
-    public partial class ClubVideo : Common.BasePage
+    public partial class ClubVideo : BasePage
     {
         public int ClubID
         {
@@ -16,12 +16,9 @@ namespace Arsenalcn.ClubSys.Web
                 int tmp;
                 if (int.TryParse(Request.QueryString["ClubID"], out tmp))
                     return tmp;
-                else
-                {
-                    Response.Redirect("ClubPortal.aspx");
+                Response.Redirect("ClubPortal.aspx");
 
-                    return -1;
-                }
+                return -1;
             }
         }
 
@@ -29,28 +26,28 @@ namespace Arsenalcn.ClubSys.Web
         {
             int gRank;
             if (int.TryParse(ddlGoalRank.SelectedValue, out gRank))
-                Response.Redirect($"ClubVideoView.aspx?ClubID={ClubID.ToString()}&GRank={gRank}");
+                Response.Redirect($"ClubVideoView.aspx?ClubID={ClubID}&GRank={gRank}");
 
             var club = ClubLogic.GetClubInfo(ClubID);
 
-            if (club != null && this.Title.IndexOf("{0}") >= 0)
-                this.Title = string.Format(this.Title, club.FullName);
+            if (club != null && Title.IndexOf("{0}") >= 0)
+                Title = string.Format(Title, club.FullName);
 
             #region SetControlProperty
 
-            ctrlLeftPanel.UserID = this.userid;
-            ctrlLeftPanel.UserName = this.username;
-            ctrlLeftPanel.UserKey = this.userkey;
+            ctrlLeftPanel.UserID = userid;
+            ctrlLeftPanel.UserName = username;
+            ctrlLeftPanel.UserKey = userkey;
 
-            ctrlFieldToolBar.UserID = this.userid;
-            ctrlFieldToolBar.UserName = this.username;
+            ctrlFieldToolBar.UserID = userid;
+            ctrlFieldToolBar.UserName = username;
 
-            ctrlMenuTabBar.CurrentMenu = Arsenalcn.ClubSys.Web.Control.ClubMenuItem.ClubVideo;
+            ctrlMenuTabBar.CurrentMenu = ClubMenuItem.ClubVideo;
             ctrlMenuTabBar.ClubID = ClubID;
 
-            ctrlClubSysHeader.UserID = this.userid;
+            ctrlClubSysHeader.UserID = userid;
             ctrlClubSysHeader.ClubID = ClubID;
-            ctrlClubSysHeader.UserName = this.username;
+            ctrlClubSysHeader.UserName = username;
 
             #endregion
 
@@ -59,16 +56,16 @@ namespace Arsenalcn.ClubSys.Web
 
         private void BindVideo()
         {
-            var dt = Service.UserVideo.GetUserVideoByClubID(ClubID);
+            var dt = UserVideo.GetUserVideoByClubID(ClubID);
 
             if (dt != null)
             {
-                dt.Columns.Add("GoalPlayerName", typeof(string));
-                dt.Columns.Add("GoalRank", typeof(int));
+                dt.Columns.Add("GoalPlayerName", typeof (string));
+                dt.Columns.Add("GoalRank", typeof (int));
 
                 foreach (DataRow dr in dt.Rows)
                 {
-                    var v = Video.Cache.Load((Guid)dr["VideoGuid"]);
+                    var v = Video.Cache.Load((Guid) dr["VideoGuid"]);
 
                     dr["GoalPlayerName"] = v.GoalPlayerName;
                     dr["GoalRank"] = Convert.ToInt16(v.GoalRank);
@@ -80,8 +77,8 @@ namespace Arsenalcn.ClubSys.Web
             gvVideo.DataSource = dt;
             gvVideo.DataBind();
 
-            this.ltlVideoCount.Text =
-                $"<span title=\"同一视频计为一个,仅计算可获得视频\">已获得(总共)视频:<em>{dt.Rows.Count.ToString()}/{Video.Cache.VideoList_Legend.Count.ToString()}</em></span>";
+            ltlVideoCount.Text =
+                $"<span title=\"同一视频计为一个,仅计算可获得视频\">已获得(总共)视频:<em>{dt.Rows.Count}/{Video.Cache.VideoList_Legend.Count}</em></span>";
         }
 
         protected void gvVideo_PageIndexChanging(object sender, GridViewPageEventArgs e)
@@ -104,7 +101,10 @@ namespace Arsenalcn.ClubSys.Web
                 if (ltrlVideo != null)
                 {
                     var StrSwfContent = "<div class=\"ClubSys_ItemPH\">";
-                    StrSwfContent += string.Format("<script type=\"text/javascript\">GenSwfObject('PlayerVideoActive{0}', 'swf/PlayerVideoActive.swf?XMLURL=ServerXml.aspx%3FUserVideoID={0}', '80', '100');</script>", drv["ID"].ToString());
+                    StrSwfContent +=
+                        string.Format(
+                            "<script type=\"text/javascript\">GenSwfObject('PlayerVideoActive{0}', 'swf/PlayerVideoActive.swf?XMLURL=ServerXml.aspx%3FUserVideoID={0}', '80', '100');</script>",
+                            drv["ID"]);
                     StrSwfContent += "</div>";
 
                     ltrlVideo.Text = StrSwfContent;
@@ -113,12 +113,12 @@ namespace Arsenalcn.ClubSys.Web
                 if (ltrlGoalRankInfo != null)
                 {
                     ltrlGoalRankInfo.Text =
-                        $"<div class=\"ClubSys_PlayerLV\" style=\"width: {((int) (Convert.ToInt16(drv["GoalRank"])*20)).ToString()}px;\" title=\"视频等级\"></div>";
+                        $"<div class=\"ClubSys_PlayerLV\" style=\"width: {Convert.ToInt16(drv["GoalRank"])*20}px;\" title=\"视频等级\"></div>";
                 }
 
                 if (btnSwfView != null)
                 {
-                    btnSwfView.OnClientClick = $"ShowVideoPreview('{drv["VideoGuid"].ToString()}'); return false";
+                    btnSwfView.OnClientClick = $"ShowVideoPreview('{drv["VideoGuid"]}'); return false";
                 }
             }
         }

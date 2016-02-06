@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Data;
 using System.Web.UI.WebControls;
-
 using Arsenalcn.CasinoSys.Entity;
+using Arsenalcn.CasinoSys.Web.Common;
+using Arsenalcn.CasinoSys.Web.Control;
 
 namespace Arsenalcn.CasinoSys.Web
 {
-    public partial class CasinoPortal : Common.BasePage
+    public partial class CasinoPortal : BasePage
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -17,7 +18,7 @@ namespace Arsenalcn.CasinoSys.Web
 
             ctrlFieldTooBar.UserId = userid;
 
-            ctrlMenuTabBar.CurrentMenu = Control.CasinoMenuType.CasinoPortal;
+            ctrlMenuTabBar.CurrentMenu = CasinoMenuType.CasinoPortal;
 
             #endregion
 
@@ -44,13 +45,14 @@ namespace Arsenalcn.CasinoSys.Web
 
                 if (drv != null)
                 {
-                    var m = new Match((Guid)drv["MatchGuid"]);
+                    var m = new Match((Guid) drv["MatchGuid"]);
 
                     var ltrlLeagueInfo = e.Row.FindControl("ltrlLeagueInfo") as Literal;
 
                     if (ltrlLeagueInfo != null)
                     {
-                        var strLeague = "<a href=\"CasinoGame.aspx?League={0}\" title=\"{1}\"><img src=\"{2}\" alt=\"{1}\" class=\"CasinoSys_CategoryImg\" /></a>";
+                        var strLeague =
+                            "<a href=\"CasinoGame.aspx?League={0}\" title=\"{1}\"><img src=\"{2}\" alt=\"{1}\" class=\"CasinoSys_CategoryImg\" /></a>";
 
                         var strLeagueName = $"{m.LeagueName}{(m.Round.HasValue ? $" 第{m.Round}轮" : string.Empty)}";
 
@@ -67,7 +69,8 @@ namespace Arsenalcn.CasinoSys.Web
                         var tHome = Team.Cache.Load(m.Home);
                         var tAway = Team.Cache.Load(m.Away);
 
-                        var strTeamName = "<a class=\"StrongLink\" href=\"CasinoTeam.aspx?Team={0}\"  title=\"{1}\">{2}</a> ";
+                        var strTeamName =
+                            "<a class=\"StrongLink\" href=\"CasinoTeam.aspx?Team={0}\"  title=\"{1}\">{2}</a> ";
                         var strTeamLogo = "<img src=\"{3}\" alt=\"{1}\" /> ";
 
                         lblHome.Text = string.Format(strTeamName + strTeamLogo,
@@ -88,13 +91,30 @@ namespace Arsenalcn.CasinoSys.Web
 
                         if (item != null)
                         {
-                            var options = ((SingleChoice)item).Options;
+                            var options = ((SingleChoice) item).Options;
 
-                            var winOption = options.Find(delegate (ChoiceOption option) { return option.OptionValue == MatchChoiceOption.HomeWinValue; });
-                            var drawOption = options.Find(delegate (ChoiceOption option) { return option.OptionValue == MatchChoiceOption.DrawValue; });
-                            var loseOption = options.Find(delegate (ChoiceOption option) { return option.OptionValue == MatchChoiceOption.AwayWinValue; });
+                            var winOption =
+                                options.Find(
+                                    delegate(ChoiceOption option)
+                                    {
+                                        return option.OptionValue == MatchChoiceOption.HomeWinValue;
+                                    });
+                            var drawOption =
+                                options.Find(
+                                    delegate(ChoiceOption option)
+                                    {
+                                        return option.OptionValue == MatchChoiceOption.DrawValue;
+                                    });
+                            var loseOption =
+                                options.Find(
+                                    delegate(ChoiceOption option)
+                                    {
+                                        return option.OptionValue == MatchChoiceOption.AwayWinValue;
+                                    });
 
-                            if (!string.IsNullOrEmpty(winOption.OptionValue) && !string.IsNullOrEmpty(drawOption.OptionValue) && !string.IsNullOrEmpty(loseOption.OptionValue))
+                            if (!string.IsNullOrEmpty(winOption.OptionValue) &&
+                                !string.IsNullOrEmpty(drawOption.OptionValue) &&
+                                !string.IsNullOrEmpty(loseOption.OptionValue))
                             {
                                 var ltrlWinRate = e.Row.FindControl("ltrlWinRate") as Literal;
                                 var ltrlDrawRate = e.Row.FindControl("ltrlDrawRate") as Literal;

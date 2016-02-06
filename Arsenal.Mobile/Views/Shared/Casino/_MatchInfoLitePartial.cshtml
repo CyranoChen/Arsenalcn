@@ -1,17 +1,17 @@
 ﻿@model Arsenal.Mobile.Models.Casino.MatchDto
 
-<fieldset data-role="controlgroup" style="text-align:center; margin: 0 auto">
+<fieldset data-role="controlgroup" style="margin: 0 auto; text-align: center;">
     <p>@Model.LeagueName</p>
     <div class="ui-grid-d">
-        <div class="ui-block-a" style="width: 30%; text-align: right">
+        <div class="ui-block-a" style="text-align: right; width: 30%;">
             <h2>
                 @Model.TeamHomeName
             </h2>
         </div>
-        <div class="ui-block-b" style="width: 10%; text-align: right">
-            <img src="http://bbs.arsenalcn.com/plugin/acncasino/@Model.TeamHomeLogo" style="width: 32px; height: 32px;" />
+        <div class="ui-block-b" style="text-align: right; width: 10%;">
+            <img src="http://bbs.arsenalcn.com/plugin/acncasino/@Model.TeamHomeLogo" style="height: 32px; width: 32px;"/>
         </div>
-        <div class="ui-block-c" style="width: 20%;  text-align: center">
+        <div class="ui-block-c" style="text-align: center; width: 20%;">
             @if (Model.ResultHome.HasValue && Model.ResultAway.HasValue)
             {
                 <span style="font-size: 22px; font-weight: bolder">@Model.ResultHome.Value</span>
@@ -20,13 +20,13 @@
             }
             else
             {
-                <span style="font-size: 18px; font-family: Tahoma; font-weight: bolder">vs</span>
+                <span style="font-family: Tahoma; font-size: 18px; font-weight: bolder">vs</span>
             }
         </div>
-        <div class="ui-block-d" style="width: 10%; text-align: left">
-            <img src="http://bbs.arsenalcn.com/plugin/acncasino/@Model.TeamAwayLogo" style="width: 32px; height: 32px;" />
+        <div class="ui-block-d" style="text-align: left; width: 10%;">
+            <img src="http://bbs.arsenalcn.com/plugin/acncasino/@Model.TeamAwayLogo" style="height: 32px; width: 32px;"/>
         </div>
-        <div class="ui-block-e" style="width: 30%; text-align: left">
+        <div class="ui-block-e" style="text-align: left; width: 30%;">
             <h2>
                 @Model.TeamAwayName
             </h2>

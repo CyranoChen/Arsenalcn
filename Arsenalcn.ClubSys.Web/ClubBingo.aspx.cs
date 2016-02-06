@@ -1,14 +1,32 @@
 ﻿using System;
-using System.Collections.Generic;
-
-using Arsenalcn.ClubSys.Service;
 using Arsenalcn.ClubSys.Entity;
+using Arsenalcn.ClubSys.Service;
+using Arsenalcn.ClubSys.Web.Common;
 
 namespace Arsenalcn.ClubSys.Web
 {
-    public partial class ClubGetStrip : Common.BasePage
+    public partial class ClubGetStrip : BasePage
     {
-        private int _clubID = -1;
+        public int ClubID { get; private set; } = -1;
+
+        public string UserName
+        {
+            get { return username; }
+        }
+
+        public int UserID
+        {
+            get { return userid; }
+        }
+
+        public int ProfileUserID
+        {
+            get { return userid; }
+        }
+
+        public string DisplaySwf { get; set; }
+
+        public string IsGoogleAdv { get; set; }
 
         protected override void OnInit(EventArgs e)
         {
@@ -17,50 +35,6 @@ namespace Arsenalcn.ClubSys.Web
             AnonymousRedirect = true;
         }
 
-        public int ClubID
-        {
-            get
-            {
-                return _clubID;
-            }
-        }
-
-        public string UserName
-        {
-            get
-            {
-                return this.username;
-            }
-        }
-
-        public int UserID
-        {
-            get
-            {
-                return this.userid;
-            }
-        }
-
-        public int ProfileUserID
-        {
-            get
-            {
-                return this.userid;
-            }
-        }
-
-        public string DisplaySwf
-        {
-            get;
-            set;
-        }
-
-        public string IsGoogleAdv
-        {
-            get;
-            set;
-        }
-        
         protected void Page_Load(object sender, EventArgs e)
         {
             var clubs = ClubLogic.GetActiveUserClubs(userid);
@@ -70,16 +44,16 @@ namespace Arsenalcn.ClubSys.Web
                 //user without a club joined can not access this page
                 var script = "alert('您尚未加入一个球会！'); window.location.href = 'ClubPortal.aspx';";
 
-                this.ClientScript.RegisterClientScriptBlock(typeof(string), "redirect", script, true);
+                ClientScript.RegisterClientScriptBlock(typeof (string), "redirect", script, true);
             }
             else
             {
-                _clubID = clubs[0].ID.Value;
+                ClubID = clubs[0].ID.Value;
             }
 
-            if (_clubID > 0)
+            if (ClubID > 0)
             {
-                if (PlayerStrip.GetClubRemainingEquipment(_clubID) <= 0)
+                if (PlayerStrip.GetClubRemainingEquipment(ClubID) <= 0)
                 {
                     //ctrlGoogleAdv.DisplayAdv = "none";
                     cbGoogleAdvActive.Visible = false;
@@ -87,7 +61,7 @@ namespace Arsenalcn.ClubSys.Web
                     lblGetStripUserInfo.Visible = false;
                     lblGetStripNotAvailable.Visible = true;
                     lblGetStripNotAvailable.Text =
-                        $"<em>今天本球会的装备领取已到上限。({ConfigGlobal.DailyClubEquipmentCount.ToString()})</em>";
+                        $"<em>今天本球会的装备领取已到上限。({ConfigGlobal.DailyClubEquipmentCount})</em>";
                 }
                 else if (PlayerStrip.GetUserBingoGainCountToday(userid) >= ConfigGlobal.DailyUserEquipmentCount)
                 {
@@ -97,7 +71,7 @@ namespace Arsenalcn.ClubSys.Web
                     lblGetStripUserInfo.Visible = false;
                     lblGetStripNotAvailable.Visible = true;
                     lblGetStripNotAvailable.Text =
-                        $"<em>您今天的装备领取已到上限。({ConfigGlobal.DailyUserEquipmentCount.ToString()})</em>";
+                        $"<em>您今天的装备领取已到上限。({ConfigGlobal.DailyUserEquipmentCount})</em>";
                 }
                 else
                 {
@@ -111,25 +85,25 @@ namespace Arsenalcn.ClubSys.Web
                     BindGetStrip();
                 }
 
-                var club = ClubLogic.GetClubInfo(_clubID);
+                var club = ClubLogic.GetClubInfo(ClubID);
 
-                if (club != null && this.Title.IndexOf("{0}") >= 0)
-                    this.Title = string.Format(this.Title, club.FullName);
+                if (club != null && Title.IndexOf("{0}") >= 0)
+                    Title = string.Format(Title, club.FullName);
 
                 #region SetControlProperty
 
-                ctrlLeftPanel.UserID = this.userid;
-                ctrlLeftPanel.UserName = this.username;
-                ctrlLeftPanel.UserKey = this.userkey;
+                ctrlLeftPanel.UserID = userid;
+                ctrlLeftPanel.UserName = username;
+                ctrlLeftPanel.UserKey = userkey;
 
-                ctrlFieldToolBar.UserID = this.userid;
-                ctrlFieldToolBar.UserName = this.username;
+                ctrlFieldToolBar.UserID = userid;
+                ctrlFieldToolBar.UserName = username;
 
                 //ctrlMenuTabBar.CurrentMenu = Arsenalcn.ClubSys.Web.Control.ClubMenuItem.ClubStrip;
                 //ctrlMenuTabBar.ClubID = _clubID;
 
-                ctrlPlayerHeader.UserID = this.userid;
-                ctrlPlayerHeader.ProfileUserID = this.ProfileUserID;
+                ctrlPlayerHeader.UserID = userid;
+                ctrlPlayerHeader.ProfileUserID = ProfileUserID;
 
                 #endregion
             }
@@ -151,17 +125,17 @@ namespace Arsenalcn.ClubSys.Web
             var getStripRP = 0;
 
             if (totalCount > 0)
-                getStripRP = Convert.ToInt16(PlayerStrip.GetUserBingoGainCount(userid) * 100 / totalCount);
+                getStripRP = Convert.ToInt16(PlayerStrip.GetUserBingoGainCount(userid)*100/totalCount);
 
             lblGetStripUserInfo.Text =
-                $"<em>{UserName.Trim()}</em>今日获得/尝试:<em>{PlayerStrip.GetUserBingoGainCountToday(UserID).ToString()}({PlayerStrip.GetUserBingoPlayCountToday(UserID).ToString()})</em> | 获得率:<em>{getStripRP.ToString()}%</em> | 库存:<em>{PlayerStrip.GetClubRemainingEquipment(ClubID).ToString()}/{ConfigGlobal.DailyClubEquipmentCount.ToString()}</em>";
+                $"<em>{UserName.Trim()}</em>今日获得/尝试:<em>{PlayerStrip.GetUserBingoGainCountToday(UserID)}({PlayerStrip.GetUserBingoPlayCountToday(UserID)})</em> | 获得率:<em>{getStripRP}%</em> | 库存:<em>{PlayerStrip.GetClubRemainingEquipment(ClubID)}/{ConfigGlobal.DailyClubEquipmentCount}</em>";
 
             if (ConfigGlobal.GoogleAdvActive && player != null && player.IsActive)
             {
                 //ctrlGoogleAdv.DisplayAdv = string.Empty;
                 DisplaySwf = "none";
                 IsGoogleAdv = "true";
-                lblGetStripUserInfo.Text += string.Format(" | <em title=\"抽取与获取装备均免费\">打工模式</em>");
+                lblGetStripUserInfo.Text += " | <em title=\"抽取与获取装备均免费\">打工模式</em>";
             }
             else
             {
@@ -169,7 +143,7 @@ namespace Arsenalcn.ClubSys.Web
                 DisplaySwf = string.Empty;
                 IsGoogleAdv = "false";
                 lblGetStripUserInfo.Text +=
-                    $" | 每次抽取:<em title=\"枪手币\">{ConfigGlobal.BingoCost.ToString()}</em> | 每件获得:<em title=\"枪手币\">{ConfigGlobal.BingoGetCost.ToString()}</em>";
+                    $" | 每次抽取:<em title=\"枪手币\">{ConfigGlobal.BingoCost}</em> | 每件获得:<em title=\"枪手币\">{ConfigGlobal.BingoGetCost}</em>";
             }
         }
     }

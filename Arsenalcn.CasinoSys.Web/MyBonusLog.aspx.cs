@@ -1,14 +1,38 @@
 ﻿using System;
 using System.Data;
 using System.Web.UI.WebControls;
-
 using Arsenalcn.CasinoSys.Entity;
+using Arsenalcn.CasinoSys.Web.Common;
+using Arsenalcn.CasinoSys.Web.Control;
 using Discuz.Forum;
 
 namespace Arsenalcn.CasinoSys.Web
 {
-    public partial class MyBonusLog : Common.BasePage
+    public partial class MyBonusLog : BasePage
     {
+        private int CurrentUserId
+        {
+            get
+            {
+                int uid;
+                if (!string.IsNullOrEmpty(Request.QueryString["UserID"]) &&
+                    int.TryParse(Request.QueryString["UserID"], out uid))
+                {
+                    return uid;
+                }
+                return userid;
+            }
+        }
+
+        private string CurrentUserName
+        {
+            get
+            {
+                var sUser = Users.GetShortUserInfo(CurrentUserId);
+                return sUser.Username.Trim();
+            }
+        }
+
         protected override void OnInit(EventArgs e)
         {
             AnonymousRedirect = true;
@@ -25,7 +49,7 @@ namespace Arsenalcn.CasinoSys.Web
 
             ctrlFieldTooBar.UserId = userid;
 
-            ctrlMenuTabBar.CurrentMenu = Control.CasinoMenuType.CasinoPortal;
+            ctrlMenuTabBar.CurrentMenu = CasinoMenuType.CasinoPortal;
 
             ctrlGamblerHeader.UserId = CurrentUserId;
             ctrlGamblerHeader.UserName = CurrentUserName;
@@ -56,7 +80,7 @@ namespace Arsenalcn.CasinoSys.Web
 
                 if (drv != null)
                 {
-                    var m = new Match((Guid)drv["MatchGuid"]);
+                    var m = new Match((Guid) drv["MatchGuid"]);
 
                     var hlHome = e.Row.FindControl("hlHome") as HyperLink;
                     var hlAway = e.Row.FindControl("hlAway") as HyperLink;
@@ -116,29 +140,6 @@ namespace Arsenalcn.CasinoSys.Web
                         ltrlResult.Text = "<span class=\"CasinoSys_Disagree\" title=\"亏损\"></span>";
                     }
                 }
-            }
-        }
-
-        private int CurrentUserId
-        {
-            get
-            {
-                int uid;
-                if (!string.IsNullOrEmpty(Request.QueryString["UserID"]) && int.TryParse(Request.QueryString["UserID"], out uid))
-                {
-                    return uid;
-                }
-                else
-                    return userid;
-            }
-        }
-
-        private string CurrentUserName
-        {
-            get
-            {
-                var sUser = Users.GetShortUserInfo(CurrentUserId);
-                return sUser.Username.Trim();
             }
         }
     }

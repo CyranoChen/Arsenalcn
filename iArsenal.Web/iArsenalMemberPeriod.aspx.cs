@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Web.UI.WebControls;
-
-using iArsenal.Service;
 using Arsenalcn.Core;
+using iArsenal.Service;
 
 namespace iArsenal.Web
 {
     public partial class iArsenalMemberPeriod : MemberPageBase
     {
         private readonly IRepository repo = new Repository();
+
         protected void Page_Load(object sender, EventArgs e)
         {
             tbMemberCardNo.Attributes["placeholder"] = "--会籍卡号--";
@@ -23,7 +23,7 @@ namespace iArsenal.Web
         {
             try
             {
-                var list = repo.Query<MemberPeriod>(x => x.MemberID == this.MID).FindAll(x =>
+                var list = repo.Query<MemberPeriod>(x => x.MemberID == MID).FindAll(x =>
                 {
                     var returnValue = true;
                     var tmpString = string.Empty;
@@ -32,7 +32,8 @@ namespace iArsenal.Web
                     {
                         tmpString = ViewState["MemberCardNo"].ToString();
                         if (!string.IsNullOrEmpty(tmpString))
-                            returnValue = returnValue && x.MemberCardNo.Equals(tmpString, StringComparison.OrdinalIgnoreCase);
+                            returnValue = returnValue &&
+                                          x.MemberCardNo.Equals(tmpString, StringComparison.OrdinalIgnoreCase);
                     }
 
                     // Find all MemberPeriods which belong to Current Member & Active
@@ -46,7 +47,7 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message.ToString()}')", true);
+                ClientScript.RegisterClientScriptBlock(typeof (string), "failed", $"alert('{ex.Message}')", true);
             }
         }
 

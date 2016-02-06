@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Reflection;
 using System.Threading;
-
 using Arsenalcn.Core;
 using Arsenalcn.Core.Logger;
 using Arsenalcn.Core.Scheduler;
@@ -9,13 +8,13 @@ using iArsenal.Service;
 
 namespace iArsenal.Scheduler
 {
-    class RefreshCache : ISchedule
+    internal class RefreshCache : ISchedule
     {
         private readonly ILog log = new AppLog();
 
         public void Execute(object state)
         {
-            var logInfo = new LogInfo()
+            var logInfo = new LogInfo
             {
                 MethodInstance = MethodBase.GetCurrentMethod(),
                 ThreadInstance = Thread.CurrentThread

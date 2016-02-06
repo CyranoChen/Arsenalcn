@@ -1,34 +1,34 @@
 ﻿using System;
-
-using iArsenal.Service;
 using Arsenalcn.Core;
+using iArsenal.Service;
 
 namespace iArsenal.Web
 {
     public partial class AdminOrderItemView : AdminPageBase
     {
         private readonly IRepository repo = new Repository();
-        protected void Page_Load(object sender, EventArgs e)
-        {
-            ctrlAdminFieldToolBar.AdminUserName = this.Username;
-
-            if (!IsPostBack)
-            {
-                InitForm();
-            }
-        }
 
         private int OrderItemID
         {
             get
             {
                 int _orderItemID;
-                if (!string.IsNullOrEmpty(Request.QueryString["OrderItemID"]) && int.TryParse(Request.QueryString["OrderItemID"], out _orderItemID))
+                if (!string.IsNullOrEmpty(Request.QueryString["OrderItemID"]) &&
+                    int.TryParse(Request.QueryString["OrderItemID"], out _orderItemID))
                 {
                     return _orderItemID;
                 }
-                else
-                    return int.MinValue;
+                return int.MinValue;
+            }
+        }
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            ctrlAdminFieldToolBar.AdminUserName = Username;
+
+            if (!IsPostBack)
+            {
+                InitForm();
             }
         }
 
@@ -38,7 +38,7 @@ namespace iArsenal.Web
             {
                 var oi = repo.Single<OrderItem>(OrderItemID);
 
-                lblOrderItemInfo.Text = $"更新会员的许愿单 ID:<em>{OrderItemID.ToString()}</em>";
+                lblOrderItemInfo.Text = $"更新会员的许愿单 ID:<em>{OrderItemID}</em>";
 
                 tbMemberID.Text = oi.MemberID.ToString();
                 tbMemberName.Text = oi.MemberName;
@@ -64,7 +64,7 @@ namespace iArsenal.Web
                     tbSale.Text = string.Empty;
 
                 if (oi.UnitPrice > 0 && oi.Quantity > 0)
-                    lblPrice.Text = (oi.UnitPrice * oi.Quantity).ToString("f2");
+                    lblPrice.Text = (oi.UnitPrice*oi.Quantity).ToString("f2");
                 else
                     lblPrice.Text = "?";
 
@@ -120,18 +120,20 @@ namespace iArsenal.Web
                 {
                     repo.Update(oi);
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('更新成功');window.location.href=window.location.href", true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                        "alert('更新成功');window.location.href=window.location.href", true);
                 }
                 else
                 {
                     repo.Insert(oi);
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('添加成功');window.location.href = 'AdminOrderItem.aspx'", true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                        "alert('添加成功');window.location.href = 'AdminOrderItem.aspx'", true);
                 }
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message.ToString()}')", true);
+                ClientScript.RegisterClientScriptBlock(typeof (string), "failed", $"alert('{ex.Message}')", true);
             }
         }
 
@@ -139,7 +141,7 @@ namespace iArsenal.Web
         {
             if (OrderItemID > 0)
             {
-                Response.Redirect("AdminOrderItem.aspx?OrderItemID=" + OrderItemID.ToString());
+                Response.Redirect("AdminOrderItem.aspx?OrderItemID=" + OrderItemID);
             }
             else
             {
@@ -152,7 +154,7 @@ namespace iArsenal.Web
             var oi = repo.Single<OrderItem>(OrderItemID);
 
             if (oi.OrderID > 0)
-                Response.Redirect("AdminOrderView.aspx?OrderID=" + oi.OrderID.ToString());
+                Response.Redirect("AdminOrderView.aspx?OrderID=" + oi.OrderID);
         }
 
         protected void btnDelete_Click(object sender, EventArgs e)
@@ -163,7 +165,8 @@ namespace iArsenal.Web
                 {
                     repo.Delete<OrderItem>(OrderItemID);
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('删除成功');window.location.href='AdminOrderItem.aspx'", true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                        "alert('删除成功');window.location.href='AdminOrderItem.aspx'", true);
                 }
                 else
                 {
@@ -172,7 +175,7 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message.ToString()}')", true);
+                ClientScript.RegisterClientScriptBlock(typeof (string), "failed", $"alert('{ex.Message}')", true);
             }
         }
     }

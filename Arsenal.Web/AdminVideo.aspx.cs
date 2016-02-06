@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Web.UI.WebControls;
 using System.Linq;
-
+using System.Web.UI.WebControls;
 using Arsenal.Service;
+using Arsenal.Web.Control;
 using Arsenalcn.Core;
 
 namespace Arsenal.Web
@@ -10,10 +10,35 @@ namespace Arsenal.Web
     public partial class AdminVideo : AdminPageBase
     {
         private readonly IRepository repo = new Repository();
+
+        private Guid? _videoGuid;
+
+        private Guid? VideoGuid
+        {
+            get
+            {
+                if (_videoGuid.HasValue && _videoGuid == Guid.Empty)
+                    return _videoGuid;
+                if (!string.IsNullOrEmpty(Request.QueryString["VideoGuid"]))
+                {
+                    try
+                    {
+                        return new Guid(Request.QueryString["VideoGuid"]);
+                    }
+                    catch
+                    {
+                        return Guid.Empty;
+                    }
+                }
+                return null;
+            }
+            set { _videoGuid = value; }
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            ctrlAdminFieldToolBar.AdminUserName = this.Username;
-            ctrlCustomPagerInfo.PageChanged += new Control.CustomPagerInfo.PageChangedEventHandler(ctrlCustomPagerInfo_PageChanged);
+            ctrlAdminFieldToolBar.AdminUserName = Username;
+            ctrlCustomPagerInfo.PageChanged += ctrlCustomPagerInfo_PageChanged;
 
             if (!IsPostBack)
             {
@@ -23,69 +48,53 @@ namespace Arsenal.Web
                 ddlGoalYear.DataBind();
 
                 ddlGoalYear.Items.Insert(0, new ListItem("--进球年份--", string.Empty));
+
                 #endregion
 
                 BindData();
             }
         }
 
-        private Guid? _videoGuid = null;
-        private Guid? VideoGuid
-        {
-            get
-            {
-                if (_videoGuid.HasValue && _videoGuid == Guid.Empty)
-                    return _videoGuid;
-                else if (!string.IsNullOrEmpty(Request.QueryString["VideoGuid"]))
-                {
-                    try { return new Guid(Request.QueryString["VideoGuid"]); }
-                    catch { return Guid.Empty; }
-                }
-                else
-                    return null;
-            }
-            set { _videoGuid = value; }
-        }
-
         private void BindData()
         {
             var list = repo.All<Video>().ToList().FindAll(x =>
-                 {
-                     var returnValue = true;
-                     var tmpString = string.Empty;
+            {
+                var returnValue = true;
+                var tmpString = string.Empty;
 
-                     if (ViewState["GoalYear"] != null)
-                     {
-                         tmpString = ViewState["GoalYear"].ToString();
-                         if (!string.IsNullOrEmpty(tmpString))
-                             returnValue = returnValue && x.GoalYear.Equals(tmpString);
-                     }
+                if (ViewState["GoalYear"] != null)
+                {
+                    tmpString = ViewState["GoalYear"].ToString();
+                    if (!string.IsNullOrEmpty(tmpString))
+                        returnValue = returnValue && x.GoalYear.Equals(tmpString);
+                }
 
-                     if (ViewState["GoalRank"] != null)
-                     {
-                         tmpString = ViewState["GoalRank"].ToString();
-                         if (!string.IsNullOrEmpty(tmpString))
-                             returnValue = returnValue && x.GoalRank.Equals(tmpString);
-                     }
+                if (ViewState["GoalRank"] != null)
+                {
+                    tmpString = ViewState["GoalRank"].ToString();
+                    if (!string.IsNullOrEmpty(tmpString))
+                        returnValue = returnValue && x.GoalRank.Equals(tmpString);
+                }
 
-                     if (ViewState["TeamworkRank"] != null)
-                     {
-                         tmpString = ViewState["TeamworkRank"].ToString();
-                         if (!string.IsNullOrEmpty(tmpString))
-                             returnValue = returnValue && x.TeamworkRank.Equals(tmpString);
-                     }
+                if (ViewState["TeamworkRank"] != null)
+                {
+                    tmpString = ViewState["TeamworkRank"].ToString();
+                    if (!string.IsNullOrEmpty(tmpString))
+                        returnValue = returnValue && x.TeamworkRank.Equals(tmpString);
+                }
 
-                     return returnValue;
-                 });
+                return returnValue;
+            });
 
             #region set GridView Selected PageIndex
+
             if (VideoGuid.HasValue && !VideoGuid.Equals(Guid.Empty))
             {
                 var i = list.FindIndex(x => x.ID.Equals(VideoGuid));
                 if (i >= 0)
                 {
-                    gvVideo.PageIndex = i / gvVideo.PageSize;
-                    gvVideo.SelectedIndex = i % gvVideo.PageSize;
+                    gvVideo.PageIndex = i/gvVideo.PageSize;
+                    gvVideo.SelectedIndex = i%gvVideo.PageSize;
                 }
                 else
                 {
@@ -97,12 +106,14 @@ namespace Arsenal.Web
             {
                 gvVideo.SelectedIndex = -1;
             }
+
             #endregion
 
             gvVideo.DataSource = list;
             gvVideo.DataBind();
 
             #region set Control Custom Pager
+
             if (gvVideo.BottomPagerRow != null)
             {
                 gvVideo.BottomPagerRow.Visible = true;
@@ -117,6 +128,7 @@ namespace Arsenal.Web
             {
                 ctrlCustomPagerInfo.Visible = false;
             }
+
             #endregion
         }
 
@@ -128,7 +140,7 @@ namespace Arsenal.Web
             BindData();
         }
 
-        protected void ctrlCustomPagerInfo_PageChanged(object sender, Control.CustomPagerInfo.DataNavigatorEventArgs e)
+        protected void ctrlCustomPagerInfo_PageChanged(object sender, CustomPagerInfo.DataNavigatorEventArgs e)
         {
             if (e.PageIndex > 0)
             {
@@ -143,7 +155,8 @@ namespace Arsenal.Web
         {
             if (gvVideo.SelectedIndex != -1)
             {
-                Response.Redirect(string.Format("AdminVideoView.aspx?VideoGuid={0}", gvVideo.DataKeys[gvVideo.SelectedIndex].Value.ToString()));
+                Response.Redirect(string.Format("AdminVideoView.aspx?VideoGuid={0}",
+                    gvVideo.DataKeys[gvVideo.SelectedIndex].Value));
             }
         }
 
@@ -160,7 +173,10 @@ namespace Arsenal.Web
 
                     if (m != null)
                     {
-                        ltrlMatchOpponentInfo.Text = string.Format("<a href=\"AdminMatchView.aspx?MatchGuid={0}\" target=\"_blank\"><em>{1}</em></a>", m.ID.ToString(), m.TeamName);
+                        ltrlMatchOpponentInfo.Text =
+                            string.Format(
+                                "<a href=\"AdminMatchView.aspx?MatchGuid={0}\" target=\"_blank\"><em>{1}</em></a>", m.ID,
+                                m.TeamName);
                     }
                     else
                     {
@@ -179,7 +195,8 @@ namespace Arsenal.Web
         {
             Video.Cache.RefreshCache();
 
-            ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('更新缓存成功');window.location.href=window.location.href", true);
+            ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                "alert('更新缓存成功');window.location.href=window.location.href", true);
         }
 
         protected void ddlGoalYear_SelectedIndexChanged(object sender, EventArgs e)

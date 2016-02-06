@@ -1,25 +1,15 @@
 ﻿using System;
-using System.Web.UI.WebControls;
 using System.Linq;
-
-using iArsenal.Service;
+using System.Web.UI.WebControls;
 using Arsenalcn.Core;
+using iArsenal.Service;
+using iArsenal.Web.Control;
 
 namespace iArsenal.Web
 {
     public partial class AdminProductView : AdminPageBase
     {
         private readonly IRepository repo = new Repository();
-        protected void Page_Load(object sender, EventArgs e)
-        {
-            ctrlAdminFieldToolBar.AdminUserName = this.Username;
-            ctrlCustomPagerInfo.PageChanged += new Control.CustomPagerInfo.PageChangedEventHandler(ctrlCustomPagerInfo_PageChanged);
-
-            if (!IsPostBack)
-            {
-                InitForm();
-            }
-        }
 
         private Guid ProductGuid
         {
@@ -27,11 +17,27 @@ namespace iArsenal.Web
             {
                 if (!string.IsNullOrEmpty(Request.QueryString["ProductGuid"]))
                 {
-                    try { return new Guid(Request.QueryString["ProductGuid"]); }
-                    catch { return Guid.Empty; }
+                    try
+                    {
+                        return new Guid(Request.QueryString["ProductGuid"]);
+                    }
+                    catch
+                    {
+                        return Guid.Empty;
+                    }
                 }
-                else
-                    return Guid.Empty;
+                return Guid.Empty;
+            }
+        }
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            ctrlAdminFieldToolBar.AdminUserName = Username;
+            ctrlCustomPagerInfo.PageChanged += ctrlCustomPagerInfo_PageChanged;
+
+            if (!IsPostBack)
+            {
+                InitForm();
             }
         }
 
@@ -45,7 +51,7 @@ namespace iArsenal.Web
                 tbCode.Text = p.Code;
                 tbName.Text = p.Name;
                 tbDisplayName.Text = p.DisplayName;
-                ddlProductType.SelectedValue = ((int)p.ProductType).ToString();
+                ddlProductType.SelectedValue = ((int) p.ProductType).ToString();
                 tbImageURL.Text = p.ImageURL;
                 tbMaterial.Text = p.Material;
                 tbColour.Text = p.Colour;
@@ -82,6 +88,7 @@ namespace iArsenal.Web
             gvProductOrder.DataBind();
 
             #region set Control Custom Pager
+
             if (gvProductOrder.BottomPagerRow != null)
             {
                 gvProductOrder.BottomPagerRow.Visible = true;
@@ -96,6 +103,7 @@ namespace iArsenal.Web
             {
                 ctrlCustomPagerInfo.Visible = false;
             }
+
             #endregion
         }
 
@@ -106,7 +114,7 @@ namespace iArsenal.Web
             BindItemData();
         }
 
-        protected void ctrlCustomPagerInfo_PageChanged(object sender, Control.CustomPagerInfo.DataNavigatorEventArgs e)
+        protected void ctrlCustomPagerInfo_PageChanged(object sender, CustomPagerInfo.DataNavigatorEventArgs e)
         {
             if (e.PageIndex > 0)
             {
@@ -121,7 +129,7 @@ namespace iArsenal.Web
             if (gvProductOrder.SelectedIndex != -1)
             {
                 Response.Redirect(
-                    $"AdminOrderView.aspx?OrderID={gvProductOrder.DataKeys[gvProductOrder.SelectedIndex].Value.ToString()}");
+                    $"AdminOrderView.aspx?OrderID={gvProductOrder.DataKeys[gvProductOrder.SelectedIndex].Value}");
             }
         }
 
@@ -164,17 +172,17 @@ namespace iArsenal.Web
 
                 p.Name = tbName.Text.Trim();
                 p.DisplayName = tbDisplayName.Text.Trim();
-                p.ProductType = (ProductType)Enum.Parse(typeof(ProductType), ddlProductType.SelectedValue);
+                p.ProductType = (ProductType) Enum.Parse(typeof (ProductType), ddlProductType.SelectedValue);
                 p.ImageURL = tbImageURL.Text.Trim();
                 p.Material = tbMaterial.Text.Trim();
                 p.Colour = tbColour.Text.Trim();
 
                 if (!string.IsNullOrEmpty(ddlSize.SelectedValue))
-                    p.Size = (ProductSizeType)Enum.Parse(typeof(ProductSizeType), ddlSize.SelectedValue);
+                    p.Size = (ProductSizeType) Enum.Parse(typeof (ProductSizeType), ddlSize.SelectedValue);
                 else
                     p.Size = ProductSizeType.None;
 
-                p.Currency = (ProductCurrencyType)Enum.Parse(typeof(ProductCurrencyType), ddlCurrency.SelectedValue);
+                p.Currency = (ProductCurrencyType) Enum.Parse(typeof (ProductCurrencyType), ddlCurrency.SelectedValue);
                 p.Price = Convert.ToSingle(tbPrice.Text.Trim());
 
                 if (!string.IsNullOrEmpty(tbSale.Text.Trim()))
@@ -194,7 +202,8 @@ namespace iArsenal.Web
 
                     Product.Cache.RefreshCache();
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('更新成功');window.location.href=window.location.href", true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                        "alert('更新成功');window.location.href=window.location.href", true);
                 }
                 else
                 {
@@ -205,12 +214,13 @@ namespace iArsenal.Web
 
                     Product.Cache.RefreshCache();
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('添加成功');window.location.href = 'AdminProduct.aspx'", true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                        "alert('添加成功');window.location.href = 'AdminProduct.aspx'", true);
                 }
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message.ToString()}')", true);
+                ClientScript.RegisterClientScriptBlock(typeof (string), "failed", $"alert('{ex.Message}')", true);
             }
         }
 
@@ -218,7 +228,7 @@ namespace iArsenal.Web
         {
             if (ProductGuid != Guid.Empty)
             {
-                Response.Redirect("AdminProduct.aspx?ProductGuid=" + ProductGuid.ToString());
+                Response.Redirect("AdminProduct.aspx?ProductGuid=" + ProductGuid);
             }
             else
             {
@@ -234,7 +244,8 @@ namespace iArsenal.Web
                 {
                     repo.Delete<Product>(ProductGuid);
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('删除成功');window.location.href='AdminProduct.aspx'", true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                        "alert('删除成功');window.location.href='AdminProduct.aspx'", true);
                 }
                 else
                 {
@@ -243,7 +254,7 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message.ToString()}')", true);
+                ClientScript.RegisterClientScriptBlock(typeof (string), "failed", $"alert('{ex.Message}')", true);
             }
         }
     }

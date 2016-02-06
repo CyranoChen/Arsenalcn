@@ -6,7 +6,9 @@ namespace Arsenalcn.CasinoSys.Entity
 {
     public class Group
     {
-        public Group() { }
+        public Group()
+        {
+        }
 
         private Group(DataRow dr)
         {
@@ -21,15 +23,24 @@ namespace Arsenalcn.CasinoSys.Entity
                 InitGroup(dr);
         }
 
+        public Guid GroupGuid { get; set; }
+
+        public string GroupName { get; set; }
+
+        public int GroupOrder { get; set; }
+
+        public Guid LeagueGuid { get; set; }
+
+        public bool IsTable { get; set; }
+
         private void InitGroup(DataRow dr)
         {
-
             if (dr != null)
             {
-                GroupGuid = (Guid)dr["GroupGuid"];
+                GroupGuid = (Guid) dr["GroupGuid"];
                 GroupName = Convert.ToString(dr["GroupName"]);
                 GroupOrder = Convert.ToInt32(dr["GroupOrder"]);
-                LeagueGuid = (Guid)dr["LeagueGuid"];
+                LeagueGuid = (Guid) dr["LeagueGuid"];
                 IsTable = Convert.ToBoolean(dr["IsTable"]);
             }
             else
@@ -108,8 +119,7 @@ namespace Arsenalcn.CasinoSys.Entity
 
             if (dtGroupMatch != null)
                 return dtGroupMatch.Rows.Count;
-            else
-                return 0;
+            return 0;
         }
 
         public static int GetAllMatchCount(Guid groupGuid)
@@ -119,8 +129,7 @@ namespace Arsenalcn.CasinoSys.Entity
 
             if (dtGroupMatch != null)
                 return dtGroupMatch.Rows.Count;
-            else
-                return 0;
+            return 0;
         }
 
         public static void SetGroupMatch(Guid groupGuid)
@@ -132,8 +141,7 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public static void ActiveGroupTableStatistics()
         {
-            var list = GetGroups().FindAll((Predicate<Group>)delegate (Group g)
-            { return League.Cache.Load(g.LeagueGuid).IsActive; });
+            var list = GetGroups().FindAll(delegate(Group g) { return League.Cache.Load(g.LeagueGuid).IsActive; });
 
             if (list != null && list.Count > 0)
             {
@@ -154,7 +162,7 @@ namespace Arsenalcn.CasinoSys.Entity
             {
                 foreach (DataRow dr in dtGroupTeam.Rows)
                 {
-                    var gt = new GroupTeam(groupGuid, (Guid)dr["TeamGuid"], null);
+                    var gt = new GroupTeam(groupGuid, (Guid) dr["TeamGuid"], null);
                     GroupTeam.UpdateGroupTeamByGroupMatch(gt.GroupGuid, gt.TeamGuid, dtGroupMatch);
                 }
             }
@@ -167,26 +175,11 @@ namespace Arsenalcn.CasinoSys.Entity
             {
                 foreach (DataRow dr in dtGroupTeam.Rows)
                 {
-                    var gt = new GroupTeam(groupGuid, (Guid)dr["TeamGuid"], null);
+                    var gt = new GroupTeam(groupGuid, (Guid) dr["TeamGuid"], null);
                     gt.PositionNo = ++positionNo;
                     gt.Update();
                 }
             }
         }
-
-        public Guid GroupGuid
-        { get; set; }
-
-        public string GroupName
-        { get; set; }
-
-        public int GroupOrder
-        { get; set; }
-
-        public Guid LeagueGuid
-        { get; set; }
-
-        public bool IsTable
-        { get; set; }
     }
 }

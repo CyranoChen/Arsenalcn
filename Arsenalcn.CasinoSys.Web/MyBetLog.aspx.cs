@@ -1,14 +1,38 @@
 ﻿using System;
 using System.Data;
 using System.Web.UI.WebControls;
-
 using Arsenalcn.CasinoSys.Entity;
+using Arsenalcn.CasinoSys.Web.Common;
+using Arsenalcn.CasinoSys.Web.Control;
 using Discuz.Forum;
 
 namespace Arsenalcn.CasinoSys.Web
 {
-    public partial class MyBetLog : Common.BasePage
+    public partial class MyBetLog : BasePage
     {
+        private int CurrentUserId
+        {
+            get
+            {
+                int uid;
+                if (!string.IsNullOrEmpty(Request.QueryString["UserID"]) &&
+                    int.TryParse(Request.QueryString["UserID"], out uid))
+                {
+                    return uid;
+                }
+                return userid;
+            }
+        }
+
+        private string CurrentUserName
+        {
+            get
+            {
+                var sUser = Users.GetShortUserInfo(CurrentUserId);
+                return sUser.Username.Trim();
+            }
+        }
+
         protected override void OnInit(EventArgs e)
         {
             AnonymousRedirect = true;
@@ -25,7 +49,7 @@ namespace Arsenalcn.CasinoSys.Web
 
             ctrlFieldTooBar.UserId = userid;
 
-            ctrlMenuTabBar.CurrentMenu = Control.CasinoMenuType.CasinoPortal;
+            ctrlMenuTabBar.CurrentMenu = CasinoMenuType.CasinoPortal;
 
             ctrlGamblerHeader.UserId = CurrentUserId;
             ctrlGamblerHeader.UserName = CurrentUserName;
@@ -49,7 +73,7 @@ namespace Arsenalcn.CasinoSys.Web
 
                 if (drv != null)
                 {
-                    var m = new Match((Guid)drv["MatchGuid"]);
+                    var m = new Match((Guid) drv["MatchGuid"]);
 
                     var hlHome = e.Row.FindControl("hlHome") as HyperLink;
                     var hlAway = e.Row.FindControl("hlAway") as HyperLink;
@@ -77,12 +101,13 @@ namespace Arsenalcn.CasinoSys.Web
                 var ltrlBetRate = e.Row.FindControl("ltrlBetRate") as Literal;
                 var btnReturnBet = e.Row.FindControl("btnReturnBet") as LinkButton;
 
-                if (drv != null && ltrlResult != null && ltrlBetResult != null && ltrlBetRate != null && btnReturnBet != null)
+                if (drv != null && ltrlResult != null && ltrlBetResult != null && ltrlBetRate != null &&
+                    btnReturnBet != null)
                 {
-                    var itemGuid = (Guid)drv["CasinoItemGuid"];
+                    var itemGuid = (Guid) drv["CasinoItemGuid"];
 
                     var item = CasinoItem.GetCasinoItem(itemGuid);
-                    var dt = BetDetail.GetBetDetailByBetID((int)drv["ID"]);
+                    var dt = BetDetail.GetBetDetailByBetID((int) drv["ID"]);
 
                     if (dt != null)
                     {
@@ -125,7 +150,8 @@ namespace Arsenalcn.CasinoSys.Web
                             ltrlBetResult.Text = "<span class=\"CasinoSys_False\" title=\"失败\"></span>";
                         }
                     }
-                    else if (Convert.IsDBNull(drv["IsWin"]) && (CurrentUserId == userid) && (item.CloseTime > DateTime.Now))
+                    else if (Convert.IsDBNull(drv["IsWin"]) && (CurrentUserId == userid) &&
+                             (item.CloseTime > DateTime.Now))
                     {
                         btnReturnBet.Visible = true;
                         btnReturnBet.CommandArgument = drv["ID"].ToString();
@@ -155,30 +181,6 @@ namespace Arsenalcn.CasinoSys.Web
         {
             gvBetLog.PageIndex = e.NewPageIndex;
             gvBetLog.DataBind();
-
-        }
-
-        private int CurrentUserId
-        {
-            get
-            {
-                int uid;
-                if (!string.IsNullOrEmpty(Request.QueryString["UserID"]) && int.TryParse(Request.QueryString["UserID"], out uid))
-                {
-                    return uid;
-                }
-                else
-                    return userid;
-            }
-        }
-
-        private string CurrentUserName
-        {
-            get
-            {
-                var sUser = Users.GetShortUserInfo(CurrentUserId);
-                return sUser.Username.Trim();
-            }
         }
 
         protected void gvBetLog_RowCommand(object sender, GridViewCommandEventArgs e)
@@ -192,14 +194,15 @@ namespace Arsenalcn.CasinoSys.Web
                     if (bet.UserID == userid)
                     {
                         Bet.ReturnBet(bet.ID);
-                        ClientScript.RegisterClientScriptBlock(typeof(string), "success", "alert('投注退还成功');window.location.href=window.location.href", true);
+                        ClientScript.RegisterClientScriptBlock(typeof (string), "success",
+                            "alert('投注退还成功');window.location.href=window.location.href", true);
                     }
                     else
                         throw new Exception("非本人投注项");
                 }
                 catch
                 {
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "failed", "alert('投注退还失败');", true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "failed", "alert('投注退还失败');", true);
                 }
 
                 BindData();

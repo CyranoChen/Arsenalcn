@@ -1,12 +1,11 @@
 ﻿using System;
+using System.Data.SqlClient;
 using System.Web.Script.Serialization;
 
 namespace iArsenal.Service
 {
     public class OrdrItmTravelPlan : OrderItem
     {
-        public OrdrItmTravelPlan() { }
-
         public void Init()
         {
             if (ProductGuid == null)
@@ -21,8 +20,6 @@ namespace iArsenal.Service
 
     public class OrdrItmTravelPlanLondon : OrdrItmTravelPlan
     {
-        public OrdrItmTravelPlanLondon() { }
-
         public new void Init()
         {
             base.Init();
@@ -58,17 +55,17 @@ namespace iArsenal.Service
             }
         }
 
-        public void Place(Member m, System.Data.SqlClient.SqlTransaction trans = null)
+        public void Place(Member m, SqlTransaction trans = null)
         {
-            this.Size = string.Format("{0}|{1}", TravelFromDate.ToString("yyyy-MM-dd"), TravelToDate.ToString("yyyy-MM-dd"));
+            Size = string.Format("{0}|{1}", TravelFromDate.ToString("yyyy-MM-dd"), TravelToDate.ToString("yyyy-MM-dd"));
 
             if (TravelOption != null)
             {
-                this.Remark = string.Join("|", TravelOption);
+                Remark = string.Join("|", TravelOption);
             }
             else
             {
-                this.Remark = string.Empty;
+                Remark = string.Empty;
             }
 
             var product = Product.Cache.Load("iETPL");
@@ -89,14 +86,12 @@ namespace iArsenal.Service
 
     public class OrdrItmTravelPlan2015AsiaTrophy : OrdrItmTravelPlan
     {
-        public OrdrItmTravelPlan2015AsiaTrophy() { }
-
         public new void Init()
         {
             base.Init();
 
-            Boolean _value;
-            if (!string.IsNullOrEmpty(Size) && Boolean.TryParse(Size, out _value))
+            bool _value;
+            if (!string.IsNullOrEmpty(Size) && bool.TryParse(Size, out _value))
             {
                 IsTicketOnly = _value;
             }
@@ -111,9 +106,11 @@ namespace iArsenal.Service
                 {
                     var jsonSerializer = new JavaScriptSerializer();
                     TravelOption = jsonSerializer.Deserialize<TravelOption>(Remark);
-
                 }
-                catch { throw new Exception("Can't get the Partner of OrderItem_TravelPlan.Remark"); }
+                catch
+                {
+                    throw new Exception("Can't get the Partner of OrderItem_TravelPlan.Remark");
+                }
             }
             else
             {
@@ -121,18 +118,18 @@ namespace iArsenal.Service
             }
         }
 
-        public void Place(Member m, System.Data.SqlClient.SqlTransaction trans = null)
+        public void Place(Member m, SqlTransaction trans = null)
         {
-            this.Size = IsTicketOnly.ToString();
+            Size = IsTicketOnly.ToString();
 
             if (TravelOption != null)
             {
                 var jsonSerializer = new JavaScriptSerializer();
-                this.Remark = jsonSerializer.Serialize(TravelOption);
+                Remark = jsonSerializer.Serialize(TravelOption);
             }
             else
             {
-                this.Remark = string.Empty;
+                Remark = string.Empty;
             }
 
             var product = Product.Cache.Load("2015ATPL");
@@ -151,7 +148,11 @@ namespace iArsenal.Service
 
     public class OrdrItmTravelPartner : OrderItem
     {
-        public OrdrItmTravelPartner() { }
+        #region Members and Properties
+
+        public Partner Partner { get; set; }
+
+        #endregion
 
         public void Init()
         {
@@ -161,9 +162,11 @@ namespace iArsenal.Service
                 {
                     var jsonSerializer = new JavaScriptSerializer();
                     Partner = jsonSerializer.Deserialize<Partner>(Remark);
-
                 }
-                catch { throw new Exception("Can't get the Partner of OrderItem_TravelPartner.Remark"); }
+                catch
+                {
+                    throw new Exception("Can't get the Partner of OrderItem_TravelPartner.Remark");
+                }
             }
             else
             {
@@ -179,27 +182,19 @@ namespace iArsenal.Service
                 throw new Exception("The OrderItem is not the type of TravelPartner.");
         }
 
-        public override void Place(Member m, Product p, System.Data.SqlClient.SqlTransaction trans = null)
+        public override void Place(Member m, Product p, SqlTransaction trans = null)
         {
             if (Partner != null)
             {
                 var jsonSerializer = new JavaScriptSerializer();
-                this.Remark = jsonSerializer.Serialize(Partner);
+                Remark = jsonSerializer.Serialize(Partner);
             }
             else
             {
-                this.Remark = string.Empty;
+                Remark = string.Empty;
             }
 
             base.Place(m, p, trans);
         }
-
-        #region Members and Properties
-
-        public Partner Partner { get; set; }
-
-        #endregion
     }
 }
-
-

@@ -2,26 +2,25 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-
 using Arsenalcn.Core;
+using DataReaderMapper;
 
 namespace iArsenal.Service
 {
     [DbSchema("iArsenal_Member", Sort = "ID DESC")]
     public class Member : Entity<int>
     {
-        public Member() : base() { }
-
         public static void CreateMap()
         {
-            var map = AutoMapper.Mapper.CreateMap<IDataReader, Member>();
+            var map = Mapper.CreateMap<IDataReader, Member>();
 
             map.ForMember(d => d.MemberTypeInfo, opt => opt.ResolveUsing(s =>
             {
                 #region Generate Member MemberTypeInfo
+
                 var retValue = string.Empty;
 
-                switch ((MemberType)((int)s.GetValue("MemberType")))
+                switch ((MemberType) ((int) s.GetValue("MemberType")))
                 {
                     case MemberType.Match:
                         retValue = "观赛";
@@ -48,6 +47,7 @@ namespace iArsenal.Service
             map.ForMember(d => d.RegionInfo, opt => opt.ResolveUsing(s =>
             {
                 #region Generate Member RegionInfo
+
                 var nation = s.GetValue("Nation").ToString();
                 var region = s.GetValue("Region").ToString();
                 var retValue = string.Empty;
@@ -65,9 +65,13 @@ namespace iArsenal.Service
                         }
                     }
                     else if (regions.Length == 1 && int.TryParse(regions[0], out itemID))
-                    { retValue = DictionaryItem.Cache.Load(itemID).Name; }
+                    {
+                        retValue = DictionaryItem.Cache.Load(itemID).Name;
+                    }
                     else
-                    { retValue = regions[0]; }
+                    {
+                        retValue = regions[0];
+                    }
                 }
                 else
                 {
@@ -75,12 +79,15 @@ namespace iArsenal.Service
                 }
 
                 return retValue;
+
                 #endregion
             }));
         }
 
         public static class Cache
         {
+            public static List<Member> MemberList;
+
             static Cache()
             {
                 InitCache();
@@ -107,129 +114,97 @@ namespace iArsenal.Service
             {
                 return MemberList.Find(x => x.AcnID.Equals(id));
             }
-
-            public static List<Member> MemberList;
         }
 
         #region Members and Properties
 
         [DbColumn("Name")]
-        public string Name
-        { get; set; }
+        public string Name { get; set; }
 
         [DbColumn("Gender")]
-        public bool Gender
-        { get; set; }
+        public bool Gender { get; set; }
 
         [DbColumn("Birthday")]
-        public DateTime? Birthday
-        { get; set; }
+        public DateTime? Birthday { get; set; }
 
         [DbColumn("Career")]
-        public string Career
-        { get; set; }
+        public string Career { get; set; }
 
         [DbColumn("Nation")]
-        public string Nation
-        { get; set; }
+        public string Nation { get; set; }
 
         [DbColumn("Region")]
-        public string Region
-        { get; set; }
+        public string Region { get; set; }
 
         [DbColumn("Mobile")]
-        public string Mobile
-        { get; set; }
+        public string Mobile { get; set; }
 
         [DbColumn("Telephone")]
-        public string Telephone
-        { get; set; }
+        public string Telephone { get; set; }
 
         [DbColumn("Address")]
-        public string Address
-        { get; set; }
+        public string Address { get; set; }
 
         [DbColumn("Email")]
-        public string Email
-        { get; set; }
+        public string Email { get; set; }
 
         [DbColumn("Zipcode")]
-        public string Zipcode
-        { get; set; }
+        public string Zipcode { get; set; }
 
         [DbColumn("MSN")]
-        public string MSN
-        { get; set; }
+        public string MSN { get; set; }
 
         [DbColumn("QQ")]
-        public string QQ
-        { get; set; }
+        public string QQ { get; set; }
 
         [DbColumn("IDCardNo")]
-        public string IDCardNo
-        { get; set; }
+        public string IDCardNo { get; set; }
 
         [DbColumn("PassportNo")]
-        public string PassportNo
-        { get; set; }
+        public string PassportNo { get; set; }
 
         [DbColumn("PassportName")]
-        public string PassportName
-        { get; set; }
+        public string PassportName { get; set; }
 
         [DbColumn("AcnID")]
-        public int AcnID
-        { get; set; }
+        public int AcnID { get; set; }
 
         [DbColumn("AcnName")]
-        public string AcnName
-        { get; set; }
+        public string AcnName { get; set; }
 
         [DbColumn("IP")]
-        public string IP
-        { get; set; }
+        public string IP { get; set; }
 
         [DbColumn("TaobaoName")]
-        public string TaobaoName
-        { get; set; }
+        public string TaobaoName { get; set; }
 
         [DbColumn("Evalution")]
-        public MemberEvalution Evalution
-        { get; set; }
+        public MemberEvalution Evalution { get; set; }
 
         [DbColumn("MemberType")]
-        public MemberType MemberType
-        { get; set; }
+        public MemberType MemberType { get; set; }
 
         [DbColumn("MemberCardNo")]
-        public string MemberCardNo
-        { get; set; }
+        public string MemberCardNo { get; set; }
 
         [DbColumn("JoinDate")]
-        public DateTime JoinDate
-        { get; set; }
+        public DateTime JoinDate { get; set; }
 
         [DbColumn("LastLoginTime")]
-        public DateTime LastLoginTime
-        { get; set; }
+        public DateTime LastLoginTime { get; set; }
 
         [DbColumn("IsActive")]
-        public bool IsActive
-        { get; set; }
+        public bool IsActive { get; set; }
 
         [DbColumn("Description")]
-        public string Description
-        { get; set; }
+        public string Description { get; set; }
 
         [DbColumn("Remark")]
-        public string Remark
-        { get; set; }
+        public string Remark { get; set; }
 
-        public string RegionInfo
-        { get; set; }
+        public string RegionInfo { get; set; }
 
-        public string MemberTypeInfo
-        { get; set; }
+        public string MemberTypeInfo { get; set; }
 
         #endregion
     }

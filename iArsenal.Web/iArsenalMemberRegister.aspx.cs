@@ -1,5 +1,4 @@
 ﻿using System;
-
 using Arsenalcn.Core;
 using Arsenalcn.Core.Utility;
 using iArsenal.Service;
@@ -9,28 +8,26 @@ namespace iArsenal.Web
     public partial class iArsenalMemberRegister : AcnPageBase
     {
         private readonly IRepository repo = new Repository();
-        protected override void OnInit(EventArgs e)
-        {
-            AnonymousRedirect = true;
-
-            base.OnInit(e);
-        }
 
         private int MemberID
         {
             get
             {
-                var m = Member.Cache.LoadByAcnID(this.UID);
+                var m = Member.Cache.LoadByAcnID(UID);
 
                 if (m != null && m.ID > 0)
                 {
                     return m.ID;
                 }
-                else
-                {
-                    return int.MinValue;
-                }
+                return int.MinValue;
             }
+        }
+
+        protected override void OnInit(EventArgs e)
+        {
+            AnonymousRedirect = true;
+
+            base.OnInit(e);
         }
 
         protected void Page_Load(object sender, EventArgs e)
@@ -76,8 +73,8 @@ namespace iArsenal.Web
                     m.Evalution = MemberEvalution.None;
                     m.MemberType = MemberType.Buyer;
                     m.MemberCardNo = string.Empty;
-                    m.AcnID = this.UID;
-                    m.AcnName = this.Username;
+                    m.AcnID = UID;
+                    m.AcnName = Username;
                     m.IP = IPLocation.GetIP();
                     m.TaobaoName = string.Empty;
                     m.JoinDate = DateTime.Now;
@@ -122,7 +119,8 @@ namespace iArsenal.Web
 
                     Member.Cache.RefreshCache();
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('您的实名会员信息更新成功');window.location.href=window.location.href+'#anchorBack'", true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                        "alert('您的实名会员信息更新成功');window.location.href=window.location.href+'#anchorBack'", true);
                 }
                 else
                 {
@@ -130,13 +128,14 @@ namespace iArsenal.Web
 
                     Member.Cache.RefreshCache();
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('您的实名会员信息已注册成功');window.location.href= 'Default.aspx'", true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                        "alert('您的实名会员信息已注册成功');window.location.href= 'Default.aspx'", true);
                 }
             }
             catch
             {
                 //ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}')", ex.Message.ToString()), true);
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", "alert('您的输入有误，请重新填写或联系管理员')");
+                ClientScript.RegisterClientScriptBlock(typeof (string), "failed", "alert('您的输入有误，请重新填写或联系管理员')");
             }
         }
     }

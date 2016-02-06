@@ -1,5 +1,4 @@
 ﻿using System;
-
 using Arsenal.Service;
 using Arsenalcn.Core;
 
@@ -8,15 +7,6 @@ namespace Arsenal.Web
     public partial class AdminLeagueView : AdminPageBase
     {
         private readonly IRepository repo = new Repository();
-        protected void Page_Load(object sender, EventArgs e)
-        {
-            ctrlAdminFieldToolBar.AdminUserName = this.Username;
-
-            if (!IsPostBack)
-            {
-                InitForm();
-            }
-        }
 
         private Guid LeagueGuid
         {
@@ -24,11 +14,26 @@ namespace Arsenal.Web
             {
                 if (!string.IsNullOrEmpty(Request.QueryString["LeagueGuid"]))
                 {
-                    try { return new Guid(Request.QueryString["LeagueGuid"]); }
-                    catch { return Guid.Empty; }
+                    try
+                    {
+                        return new Guid(Request.QueryString["LeagueGuid"]);
+                    }
+                    catch
+                    {
+                        return Guid.Empty;
+                    }
                 }
-                else
-                    return Guid.Empty;
+                return Guid.Empty;
+            }
+        }
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            ctrlAdminFieldToolBar.AdminUserName = Username;
+
+            if (!IsPostBack)
+            {
+                InitForm();
             }
         }
 
@@ -80,17 +85,20 @@ namespace Arsenal.Web
                 if (LeagueGuid != Guid.Empty)
                 {
                     repo.Update(l);
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('更新成功');window.location.href = window.location.href", true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                        "alert('更新成功');window.location.href = window.location.href", true);
                 }
                 else
                 {
                     repo.Insert(l);
-                    this.ClientScript.RegisterClientScriptBlock(typeof(string), "save", "alert('添加成功');window.location.href = 'AdminLeague.aspx';", true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "save",
+                        "alert('添加成功');window.location.href = 'AdminLeague.aspx';", true);
                 }
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}')", ex.Message.ToString()), true);
+                ClientScript.RegisterClientScriptBlock(typeof (string), "failed",
+                    string.Format("alert('{0}')", ex.Message), true);
             }
         }
 
@@ -98,7 +106,7 @@ namespace Arsenal.Web
         {
             if (LeagueGuid != Guid.Empty)
             {
-                Response.Redirect("AdminLeague.aspx?LeagueGuid=" + LeagueGuid.ToString());
+                Response.Redirect("AdminLeague.aspx?LeagueGuid=" + LeagueGuid);
             }
             else
             {
@@ -114,7 +122,8 @@ namespace Arsenal.Web
                 {
                     repo.Delete<League>(LeagueGuid);
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('删除成功');window.location.href='AdminLeague.aspx'", true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                        "alert('删除成功');window.location.href='AdminLeague.aspx'", true);
                 }
                 else
                 {
@@ -123,7 +132,7 @@ namespace Arsenal.Web
             }
             catch
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", "alert('删除失败')", true);
+                ClientScript.RegisterClientScriptBlock(typeof (string), "failed", "alert('删除失败')", true);
             }
         }
     }

@@ -1,27 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
-
 using Arsenalcn.Core;
+using DataReaderMapper;
 
 namespace Arsenal.Service
 {
     [DbSchema("Arsenal_Player", Key = "PlayerGuid", Sort = "IsLegend, IsLoan, SquadNumber, LastName")]
     public class Player : Entity<Guid>
     {
-        public Player() : base() { }
-
         public static void CreateMap()
         {
-            var map = AutoMapper.Mapper.CreateMap<IDataReader, Player>();
+            var map = Mapper.CreateMap<IDataReader, Player>();
 
-            map.ForMember(d => d.ID, opt => opt.MapFrom(s => (Guid)s.GetValue("PlayerGuid")));
-            map.ForMember(d => d.Position, opt => opt.MapFrom(s => (int)s.GetValue("PlayerPosition")));
+            map.ForMember(d => d.ID, opt => opt.MapFrom(s => (Guid) s.GetValue("PlayerGuid")));
+            map.ForMember(d => d.Position, opt => opt.MapFrom(s => (int) s.GetValue("PlayerPosition")));
         }
 
         public static class Cache
         {
+            public static List<Player> PlayerList;
+            public static List<Player> PlayerList_HasSquadNumber;
+
+            public static IEnumerable<int> ColList_SquadNumber;
+            public static IEnumerable<string> ColList_Position;
+
             static Cache()
             {
                 InitCache();
@@ -60,120 +65,91 @@ namespace Arsenal.Service
 
                 var sql = string.Format("SELECT * FROM {0} WHERE {1} = @key", attr.Name, attr.Key);
 
-                System.Data.SqlClient.SqlParameter[] para = { new System.Data.SqlClient.SqlParameter("@key", guid) };
+                SqlParameter[] para = {new SqlParameter("@key", guid)};
 
                 var ds = DataAccess.ExecuteDataset(sql, para);
 
                 if (ds.Tables[0].Rows.Count == 0)
-                { return null; }
-                else
-                { return ds.Tables[0].Rows[0]; }
+                {
+                    return null;
+                }
+                return ds.Tables[0].Rows[0];
             }
-
-            public static List<Player> PlayerList;
-            public static List<Player> PlayerList_HasSquadNumber;
-
-            public static IEnumerable<int> ColList_SquadNumber;
-            public static IEnumerable<string> ColList_Position;
         }
 
         #region Members and Properties
 
         [DbColumn("FirstName")]
-        public string FirstName
-        { get; set; }
+        public string FirstName { get; set; }
 
         [DbColumn("LastName")]
-        public string LastName
-        { get; set; }
+        public string LastName { get; set; }
 
         [DbColumn("DisplayName")]
-        public string DisplayName
-        { get; set; }
+        public string DisplayName { get; set; }
 
         [DbColumn("PrintingName")]
-        public string PrintingName
-        { get; set; }
+        public string PrintingName { get; set; }
 
         [DbColumn("PlayerPosition")]
-        public PlayerPositionType Position
-        { get; set; }
+        public PlayerPositionType Position { get; set; }
 
         [DbColumn("SquadNumber")]
-        public int SquadNumber
-        { get; set; }
+        public int SquadNumber { get; set; }
 
         [DbColumn("FaceURL")]
-        public string FaceURL
-        { get; set; }
+        public string FaceURL { get; set; }
 
         [DbColumn("PhotoURL")]
-        public string PhotoURL
-        { get; set; }
+        public string PhotoURL { get; set; }
 
         [DbColumn("Offset")]
-        public int Offset
-        { get; set; }
+        public int Offset { get; set; }
 
         [DbColumn("IsLegend")]
-        public bool IsLegend
-        { get; set; }
+        public bool IsLegend { get; set; }
 
         [DbColumn("IsLoan")]
-        public bool IsLoan
-        { get; set; }
+        public bool IsLoan { get; set; }
 
         [DbColumn("Birthday")]
-        public DateTime? Birthday
-        { get; set; }
+        public DateTime? Birthday { get; set; }
 
         [DbColumn("Born")]
-        public string Born
-        { get; set; }
+        public string Born { get; set; }
 
         [DbColumn("Starts")]
-        public int Starts
-        { get; set; }
+        public int Starts { get; set; }
 
         [DbColumn("Subs")]
-        public int Subs
-        { get; set; }
+        public int Subs { get; set; }
 
         [DbColumn("Apps")]
-        public int Apps
-        { get; set; }
+        public int Apps { get; set; }
 
         [DbColumn("Goals")]
-        public int Goals
-        { get; set; }
+        public int Goals { get; set; }
 
         [DbColumn("JoinDate")]
-        public DateTime? JoinDate
-        { get; set; }
+        public DateTime? JoinDate { get; set; }
 
         [DbColumn("Joined")]
-        public string Joined
-        { get; set; }
+        public string Joined { get; set; }
 
         [DbColumn("LeftYear")]
-        public string LeftYear
-        { get; set; }
+        public string LeftYear { get; set; }
 
         [DbColumn("Debut")]
-        public string Debut
-        { get; set; }
+        public string Debut { get; set; }
 
         [DbColumn("FirstGoal")]
-        public string FirstGoal
-        { get; set; }
+        public string FirstGoal { get; set; }
 
         [DbColumn("PreviousClubs")]
-        public string PreviousClubs
-        { get; set; }
+        public string PreviousClubs { get; set; }
 
         [DbColumn("Profile")]
-        public string Profile
-        { get; set; }
+        public string Profile { get; set; }
 
         #endregion
     }

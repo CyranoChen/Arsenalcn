@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Data;
 using System.Web.UI.WebControls;
+using Arsenalcn.CasinoSys.Entity;
+using Arsenalcn.CasinoSys.Web.Common;
+using Arsenalcn.CasinoSys.Web.Control;
 
 namespace Arsenalcn.CasinoSys.Web
 {
-    public partial class CasinoRank : Common.BasePage
+    public partial class CasinoRank : BasePage
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -15,17 +18,17 @@ namespace Arsenalcn.CasinoSys.Web
 
             ctrlFieldTooBar.UserId = userid;
 
-            ctrlMenuTabBar.CurrentMenu = Control.CasinoMenuType.CasinoRank;
+            ctrlMenuTabBar.CurrentMenu = CasinoMenuType.CasinoRank;
 
             #endregion
 
-            var dt = Entity.Rank.GetTopGamblerMonthly();
+            var dt = Rank.GetTopGamblerMonthly();
 
             if (dt != null)
             {
-                dt.Columns.Add("RankDate", typeof(string));
-                dt.Columns.Add("WinnerProfitRate", typeof(float));
-                dt.Columns.Add("LoserProfitRate", typeof(float));
+                dt.Columns.Add("RankDate", typeof (string));
+                dt.Columns.Add("WinnerProfitRate", typeof (float));
+                dt.Columns.Add("LoserProfitRate", typeof (float));
 
                 var rMonth = string.Empty;
 
@@ -37,8 +40,10 @@ namespace Arsenalcn.CasinoSys.Web
                         rMonth = dr["RankMonth"].ToString();
 
                     dr["RankDate"] = $"{dr["RankYear"]}/{rMonth}";
-                    dr["WinnerProfitRate"] = Convert.ToSingle(dr["WinnerProfit"]) / Convert.ToSingle(dr["WinnerTotalBet"]) * 100;
-                    dr["LoserProfitRate"] = Convert.ToSingle(dr["LoserProfit"]) / Convert.ToSingle(dr["LoserTotalBet"]) * 100;
+                    dr["WinnerProfitRate"] = Convert.ToSingle(dr["WinnerProfit"])/Convert.ToSingle(dr["WinnerTotalBet"])*
+                                             100;
+                    dr["LoserProfitRate"] = Convert.ToSingle(dr["LoserProfit"])/Convert.ToSingle(dr["LoserTotalBet"])*
+                                            100;
                 }
             }
 

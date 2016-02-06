@@ -1,16 +1,13 @@
 ﻿using System;
-using System.Linq;
-
-using Arsenalcn.Core;
 using System.Collections;
+using System.Linq;
+using Arsenalcn.Core;
 
 namespace iArsenal.Service
 {
     [DbSchema("iArsenal_MemberPeriod", Sort = "ID DESC")]
     public class MemberPeriod : Entity<int>
     {
-        public MemberPeriod() : base() { }
-
         public bool IsCurrentSeason(int year = 0)
         {
             var _date = DateTime.Now.AddYears(year);
@@ -28,54 +25,42 @@ namespace iArsenal.Service
             IRepository repo = new Repository();
 
             return repo.Query<MemberPeriod>(x =>
-                x.MemberID == id && x.IsActive == true && x.StartDate <= _date && x.EndDate >= _date)
-                .FirstOrDefault();
+                x.MemberID == id && x.StartDate <= _date && x.EndDate >= _date).Find(x => x.IsActive);
         }
 
         #region Members and Properties
 
         [DbColumn("MemberID")]
-        public int MemberID
-        { get; set; }
+        public int MemberID { get; set; }
 
         [DbColumn("MemberName")]
-        public string MemberName
-        { get; set; }
+        public string MemberName { get; set; }
 
         [DbColumn("MemberCardNo")]
-        public string MemberCardNo
-        { get; set; }
+        public string MemberCardNo { get; set; }
 
         [DbColumn("MemberClass")]
-        public MemberClassType MemberClass
-        { get; set; }
+        public MemberClassType MemberClass { get; set; }
 
         [DbColumn("OrderID")]
-        public int? OrderID
-        { get; set; }
+        public int? OrderID { get; set; }
 
         [DbColumn("StartDate")]
-        public DateTime StartDate
-        { get; set; }
+        public DateTime StartDate { get; set; }
 
         [DbColumn("EndDate")]
-        public DateTime EndDate
-        { get; set; }
+        public DateTime EndDate { get; set; }
 
         [DbColumn("IsActive")]
-        public bool IsActive
-        { get; set; }
+        public bool IsActive { get; set; }
 
         [DbColumn("Description")]
-        public string Description
-        { get; set; }
+        public string Description { get; set; }
 
         [DbColumn("Remark")]
-        public string Remark
-        { get; set; }
+        public string Remark { get; set; }
 
         #endregion
-
     }
 
     public enum MemberClassType

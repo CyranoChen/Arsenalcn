@@ -1,18 +1,40 @@
 ﻿using System;
 using System.Web;
-using Arsenalcn.ClubSys.Service;
+using System.Web.UI;
 using Arsenalcn.ClubSys.Entity;
+using Arsenalcn.ClubSys.Service;
 
 namespace Arsenalcn.ClubSys.Web.Control
 {
-    public partial class ClubSysHeader : System.Web.UI.UserControl
+    public partial class ClubSysHeader : UserControl
     {
+        private int clubID = -1;
+
+        private int userID = -1;
+
+        private string userName = string.Empty;
+
+        public int ClubID
+        {
+            set { clubID = value; }
+        }
+
+        public int UserID
+        {
+            set { userID = value; }
+        }
+
+        public string UserName
+        {
+            set { userName = value; }
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (clubID > 0)
             {
                 if (aManageClub.HRef.IndexOf("{0}") >= 0)
-                    aManageClub.HRef = string.Format(aManageClub.HRef, clubID.ToString());
+                    aManageClub.HRef = string.Format(aManageClub.HRef, clubID);
 
                 var currentClub = ClubLogic.GetClubInfo(clubID);
 
@@ -76,13 +98,15 @@ namespace Arsenalcn.ClubSys.Web.Control
                             btnLeaveClub.Visible = false;
 
                         // the count of clubs which current user has joined exceed max quota, hide join action
-                        if (ClubLogic.GetActiveUserClubs(userID).Count >= ConfigGlobal.SingleUserMaxClubCount && ucs != UserClubStatus.Member)
+                        if (ClubLogic.GetActiveUserClubs(userID).Count >= ConfigGlobal.SingleUserMaxClubCount &&
+                            ucs != UserClubStatus.Member)
                         {
                             btnJoinClub.Visible = false;
                             btnCancelApply.Visible = false;
                         }
 
-                        if (!currentClub.IsAppliable.Value || ClubLogic.GetClubMemberCount(clubID) >= ClubLogic.GetClubMemberQuota(clubID))
+                        if (!currentClub.IsAppliable.Value ||
+                            ClubLogic.GetClubMemberCount(clubID) >= ClubLogic.GetClubMemberQuota(clubID))
                         {
                             btnJoinClub.Visible = false;
                         }
@@ -93,7 +117,8 @@ namespace Arsenalcn.ClubSys.Web.Control
                         {
                             //current user is a member of the club
 
-                            if (userClub.Responsibility == (int)Responsibility.Manager || userClub.Responsibility == (int)Responsibility.Executor)
+                            if (userClub.Responsibility == (int) Responsibility.Manager ||
+                                userClub.Responsibility == (int) Responsibility.Executor)
                             {
                                 aManageClub.Visible = true;
                             }
@@ -122,33 +147,6 @@ namespace Arsenalcn.ClubSys.Web.Control
             }
         }
 
-        private int clubID = -1;
-        public int ClubID
-        {
-            set
-            {
-                clubID = value;
-            }
-        }
-
-        private int userID = -1;
-        public int UserID
-        {
-            set
-            {
-                userID = value;
-            }
-        }
-
-        private string userName = string.Empty;
-        public string UserName
-        {
-            set
-            {
-                userName = value;
-            }
-        }
-
         protected void btnJoinClub_Click(object sender, EventArgs e)
         {
             var uct = ClubLogic.GetUserClubStatus(userID, clubID);
@@ -170,7 +168,7 @@ namespace Arsenalcn.ClubSys.Web.Control
             btnJoinClub.Visible = false;
             btnCancelApply.Visible = true;
 
-            this.Page.ClientScript.RegisterClientScriptBlock(typeof(string), "join", script, true);
+            Page.ClientScript.RegisterClientScriptBlock(typeof (string), "join", script, true);
         }
 
         protected void btnCancelApply_Click(object sender, EventArgs e)
@@ -194,7 +192,7 @@ namespace Arsenalcn.ClubSys.Web.Control
             btnCancelApply.Visible = false;
             btnJoinClub.Visible = true;
 
-            this.Page.ClientScript.RegisterClientScriptBlock(typeof(string), "cancel", script, true);
+            Page.ClientScript.RegisterClientScriptBlock(typeof (string), "cancel", script, true);
         }
 
         protected void btnLeaveClub_Click(object sender, EventArgs e)
@@ -218,7 +216,7 @@ namespace Arsenalcn.ClubSys.Web.Control
             btnJoinClub.Visible = true;
             btnLeaveClub.Visible = false;
 
-            this.Page.ClientScript.RegisterClientScriptBlock(typeof(string), "leave", script, true);
+            Page.ClientScript.RegisterClientScriptBlock(typeof (string), "leave", script, true);
         }
     }
 }

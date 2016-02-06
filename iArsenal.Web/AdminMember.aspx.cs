@@ -1,26 +1,17 @@
 ﻿using System;
 using System.Web.UI.WebControls;
-
 using Arsenalcn.Core;
 using iArsenal.Service;
+using iArsenal.Web.Control;
 
 namespace iArsenal.Web
 {
     public partial class AdminMember : AdminPageBase
     {
         private readonly IRepository repo = new Repository();
-        protected void Page_Load(object sender, EventArgs e)
-        {
-            ctrlAdminFieldToolBar.AdminUserName = this.Username;
-            ctrlCustomPagerInfo.PageChanged += new Control.CustomPagerInfo.PageChangedEventHandler(ctrlCustomPagerInfo_PageChanged);
-
-            if (!IsPostBack)
-            {
-                BindData();
-            }
-        }
 
         private int _memberID = int.MinValue;
+
         private int MemberID
         {
             get
@@ -28,12 +19,23 @@ namespace iArsenal.Web
                 int _res;
                 if (_memberID == 0)
                     return _memberID;
-                else if (!string.IsNullOrEmpty(Request.QueryString["MemberID"]) && int.TryParse(Request.QueryString["MemberID"], out _res))
+                if (!string.IsNullOrEmpty(Request.QueryString["MemberID"]) &&
+                    int.TryParse(Request.QueryString["MemberID"], out _res))
                     return _res;
-                else
-                    return int.MinValue;
+                return int.MinValue;
             }
             set { _memberID = value; }
+        }
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            ctrlAdminFieldToolBar.AdminUserName = Username;
+            ctrlCustomPagerInfo.PageChanged += ctrlCustomPagerInfo_PageChanged;
+
+            if (!IsPostBack)
+            {
+                BindData();
+            }
         }
 
         private void BindData()
@@ -75,27 +77,28 @@ namespace iArsenal.Web
                 {
                     tmpString = ViewState["MemberType"].ToString();
                     if (!string.IsNullOrEmpty(tmpString) && tmpString != "0")
-                        returnValue = returnValue && ((int)x.MemberType).ToString().Equals(tmpString);
+                        returnValue = returnValue && ((int) x.MemberType).ToString().Equals(tmpString);
                 }
 
                 if (ViewState["Evalution"] != null)
                 {
                     tmpString = ViewState["Evalution"].ToString();
                     if (!string.IsNullOrEmpty(tmpString) && tmpString != "0")
-                        returnValue = returnValue && ((int)x.Evalution).ToString().Equals(tmpString);
+                        returnValue = returnValue && ((int) x.Evalution).ToString().Equals(tmpString);
                 }
 
                 return returnValue;
             });
 
             #region set GridView Selected PageIndex
+
             if (MemberID > 0)
             {
                 var i = list.FindIndex(x => x.ID.Equals(MemberID));
                 if (i >= 0)
                 {
-                    gvMember.PageIndex = i / gvMember.PageSize;
-                    gvMember.SelectedIndex = i % gvMember.PageSize;
+                    gvMember.PageIndex = i/gvMember.PageSize;
+                    gvMember.SelectedIndex = i%gvMember.PageSize;
                 }
                 else
                 {
@@ -107,12 +110,14 @@ namespace iArsenal.Web
             {
                 gvMember.SelectedIndex = -1;
             }
+
             #endregion
 
             gvMember.DataSource = list;
             gvMember.DataBind();
 
             #region set Control Custom Pager
+
             if (gvMember.BottomPagerRow != null)
             {
                 gvMember.BottomPagerRow.Visible = true;
@@ -127,6 +132,7 @@ namespace iArsenal.Web
             {
                 ctrlCustomPagerInfo.Visible = false;
             }
+
             #endregion
         }
 
@@ -138,7 +144,7 @@ namespace iArsenal.Web
             BindData();
         }
 
-        protected void ctrlCustomPagerInfo_PageChanged(object sender, Control.CustomPagerInfo.DataNavigatorEventArgs e)
+        protected void ctrlCustomPagerInfo_PageChanged(object sender, CustomPagerInfo.DataNavigatorEventArgs e)
         {
             if (e.PageIndex > 0)
             {
@@ -154,7 +160,7 @@ namespace iArsenal.Web
             if (gvMember.SelectedIndex != -1)
             {
                 Response.Redirect(
-                    $"AdminMemberView.aspx?MemberID={gvMember.DataKeys[gvMember.SelectedIndex].Value.ToString()}");
+                    $"AdminMemberView.aspx?MemberID={gvMember.DataKeys[gvMember.SelectedIndex].Value}");
             }
         }
 
@@ -162,7 +168,8 @@ namespace iArsenal.Web
         {
             Member.Cache.RefreshCache();
 
-            ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('更新缓存成功');window.location.href=window.location.href", true);
+            ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                "alert('更新缓存成功');window.location.href=window.location.href", true);
         }
 
         protected void btnFilter_Click(object sender, EventArgs e)
@@ -230,7 +237,6 @@ namespace iArsenal.Web
 
                     hlName.NavigateUrl = $"AdminOrder.aspx?MemberID={m.ID}";
                 }
-
             }
         }
     }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-
 using Arsenalcn.Core;
 using Arsenalcn.Core.Utility;
 using iArsenal.Service;
@@ -10,29 +9,30 @@ namespace iArsenal.Web
     public partial class AdminMemberView : AdminPageBase
     {
         private readonly IRepository repo = new Repository();
-        protected void Page_Load(object sender, EventArgs e)
-        {
-            ctrlAdminFieldToolBar.AdminUserName = this.Username;
-
-            tbAcnSessionKey.Text = this.SessionKey;
-
-            if (!IsPostBack)
-            {
-                InitForm();
-            }
-        }
 
         private int MemberID
         {
             get
             {
                 int _memberID;
-                if (!string.IsNullOrEmpty(Request.QueryString["MemberID"]) && int.TryParse(Request.QueryString["MemberID"], out _memberID))
+                if (!string.IsNullOrEmpty(Request.QueryString["MemberID"]) &&
+                    int.TryParse(Request.QueryString["MemberID"], out _memberID))
                 {
                     return _memberID;
                 }
-                else
-                    return int.MinValue;
+                return int.MinValue;
+            }
+        }
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            ctrlAdminFieldToolBar.AdminUserName = Username;
+
+            tbAcnSessionKey.Text = SessionKey;
+
+            if (!IsPostBack)
+            {
+                InitForm();
             }
         }
 
@@ -42,12 +42,12 @@ namespace iArsenal.Web
             {
                 var m = repo.Single<Member>(MemberID);
 
-                lblMemberInfo.Text = $"会员姓名<em>({MemberID.ToString()})</em>:";
+                lblMemberInfo.Text = $"会员姓名<em>({MemberID})</em>:";
 
                 tbName.Text = m.Name;
                 cbIsActive.Checked = m.IsActive;
-                ddlEvalution.SelectedValue = ((int)m.Evalution).ToString();
-                ddlMemberType.SelectedValue = ((int)m.MemberType).ToString();
+                ddlEvalution.SelectedValue = ((int) m.Evalution).ToString();
+                ddlMemberType.SelectedValue = ((int) m.MemberType).ToString();
                 tbMemberCardNo.Text = m.MemberCardNo;
                 tbAcnID.Text = m.AcnID.ToString();
                 tbAcnName.Text = m.AcnName;
@@ -72,6 +72,7 @@ namespace iArsenal.Web
                 tbQQ.Text = m.QQ;
 
                 #region Set Member Nation & Region
+
                 if (!string.IsNullOrEmpty(m.Nation))
                 {
                     if (m.Nation.Equals("中国"))
@@ -103,6 +104,7 @@ namespace iArsenal.Web
                 {
                     ddlNation.SelectedValue = string.Empty;
                 }
+
                 #endregion
 
                 tbCareer.Text = m.Career;
@@ -137,7 +139,7 @@ namespace iArsenal.Web
             if (gvMemberPeriod.SelectedIndex != -1)
             {
                 Response.Redirect(
-                    $"AdminMemberPeriodView.aspx?MemberPeriodID={gvMemberPeriod.DataKeys[gvMemberPeriod.SelectedIndex].Value.ToString()}");
+                    $"AdminMemberPeriodView.aspx?MemberPeriodID={gvMemberPeriod.DataKeys[gvMemberPeriod.SelectedIndex].Value}");
             }
         }
 
@@ -154,8 +156,8 @@ namespace iArsenal.Web
 
                 m.Name = tbName.Text.Trim();
                 m.IsActive = cbIsActive.Checked;
-                m.Evalution = (MemberEvalution)Enum.Parse(typeof(MemberEvalution), ddlEvalution.SelectedValue);
-                m.MemberType = (MemberType)Enum.Parse(typeof(MemberType), ddlMemberType.SelectedValue);
+                m.Evalution = (MemberEvalution) Enum.Parse(typeof (MemberEvalution), ddlEvalution.SelectedValue);
+                m.MemberType = (MemberType) Enum.Parse(typeof (MemberType), ddlMemberType.SelectedValue);
                 m.MemberCardNo = tbMemberCardNo.Text.Trim();
                 m.AcnID = Convert.ToInt32(tbAcnID.Text.Trim());
                 m.AcnName = tbAcnName.Text.Trim();
@@ -187,6 +189,7 @@ namespace iArsenal.Web
                 m.QQ = tbQQ.Text.Trim();
 
                 #region Get Member Nation & Region
+
                 var _nation = ddlNation.SelectedValue;
 
                 if (!string.IsNullOrEmpty(_nation))
@@ -226,6 +229,7 @@ namespace iArsenal.Web
                     m.Nation = string.Empty;
                     m.Region = string.Empty;
                 }
+
                 #endregion
 
                 m.Career = tbCareer.Text.Trim();
@@ -239,6 +243,7 @@ namespace iArsenal.Web
                 m.Remark = tbRemark.Text.Trim();
 
                 #region Filter Member By AcnID
+
                 var tmpMID = int.MinValue;
 
                 var tmpMem = repo.Query<Member>(x => x.AcnID == m.AcnID).FirstOrDefault();
@@ -247,6 +252,7 @@ namespace iArsenal.Web
                 {
                     tmpMID = tmpMem.ID > 0 ? tmpMem.ID : int.MinValue;
                 }
+
                 #endregion
 
                 if (MemberID > 0 && (MemberID.Equals(tmpMID) || tmpMID <= 0))
@@ -254,30 +260,29 @@ namespace iArsenal.Web
                     repo.Update(m);
                     Member.Cache.RefreshCache();
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('更新成功');window.location.href=window.location.href", true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                        "alert('更新成功');window.location.href=window.location.href", true);
                 }
                 else
                 {
                     if (tmpMID > 0)
                     {
                         var msg =
-                            $"if (confirm('该会员的AcnID已经注册,是否跳转?')) {{ window.location.href = 'AdminMemberView.aspx?MemberID={tmpMID.ToString()}'; }}";
-                        ClientScript.RegisterClientScriptBlock(typeof(string), "failed", msg, true);
+                            $"if (confirm('该会员的AcnID已经注册,是否跳转?')) {{ window.location.href = 'AdminMemberView.aspx?MemberID={tmpMID}'; }}";
+                        ClientScript.RegisterClientScriptBlock(typeof (string), "failed", msg, true);
                         //ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("JumpToMemberViewer('{0}')", tmpMID.ToString()), true);
-                        throw new Exception($"AcnID in use for Member(No.{tmpMID.ToString()})");
+                        throw new Exception($"AcnID in use for Member(No.{tmpMID})");
                     }
-                    else
-                    {
-                        repo.Insert(m);
-                        Member.Cache.RefreshCache();
+                    repo.Insert(m);
+                    Member.Cache.RefreshCache();
 
-                        ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('添加成功');window.location.href = 'AdminMember.aspx'", true);
-                    }
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                        "alert('添加成功');window.location.href = 'AdminMember.aspx'", true);
                 }
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message.ToString()}')", true);
+                ClientScript.RegisterClientScriptBlock(typeof (string), "failed", $"alert('{ex.Message}')", true);
             }
         }
 
@@ -285,7 +290,7 @@ namespace iArsenal.Web
         {
             if (MemberID > 0)
             {
-                Response.Redirect("AdminMember.aspx?MemberID=" + MemberID.ToString());
+                Response.Redirect("AdminMember.aspx?MemberID=" + MemberID);
             }
             else
             {
@@ -301,7 +306,8 @@ namespace iArsenal.Web
                 {
                     repo.Delete<Member>(MemberID);
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('删除成功');window.location.href='AdminMember.aspx'", true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                        "alert('删除成功');window.location.href='AdminMember.aspx'", true);
                 }
                 else
                 {
@@ -310,7 +316,7 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message.ToString()}')", true);
+                ClientScript.RegisterClientScriptBlock(typeof (string), "failed", $"alert('{ex.Message}')", true);
             }
         }
     }

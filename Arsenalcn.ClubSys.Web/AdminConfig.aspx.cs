@@ -1,15 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Web.UI.WebControls;
+using Arsenalcn.ClubSys.Service;
+using Arsenalcn.ClubSys.Web.Common;
 using Arsenalcn.Common.Entity;
 
 namespace Arsenalcn.ClubSys.Web
 {
-    public partial class AdminConfig : Common.AdminBasePage
+    public partial class AdminConfig : AdminBasePage
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            ctrlAdminFieldToolBar.AdminUserName = this.username;
+            ctrlAdminFieldToolBar.AdminUserName = username;
 
             if (!IsPostBack)
             {
@@ -19,7 +20,8 @@ namespace Arsenalcn.ClubSys.Web
 
         private void BindData()
         {
-            var list = Config.GetConfigs().FindAll(delegate(Config c) { return c.ConfigSystem.Equals(ConfigSystem.AcnClub); });
+            var list =
+                Config.GetConfigs().FindAll(delegate(Config c) { return c.ConfigSystem.Equals(ConfigSystem.AcnClub); });
 
             gvSysConfig.DataSource = list;
             gvSysConfig.DataBind();
@@ -51,8 +53,8 @@ namespace Arsenalcn.ClubSys.Web
                 }
                 catch (Exception ex)
                 {
-                    this.ClientScript.RegisterClientScriptBlock(typeof(string), "failed",
-                        $"alert('{ex.Message.ToString()}');", true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "failed",
+                        $"alert('{ex.Message}');", true);
                 }
             }
 
@@ -81,17 +83,18 @@ namespace Arsenalcn.ClubSys.Web
             {
                 Config.Cache.RefreshCache();
 
-                Service.Match.Cache.RefreshCache();
-                Service.Player.Cache.RefreshCache();
-                Service.Team.Cache.RefreshCache();
-                Service.Video.Cache.RefreshCache();
+                Match.Cache.RefreshCache();
+                Player.Cache.RefreshCache();
+                Team.Cache.RefreshCache();
+                Video.Cache.RefreshCache();
 
-                ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('更新全部缓存成功');window.location.href=window.location.href", true);
+                ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                    "alert('更新全部缓存成功');window.location.href=window.location.href", true);
             }
             catch (Exception ex)
             {
-                this.ClientScript.RegisterClientScriptBlock(typeof(string), "failed",
-                    $"alert('{ex.Message.ToString()}');", true);
+                ClientScript.RegisterClientScriptBlock(typeof (string), "failed",
+                    $"alert('{ex.Message}');", true);
             }
         }
     }

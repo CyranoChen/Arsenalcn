@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-
 using Arsenalcn.Common;
-
 using Discuz.Forum;
 
 namespace Arsenalcn.CasinoSys.Entity
 {
     public class Match
     {
-        public Match() { }
+        public Match()
+        {
+        }
 
         public Match(Guid matchGuid)
         {
@@ -25,17 +25,37 @@ namespace Arsenalcn.CasinoSys.Entity
             InitMatch(dr);
         }
 
+        public Guid MatchGuid { get; set; }
+
+        public Guid Home { get; set; }
+
+        public Guid Away { get; set; }
+
+        public short? ResultHome { get; set; }
+
+        public short? ResultAway { get; set; }
+
+        public DateTime PlayTime { get; set; }
+
+        public Guid LeagueGuid { get; set; }
+
+        public string LeagueName { get; set; }
+
+        public int? Round { get; set; }
+
+        public Guid? GroupGuid { get; set; }
+
         private void InitMatch(DataRow dr)
         {
             if (dr != null)
             {
-                MatchGuid = (Guid)dr["MatchGuid"];
-                Home = (Guid)dr["Home"];
-                Away = (Guid)dr["Away"];
-                LeagueGuid = (Guid)dr["LeagueGuid"];
+                MatchGuid = (Guid) dr["MatchGuid"];
+                Home = (Guid) dr["Home"];
+                Away = (Guid) dr["Away"];
+                LeagueGuid = (Guid) dr["LeagueGuid"];
 
                 if (!Convert.IsDBNull(dr["GroupGuid"]))
-                    GroupGuid = (Guid)dr["GroupGuid"];
+                    GroupGuid = (Guid) dr["GroupGuid"];
                 else
                     GroupGuid = null;
 
@@ -49,7 +69,7 @@ namespace Arsenalcn.CasinoSys.Entity
                 else
                     ResultAway = null;
 
-                PlayTime = (DateTime)dr["PlayTime"];
+                PlayTime = (DateTime) dr["PlayTime"];
                 LeagueName = dr["LeagueName"].ToString();
 
                 if (!Convert.IsDBNull(dr["Round"]))
@@ -63,7 +83,8 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public void Update()
         {
-            DataAccess.Match.UpdateMatch(MatchGuid, Home, Away, ResultHome, ResultAway, PlayTime, LeagueGuid, LeagueName, Round, GroupGuid);
+            DataAccess.Match.UpdateMatch(MatchGuid, Home, Away, ResultHome, ResultAway, PlayTime, LeagueGuid, LeagueName,
+                Round, GroupGuid);
         }
 
         public void Insert(int userID, string username, float winRate, float drawRate, float loseRate)
@@ -74,10 +95,11 @@ namespace Arsenalcn.CasinoSys.Entity
                 var trans = conn.BeginTransaction();
                 try
                 {
-                    DataAccess.Match.InsertMatch(MatchGuid, Home, Away, PlayTime, LeagueGuid, LeagueName, Round, GroupGuid, trans);
+                    DataAccess.Match.InsertMatch(MatchGuid, Home, Away, PlayTime, LeagueGuid, LeagueName, Round,
+                        GroupGuid, trans);
 
                     //add matchResult
-                    var itemMatchResult = (MatchResult)CasinoItem.CreateInstance(CasinoType.MatchResult);
+                    var itemMatchResult = (MatchResult) CasinoItem.CreateInstance(CasinoType.MatchResult);
                     itemMatchResult.MatchGuid = MatchGuid;
                     itemMatchResult.CreateTime = DateTime.Now;
                     itemMatchResult.PublishTime = DateTime.Now;
@@ -91,7 +113,7 @@ namespace Arsenalcn.CasinoSys.Entity
                     itemMatchResult.Save(trans);
 
                     //add singleChoice
-                    var itemSingleChoice = (SingleChoice)CasinoItem.CreateInstance(CasinoType.SingleChoice);
+                    var itemSingleChoice = (SingleChoice) CasinoItem.CreateInstance(CasinoType.SingleChoice);
                     itemSingleChoice.MatchGuid = MatchGuid;
                     itemSingleChoice.CreateTime = DateTime.Now;
                     itemSingleChoice.PublishTime = DateTime.Now;
@@ -103,9 +125,27 @@ namespace Arsenalcn.CasinoSys.Entity
                     itemSingleChoice.OwnerUserName = username;
                     itemSingleChoice.FloatingRate = false;
 
-                    itemSingleChoice.Options.Add(new ChoiceOption() { OptionDisplay = "主队胜", OptionValue = MatchChoiceOption.HomeWinValue, OptionRate = winRate, OrderID = 1 });
-                    itemSingleChoice.Options.Add(new ChoiceOption() { OptionDisplay = "双方平", OptionValue = MatchChoiceOption.DrawValue, OptionRate = drawRate, OrderID = 2 });
-                    itemSingleChoice.Options.Add(new ChoiceOption() { OptionDisplay = "客队胜", OptionValue = MatchChoiceOption.AwayWinValue, OptionRate = loseRate, OrderID = 3 });
+                    itemSingleChoice.Options.Add(new ChoiceOption
+                    {
+                        OptionDisplay = "主队胜",
+                        OptionValue = MatchChoiceOption.HomeWinValue,
+                        OptionRate = winRate,
+                        OrderID = 1
+                    });
+                    itemSingleChoice.Options.Add(new ChoiceOption
+                    {
+                        OptionDisplay = "双方平",
+                        OptionValue = MatchChoiceOption.DrawValue,
+                        OptionRate = drawRate,
+                        OrderID = 2
+                    });
+                    itemSingleChoice.Options.Add(new ChoiceOption
+                    {
+                        OptionDisplay = "客队胜",
+                        OptionValue = MatchChoiceOption.AwayWinValue,
+                        OptionRate = loseRate,
+                        OrderID = 3
+                    });
 
                     itemSingleChoice.Save(trans);
 
@@ -155,7 +195,8 @@ namespace Arsenalcn.CasinoSys.Entity
                 var trans = conn.BeginTransaction();
                 try
                 {
-                    var casinoItemGuid = DataAccess.CasinoItem.GetCasinoItemGuidByMatch(MatchGuid, (int)CasinoType.SingleChoice, trans);
+                    var casinoItemGuid = DataAccess.CasinoItem.GetCasinoItemGuidByMatch(MatchGuid,
+                        (int) CasinoType.SingleChoice, trans);
                     if (casinoItemGuid.HasValue)
                     {
                         var item = CasinoItem.GetCasinoItem(casinoItemGuid.Value);
@@ -210,7 +251,8 @@ namespace Arsenalcn.CasinoSys.Entity
 
                 try
                 {
-                    var itemGuid = DataAccess.CasinoItem.GetCasinoItemGuidByMatch(MatchGuid, (int)CasinoType.SingleChoice, trans);
+                    var itemGuid = DataAccess.CasinoItem.GetCasinoItemGuidByMatch(MatchGuid,
+                        (int) CasinoType.SingleChoice, trans);
 
                     if (itemGuid.HasValue)
                     {
@@ -236,11 +278,14 @@ namespace Arsenalcn.CasinoSys.Entity
 
                                     var dr = dt.Rows[0];
 
-                                    if (dr["DetailName"].ToString() == MatchChoiceOption.HomeWinValue && ResultHome > ResultAway)
+                                    if (dr["DetailName"].ToString() == MatchChoiceOption.HomeWinValue &&
+                                        ResultHome > ResultAway)
                                         isWin = true;
-                                    else if (dr["DetailName"].ToString() == MatchChoiceOption.DrawValue && ResultHome == ResultAway)
+                                    else if (dr["DetailName"].ToString() == MatchChoiceOption.DrawValue &&
+                                             ResultHome == ResultAway)
                                         isWin = true;
-                                    else if (dr["DetailName"].ToString() == MatchChoiceOption.AwayWinValue && ResultHome < ResultAway)
+                                    else if (dr["DetailName"].ToString() == MatchChoiceOption.AwayWinValue &&
+                                             ResultHome < ResultAway)
                                         isWin = true;
 
                                     bet.IsWin = isWin;
@@ -249,7 +294,7 @@ namespace Arsenalcn.CasinoSys.Entity
 
                                     if (isWin)
                                     {
-                                        bet.Earning = bet.BetAmount * bet.BetRate;
+                                        bet.Earning = bet.BetAmount*bet.BetRate;
                                         bet.EarningDesc = $"{bet.Earning.Value:N2}";
 
                                         totalEarning -= bet.Earning.Value;
@@ -281,7 +326,8 @@ namespace Arsenalcn.CasinoSys.Entity
                         item.Save(trans);
                     }
 
-                    itemGuid = DataAccess.CasinoItem.GetCasinoItemGuidByMatch(MatchGuid, (int)CasinoType.MatchResult, trans);
+                    itemGuid = DataAccess.CasinoItem.GetCasinoItemGuidByMatch(MatchGuid, (int) CasinoType.MatchResult,
+                        trans);
 
                     if (itemGuid.HasValue)
                     {
@@ -346,35 +392,5 @@ namespace Arsenalcn.CasinoSys.Entity
         {
             DataAccess.MatchResult.UpdateMatchResult(casinoItem, home, away, null);
         }
-
-        public Guid MatchGuid
-        { get; set; }
-
-        public Guid Home
-        { get; set; }
-
-        public Guid Away
-        { get; set; }
-
-        public short? ResultHome
-        { get; set; }
-
-        public short? ResultAway
-        { get; set; }
-
-        public DateTime PlayTime
-        { get; set; }
-
-        public Guid LeagueGuid
-        { get; set; }
-
-        public string LeagueName
-        { get; set; }
-
-        public int? Round
-        { get; set; }
-
-        public Guid? GroupGuid
-        { get; set; }
     }
 }

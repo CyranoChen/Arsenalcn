@@ -1,4 +1,5 @@
 ﻿<%@ Control Language="C#" CodeBehind="LeftPanel.ascx.cs" Inherits="Arsenalcn.CasinoSys.Web.Control.LeftPanel" %>
+<%@ Import Namespace="Arsenalcn.CasinoSys.Entity" %>
 <%@ Register Src="TopContestList.ascx" TagName="TopContestList" TagPrefix="uc1" %>
 <%@ Register Src="TopGamblerList.ascx" TagName="TopGamblerList" TagPrefix="uc2" %>
 <%@ Register Src="TopMatchList.ascx" TagName="TopMatchList" TagPrefix="uc3" %>
@@ -9,7 +10,7 @@
         </h3>
         <div class="Block">
             <p class="CasinoSys_Notice">
-                <%=Arsenalcn.CasinoSys.Entity.ConfigGlobal.SysNotice %>
+                <%= ConfigGlobal.SysNotice %>
             </p>
         </div>
     </asp:Panel>
@@ -20,16 +21,24 @@
         <div class="Block">
             <ul>
                 <asp:Literal ID="ltrlMyGamblerInfo" runat="server"></asp:Literal>
-                <li><a href="MyGambler.aspx">我的账户(充值|套现)</a></li>
-                <li><a href="MyCoupon.aspx">我的投注单</a></li>
-                <li><a href="MyBetLog.aspx">我的中奖查询</a></li>
-                <li><a href="MyBonusLog.aspx">我的盈亏情况</a></li>
+                <li>
+                    <a href="MyGambler.aspx">我的账户(充值|套现)</a>
+                </li>
+                <li>
+                    <a href="MyCoupon.aspx">我的投注单</a>
+                </li>
+                <li>
+                    <a href="MyBetLog.aspx">我的中奖查询</a>
+                </li>
+                <li>
+                    <a href="MyBonusLog.aspx">我的盈亏情况</a>
+                </li>
             </ul>
         </div>
     </asp:Panel>
-    <uc1:TopContestList ID="ctrlTopContestList" runat="server" />
-    <uc2:TopGamblerList ID="ctrlTopGamblerList" runat="server" />
-    <uc3:TopMatchList ID="ctrlTopMatchList" runat="server" Visible="false" />
+    <uc1:TopContestList ID="ctrlTopContestList" runat="server"/>
+    <uc2:TopGamblerList ID="ctrlTopGamblerList" runat="server"/>
+    <uc3:TopMatchList ID="ctrlTopMatchList" runat="server" Visible="false"/>
     <asp:Panel ID="pnlDev" runat="server" CssClass="InfoPanel" Visible="false">
         <h3 class="Col" onclick="$(this).toggleClass('Col'); $(this).toggleClass('Exp'); $(this).next('div').toggle('normal');">
             <a>程序开发与支持</a>

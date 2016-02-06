@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using Arsenalcn.ClubSys.Entity;
-using Discuz.Entity;
 using Discuz.Forum;
 
 namespace Arsenalcn.ClubSys.Service
@@ -50,7 +48,7 @@ namespace Arsenalcn.ClubSys.Service
                 uc.JoinClubDate = DateTime.Now;
                 uc.FromDate = DateTime.Now;
                 uc.IsActive = true;
-                uc.Responsibility = (int)Responsibility.Member;
+                uc.Responsibility = (int) Responsibility.Member;
                 uc.Userid = ah.Userid;
                 uc.UserName = ah.UserName;
 
@@ -87,15 +85,14 @@ namespace Arsenalcn.ClubSys.Service
                 uc.ToDate = DateTime.Now;
                 uc.IsActive = false;
 
-                if (uc.Responsibility == (int)Responsibility.Manager)
+                if (uc.Responsibility == (int) Responsibility.Manager)
                     return false;
 
                 ClubLogic.SaveUserClub(uc);
 
                 return true;
             }
-            else
-                return false;
+            return false;
         }
 
         public static bool LeaveClub(int userID, int clubID, bool isKicked, string kickUserName)
@@ -107,7 +104,7 @@ namespace Arsenalcn.ClubSys.Service
                 uc.ToDate = DateTime.Now;
                 uc.IsActive = false;
 
-                if (uc.Responsibility == (int)Responsibility.Manager)
+                if (uc.Responsibility == (int) Responsibility.Manager)
                     return false;
 
                 ClubLogic.SaveUserClub(uc);
@@ -119,7 +116,8 @@ namespace Arsenalcn.ClubSys.Service
                 if (isKicked)
                 {
                     ch.ActionType = ClubHistoryActionType.MandatoryLeaveClub.ToString();
-                    ch.ActionDescription = ClubLogic.BuildClubHistoryActionDesc(ClubHistoryActionType.MandatoryLeaveClub, null);
+                    ch.ActionDescription = ClubLogic.BuildClubHistoryActionDesc(
+                        ClubHistoryActionType.MandatoryLeaveClub, null);
                     ch.OperatorUserName = kickUserName;
                 }
                 else
@@ -138,14 +136,14 @@ namespace Arsenalcn.ClubSys.Service
 
                 return true;
             }
-            else
-                return false;
+            return false;
         }
 
-        public static void ChangeResponsibility(int userID, string userName, int clubID, Responsibility res, string operatorUserName)
+        public static void ChangeResponsibility(int userID, string userName, int clubID, Responsibility res,
+            string operatorUserName)
         {
             var userClub = ClubLogic.GetActiveUserClub(userID, clubID);
-            if (userClub != null && userClub.Responsibility == (int)res)
+            if (userClub != null && userClub.Responsibility == (int) res)
                 return;
 
             var club = ClubLogic.GetClubInfo(clubID);
@@ -155,6 +153,7 @@ namespace Arsenalcn.ClubSys.Service
                 if (res == Responsibility.Manager)
                 {
                     #region Proceed previous manager user club info
+
                     var preManagerUid = club.ManagerUid.Value;
                     var preManagerName = club.ManagerUserName;
                     LeaveClub(preManagerUid, clubID);
@@ -166,11 +165,12 @@ namespace Arsenalcn.ClubSys.Service
                     preUC.JoinClubDate = preManagerUc.JoinClubDate;
                     preUC.FromDate = DateTime.Now;
                     preUC.IsActive = true;
-                    preUC.Responsibility = (int)Responsibility.Member;
+                    preUC.Responsibility = (int) Responsibility.Member;
                     preUC.Userid = preManagerUid;
                     preUC.UserName = preManagerName;
 
                     ClubLogic.SaveUserClub(preUC);
+
                     #endregion
 
                     club.ManagerUid = userID;
@@ -195,20 +195,22 @@ namespace Arsenalcn.ClubSys.Service
                 ch.ActionUserName = userName;
                 ch.OperatorUserName = operatorUserName;
 
-                if (userClub.Responsibility.Value > (int)res)
+                if (userClub.Responsibility.Value > (int) res)
                 {
                     //nominate
                     ch.ActionType = ClubHistoryActionType.Nominated.ToString();
-                    ch.ActionDescription = ClubLogic.BuildClubHistoryActionDesc(ClubHistoryActionType.Nominated, ClubLogic.TranslateResponsibility(res));
+                    ch.ActionDescription = ClubLogic.BuildClubHistoryActionDesc(ClubHistoryActionType.Nominated,
+                        ClubLogic.TranslateResponsibility(res));
                 }
                 else
                 {
                     //dismiss
                     ch.ActionType = ClubHistoryActionType.Dismiss.ToString();
-                    ch.ActionDescription = ClubLogic.BuildClubHistoryActionDesc(ClubHistoryActionType.Dismiss, ClubLogic.TranslateResponsibility(res));
+                    ch.ActionDescription = ClubLogic.BuildClubHistoryActionDesc(ClubHistoryActionType.Dismiss,
+                        ClubLogic.TranslateResponsibility(res));
                 }
 
-                uc.Responsibility = (int)res;
+                uc.Responsibility = (int) res;
 
                 ClubLogic.SaveUserClub(uc);
                 ClubLogic.SaveClubHistory(ch);
@@ -230,8 +232,7 @@ namespace Arsenalcn.ClubSys.Service
 
                 return true;
             }
-            else
-                return false;
+            return false;
         }
 
         internal static bool JoinClub(int userID, string userName, int clubID)
@@ -243,8 +244,7 @@ namespace Arsenalcn.ClubSys.Service
                 ApplyJoinClub(userID, userName, clubID);
                 return true;
             }
-            else
-                return false;
+            return false;
         }
 
         public static bool UserClubAction(int userID, string userName, int clubID, UserClubStatus uct)
@@ -267,27 +267,32 @@ namespace Arsenalcn.ClubSys.Service
             return false;
         }
 
-        public static void TransferMemberExtcredit(int clubID, int fromUserID, int toUserID, float extCredit, int extCreditType)
+        public static void TransferMemberExtcredit(int clubID, int fromUserID, int toUserID, float extCredit,
+            int extCreditType)
         {
             //UserClub ucFrom = ClubLogic.GetActiveUserClub(fromUserID, clubID);
             //UserClub ucTo = ClubLogic.GetActiveUserClub(toUserID, clubID);
 
-            var userFrom = AdminUsers.GetUserInfo(fromUserID);
-            var userTo = AdminUsers.GetUserInfo(toUserID);
+            var userFrom = Users.GetUserInfo(fromUserID);
+            var userTo = Users.GetUserInfo(toUserID);
 
             if (fromUserID != toUserID)
             {
-                if (extCredit > AdminUsers.GetUserExtCredits(fromUserID, extCreditType))
-                { throw new Exception("Insufficient Founds"); }
+                if (extCredit > Users.GetUserExtCredits(fromUserID, extCreditType))
+                {
+                    throw new Exception("Insufficient Founds");
+                }
 
                 var list = ClubLogic.GetUserManagedClubs(fromUserID);
                 if (list == null || list.Count <= 0)
-                { throw new Exception("No privilege of tranfer"); }
+                {
+                    throw new Exception("No privilege of tranfer");
+                }
 
                 // Transfer Logic
 
-                AdminUsers.UpdateUserExtCredits(fromUserID, extCreditType, -extCredit);
-                AdminUsers.UpdateUserExtCredits(toUserID, extCreditType, extCredit);
+                Users.UpdateUserExtCredits(fromUserID, extCreditType, -extCredit);
+                Users.UpdateUserExtCredits(toUserID, extCreditType, extCredit);
 
                 // Club History Log & SMS
 
@@ -295,12 +300,14 @@ namespace Arsenalcn.ClubSys.Service
                 ch.ClubID = clubID;
                 ch.ActionUserName = userTo.Username.Trim();
                 ch.ActionType = ClubHistoryActionType.TransferExtcredit.ToString();
-                ch.ActionDescription = ClubLogic.BuildClubHistoryActionDesc(ClubHistoryActionType.TransferExtcredit, userTo.Username.Trim(), extCredit.ToString(), "枪手币");
+                ch.ActionDescription = ClubLogic.BuildClubHistoryActionDesc(ClubHistoryActionType.TransferExtcredit,
+                    userTo.Username.Trim(), extCredit.ToString(), "枪手币");
                 ch.OperatorUserName = userFrom.Username.Trim();
 
                 ClubLogic.SaveClubHistory(ch);
 
-                ClubSysPrivateMessage.SendMessage(clubID, userTo.Username.Trim(), ClubSysMessageType.TransferExtcredit, userFrom.Username.Trim(), extCredit.ToString("N0"), "枪手币");
+                ClubSysPrivateMessage.SendMessage(clubID, userTo.Username.Trim(), ClubSysMessageType.TransferExtcredit,
+                    userFrom.Username.Trim(), extCredit.ToString("N0"), "枪手币");
             }
             else
             {
@@ -329,15 +336,14 @@ namespace Arsenalcn.ClubSys.Service
 
                             if (userInfo != null)
                             {
-                                clubMemberFortune += (int)userInfo.Extcredits2;
+                                clubMemberFortune += (int) userInfo.Extcredits2;
                                 clubMemberCredit += userInfo.Credits;
-                                clubMemberLoyalty += (int)(DateTime.Now - member.JoinClubDate.Value).TotalDays;
-                                clubMemberRP += (int)userInfo.Extcredits4;
+                                clubMemberLoyalty += (int) (DateTime.Now - member.JoinClubDate.Value).TotalDays;
+                                clubMemberRP += (int) userInfo.Extcredits4;
                             }
                         }
                         catch
                         {
-                            continue;
                         }
                     }
 
@@ -353,7 +359,6 @@ namespace Arsenalcn.ClubSys.Service
                 }
                 catch
                 {
-                    continue;
                 }
             }
         }
@@ -387,7 +392,6 @@ namespace Arsenalcn.ClubSys.Service
                         }
                         catch
                         {
-                            continue;
                         }
                     }
 
@@ -400,7 +404,6 @@ namespace Arsenalcn.ClubSys.Service
                 }
                 catch
                 {
-                    continue;
                 }
             }
         }

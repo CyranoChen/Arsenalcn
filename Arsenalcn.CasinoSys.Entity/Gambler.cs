@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-
 using Discuz.Forum;
 
 namespace Arsenalcn.CasinoSys.Entity
 {
     public class Gambler
     {
-        public Gambler() { }
+        public Gambler()
+        {
+        }
 
         private Gambler(DataRow dr)
         {
@@ -27,6 +28,7 @@ namespace Arsenalcn.CasinoSys.Entity
             else
             {
                 #region Insert new Gambler for new user
+
                 UserID = userID;
                 UserName = Users.GetShortUserInfo(userID).Username.Trim();
                 Cash = 0f;
@@ -43,6 +45,7 @@ namespace Arsenalcn.CasinoSys.Entity
                 Remark = string.Empty;
 
                 Insert(trans);
+
                 #endregion
             }
         }
@@ -103,13 +106,15 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public void Update(SqlTransaction trans = null)
         {
-            DataAccess.Gambler.UpdateGambler(GamblerID, UserID, UserName, Cash, TotalBet, Win, Lose, RPBonus, ContestRank, TotalRank,
+            DataAccess.Gambler.UpdateGambler(GamblerID, UserID, UserName, Cash, TotalBet, Win, Lose, RPBonus,
+                ContestRank, TotalRank,
                 Banker, JoinDate, IsActive, Description, Remark, trans);
         }
 
         public void Insert(SqlTransaction trans = null)
         {
-            GamblerID = DataAccess.Gambler.InsertGambler(GamblerID, UserID, UserName, Cash, TotalBet, Win, Lose, RPBonus, ContestRank, TotalRank,
+            GamblerID = DataAccess.Gambler.InsertGambler(GamblerID, UserID, UserName, Cash, TotalBet, Win, Lose, RPBonus,
+                ContestRank, TotalRank,
                 Banker, JoinDate, IsActive, Description, Remark, trans);
         }
 
@@ -134,50 +139,18 @@ namespace Arsenalcn.CasinoSys.Entity
             return list;
         }
 
-        public static class Cache
-        {
-            static Cache()
-            {
-                InitCache();
-            }
-
-            public static void RefreshCache()
-            {
-                InitCache();
-            }
-
-            private static void InitCache()
-            {
-                GamblerList = GetGamblers();
-            }
-
-            public static Gambler Load(Guid guid)
-            {
-                return GamblerList.Find(delegate(Gambler g) { return g.GamblerID.Equals(guid); });
-            }
-
-            public static Gambler LoadByUserID(int userID)
-            {
-                return GamblerList.Find(delegate(Gambler g) { return g.UserID.Equals(userID); });
-            }
-
-            public static List<Gambler> GamblerList;
-        }
-
         public static float GetGamblerTotalBetByUserID(int userID, Guid? leagueGuid = null)
         {
             if (leagueGuid.HasValue)
                 return DataAccess.Gambler.GetGamblerTotalBetByUserID(userID, leagueGuid.Value);
-            else
-                return DataAccess.Gambler.GetGamblerTotalBetByUserID(userID);
+            return DataAccess.Gambler.GetGamblerTotalBetByUserID(userID);
         }
 
         public static int GetGamblerRPByUserID(int userID, Guid? leagueGuid = null)
         {
             if (leagueGuid.HasValue)
                 return DataAccess.Gambler.GetGamblerRPByUserID(userID, leagueGuid.Value);
-            else
-                return DataAccess.Gambler.GetGamblerRPByUserID(userID);
+            return DataAccess.Gambler.GetGamblerRPByUserID(userID);
         }
 
         public static void GamblerStatistics()
@@ -225,10 +198,13 @@ namespace Arsenalcn.CasinoSys.Entity
             var listCasinoCamblerContest = CasinoGambler.GetCasinoGamblers(ConfigGlobal.DefaultLeagueID);
 
             if (listCasinoCamblerContest != null && listCasinoCamblerContest.Count > 0 &&
-                listCasinoCamblerContest.Exists(delegate(CasinoGambler casinoGambler) { return casinoGambler.UserID.Equals(userID); }))
+                listCasinoCamblerContest.Exists(
+                    delegate(CasinoGambler casinoGambler) { return casinoGambler.UserID.Equals(userID); }))
             {
                 listCasinoCamblerContest = CasinoGambler.SortCasinoGambler(listCasinoCamblerContest);
-                cgc = listCasinoCamblerContest.Find(delegate(CasinoGambler casinoGambler) { return casinoGambler.UserID.Equals(userID); });
+                cgc =
+                    listCasinoCamblerContest.Find(
+                        delegate(CasinoGambler casinoGambler) { return casinoGambler.UserID.Equals(userID); });
             }
 
             if (g != null && cg != null)
@@ -279,64 +255,89 @@ namespace Arsenalcn.CasinoSys.Entity
                     if (dtRanks != null)
                     {
                         //insert
-                        DataAccess.Rank.UpdateRank(iDay.Year, iDay.Month, Convert.ToInt32(dtWinner.Rows[0]["UserID"]), dtWinner.Rows[0]["UserName"].ToString().Trim(), Convert.ToSingle(dtWinner.Rows[0]["profit"]), Convert.ToSingle(dtWinner.Rows[0]["TotalBet"]), Convert.ToInt32(dtLoser.Rows[0]["UserID"]), dtLoser.Rows[0]["UserName"].ToString().Trim(), Convert.ToSingle(dtLoser.Rows[0]["profit"]), Convert.ToSingle(dtLoser.Rows[0]["TotalBet"]), Convert.ToInt32(dtRP.Rows[0]["UserID"]), dtRP.Rows[0]["UserName"].ToString().Trim(), Convert.ToInt32(dtRP.Rows[0]["RPBonus"]));
+                        DataAccess.Rank.UpdateRank(iDay.Year, iDay.Month, Convert.ToInt32(dtWinner.Rows[0]["UserID"]),
+                            dtWinner.Rows[0]["UserName"].ToString().Trim(), Convert.ToSingle(dtWinner.Rows[0]["profit"]),
+                            Convert.ToSingle(dtWinner.Rows[0]["TotalBet"]), Convert.ToInt32(dtLoser.Rows[0]["UserID"]),
+                            dtLoser.Rows[0]["UserName"].ToString().Trim(), Convert.ToSingle(dtLoser.Rows[0]["profit"]),
+                            Convert.ToSingle(dtLoser.Rows[0]["TotalBet"]), Convert.ToInt32(dtRP.Rows[0]["UserID"]),
+                            dtRP.Rows[0]["UserName"].ToString().Trim(), Convert.ToInt32(dtRP.Rows[0]["RPBonus"]));
                     }
                     else
                     {
                         //update
-                        DataAccess.Rank.InsertRank(iDay.Year, iDay.Month, Convert.ToInt32(dtWinner.Rows[0]["UserID"]), dtWinner.Rows[0]["UserName"].ToString().Trim(), Convert.ToSingle(dtWinner.Rows[0]["profit"]), Convert.ToSingle(dtWinner.Rows[0]["TotalBet"]), Convert.ToInt32(dtLoser.Rows[0]["UserID"]), dtLoser.Rows[0]["UserName"].ToString().Trim(), Convert.ToSingle(dtLoser.Rows[0]["profit"]), Convert.ToSingle(dtLoser.Rows[0]["TotalBet"]), Convert.ToInt32(dtRP.Rows[0]["UserID"]), dtRP.Rows[0]["UserName"].ToString().Trim(), Convert.ToInt32(dtRP.Rows[0]["RPBonus"]));
+                        DataAccess.Rank.InsertRank(iDay.Year, iDay.Month, Convert.ToInt32(dtWinner.Rows[0]["UserID"]),
+                            dtWinner.Rows[0]["UserName"].ToString().Trim(), Convert.ToSingle(dtWinner.Rows[0]["profit"]),
+                            Convert.ToSingle(dtWinner.Rows[0]["TotalBet"]), Convert.ToInt32(dtLoser.Rows[0]["UserID"]),
+                            dtLoser.Rows[0]["UserName"].ToString().Trim(), Convert.ToSingle(dtLoser.Rows[0]["profit"]),
+                            Convert.ToSingle(dtLoser.Rows[0]["TotalBet"]), Convert.ToInt32(dtRP.Rows[0]["UserID"]),
+                            dtRP.Rows[0]["UserName"].ToString().Trim(), Convert.ToInt32(dtRP.Rows[0]["RPBonus"]));
                     }
                 }
                 iDay = iDay.AddMonths(-1);
             }
         }
 
+        public static class Cache
+        {
+            public static List<Gambler> GamblerList;
+
+            static Cache()
+            {
+                InitCache();
+            }
+
+            public static void RefreshCache()
+            {
+                InitCache();
+            }
+
+            private static void InitCache()
+            {
+                GamblerList = GetGamblers();
+            }
+
+            public static Gambler Load(Guid guid)
+            {
+                return GamblerList.Find(delegate(Gambler g) { return g.GamblerID.Equals(guid); });
+            }
+
+            public static Gambler LoadByUserID(int userID)
+            {
+                return GamblerList.Find(delegate(Gambler g) { return g.UserID.Equals(userID); });
+            }
+        }
+
         #region Members and Properties
 
-        public int GamblerID
-        { get; set; }
+        public int GamblerID { get; set; }
 
-        public int UserID
-        { get; set; }
+        public int UserID { get; set; }
 
-        public string UserName
-        { get; set; }
+        public string UserName { get; set; }
 
-        public float Cash
-        { get; set; }
+        public float Cash { get; set; }
 
-        public float TotalBet
-        { get; set; }
+        public float TotalBet { get; set; }
 
-        public int Win
-        { get; set; }
+        public int Win { get; set; }
 
-        public int Lose
-        { get; set; }
+        public int Lose { get; set; }
 
-        public int? RPBonus
-        { get; set; }
+        public int? RPBonus { get; set; }
 
-        public int? ContestRank
-        { get; set; }
+        public int? ContestRank { get; set; }
 
-        public int TotalRank
-        { get; set; }
+        public int TotalRank { get; set; }
 
-        public int? Banker
-        { get; set; }
+        public int? Banker { get; set; }
 
-        public DateTime JoinDate
-        { get; set; }
+        public DateTime JoinDate { get; set; }
 
-        public bool IsActive
-        { get; set; }
+        public bool IsActive { get; set; }
 
-        public string Description
-        { get; set; }
+        public string Description { get; set; }
 
-        public string Remark
-        { get; set; }
+        public string Remark { get; set; }
 
         #endregion
     }

@@ -1,26 +1,17 @@
 ﻿using System;
 using System.Web.UI.WebControls;
-
-using iArsenal.Service;
 using Arsenalcn.Core;
+using iArsenal.Service;
+using iArsenal.Web.Control;
 
 namespace iArsenal.Web
 {
     public partial class AdminMemberPeriod : AdminPageBase
     {
         private readonly IRepository repo = new Repository();
-        protected void Page_Load(object sender, EventArgs e)
-        {
-            ctrlAdminFieldToolBar.AdminUserName = this.Username;
-            ctrlCustomPagerInfo.PageChanged += new Control.CustomPagerInfo.PageChangedEventHandler(ctrlCustomPagerInfo_PageChanged);
-
-            if (!IsPostBack)
-            {
-                BindData();
-            }
-        }
 
         private int _MemberPeriodID = int.MinValue;
+
         private int MemberPeriodID
         {
             get
@@ -28,12 +19,23 @@ namespace iArsenal.Web
                 int _res;
                 if (_MemberPeriodID == 0)
                     return _MemberPeriodID;
-                else if (!string.IsNullOrEmpty(Request.QueryString["MemberPeriodID"]) && int.TryParse(Request.QueryString["MemberPeriodID"], out _res))
+                if (!string.IsNullOrEmpty(Request.QueryString["MemberPeriodID"]) &&
+                    int.TryParse(Request.QueryString["MemberPeriodID"], out _res))
                     return _res;
-                else
-                    return int.MinValue;
+                return int.MinValue;
             }
             set { _MemberPeriodID = value; }
+        }
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            ctrlAdminFieldToolBar.AdminUserName = Username;
+            ctrlCustomPagerInfo.PageChanged += ctrlCustomPagerInfo_PageChanged;
+
+            if (!IsPostBack)
+            {
+                BindData();
+            }
         }
 
         private void BindData()
@@ -68,20 +70,21 @@ namespace iArsenal.Web
                 {
                     tmpString = ViewState["MemberClass"].ToString();
                     if (!string.IsNullOrEmpty(tmpString) && tmpString != "0")
-                        returnValue = returnValue && ((int)x.MemberClass).ToString().Equals(tmpString);
+                        returnValue = returnValue && ((int) x.MemberClass).ToString().Equals(tmpString);
                 }
 
                 return returnValue;
             });
 
             #region set GridView Selected PageIndex
+
             if (MemberPeriodID > 0)
             {
                 var i = list.FindIndex(x => x.ID.Equals(MemberPeriodID));
                 if (i >= 0)
                 {
-                    gvMemberPeriod.PageIndex = i / gvMemberPeriod.PageSize;
-                    gvMemberPeriod.SelectedIndex = i % gvMemberPeriod.PageSize;
+                    gvMemberPeriod.PageIndex = i/gvMemberPeriod.PageSize;
+                    gvMemberPeriod.SelectedIndex = i%gvMemberPeriod.PageSize;
                 }
                 else
                 {
@@ -93,12 +96,14 @@ namespace iArsenal.Web
             {
                 gvMemberPeriod.SelectedIndex = -1;
             }
+
             #endregion
 
             gvMemberPeriod.DataSource = list;
             gvMemberPeriod.DataBind();
 
             #region set Control Custom Pager
+
             if (gvMemberPeriod.BottomPagerRow != null)
             {
                 gvMemberPeriod.BottomPagerRow.Visible = true;
@@ -113,6 +118,7 @@ namespace iArsenal.Web
             {
                 ctrlCustomPagerInfo.Visible = false;
             }
+
             #endregion
         }
 
@@ -124,7 +130,7 @@ namespace iArsenal.Web
             BindData();
         }
 
-        protected void ctrlCustomPagerInfo_PageChanged(object sender, Control.CustomPagerInfo.DataNavigatorEventArgs e)
+        protected void ctrlCustomPagerInfo_PageChanged(object sender, CustomPagerInfo.DataNavigatorEventArgs e)
         {
             if (e.PageIndex > 0)
             {
@@ -140,7 +146,7 @@ namespace iArsenal.Web
             if (gvMemberPeriod.SelectedIndex != -1)
             {
                 Response.Redirect(
-                    $"AdminMemberPeriodView.aspx?MemberPeriodID={gvMemberPeriod.DataKeys[gvMemberPeriod.SelectedIndex].Value.ToString()}");
+                    $"AdminMemberPeriodView.aspx?MemberPeriodID={gvMemberPeriod.DataKeys[gvMemberPeriod.SelectedIndex].Value}");
             }
         }
 
@@ -201,7 +207,6 @@ namespace iArsenal.Web
 
                     hlName.NavigateUrl = $"AdminMemberView.aspx?MemberID={m.ID}";
                 }
-
             }
         }
     }

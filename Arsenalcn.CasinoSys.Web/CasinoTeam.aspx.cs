@@ -1,13 +1,52 @@
 ﻿using System;
 using System.Data;
 using System.Web.UI.WebControls;
-
 using Arsenalcn.CasinoSys.Entity;
+using Arsenalcn.CasinoSys.Web.Common;
+using Arsenalcn.CasinoSys.Web.Control;
 
 namespace Arsenalcn.CasinoSys.Web
 {
-    public partial class CasinoTeam : Common.BasePage
+    public partial class CasinoTeam : BasePage
     {
+        public Guid CurrentTeam
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(Request.QueryString["Team"]))
+                {
+                    try
+                    {
+                        return new Guid(Request.QueryString["Team"]);
+                    }
+                    catch
+                    {
+                        return Guid.Empty;
+                    }
+                }
+                return Guid.Empty;
+            }
+        }
+
+        public Guid CurrentMatch
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(Request.QueryString["Match"]))
+                {
+                    try
+                    {
+                        return new Guid(Request.QueryString["Match"]);
+                    }
+                    catch
+                    {
+                        return Guid.Empty;
+                    }
+                }
+                return Guid.Empty;
+            }
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             #region Assign Control Property
@@ -17,7 +56,7 @@ namespace Arsenalcn.CasinoSys.Web
 
             ctrlFieldTooBar.UserId = userid;
 
-            ctrlMenuTabBar.CurrentMenu = Control.CasinoMenuType.CasinoGame;
+            ctrlMenuTabBar.CurrentMenu = CasinoMenuType.CasinoGame;
 
             #endregion
 
@@ -57,46 +96,6 @@ namespace Arsenalcn.CasinoSys.Web
                 Response.Redirect("CasinoPortal.aspx");
         }
 
-        public Guid CurrentTeam
-        {
-            get
-            {
-                if (!string.IsNullOrEmpty(Request.QueryString["Team"]))
-                {
-                    try
-                    {
-                        return new Guid(Request.QueryString["Team"]);
-                    }
-                    catch
-                    {
-                        return Guid.Empty;
-                    }
-                }
-                else
-                    return Guid.Empty;
-            }
-        }
-
-        public Guid CurrentMatch
-        {
-            get
-            {
-                if (!string.IsNullOrEmpty(Request.QueryString["Match"]))
-                {
-                    try
-                    {
-                        return new Guid(Request.QueryString["Match"]);
-                    }
-                    catch
-                    {
-                        return Guid.Empty;
-                    }
-                }
-                else
-                    return Guid.Empty;
-            }
-        }
-
         protected void gvMatch_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
@@ -105,13 +104,14 @@ namespace Arsenalcn.CasinoSys.Web
 
                 if (drv != null)
                 {
-                    var m = new Match((Guid)drv["MatchGuid"]);
+                    var m = new Match((Guid) drv["MatchGuid"]);
 
                     var ltrlLeagueInfo = e.Row.FindControl("ltrlLeagueInfo") as Literal;
 
                     if (ltrlLeagueInfo != null)
                     {
-                        var strLeague = "<a href=\"CasinoGame.aspx?League={0}\" title=\"{1}\"><img src=\"{2}\" alt=\"{1}\" class=\"CasinoSys_CategoryImg\" /></a>";
+                        var strLeague =
+                            "<a href=\"CasinoGame.aspx?League={0}\" title=\"{1}\"><img src=\"{2}\" alt=\"{1}\" class=\"CasinoSys_CategoryImg\" /></a>";
 
                         var strLeagueName = $"{m.LeagueName}{(m.Round.HasValue ? $" 第{m.Round}轮" : string.Empty)}";
 
@@ -129,7 +129,8 @@ namespace Arsenalcn.CasinoSys.Web
                         var tHome = Team.Cache.Load(m.Home);
                         var tAway = Team.Cache.Load(m.Away);
 
-                        var strTeamName = "<a class=\"StrongLink\" href=\"CasinoTeam.aspx?Team={0}\"  title=\"{1}\">{2}</a> ";
+                        var strTeamName =
+                            "<a class=\"StrongLink\" href=\"CasinoTeam.aspx?Team={0}\"  title=\"{1}\">{2}</a> ";
                         var strTeamLogo = "<img src=\"{3}\" alt=\"{1}\" /> ";
 
                         lblHome.Text = string.Format(strTeamName + strTeamLogo,
@@ -154,7 +155,9 @@ namespace Arsenalcn.CasinoSys.Web
                     var betList = Bet.GetMatchAllBet(m.MatchGuid);
 
                     if (ltrlTotalBetCount != null)
-                    { ltrlTotalBetCount.Text = betList.Count.ToString(); }
+                    {
+                        ltrlTotalBetCount.Text = betList.Count.ToString();
+                    }
 
                     if (ltrlTotalBetCash != null)
                     {
@@ -166,7 +169,11 @@ namespace Arsenalcn.CasinoSys.Web
                     if (ltrlTotalWin != null)
                     {
                         float totalWin = 0;
-                        betList.ForEach(delegate(Bet bet) { totalWin += (bet.BetAmount.GetValueOrDefault(0f) - bet.Earning.GetValueOrDefault(0f)); });
+                        betList.ForEach(
+                            delegate(Bet bet)
+                            {
+                                totalWin += (bet.BetAmount.GetValueOrDefault(0f) - bet.Earning.GetValueOrDefault(0f));
+                            });
                         ltrlTotalWin.Text = totalWin.ToString("N2");
                     }
                 }

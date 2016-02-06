@@ -1,37 +1,31 @@
 ﻿using System;
-using System.Collections.Generic;
-
-using Arsenalcn.ClubSys.Service;
+using System.Web.UI;
 using Arsenalcn.ClubSys.Entity;
-
+using Arsenalcn.ClubSys.Service;
+using Arsenalcn.Common.Entity;
 using Discuz.Forum;
-using Discuz.Entity;
 
 namespace Arsenalcn.ClubSys.Web.Control
 {
-    public partial class FieldToolBar : System.Web.UI.UserControl
+    public partial class FieldToolBar : UserControl
     {
         private int userid = -1;
-        public int UserID
-        {
-            set
-            {
-                userid = value;
-            }
-        }
 
         private string username = string.Empty;
+
+        public int UserID
+        {
+            set { userid = value; }
+        }
+
         public string UserName
         {
-            set
-            {
-                username = value;
-            }
+            set { username = value; }
         }
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (this.userid == -1)
+            if (userid == -1)
             {
                 pnlFuncLink.Visible = false;
 
@@ -41,7 +35,7 @@ namespace Arsenalcn.ClubSys.Web.Control
             {
                 pnlFuncLink.Visible = true;
 
-                var myClubs = ClubLogic.GetActiveUserClubs(this.userid);
+                var myClubs = ClubLogic.GetActiveUserClubs(userid);
 
                 var leftCount = ConfigGlobal.SingleUserMaxClubCount - myClubs.Count;
 
@@ -50,9 +44,9 @@ namespace Arsenalcn.ClubSys.Web.Control
                     leftCount = 0;
                 }
 
-                ltrlToolBarTip.Text = $"<strong>提醒：您还可以加入<em>{leftCount.ToString()}</em>个球会</strong>";
+                ltrlToolBarTip.Text = $"<strong>提醒：您还可以加入<em>{leftCount}</em>个球会</strong>";
 
-                if (ConfigAdmin.IsPluginAdmin(this.userid))
+                if (ConfigAdmin.IsPluginAdmin(userid))
                 {
                     phAdministrator.Visible = true;
                 }
@@ -74,7 +68,14 @@ namespace Arsenalcn.ClubSys.Web.Control
 
                 var player = PlayerStrip.GetPlayerInfoByPlayerID(luckyPlayerID);
                 var clubs = ClubLogic.GetActiveUserClubs(player.UserID);
-                var IsLuckyPlayerLeader = clubs.Exists(delegate(Club club) { return ClubLogic.GetClubLeads(club.ID.Value).Exists(delegate(UserClub uc) { return uc.Userid == this.userid; }); });
+                var IsLuckyPlayerLeader =
+                    clubs.Exists(
+                        delegate(Club club)
+                        {
+                            return
+                                ClubLogic.GetClubLeads(club.ID.Value)
+                                    .Exists(delegate(UserClub uc) { return uc.Userid == this.userid; });
+                        });
 
                 if (DateTime.Now.Hour < ConfigGlobal.LuckyPlayerDeadline)
                 {
@@ -118,7 +119,6 @@ namespace Arsenalcn.ClubSys.Web.Control
             }
             else
                 phLuckPlayer.Visible = false;
-
         }
 
         protected void btnGetBonus_Click(object sender, EventArgs e)
@@ -126,10 +126,17 @@ namespace Arsenalcn.ClubSys.Web.Control
             var luckyPlayerID = ConfigGlobal.LuckyPlayerID;
 
             var player = PlayerStrip.GetPlayerInfoByPlayerID(luckyPlayerID);
-            var gPlayer = PlayerStrip.GetPlayerInfo(this.userid);
+            var gPlayer = PlayerStrip.GetPlayerInfo(userid);
 
             var clubs = ClubLogic.GetActiveUserClubs(player.UserID);
-            var isLuckyPlayerLeader = clubs.Exists(delegate(Club club) { return ClubLogic.GetClubLeads(club.ID.Value).Exists(delegate(UserClub uc) { return uc.Userid == this.userid; }); });
+            var isLuckyPlayerLeader =
+                clubs.Exists(
+                    delegate(Club club)
+                    {
+                        return
+                            ClubLogic.GetClubLeads(club.ID.Value)
+                                .Exists(delegate(UserClub uc) { return uc.Userid == this.userid; });
+                    });
 
             var script = string.Empty;
             var CanGetLuckyPlayerBonus = false;
@@ -141,10 +148,10 @@ namespace Arsenalcn.ClubSys.Web.Control
             {
                 var totalBonus = LuckyPlayer.CalcTotalBonus();
 
-                var bonusToUser = (int)(totalBonus * ConfigGlobal.LuckyPlayerBonusPercentage);
+                var bonusToUser = (int) (totalBonus*ConfigGlobal.LuckyPlayerBonusPercentage);
                 var bonusToClub = totalBonus - bonusToUser;
 
-                var userInfo = AdminUsers.GetUserInfo(userid);
+                var userInfo = Users.GetUserInfo(userid);
                 userInfo.Extcredits2 += bonusToUser;
 
                 AdminUsers.UpdateUserAllInfo(userInfo);
@@ -167,7 +174,7 @@ namespace Arsenalcn.ClubSys.Web.Control
 
                 LuckyPlayer.SetBonusGot(gPlayer.ID, bonusToClub, clubID, player.ID);
 
-                ConfigGlobal.Cache.RefreshCache();
+                Config.Cache.RefreshCache();
 
                 script = $"alert('您已获得幸运球员奖金{bonusToUser}枪手币，球会获得{bonusToClub}枪手币');";
 
@@ -180,7 +187,7 @@ namespace Arsenalcn.ClubSys.Web.Control
                 script = "alert('您无法领取今日的幸运球员奖金');";
             }
 
-            this.Page.ClientScript.RegisterClientScriptBlock(typeof(string), "alert", script, true);
+            Page.ClientScript.RegisterClientScriptBlock(typeof (string), "alert", script, true);
         }
     }
 }

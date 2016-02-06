@@ -1,16 +1,14 @@
 ﻿using System;
+using System.Data.SqlClient;
 
 namespace iArsenal.Service
 {
     public class OrdrItmReplicaKit : OrderItem
     {
-        public OrdrItmReplicaKit() { }
     }
 
     public class OrdrItmReplicaKitHome : OrdrItmReplicaKit
     {
-        public OrdrItmReplicaKitHome() { }
-
         public void Init()
         {
             if (ProductGuid == null)
@@ -22,7 +20,7 @@ namespace iArsenal.Service
                 throw new Exception("The OrderItem is not the type of ReplicaKitHome.");
         }
 
-        public void Place(Member m, System.Data.SqlClient.SqlTransaction trans = null)
+        public void Place(Member m, SqlTransaction trans = null)
         {
             var product = Product.Cache.ProductList.Find(p =>
                 p.ProductType.Equals(ProductType.ReplicaKitHome));
@@ -33,8 +31,6 @@ namespace iArsenal.Service
 
     public class OrdrItmReplicaKitAway : OrdrItmReplicaKit
     {
-        public OrdrItmReplicaKitAway() { }
-
         public void Init()
         {
             if (ProductGuid == null)
@@ -46,7 +42,7 @@ namespace iArsenal.Service
                 throw new Exception("The OrderItem is not the type of ReplicaKitAway.");
         }
 
-        public void Place(Member m, System.Data.SqlClient.SqlTransaction trans = null)
+        public void Place(Member m, SqlTransaction trans = null)
         {
             var product = Product.Cache.ProductList.Find(p =>
                 p.ProductType.Equals(ProductType.ReplicaKitAway));
@@ -57,8 +53,6 @@ namespace iArsenal.Service
 
     public class OrdrItmReplicaKitCup : OrdrItmReplicaKit
     {
-        public OrdrItmReplicaKitCup() { }
-
         public void Init()
         {
             if (ProductGuid == null)
@@ -70,7 +64,7 @@ namespace iArsenal.Service
                 throw new Exception("The OrderItem is not the type of ReplicaKitCup.");
         }
 
-        public void Place(Member m, System.Data.SqlClient.SqlTransaction trans = null)
+        public void Place(Member m, SqlTransaction trans = null)
         {
             var product = Product.Cache.ProductList.Find(p =>
                 p.ProductType.Equals(ProductType.ReplicaKitCup));
@@ -81,8 +75,6 @@ namespace iArsenal.Service
 
     public class OrdrItmPlayerNumber : OrderItem
     {
-        public OrdrItmPlayerNumber() { }
-
         public void Init()
         {
             if (ProductGuid == null)
@@ -94,7 +86,7 @@ namespace iArsenal.Service
                 throw new Exception("The OrderItem is not the type of PlayerNumber.");
         }
 
-        public void Place(Member m, System.Data.SqlClient.SqlTransaction trans = null)
+        public void Place(Member m, SqlTransaction trans = null)
         {
             var product = Product.Cache.ProductList.Find(p =>
                 p.ProductType.Equals(ProductType.PlayerNumber));
@@ -118,10 +110,7 @@ namespace iArsenal.Service
                 {
                     return new Guid(Remark);
                 }
-                else
-                {
-                    return Guid.Empty;
-                }
+                return Guid.Empty;
             }
         }
 
@@ -130,8 +119,6 @@ namespace iArsenal.Service
 
     public class OrdrItmPlayerName : OrderItem
     {
-        public OrdrItmPlayerName() { }
-
         public void Init()
         {
             if (ProductGuid == null)
@@ -143,7 +130,7 @@ namespace iArsenal.Service
                 throw new Exception("The OrderItem is not the type of PlayerName.");
         }
 
-        public void Place(Member m, System.Data.SqlClient.SqlTransaction trans = null)
+        public void Place(Member m, SqlTransaction trans = null)
         {
             var product = Product.Cache.ProductList.Find(p =>
                 p.ProductType.Equals(ProductType.PlayerName));
@@ -167,10 +154,7 @@ namespace iArsenal.Service
                 {
                     return new Guid(Remark);
                 }
-                else
-                {
-                    return Guid.Empty;
-                }
+                return Guid.Empty;
             }
         }
 
@@ -179,8 +163,6 @@ namespace iArsenal.Service
 
     public class OrdrItmArsenalFont : OrderItem
     {
-        public OrdrItmArsenalFont() { }
-
         public void Init()
         {
             if (ProductGuid == null)
@@ -192,7 +174,7 @@ namespace iArsenal.Service
                 throw new Exception("The OrderItem is not the type of ArsenalFont.");
         }
 
-        public void Place(Member m, System.Data.SqlClient.SqlTransaction trans = null)
+        public void Place(Member m, SqlTransaction trans = null)
         {
             var product = Product.Cache.ProductList.Find(p =>
                 p.ProductType.Equals(ProductType.ArsenalFont));
@@ -203,8 +185,6 @@ namespace iArsenal.Service
 
     public class OrdrItmPremiershipPatch : OrderItem
     {
-        public OrdrItmPremiershipPatch() { }
-
         public void Init()
         {
             if (ProductGuid == null)
@@ -216,7 +196,7 @@ namespace iArsenal.Service
                 throw new Exception("The OrderItem is not the type of PremiershipPatch.");
         }
 
-        public void Place(Member m, System.Data.SqlClient.SqlTransaction trans = null)
+        public void Place(Member m, SqlTransaction trans = null)
         {
             var product = Product.Cache.ProductList.Find(p =>
                 p.ProductType.Equals(ProductType.PremiershipPatch));
@@ -227,8 +207,6 @@ namespace iArsenal.Service
 
     public class OrdrItmChampionshipPatch : OrderItem
     {
-        public OrdrItmChampionshipPatch() { }
-
         public void Init()
         {
             if (ProductGuid == null)
@@ -240,7 +218,7 @@ namespace iArsenal.Service
                 throw new Exception("The OrderItem is not the type of ChampionshipPatch.");
         }
 
-        public void Place(Member m, System.Data.SqlClient.SqlTransaction trans = null)
+        public void Place(Member m, SqlTransaction trans = null)
         {
             var product = Product.Cache.ProductList.Find(p =>
                 p.ProductType.Equals(ProductType.ChampionshipPatch));

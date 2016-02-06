@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Web.UI.WebControls;
 using System.Linq;
-
+using System.Web.UI.WebControls;
 using Arsenal.Service;
+using Arsenal.Web.Control;
 using Arsenalcn.Core;
 
 namespace Arsenal.Web
@@ -11,14 +11,40 @@ namespace Arsenal.Web
     public partial class AdminMatch : AdminPageBase
     {
         private readonly IRepository repo = new Repository();
+
+        private Guid? _matchGuid;
+
+        private Guid? MatchGuid
+        {
+            get
+            {
+                if (_matchGuid.HasValue && _matchGuid == Guid.Empty)
+                    return _matchGuid;
+                if (!string.IsNullOrEmpty(Request.QueryString["MatchGuid"]))
+                {
+                    try
+                    {
+                        return new Guid(Request.QueryString["MatchGuid"]);
+                    }
+                    catch
+                    {
+                        return Guid.Empty;
+                    }
+                }
+                return null;
+            }
+            set { _matchGuid = value; }
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            ctrlAdminFieldToolBar.AdminUserName = this.Username;
-            ctrlCustomPagerInfo.PageChanged += new Control.CustomPagerInfo.PageChangedEventHandler(ctrlCustomPagerInfo_PageChanged);
+            ctrlAdminFieldToolBar.AdminUserName = Username;
+            ctrlCustomPagerInfo.PageChanged += ctrlCustomPagerInfo_PageChanged;
 
             if (!IsPostBack)
             {
                 #region Bind ddlLeague
+
                 var list = League.Cache.LeagueList.FindAll(l =>
                     Match.Cache.MatchList.Exists(m => m.LeagueGuid.Equals(l.ID)));
 
@@ -28,28 +54,11 @@ namespace Arsenal.Web
                 ddlLeague.DataBind();
 
                 ddlLeague.Items.Insert(0, new ListItem("--请选择比赛分类--", string.Empty));
+
                 #endregion
 
                 BindData();
             }
-        }
-
-        private Guid? _matchGuid = null;
-        private Guid? MatchGuid
-        {
-            get
-            {
-                if (_matchGuid.HasValue && _matchGuid == Guid.Empty)
-                    return _matchGuid;
-                else if (!string.IsNullOrEmpty(Request.QueryString["MatchGuid"]))
-                {
-                    try { return new Guid(Request.QueryString["MatchGuid"]); }
-                    catch { return Guid.Empty; }
-                }
-                else
-                    return null;
-            }
-            set { _matchGuid = value; }
         }
 
         private void BindData()
@@ -84,13 +93,14 @@ namespace Arsenal.Web
             });
 
             #region set GridView Selected PageIndex
+
             if (MatchGuid.HasValue && !MatchGuid.Value.Equals(Guid.Empty))
             {
                 var i = list.FindIndex(x => x.ID.Equals(MatchGuid));
                 if (i >= 0)
                 {
-                    gvMatch.PageIndex = i / gvMatch.PageSize;
-                    gvMatch.SelectedIndex = i % gvMatch.PageSize;
+                    gvMatch.PageIndex = i/gvMatch.PageSize;
+                    gvMatch.SelectedIndex = i%gvMatch.PageSize;
                 }
                 else
                 {
@@ -102,12 +112,14 @@ namespace Arsenal.Web
             {
                 gvMatch.SelectedIndex = -1;
             }
+
             #endregion
 
             gvMatch.DataSource = list;
             gvMatch.DataBind();
 
             #region set Control Custom Pager
+
             if (gvMatch.BottomPagerRow != null)
             {
                 gvMatch.BottomPagerRow.Visible = true;
@@ -122,6 +134,7 @@ namespace Arsenal.Web
             {
                 ctrlCustomPagerInfo.Visible = false;
             }
+
             #endregion
         }
 
@@ -133,7 +146,7 @@ namespace Arsenal.Web
             BindData();
         }
 
-        protected void ctrlCustomPagerInfo_PageChanged(object sender, Control.CustomPagerInfo.DataNavigatorEventArgs e)
+        protected void ctrlCustomPagerInfo_PageChanged(object sender, CustomPagerInfo.DataNavigatorEventArgs e)
         {
             if (e.PageIndex > 0)
             {
@@ -148,7 +161,8 @@ namespace Arsenal.Web
         {
             if (gvMatch.SelectedIndex != -1)
             {
-                Response.Redirect(string.Format("AdminMatchView.aspx?MatchGuid={0}", gvMatch.DataKeys[gvMatch.SelectedIndex].Value.ToString()));
+                Response.Redirect(string.Format("AdminMatchView.aspx?MatchGuid={0}",
+                    gvMatch.DataKeys[gvMatch.SelectedIndex].Value));
             }
         }
 
@@ -156,7 +170,8 @@ namespace Arsenal.Web
         {
             Match.Cache.RefreshCache();
 
-            ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('更新缓存成功');window.location.href = window.location.href", true);
+            ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                "alert('更新缓存成功');window.location.href = window.location.href", true);
         }
 
         private void BindTeamData(Guid guid)

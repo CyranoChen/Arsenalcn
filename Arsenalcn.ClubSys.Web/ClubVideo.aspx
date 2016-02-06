@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" MasterPageFile="DefaultMaster.master" CodeBehind="ClubVideo.aspx.cs"
-    Inherits="Arsenalcn.ClubSys.Web.ClubVideo" Title="{0} 视频名人堂" EnableViewState="false" %>
+Inherits="Arsenalcn.ClubSys.Web.ClubVideo" Title="{0} 视频名人堂" EnableViewState="false" %>
 <%@ Register Src="Control/LeftPanel.ascx" TagName="LeftPanel" TagPrefix="uc1" %>
 <%@ Register Src="Control/FieldToolBar.ascx" TagName="FieldToolBar" TagPrefix="uc2" %>
 <%@ Register Src="Control/MenuTabBar.ascx" TagName="MenuTabBar" TagPrefix="uc3" %>
@@ -7,11 +7,11 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="cphHead" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="cphMain" runat="server">
-    <uc1:LeftPanel ID="ctrlLeftPanel" runat="server" />
+    <uc1:LeftPanel ID="ctrlLeftPanel" runat="server"/>
     <div id="MainPanel">
-        <uc2:FieldToolBar ID="ctrlFieldToolBar" runat="server" />
-        <uc3:MenuTabBar ID="ctrlMenuTabBar" runat="server" />
-        <uc4:ClubSysHeader ID="ctrlClubSysHeader" runat="server" />
+        <uc2:FieldToolBar ID="ctrlFieldToolBar" runat="server"/>
+        <uc3:MenuTabBar ID="ctrlMenuTabBar" runat="server"/>
+        <uc4:ClubSysHeader ID="ctrlClubSysHeader" runat="server"/>
         <div class="FunctionBar">
             <div class="DivFloatLeft">
                 <asp:DropDownList ID="ddlGoalRank" runat="server" AutoPostBack="true">
@@ -30,7 +30,7 @@
             </div>
         </div>
         <asp:GridView ID="gvVideo" runat="server" OnPageIndexChanging="gvVideo_PageIndexChanging"
-            OnRowDataBound="gvVideo_RowDataBound">
+                      OnRowDataBound="gvVideo_RowDataBound">
             <Columns>
                 <asp:TemplateField HeaderText="视频卡">
                     <ItemTemplate>
@@ -38,10 +38,10 @@
                     </ItemTemplate>
                 </asp:TemplateField>
                 <asp:HyperLinkField HeaderText="最先获得" DataTextField="UserName" Target="_blank" DataNavigateUrlFields="UserID"
-                    DataNavigateUrlFormatString="MyCollection.aspx?type=Video&userid={0}" ControlStyle-CssClass="StrongLink" />
+                                    DataNavigateUrlFormatString="MyCollection.aspx?type=Video&userid={0}" ControlStyle-CssClass="StrongLink"/>
                 <asp:BoundField HeaderText="获得时间" DataField="ActiveDate" DataFormatString="<em>{0:yyyy-MM-dd HH:mm:ss}</em>"
-                    HtmlEncode="false" />
-                <asp:BoundField HeaderText="球员名" DataField="GoalPlayerName" />
+                                HtmlEncode="false"/>
+                <asp:BoundField HeaderText="球员名" DataField="GoalPlayerName"/>
                 <asp:TemplateField HeaderText="视频等级">
                     <ItemTemplate>
                         <asp:Literal ID="ltrlGoalRankInfo" runat="server"></asp:Literal>

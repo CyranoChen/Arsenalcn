@@ -1,46 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
-
-using Arsenalcn.ClubSys.Service;
+using System.Web.UI;
 using Arsenalcn.ClubSys.Entity;
+using Arsenalcn.ClubSys.Service;
 
 namespace Arsenalcn.ClubSys.Web.Control
 {
-    public partial class PlayerHeader : System.Web.UI.UserControl
+    public partial class PlayerHeader : UserControl
     {
-        private int _profileUserID = -1;
+        public int shirtLv;
+        public int shortsLv;
+        public int sockLv;
+
         /// <summary>
-        /// Current Profile User ID
+        ///     Current Profile User ID
         /// </summary>
-        public int ProfileUserID
-        {
-            get
-            {
-                return _profileUserID;
-            }
-            set
-            {
-                _profileUserID = value;
-            }
-        }
+        public int ProfileUserID { get; set; } = -1;
 
-        private int _userID = -1;
-
-        public int UserID
-        {
-            get
-            {
-                return _userID;
-            }
-            set
-            {
-                _userID = value;
-            }
-        }
-
-        public int shirtLv = 0;
-        public int shortsLv = 0;
-        public int sockLv = 0;
+        public int UserID { get; set; } = -1;
 
         public int PlayerLv
         {
@@ -55,8 +31,7 @@ namespace Arsenalcn.ClubSys.Web.Control
 
                 if (lv < sockLv)
                     return lv;
-                else
-                    return sockLv;
+                return sockLv;
             }
         }
 
@@ -77,7 +52,7 @@ namespace Arsenalcn.ClubSys.Web.Control
                 btnClub.Text = club.FullName;
                 btnClub.PostBackUrl = $"../ClubView.aspx?ClubID={club.ID.Value}";
 
-                if (ProfileUserID != _userID)
+                if (ProfileUserID != UserID)
                 {
                     btnGetStrip.Visible = false;
                     btnCardFusion.Visible = false;
@@ -104,13 +79,13 @@ namespace Arsenalcn.ClubSys.Web.Control
             }
             else
             {
-                ltrlRP.Text = (PlayerStrip.GetUserBingoGainCount(ProfileUserID) * 100 / TotalCount).ToString() + "%";
+                ltrlRP.Text = (PlayerStrip.GetUserBingoGainCount(ProfileUserID)*100/TotalCount) + "%";
             }
 
             var _playerLV = Math.Min(PlayerLv, ConfigGlobal.PlayerMaxLv);
 
             ltrlPlayerLV.Text =
-                $"<div class=\"ClubSys_PlayerLV\" style=\"width: {(_playerLV*20).ToString()}px;\" title=\"球员等级\"></div>";
+                $"<div class=\"ClubSys_PlayerLV\" style=\"width: {(_playerLV*20)}px;\" title=\"球员等级\"></div>";
         }
     }
 }

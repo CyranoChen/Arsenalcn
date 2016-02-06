@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="C#" CodeBehind="CollectionCard.ascx.cs" Inherits="Arsenalcn.ClubSys.Web.Control.CollectionCard"
-    EnableViewState="false" %>
+EnableViewState="false" %>
 <div class="FunctionBar">
     <div class="DivFloatLeft">
         <asp:DropDownList ID="ddlCardOrder" runat="server" AutoPostBack="true">
@@ -24,7 +24,8 @@
                 <asp:Label ID="lblPlayerCardPath" CssClass="SwfSrc" runat="server"></asp:Label>
                 <asp:Label ID="lblSetCurrent" runat="server" ToolTip="已使用" CssClass="CurrentStrip"></asp:Label>
                 <asp:LinkButton ID="btnSetCurrent" runat="server" ToolTip="点击使用" CommandName="SetCurrent"
-                    CssClass="BtnSetCurrent"></asp:LinkButton>
+                                CssClass="BtnSetCurrent">
+                </asp:LinkButton>
             </div>
         </ItemTemplate>
         <FooterTemplate>

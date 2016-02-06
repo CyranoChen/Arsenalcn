@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-
-using Microsoft.ApplicationBlocks.Data;
-
 using Arsenalcn.ClubSys.Entity;
 using Arsenalcn.Common;
+using Microsoft.ApplicationBlocks.Data;
 
 namespace Arsenalcn.ClubSys.Service
 {
@@ -16,66 +14,84 @@ namespace Arsenalcn.ClubSys.Service
         {
             var sql = "SELECT * FROM dbo.AcnClub_RelationUserVideo WHERE ID = @uvID";
 
-            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@uvID", uvID));
+            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql,
+                new SqlParameter("@uvID", uvID));
 
             if (ds.Tables[0].Rows.Count == 0)
                 return null;
-            else
-                return ds.Tables[0].Rows[0];
+            return ds.Tables[0].Rows[0];
         }
 
-        public static void UpdateUserVideo(int uvID, int userID, string userName, Guid videoGuid, DateTime activeDate, string userDesc, bool isPublic, SqlTransaction trans = null)
+        public static void UpdateUserVideo(int uvID, int userID, string userName, Guid videoGuid, DateTime activeDate,
+            string userDesc, bool isPublic, SqlTransaction trans = null)
         {
-            var sql = @"UPDATE dbo.AcnClub_RelationUserVideo SET UserID = @userID, UserName = @userName, VideoGuid = @videoGuid, 
+            var sql =
+                @"UPDATE dbo.AcnClub_RelationUserVideo SET UserID = @userID, UserName = @userName, VideoGuid = @videoGuid, 
                                   ActiveDate = @activeDate, UserDesc = @userDesc, IsPublic = @isPublic WHERE ID = @uvID";
 
-            SqlParameter[] para = {
-                                      new SqlParameter("@uvID", uvID),
-                                      new SqlParameter("@userID", userID),
-                                      new SqlParameter("@userName", userName),
-                                      new SqlParameter("@videoGuid", videoGuid),
-                                      new SqlParameter("@activeDate", activeDate),
-                                      new SqlParameter("@userDesc", userDesc),
-                                      new SqlParameter("@isPublic", isPublic),
-                                  };
+            SqlParameter[] para =
+            {
+                new SqlParameter("@uvID", uvID),
+                new SqlParameter("@userID", userID),
+                new SqlParameter("@userName", userName),
+                new SqlParameter("@videoGuid", videoGuid),
+                new SqlParameter("@activeDate", activeDate),
+                new SqlParameter("@userDesc", userDesc),
+                new SqlParameter("@isPublic", isPublic)
+            };
 
             if (trans == null)
-            { SqlHelper.ExecuteNonQuery(SQLConn.GetConnection(), CommandType.Text, sql, para); }
+            {
+                SqlHelper.ExecuteNonQuery(SQLConn.GetConnection(), CommandType.Text, sql, para);
+            }
             else
-            { SqlHelper.ExecuteNonQuery(trans, CommandType.Text, sql, para); }
+            {
+                SqlHelper.ExecuteNonQuery(trans, CommandType.Text, sql, para);
+            }
         }
 
-        public static void InsertUserVideo(int uvID, int userID, string userName, Guid videoGuid, DateTime activeDate, string userDesc, bool isPublic, SqlTransaction trans = null)
+        public static void InsertUserVideo(int uvID, int userID, string userName, Guid videoGuid, DateTime activeDate,
+            string userDesc, bool isPublic, SqlTransaction trans = null)
         {
-            var sql = @"INSERT INTO dbo.AcnClub_RelationUserVideo (UserID, UserName, VideoGuid, ActiveDate, UserDesc, IsPublic)  
+            var sql =
+                @"INSERT INTO dbo.AcnClub_RelationUserVideo (UserID, UserName, VideoGuid, ActiveDate, UserDesc, IsPublic)  
                                  VALUES (@userID, @userName, @videoGuid, @activeDate, @userDesc, @isPublic)";
 
-            SqlParameter[] para = {
-                                      new SqlParameter(),
-                                      new SqlParameter("@userID", userID),
-                                      new SqlParameter("@userName", userName),
-                                      new SqlParameter("@videoGuid", videoGuid),
-                                      new SqlParameter("@activeDate", activeDate),
-                                      new SqlParameter("@userDesc", userDesc),
-                                      new SqlParameter("@isPublic", isPublic),
-                                  };
+            SqlParameter[] para =
+            {
+                new SqlParameter(),
+                new SqlParameter("@userID", userID),
+                new SqlParameter("@userName", userName),
+                new SqlParameter("@videoGuid", videoGuid),
+                new SqlParameter("@activeDate", activeDate),
+                new SqlParameter("@userDesc", userDesc),
+                new SqlParameter("@isPublic", isPublic)
+            };
 
             if (trans == null)
-            { SqlHelper.ExecuteNonQuery(SQLConn.GetConnection(), CommandType.Text, sql, para); }
+            {
+                SqlHelper.ExecuteNonQuery(SQLConn.GetConnection(), CommandType.Text, sql, para);
+            }
             else
-            { SqlHelper.ExecuteNonQuery(trans, CommandType.Text, sql, para); }
+            {
+                SqlHelper.ExecuteNonQuery(trans, CommandType.Text, sql, para);
+            }
         }
 
         public static void DeleteUserVideo(int uvID, SqlTransaction trans = null)
         {
             var sql = "DELETE dbo.AcnClub_RelationUserVideo WHERE ID = @uvID";
 
-            SqlParameter[] para = { new SqlParameter("@uvID", uvID) };
+            SqlParameter[] para = {new SqlParameter("@uvID", uvID)};
 
             if (trans == null)
-            { SqlHelper.ExecuteNonQuery(SQLConn.GetConnection(), CommandType.Text, sql, para); }
+            {
+                SqlHelper.ExecuteNonQuery(SQLConn.GetConnection(), CommandType.Text, sql, para);
+            }
             else
-            { SqlHelper.ExecuteNonQuery(trans, CommandType.Text, sql, para); }
+            {
+                SqlHelper.ExecuteNonQuery(trans, CommandType.Text, sql, para);
+            }
         }
 
         public static DataTable GetUserVideos()
@@ -87,8 +103,7 @@ namespace Arsenalcn.ClubSys.Service
 
             if (ds.Tables[0].Rows.Count == 0)
                 return null;
-            else
-                return ds.Tables[0];
+            return ds.Tables[0];
         }
 
         //public static DataTable GetUserVideo(int userID)
@@ -137,14 +152,13 @@ namespace Arsenalcn.ClubSys.Service
 
                                   DROP TABLE #TmpUserClubVideo;";
 
-            SqlParameter[] para = { new SqlParameter("@clubID", clubID) };
+            SqlParameter[] para = {new SqlParameter("@clubID", clubID)};
 
             var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql, para);
 
             if (ds.Tables[0].Rows.Count == 0)
                 return null;
-            else
-                return ds.Tables[0];
+            return ds.Tables[0];
         }
 
         //public static DataRow GetVideoInfoByUserVideoID(int userVideoID)
@@ -277,15 +291,13 @@ namespace Arsenalcn.ClubSys.Service
                 var rand = new Random(Guid.NewGuid().GetHashCode());
                 return list[rand.Next(0, list.Count - 1)].ID;
             }
-            else
-            {
-                return null;
-            }
+            return null;
         }
 
         public static void ConsolidateCards(int userID, string userName, int userNumID1, int userNumID2)
         {
-            var sql = "DELETE FROM AcnClub_Card WHERE [ID] = @userNum1 OR [ID] = @userNum2 ; INSERT INTO dbo.AcnClub_Card (UserID, UserName, IsActive, IsInUse, GainDate, ActiveDate, ArsenalPlayerGuid) VALUES (@userID, @userName, 0, 0, getdate(), null, null);";
+            var sql =
+                "DELETE FROM AcnClub_Card WHERE [ID] = @userNum1 OR [ID] = @userNum2 ; INSERT INTO dbo.AcnClub_Card (UserID, UserName, IsActive, IsInUse, GainDate, ActiveDate, ArsenalPlayerGuid) VALUES (@userID, @userName, 0, 0, getdate(), null, null);";
 
             using (var con = SQLConn.GetConnection())
             {
@@ -326,18 +338,15 @@ namespace Arsenalcn.ClubSys.Service
 
         public static Guid? SetDailyVideo()
         {
-            var guid = UserVideo.GetRandomVideo(-1, 4, 5, null);
-            if ((guid.HasValue) && (ConfigGlobal.DailyVideoActive == true))
+            var guid = GetRandomVideo(-1, 4, 5, null);
+            if ((guid.HasValue) && ConfigGlobal.DailyVideoActive)
             {
                 if (ConfigGlobal.DailyVideoGuid.Equals(guid.Value))
-                    guid = UserVideo.GetRandomVideo(-1, 4, 5, null);
+                    guid = GetRandomVideo(-1, 4, 5, null);
 
                 return guid;
             }
-            else
-            {
-                return null;
-            }
+            return null;
         }
     }
 }

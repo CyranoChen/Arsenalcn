@@ -6,7 +6,9 @@ namespace Arsenalcn.Common.Entity
 {
     public class DictionaryItem
     {
-        public DictionaryItem() { }
+        public DictionaryItem()
+        {
+        }
 
         private DictionaryItem(DataRow dr)
         {
@@ -42,12 +44,14 @@ namespace Arsenalcn.Common.Entity
 
         private void Update()
         {
-            DataAccess.DictionaryItem.UpdateDictionaryItem(ItemID, DictionaryID, Code, Name, Description, CustomCode, Spell, ShortSpell, ParentID, OrderNum);
+            DataAccess.DictionaryItem.UpdateDictionaryItem(ItemID, DictionaryID, Code, Name, Description, CustomCode,
+                Spell, ShortSpell, ParentID, OrderNum);
         }
 
         private void Insert()
         {
-            DataAccess.DictionaryItem.InsertDictionaryItem(DictionaryID, Code, Name, Description, CustomCode, Spell, ShortSpell, ParentID, OrderNum);
+            DataAccess.DictionaryItem.InsertDictionaryItem(DictionaryID, Code, Name, Description, CustomCode, Spell,
+                ShortSpell, ParentID, OrderNum);
         }
 
         private void Delete()
@@ -73,6 +77,8 @@ namespace Arsenalcn.Common.Entity
 
         public static class Cache
         {
+            public static List<DictionaryItem> DictionaryItemList_Region;
+
             static Cache()
             {
                 InitCache();
@@ -86,49 +92,39 @@ namespace Arsenalcn.Common.Entity
             private static void InitCache()
             {
                 DictionaryItemList_Region = GetDictionaryItems();
-                DictionaryItemList_Region = DictionaryItemList_Region.FindAll(delegate(DictionaryItem di) { return di.DictionaryID == 108; });
-                DictionaryItemList_Region.Sort(delegate(DictionaryItem itemA, DictionaryItem itemB) { return itemA.OrderNum - itemB.OrderNum; });
+                DictionaryItemList_Region =
+                    DictionaryItemList_Region.FindAll(delegate(DictionaryItem di) { return di.DictionaryID == 108; });
+                DictionaryItemList_Region.Sort(
+                    delegate(DictionaryItem itemA, DictionaryItem itemB) { return itemA.OrderNum - itemB.OrderNum; });
             }
 
             public static DictionaryItem Load(int id)
             {
                 return DictionaryItemList_Region.Find(delegate(DictionaryItem i) { return i.ItemID == id; });
             }
-
-            public static List<DictionaryItem> DictionaryItemList_Region;
         }
 
         #region Members and Properties
 
-        public int ItemID
-        { get; set; }
+        public int ItemID { get; set; }
 
-        public int DictionaryID
-        { get; set; }
+        public int DictionaryID { get; set; }
 
-        public string Code
-        { get; set; }
+        public string Code { get; set; }
 
-        public string Name
-        { get; set; }
+        public string Name { get; set; }
 
-        public string Description
-        { get; set; }
+        public string Description { get; set; }
 
-        public string CustomCode
-        { get; set; }
+        public string CustomCode { get; set; }
 
-        public string Spell
-        { get; set; }
+        public string Spell { get; set; }
 
-        public string ShortSpell
-        { get; set; }
+        public string ShortSpell { get; set; }
 
-        public int ParentID
-        { get; set; }
+        public int ParentID { get; set; }
 
-        public int OrderNum
-        { get; set; }
+        public int OrderNum { get; set; }
 
         #endregion
     }

@@ -8,7 +8,9 @@ namespace Arsenalcn.CasinoSys.Entity
     {
         public static readonly Guid DefaultBankerID = ConfigGlobal.DefaultBankerID;
 
-        public Banker() { }
+        public Banker()
+        {
+        }
 
         public Banker(Guid bankerID)
         {
@@ -18,11 +20,21 @@ namespace Arsenalcn.CasinoSys.Entity
                 InitBanker(dr);
         }
 
+        public Guid BankerID { get; private set; }
+
+        public string BankerName { get; private set; }
+
+        public int? ClubID { get; private set; }
+
+        public float Cash { get; set; }
+
+        public bool IsActive { get; private set; }
+
         private void InitBanker(DataRow dr)
         {
             if (dr != null)
             {
-                BankerID = (Guid)dr["ID"];
+                BankerID = (Guid) dr["ID"];
                 BankerName = Convert.ToString(dr["BankerName"]);
 
                 if (Convert.IsDBNull(dr["ClubID"]))
@@ -50,26 +62,11 @@ namespace Arsenalcn.CasinoSys.Entity
             {
                 foreach (DataRow dr in dt.Rows)
                 {
-                    var banker = new Banker((Guid)dr["ID"]);
-                    banker.Cash = DataAccess.Bet.GetTotalEarningByBankerGuid((Guid)dr["ID"]);
+                    var banker = new Banker((Guid) dr["ID"]);
+                    banker.Cash = DataAccess.Bet.GetTotalEarningByBankerGuid((Guid) dr["ID"]);
                     banker.Update(null);
                 }
             }
         }
-
-        public Guid BankerID
-        { get; private set; }
-
-        public string BankerName
-        { get; private set; }
-
-        public int? ClubID
-        { get; private set; }
-
-        public float Cash
-        { get; set; }
-
-        public bool IsActive
-        { get; private set; }
     }
 }

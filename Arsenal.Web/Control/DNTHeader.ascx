@@ -2,7 +2,8 @@
 <div id="header">
     <h2>
         <a href="http://www.arsenalcn.com/" title="阿森纳中国官方球迷会">
-            <img src="App_Themes/arsenalcn/images/logo.png" alt="阿森纳中国官方球迷会" /></a>
+            <img src="App_Themes/arsenalcn/images/logo.png" alt="阿森纳中国官方球迷会"/>
+        </a>
     </h2>
     <asp:PlaceHolder ID="phAnonymous" runat="server">
         <span class="avataonline">
@@ -21,14 +22,30 @@
 </div>
 <div id="menubar">
     <ul id="menu" class="cl">
-        <li><a href="http://bbs.arsenalcn.com/plugin/acnclub/">球会</a></li>
-        <li><a href="http://bbs.arsenalcn.com/plugin/acncasino/">博彩</a></li>
-        <li><a href="http://arsenalcn.taobao.com" target="_blank">商城</a></li>
-        <li><a href="http://e.weibo.com/arsenalcn/" target="_blank">微博</a></li>
-        <li><a href="http://bbs.arsenalcn.com/showalbumlist.aspx">相册</a></li>
-        <li><a href="http://bbs.arsenalcn.com/showuser.aspx">会员</a></li>
-        <li><a href="http://bbs.arsenalcn.com/search.aspx" target="_blank">搜索</a></li>
-        <li><a href="http://bbs.arsenalcn.com/help.aspx">帮助</a> </li>
+        <li>
+            <a href="http://bbs.arsenalcn.com/plugin/acnclub/">球会</a>
+        </li>
+        <li>
+            <a href="http://bbs.arsenalcn.com/plugin/acncasino/">博彩</a>
+        </li>
+        <li>
+            <a href="http://arsenalcn.taobao.com" target="_blank">商城</a>
+        </li>
+        <li>
+            <a href="http://e.weibo.com/arsenalcn/" target="_blank">微博</a>
+        </li>
+        <li>
+            <a href="http://bbs.arsenalcn.com/showalbumlist.aspx">相册</a>
+        </li>
+        <li>
+            <a href="http://bbs.arsenalcn.com/showuser.aspx">会员</a>
+        </li>
+        <li>
+            <a href="http://bbs.arsenalcn.com/search.aspx" target="_blank">搜索</a>
+        </li>
+        <li>
+            <a href="http://bbs.arsenalcn.com/help.aspx">帮助</a>
+        </li>
     </ul>
 </div>
 <div id="nav">
@@ -37,7 +54,7 @@
     </div>
     <div id="stats">
         <script src="http://s22.cnzz.com/stat.php?id=4134306&web_id=4134306&online=1&show=line"
-            type="text/javascript"></script>
+                type="text/javascript"></script>
     </div>
     <div class="Clear">
     </div>

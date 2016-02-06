@@ -6,7 +6,9 @@ namespace Arsenalcn.Common.Entity
 {
     public class Dictionary
     {
-        public Dictionary() { }
+        public Dictionary()
+        {
+        }
 
         private Dictionary(DataRow dr)
         {
@@ -40,12 +42,14 @@ namespace Arsenalcn.Common.Entity
 
         private void Update()
         {
-            DataAccess.Dictionary.UpdateDictionary(DictionaryID, Name, DisplayName, StandardLevel, BusinessField, StandardCode, IsTreeDictionary, Description);
+            DataAccess.Dictionary.UpdateDictionary(DictionaryID, Name, DisplayName, StandardLevel, BusinessField,
+                StandardCode, IsTreeDictionary, Description);
         }
 
         private void Insert()
         {
-            DataAccess.Dictionary.InsertDictionary(Name, DisplayName, StandardLevel, BusinessField, StandardCode, IsTreeDictionary, Description);
+            DataAccess.Dictionary.InsertDictionary(Name, DisplayName, StandardLevel, BusinessField, StandardCode,
+                IsTreeDictionary, Description);
         }
 
         private void Delete()
@@ -71,6 +75,8 @@ namespace Arsenalcn.Common.Entity
 
         public static class Cache
         {
+            public static List<Dictionary> DictionaryList;
+
             static Cache()
             {
                 InitCache();
@@ -90,35 +96,25 @@ namespace Arsenalcn.Common.Entity
             {
                 return DictionaryList.Find(delegate(Dictionary d) { return d.DictionaryID == id; });
             }
-
-            public static List<Dictionary> DictionaryList;
         }
 
         #region Members and Properties
 
-        public int DictionaryID
-        { get; set; }
+        public int DictionaryID { get; set; }
 
-        public string Name
-        { get; set; }
+        public string Name { get; set; }
 
-        public string DisplayName
-        { get; set; }
+        public string DisplayName { get; set; }
 
-        public string StandardLevel
-        { get; set; }
+        public string StandardLevel { get; set; }
 
-        public string BusinessField
-        { get; set; }
+        public string BusinessField { get; set; }
 
-        public string StandardCode
-        { get; set; }
+        public string StandardCode { get; set; }
 
-        public Boolean IsTreeDictionary
-        { get; set; }
+        public bool IsTreeDictionary { get; set; }
 
-        public string Description
-        { get; set; }
+        public string Description { get; set; }
 
         #endregion
     }

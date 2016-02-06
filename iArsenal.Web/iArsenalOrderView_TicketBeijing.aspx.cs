@@ -1,13 +1,27 @@
 ﻿using System;
-
-using iArsenal.Service;
 using Arsenalcn.Core;
+using iArsenal.Service;
 
 namespace iArsenal.Web
 {
     public partial class iArsenalOrderView_TicketBeijing : MemberPageBase
     {
         private readonly IRepository repo = new Repository();
+
+        private int OrderID
+        {
+            get
+            {
+                int _orderID;
+                if (!string.IsNullOrEmpty(Request.QueryString["OrderID"]) &&
+                    int.TryParse(Request.QueryString["OrderID"], out _orderID))
+                {
+                    return _orderID;
+                }
+                return int.MinValue;
+            }
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -16,33 +30,19 @@ namespace iArsenal.Web
             }
         }
 
-        private int OrderID
-        {
-            get
-            {
-                int _orderID;
-                if (!string.IsNullOrEmpty(Request.QueryString["OrderID"]) && int.TryParse(Request.QueryString["OrderID"], out _orderID))
-                {
-                    return _orderID;
-                }
-                else
-                    return int.MinValue;
-            }
-        }
-
         private void InitForm()
         {
             try
             {
-                lblMemberName.Text = $"<b>{this.MemberName}</b> (<em>NO.{this.MID.ToString()}</em>)";
+                lblMemberName.Text = $"<b>{MemberName}</b> (<em>NO.{MID}</em>)";
 
                 if (OrderID > 0)
                 {
-                    var o = (OrdrTicket)Order.Select(OrderID);
+                    var o = (OrdrTicket) Order.Select(OrderID);
 
                     if (ConfigGlobal.IsPluginAdmin(UID) && o != null)
                     {
-                        lblMemberName.Text = $"<b>{o.MemberName}</b> (<em>NO.{o.MemberID.ToString()}</em>)";
+                        lblMemberName.Text = $"<b>{o.MemberName}</b> (<em>NO.{o.MemberID}</em>)";
                     }
                     else
                     {
@@ -71,7 +71,7 @@ namespace iArsenal.Web
                     lblOrderMobile.Text = $"<em>{o.Mobile}</em>";
                     lblOrderPayment.Text = o.PaymentInfo;
                     lblOrderDescription.Text = o.Description;
-                    lblOrderID.Text = $"<em>{o.ID.ToString()}</em>";
+                    lblOrderID.Text = $"<em>{o.ID}</em>";
                     lblOrderCreateTime.Text = o.CreateTime.ToString("yyyy-MM-dd HH:mm");
 
                     if (!string.IsNullOrEmpty(o.Remark))
@@ -112,7 +112,7 @@ namespace iArsenal.Web
                     // Set Order Price
 
                     price = oiTicket.TotalPrice;
-                    priceInfo = $"<合计> {oiTicket.UnitPrice.ToString("f2")} × {oiTicket.Quantity.ToString()}";
+                    priceInfo = $"<合计> {oiTicket.UnitPrice.ToString("f2")} × {oiTicket.Quantity}";
 
                     if (!o.Sale.HasValue)
                         lblOrderPrice.Text = $"{priceInfo} = <em>{price.ToString("f2")}</em>元 (CNY)";
@@ -148,8 +148,8 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed",
-                    $"alert('{ex.Message.ToString()}');window.location.href = 'iArsenalOrder.aspx'", true);
+                ClientScript.RegisterClientScriptBlock(typeof (string), "failed",
+                    $"alert('{ex.Message}');window.location.href = 'iArsenalOrder.aspx'", true);
             }
         }
 
@@ -170,13 +170,14 @@ namespace iArsenal.Web
 
                     repo.Update(o);
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
-                        $"alert('谢谢您的订购，您的订单已经提交成功。\\r\\n请尽快付款以完成订单确认，订单号为：{o.ID.ToString()}'); window.location.href = window.location.href", true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                        $"alert('谢谢您的订购，您的订单已经提交成功。\\r\\n请尽快付款以完成订单确认，订单号为：{o.ID}'); window.location.href = window.location.href",
+                        true);
                 }
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message.ToString()}');", true);
+                ClientScript.RegisterClientScriptBlock(typeof (string), "failed", $"alert('{ex.Message}');", true);
             }
         }
 
@@ -191,13 +192,13 @@ namespace iArsenal.Web
                     if (o == null || !o.MemberID.Equals(MID) || !o.IsActive)
                         throw new Exception("此订单无效或非当前用户订单");
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
-                        $"window.location.href = 'iArsenalOrder_TicketBeijing.aspx?OrderID={o.ID.ToString()}'", true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                        $"window.location.href = 'iArsenalOrder_TicketBeijing.aspx?OrderID={o.ID}'", true);
                 }
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message.ToString()}');", true);
+                ClientScript.RegisterClientScriptBlock(typeof (string), "failed", $"alert('{ex.Message}');", true);
             }
         }
 
@@ -218,13 +219,13 @@ namespace iArsenal.Web
 
                     repo.Update(o);
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
-                        $"alert('此订单({o.ID.ToString()})已经取消');window.location.href = 'iArsenalOrder.aspx'", true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                        $"alert('此订单({o.ID})已经取消');window.location.href = 'iArsenalOrder.aspx'", true);
                 }
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message.ToString()}');", true);
+                ClientScript.RegisterClientScriptBlock(typeof (string), "failed", $"alert('{ex.Message}');", true);
             }
         }
     }

@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Web;
 using System.Web.Script.Serialization;
-
 using iArsenal.Service;
 
 namespace iArsenal.Web
@@ -62,7 +60,8 @@ namespace iArsenal.Web
                 }
             }
 
-            if (!string.IsNullOrEmpty(context.Request.QueryString["IsActive"]) && !string.IsNullOrEmpty(context.Request.QueryString["ProductType"]))
+            if (!string.IsNullOrEmpty(context.Request.QueryString["IsActive"]) &&
+                !string.IsNullOrEmpty(context.Request.QueryString["ProductType"]))
             {
                 try
                 {
@@ -70,13 +69,17 @@ namespace iArsenal.Web
                     var _productType = int.Parse(context.Request.QueryString["ProductType"]);
 
                     var list = Product.Cache.ProductList.FindAll(
-                        p => p.IsActive.Equals(_isActive) && ((int)p.ProductType).Equals(_productType)); ;
+                        p => p.IsActive.Equals(_isActive) && ((int) p.ProductType).Equals(_productType));
+                    ;
 
                     if (list != null && list.Count > 0)
                     {
                         var alCode = new ArrayList();
 
-                        foreach (var p in list) { alCode.Add(p.Code); }
+                        foreach (var p in list)
+                        {
+                            alCode.Add(p.Code);
+                        }
 
                         var jsonSerializer = new JavaScriptSerializer();
                         responseText = jsonSerializer.Serialize(alCode);
@@ -102,10 +105,7 @@ namespace iArsenal.Web
 
         public bool IsReusable
         {
-            get
-            {
-                return true;
-            }
+            get { return true; }
         }
     }
 }

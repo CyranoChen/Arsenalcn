@@ -1,11 +1,16 @@
 ﻿using System;
-
+using System.Web.UI;
+using Arsenalcn.CasinoSys.Entity;
 using Discuz.Forum;
 
 namespace Arsenalcn.CasinoSys.Web.Control
 {
-    public partial class GamblerHeader : System.Web.UI.UserControl
+    public partial class GamblerHeader : UserControl
     {
+        public int UserId { get; set; }
+
+        public string UserName { get; set; }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!string.IsNullOrEmpty(Request.QueryString["UserID"]))
@@ -25,12 +30,12 @@ namespace Arsenalcn.CasinoSys.Web.Control
 
             if (UserId > 0)
             {
-                var currentGamlber = new Entity.Gambler(UserId);
+                var currentGamlber = new Gambler(UserId);
 
                 ltrlTotalBet.Text = currentGamlber.TotalBet.ToString("N2");
                 ltrlWin.Text = currentGamlber.Win.ToString();
                 ltrlLose.Text = currentGamlber.Lose.ToString();
-                ltrlEarning.Text = Entity.Bet.GetUserTotalWinCash(UserId).ToString("N2");
+                ltrlEarning.Text = Bet.GetUserTotalWinCash(UserId).ToString("N2");
                 ltrlCash.Text = currentGamlber.Cash.ToString("N2");
 
                 ltrlQSB.Text = Users.GetUserExtCredits(UserId, 2).ToString("N2");
@@ -59,15 +64,6 @@ namespace Arsenalcn.CasinoSys.Web.Control
 
                 hlUserName.Text = UserName;
             }
-        }
-
-        public int UserId
-        { get; set; }
-
-        public string UserName
-        {
-            get;
-            set;
         }
     }
 }

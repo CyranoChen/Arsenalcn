@@ -1,5 +1,4 @@
 ﻿using System;
-
 using Arsenal.Service;
 
 namespace Arsenal.Web
@@ -13,7 +12,7 @@ namespace Arsenal.Web
 
             base.OnInitComplete(e);
 
-            if (!ConfigGlobal.IsPluginAdmin(this.UID))
+            if (!ConfigGlobal.IsPluginAdmin(UID))
             {
                 Response.Redirect("Default.aspx");
             }

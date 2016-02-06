@@ -1,8 +1,9 @@
 ﻿using System;
+using Arsenalcn.ClubSys.Web.Common;
 
 namespace Arsenalcn.ClubSys.Web
 {
-    public partial class ClubCardFusion : Common.BasePage
+    public partial class ClubCardFusion : BasePage
     {
         protected override void OnInit(EventArgs e)
         {
@@ -14,15 +15,16 @@ namespace Arsenalcn.ClubSys.Web
         protected void Page_Load(object sender, EventArgs e)
         {
             #region SetControlProperty
-            ctrlLeftPanel.UserID = this.userid;
-            ctrlLeftPanel.UserName = this.username;
-            ctrlLeftPanel.UserKey = this.userkey;
 
-            ctrlFieldToolBar.UserID = this.userid;
-            ctrlFieldToolBar.UserName = this.username;
+            ctrlLeftPanel.UserID = userid;
+            ctrlLeftPanel.UserName = username;
+            ctrlLeftPanel.UserKey = userkey;
 
-            ctrlPlayerHeader.UserID = this.userid;
-            ctrlPlayerHeader.ProfileUserID = this.userid;
+            ctrlFieldToolBar.UserID = userid;
+            ctrlFieldToolBar.UserName = username;
+
+            ctrlPlayerHeader.UserID = userid;
+            ctrlPlayerHeader.ProfileUserID = userid;
 
             #endregion
 

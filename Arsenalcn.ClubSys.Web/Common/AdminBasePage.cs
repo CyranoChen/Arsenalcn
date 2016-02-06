@@ -1,5 +1,4 @@
 ﻿using System;
-
 using Arsenalcn.ClubSys.Entity;
 
 namespace Arsenalcn.ClubSys.Web.Common
@@ -13,7 +12,7 @@ namespace Arsenalcn.ClubSys.Web.Common
 
             base.OnInitComplete(e);
 
-            if (!ConfigAdmin.IsPluginAdmin(this.userid))
+            if (!ConfigAdmin.IsPluginAdmin(userid))
             {
                 Response.Redirect("ClubPortal.aspx");
             }

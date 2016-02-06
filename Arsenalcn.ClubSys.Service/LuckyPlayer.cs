@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
-
 using Arsenalcn.ClubSys.Entity;
 using Arsenalcn.Common;
 
@@ -24,16 +23,19 @@ namespace Arsenalcn.ClubSys.Service
 
                     con.Open();
 
-                    playerID = (int)com.ExecuteScalar();
+                    playerID = (int) com.ExecuteScalar();
 
                     //con.Close();
                 }
 
                 if (playerID > 0)
                 {
-                    sql = "IF NOT EXISTS (SELECT * FROM dbo.Arsenalcn_Config WHERE ConfigKey = 'LuckyPlayerID' AND ConfigSystem = 'AcnClub') INSERT INTO dbo.Arsenalcn_Config VALUES ('AcnClub', 'LuckyPlayerID', '-1'); UPDATE dbo.Arsenalcn_Config SET ConfigValue = @value WHERE ConfigKey = 'LuckyPlayerID' AND ConfigSystem = 'AcnClub'; ";
-                    sql = sql + "IF NOT EXISTS (SELECT * FROM dbo.Arsenalcn_Config WHERE ConfigKey = 'LuckyPlayerBonusGot'  AND ConfigSystem = 'AcnClub') INSERT INTO dbo.Arsenalcn_Config VALUES ('AcnClub', 'LuckyPlayerBonusGot', 'false'); UPDATE dbo.Arsenalcn_Config SET ConfigValue = 'false' WHERE ConfigKey = 'LuckyPlayerBonusGot' AND ConfigSystem = 'AcnClub'; ";
-                    sql = sql + "INSERT INTO dbo.AcnClub_LogLuckyPlayer (PlayerID, TotalBonus, [Date], BonusGot) values (@value, @bonus, getdate(), 0);";
+                    sql =
+                        "IF NOT EXISTS (SELECT * FROM dbo.Arsenalcn_Config WHERE ConfigKey = 'LuckyPlayerID' AND ConfigSystem = 'AcnClub') INSERT INTO dbo.Arsenalcn_Config VALUES ('AcnClub', 'LuckyPlayerID', '-1'); UPDATE dbo.Arsenalcn_Config SET ConfigValue = @value WHERE ConfigKey = 'LuckyPlayerID' AND ConfigSystem = 'AcnClub'; ";
+                    sql = sql +
+                          "IF NOT EXISTS (SELECT * FROM dbo.Arsenalcn_Config WHERE ConfigKey = 'LuckyPlayerBonusGot'  AND ConfigSystem = 'AcnClub') INSERT INTO dbo.Arsenalcn_Config VALUES ('AcnClub', 'LuckyPlayerBonusGot', 'false'); UPDATE dbo.Arsenalcn_Config SET ConfigValue = 'false' WHERE ConfigKey = 'LuckyPlayerBonusGot' AND ConfigSystem = 'AcnClub'; ";
+                    sql = sql +
+                          "INSERT INTO dbo.AcnClub_LogLuckyPlayer (PlayerID, TotalBonus, [Date], BonusGot) values (@value, @bonus, getdate(), 0);";
 
                     using (var con = SQLConn.GetConnection())
                     {
@@ -66,9 +68,9 @@ namespace Arsenalcn.ClubSys.Service
                 com.Parameters.Add(new SqlParameter("@fromDate", DateTime.Today.AddDays(-1)));
                 com.Parameters.Add(new SqlParameter("@toDate", DateTime.Today));
 
-                var count = (int)com.ExecuteScalar();
+                var count = (int) com.ExecuteScalar();
 
-                totalBonus = count * ConfigGlobal.BingoGetCost;
+                totalBonus = count*ConfigGlobal.BingoGetCost;
 
                 //con.Close();
             }
@@ -79,7 +81,8 @@ namespace Arsenalcn.ClubSys.Service
         public static void SetBonusGot(int playerID, int bonusToClub, int clubID, int luckyPlayerID)
         {
             var sql = "UPDATE dbo.Arsenalcn_Config SET ConfigValue = 'true' WHERE ConfigKey = 'LuckyPlayerBonusGot'; ";
-            sql = sql + "UPDATE dbo.AcnClub_LogLuckyPlayer SET BonusGot = 1 WHERE [ID] = (SELECT TOP 1 [ID] FROM AcnClub_LogLuckyPlayer ORDER BY [Date] DESC); ";
+            sql = sql +
+                  "UPDATE dbo.AcnClub_LogLuckyPlayer SET BonusGot = 1 WHERE [ID] = (SELECT TOP 1 [ID] FROM AcnClub_LogLuckyPlayer ORDER BY [Date] DESC); ";
 
             using (var con = SQLConn.GetConnection())
             {
@@ -91,10 +94,10 @@ namespace Arsenalcn.ClubSys.Service
 
                 //con.Close();
             }
-           
+
             var player = PlayerStrip.GetPlayerInfoByPlayerID(playerID);
             var lPlayer = PlayerStrip.GetPlayerInfoByPlayerID(luckyPlayerID);
-    
+
             if (player != null && clubID > 0)
             {
                 var ch = new ClubHistory();
@@ -102,7 +105,8 @@ namespace Arsenalcn.ClubSys.Service
                 ch.ActionUserName = lPlayer.UserName;
                 ch.OperatorUserName = player.UserName;
                 ch.ActionType = ClubHistoryActionType.LuckyPlayer.ToString();
-                ch.ActionDescription = ClubLogic.BuildClubHistoryActionDesc(ClubHistoryActionType.LuckyPlayer, bonusToClub.ToString(), lPlayer.UserName.ToString());
+                ch.ActionDescription = ClubLogic.BuildClubHistoryActionDesc(ClubHistoryActionType.LuckyPlayer,
+                    bonusToClub.ToString(), lPlayer.UserName);
 
                 ClubLogic.SaveClubHistory(ch);
             }
@@ -110,7 +114,8 @@ namespace Arsenalcn.ClubSys.Service
 
         public static DataTable GetLuckPlayerHistory()
         {
-            var sql = "SELECT * FROM dbo.AcnClub_LogLuckyPlayer lp INNER JOIN dbo.AcnClub_Player p ON lp.PlayerID = p.[ID] order by lp.ID desc";
+            var sql =
+                "SELECT * FROM dbo.AcnClub_LogLuckyPlayer lp INNER JOIN dbo.AcnClub_Player p ON lp.PlayerID = p.[ID] order by lp.ID desc";
 
             using (var con = SQLConn.GetConnection())
             {

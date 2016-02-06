@@ -1,71 +1,62 @@
 ﻿using System;
-using iArsenal.Service;
+using System.Web.UI;
 using Arsenalcn.Core;
+using iArsenal.Service;
 
 namespace iArsenal.Web.Control
 {
-    public partial class iArsenalHeader : System.Web.UI.UserControl
+    public partial class iArsenalHeader : UserControl
     {
         private readonly IRepository repo = new Repository();
 
+        private int _memberId = -1;
+
+        private string _memberName = string.Empty;
+
+        private int _userId = -1;
+
+        private string _userKey = string.Empty;
+
         private string _userName = string.Empty;
+
         /// <summary>
-        /// Current User Name
+        ///     Current User Name
         /// </summary>
         public string UserName
         {
-            set
-            {
-                _userName = value;
-            }
+            set { _userName = value; }
         }
 
-        private int _userId = -1;
         /// <summary>
-        /// Current User ID
+        ///     Current User ID
         /// </summary>
         public int UserID
         {
-            set
-            {
-                _userId = value;
-            }
+            set { _userId = value; }
         }
 
-        private string _userKey = string.Empty;
         /// <summary>
-        /// Current User Key
+        ///     Current User Key
         /// </summary>
         public string UserKey
         {
-            set
-            {
-                _userKey = value;
-            }
+            set { _userKey = value; }
         }
 
-        private string _memberName = string.Empty;
         /// <summary>
-        /// Current Member Name
+        ///     Current Member Name
         /// </summary>
         public string MemberName
         {
-            set
-            {
-                _memberName = value;
-            }
+            set { _memberName = value; }
         }
 
-        private int _memberId = -1;
         /// <summary>
-        /// Current Member ID
+        ///     Current Member ID
         /// </summary>
         public int MemberID
         {
-            set
-            {
-                _memberId = value;
-            }
+            set { _memberId = value; }
         }
 
         protected void Page_Load(object sender, EventArgs e)
@@ -79,16 +70,16 @@ namespace iArsenal.Web.Control
 
                 if (m != null && m.ID > 0)
                 {
-                    lblUserInfo.Text = $"欢迎访问，<b>{m.Name}</b> (<em>NO.{m.ID.ToString()}</em>)";
+                    lblUserInfo.Text = $"欢迎访问，<b>{m.Name}</b> (<em>NO.{m.ID}</em>)";
                 }
                 else
                 {
-                    lblUserInfo.Text = $"欢迎访问，<b>{_userName}</b> (<em>ID.{_userId.ToString()}</em>)";
+                    lblUserInfo.Text = $"欢迎访问，<b>{_userName}</b> (<em>ID.{_userId}</em>)";
                 }
 
                 if (ConfigGlobal.IsPluginAdmin(_userId))
                 {
-                    ltrlAdminConfig.Text = string.Format("<a href=\"AdminConfig.aspx\" target=\"_blank\">后台管理</a> - ");
+                    ltrlAdminConfig.Text = "<a href=\"AdminConfig.aspx\" target=\"_blank\">后台管理</a> - ";
                 }
                 else
                 {

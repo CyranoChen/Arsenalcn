@@ -45,12 +45,50 @@ namespace Arsenalcn.CasinoSys.Entity
             InitGroupTeam(dr);
         }
 
+        public Guid GroupGuid { get; set; }
+
+        public Guid TeamGuid { get; set; }
+
+        public short? PositionNo { get; set; }
+
+        public short? TotalPlayed { get; set; }
+
+        public short? TotalPoints { get; set; }
+
+        public short? HomeWon { get; set; }
+
+        public short? HomeDraw { get; set; }
+
+        public short? HomeLost { get; set; }
+
+        public short? HomeGoalFor { get; set; }
+
+        public short? HomeGoalAgainst { get; set; }
+
+        public short? HomeGoalDiff { get; set; }
+
+        public short? HomePoints { get; set; }
+
+        public short? AwayWon { get; set; }
+
+        public short? AwayDraw { get; set; }
+
+        public short? AwayLost { get; set; }
+
+        public short? AwayGoalFor { get; set; }
+
+        public short? AwayGoalAgainst { get; set; }
+
+        public short? AwayGoalDiff { get; set; }
+
+        public short? AwayPoints { get; set; }
+
         private void InitGroupTeam(DataRow dr)
         {
             if (dr != null)
             {
-                GroupGuid = (Guid)dr["GroupGuid"];
-                TeamGuid = (Guid)dr["TeamGuid"];
+                GroupGuid = (Guid) dr["GroupGuid"];
+                TeamGuid = (Guid) dr["TeamGuid"];
 
                 if (Convert.IsDBNull(dr["PositionNo"]))
                     PositionNo = null;
@@ -68,6 +106,7 @@ namespace Arsenalcn.CasinoSys.Entity
                     TotalPoints = Convert.ToInt16(dr["TotalPoints"]);
 
                 #region Group Team Home Columns
+
                 if (Convert.IsDBNull(dr["HomeWon"]))
                     HomeWon = null;
                 else
@@ -102,9 +141,11 @@ namespace Arsenalcn.CasinoSys.Entity
                     HomePoints = null;
                 else
                     HomePoints = Convert.ToInt16(dr["HomePoints"]);
+
                 #endregion
 
                 #region Group Team Away Columns
+
                 if (Convert.IsDBNull(dr["AwayWon"]))
                     AwayWon = null;
                 else
@@ -139,6 +180,7 @@ namespace Arsenalcn.CasinoSys.Entity
                     AwayPoints = null;
                 else
                     AwayPoints = Convert.ToInt16(dr["AwayPoints"]);
+
                 #endregion
             }
             else
@@ -171,7 +213,7 @@ namespace Arsenalcn.CasinoSys.Entity
 
             foreach (DataRow dr in dtGroupMatch.Rows)
             {
-                var match = new Match((Guid)dr["MatchGuid"]);
+                var match = new Match((Guid) dr["MatchGuid"]);
 
                 if (match != null)
                 {
@@ -227,64 +269,9 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public void Update()
         {
-            DataAccess.Group.UpdateRelationGroupTeam(GroupGuid, TeamGuid, PositionNo, TotalPlayed, HomeWon, HomeDraw, HomeLost, HomeGoalFor, HomeGoalAgainst, HomeGoalDiff, HomePoints, AwayWon, AwayDraw, AwayLost, AwayGoalFor, AwayGoalAgainst, AwayGoalDiff, AwayPoints, TotalPoints);
+            DataAccess.Group.UpdateRelationGroupTeam(GroupGuid, TeamGuid, PositionNo, TotalPlayed, HomeWon, HomeDraw,
+                HomeLost, HomeGoalFor, HomeGoalAgainst, HomeGoalDiff, HomePoints, AwayWon, AwayDraw, AwayLost,
+                AwayGoalFor, AwayGoalAgainst, AwayGoalDiff, AwayPoints, TotalPoints);
         }
-
-        public Guid GroupGuid
-        { get; set; }
-
-        public Guid TeamGuid
-        { get; set; }
-
-        public short? PositionNo
-        { get; set; }
-
-        public short? TotalPlayed
-        { get; set; }
-
-        public short? TotalPoints
-        { get; set; }
-
-        public short? HomeWon
-        { get; set; }
-
-        public short? HomeDraw
-        { get; set; }
-
-        public short? HomeLost
-        { get; set; }
-
-        public short? HomeGoalFor
-        { get; set; }
-
-        public short? HomeGoalAgainst
-        { get; set; }
-
-        public short? HomeGoalDiff
-        { get; set; }
-
-        public short? HomePoints
-        { get; set; }
-
-        public short? AwayWon
-        { get; set; }
-
-        public short? AwayDraw
-        { get; set; }
-
-        public short? AwayLost
-        { get; set; }
-
-        public short? AwayGoalFor
-        { get; set; }
-
-        public short? AwayGoalAgainst
-        { get; set; }
-
-        public short? AwayGoalDiff
-        { get; set; }
-
-        public short? AwayPoints
-        { get; set; }
     }
 }

@@ -5,7 +5,6 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Web;
 using System.Xml;
-
 using iArsenal.Service;
 
 namespace iArsenal.Web
@@ -16,7 +15,8 @@ namespace iArsenal.Web
         {
             var responseText = string.Empty;
 
-            if (!string.IsNullOrEmpty(context.Request.QueryString["AcnID"]) && !string.IsNullOrEmpty(context.Request.QueryString["SessionKey"]))
+            if (!string.IsNullOrEmpty(context.Request.QueryString["AcnID"]) &&
+                !string.IsNullOrEmpty(context.Request.QueryString["SessionKey"]))
             {
                 try
                 {
@@ -26,18 +26,18 @@ namespace iArsenal.Web
                     var fields = "user_name";
 
                     //New HttpWebRequest for DiscuzNT Service API
-                    var req = (HttpWebRequest)WebRequest.Create(ConfigGlobal.APIServiceURL);
+                    var req = (HttpWebRequest) WebRequest.Create(ConfigGlobal.APIServiceURL);
 
                     req.Method = "POST";
                     req.ContentType = "application/x-www-form-urlencoded";
 
                     //Gen Digital Signature
                     var sig =
-                        $"api_key={ConfigGlobal.APIAppKey}call_id={callID.ToString()}fields={fields}method={"users.getInfo"}session_key={sessionKey}uids={acnID}{ConfigGlobal.APICryptographicKey}";
+                        $"api_key={ConfigGlobal.APIAppKey}call_id={callID}fields={fields}method={"users.getInfo"}session_key={sessionKey}uids={acnID}{ConfigGlobal.APICryptographicKey}";
 
                     //Set WebRequest Parameter
                     var para =
-                        $"method={"users.getInfo"}&api_key={ConfigGlobal.APIAppKey}&session_key={sessionKey}&call_id={callID.ToString()}&uids={acnID}&fields={fields}&sig={getMd5Hash(sig)}";
+                        $"method={"users.getInfo"}&api_key={ConfigGlobal.APIAppKey}&session_key={sessionKey}&call_id={callID}&uids={acnID}&fields={fields}&sig={getMd5Hash(sig)}";
 
                     var encodedBytes = Encoding.UTF8.GetBytes(para);
                     req.ContentLength = encodedBytes.Length;
@@ -93,6 +93,11 @@ namespace iArsenal.Web
             context.Response.End();
         }
 
+        public bool IsReusable
+        {
+            get { return true; }
+        }
+
         private string getMd5Hash(string input)
         {
             // Create a new instance of the MD5CryptoServiceProvider object.
@@ -114,14 +119,6 @@ namespace iArsenal.Web
 
             // Return the hexadecimal string.
             return sBuilder.ToString();
-        }
-
-        public bool IsReusable
-        {
-            get
-            {
-                return true;
-            }
         }
     }
 }

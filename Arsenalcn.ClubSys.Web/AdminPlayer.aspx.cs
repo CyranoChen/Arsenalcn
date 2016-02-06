@@ -1,12 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Web.UI.WebControls;
 using Arsenalcn.ClubSys.Entity;
-
+using Arsenalcn.ClubSys.Service;
+using Arsenalcn.ClubSys.Web.Common;
 
 namespace Arsenalcn.ClubSys.Web
 {
-    public partial class AdminPlayer : Common.AdminBasePage
+    public partial class AdminPlayer : AdminBasePage
     {
         //protected override void OnInit(EventArgs e)
         //{
@@ -17,7 +17,7 @@ namespace Arsenalcn.ClubSys.Web
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            ctrlAdminFieldToolBar.AdminUserName = this.username;
+            ctrlAdminFieldToolBar.AdminUserName = username;
 
             if (!IsPostBack)
             {
@@ -27,7 +27,8 @@ namespace Arsenalcn.ClubSys.Web
 
         private void BindData()
         {
-            var list = Service.PlayerStrip.GetPlayers(); ;
+            var list = PlayerStrip.GetPlayers();
+            ;
 
             gvPlayer.DataSource = list;
             gvPlayer.DataBind();
@@ -45,8 +46,8 @@ namespace Arsenalcn.ClubSys.Web
                 var ddlIsActive = e.Row.FindControl("ddlIsActive") as DropDownList;
 
                 if (tbShirt != null)
-                { 
-                    tbShirt.Text = p.Shirt.ToString(); 
+                {
+                    tbShirt.Text = p.Shirt.ToString();
                 }
 
                 if (tbShorts != null)
@@ -77,7 +78,7 @@ namespace Arsenalcn.ClubSys.Web
             {
                 try
                 {
-                    var pid = (int)gvPlayer.DataKeys[gvPlayer.EditIndex].Value;
+                    var pid = (int) gvPlayer.DataKeys[gvPlayer.EditIndex].Value;
 
                     int _shirt;
                     int _shorts;
@@ -88,7 +89,8 @@ namespace Arsenalcn.ClubSys.Web
                         && int.TryParse(tbSock.Text.Trim(), out _sock)
                         && !string.IsNullOrEmpty(ddlIsActive.SelectedValue))
                     {
-                        Service.PlayerStrip.UpdatePlayerInfo(pid, _shirt, _shorts, _sock, Convert.ToBoolean(ddlIsActive.SelectedValue));
+                        PlayerStrip.UpdatePlayerInfo(pid, _shirt, _shorts, _sock,
+                            Convert.ToBoolean(ddlIsActive.SelectedValue));
                     }
                     else
                     {
@@ -97,8 +99,8 @@ namespace Arsenalcn.ClubSys.Web
                 }
                 catch (Exception ex)
                 {
-                    this.ClientScript.RegisterClientScriptBlock(typeof(string), "failed",
-                        $"alert('{ex.Message.ToString()}');", true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "failed",
+                        $"alert('{ex.Message}');", true);
                 }
             }
 

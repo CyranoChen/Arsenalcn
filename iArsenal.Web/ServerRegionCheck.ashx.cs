@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Web;
 using System.Web.Script.Serialization;
-
 using Arsenalcn.Core;
 
 namespace iArsenal.Web
@@ -22,7 +20,10 @@ namespace iArsenal.Web
                     var itemList = DictionaryItem.Cache.DictionaryItemList_Region;
 
                     itemList = itemList.FindAll(item => item.ParentID.Equals(rid));
-                    itemList.RemoveAll(item => item.Name.Equals("市辖区") || item.Name.Equals("县") || item.Name.Equals("市") || item.Name.Contains("行政单位"));
+                    itemList.RemoveAll(
+                        item =>
+                            item.Name.Equals("市辖区") || item.Name.Equals("县") || item.Name.Equals("市") ||
+                            item.Name.Contains("行政单位"));
 
                     if (itemList != null)
                     {
@@ -44,10 +45,7 @@ namespace iArsenal.Web
 
         public bool IsReusable
         {
-            get
-            {
-                return true;
-            }
+            get { return true; }
         }
     }
 }

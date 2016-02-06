@@ -1,14 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web.Script.Serialization;
+using System.Web.UI;
 using System.Web.UI.WebControls;
-
 using iArsenal.Service;
 
 namespace iArsenal.Web.Control
 {
-    public partial class PortalWorkflowInfo : System.Web.UI.UserControl
+    public partial class PortalWorkflowInfo : UserControl
     {
+        public int CountOrderStatusList = 5;
+
+        public bool currStatusActive = true;
+
+        public string JSONOrderStatusList { get; set; }
+
+        public OrderStatusType CurrOrderStatus { get; set; }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!string.IsNullOrEmpty(JSONOrderStatusList))
@@ -19,7 +27,6 @@ namespace iArsenal.Web.Control
 
                 if (list.Count > 0 && list.Exists(wl => wl.StatusType.Equals(CurrOrderStatus)))
                 {
-
                     CountOrderStatusList = list.Count;
 
                     rptrWorkflowInfo.DataSource = list;
@@ -46,34 +53,24 @@ namespace iArsenal.Web.Control
 
                 if (ltrlStateInfo != null)
                 {
-                    ltrlStateInfo.Text = string.Format("<li style=\"width: {3}%\" id=\"Status-{0}\" {2}>{1}</li>", ((int)wl.StatusType).ToString(),
-                        wl.StatusInfo.ToString(), currStatusActive ? "class=\"Active\"" : string.Empty, (100 / CountOrderStatusList).ToString("f0"));
+                    ltrlStateInfo.Text = string.Format("<li style=\"width: {3}%\" id=\"Status-{0}\" {2}>{1}</li>",
+                        ((int) wl.StatusType),
+                        wl.StatusInfo, currStatusActive ? "class=\"Active\"" : string.Empty,
+                        (100/CountOrderStatusList).ToString("f0"));
 
                     if (wl.StatusType.Equals(CurrOrderStatus))
-                    { currStatusActive = false; }
+                    {
+                        currStatusActive = false;
+                    }
                 }
             }
         }
 
-        public int CountOrderStatusList = 5;
-
-        public Boolean currStatusActive = true;
-
-        public string JSONOrderStatusList
-        { get; set; }
-
-        public OrderStatusType CurrOrderStatus
-        { get; set; }
-
         protected class OrderStatus_Workflow
         {
-            public OrderStatus_Workflow() { }
+            public OrderStatusType StatusType { get; set; }
 
-            public OrderStatusType StatusType
-            { get; set; }
-
-            public string StatusInfo
-            { get; set; }
+            public string StatusInfo { get; set; }
         }
     }
 }

@@ -11,6 +11,9 @@ namespace iArsenal.Service
             Init();
         }
 
+        private static Dictionary<string, string> ConfigDictionary { get; set; }
+        public static AssemblyInfo Assembly { get; set; }
+
         public static void Refresh()
         {
             Init();
@@ -21,7 +24,7 @@ namespace iArsenal.Service
             Config.Cache.RefreshCache();
             ConfigDictionary = Config.Cache.GetDictionaryByConfigSystem(ConfigSystem.iArsenal);
 
-            Assembly = new AssemblyInfo()
+            Assembly = new AssemblyInfo
             {
                 Title = ConfigDictionary["AssemblyTitle"],
                 Description = ConfigDictionary["AssemblyDescription"],
@@ -35,9 +38,6 @@ namespace iArsenal.Service
                 FileVersion = ConfigDictionary["AssemblyFileVersion"]
             };
         }
-
-        private static Dictionary<string, string> ConfigDictionary { get; set; }
-        public static AssemblyInfo Assembly { get; set; }
 
         public static bool IsPluginAdmin(int userid)
         {
@@ -58,50 +58,32 @@ namespace iArsenal.Service
 
         public static string APIAppKey
         {
-            get
-            {
-                return ConfigDictionary["APIAppKey"];
-            }
+            get { return ConfigDictionary["APIAppKey"]; }
         }
 
         public static string APICryptographicKey
         {
-            get
-            {
-                return ConfigDictionary["APICryptographicKey"];
-            }
+            get { return ConfigDictionary["APICryptographicKey"]; }
         }
 
         public static string APILoginURL
         {
-            get
-            {
-                return ConfigDictionary["APILoginURL"];
-            }
+            get { return ConfigDictionary["APILoginURL"]; }
         }
 
         public static string APILogoutURL
         {
-            get
-            {
-                return ConfigDictionary["APILogoutURL"];
-            }
+            get { return ConfigDictionary["APILogoutURL"]; }
         }
 
         public static string APIServiceURL
         {
-            get
-            {
-                return ConfigDictionary["APIServiceURL"];
-            }
+            get { return ConfigDictionary["APIServiceURL"]; }
         }
 
         public static string AcnCasinoURL
         {
-            get
-            {
-                return ConfigDictionary["AcnCasinoURL"];
-            }
+            get { return ConfigDictionary["AcnCasinoURL"]; }
         }
 
         public static string[] PluginAdmin
@@ -115,26 +97,17 @@ namespace iArsenal.Service
 
         public static string PluginName
         {
-            get
-            {
-                return ConfigDictionary["PluginName"];
-            }
+            get { return ConfigDictionary["PluginName"]; }
         }
 
         public static string PluginVersion
         {
-            get
-            {
-                return ConfigDictionary["PluginVersion"];
-            }
+            get { return ConfigDictionary["PluginVersion"]; }
         }
 
         public static string PluginDisplayName
         {
-            get
-            {
-                return ConfigDictionary["PluginDisplayName"];
-            }
+            get { return ConfigDictionary["PluginDisplayName"]; }
         }
 
         public static bool PluginActive
@@ -175,17 +148,13 @@ namespace iArsenal.Service
 
                 if (!string.IsNullOrEmpty(tmpID))
                     return new Guid(tmpID);
-                else
-                    return new Guid("036478f0-9062-4533-be33-43197a0b1568");
+                return new Guid("036478f0-9062-4533-be33-43197a0b1568");
             }
         }
 
         public static string SysNotice
         {
-            get
-            {
-                return ConfigDictionary["SysNotice"];
-            }
+            get { return ConfigDictionary["SysNotice"]; }
         }
 
         public static string[] BulkOrderInfo
@@ -194,7 +163,7 @@ namespace iArsenal.Service
             {
                 var configValue = ConfigDictionary["BulkOrderInfo"];
 
-                return configValue.Split(new char[] { '|' });
+                return configValue.Split('|');
             }
         }
 

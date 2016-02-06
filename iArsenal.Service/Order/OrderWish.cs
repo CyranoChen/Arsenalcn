@@ -1,29 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Arsenalcn.Core;
 
 namespace iArsenal.Service
 {
     public class OrdrWish : Order
     {
-        public OrdrWish() { }
-
         public void Init()
         {
             IRepository repo = new Repository();
 
-            var list = repo.Query<OrderItem>(x => x.OrderID == ID && x.IsActive == true);
+            var list = repo.Query<OrderItem>(x => x.OrderID == ID).FindAll(x => x.IsActive);
 
-            if (list != null && list.Count > 0)
+            if (list.Any())
             {
                 WishList_Existent = list.FindAll(x => !x.ProductGuid.Equals(Guid.Empty) &&
-                    Product.Cache.Load(x.ProductGuid).ProductType.Equals(ProductType.Other));
+                                                      Product.Cache.Load(x.ProductGuid)
+                                                          .ProductType.Equals(ProductType.Other));
 
                 WishList_Nonexistent = list.FindAll(x => x.ProductGuid.Equals(Guid.Empty));
 
                 if (WishList_Existent.Count > 0 || WishList_Nonexistent.Count > 0)
                 {
-                    base.UrlOrderView = "iArsenalOrderView_ArsenalDirect.aspx";
+                    UrlOrderView = "iArsenalOrderView_ArsenalDirect.aspx";
                 }
                 else
                 {
@@ -35,19 +35,19 @@ namespace iArsenal.Service
 
             var _strWorkflow = "{{ \"StatusType\": \"{0}\", \"StatusInfo\": \"{1}\" }}";
 
-            string[] _workflowInfo = {
-                                      string.Format(_strWorkflow, ((int)OrderStatusType.Draft).ToString(), "未提交"),
-                                      string.Format(_strWorkflow, ((int)OrderStatusType.Submitted).ToString(), "后台审核"),
-                                      string.Format(_strWorkflow, ((int)OrderStatusType.Approved).ToString(), "待会员确认"),
-                                      string.Format(_strWorkflow, ((int)OrderStatusType.Confirmed).ToString(), "已确认"),
-                                      string.Format(_strWorkflow, ((int)OrderStatusType.Ordered).ToString(), "已下单"),
-                                      string.Format(_strWorkflow, ((int)OrderStatusType.Delivered).ToString(), "已发货")
-                                  };
+            string[] _workflowInfo =
+            {
+                string.Format(_strWorkflow, ((int) OrderStatusType.Draft), "未提交"),
+                string.Format(_strWorkflow, ((int) OrderStatusType.Submitted), "后台审核"),
+                string.Format(_strWorkflow, ((int) OrderStatusType.Approved), "待会员确认"),
+                string.Format(_strWorkflow, ((int) OrderStatusType.Confirmed), "已确认"),
+                string.Format(_strWorkflow, ((int) OrderStatusType.Ordered), "已下单"),
+                string.Format(_strWorkflow, ((int) OrderStatusType.Delivered), "已发货")
+            };
 
-            base.StatusWorkflowInfo = _workflowInfo;
+            StatusWorkflowInfo = _workflowInfo;
 
             #endregion
-
         }
 
         #region Members and Properties
@@ -57,6 +57,5 @@ namespace iArsenal.Service
         public List<OrderItem> WishList_Nonexistent { get; set; }
 
         #endregion
-
     }
 }

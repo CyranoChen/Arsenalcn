@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics.Contracts;
-
 using Arsenalcn.Core;
 
 namespace Arsenal.Service
@@ -11,7 +10,9 @@ namespace Arsenal.Service
     [DbSchema("Arsenal_RelationLeagueTeam", Key = "", Sort = "")]
     public class RelationLeagueTeam
     {
-        public RelationLeagueTeam() { }
+        public RelationLeagueTeam()
+        {
+        }
 
         public RelationLeagueTeam(DataRow dr)
         {
@@ -22,8 +23,8 @@ namespace Arsenal.Service
 
         private void Init(DataRow dr)
         {
-            TeamGuid = (Guid)dr["TeamGuid"];
-            LeagueGuid = (Guid)dr["LeagueGuid"];
+            TeamGuid = (Guid) dr["TeamGuid"];
+            LeagueGuid = (Guid) dr["LeagueGuid"];
         }
 
         public void Single()
@@ -31,14 +32,18 @@ namespace Arsenal.Service
             var sql = string.Format("SELECT * FROM {0} WHERE TeamGuid = @teamGuid AND LeagueGuid = @leagueGuid",
                 Repository.GetTableAttr<RelationLeagueTeam>().Name);
 
-            SqlParameter[] para = {
-                                      new SqlParameter("@teamGuid", TeamGuid), 
-                                      new SqlParameter("@leagueGuid", LeagueGuid)
-                                  };
+            SqlParameter[] para =
+            {
+                new SqlParameter("@teamGuid", TeamGuid),
+                new SqlParameter("@leagueGuid", LeagueGuid)
+            };
 
             var ds = DataAccess.ExecuteDataset(sql, para);
 
-            if (ds.Tables[0].Rows.Count > 0) { Init(ds.Tables[0].Rows[0]); }
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                Init(ds.Tables[0].Rows[0]);
+            }
         }
 
         public bool Any()
@@ -46,10 +51,11 @@ namespace Arsenal.Service
             var sql = string.Format("SELECT * FROM {0} WHERE TeamGuid = @teamGuid AND LeagueGuid = @leagueGuid",
                 Repository.GetTableAttr<RelationLeagueTeam>().Name);
 
-            SqlParameter[] para = {
-                                      new SqlParameter("@teamGuid", TeamGuid), 
-                                      new SqlParameter("@leagueGuid", LeagueGuid)
-                                  };
+            SqlParameter[] para =
+            {
+                new SqlParameter("@teamGuid", TeamGuid),
+                new SqlParameter("@leagueGuid", LeagueGuid)
+            };
 
             var ds = DataAccess.ExecuteDataset(sql, para);
 
@@ -82,7 +88,7 @@ namespace Arsenal.Service
             var sql = string.Format("SELECT * FROM {0} WHERE LeagueGuid = @leagueGuid",
                 Repository.GetTableAttr<RelationLeagueTeam>().Name);
 
-            SqlParameter[] para = { new SqlParameter("@leagueGuid", lGuid) };
+            SqlParameter[] para = {new SqlParameter("@leagueGuid", lGuid)};
 
             var ds = DataAccess.ExecuteDataset(sql, para);
 
@@ -104,7 +110,7 @@ namespace Arsenal.Service
             var sql = string.Format("SELECT * FROM {0} WHERE TeamGuid = @teamGuid",
                 Repository.GetTableAttr<RelationLeagueTeam>().Name);
 
-            SqlParameter[] para = { new SqlParameter("@teamGuid", tGuid) };
+            SqlParameter[] para = {new SqlParameter("@teamGuid", tGuid)};
 
             var ds = DataAccess.ExecuteDataset(sql, para);
 
@@ -124,7 +130,7 @@ namespace Arsenal.Service
             var sql = string.Format("INSERT INTO {0} (TeamGuid, LeagueGuid) VALUES (@teamGuid, @leagueGuid)",
                 Repository.GetTableAttr<RelationLeagueTeam>().Name);
 
-            SqlParameter[] para = { new SqlParameter("@teamGuid", TeamGuid), new SqlParameter("@leagueGuid", LeagueGuid) };
+            SqlParameter[] para = {new SqlParameter("@teamGuid", TeamGuid), new SqlParameter("@leagueGuid", LeagueGuid)};
 
             DataAccess.ExecuteNonQuery(sql, para, trans);
         }
@@ -144,7 +150,7 @@ namespace Arsenal.Service
             var sql = string.Format("DELETE FROM {0} WHERE TeamGuid = @teamGuid AND LeagueGuid = @leagueGuid",
                 Repository.GetTableAttr<RelationLeagueTeam>().Name);
 
-            SqlParameter[] para = { new SqlParameter("@teamGuid", TeamGuid), new SqlParameter("@leagueGuid", LeagueGuid) };
+            SqlParameter[] para = {new SqlParameter("@teamGuid", TeamGuid), new SqlParameter("@leagueGuid", LeagueGuid)};
 
             DataAccess.ExecuteNonQuery(sql, para, trans);
         }
@@ -163,15 +169,17 @@ namespace Arsenal.Service
         {
             var sql = string.Format(@"DELETE FROM {0} WHERE (TeamGuid NOT IN (SELECT TeamGuid FROM {1})) OR
                                (LeagueGuid NOT IN (SELECT LeagueGuid FROM {2}))",
-                               Repository.GetTableAttr<RelationLeagueTeam>().Name,
-                               Repository.GetTableAttr<Team>().Name,
-                               Repository.GetTableAttr<League>().Name);
+                Repository.GetTableAttr<RelationLeagueTeam>().Name,
+                Repository.GetTableAttr<Team>().Name,
+                Repository.GetTableAttr<League>().Name);
 
             DataAccess.ExecuteNonQuery(sql, null, trans);
         }
 
         public static class Cache
         {
+            public static List<RelationLeagueTeam> RelationLeagueTeamList;
+
             static Cache()
             {
                 InitCache();
@@ -186,20 +194,15 @@ namespace Arsenal.Service
             {
                 RelationLeagueTeamList = All();
             }
-
-            public static List<RelationLeagueTeam> RelationLeagueTeamList;
         }
-
 
         #region Members and Properties
 
         [DbColumn("TeamGuid", IsKey = true)]
-        public Guid TeamGuid
-        { get; set; }
+        public Guid TeamGuid { get; set; }
 
         [DbColumn("LeagueGuid", IsKey = true)]
-        public Guid LeagueGuid
-        { get; set; }
+        public Guid LeagueGuid { get; set; }
 
         #endregion
     }

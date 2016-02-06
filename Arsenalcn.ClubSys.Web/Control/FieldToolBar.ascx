@@ -1,7 +1,7 @@
 ﻿<%@ Control Language="C#" CodeBehind="FieldToolBar.ascx.cs" Inherits="Arsenalcn.ClubSys.Web.Control.FieldToolBar"
-    EnableViewState="false" %>
+EnableViewState="false" %>
 <div class="FieldToolBar">
-    <div class="CtrlLeftPanelExp" onclick="$(this).toggleClass('CtrlLeftPanelExp'); $(this).toggleClass('CtrlLeftPanelCol'); $('#LeftPanel').toggle(); SwitchLeftPanel($(this).attr('class'))">
+    <div class="CtrlLeftPanelExp" onclick="$(this).toggleClass('CtrlLeftPanelExp'); $(this).toggleClass('CtrlLeftPanelCol'); $('#LeftPanel').toggle(); SwitchLeftPanel($(this).attr('class'));">
         <asp:Literal ID="ltrlToolBarTip" runat="server"></asp:Literal>
     </div>
     <asp:Panel ID="pnlFuncLink" runat="server" CssClass="HeaderBtnBar">
@@ -15,9 +15,15 @@
 <asp:PlaceHolder ID="phLuckPlayer" runat="server">
     <div class="ClubSys_Tip">
         <label>
-            幸运球员:<em><asp:Literal ID="ltrlLuckyPlayerName" runat="server"></asp:Literal></em>
+            幸运球员:<em>
+                <asp:Literal ID="ltrlLuckyPlayerName" runat="server"></asp:Literal>
+            </em>
             <asp:LinkButton ID="btnGetBonus" runat="server" CssClass="ClubSys_LuckyGet" Text="请领取"
-                OnClick="btnGetBonus_Click"></asp:LinkButton>
-            奖金共<em><asp:Literal ID="ltrlBonus" runat="server"></asp:Literal></em>枪手币</label>
+                            OnClick="btnGetBonus_Click">
+            </asp:LinkButton>
+            奖金共<em>
+                <asp:Literal ID="ltrlBonus" runat="server"></asp:Literal>
+            </em>枪手币
+        </label>
     </div>
 </asp:PlaceHolder>

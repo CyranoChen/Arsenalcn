@@ -1,49 +1,59 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Arsenalcn.Core;
+using AutoMapper;
 
 namespace iArsenal.Service
 {
     public class OrdrTravel : Order
     {
-        public OrdrTravel() { }
-
         public void Init()
         {
             IRepository repo = new Repository();
 
-            var list = repo.Query<OrderItem>(x => x.OrderID == ID && x.IsActive == true)
-                .FindAll(x => Product.Cache.Load(x.ProductGuid) != null);
+            var list = repo.Query<OrderItem>(x => x.OrderID == ID)
+                .FindAll(x => x.IsActive && Product.Cache.Load(x.ProductGuid) != null);
 
-            if (list != null && list.Count > 0)
+            if (list.Any())
             {
                 OrderItem oiBase = null;
 
                 oiBase = list.Find(x => Product.Cache.Load(x.ProductGuid).ProductType.Equals(ProductType.TravelPlan));
                 if (oiBase != null)
                 {
-                    AutoMapper.Mapper.CreateMap<OrderItem, OrdrItmTravelPlan>().AfterMap((s, d) => d.Init());
-                    OITravelPlan = AutoMapper.Mapper.Map<OrdrItmTravelPlan>(oiBase);
+                    var mapperTravelPlan = new MapperConfiguration(cfg =>
+                        cfg.CreateMap<OrderItem, OrdrItmTravelPlan>().AfterMap((s, d) => d.Init()))
+                        .CreateMapper();
+
+                    OITravelPlan = mapperTravelPlan.Map<OrdrItmTravelPlan>(oiBase);
                 }
 
                 if (OITravelPlan != null)
                 {
-                    var oiPartnerList = list.FindAll(x => Product.Cache.Load(x.ProductGuid).ProductType.Equals(ProductType.TravelPartner));
-                    AutoMapper.Mapper.CreateMap<OrderItem, OrdrItmTravelPartner>().AfterMap((s, d) => d.Init());
-                    OITravelPartnerList = AutoMapper.Mapper.Map<List<OrdrItmTravelPartner>>(oiPartnerList);
+                    var oiPartnerList =
+                        list.FindAll(
+                            x => Product.Cache.Load(x.ProductGuid).ProductType.Equals(ProductType.TravelPartner));
+
+                    var mapperTravelPartner = new MapperConfiguration(cfg =>
+                        cfg.CreateMap<OrderItem, OrdrItmTravelPartner>().AfterMap((s, d) => d.Init()))
+                        .CreateMapper();
+
+                    OITravelPartnerList = mapperTravelPartner.Map<List<OrdrItmTravelPartner>>(oiPartnerList);
 
                     #region Generate UrlOrderView by Product Code
+
                     var p = Product.Cache.Load(OITravelPlan.ProductGuid);
 
                     if (p != null && p.ProductType.Equals(ProductType.TravelPlan))
                     {
                         if (p.Code.Equals("iETPL", StringComparison.OrdinalIgnoreCase))
                         {
-                            base.UrlOrderView = "iArsenalOrderView_LondonTravel.aspx";
+                            UrlOrderView = "iArsenalOrderView_LondonTravel.aspx";
                         }
                         else if (p.Code.Equals("2015ATPL", StringComparison.OrdinalIgnoreCase))
                         {
-                            base.UrlOrderView = "iArsenalOrderView_AsiaTrophy2015.aspx";
+                            UrlOrderView = "iArsenalOrderView_AsiaTrophy2015.aspx";
                         }
                         else
                         {
@@ -54,8 +64,8 @@ namespace iArsenal.Service
                     {
                         throw new Exception("Unable to init Order_Travel.");
                     }
-                    #endregion
 
+                    #endregion
                 }
                 else
                 {
@@ -67,17 +77,17 @@ namespace iArsenal.Service
 
             var _strWorkflow = "{{ \"StatusType\": \"{0}\", \"StatusInfo\": \"{1}\" }}";
 
-            string[] _workflowInfo = {
-                                      string.Format(_strWorkflow, ((int)OrderStatusType.Draft).ToString(), "未提交"),
-                                      string.Format(_strWorkflow, ((int)OrderStatusType.Submitted).ToString(), "审核中"),
-                                      string.Format(_strWorkflow, ((int)OrderStatusType.Confirmed).ToString(), "已确认"),
-                                      string.Format(_strWorkflow, ((int)OrderStatusType.Delivered).ToString(), "已完成")
-                                  };
+            string[] _workflowInfo =
+            {
+                string.Format(_strWorkflow, ((int) OrderStatusType.Draft), "未提交"),
+                string.Format(_strWorkflow, ((int) OrderStatusType.Submitted), "审核中"),
+                string.Format(_strWorkflow, ((int) OrderStatusType.Confirmed), "已确认"),
+                string.Format(_strWorkflow, ((int) OrderStatusType.Delivered), "已完成")
+            };
 
-            base.StatusWorkflowInfo = _workflowInfo;
+            StatusWorkflowInfo = _workflowInfo;
 
             #endregion
-
         }
 
         #region Members and Properties
@@ -87,6 +97,5 @@ namespace iArsenal.Service
         public List<OrdrItmTravelPartner> OITravelPartnerList { get; set; }
 
         #endregion
-
     }
 }

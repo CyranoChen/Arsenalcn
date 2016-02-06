@@ -6,26 +6,26 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>ACN博彩(ACN.CasinoSys) - 阿森纳中国官方球迷会 Arsenalcn.com</title>
-    <link rel="icon" href="http://www.arsenalcn.com/favicon.ico" type="image/x-icon" />
-    <link rel="shortcut icon" href="http://www.arsenalcn.com/favicon.ico" type="image/x-icon" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="keywords" content="Arsenal,Arsenalcn,ACN,iArsenal,阿森纳中国官方球迷会,阿森纳论坛,阿森纳,阿森纳球迷" />
-    <meta name="description" content="阿森纳中国球迷会,官方,官方球迷会,阿森纳中国,中国分会" />
+    <link rel="icon" href="http://www.arsenalcn.com/favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" href="http://www.arsenalcn.com/favicon.ico" type="image/x-icon"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="keywords" content="Arsenal,Arsenalcn,ACN,iArsenal,阿森纳中国官方球迷会,阿森纳论坛,阿森纳,阿森纳球迷"/>
+    <meta name="description" content="阿森纳中国球迷会,官方,官方球迷会,阿森纳中国,中国分会"/>
     <script type="text/javascript" src="scripts/jquery-1.7.1.min.js"></script>
     <script type="text/javascript" src="scripts/casinosys.js"></script>
     <asp:ContentPlaceHolder ID="cphHead" runat="server">
     </asp:ContentPlaceHolder>
 </head>
 <body>
-    <form id="form1" runat="server">
+<form id="form1" runat="server">
     <div id="ACN_Wrap">
-        <uc1:DNTHeader ID="ctrlHeader" runat="server" />
+        <uc1:DNTHeader ID="ctrlHeader" runat="server"/>
         <asp:ContentPlaceHolder ID="cphMain" runat="server">
         </asp:ContentPlaceHolder>
         <div class="Clear">
         </div>
     </div>
-    <uc2:DNTFooter ID="ctrlFooter" runat="server" />
-    </form>
+    <uc2:DNTFooter ID="ctrlFooter" runat="server"/>
+</form>
 </body>
 </html>

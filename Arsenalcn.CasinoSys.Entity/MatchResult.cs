@@ -6,7 +6,13 @@ namespace Arsenalcn.CasinoSys.Entity
 {
     public sealed class MatchResult : CasinoItem
     {
-        internal MatchResult() { }
+        internal MatchResult()
+        {
+        }
+
+        public short? Home { get; set; }
+
+        public short? Away { get; set; }
 
         protected override void BuildDetail()
         {
@@ -38,26 +44,17 @@ namespace Arsenalcn.CasinoSys.Entity
 
                 return newGuid;
             }
-            else
+            //update
+
+            if (Home.HasValue && Away.HasValue && Earning.HasValue)
             {
-                //update
+                DataAccess.MatchResult.UpdateMatchResult(ItemGuid.Value, Home.Value, Away.Value, trans);
 
-                if (Home.HasValue && Away.HasValue && Earning.HasValue)
-                {
-                    DataAccess.MatchResult.UpdateMatchResult(ItemGuid.Value, Home.Value, Away.Value, trans);
-
-                    base.Save(trans);
-                }
-
-                return ItemGuid.Value;
+                base.Save(trans);
             }
+
+            return ItemGuid.Value;
         }
-
-        public short? Home
-        { get; set; }
-
-        public short? Away
-        { get; set; }
     }
 
     public class MatchResultBetDetail
@@ -65,7 +62,9 @@ namespace Arsenalcn.CasinoSys.Entity
         public static readonly string BetDetailHomeName = "Home";
         public static readonly string BetDetailAwayName = "Away";
 
-        public MatchResultBetDetail() { }
+        public MatchResultBetDetail()
+        {
+        }
 
         public MatchResultBetDetail(DataTable dt)
         {
@@ -84,16 +83,14 @@ namespace Arsenalcn.CasinoSys.Entity
             }
         }
 
+        public short Home { get; set; }
+
+        public short Away { get; set; }
+
         public void Save(int betID, SqlTransaction trans)
         {
             DataAccess.BetDetail.InsertBetDetail(betID, BetDetailHomeName, Home.ToString(), trans);
             DataAccess.BetDetail.InsertBetDetail(betID, BetDetailAwayName, Away.ToString(), trans);
         }
-
-        public short Home
-        { get; set; }
-
-        public short Away
-        { get; set; }
     }
 }

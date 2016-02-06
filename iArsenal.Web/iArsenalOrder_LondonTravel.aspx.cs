@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-
 using Arsenalcn.Core;
 using iArsenal.Service;
 
@@ -10,6 +9,21 @@ namespace iArsenal.Web
     public partial class iArsenalOrder_LondonTravel : MemberPageBase
     {
         private readonly IRepository repo = new Repository();
+
+        private int OrderID
+        {
+            get
+            {
+                int _orderID;
+                if (!string.IsNullOrEmpty(Request.QueryString["OrderID"]) &&
+                    int.TryParse(Request.QueryString["OrderID"], out _orderID))
+                {
+                    return _orderID;
+                }
+                return int.MinValue;
+            }
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -18,26 +32,12 @@ namespace iArsenal.Web
             }
         }
 
-        private int OrderID
-        {
-            get
-            {
-                int _orderID;
-                if (!string.IsNullOrEmpty(Request.QueryString["OrderID"]) && int.TryParse(Request.QueryString["OrderID"], out _orderID))
-                {
-                    return _orderID;
-                }
-                else
-                    return int.MinValue;
-            }
-        }
-
         private void InitForm()
         {
             try
             {
-                lblMemberName.Text = $"<b>{this.MemberName}</b> (<em>NO.{this.MID.ToString()}</em>)";
-                lblMemberACNInfo.Text = $"<b>{this.Username}</b> (<em>ID.{this.UID.ToString()}</em>)";
+                lblMemberName.Text = $"<b>{MemberName}</b> (<em>NO.{MID}</em>)";
+                lblMemberACNInfo.Text = $"<b>{Username}</b> (<em>ID.{UID}</em>)";
 
                 var pETPL = Product.Cache.Load("iETPL");
                 var pETPA = Product.Cache.Load("iETPA");
@@ -49,13 +49,16 @@ namespace iArsenal.Web
 
                 if (OrderID > 0)
                 {
-                    var o = (OrdrTravel)Order.Select(OrderID);
+                    var o = (OrdrTravel) Order.Select(OrderID);
 
-                    if (o == null || !o.IsActive) { throw new Exception("此订单无效"); }
+                    if (o == null || !o.IsActive)
+                    {
+                        throw new Exception("此订单无效");
+                    }
 
                     if (ConfigGlobal.IsPluginAdmin(UID) || o.MemberID.Equals(MID))
                     {
-                        lblMemberName.Text = $"<b>{o.MemberName}</b> (<em>NO.{o.MemberID.ToString()}</em>)";
+                        lblMemberName.Text = $"<b>{o.MemberName}</b> (<em>NO.{o.MemberID}</em>)";
 
                         var m = repo.Single<Member>(o.MemberID);
 
@@ -63,60 +66,59 @@ namespace iArsenal.Web
                         {
                             throw new Exception("无此会员信息");
                         }
-                        else
+                        lblMemberACNInfo.Text = $"<b>{m.AcnName}</b> (<em>ID.{m.AcnID}</em>)";
+
+                        #region Set Member Nation & Region
+
+                        if (!string.IsNullOrEmpty(m.Nation))
                         {
-                            lblMemberACNInfo.Text = $"<b>{m.AcnName}</b> (<em>ID.{m.AcnID.ToString()}</em>)";
-
-                            #region Set Member Nation & Region
-                            if (!string.IsNullOrEmpty(m.Nation))
+                            if (m.Nation.Equals("中国"))
                             {
-                                if (m.Nation.Equals("中国"))
-                                {
-                                    ddlNation.SelectedValue = m.Nation;
+                                ddlNation.SelectedValue = m.Nation;
 
-                                    var region = m.Region.Split('|');
-                                    if (region.Length > 1)
-                                    {
-                                        tbRegion1.Text = region[0];
-                                        tbRegion2.Text = region[1];
-                                    }
-                                    else
-                                    {
-                                        tbRegion1.Text = region[0];
-                                        tbRegion2.Text = string.Empty;
-                                    }
+                                var region = m.Region.Split('|');
+                                if (region.Length > 1)
+                                {
+                                    tbRegion1.Text = region[0];
+                                    tbRegion2.Text = region[1];
                                 }
                                 else
                                 {
-                                    ddlNation.SelectedValue = "其他";
-                                    if (m.Nation.Equals("其他"))
-                                        tbNation.Text = string.Empty;
-                                    else
-                                        tbNation.Text = m.Nation;
+                                    tbRegion1.Text = region[0];
+                                    tbRegion2.Text = string.Empty;
                                 }
                             }
                             else
                             {
-                                ddlNation.SelectedValue = string.Empty;
+                                ddlNation.SelectedValue = "其他";
+                                if (m.Nation.Equals("其他"))
+                                    tbNation.Text = string.Empty;
+                                else
+                                    tbNation.Text = m.Nation;
                             }
-                            #endregion
-
-                            tbIDCardNo.Text = m.IDCardNo;
-                            tbPassportNo.Text = m.PassportNo;
-                            tbPassportName.Text = m.PassportName;
-                            tbMobile.Text = m.Mobile;
-                            tbQQ.Text = m.QQ;
-                            tbEmail.Text = m.Email;
-
-                            tbOrderDescription.Text = o.Description;
                         }
+                        else
+                        {
+                            ddlNation.SelectedValue = string.Empty;
+                        }
+
+                        #endregion
+
+                        tbIDCardNo.Text = m.IDCardNo;
+                        tbPassportNo.Text = m.PassportNo;
+                        tbPassportName.Text = m.PassportName;
+                        tbMobile.Text = m.Mobile;
+                        tbQQ.Text = m.QQ;
+                        tbEmail.Text = m.Email;
+
+                        tbOrderDescription.Text = o.Description;
                     }
                     else
                     {
                         throw new Exception("此订单非当前用户订单");
                     }
 
-                    var oiTP = o.OITravelPlan.MapTo<OrdrItmTravelPlanLondon>();
+                    var oiTP = o.OITravelPlan.MapTo<OrdrItmTravelPlan, OrdrItmTravelPlanLondon>();
                     oiTP.Init();
 
                     var listPartner = o.OITravelPartnerList.FindAll(oi =>
@@ -177,9 +179,10 @@ namespace iArsenal.Web
                 else
                 {
                     //Fill Member draft information into textbox
-                    var m = repo.Single<Member>(this.MID);
+                    var m = repo.Single<Member>(MID);
 
                     #region Set Member Nation & Region
+
                     if (!string.IsNullOrEmpty(m.Nation))
                     {
                         if (m.Nation.Equals("中国"))
@@ -211,6 +214,7 @@ namespace iArsenal.Web
                     {
                         ddlNation.SelectedValue = string.Empty;
                     }
+
                     #endregion
 
                     tbIDCardNo.Text = m.IDCardNo;
@@ -223,8 +227,8 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed",
-                    $"alert('{ex.Message.ToString()}');window.location.href = 'Default.aspx'", true);
+                ClientScript.RegisterClientScriptBlock(typeof (string), "failed",
+                    $"alert('{ex.Message}');window.location.href = 'Default.aspx'", true);
             }
         }
 
@@ -237,10 +241,12 @@ namespace iArsenal.Web
 
                 try
                 {
-                    var m = repo.Single<Member>(this.MID);
+                    var m = repo.Single<Member>(MID);
 
                     // Update Member Information
+
                     #region Get Member Nation & Region
+
                     var _nation = ddlNation.SelectedValue;
 
                     if (!string.IsNullOrEmpty(_nation))
@@ -280,6 +286,7 @@ namespace iArsenal.Web
                         m.Nation = string.Empty;
                         m.Region = string.Empty;
                     }
+
                     #endregion
 
                     if (!string.IsNullOrEmpty(tbIDCardNo.Text.Trim()))
@@ -458,13 +465,15 @@ namespace iArsenal.Web
 
                     trans.Commit();
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", string.Format("alert('订单({0})保存成功');window.location.href = 'ServerOrderView.ashx?OrderID={0}'", _newID.ToString()), true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                        string.Format("alert('订单({0})保存成功');window.location.href = 'ServerOrderView.ashx?OrderID={0}'",
+                            _newID), true);
                 }
                 catch (Exception ex)
                 {
                     trans.Rollback();
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message.ToString()}')", true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "failed", $"alert('{ex.Message}')", true);
                 }
 
                 //conn.Close();

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
-
 using Arsenalcn.Common;
 using Microsoft.ApplicationBlocks.Data;
 
@@ -13,12 +12,12 @@ namespace Arsenalcn.CasinoSys.DataAccess
         {
             var sql = "SELECT * FROM dbo.AcnCasino_SingleChoice WHERE CasinoItemGuid = @guid";
 
-            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@guid", casinoItemGuid));
+            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql,
+                new SqlParameter("@guid", casinoItemGuid));
 
             if (ds.Tables[0].Rows.Count == 0)
                 return null;
-            else
-                return ds.Tables[0].Rows[0];
+            return ds.Tables[0].Rows[0];
         }
 
         public static void InsertSingleChoice(Guid casinoItemGuid, bool floatingRate, SqlTransaction trans)
@@ -27,12 +26,13 @@ namespace Arsenalcn.CasinoSys.DataAccess
 
             if (trans != null)
             {
-                SqlHelper.ExecuteNonQuery(trans, CommandType.Text, sql, new SqlParameter("@guid", casinoItemGuid), new SqlParameter("@floatingRate", floatingRate));
-
+                SqlHelper.ExecuteNonQuery(trans, CommandType.Text, sql, new SqlParameter("@guid", casinoItemGuid),
+                    new SqlParameter("@floatingRate", floatingRate));
             }
             else
             {
-                SqlHelper.ExecuteNonQuery(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@guid", casinoItemGuid), new SqlParameter("@floatingRate", floatingRate));
+                SqlHelper.ExecuteNonQuery(SQLConn.GetConnection(), CommandType.Text, sql,
+                    new SqlParameter("@guid", casinoItemGuid), new SqlParameter("@floatingRate", floatingRate));
             }
         }
     }

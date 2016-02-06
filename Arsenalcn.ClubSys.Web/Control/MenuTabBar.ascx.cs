@@ -1,14 +1,10 @@
 ﻿using System;
+using System.Web.UI;
 
 namespace Arsenalcn.ClubSys.Web.Control
 {
-    public partial class MenuTabBar : System.Web.UI.UserControl
+    public partial class MenuTabBar : UserControl
     {
-        protected void Page_Load(object sender, EventArgs e)
-        {
-
-        }
-
         public ClubMenuItem CurrentMenu
         {
             set
@@ -43,27 +39,10 @@ namespace Arsenalcn.ClubSys.Web.Control
             }
         }
 
-        private int _clubID = -1;
-        public int ClubID
+        public int ClubID { get; set; } = -1;
+
+        protected void Page_Load(object sender, EventArgs e)
         {
-            get
-            {
-                //int tmp;
-                //if (int.TryParse(Request.QueryString["ClubID"], out tmp))
-                //    return tmp;
-                //else
-                //{
-                //    Response.Redirect("ClubPortal.aspx");
-
-                //    return -1;
-                //}
-
-                return _clubID;
-            }
-            set
-            {
-                _clubID = value;
-            }
         }
     }
 

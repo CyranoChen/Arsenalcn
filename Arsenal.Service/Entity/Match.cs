@@ -2,25 +2,24 @@
 using System.Collections.Generic;
 using System.Data;
 using Arsenalcn.Core;
+using DataReaderMapper;
 
 namespace Arsenal.Service
 {
     [DbSchema("Arsenal_Match", Key = "MatchGuid", Sort = "PlayTime DESC")]
     public class Match : Entity<Guid>
     {
-        public Match() : base() { }
-
         public static void CreateMap()
         {
-            var map = AutoMapper.Mapper.CreateMap<IDataReader, Match>();
+            var map = Mapper.CreateMap<IDataReader, Match>();
 
-            map.ForMember(d => d.ID, opt => opt.MapFrom(s => (Guid)s.GetValue("MatchGuid")));
+            map.ForMember(d => d.ID, opt => opt.MapFrom(s => (Guid) s.GetValue("MatchGuid")));
 
             map.ForMember(d => d.ResultInfo, opt => opt.ResolveUsing(s =>
             {
-                var resultHome = (short?)s.GetValue("ResultHome");
-                var resultAway = (short?)s.GetValue("ResultAway");
-                var IsHome = (bool)s.GetValue("IsHome");
+                var resultHome = (short?) s.GetValue("ResultHome");
+                var resultAway = (short?) s.GetValue("ResultAway");
+                var IsHome = (bool) s.GetValue("IsHome");
 
                 if (resultHome.HasValue && resultAway.HasValue)
                 {
@@ -28,16 +27,16 @@ namespace Arsenal.Service
 
                     if (IsHome)
                         return string.Format(_strResult, resultHome.Value.ToString(), resultAway.Value.ToString());
-                    else
-                        return string.Format(_strResult, resultAway.Value.ToString(), resultHome.Value.ToString());
+                    return string.Format(_strResult, resultAway.Value.ToString(), resultHome.Value.ToString());
                 }
-                else
-                { return string.Empty; }
+                return string.Empty;
             }));
         }
 
         public static class Cache
         {
+            public static List<Match> MatchList;
+
             static Cache()
             {
                 InitCache();
@@ -59,78 +58,59 @@ namespace Arsenal.Service
             {
                 return MatchList.Find(x => x.ID.Equals(guid));
             }
-
-            public static List<Match> MatchList;
         }
 
         #region Members and Properties
 
         [DbColumn("TeamGuid")]
-        public Guid TeamGuid
-        { get; set; }
+        public Guid TeamGuid { get; set; }
 
         [DbColumn("TeamName")]
-        public string TeamName
-        { get; set; }
+        public string TeamName { get; set; }
 
         [DbColumn("IsHome")]
-        public Boolean IsHome
-        { get; set; }
+        public bool IsHome { get; set; }
 
         [DbColumn("ResultHome")]
-        public short? ResultHome
-        { get; set; }
+        public short? ResultHome { get; set; }
 
         [DbColumn("ResultAway")]
-        public short? ResultAway
-        { get; set; }
+        public short? ResultAway { get; set; }
 
-        public string ResultInfo
-        { get; set; }
+        public string ResultInfo { get; set; }
 
         [DbColumn("PlayTime")]
-        public DateTime PlayTime
-        { get; set; }
+        public DateTime PlayTime { get; set; }
 
         [DbColumn("LeagueGuid")]
-        public Guid? LeagueGuid
-        { get; set; }
+        public Guid? LeagueGuid { get; set; }
 
         [DbColumn("LeagueName")]
-        public string LeagueName
-        { get; set; }
+        public string LeagueName { get; set; }
 
         [DbColumn("Round")]
-        public short? Round
-        { get; set; }
+        public short? Round { get; set; }
 
         [DbColumn("GroupGuid")]
-        public Guid? GroupGuid
-        { get; set; }
+        public Guid? GroupGuid { get; set; }
 
         [DbColumn("CasinoMatchGuid")]
-        public Guid? CasinoMatchGuid
-        { get; set; }
+        public Guid? CasinoMatchGuid { get; set; }
 
         [DbColumn("ReportImageURL")]
-        public string ReportImageURL
-        { get; set; }
+        public string ReportImageURL { get; set; }
 
         [DbColumn("ReportURL")]
-        public string ReportURL
-        { get; set; }
+        public string ReportURL { get; set; }
 
         [DbColumn("TopicURL")]
-        public string TopicURL
-        { get; set; }
+        public string TopicURL { get; set; }
 
         [DbColumn("IsActive")]
-        public Boolean IsActive
-        { get; set; }
+        public bool IsActive { get; set; }
 
         [DbColumn("Remark")]
-        public string Remark
-        { get; set; }
+        public string Remark { get; set; }
 
         #endregion
     }

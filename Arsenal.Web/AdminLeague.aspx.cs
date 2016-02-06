@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Web.UI.WebControls;
 using Arsenal.Service;
+using Arsenal.Web.Control;
 using Arsenalcn.Core;
 
 namespace Arsenal.Web
@@ -8,10 +9,35 @@ namespace Arsenal.Web
     public partial class AdminLeague : AdminPageBase
     {
         private readonly IRepository repo = new Repository();
+
+        private Guid? _leagueGuid;
+
+        private Guid? LeagueGuid
+        {
+            get
+            {
+                if (_leagueGuid.HasValue && _leagueGuid == Guid.Empty)
+                    return _leagueGuid;
+                if (!string.IsNullOrEmpty(Request.QueryString["LeagueGuid"]))
+                {
+                    try
+                    {
+                        return new Guid(Request.QueryString["LeagueGuid"]);
+                    }
+                    catch
+                    {
+                        return Guid.Empty;
+                    }
+                }
+                return null;
+            }
+            set { _leagueGuid = value; }
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            ctrlAdminFieldToolBar.AdminUserName = this.Username;
-            ctrlCustomPagerInfo.PageChanged += new Control.CustomPagerInfo.PageChangedEventHandler(ctrlCustomPagerInfo_PageChanged);
+            ctrlAdminFieldToolBar.AdminUserName = Username;
+            ctrlCustomPagerInfo.PageChanged += ctrlCustomPagerInfo_PageChanged;
 
             if (!IsPostBack)
             {
@@ -19,64 +45,50 @@ namespace Arsenal.Web
             }
         }
 
-        private Guid? _leagueGuid = null;
-        private Guid? LeagueGuid
-        {
-            get
-            {
-                if (_leagueGuid.HasValue && _leagueGuid == Guid.Empty)
-                    return _leagueGuid;
-                else if (!string.IsNullOrEmpty(Request.QueryString["LeagueGuid"]))
-                {
-                    try { return new Guid(Request.QueryString["LeagueGuid"]); }
-                    catch { return Guid.Empty; }
-                }
-                else
-                    return null;
-            }
-            set { _leagueGuid = value; }
-        }
-
         private void BindData()
         {
             var list = repo.All<League>().FindAll(x =>
+            {
+                var returnValue = true;
+                var tmpString = string.Empty;
+
+                if (ViewState["LeagueName"] != null)
                 {
-                    var returnValue = true;
-                    var tmpString = string.Empty;
+                    tmpString = ViewState["LeagueName"].ToString();
+                    if (!string.IsNullOrEmpty(tmpString) && tmpString != "--分类名称--")
+                        returnValue = returnValue &&
+                                      (x.LeagueName.ToLower().Contains(tmpString.ToLower()) ||
+                                       x.LeagueOrgName.ToLower().Contains(tmpString.ToLower()));
+                }
 
-                    if (ViewState["LeagueName"] != null)
-                    {
-                        tmpString = ViewState["LeagueName"].ToString();
-                        if (!string.IsNullOrEmpty(tmpString) && tmpString != "--分类名称--")
-                            returnValue = returnValue && (x.LeagueName.ToLower().Contains(tmpString.ToLower()) || x.LeagueOrgName.ToLower().Contains(tmpString.ToLower()));
-                    }
+                if (ViewState["LeagueSeason"] != null)
+                {
+                    tmpString = ViewState["LeagueSeason"].ToString();
+                    if (!string.IsNullOrEmpty(tmpString) && tmpString != "--所属赛季--")
+                        returnValue = returnValue &&
+                                      x.LeagueSeason.Equals(tmpString, StringComparison.OrdinalIgnoreCase);
+                }
 
-                    if (ViewState["LeagueSeason"] != null)
-                    {
-                        tmpString = ViewState["LeagueSeason"].ToString();
-                        if (!string.IsNullOrEmpty(tmpString) && tmpString != "--所属赛季--")
-                            returnValue = returnValue && x.LeagueSeason.Equals(tmpString, StringComparison.OrdinalIgnoreCase);
-                    }
+                if (ViewState["IsActive"] != null)
+                {
+                    tmpString = ViewState["IsActive"].ToString();
+                    if (!string.IsNullOrEmpty(tmpString))
+                        returnValue = returnValue && x.IsActive.Equals(Convert.ToBoolean(tmpString));
+                }
 
-                    if (ViewState["IsActive"] != null)
-                    {
-                        tmpString = ViewState["IsActive"].ToString();
-                        if (!string.IsNullOrEmpty(tmpString))
-                            returnValue = returnValue && x.IsActive.Equals(Convert.ToBoolean(tmpString));
-                    }
-
-                    return returnValue;
-                });
+                return returnValue;
+            });
 
             #region set GridView Selected PageIndex
+
             if (LeagueGuid.HasValue && !LeagueGuid.Value.Equals(Guid.Empty))
             {
                 var i = list.FindIndex(x => x.ID.Equals(LeagueGuid));
 
                 if (i >= 0)
                 {
-                    gvLeague.PageIndex = i / gvLeague.PageSize;
-                    gvLeague.SelectedIndex = i % gvLeague.PageSize;
+                    gvLeague.PageIndex = i/gvLeague.PageSize;
+                    gvLeague.SelectedIndex = i%gvLeague.PageSize;
                 }
                 else
                 {
@@ -88,12 +100,14 @@ namespace Arsenal.Web
             {
                 gvLeague.SelectedIndex = -1;
             }
+
             #endregion
 
             gvLeague.DataSource = list;
             gvLeague.DataBind();
 
             #region set Control Custom Pager
+
             if (gvLeague.BottomPagerRow != null)
             {
                 gvLeague.BottomPagerRow.Visible = true;
@@ -108,6 +122,7 @@ namespace Arsenal.Web
             {
                 ctrlCustomPagerInfo.Visible = false;
             }
+
             #endregion
         }
 
@@ -119,7 +134,7 @@ namespace Arsenal.Web
             BindData();
         }
 
-        protected void ctrlCustomPagerInfo_PageChanged(object sender, Control.CustomPagerInfo.DataNavigatorEventArgs e)
+        protected void ctrlCustomPagerInfo_PageChanged(object sender, CustomPagerInfo.DataNavigatorEventArgs e)
         {
             if (e.PageIndex > 0)
             {
@@ -134,7 +149,8 @@ namespace Arsenal.Web
         {
             if (gvLeague.SelectedIndex != -1)
             {
-                Response.Redirect(string.Format("AdminLeagueView.aspx?LeagueGuid={0}", gvLeague.DataKeys[gvLeague.SelectedIndex].Value.ToString()));
+                Response.Redirect(string.Format("AdminLeagueView.aspx?LeagueGuid={0}",
+                    gvLeague.DataKeys[gvLeague.SelectedIndex].Value));
             }
         }
 
@@ -142,7 +158,8 @@ namespace Arsenal.Web
         {
             League.Cache.RefreshCache();
 
-            ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('更新缓存成功');window.location.href=window.location.href", true);
+            ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                "alert('更新缓存成功');window.location.href=window.location.href", true);
         }
 
         protected void ddlIsActive_SelectedIndexChanged(object sender, EventArgs e)

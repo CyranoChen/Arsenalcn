@@ -1,47 +1,38 @@
 ﻿using System.Collections.Generic;
 using System.Data;
-
-using Microsoft.ApplicationBlocks.Data;
-
 using Arsenalcn.ClubSys.Entity;
 using Arsenalcn.Common;
+using Microsoft.ApplicationBlocks.Data;
 
 namespace Arsenalcn.ClubSys.Service
 {
     public class RankLevel
     {
-        private static RankLevel _rankLevel = null;
+        private static RankLevel _rankLevel;
 
-        private List<Rank> _ranks;
         private RankLevel()
         {
-            _ranks = GetSysRanks();
+            AllRanks = GetSysRanks();
         }
+
+        public List<Rank> AllRanks { get; }
 
         public Rank GetRank(int clubFortune)
         {
-            foreach (var rank in _ranks)
+            foreach (var rank in AllRanks)
             {
                 if (clubFortune <= rank.MaxClubFortune)
                     return rank;
             }
 
-            return _ranks[_ranks.Count - 1];
-        }
-
-        public List<Rank> AllRanks
-        {
-            get
-            {
-                return _ranks;
-            }
+            return AllRanks[AllRanks.Count - 1];
         }
 
         public static RankLevel GetInstance()
         {
             if (_rankLevel == null)
             {
-                lock (typeof(RankLevel))
+                lock (typeof (RankLevel))
                 {
                     if (_rankLevel == null)
                         _rankLevel = new RankLevel();
@@ -59,15 +50,12 @@ namespace Arsenalcn.ClubSys.Service
 
             if (ds.Tables[0].Rows.Count == 0)
                 return new List<Rank>();
-            else
+            var list = new List<Rank>();
+            foreach (DataRow dr in ds.Tables[0].Rows)
             {
-                var list = new List<Rank>();
-                foreach (DataRow dr in ds.Tables[0].Rows)
-                {
-                    list.Add(new Rank(dr));
-                }
-                return list;
+                list.Add(new Rank(dr));
             }
+            return list;
         }
     }
 }

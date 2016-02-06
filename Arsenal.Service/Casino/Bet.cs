@@ -2,19 +2,17 @@
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics.Contracts;
-
 using Arsenalcn.Core;
+using DataReaderMapper;
 
 namespace Arsenal.Service.Casino
 {
     [DbSchema("AcnCasino_Bet", Sort = "BetTime DESC")]
     public class Bet : Entity<int>
     {
-        public Bet() : base() { }
-
         public static void CreateMap()
         {
-            var map = AutoMapper.Mapper.CreateMap<IDataReader, Bet>();
+            var map = Mapper.CreateMap<IDataReader, Bet>();
 
             map.ForMember(d => d.BetAmount, opt => opt.MapFrom(s => s.GetValue("Bet")));
         }
@@ -29,14 +27,15 @@ namespace Arsenal.Service.Casino
 
                 try
                 {
-                    Contract.Requires(this.UserID > 0);
+                    Contract.Requires(UserID > 0);
                     Contract.Requires(matchGuid != null);
                     Contract.Requires(!string.IsNullOrEmpty(selectedOption));
-                    Contract.Requires(this.BetAmount.HasValue & this.BetAmount.Value > 0);
+                    Contract.Requires(BetAmount.HasValue & BetAmount.Value > 0);
 
                     IRepository repo = new Repository();
 
                     #region Get CasinoItem & Check
+
                     var item = repo.Query<CasinoItem>(x =>
                         x.MatchGuid == matchGuid && x.ItemType == CasinoType.SingleChoice)[0];
 
@@ -49,23 +48,27 @@ namespace Arsenal.Service.Casino
                     {
                         throw new Exception("已超出投注截止时间");
                     }
+
                     #endregion
 
                     #region Get Gambler & Check
-                    var gambler = repo.Query<Gambler>(x => x.UserID == this.UserID)[0];
+
+                    var gambler = repo.Query<Gambler>(x => x.UserID == UserID)[0];
 
                     if (gambler == null)
                     {
                         throw new Exception("当前用户不存在博彩帐户(Gambler)");
                     }
 
-                    if ((double)gambler.Cash < this.BetAmount.Value)
+                    if (gambler.Cash < BetAmount.Value)
                     {
                         throw new Exception(string.Format("博彩帐户余额不足(博彩币余额: {0})", gambler.Cash.ToString("f2")));
                     }
+
                     #endregion
 
                     #region Get ChoiceOption & Check
+
                     var choiceOption = repo.Query<ChoiceOption>(x => x.CasinoItemGuid == item.ID)
                         .Find(x => x.OptionName.Equals(selectedOption, StringComparison.OrdinalIgnoreCase));
 
@@ -73,15 +76,18 @@ namespace Arsenal.Service.Casino
                     {
                         throw new Exception("对应投注项不存在(ChoiceOption)");
                     }
+
                     #endregion
 
                     #region Get Banker & Check
+
                     var banker = repo.Single<Banker>(item.BankerID);
 
                     if (banker == null)
                     {
                         throw new Exception("对应庄家不存在(Banker)");
                     }
+
                     #endregion
 
                     //update gambler statistics
@@ -92,17 +98,17 @@ namespace Arsenal.Service.Casino
                     banker.Cash += BetAmount.Value;
                     repo.Update(banker, trans);
 
-                    this.CasinoItemGuid = item.ID;
-                    this.BetTime = DateTime.Now;
-                    this.BetRate = (double)choiceOption.OptionRate;
+                    CasinoItemGuid = item.ID;
+                    BetTime = DateTime.Now;
+                    BetRate = choiceOption.OptionRate;
 
                     object _key = null;
                     repo.Insert(this, out _key, trans);
-                    this.ID = Convert.ToInt32(_key);
+                    ID = Convert.ToInt32(_key);
 
                     var betDetail = new BetDetail();
 
-                    betDetail.BetID = this.ID;
+                    betDetail.BetID = ID;
 
                     if (selectedOption.ToLower() == "home")
                         betDetail.DetailName = "Home";
@@ -114,7 +120,6 @@ namespace Arsenal.Service.Casino
                     repo.Insert(betDetail, trans);
 
                     trans.Commit();
-
                 }
                 catch (Exception ex)
                 {
@@ -135,13 +140,14 @@ namespace Arsenal.Service.Casino
 
                 try
                 {
-                    Contract.Requires(this.UserID > 0);
+                    Contract.Requires(UserID > 0);
                     Contract.Requires(matchGuid != null);
                     Contract.Requires(resultHome >= 0 & resultAway >= 0);
 
                     IRepository repo = new Repository();
 
                     #region Get CasinoItem & Check
+
                     var item = repo.Query<CasinoItem>(x =>
                         x.MatchGuid == matchGuid && x.ItemType == CasinoType.MatchResult)[0];
 
@@ -154,37 +160,42 @@ namespace Arsenal.Service.Casino
                     {
                         throw new Exception("已超出投注截止时间");
                     }
+
                     #endregion
 
                     #region Get Gambler & Check
-                    var gambler = repo.Query<Gambler>(x => x.UserID == this.UserID)[0];
+
+                    var gambler = repo.Query<Gambler>(x => x.UserID == UserID)[0];
 
                     if (gambler == null)
                     {
                         throw new Exception("当前用户不存在博彩帐户(Gambler)");
                     }
+
                     #endregion
 
                     #region Get RepeatBet & Check
+
                     var historyBets = repo.Query<Bet>(x =>
-                        x.CasinoItemGuid == item.ID && x.UserID == this.UserID);
+                        x.CasinoItemGuid == item.ID && x.UserID == UserID);
 
                     if (historyBets.Count > 0)
                     {
                         throw new Exception("已经投过此注，不能重复猜比分");
                     }
+
                     #endregion
 
-                    this.CasinoItemGuid = item.ID;
-                    this.BetTime = DateTime.Now;
+                    CasinoItemGuid = item.ID;
+                    BetTime = DateTime.Now;
 
                     object _key = null;
                     repo.Insert(this, out _key, trans);
-                    this.ID = Convert.ToInt32(_key);
+                    ID = Convert.ToInt32(_key);
 
                     var betDetailHome = new BetDetail();
 
-                    betDetailHome.BetID = this.ID;
+                    betDetailHome.BetID = ID;
                     betDetailHome.DetailName = "Home";
                     betDetailHome.DetailValue = resultHome.ToString();
 
@@ -192,7 +203,7 @@ namespace Arsenal.Service.Casino
 
                     var betDetailAway = new BetDetail();
 
-                    betDetailAway.BetID = this.ID;
+                    betDetailAway.BetID = ID;
                     betDetailAway.DetailName = "Away";
                     betDetailAway.DetailValue = resultAway.ToString();
 
@@ -213,50 +224,40 @@ namespace Arsenal.Service.Casino
         {
             //DELETE FROM dbo.AcnCasino_Bet WHERE (CasinoItemGuid NOT IN(SELECT CasinoItemGuid FROM dbo.AcnCasino_CasinoItem))
             var sql = string.Format(@"DELETE FROM {0} WHERE (CasinoItemGuid NOT IN (SELECT CasinoItemGuid FROM {1}))",
-                   Repository.GetTableAttr<Bet>().Name,
-                   Repository.GetTableAttr<CasinoItem>().Name);
+                Repository.GetTableAttr<Bet>().Name,
+                Repository.GetTableAttr<CasinoItem>().Name);
 
             DataAccess.ExecuteNonQuery(sql, null, trans);
         }
 
-
         #region Members and Properties
 
         [DbColumn("UserID")]
-        public int UserID
-        { get; set; }
+        public int UserID { get; set; }
 
         [DbColumn("UserName")]
-        public string UserName
-        { get; set; }
+        public string UserName { get; set; }
 
         [DbColumn("CasinoItemGuid")]
-        public Guid CasinoItemGuid
-        { get; set; }
+        public Guid CasinoItemGuid { get; set; }
 
         [DbColumn("Bet")]
-        public double? BetAmount
-        { get; set; }
+        public double? BetAmount { get; set; }
 
         [DbColumn("BetTime")]
-        public DateTime BetTime
-        { get; set; }
+        public DateTime BetTime { get; set; }
 
         [DbColumn("BetRate")]
-        public double? BetRate
-        { get; set; }
+        public double? BetRate { get; set; }
 
         [DbColumn("IsWin")]
-        public bool? IsWin
-        { get; set; }
+        public bool? IsWin { get; set; }
 
         [DbColumn("Earning")]
-        public double? Earning
-        { get; set; }
+        public double? Earning { get; set; }
 
         [DbColumn("EarningDesc")]
-        public string EarningDesc
-        { get; set; }
+        public string EarningDesc { get; set; }
 
         #endregion
     }

@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Web;
 using System.Web.Script.Serialization;
-
-using iArsenal.Service;
 using Arsenalcn.Core;
+using iArsenal.Service;
 
 namespace iArsenal.Web
 {
     public class ServerMemberCheck : IHttpHandler
     {
         private readonly IRepository repo = new Repository();
+
         public void ProcessRequest(HttpContext context)
         {
             var responseText = string.Empty;
@@ -48,10 +48,7 @@ namespace iArsenal.Web
 
         public bool IsReusable
         {
-            get
-            {
-                return true;
-            }
+            get { return true; }
         }
     }
 }

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Web;
-
 using Arsenalcn.ClubSys.Entity;
 using Arsenalcn.Common;
 using Microsoft.ApplicationBlocks.Data;
@@ -16,13 +15,13 @@ namespace Arsenalcn.ClubSys.Service
         {
             if (nullable == null)
                 return DBNull.Value;
-            else
-                return nullable;
+            return nullable;
         }
 
         public static void InsertClub(Club club)
         {
-            var sql = @"INSERT INTO dbo.AcnClub_Club VALUES (@fullName, @shortName, @rankLevel, @rankScore, @logo, @slogan, @description, @creatorUid,
+            var sql =
+                @"INSERT INTO dbo.AcnClub_Club VALUES (@fullName, @shortName, @rankLevel, @rankScore, @logo, @slogan, @description, @creatorUid,
 		                       @creatorUserName, @managerUid, @managerUserName, @createDate, @updateDate, @isActive,
 		                       @isAppliable, @fortune, @memberCredit, @memberFortune, @memberRP, @memberLoyalty)";
 
@@ -55,7 +54,8 @@ namespace Arsenalcn.ClubSys.Service
 
         public static void SaveClub(Club club)
         {
-            var sql = @"UPDATE dbo.AcnClub_Club SET FullName = @fullName, ShortName = @shortName, RankLevel = @rankLevel, RankScore = @rankScore,
+            var sql =
+                @"UPDATE dbo.AcnClub_Club SET FullName = @fullName, ShortName = @shortName, RankLevel = @rankLevel, RankScore = @rankScore,
 		                        Logo = @logo, Slogan = @slogan, Description = @description, CreatorUid = @creatorUid, CreatorUserName = @creatorUserName, 
                                 ManagerUid = @managerUid, ManagerUserName = @managerUserName, CreateDate = @createDate, UpdateDate = @updateDate, 
                                 IsActive = @isActive, IsAppliable = @isAppliable, Fortune = @fortune, MemberCredit = @memberCredit, MemberFortune = @memberFortune,
@@ -90,7 +90,8 @@ namespace Arsenalcn.ClubSys.Service
 
         internal static void SaveClubHistory(ClubHistory ch)
         {
-            var sql = "INSERT INTO dbo.AcnClub_LogClub VALUES (@clubID, @actionType, GETDATE(), @actionUserName, @OperatorUserName, @ActionDescription)";
+            var sql =
+                "INSERT INTO dbo.AcnClub_LogClub VALUES (@clubID, @actionType, GETDATE(), @actionUserName, @OperatorUserName, @ActionDescription)";
 
             var para = new SqlParameter[5];
 
@@ -107,7 +108,6 @@ namespace Arsenalcn.ClubSys.Service
         {
             using (var con = SQLConn.GetConnection())
             {
-
                 var com = new SqlCommand();
                 com.Connection = con;
                 com.CommandType = CommandType.StoredProcedure;
@@ -155,72 +155,74 @@ namespace Arsenalcn.ClubSys.Service
         {
             var sql = "SELECT * FROM dbo.AcnClub_Club WHERE ClubUid = @id";
 
-            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@id", id));
+            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql,
+                new SqlParameter("@id", id));
 
             if (ds.Tables[0].Rows.Count == 0)
                 return null;
-            else
-                return new Club(ds.Tables[0].Rows[0]);
+            return new Club(ds.Tables[0].Rows[0]);
         }
 
         public static Club GetClubInfo(string fullName)
         {
             var sql = "SELECT * FROM dbo.AcnClub_Club WHERE FullName = @fullName";
 
-            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@fullName", fullName));
+            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql,
+                new SqlParameter("@fullName", fullName));
 
             if (ds.Tables[0].Rows.Count == 0)
                 return null;
-            else
-                return new Club(ds.Tables[0].Rows[0]);
+            return new Club(ds.Tables[0].Rows[0]);
         }
 
         public static Club GetCreateClubApplicationByUserID(int userID)
         {
             var sql = "SELECT TOP 1 * FROM dbo.AcnClub_Club WHERE ManagerUid = @userID AND IsActive IS NULL";
 
-            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@userID", userID));
+            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql,
+                new SqlParameter("@userID", userID));
 
             if (ds.Tables[0].Rows.Count == 0)
                 return null;
-            else
-                return new Club(ds.Tables[0].Rows[0]);
+            return new Club(ds.Tables[0].Rows[0]);
         }
 
         internal static ApplyHistory GetActiveApplyHistoryByUserClub(int userID, int clubID)
         {
-            var sql = "SELECT TOP 1 * FROM dbo.AcnClub_Application WHERE UserID = @userID AND ClubUid = @clubID AND IsAccepted IS NULL";
+            var sql =
+                "SELECT TOP 1 * FROM dbo.AcnClub_Application WHERE UserID = @userID AND ClubUid = @clubID AND IsAccepted IS NULL";
 
-            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@userID", userID), new SqlParameter("@clubID", clubID));
+            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql,
+                new SqlParameter("@userID", userID), new SqlParameter("@clubID", clubID));
 
             if (ds.Tables[0].Rows.Count == 0)
                 return null;
-            else
-                return new ApplyHistory(ds.Tables[0].Rows[0]);
+            return new ApplyHistory(ds.Tables[0].Rows[0]);
         }
 
         public static ApplyHistory GetApplyHistory(int id)
         {
             var sql = "SELECT * FROM dbo.AcnClub_Application WHERE ID = @id";
 
-            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@id", id));
+            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql,
+                new SqlParameter("@id", id));
 
             if (ds.Tables[0].Rows.Count == 0)
                 return null;
-            else
-                return new ApplyHistory(ds.Tables[0].Rows[0]);
+            return new ApplyHistory(ds.Tables[0].Rows[0]);
         }
 
         public static UserClub GetActiveUserClub(int userID, int clubID)
         {
-            var sql = "SELECT * FROM dbo.AcnClub_RelationUserClub	WHERE UserID = @userID AND ClubUid = @clubID AND IsActive = 1";
+            var sql =
+                "SELECT * FROM dbo.AcnClub_RelationUserClub	WHERE UserID = @userID AND ClubUid = @clubID AND IsActive = 1";
 
-            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@userID", userID), new SqlParameter("@clubID", clubID));
+            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql,
+                new SqlParameter("@userID", userID), new SqlParameter("@clubID", clubID));
 
             if (ds.Tables[0].Rows.Count == 0)
                 return null;
-            else
-                return new UserClub(ds.Tables[0].Rows[0]);
+            return new UserClub(ds.Tables[0].Rows[0]);
         }
 
         public static List<Club> GetUserManagedClubs(int userID)
@@ -229,26 +231,24 @@ namespace Arsenalcn.ClubSys.Service
                                INNER JOIN dbo.AcnClub_Club c ON uc.ClubUid = c.ClubUid 
                                WHERE c.IsActive = 1 AND uc.UserID = @userId AND uc.IsActive = 1 AND Responsibility <20";
 
-            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@userID", userID));
+            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql,
+                new SqlParameter("@userID", userID));
 
             if (ds.Tables[0].Rows.Count == 0)
                 return new List<Club>();
-            else
+            var list = new List<Club>();
+            foreach (DataRow dr in ds.Tables[0].Rows)
             {
-                var list = new List<Club>();
-                foreach (DataRow dr in ds.Tables[0].Rows)
-                {
-                    var club = new Club(dr);
+                var club = new Club(dr);
 
-                    if (club.AdditionalData != null && club.AdditionalData != DBNull.Value)
-                        club.AdditionalData = TranslateResponsibility((int)club.AdditionalData);
-                    else
-                        club.AdditionalData = TranslateResponsibility(Responsibility.Manager);
+                if (club.AdditionalData != null && club.AdditionalData != DBNull.Value)
+                    club.AdditionalData = TranslateResponsibility((int) club.AdditionalData);
+                else
+                    club.AdditionalData = TranslateResponsibility(Responsibility.Manager);
 
-                    list.Add(club);
-                }
-                return list;
+                list.Add(club);
             }
+            return list;
         }
 
         public static List<Club> GetActiveUserClubs(int userID)
@@ -257,19 +257,17 @@ namespace Arsenalcn.ClubSys.Service
 	                            INNER JOIN dbo.AcnClub_Club c ON uc.ClubUid = c.ClubUid
 	                            WHERE UserID = @userId AND uc.IsActive = 1 AND c.IsActive = 1";
 
-            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@userID", userID));
+            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql,
+                new SqlParameter("@userID", userID));
 
             if (ds.Tables[0].Rows.Count == 0)
                 return new List<Club>();
-            else
+            var list = new List<Club>();
+            foreach (DataRow dr in ds.Tables[0].Rows)
             {
-                var list = new List<Club>();
-                foreach (DataRow dr in ds.Tables[0].Rows)
-                {
-                    list.Add(new Club(dr));
-                }
-                return list;
+                list.Add(new Club(dr));
             }
+            return list;
         }
 
         public static List<ClubHistory> GetClubHistory()
@@ -280,129 +278,117 @@ namespace Arsenalcn.ClubSys.Service
 
             if (ds.Tables[0].Rows.Count == 0)
                 return new List<ClubHistory>();
-            else
+            var list = new List<ClubHistory>();
+            foreach (DataRow dr in ds.Tables[0].Rows)
             {
-                var list = new List<ClubHistory>();
-                foreach (DataRow dr in ds.Tables[0].Rows)
-                {
-                    list.Add(new ClubHistory(dr));
-                }
-                return list;
+                list.Add(new ClubHistory(dr));
             }
+            return list;
         }
 
         public static List<ClubHistory> GetClubHistory(int clubID)
         {
             var sql = "SELECT * FROM dbo.AcnClub_LogClub WHERE ClubID = @clubID ORDER BY ActionDate DESC";
 
-            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@clubID", clubID));
+            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql,
+                new SqlParameter("@clubID", clubID));
 
             if (ds.Tables[0].Rows.Count == 0)
                 return new List<ClubHistory>();
-            else
+            var list = new List<ClubHistory>();
+            foreach (DataRow dr in ds.Tables[0].Rows)
             {
-                var list = new List<ClubHistory>();
-                foreach (DataRow dr in ds.Tables[0].Rows)
-                {
-                    list.Add(new ClubHistory(dr));
-                }
-                return list;
+                list.Add(new ClubHistory(dr));
             }
+            return list;
         }
 
         public static List<ClubHistory> GetUserClubHistory(string userName)
         {
-            var sql = "SELECT * FROM dbo.AcnClub_LogClub WHERE ActionUserName = @userName OR OperatorUserName = @userName ORDER BY ActionDate DESC";
+            var sql =
+                "SELECT * FROM dbo.AcnClub_LogClub WHERE ActionUserName = @userName OR OperatorUserName = @userName ORDER BY ActionDate DESC";
 
-            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@userName", userName));
+            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql,
+                new SqlParameter("@userName", userName));
 
             if (ds.Tables[0].Rows.Count == 0)
                 return new List<ClubHistory>();
-            else
+            var list = new List<ClubHistory>();
+            foreach (DataRow dr in ds.Tables[0].Rows)
             {
-                var list = new List<ClubHistory>();
-                foreach (DataRow dr in ds.Tables[0].Rows)
-                {
-                    list.Add(new ClubHistory(dr));
-                }
-                return list;
+                list.Add(new ClubHistory(dr));
             }
+            return list;
         }
 
         public static List<UserClub> GetClubMembers(int clubID)
         {
-            var sql = "SELECT * FROM dbo.AcnClub_RelationUserClub WHERE ClubUid = @clubID AND isActive = 1 ORDER BY JoinClubDate";
+            var sql =
+                "SELECT * FROM dbo.AcnClub_RelationUserClub WHERE ClubUid = @clubID AND isActive = 1 ORDER BY JoinClubDate";
 
-            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@clubID", clubID));
+            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql,
+                new SqlParameter("@clubID", clubID));
 
             if (ds.Tables[0].Rows.Count == 0)
                 return new List<UserClub>();
-            else
+            var list = new List<UserClub>();
+            foreach (DataRow dr in ds.Tables[0].Rows)
             {
-                var list = new List<UserClub>();
-                foreach (DataRow dr in ds.Tables[0].Rows)
-                {
-                    list.Add(new UserClub(dr));
-                }
-                return list;
+                list.Add(new UserClub(dr));
             }
+            return list;
         }
 
         public static List<UserClub> GetClubLeads(int clubID)
         {
-            var sql = "SELECT * FROM dbo.AcnClub_RelationUserClub WHERE ClubUid = @clubID AND isActive = 1 AND Responsibility < 20 ORDER BY Responsibility";
+            var sql =
+                "SELECT * FROM dbo.AcnClub_RelationUserClub WHERE ClubUid = @clubID AND isActive = 1 AND Responsibility < 20 ORDER BY Responsibility";
 
-            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@clubID", clubID));
+            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql,
+                new SqlParameter("@clubID", clubID));
 
             if (ds.Tables[0].Rows.Count == 0)
                 return new List<UserClub>();
-            else
+            var list = new List<UserClub>();
+            foreach (DataRow dr in ds.Tables[0].Rows)
             {
-                var list = new List<UserClub>();
-                foreach (DataRow dr in ds.Tables[0].Rows)
-                {
-                    list.Add(new UserClub(dr));
-                }
-                return list;
+                list.Add(new UserClub(dr));
             }
+            return list;
         }
 
         public static List<ApplyHistory> GetClubApplications(int clubID)
         {
             var sql = "SELECT * FROM dbo.AcnClub_Application WHERE ClubUid = @clubId AND IsAccepted IS NULL";
 
-            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@clubID", clubID));
+            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql,
+                new SqlParameter("@clubID", clubID));
 
             if (ds.Tables[0].Rows.Count == 0)
                 return new List<ApplyHistory>();
-            else
+            var list = new List<ApplyHistory>();
+            foreach (DataRow dr in ds.Tables[0].Rows)
             {
-                var list = new List<ApplyHistory>();
-                foreach (DataRow dr in ds.Tables[0].Rows)
-                {
-                    list.Add(new ApplyHistory(dr));
-                }
-                return list;
+                list.Add(new ApplyHistory(dr));
             }
+            return list;
         }
 
         public static List<ApplyHistory> GetActiveUserApplications(int userID)
         {
             var sql = "SELECT * FROM dbo.AcnClub_Application WHERE UserID = @userID AND IsAccepted IS NULL";
 
-            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@userID", userID));
+            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql,
+                new SqlParameter("@userID", userID));
 
             if (ds.Tables[0].Rows.Count == 0)
                 return new List<ApplyHistory>();
-            else
+            var list = new List<ApplyHistory>();
+            foreach (DataRow dr in ds.Tables[0].Rows)
             {
-                var list = new List<ApplyHistory>();
-                foreach (DataRow dr in ds.Tables[0].Rows)
-                {
-                    list.Add(new ApplyHistory(dr));
-                }
-                return list;
+                list.Add(new ApplyHistory(dr));
             }
+            return list;
         }
 
         public static List<Club> GetActiveClubs()
@@ -413,18 +399,15 @@ namespace Arsenalcn.ClubSys.Service
 
             if (ds.Tables[0].Rows.Count == 0)
                 return new List<Club>();
-            else
+            var list = new List<Club>();
+            foreach (DataRow dr in ds.Tables[0].Rows)
             {
-                var list = new List<Club>();
-                foreach (DataRow dr in ds.Tables[0].Rows)
-                {
-                    var club = new Club(dr);
+                var club = new Club(dr);
 
-                    if (club.IsActive.HasValue && club.IsActive.Value)
-                        list.Add(club);
-                }
-                return list;
+                if (club.IsActive.HasValue && club.IsActive.Value)
+                    list.Add(club);
             }
+            return list;
         }
 
         public static List<Club> GetAllClubs()
@@ -435,15 +418,12 @@ namespace Arsenalcn.ClubSys.Service
 
             if (ds.Tables[0].Rows.Count == 0)
                 return new List<Club>();
-            else
+            var list = new List<Club>();
+            foreach (DataRow dr in ds.Tables[0].Rows)
             {
-                var list = new List<Club>();
-                foreach (DataRow dr in ds.Tables[0].Rows)
-                {
-                    list.Add(new Club(dr));
-                }
-                return list;
+                list.Add(new Club(dr));
             }
+            return list;
         }
 
         public static List<Club> GetTopRankClubs()
@@ -454,21 +434,18 @@ namespace Arsenalcn.ClubSys.Service
 
             if (ds.Tables[0].Rows.Count == 0)
                 return new List<Club>();
-            else
+            var list = new List<Club>();
+
+            var rank = 1;
+            foreach (DataRow dr in ds.Tables[0].Rows)
             {
-                var list = new List<Club>();
+                var club = new Club(dr);
 
-                var rank = 1;
-                foreach (DataRow dr in ds.Tables[0].Rows)
-                {
-                    var club = new Club(dr);
+                club.AdditionalData = string.Format("Top{0}", rank);
 
-                    club.AdditionalData = string.Format("Top{0}", rank);
-
-                    list.Add(club);
-                }
-                return list;
+                list.Add(club);
             }
+            return list;
         }
 
         public static List<Club> GetTopLvClubs()
@@ -479,21 +456,18 @@ namespace Arsenalcn.ClubSys.Service
 
             if (ds.Tables[0].Rows.Count == 0)
                 return new List<Club>();
-            else
+            var list = new List<Club>();
+
+            var rank = 1;
+            foreach (DataRow dr in ds.Tables[0].Rows)
             {
-                var list = new List<Club>();
+                var club = new Club(dr);
 
-                var rank = 1;
-                foreach (DataRow dr in ds.Tables[0].Rows)
-                {
-                    var club = new Club(dr);
+                club.AdditionalData = string.Format("Top{0}", rank);
 
-                    club.AdditionalData = string.Format("Top{0}", rank);
-
-                    list.Add(club);
-                }
-                return list;
+                list.Add(club);
             }
+            return list;
         }
 
         public static List<Club> GetTopFortuneClubs()
@@ -504,21 +478,18 @@ namespace Arsenalcn.ClubSys.Service
 
             if (ds.Tables[0].Rows.Count == 0)
                 return new List<Club>();
-            else
+            var list = new List<Club>();
+
+            var rank = 1;
+            foreach (DataRow dr in ds.Tables[0].Rows)
             {
-                var list = new List<Club>();
+                var club = new Club(dr);
 
-                var rank = 1;
-                foreach (DataRow dr in ds.Tables[0].Rows)
-                {
-                    var club = new Club(dr);
+                club.AdditionalData = string.Format("Top{0}", rank);
 
-                    club.AdditionalData = string.Format("Top{0}", rank);
-
-                    list.Add(club);
-                }
-                return list;
+                list.Add(club);
             }
+            return list;
         }
 
         public static List<Club> GetLatestClubs()
@@ -529,15 +500,12 @@ namespace Arsenalcn.ClubSys.Service
 
             if (ds.Tables[0].Rows.Count == 0)
                 return new List<Club>();
-            else
+            var list = new List<Club>();
+            foreach (DataRow dr in ds.Tables[0].Rows)
             {
-                var list = new List<Club>();
-                foreach (DataRow dr in ds.Tables[0].Rows)
-                {
-                    list.Add(new Club(dr));
-                }
-                return list;
+                list.Add(new Club(dr));
             }
+            return list;
         }
 
         public static int GetActiveUserCount()
@@ -548,8 +516,7 @@ namespace Arsenalcn.ClubSys.Service
 
             if (obj != null)
                 return Convert.ToInt32(obj);
-            else
-                return int.MinValue;
+            return int.MinValue;
         }
 
         public static int GetActiveClubCount()
@@ -560,8 +527,7 @@ namespace Arsenalcn.ClubSys.Service
 
             if (obj != null)
                 return Convert.ToInt32(obj);
-            else
-                return int.MinValue;
+            return int.MinValue;
         }
 
         public static UserClubStatus GetUserClubStatus(int userID, int clubID)
@@ -585,7 +551,7 @@ namespace Arsenalcn.ClubSys.Service
                 com.ExecuteNonQuery();
                 //con.Close();
 
-                return (UserClubStatus)returnPara.Value;
+                return (UserClubStatus) returnPara.Value;
             }
         }
 
@@ -593,36 +559,38 @@ namespace Arsenalcn.ClubSys.Service
         {
             var sql = "SELECT COUNT(*) FROM dbo.AcnClub_RelationUserClub	WHERE ClubUid = @clubID AND IsActive = 1";
 
-            var obj = SqlHelper.ExecuteScalar(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@clubID", clubID));
+            var obj = SqlHelper.ExecuteScalar(SQLConn.GetConnection(), CommandType.Text, sql,
+                new SqlParameter("@clubID", clubID));
 
             if (obj != null)
                 return Convert.ToInt32(obj);
-            else
-                return int.MinValue;
+            return int.MinValue;
         }
 
         public static int GetClubMemberQuota(int clubID)
         {
-            var sql = "SELECT r.MaxMember FROM dbo.AcnClub_Club c INNER JOIN dbo.AcnClub_ConfigRank r ON c.RankLevel = r.RankLevelID WHERE c.ClubUid = @clubID";
+            var sql =
+                "SELECT r.MaxMember FROM dbo.AcnClub_Club c INNER JOIN dbo.AcnClub_ConfigRank r ON c.RankLevel = r.RankLevelID WHERE c.ClubUid = @clubID";
 
-            var obj = SqlHelper.ExecuteScalar(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@clubID", clubID));
+            var obj = SqlHelper.ExecuteScalar(SQLConn.GetConnection(), CommandType.Text, sql,
+                new SqlParameter("@clubID", clubID));
 
             if (obj != null)
                 return Convert.ToInt32(obj);
-            else
-                return int.MinValue;
+            return int.MinValue;
         }
 
         public static int GetClubExecutorQuota(int clubID)
         {
-            var sql = "SELECT r.MaxExecutor FROM dbo.AcnClub_Club c INNER JOIN dbo.AcnClub_ConfigRank r ON c.RankLevel = r.RankLevelID WHERE c.ClubUid = @clubID";
+            var sql =
+                "SELECT r.MaxExecutor FROM dbo.AcnClub_Club c INNER JOIN dbo.AcnClub_ConfigRank r ON c.RankLevel = r.RankLevelID WHERE c.ClubUid = @clubID";
 
-            var obj = SqlHelper.ExecuteScalar(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@clubID", clubID));
+            var obj = SqlHelper.ExecuteScalar(SQLConn.GetConnection(), CommandType.Text, sql,
+                new SqlParameter("@clubID", clubID));
 
             if (obj != null)
                 return Convert.ToInt32(obj);
-            else
-                return int.MinValue;
+            return int.MinValue;
         }
 
         //internal static string SavePic(HttpPostedFile file)
@@ -638,7 +606,8 @@ namespace Arsenalcn.ClubSys.Service
         //    return fileName;
         //}
 
-        public static void ApplyClub(string fullName, string shortName, string slogan, string desc, int creatorUid, string creatorUserName)
+        public static void ApplyClub(string fullName, string shortName, string slogan, string desc, int creatorUid,
+            string creatorUserName)
         {
             var club = new Club();
             club.FullName = fullName;
@@ -668,7 +637,8 @@ namespace Arsenalcn.ClubSys.Service
             }
         }
 
-        public static void UpdateApplyClub(int clubID, string fullName, string shortName, string slogan, string desc, int creatorUid, string creatorUserName)
+        public static void UpdateApplyClub(int clubID, string fullName, string shortName, string slogan, string desc,
+            int creatorUid, string creatorUserName)
         {
             var club = GetClubInfo(clubID);
             club.FullName = fullName;
@@ -692,7 +662,7 @@ namespace Arsenalcn.ClubSys.Service
 
         public static void ApproveClub(int clubID, bool approve)
         {
-            var club = ClubLogic.GetClubInfo(clubID);
+            var club = GetClubInfo(clubID);
 
             if (club != null)
             {
@@ -709,7 +679,7 @@ namespace Arsenalcn.ClubSys.Service
                 uc.JoinClubDate = DateTime.Now;
                 uc.FromDate = DateTime.Now;
                 uc.IsActive = true;
-                uc.Responsibility = (int)Responsibility.Manager;
+                uc.Responsibility = (int) Responsibility.Manager;
                 uc.Userid = club.ManagerUid;
                 uc.UserName = club.ManagerUserName;
 
@@ -721,9 +691,10 @@ namespace Arsenalcn.ClubSys.Service
                 throw new Exception("Club not exist.");
         }
 
-        public static void UpdateClubInfo(int clubID, HttpPostedFile logo, string slogan, string description, bool isAppliable, int? fortune)
+        public static void UpdateClubInfo(int clubID, HttpPostedFile logo, string slogan, string description,
+            bool isAppliable, int? fortune)
         {
-            var club = ClubLogic.GetClubInfo(clubID);
+            var club = GetClubInfo(clubID);
 
             if (club != null)
             {
@@ -749,7 +720,7 @@ namespace Arsenalcn.ClubSys.Service
 
         public static string TranslateResponsibility(int res)
         {
-            return TranslateResponsibility((Responsibility)res);
+            return TranslateResponsibility((Responsibility) res);
         }
 
         public static string TranslateResponsibility(Responsibility res)
@@ -769,7 +740,7 @@ namespace Arsenalcn.ClubSys.Service
 
         public static string TranslateClubHistoryActionType(int actionType)
         {
-            return TranslateClubHistoryActionType((ClubHistoryActionType)actionType);
+            return TranslateClubHistoryActionType((ClubHistoryActionType) actionType);
         }
 
         public static string TranslateClubHistoryActionType(ClubHistoryActionType actionType)
@@ -797,7 +768,7 @@ namespace Arsenalcn.ClubSys.Service
 
         public static string BuildClubHistoryActionDesc(int actionType, params string[] para)
         {
-            return BuildClubHistoryActionDesc((ClubHistoryActionType)actionType, para);
+            return BuildClubHistoryActionDesc((ClubHistoryActionType) actionType, para);
         }
 
         public static string BuildClubHistoryActionDesc(ClubHistoryActionType actionType, params string[] para)

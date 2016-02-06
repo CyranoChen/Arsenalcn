@@ -1,34 +1,32 @@
 ﻿<asp:GridView runat="server" CssClass="DataView" BorderWidth="0" PagerSettings-Mode="NumericFirstLast" AllowPaging="True" AllowSorting="True" AutoGenerateColumns="False" GridLines="None">
-    <FooterStyle CssClass="Footer" />
-    <RowStyle CssClass="Row" />
-    <PagerStyle CssClass="Pager" />
-    <SelectedRowStyle  CssClass="SelectedRow" />
-    <HeaderStyle CssClass="Header" />
-    <EditRowStyle CssClass="EditRow" />
-    <AlternatingRowStyle CssClass="AlternatingRow" />
+    <FooterStyle CssClass="Footer"/>
+    <RowStyle CssClass="Row"/>
+    <PagerStyle CssClass="Pager"/>
+    <SelectedRowStyle CssClass="SelectedRow"/>
+    <HeaderStyle CssClass="Header"/>
+    <EditRowStyle CssClass="EditRow"/>
+    <AlternatingRowStyle CssClass="AlternatingRow"/>
 </asp:GridView>
 
 <asp:DetailsView runat="server" CssClass="DataView" BorderWidth="1" GridLines="Horizontal">
-    <FooterStyle CssClass="Footer" />
-    <CommandRowStyle CssClass="CommandRow" />
-    <RowStyle CssClass="Row" HorizontalAlign="Left" />
-    <FieldHeaderStyle CssClass="FieldHeader" />
-    <PagerStyle CssClass="Pager" />
-    <HeaderStyle CssClass="Header" />
-    <EditRowStyle CssClass="EditRow" />
-    <AlternatingRowStyle CssClass="AlternatingRow" />
+    <FooterStyle CssClass="Footer"/>
+    <CommandRowStyle CssClass="CommandRow"/>
+    <RowStyle CssClass="Row" HorizontalAlign="Left"/>
+    <FieldHeaderStyle CssClass="FieldHeader"/>
+    <PagerStyle CssClass="Pager"/>
+    <HeaderStyle CssClass="Header"/>
+    <EditRowStyle CssClass="EditRow"/>
+    <AlternatingRowStyle CssClass="AlternatingRow"/>
 </asp:DetailsView>
 
 <asp:TreeView runat="server" CssClass="TreeView" ShowLines="True" ShowExpandCollapse="True" NodeIndent="15">
-    <ParentNodeStyle CssClass="ParentNode" />
-    <HoverNodeStyle CssClass="HoverNode" />
-    <SelectedNodeStyle CssClass="SelectedNode" />
-    <NodeStyle CssClass="Node" />
+    <ParentNodeStyle CssClass="ParentNode"/>
+    <HoverNodeStyle CssClass="HoverNode"/>
+    <SelectedNodeStyle CssClass="SelectedNode"/>
+    <NodeStyle CssClass="Node"/>
 </asp:TreeView>
 
-<asp:TextBox runat="server" />
-<asp:DropDownList  runat="server" />
-<asp:CheckBox runat="server" CssClass="CheckBox" />
-<asp:RadioButtonList runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" CssClass="RadioButtonList" />
-
-
+<asp:TextBox runat="server"/>
+<asp:DropDownList runat="server"/>
+<asp:CheckBox runat="server" CssClass="CheckBox"/>
+<asp:RadioButtonList runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" CssClass="RadioButtonList"/>

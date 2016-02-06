@@ -5,7 +5,6 @@ using System.Net;
 using System.Text;
 using System.Web;
 using System.Web.Caching;
-
 using Arsenalcn.Core;
 
 namespace Arsenal.Service
@@ -13,7 +12,6 @@ namespace Arsenal.Service
     public class WeChatApiClient : RestClient
     {
         public WeChatApiClient()
-            : base()
         {
             ServiceUrl = ConfigGlobal.WeChatServiceURL;
             AppKey = ConfigGlobal.WeChatAppKey;
@@ -22,6 +20,12 @@ namespace Arsenal.Service
             Init();
         }
 
+        #region Members and Properties
+
+        public string AccessToken { get; set; }
+
+        #endregion
+
         private void Init()
         {
             var context = HttpContext.Current;
@@ -29,7 +33,7 @@ namespace Arsenal.Service
             // Get access_token by using System.Web.Caching
             if (context.Cache["AccessToken"] != null)
             {
-                this.AccessToken = context.Cache["AccessToken"].ToString();
+                AccessToken = context.Cache["AccessToken"].ToString();
             }
             else
             {
@@ -51,7 +55,7 @@ namespace Arsenal.Service
                     // Set access_token by using System.Web.Caching
                     AddItemToCache("AccessToken", responseResult, 3600);
 
-                    this.AccessToken = context.Cache["AccessToken"].ToString();
+                    AccessToken = context.Cache["AccessToken"].ToString();
                 }
             }
         }
@@ -60,7 +64,7 @@ namespace Arsenal.Service
         //static CacheItemRemovedReason reason;
         //CacheItemRemovedCallback onRemove = null;
 
-        private void RemovedCallback(String k, Object v, CacheItemRemovedReason r)
+        private void RemovedCallback(string k, object v, CacheItemRemovedReason r)
         {
             //itemRemoved = true;
             //reason = r;
@@ -70,10 +74,11 @@ namespace Arsenal.Service
         {
             //itemRemoved = false;
 
-            var onRemove = new CacheItemRemovedCallback(this.RemovedCallback);
+            var onRemove = new CacheItemRemovedCallback(RemovedCallback);
 
             if (HttpContext.Current.Cache[key] == null)
-                HttpContext.Current.Cache.Add(key, value, null, DateTime.Now.AddSeconds(expires), TimeSpan.Zero, CacheItemPriority.High, onRemove);
+                HttpContext.Current.Cache.Add(key, value, null, DateTime.Now.AddSeconds(expires), TimeSpan.Zero,
+                    CacheItemPriority.High, onRemove);
         }
 
         //public void RemoveItemFromCache(Object sender, EventArgs e)
@@ -87,29 +92,36 @@ namespace Arsenal.Service
             Parameters = new SortedDictionary<string, string>();
 
             if (!string.IsNullOrEmpty(AppKey))
-            { Parameters.Add("api_key", AppKey); }
+            {
+                Parameters.Add("api_key", AppKey);
+            }
             else
-            { throw new ArgumentNullException("AppKey"); }
+            {
+                throw new ArgumentNullException("AppKey");
+            }
 
             if (!string.IsNullOrEmpty(Method))
-            { Parameters.Add("method", Method); }
+            {
+                Parameters.Add("method", Method);
+            }
             else
-            { throw new ArgumentNullException("Method"); }
+            {
+                throw new ArgumentNullException("Method");
+            }
 
             if (!string.IsNullOrEmpty(AccessToken))
-            { Parameters.Add("access_token", AccessToken); }
+            {
+                Parameters.Add("access_token", AccessToken);
+            }
             else
-            { throw new ArgumentNullException("AccessToken"); }
+            {
+                throw new ArgumentNullException("AccessToken");
+            }
 
             if (!string.IsNullOrEmpty(Format.ToString()))
-            { Parameters.Add("format", Format.ToString()); }
+            {
+                Parameters.Add("format", Format.ToString());
+            }
         }
-
-        #region Members and Properties
-
-        public string AccessToken
-        { get; set; }
-
-        #endregion
     }
 }

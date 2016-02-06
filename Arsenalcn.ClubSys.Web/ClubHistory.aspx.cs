@@ -1,14 +1,17 @@
 ﻿using System;
-using System.Web.UI.WebControls;
 using System.Collections.Generic;
-
-using Arsenalcn.ClubSys.Service;
+using System.Web.UI.WebControls;
 using Arsenalcn.ClubSys.Entity;
+using Arsenalcn.ClubSys.Service;
+using Arsenalcn.ClubSys.Web.Common;
+using Arsenalcn.ClubSys.Web.Control;
 
 namespace Arsenalcn.ClubSys.Web
 {
-    public partial class ClubHistory : Common.BasePage
+    public partial class ClubHistory : BasePage
     {
+        private List<Entity.ClubHistory> history;
+
         private int ClubID
         {
             get
@@ -16,12 +19,9 @@ namespace Arsenalcn.ClubSys.Web
                 int tmp;
                 if (int.TryParse(Request.QueryString["ClubID"], out tmp))
                     return tmp;
-                else
-                {
-                    Response.Redirect("ClubPortal.aspx");
+                Response.Redirect("ClubPortal.aspx");
 
-                    return -1;
-                }
+                return -1;
             }
         }
 
@@ -29,31 +29,30 @@ namespace Arsenalcn.ClubSys.Web
         {
             var club = ClubLogic.GetClubInfo(ClubID);
 
-            if( club != null && this.Title.IndexOf("{0}") >= 0 )
-                this.Title = string.Format(this.Title, club.FullName);
+            if (club != null && Title.IndexOf("{0}") >= 0)
+                Title = string.Format(Title, club.FullName);
 
             #region SetControlProperty
 
-            ctrlLeftPanel.UserID = this.userid;
-            ctrlLeftPanel.UserName = this.username;
-            ctrlLeftPanel.UserKey = this.userkey;
+            ctrlLeftPanel.UserID = userid;
+            ctrlLeftPanel.UserName = username;
+            ctrlLeftPanel.UserKey = userkey;
 
-            ctrlFieldToolBar.UserID = this.userid;
-            ctrlFieldToolBar.UserName = this.username;
+            ctrlFieldToolBar.UserID = userid;
+            ctrlFieldToolBar.UserName = username;
 
-            ctrlMenuTabBar.CurrentMenu = Arsenalcn.ClubSys.Web.Control.ClubMenuItem.ClubHistory;
+            ctrlMenuTabBar.CurrentMenu = ClubMenuItem.ClubHistory;
             ctrlMenuTabBar.ClubID = ClubID;
 
-            ctrlClubSysHeader.UserID = this.userid;
+            ctrlClubSysHeader.UserID = userid;
             ctrlClubSysHeader.ClubID = ClubID;
-            ctrlClubSysHeader.UserName = this.username;
+            ctrlClubSysHeader.UserName = username;
 
             #endregion
 
             BindClubHistory();
         }
 
-        private List<Arsenalcn.ClubSys.Entity.ClubHistory> history = null;
         private void BindClubHistory()
         {
             if (history == null)
@@ -62,7 +61,7 @@ namespace Arsenalcn.ClubSys.Web
 
                 foreach (var ch in history)
                 {
-                    var actionType = (ClubHistoryActionType)Enum.Parse(typeof(ClubHistoryActionType), ch.ActionType);
+                    var actionType = (ClubHistoryActionType) Enum.Parse(typeof (ClubHistoryActionType), ch.ActionType);
                     switch (actionType)
                     {
                         case ClubHistoryActionType.JoinClub:

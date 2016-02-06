@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-
 using Arsenalcn.Common;
-
 using Discuz.Forum;
 
 namespace Arsenalcn.CasinoSys.Entity
 {
     public class Bet
     {
-        public Bet() { }
+        public Bet()
+        {
+        }
 
         public Bet(int betID)
         {
@@ -26,6 +26,26 @@ namespace Arsenalcn.CasinoSys.Entity
             InitBet(dr);
         }
 
+        public int ID { get; set; }
+
+        public int UserID { get; set; }
+
+        public string UserName { get; set; }
+
+        public Guid CasinoItemGuid { get; set; }
+
+        public float? BetAmount { get; set; }
+
+        public DateTime BetTime { get; private set; }
+
+        public float? BetRate { get; set; }
+
+        public bool? IsWin { get; set; }
+
+        public float? Earning { get; set; }
+
+        public string EarningDesc { get; set; }
+
         private void InitBet(DataRow dr)
         {
             if (dr != null)
@@ -33,7 +53,7 @@ namespace Arsenalcn.CasinoSys.Entity
                 ID = Convert.ToInt32(dr["ID"]);
                 UserID = Convert.ToInt32(dr["UserID"]);
                 UserName = Convert.ToString(dr["UserName"]);
-                CasinoItemGuid = (Guid)dr["CasinoItemGuid"];
+                CasinoItemGuid = (Guid) dr["CasinoItemGuid"];
 
                 if (Convert.IsDBNull(dr["Bet"]))
                     BetAmount = null;
@@ -41,7 +61,7 @@ namespace Arsenalcn.CasinoSys.Entity
                     BetAmount = Convert.ToSingle(dr["Bet"]);
 
 
-                BetTime = (DateTime)dr["BetTime"];
+                BetTime = (DateTime) dr["BetTime"];
 
                 if (Convert.IsDBNull(dr["BetRate"]))
                     BetRate = null;
@@ -357,35 +377,5 @@ namespace Arsenalcn.CasinoSys.Entity
         {
             return DataAccess.Bet.GetMatchTopEarning(matchGuid);
         }
-
-        public int ID
-        { get; set; }
-
-        public int UserID
-        { get; set; }
-
-        public string UserName
-        { get; set; }
-
-        public Guid CasinoItemGuid
-        { get; set; }
-
-        public float? BetAmount
-        { get; set; }
-
-        public DateTime BetTime
-        { get; private set; }
-
-        public float? BetRate
-        { get; set; }
-
-        public bool? IsWin
-        { get; set; }
-
-        public float? Earning
-        { get; set; }
-
-        public string EarningDesc
-        { get; set; }
     }
 }

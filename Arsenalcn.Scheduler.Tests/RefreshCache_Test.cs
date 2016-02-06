@@ -1,7 +1,10 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Arsenalcn.Core;
 using Arsenal.Service;
+using Arsenal.Service.Casino;
+using Arsenalcn.Core;
+using Arsenalcn.Core.Logger;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Match = Arsenal.Service.Match;
 
 namespace Arsenalcn.Scheduler.Tests
 {
@@ -25,13 +28,13 @@ namespace Arsenalcn.Scheduler.Tests
                 Video.Cache.RefreshCache();
 
                 //AcnCasino
-                Arsenal.Service.Casino.CasinoItem.Clean();
-                Arsenal.Service.Casino.ChoiceOption.Clean();
-                Arsenal.Service.Casino.Bet.Clean();
-                Arsenal.Service.Casino.BetDetail.Clean();
+                CasinoItem.Clean();
+                ChoiceOption.Clean();
+                Bet.Clean();
+                BetDetail.Clean();
 
                 // Clean Log
-                Arsenalcn.Core.Logger.Log.Clean();
+                Log.Clean();
             }
             catch (Exception ex)
             {

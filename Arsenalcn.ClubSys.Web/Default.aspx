@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" MasterPageFile="DefaultMaster.master" CodeBehind="Default.aspx.cs"
-    Inherits="Arsenalcn.ClubSys.Web._Default" Title="ACN球会系统" EnableViewState="false" %>
+Inherits="Arsenalcn.ClubSys.Web._Default" Title="ACN球会系统" EnableViewState="false" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="cphHead" runat="server">
 </asp:Content>

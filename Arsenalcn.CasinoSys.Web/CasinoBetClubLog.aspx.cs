@@ -1,12 +1,36 @@
 ﻿using System;
 using System.Web.UI.WebControls;
-
 using Arsenalcn.CasinoSys.Entity;
+using Arsenalcn.CasinoSys.Web.Common;
+using Arsenalcn.CasinoSys.Web.Control;
 
 namespace Arsenalcn.CasinoSys.Web
 {
-    public partial class CasinoBetClubLog : Common.BasePage
+    public partial class CasinoBetClubLog : BasePage
     {
+        private string _away = string.Empty;
+
+        private string _home = string.Empty;
+
+        public Guid CurrentMatch
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(Request.QueryString["Match"]))
+                {
+                    try
+                    {
+                        return new Guid(Request.QueryString["Match"]);
+                    }
+                    catch
+                    {
+                        return Guid.Empty;
+                    }
+                }
+                return Guid.Empty;
+            }
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             #region Assign Control Property
@@ -16,7 +40,7 @@ namespace Arsenalcn.CasinoSys.Web
 
             ctrlFieldTooBar.UserId = userid;
 
-            ctrlMenuTabBar.CurrentMenu = Control.CasinoMenuType.CasinoBetLog;
+            ctrlMenuTabBar.CurrentMenu = CasinoMenuType.CasinoBetLog;
 
             if (CurrentMatch != Guid.Empty)
             {
@@ -57,9 +81,6 @@ namespace Arsenalcn.CasinoSys.Web
             BindData();
         }
 
-        private string _home = string.Empty;
-        private string _away = string.Empty;
-
         private void BindData()
         {
             if (CurrentMatch != Guid.Empty)
@@ -80,7 +101,7 @@ namespace Arsenalcn.CasinoSys.Web
                     ltrlMatchResultCount.Text = betList.FindAll(bet => !bet.BetAmount.HasValue).Count.ToString();
 
                     float totalBetCount = 0;
-                    betList.ForEach(delegate (Bet bet) { totalBetCount += bet.BetAmount.GetValueOrDefault(0f); });
+                    betList.ForEach(delegate(Bet bet) { totalBetCount += bet.BetAmount.GetValueOrDefault(0f); });
                     ltrlTotalBetCount.Text = totalBetCount.ToString("N0");
 
                     var itemGuid = CasinoItem.GetCasinoItemGuidByMatch(CurrentMatch, CasinoType.MatchResult);
@@ -95,26 +116,6 @@ namespace Arsenalcn.CasinoSys.Web
 
                     gvBet.DataBind();
                 }
-            }
-        }
-
-        public Guid CurrentMatch
-        {
-            get
-            {
-                if (!string.IsNullOrEmpty(Request.QueryString["Match"]))
-                {
-                    try
-                    {
-                        return new Guid(Request.QueryString["Match"]);
-                    }
-                    catch
-                    {
-                        return Guid.Empty;
-                    }
-                }
-                else
-                    return Guid.Empty;
             }
         }
 
@@ -134,10 +135,12 @@ namespace Arsenalcn.CasinoSys.Web
                     {
                         var pathAcnClub = ConfigGlobal.PluginAcnClubPath;
 
-                        if ((!string.IsNullOrEmpty(pathAcnClub)) && (pathAcnClub != Boolean.FalseString.ToLower()))
+                        if ((!string.IsNullOrEmpty(pathAcnClub)) && (pathAcnClub != bool.FalseString.ToLower()))
                         {
                             var drClub = UserClub.GetUserClubHistoryInfo(bet.UserID, bet.BetTime);
-                            if ((drClub != null) && ((drClub["ClubUid"].ToString() == ddlClub.SelectedValue) || (ddlClub.SelectedValue == "0")))
+                            if ((drClub != null) &&
+                                ((drClub["ClubUid"].ToString() == ddlClub.SelectedValue) ||
+                                 (ddlClub.SelectedValue == "0")))
                             {
                                 ltrlClub.Text =
                                     $"<a href=\"/{pathAcnClub}/ClubView.aspx?ClubID={drClub["ClubUid"]}\" target=\"_blank\">{drClub["ClubName"]}</a>";
@@ -185,7 +188,6 @@ namespace Arsenalcn.CasinoSys.Web
 
                     if (ltrlBetResult != null)
                     {
-
                         if (!bet.IsWin.HasValue)
                         {
                             ltrlBetResult.Text = string.Empty;

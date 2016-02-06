@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Data;
 using System.Web.UI.WebControls;
-
 using Arsenalcn.CasinoSys.Entity;
+using Arsenalcn.CasinoSys.Web.Common;
 
 namespace Arsenalcn.CasinoSys.Web
 {
-    public partial class AdminMatch : Common.AdminBasePage
+    public partial class AdminMatch : AdminBasePage
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -22,12 +22,12 @@ namespace Arsenalcn.CasinoSys.Web
         {
             var dt = CasinoItem.GetMatchCasinoItemView(false);
 
-            dt.Columns.Add("HomeDisplay", typeof(string));
-            dt.Columns.Add("AwayDisplay", typeof(string));
+            dt.Columns.Add("HomeDisplay", typeof (string));
+            dt.Columns.Add("AwayDisplay", typeof (string));
 
             foreach (DataRow dr in dt.Rows)
             {
-                var m = new Match((Guid)dr["MatchGuid"]);
+                var m = new Match((Guid) dr["MatchGuid"]);
 
                 dr["HomeDisplay"] = Team.Cache.Load(m.Home).TeamDisplayName;
                 dr["AwayDisplay"] = Team.Cache.Load(m.Away).TeamDisplayName;
@@ -46,7 +46,7 @@ namespace Arsenalcn.CasinoSys.Web
 
                 if (drv != null)
                 {
-                    var m = new Match((Guid)drv["MatchGuid"]);
+                    var m = new Match((Guid) drv["MatchGuid"]);
 
                     var matchResult = e.Row.FindControl("ltrlMatchResult") as Literal;
                     var btnCalcBonus = e.Row.FindControl("btnCalcBonus") as LinkButton;
@@ -139,7 +139,7 @@ namespace Arsenalcn.CasinoSys.Web
             {
                 try
                 {
-                    var guid = (Guid)gvMatch.DataKeys[gvMatch.EditIndex].Value;
+                    var guid = (Guid) gvMatch.DataKeys[gvMatch.EditIndex].Value;
 
                     var m = new Match(guid);
 
@@ -175,7 +175,7 @@ namespace Arsenalcn.CasinoSys.Web
                 }
                 catch (Exception ex)
                 {
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message}');", true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "failed", $"alert('{ex.Message}');", true);
                 }
             }
 
@@ -186,7 +186,7 @@ namespace Arsenalcn.CasinoSys.Web
 
         protected void gvMatch_RowDeleting(object sender, GridViewDeleteEventArgs e)
         {
-            var guid = (Guid)gvMatch.DataKeys[e.RowIndex].Value;
+            var guid = (Guid) gvMatch.DataKeys[e.RowIndex].Value;
 
             try
             {
@@ -195,7 +195,7 @@ namespace Arsenalcn.CasinoSys.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message}');", true);
+                ClientScript.RegisterClientScriptBlock(typeof (string), "failed", $"alert('{ex.Message}');", true);
             }
 
             BindData();
@@ -227,7 +227,7 @@ namespace Arsenalcn.CasinoSys.Web
                     var m = new Match(guid);
                     m.ReturnBet();
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "success", "alert('投注退还成功');", true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "success", "alert('投注退还成功');", true);
 
                     BindData();
                 }
@@ -238,14 +238,14 @@ namespace Arsenalcn.CasinoSys.Web
                     var m = new Match(guid);
                     m.CalcBonus();
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "success", "alert('奖金发放成功');", true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "success", "alert('奖金发放成功');", true);
 
                     BindData();
                 }
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message}');", true);
+                ClientScript.RegisterClientScriptBlock(typeof (string), "failed", $"alert('{ex.Message}');", true);
             }
         }
 

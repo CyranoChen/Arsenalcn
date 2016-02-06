@@ -1,16 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-
+using System.Web.UI;
 using Arsenalcn.ClubSys.Service;
-using Arsenalcn.ClubSys.Entity;
 
 namespace Arsenalcn.ClubSys.Web.Control
 {
-    public partial class TopClubList : System.Web.UI.UserControl
+    public partial class TopClubList : UserControl
     {
         protected void Page_Load(object sender, EventArgs e)
         {
             #region Top Rank Club
+
             var topRankClubs = ClubLogic.GetTopRankClubs();
 
             var rank = 1;
@@ -22,9 +21,11 @@ namespace Arsenalcn.ClubSys.Web.Control
 
             rptTopClubs.DataSource = topRankClubs;
             rptTopClubs.DataBind();
+
             #endregion
 
             #region Top Lv Rank Club
+
             var topLvClubs = ClubLogic.GetTopLvClubs();
 
             rank = 1;
@@ -36,9 +37,11 @@ namespace Arsenalcn.ClubSys.Web.Control
 
             rptLv.DataSource = topLvClubs;
             rptLv.DataBind();
+
             #endregion
 
             #region Top Fortune Rank Club
+
             var topFortuneClubs = ClubLogic.GetTopFortuneClubs();
 
             rank = 1;
@@ -50,6 +53,7 @@ namespace Arsenalcn.ClubSys.Web.Control
 
             rptFortune.DataSource = topFortuneClubs;
             rptFortune.DataBind();
+
             #endregion
         }
     }

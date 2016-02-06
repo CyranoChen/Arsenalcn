@@ -1,15 +1,17 @@
 ﻿using System;
-using System.Web;
-using System.Web.UI.WebControls;
 using System.Collections.Generic;
-
-using Arsenalcn.ClubSys.Service;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
 using Arsenalcn.ClubSys.Entity;
+using Arsenalcn.ClubSys.Service;
 
 namespace Arsenalcn.ClubSys.Web.Control
 {
-    public partial class PortalClubList : System.Web.UI.UserControl
+    public partial class PortalClubList : UserControl
     {
+        private List<Club> clubList;
+
         protected void Page_Load(object sender, EventArgs e)
         {
             //#region Callback Reference
@@ -23,6 +25,7 @@ namespace Arsenalcn.ClubSys.Web.Control
 
             BindClubListData();
         }
+
         //#region ICallbackEventHandler Members
 
         //public string GetCallbackResult()
@@ -99,7 +102,7 @@ namespace Arsenalcn.ClubSys.Web.Control
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                var club = (Club)e.Row.DataItem;
+                var club = (Club) e.Row.DataItem;
 
                 var count = ClubLogic.GetClubMembers(club.ID.Value).Count;
 
@@ -117,14 +120,17 @@ namespace Arsenalcn.ClubSys.Web.Control
 
                 var ltrlEquipmentCount = e.Row.FindControl("ltrlEquipmentCount") as Literal;
 
-                ltrlClubLogo.Text = string.Format("<a href=\"ClubView.aspx?ClubID={0}\" title=\"{2}\"><img src=\"UploadFiles/{1}\" alt=\"{2}\" width=\"80\" height=\"80\" /></a>", club.ID.ToString(), club.LogoName.ToString(), club.FullName.ToString());
+                ltrlClubLogo.Text =
+                    string.Format(
+                        "<a href=\"ClubView.aspx?ClubID={0}\" title=\"{2}\"><img src=\"UploadFiles/{1}\" alt=\"{2}\" width=\"80\" height=\"80\" /></a>",
+                        club.ID, club.LogoName, club.FullName);
                 ltrlClubName.Text =
-                    $"<a href=\"ClubView.aspx?ClubID={club.ID.ToString()}\" class=\"StrongLink\" title=\"{HttpUtility.HtmlEncode(club.Slogan).Replace("'", "\"")}\">{club.FullName.ToString()}</a>";
+                    $"<a href=\"ClubView.aspx?ClubID={club.ID}\" class=\"StrongLink\" title=\"{HttpUtility.HtmlEncode(club.Slogan).Replace("'", "\"")}\">{club.FullName}</a>";
                 ltrlClubRank.Text =
-                    $"<a href=\"ClubRank.aspx?ClubID={club.ID.ToString()}\" class=\"StrongLink\">RPos:{club.RankScore.ToString()}</a><div class=\"ClubSys_Rank\" style=\"width: {(club.RankLevel*20).ToString()}px;\"></div>";
+                    $"<a href=\"ClubRank.aspx?ClubID={club.ID}\" class=\"StrongLink\">RPos:{club.RankScore}</a><div class=\"ClubSys_Rank\" style=\"width: {(club.RankLevel*20)}px;\"></div>";
 
                 ltrlEquipmentCount.Text =
-                    $"<em title=\"卡片数C|视频数V(今日库存)\">{PlayerStrip.GetClubMemberCardCount(club.ID.Value).ToString()}|{PlayerStrip.GetClubMemberVideoCount(club.ID.Value).ToString()}({PlayerStrip.GetClubRemainingEquipment(club.ID.Value)})</em>";
+                    $"<em title=\"卡片数C|视频数V(今日库存)\">{PlayerStrip.GetClubMemberCardCount(club.ID.Value)}|{PlayerStrip.GetClubMemberVideoCount(club.ID.Value)}({PlayerStrip.GetClubRemainingEquipment(club.ID.Value)})</em>";
 
                 if (!club.IsAppliable.Value)
                     ltrlIsAppliable.Visible = true;
@@ -186,7 +192,7 @@ namespace Arsenalcn.ClubSys.Web.Control
                         userClub.AdditionalData = ClubLogic.TranslateResponsibility(userClub.Responsibility.Value);
 
                         //temp usage of username for li class
-                        if (userClub.Responsibility.Value == (int)Responsibility.Manager)
+                        if (userClub.Responsibility.Value == (int) Responsibility.Manager)
                             userClub.AdditionalData2 = " class=\"Manager\"";
                         else
                             userClub.AdditionalData2 = string.Empty;
@@ -205,7 +211,6 @@ namespace Arsenalcn.ClubSys.Web.Control
             BindClubListData();
         }
 
-        private List<Club> clubList = null;
         private void BindClubListData()
         {
             if (clubList == null)
@@ -225,7 +230,6 @@ namespace Arsenalcn.ClubSys.Web.Control
 
             gvClubList.DataSource = clubList;
             gvClubList.DataBind();
-
         }
     }
 }

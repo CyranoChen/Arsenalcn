@@ -6,7 +6,9 @@ namespace Arsenalcn.CasinoSys.Entity
 {
     public class Team
     {
-        public Team() { }
+        public Team()
+        {
+        }
 
         private Team(DataRow dr)
         {
@@ -17,7 +19,7 @@ namespace Arsenalcn.CasinoSys.Entity
         {
             if (dr != null)
             {
-                ID = (Guid)dr["TeamGuid"];
+                ID = (Guid) dr["TeamGuid"];
                 TeamEnglishName = dr["TeamEnglishName"].ToString();
                 TeamDisplayName = dr["TeamDisplayName"].ToString();
                 TeamLogo = dr["TeamLogo"].ToString();
@@ -52,39 +54,10 @@ namespace Arsenalcn.CasinoSys.Entity
             return list;
         }
 
-        #region Members and Properties
-
-        public Guid ID
-        { get; set; }
-
-        public string TeamEnglishName
-        { get; set; }
-
-        public string TeamDisplayName
-        { get; set; }
-
-        public string TeamLogo
-        { get; set; }
-
-        public string Ground
-        { get; set; }
-
-        public int? Capacity
-        { get; set; }
-
-        public string Manager
-        { get; set; }
-
-        public Guid LeagueGuid
-        { get; set; }
-
-        public int LeagueCountInfo
-        { get; set; }
-
-        #endregion
-
         public static class Cache
         {
+            public static List<Team> TeamList;
+
             static Cache()
             {
                 InitCache();
@@ -108,18 +81,38 @@ namespace Arsenalcn.CasinoSys.Entity
             public static List<Team> GetTeamsByLeagueGuid(Guid guid)
             {
                 return TeamList.FindAll(x =>
-                    new RelationLeagueTeam() { TeamGuid = x.ID, LeagueGuid = guid }.Any());
+                    new RelationLeagueTeam {TeamGuid = x.ID, LeagueGuid = guid}.Any());
             }
-
-            public static List<Team> TeamList;
         }
 
+        //        InitCache();
+        //    {
+        //    static Cache()
+        //{
+
+        #region Members and Properties
+
+        public Guid ID { get; set; }
+
+        public string TeamEnglishName { get; set; }
+
+        public string TeamDisplayName { get; set; }
+
+        public string TeamLogo { get; set; }
+
+        public string Ground { get; set; }
+
+        public int? Capacity { get; set; }
+
+        public string Manager { get; set; }
+
+        public Guid LeagueGuid { get; set; }
+
+        public int LeagueCountInfo { get; set; }
+
+        #endregion
 
         //public static class Cache
-        //{
-        //    static Cache()
-        //    {
-        //        InitCache();
         //    }
 
         //    public static void RefreshCache()

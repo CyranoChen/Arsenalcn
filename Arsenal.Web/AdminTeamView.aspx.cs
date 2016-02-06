@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web.UI.WebControls;
-
 using Arsenal.Service;
 using Arsenalcn.Core;
 
@@ -11,13 +9,34 @@ namespace Arsenal.Web
     public partial class AdminTeamView : AdminPageBase
     {
         private readonly IRepository repo = new Repository();
+
+        private Guid TeamGuid
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(Request.QueryString["TeamGuid"]))
+                {
+                    try
+                    {
+                        return new Guid(Request.QueryString["TeamGuid"]);
+                    }
+                    catch
+                    {
+                        return Guid.Empty;
+                    }
+                }
+                return Guid.Empty;
+            }
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            ctrlAdminFieldToolBar.AdminUserName = this.Username;
+            ctrlAdminFieldToolBar.AdminUserName = Username;
 
             if (!IsPostBack)
             {
                 #region Bind ddlLeague
+
                 var list = League.Cache.LeagueList;
 
                 ddlTeamLeague.DataSource = list;
@@ -26,23 +45,10 @@ namespace Arsenal.Web
                 ddlTeamLeague.DataBind();
 
                 ddlTeamLeague.Items.Insert(0, new ListItem("--请选择比赛分类--", string.Empty));
+
                 #endregion
 
                 InitForm();
-            }
-        }
-
-        private Guid TeamGuid
-        {
-            get
-            {
-                if (!string.IsNullOrEmpty(Request.QueryString["TeamGuid"]))
-                {
-                    try { return new Guid(Request.QueryString["TeamGuid"]); }
-                    catch { return Guid.Empty; }
-                }
-                else
-                    return Guid.Empty;
             }
         }
 
@@ -97,7 +103,7 @@ namespace Arsenal.Web
                 {
                     var leagueGuid = new Guid(ddlTeamLeague.SelectedValue);
 
-                    var rlt = new RelationLeagueTeam() { TeamGuid = TeamGuid, LeagueGuid = leagueGuid };
+                    var rlt = new RelationLeagueTeam {TeamGuid = TeamGuid, LeagueGuid = leagueGuid};
 
                     if (!rlt.Any())
                     {
@@ -108,17 +114,20 @@ namespace Arsenal.Web
                 if (TeamGuid != Guid.Empty)
                 {
                     repo.Update(t);
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('更新成功');window.location.href = window.location.href", true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                        "alert('更新成功');window.location.href = window.location.href", true);
                 }
                 else
                 {
                     repo.Insert(t);
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('添加成功');window.location.href = 'AdminTeam.aspx'", true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                        "alert('添加成功');window.location.href = 'AdminTeam.aspx'", true);
                 }
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}')", ex.Message.ToString()), true);
+                ClientScript.RegisterClientScriptBlock(typeof (string), "failed",
+                    string.Format("alert('{0}')", ex.Message), true);
             }
         }
 
@@ -126,7 +135,7 @@ namespace Arsenal.Web
         {
             if (TeamGuid != Guid.Empty)
             {
-                Response.Redirect("AdminTeam.aspx?TeamGuid=" + TeamGuid.ToString());
+                Response.Redirect("AdminTeam.aspx?TeamGuid=" + TeamGuid);
             }
             else
             {
@@ -143,11 +152,15 @@ namespace Arsenal.Web
                     var list = RelationLeagueTeam.QueryByTeamGuid(TeamGuid);
 
                     if (list != null && list.Count > 0)
-                    { RelationLeagueTeam.Delete(list); }
+                    {
+                        RelationLeagueTeam.Delete(list);
+                    }
 
                     repo.Delete<Team>(TeamGuid);
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", string.Format("alert('删除成功(包括{0}个分类关联)');window.location.href='AdminTeam.aspx'", list.Count().ToString()), true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                        string.Format("alert('删除成功(包括{0}个分类关联)');window.location.href='AdminTeam.aspx'", list.Count()),
+                        true);
                 }
                 else
                 {
@@ -156,7 +169,7 @@ namespace Arsenal.Web
             }
             catch
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", "alert('删除失败')", true);
+                ClientScript.RegisterClientScriptBlock(typeof (string), "failed", "alert('删除失败')", true);
             }
         }
     }

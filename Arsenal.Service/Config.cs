@@ -11,6 +11,9 @@ namespace Arsenal.Service
             Init();
         }
 
+        private static Dictionary<string, string> ConfigDictionary { get; set; }
+        public static AssemblyInfo Assembly { get; set; }
+
         public static void Refresh()
         {
             Init();
@@ -21,7 +24,7 @@ namespace Arsenal.Service
             Config.Cache.RefreshCache();
             ConfigDictionary = Config.Cache.GetDictionaryByConfigSystem(ConfigSystem.Arsenal);
 
-            Assembly = new AssemblyInfo()
+            Assembly = new AssemblyInfo
             {
                 Title = ConfigDictionary["AssemblyTitle"],
                 Description = ConfigDictionary["AssemblyDescription"],
@@ -36,12 +39,9 @@ namespace Arsenal.Service
             };
         }
 
-        private static Dictionary<string, string> ConfigDictionary { get; set; }
-        public static AssemblyInfo Assembly { get; set; }
-
         public static bool IsPluginAdmin(int userid)
         {
-            var admins = ConfigGlobal.PluginAdmin;
+            var admins = PluginAdmin;
             if (userid > 0 && admins.Length > 0)
             {
                 foreach (var a in admins)
@@ -73,42 +73,27 @@ namespace Arsenal.Service
 
         public static string APIAppKey
         {
-            get
-            {
-                return ConfigDictionary["APIAppKey"];
-            }
+            get { return ConfigDictionary["APIAppKey"]; }
         }
 
         public static string APICryptographicKey
         {
-            get
-            {
-                return ConfigDictionary["APICryptographicKey"];
-            }
+            get { return ConfigDictionary["APICryptographicKey"]; }
         }
 
         public static string APILoginURL
         {
-            get
-            {
-                return ConfigDictionary["APILoginURL"];
-            }
+            get { return ConfigDictionary["APILoginURL"]; }
         }
 
         public static string APILogoutURL
         {
-            get
-            {
-                return ConfigDictionary["APILogoutURL"];
-            }
+            get { return ConfigDictionary["APILogoutURL"]; }
         }
 
         public static string APIServiceURL
         {
-            get
-            {
-                return ConfigDictionary["APIServiceURL"];
-            }
+            get { return ConfigDictionary["APIServiceURL"]; }
         }
 
         public static string[] PluginAdmin
@@ -122,26 +107,17 @@ namespace Arsenal.Service
 
         public static string PluginName
         {
-            get
-            {
-                return ConfigDictionary["PluginName"];
-            }
+            get { return ConfigDictionary["PluginName"]; }
         }
 
         public static string PluginVersion
         {
-            get
-            {
-                return ConfigDictionary["PluginVersion"];
-            }
+            get { return ConfigDictionary["PluginVersion"]; }
         }
 
         public static string PluginDisplayName
         {
-            get
-            {
-                return ConfigDictionary["PluginDisplayName"];
-            }
+            get { return ConfigDictionary["PluginDisplayName"]; }
         }
 
         public static bool PluginActive
@@ -198,9 +174,10 @@ namespace Arsenal.Service
                     var tmpID = ConfigDictionary["ArsenalTeamGuid"];
 
                     if (!string.IsNullOrEmpty(tmpID))
-                    { return new Guid(tmpID); }
-                    else
-                    { return Guid.Empty; }
+                    {
+                        return new Guid(tmpID);
+                    }
+                    return Guid.Empty;
                 }
                 catch
                 {
@@ -217,8 +194,7 @@ namespace Arsenal.Service
 
                 if (!string.IsNullOrEmpty(tmpUrl))
                     return tmpUrl;
-                else
-                    return "http://ftp.arsenalcn.com/playervideo/";
+                return "http://ftp.arsenalcn.com/playervideo/";
             }
         }
 
@@ -239,29 +215,19 @@ namespace Arsenal.Service
 
         public static string WeChatAppKey
         {
-            get
-            {
-                return ConfigDictionary["WeChatAppKey"];
-            }
+            get { return ConfigDictionary["WeChatAppKey"]; }
         }
 
         public static string WeChatAppSecret
         {
-            get
-            {
-                return ConfigDictionary["WeChatAppSecret"];
-            }
+            get { return ConfigDictionary["WeChatAppSecret"]; }
         }
 
         public static string WeChatServiceURL
         {
-            get
-            {
-                return ConfigDictionary["WeChatServiceURL"];
-            }
+            get { return ConfigDictionary["WeChatServiceURL"]; }
         }
 
         #endregion
     }
 }
-

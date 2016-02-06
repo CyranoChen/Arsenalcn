@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Linq;
-
 using Arsenal.Service.Casino;
 using Arsenalcn.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 using ArsenalMatch = Arsenal.Service.Match;
 using CasinoMatch = Arsenal.Service.Casino.Match;
 
 namespace Arsenalcn.Scheduler.Tests
 {
     [TestClass]
-    public class Casino_Test
+    public class CasinoTest
     {
         [TestMethod]
         public void AutoUpdateArsenalMatchResult_Test()
@@ -43,10 +41,7 @@ namespace Arsenalcn.Scheduler.Tests
                                 {
                                     return m.TeamGuid.Equals(x.Away) && m.PlayTime.Equals(x.PlayTime);
                                 }
-                                else
-                                {
-                                    return m.TeamGuid.Equals(x.Home) && m.PlayTime.Equals(x.PlayTime);
-                                }
+                                return m.TeamGuid.Equals(x.Home) && m.PlayTime.Equals(x.PlayTime);
                             });
                         }
 

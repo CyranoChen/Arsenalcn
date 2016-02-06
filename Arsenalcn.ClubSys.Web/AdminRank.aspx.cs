@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Web.UI.WebControls;
+using Arsenalcn.ClubSys.Web.Common;
 using Arsenalcn.Common;
 
 namespace Arsenalcn.ClubSys.Web
 {
-    public partial class AdminRank : Common.AdminBasePage
+    public partial class AdminRank : AdminBasePage
     {
         protected override void OnInit(EventArgs e)
         {
@@ -15,7 +16,7 @@ namespace Arsenalcn.ClubSys.Web
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            ctrlAdminFieldToolBar.AdminUserName = this.username;
+            ctrlAdminFieldToolBar.AdminUserName = username;
         }
 
         protected void gvRanks_RowEditing(object sender, GridViewEditEventArgs e)
@@ -27,6 +28,5 @@ namespace Arsenalcn.ClubSys.Web
         {
             gvRanks.EditIndex = -1;
         }
-
     }
 }

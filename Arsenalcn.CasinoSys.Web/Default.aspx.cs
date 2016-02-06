@@ -1,10 +1,10 @@
 ﻿using System;
-
 using Arsenalcn.CasinoSys.Entity;
+using Arsenalcn.CasinoSys.Web.Common;
 
 namespace Arsenalcn.CasinoSys.Web
 {
-    public partial class Default : Common.BasePage
+    public partial class Default : BasePage
     {
         protected void Page_Load(object sender, EventArgs e)
         {

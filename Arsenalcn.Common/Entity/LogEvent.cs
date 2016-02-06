@@ -6,7 +6,9 @@ namespace Arsenalcn.Common.Entity
 {
     public class LogEvent
     {
-        public LogEvent() { }
+        public LogEvent()
+        {
+        }
 
         public LogEvent(DataRow dr)
         {
@@ -18,10 +20,10 @@ namespace Arsenalcn.Common.Entity
             if (dr != null)
             {
                 LogID = Convert.ToInt32(dr["ID"]);
-                EventType = (LogEventType)Enum.Parse(typeof(LogEventType), dr["EventType"].ToString());
+                EventType = (LogEventType) Enum.Parse(typeof (LogEventType), dr["EventType"].ToString());
                 Message = dr["Message"].ToString();
                 ErrorStackTrace = dr["ErrorStackTrace"].ToString();
-                EventDate = (DateTime)(dr["EventDate"]);
+                EventDate = (DateTime) (dr["EventDate"]);
                 ErrorParam = dr["ErrorParam"].ToString();
             }
             else
@@ -79,23 +81,17 @@ namespace Arsenalcn.Common.Entity
 
         #region Members and Properties
 
-        public int LogID
-        { get; set; }
+        public int LogID { get; set; }
 
-        public LogEventType EventType
-        { get; set; }
+        public LogEventType EventType { get; set; }
 
-        public string Message
-        { get; set; }
+        public string Message { get; set; }
 
-        public string ErrorStackTrace
-        { get; set; }
+        public string ErrorStackTrace { get; set; }
 
-        public DateTime EventDate
-        { get; set; }
+        public DateTime EventDate { get; set; }
 
-        public string ErrorParam
-        { get; set; }
+        public string ErrorParam { get; set; }
 
         #endregion
     }

@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Web.UI.WebControls;
 using System.Linq;
-
-using iArsenal.Service;
+using System.Web.UI.WebControls;
 using Arsenalcn.Core;
+using iArsenal.Service;
 
 namespace iArsenal.Web
 {
@@ -40,7 +39,6 @@ namespace iArsenal.Web
 
                 if (tbConfigValue != null)
                 {
-
                     var c = new Config
                     {
                         ConfigSystem = ConfigSystem.iArsenal,
@@ -59,7 +57,7 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message}');", true);
+                ClientScript.RegisterClientScriptBlock(typeof (string), "failed", $"alert('{ex.Message}');", true);
             }
         }
 
@@ -93,11 +91,12 @@ namespace iArsenal.Web
 
                 Order.RefreshOrderBaseType();
 
-                ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('更新全部缓存成功');window.location.href=window.location.href", true);
+                ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                    "alert('更新全部缓存成功');window.location.href=window.location.href", true);
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message}');", true);
+                ClientScript.RegisterClientScriptBlock(typeof (string), "failed", $"alert('{ex.Message}');", true);
             }
         }
     }

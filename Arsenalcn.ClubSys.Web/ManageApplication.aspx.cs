@@ -1,19 +1,19 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Collections.Generic;
-
-using Arsenalcn.ClubSys.Service;
 using Arsenalcn.ClubSys.Entity;
-
-using Discuz.Entity;
+using Arsenalcn.ClubSys.Service;
+using Arsenalcn.ClubSys.Web.Common;
+using Arsenalcn.ClubSys.Web.Control;
 using Discuz.Forum;
-
 
 namespace Arsenalcn.ClubSys.Web
 {
-    public partial class ManageApplication : Common.BasePage, ICallbackEventHandler
+    public partial class ManageApplication : BasePage, ICallbackEventHandler
     {
+        private List<ApplyHistory> clubApplicationList;
+
         private int ClubID
         {
             get
@@ -21,12 +21,9 @@ namespace Arsenalcn.ClubSys.Web
                 int tmp;
                 if (int.TryParse(Request.QueryString["ClubID"], out tmp))
                     return tmp;
-                else
-                {
-                    Response.Redirect("ClubPortal.aspx");
+                Response.Redirect("ClubPortal.aspx");
 
-                    return -1;
-                }
+                return -1;
             }
         }
 
@@ -34,31 +31,32 @@ namespace Arsenalcn.ClubSys.Web
         {
             #region SetControlProperty
 
-            ctrlLeftPanel.UserID = this.userid;
-            ctrlLeftPanel.UserName = this.username;
-            ctrlLeftPanel.UserKey = this.userkey;
+            ctrlLeftPanel.UserID = userid;
+            ctrlLeftPanel.UserName = username;
+            ctrlLeftPanel.UserKey = userkey;
 
-            ctrlFieldToolBar.UserID = this.userid;
-            ctrlFieldToolBar.UserName = this.username;
+            ctrlFieldToolBar.UserID = userid;
+            ctrlFieldToolBar.UserName = username;
 
-            ctrlManageMenuTabBar.CurrentMenu = Arsenalcn.ClubSys.Web.Control.ManageClubMenuItem.ManageApplication;
-            ctrlManageMenuTabBar.UserID = this.userid;
+            ctrlManageMenuTabBar.CurrentMenu = ManageClubMenuItem.ManageApplication;
+            ctrlManageMenuTabBar.UserID = userid;
 
             #endregion
 
             #region Callback Reference
+
             var callbackReference = Page.ClientScript.GetCallbackEventReference(this, "arg", "GetResult", "context");
 
             var callbackScript = $"function ApproveJoin(arg, context){{ {callbackReference} }};";
 
-            Page.ClientScript.RegisterClientScriptBlock(typeof(string), "action", callbackScript, true);
+            Page.ClientScript.RegisterClientScriptBlock(typeof (string), "action", callbackScript, true);
 
             #endregion
 
             var club = ClubLogic.GetClubInfo(ClubID);
 
-            if (club != null && this.Title.IndexOf("{0}") >= 0)
-                this.Title = string.Format(this.Title, club.FullName);
+            if (club != null && Title.IndexOf("{0}") >= 0)
+                Title = string.Format(Title, club.FullName);
 
             if (!IsPostBack)
             {
@@ -69,7 +67,7 @@ namespace Arsenalcn.ClubSys.Web
         protected void LoadPageData()
         {
             // Administrators could enter this page
-            if (ConfigAdmin.IsPluginAdmin(this.userid))
+            if (ConfigAdmin.IsPluginAdmin(userid))
             {
                 pnlInaccessible.Visible = false;
                 phContent.Visible = true;
@@ -79,11 +77,12 @@ namespace Arsenalcn.ClubSys.Web
             }
             else
             {
-                var userClub = ClubLogic.GetActiveUserClub(this.userid, ClubID);
+                var userClub = ClubLogic.GetActiveUserClub(userid, ClubID);
 
                 if (userClub != null && userClub.Responsibility.HasValue)
                 {
-                    if (userClub.Responsibility.Value.Equals((int)Responsibility.Executor) || userClub.Responsibility.Value.Equals((int)Responsibility.Manager))
+                    if (userClub.Responsibility.Value.Equals((int) Responsibility.Executor) ||
+                        userClub.Responsibility.Value.Equals((int) Responsibility.Manager))
                     {
                         pnlInaccessible.Visible = false;
                         phContent.Visible = true;
@@ -95,7 +94,6 @@ namespace Arsenalcn.ClubSys.Web
                     {
                         pnlInaccessible.Visible = true;
                         phContent.Visible = false;
-
                     }
                 }
                 else
@@ -106,7 +104,6 @@ namespace Arsenalcn.ClubSys.Web
             }
         }
 
-        private List<ApplyHistory> clubApplicationList = null;
         private void BindMemberList()
         {
             if (clubApplicationList == null)
@@ -123,7 +120,7 @@ namespace Arsenalcn.ClubSys.Web
                 var ah = e.Row.DataItem as ApplyHistory;
                 if (ah != null)
                 {
-                    var userInfo = AdminUsers.GetUserInfo(ah.Userid);
+                    var userInfo = Users.GetUserInfo(ah.Userid);
                     if (userInfo != null)
                     {
                         #region set avatar
@@ -225,16 +222,16 @@ namespace Arsenalcn.ClubSys.Web
 
                     if (!approved)
                     {
-                        UserClubLogic.ApproveJoinClub(ah.ID.Value, approved, this.username);
+                        UserClubLogic.ApproveJoinClub(ah.ID.Value, approved, username);
                         return "false";
                     }
-                    else if (approved && count >= quota)
+                    if (approved && count >= quota)
                         return string.Empty;
 
-                    UserClubLogic.ApproveJoinClub(ah.ID.Value, approved, this.username);
+                    UserClubLogic.ApproveJoinClub(ah.ID.Value, approved, username);
 
                     //check if user joined clubs count has reached max count, if true, cancel all applications of this user
-                    var myClubs = ClubLogic.GetActiveUserClubs(this.userid);
+                    var myClubs = ClubLogic.GetActiveUserClubs(userid);
                     if (myClubs.Count >= ConfigGlobal.SingleUserMaxClubCount)
                     {
                         //cancel
@@ -248,15 +245,14 @@ namespace Arsenalcn.ClubSys.Web
 
                     return "true";
                 }
-                else
-                    return string.Empty;
-            }
-            else
                 return string.Empty;
+            }
+            return string.Empty;
         }
 
-        int applyHistoryID = -1;
-        bool approved = true;
+        private int applyHistoryID = -1;
+        private bool approved = true;
+
         public void RaiseCallbackEvent(string eventArgument)
         {
             var args = eventArgument.Split(';');

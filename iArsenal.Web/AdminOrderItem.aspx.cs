@@ -1,26 +1,17 @@
 ﻿using System;
 using System.Web.UI.WebControls;
-
-using iArsenal.Service;
 using Arsenalcn.Core;
+using iArsenal.Service;
+using iArsenal.Web.Control;
 
 namespace iArsenal.Web
 {
     public partial class AdminOrderItem : AdminPageBase
     {
         private readonly IRepository repo = new Repository();
-        protected void Page_Load(object sender, EventArgs e)
-        {
-            ctrlAdminFieldToolBar.AdminUserName = this.Username;
-            ctrlCustomPagerInfo.PageChanged += new Control.CustomPagerInfo.PageChangedEventHandler(ctrlCustomPagerInfo_PageChanged);
-
-            if (!IsPostBack)
-            {
-                BindData();
-            }
-        }
 
         private int _orderItemID = int.MinValue;
+
         private int OrderItemID
         {
             get
@@ -28,12 +19,23 @@ namespace iArsenal.Web
                 int _res;
                 if (_orderItemID == 0)
                     return _orderItemID;
-                else if (!string.IsNullOrEmpty(Request.QueryString["OrderItemID"]) && int.TryParse(Request.QueryString["OrderItemID"], out _res))
+                if (!string.IsNullOrEmpty(Request.QueryString["OrderItemID"]) &&
+                    int.TryParse(Request.QueryString["OrderItemID"], out _res))
                     return _res;
-                else
-                    return int.MinValue;
+                return int.MinValue;
             }
             set { _orderItemID = value; }
+        }
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            ctrlAdminFieldToolBar.AdminUserName = Username;
+            ctrlCustomPagerInfo.PageChanged += ctrlCustomPagerInfo_PageChanged;
+
+            if (!IsPostBack)
+            {
+                BindData();
+            }
         }
 
         private void BindData()
@@ -68,13 +70,14 @@ namespace iArsenal.Web
             });
 
             #region set GridView Selected PageIndex
+
             if (OrderItemID > 0)
             {
                 var i = list.FindIndex(x => x.ID.Equals(OrderItemID));
                 if (i >= 0)
                 {
-                    gvOrderItem.PageIndex = i / gvOrderItem.PageSize;
-                    gvOrderItem.SelectedIndex = i % gvOrderItem.PageSize;
+                    gvOrderItem.PageIndex = i/gvOrderItem.PageSize;
+                    gvOrderItem.SelectedIndex = i%gvOrderItem.PageSize;
                 }
                 else
                 {
@@ -86,12 +89,14 @@ namespace iArsenal.Web
             {
                 gvOrderItem.SelectedIndex = -1;
             }
+
             #endregion
 
             gvOrderItem.DataSource = list;
             gvOrderItem.DataBind();
 
             #region set Control Custom Pager
+
             if (gvOrderItem.BottomPagerRow != null)
             {
                 gvOrderItem.BottomPagerRow.Visible = true;
@@ -106,6 +111,7 @@ namespace iArsenal.Web
             {
                 ctrlCustomPagerInfo.Visible = false;
             }
+
             #endregion
         }
 
@@ -117,7 +123,7 @@ namespace iArsenal.Web
             BindData();
         }
 
-        protected void ctrlCustomPagerInfo_PageChanged(object sender, Control.CustomPagerInfo.DataNavigatorEventArgs e)
+        protected void ctrlCustomPagerInfo_PageChanged(object sender, CustomPagerInfo.DataNavigatorEventArgs e)
         {
             if (e.PageIndex > 0)
             {
@@ -133,7 +139,7 @@ namespace iArsenal.Web
             if (gvOrderItem.SelectedIndex != -1)
             {
                 Response.Redirect(
-                    $"AdminOrderItemView.aspx?OrderItemID={gvOrderItem.DataKeys[gvOrderItem.SelectedIndex].Value.ToString()}");
+                    $"AdminOrderItemView.aspx?OrderItemID={gvOrderItem.DataKeys[gvOrderItem.SelectedIndex].Value}");
             }
         }
 

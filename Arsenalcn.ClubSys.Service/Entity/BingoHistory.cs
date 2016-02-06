@@ -5,129 +5,6 @@ namespace Arsenalcn.ClubSys.Entity
 {
     public class BingoHistory : ClubSysObject
     {
-        #region Members and Properties
-
-        private int _id;
-        /// <summary>
-        /// History ID
-        /// </summary>
-        [ClubSysDbColumn("ID")]
-        public int ID
-        {
-            get
-            {
-                return _id;
-            }
-            set
-            {
-                _id = value;
-            }
-        }
-
-        private int _userId;
-        /// <summary>
-        /// User ID
-        /// </summary>
-        [ClubSysDbColumn("UserID")]
-        public int UserID
-        {
-            get
-            {
-                return _userId;
-            }
-            set
-            {
-                _userId = value;
-            }
-        }
-
-        private string _userName;
-        /// <summary>
-        /// User Name
-        /// </summary>
-        [ClubSysDbColumn("UserName")]
-        public string UserName
-        {
-            get
-            {
-                return _userName;
-            }
-            set
-            {
-                _userName = value;
-            }
-        }
-
-        private int _clubID;
-        /// <summary>
-        /// Club ID
-        /// </summary>
-        [ClubSysDbColumn("ClubID")]
-        public int ClubID
-        {
-            get
-            {
-                return _clubID;
-            }
-            set
-            {
-                _clubID = value;
-            }
-        }
-
-        private DateTime _actionDate;
-        /// <summary>
-        /// Action Date
-        /// </summary>
-        [ClubSysDbColumn("ActionDate")]
-        public DateTime ActionDate
-        {
-            get
-            {
-                return _actionDate;
-            }
-            set
-            {
-                _actionDate = value;
-            }
-        }
-
-        private int? _result;
-        /// <summary>
-        /// Result
-        /// </summary>
-        [ClubSysDbColumn("Result")]
-        public int? Result
-        {
-            get
-            {
-                return _result;
-            }
-            set
-            {
-                _result = value;
-            }
-        }
-
-        private string _resultDetail;
-        /// <summary>
-        /// Result Detail
-        /// </summary>
-        [ClubSysDbColumn("ResultDetail")]
-        public string ResultDetail
-        {
-            get
-            {
-                return _resultDetail;
-            }
-            set
-            {
-                _resultDetail = value;
-            }
-        }
-
-        #endregion
-
         public BingoHistory()
         {
         }
@@ -136,5 +13,51 @@ namespace Arsenalcn.ClubSys.Entity
             : base(dr)
         {
         }
+
+        #region Members and Properties
+
+        /// <summary>
+        ///     History ID
+        /// </summary>
+        [ClubSysDbColumn("ID")]
+        public int ID { get; set; }
+
+        /// <summary>
+        ///     User ID
+        /// </summary>
+        [ClubSysDbColumn("UserID")]
+        public int UserID { get; set; }
+
+        /// <summary>
+        ///     User Name
+        /// </summary>
+        [ClubSysDbColumn("UserName")]
+        public string UserName { get; set; }
+
+        /// <summary>
+        ///     Club ID
+        /// </summary>
+        [ClubSysDbColumn("ClubID")]
+        public int ClubID { get; set; }
+
+        /// <summary>
+        ///     Action Date
+        /// </summary>
+        [ClubSysDbColumn("ActionDate")]
+        public DateTime ActionDate { get; set; }
+
+        /// <summary>
+        ///     Result
+        /// </summary>
+        [ClubSysDbColumn("Result")]
+        public int? Result { get; set; }
+
+        /// <summary>
+        ///     Result Detail
+        /// </summary>
+        [ClubSysDbColumn("ResultDetail")]
+        public string ResultDetail { get; set; }
+
+        #endregion
     }
 }

@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using Arsenalcn.ClubSys.Entity;
 
 namespace Arsenalcn.ClubSys.Service
 {
     public class Video
     {
-        public Video() { }
+        public Video()
+        {
+        }
 
         private Video(DataRow dr)
         {
@@ -17,16 +20,16 @@ namespace Arsenalcn.ClubSys.Service
         {
             if (dr != null)
             {
-                ID = (Guid)dr["VideoGuid"];
+                ID = (Guid) dr["VideoGuid"];
                 FileName = dr["FileName"].ToString();
 
                 if (!Convert.IsDBNull(dr["ArsenalMatchGuid"]))
-                    ArsenalMatchGuid = (Guid)dr["ArsenalMatchGuid"];
+                    ArsenalMatchGuid = (Guid) dr["ArsenalMatchGuid"];
                 else
                     ArsenalMatchGuid = null;
 
                 if (!Convert.IsDBNull(dr["GoalPlayerGuid"]))
-                    GoalPlayerGuid = (Guid)dr["GoalPlayerGuid"];
+                    GoalPlayerGuid = (Guid) dr["GoalPlayerGuid"];
                 else
                     GoalPlayerGuid = null;
 
@@ -36,7 +39,7 @@ namespace Arsenalcn.ClubSys.Service
                     GoalPlayerName = null;
 
                 if (!Convert.IsDBNull(dr["AssistPlayerGuid"]))
-                    AssistPlayerGuid = (Guid)dr["AssistPlayerGuid"];
+                    AssistPlayerGuid = (Guid) dr["AssistPlayerGuid"];
                 else
                     AssistPlayerGuid = null;
 
@@ -47,7 +50,7 @@ namespace Arsenalcn.ClubSys.Service
 
                 GoalRank = dr["GoalRank"].ToString();
                 TeamworkRank = dr["TeamworkRank"].ToString();
-                VideoType = (VideoFileType)Enum.Parse(typeof(VideoFileType), dr["VideoType"].ToString());
+                VideoType = (VideoFileType) Enum.Parse(typeof (VideoFileType), dr["VideoType"].ToString());
                 VideoLength = Convert.ToInt16(dr["VideoLength"]);
                 VideoWidth = Convert.ToInt16(dr["VideoWidth"]);
                 VideoHeight = Convert.ToInt16(dr["VideoHeight"]);
@@ -55,12 +58,13 @@ namespace Arsenalcn.ClubSys.Service
                 Opponent = dr["Opponent"].ToString();
 
                 // Generate Video File Path
-                VideoFilePath = string.Format("{0}{1}.{2}", Entity.ConfigGlobal.ArsenalVideoUrl, ID, VideoType.ToString().ToLower());
+                VideoFilePath = string.Format("{0}{1}.{2}", ConfigGlobal.ArsenalVideoUrl, ID,
+                    VideoType.ToString().ToLower());
             }
             else
                 throw new Exception("Unable to init Video.");
         }
-        
+
         public static List<Video> GetVideos()
         {
             var dt = DataAccess.Video.GetVideos();
@@ -77,60 +81,11 @@ namespace Arsenalcn.ClubSys.Service
             return list;
         }
 
-        #region Members and Properties
-
-        public Guid ID
-        { get; set; }
-
-        public string FileName
-        { get; set; }
-
-        public Guid? ArsenalMatchGuid
-        { get; set; }
-
-        public Guid? GoalPlayerGuid
-        { get; set; }
-
-        public string GoalPlayerName
-        { get; set; }
-
-        public Guid? AssistPlayerGuid
-        { get; set; }
-
-        public string AssistPlayerName
-        { get; set; }
-
-        public string GoalRank
-        { get; set; }
-
-        public string TeamworkRank
-        { get; set; }
-
-        public VideoFileType VideoType
-        { get; set; }
-
-        public int VideoLength
-        { get; set; }
-
-        public int VideoWidth
-        { get; set; }
-
-        public int VideoHeight
-        { get; set; }
-
-        public string GoalYear
-        { get; set; }
-
-        public string Opponent
-        { get; set; }
-
-        public string VideoFilePath
-        { get; set; }
-
-        #endregion
-
         public static class Cache
         {
+            public static List<Video> VideoList;
+            public static List<Video> VideoList_Legend;
+
             static Cache()
             {
                 InitCache();
@@ -148,8 +103,7 @@ namespace Arsenalcn.ClubSys.Service
                 {
                     if (x.GoalPlayerGuid.HasValue)
                         return Player.Cache.Load(x.GoalPlayerGuid.Value).IsLegend;
-                    else
-                        return false;
+                    return false;
                 });
             }
 
@@ -169,26 +123,56 @@ namespace Arsenalcn.ClubSys.Service
                     {
                         return x.GoalRank.Equals(GRank.ToString()) && x.TeamworkRank.Equals(TRank.ToString());
                     }
-                    else if (GRank <= 0 && TRank > 0)
+                    if (GRank <= 0 && TRank > 0)
                     {
                         return x.TeamworkRank.Equals(TRank.ToString());
                     }
-                    else if (GRank > 0 && TRank <= 0)
+                    if (GRank > 0 && TRank <= 0)
                     {
                         return x.GoalRank.Equals(GRank.ToString());
                     }
-                    else
-                    {
-                        return true;
-                    }
+                    return true;
                 });
 
                 return list;
             }
-
-            public static List<Video> VideoList;
-            public static List<Video> VideoList_Legend;
         }
+
+        #region Members and Properties
+
+        public Guid ID { get; set; }
+
+        public string FileName { get; set; }
+
+        public Guid? ArsenalMatchGuid { get; set; }
+
+        public Guid? GoalPlayerGuid { get; set; }
+
+        public string GoalPlayerName { get; set; }
+
+        public Guid? AssistPlayerGuid { get; set; }
+
+        public string AssistPlayerName { get; set; }
+
+        public string GoalRank { get; set; }
+
+        public string TeamworkRank { get; set; }
+
+        public VideoFileType VideoType { get; set; }
+
+        public int VideoLength { get; set; }
+
+        public int VideoWidth { get; set; }
+
+        public int VideoHeight { get; set; }
+
+        public string GoalYear { get; set; }
+
+        public string Opponent { get; set; }
+
+        public string VideoFilePath { get; set; }
+
+        #endregion
     }
 
     public enum VideoFileType

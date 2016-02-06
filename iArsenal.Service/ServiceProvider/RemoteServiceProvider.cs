@@ -1,5 +1,4 @@
 ﻿using System.Configuration;
-
 using iArsenal.Service.Arsenal;
 
 namespace iArsenal.Service.ServiceProvider
@@ -10,7 +9,7 @@ namespace iArsenal.Service.ServiceProvider
         {
             var svc = new ServiceArsenal();
 
-            svc.Url = ConfigurationManager.AppSettings["Arsenalcn.WebService.Url"].ToString();            
+            svc.Url = ConfigurationManager.AppSettings["Arsenalcn.WebService.Url"];
 
             return svc;
         }

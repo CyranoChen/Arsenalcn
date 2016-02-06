@@ -1,36 +1,37 @@
 ﻿using System;
 using System.Web.UI.WebControls;
-
-using iArsenal.Service;
 using Arsenalcn.Core;
+using iArsenal.Service;
+using iArsenal.Web.Control;
 
 namespace iArsenal.Web
 {
     public partial class AdminOrderView : AdminPageBase
     {
         private readonly IRepository repo = new Repository();
-        protected void Page_Load(object sender, EventArgs e)
-        {
-            ctrlAdminFieldToolBar.AdminUserName = this.Username;
-            ctrlCustomPagerInfo.PageChanged += new Control.CustomPagerInfo.PageChangedEventHandler(ctrlCustomPagerInfo_PageChanged);
-
-            if (!IsPostBack)
-            {
-                InitForm();
-            }
-        }
 
         private int OrderID
         {
             get
             {
                 int _OrderID;
-                if (!string.IsNullOrEmpty(Request.QueryString["OrderID"]) && int.TryParse(Request.QueryString["OrderID"], out _OrderID))
+                if (!string.IsNullOrEmpty(Request.QueryString["OrderID"]) &&
+                    int.TryParse(Request.QueryString["OrderID"], out _OrderID))
                 {
                     return _OrderID;
                 }
-                else
-                    return int.MinValue;
+                return int.MinValue;
+            }
+        }
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            ctrlAdminFieldToolBar.AdminUserName = Username;
+            ctrlCustomPagerInfo.PageChanged += ctrlCustomPagerInfo_PageChanged;
+
+            if (!IsPostBack)
+            {
+                InitForm();
             }
         }
 
@@ -40,12 +41,15 @@ namespace iArsenal.Web
             {
                 var o = repo.Single<Order>(OrderID);
 
-                lblOrderInfo.Text = string.Format("更新会员的订单 ID:<a href=\"ServerOrderView.ashx?OrderID={0}\" target=\"_blank\"><em>{0}</em></a>", OrderID.ToString());
+                lblOrderInfo.Text =
+                    string.Format(
+                        "更新会员的订单 ID:<a href=\"ServerOrderView.ashx?OrderID={0}\" target=\"_blank\"><em>{0}</em></a>",
+                        OrderID);
 
                 tbMemberID.Text = o.MemberID.ToString();
                 tbMemberName.Text = o.MemberName;
                 cbIsActive.Checked = o.IsActive;
-                ddlStatus.SelectedValue = ((int)o.Status).ToString();
+                ddlStatus.SelectedValue = ((int) o.Status).ToString();
                 tbRate.Text = o.Rate.ToString();
                 tbCreateTime.Text = o.CreateTime.ToString("yyyy-MM-dd HH:mm:ss");
                 tbUpdateTime.Text = o.UpdateTime.ToString("yyyy-MM-dd HH:mm:ss");
@@ -88,6 +92,7 @@ namespace iArsenal.Web
             gvOrderItem.DataBind();
 
             #region set Control Custom Pager
+
             if (gvOrderItem.BottomPagerRow != null)
             {
                 gvOrderItem.BottomPagerRow.Visible = true;
@@ -102,8 +107,8 @@ namespace iArsenal.Web
             {
                 ctrlCustomPagerInfo.Visible = false;
             }
-            #endregion
 
+            #endregion
         }
 
         protected void gvOrderItem_PageIndexChanging(object sender, GridViewPageEventArgs e)
@@ -113,7 +118,7 @@ namespace iArsenal.Web
             BindItemData();
         }
 
-        protected void ctrlCustomPagerInfo_PageChanged(object sender, Control.CustomPagerInfo.DataNavigatorEventArgs e)
+        protected void ctrlCustomPagerInfo_PageChanged(object sender, CustomPagerInfo.DataNavigatorEventArgs e)
         {
             if (e.PageIndex > 0)
             {
@@ -128,7 +133,7 @@ namespace iArsenal.Web
             if (gvOrderItem.SelectedIndex != -1)
             {
                 Response.Redirect(
-                    $"AdminOrderItemView.aspx?OrderItemID={gvOrderItem.DataKeys[gvOrderItem.SelectedIndex].Value.ToString()}");
+                    $"AdminOrderItemView.aspx?OrderItemID={gvOrderItem.DataKeys[gvOrderItem.SelectedIndex].Value}");
             }
         }
 
@@ -150,7 +155,7 @@ namespace iArsenal.Web
 
                 o.MemberName = tbMemberName.Text.Trim();
                 o.IsActive = cbIsActive.Checked;
-                o.Status = (OrderStatusType)Enum.Parse(typeof(OrderStatusType), ddlStatus.SelectedValue);
+                o.Status = (OrderStatusType) Enum.Parse(typeof (OrderStatusType), ddlStatus.SelectedValue);
                 o.Rate = Convert.ToInt16(tbRate.Text.Trim());
                 o.CreateTime = DateTime.Parse(tbCreateTime.Text.Trim());
                 o.UpdateTime = DateTime.Parse(tbUpdateTime.Text.Trim());
@@ -180,18 +185,20 @@ namespace iArsenal.Web
                 {
                     repo.Update(o);
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('更新成功');window.location.href = window.location.href", true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                        "alert('更新成功');window.location.href = window.location.href", true);
                 }
                 else
                 {
                     repo.Insert(o);
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('添加成功');window.location.href = 'AdminOrder.aspx'", true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                        "alert('添加成功');window.location.href = 'AdminOrder.aspx'", true);
                 }
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message.ToString()}')", true);
+                ClientScript.RegisterClientScriptBlock(typeof (string), "failed", $"alert('{ex.Message}')", true);
             }
         }
 
@@ -205,7 +212,7 @@ namespace iArsenal.Web
 
                     o.CalcOrderPrice();
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
                         $"alert('重新计算总价为{o.Price.ToString("f2")}元');window.location.href=window.location.href", true);
                 }
                 else
@@ -215,7 +222,7 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message.ToString()}')", true);
+                ClientScript.RegisterClientScriptBlock(typeof (string), "failed", $"alert('{ex.Message}')", true);
             }
         }
 
@@ -223,7 +230,7 @@ namespace iArsenal.Web
         {
             if (OrderID > 0)
             {
-                Response.Redirect("AdminOrder.aspx?OrderID=" + OrderID.ToString());
+                Response.Redirect("AdminOrder.aspx?OrderID=" + OrderID);
             }
             else
             {
@@ -241,8 +248,8 @@ namespace iArsenal.Web
 
                     repo.Delete<Order>(OrderID);
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
-                        $"alert('删除成功(包括{count.ToString()}个许愿)');window.location.href='AdminOrder.aspx'", true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                        $"alert('删除成功(包括{count}个许愿)');window.location.href='AdminOrder.aspx'", true);
                 }
                 else
                 {
@@ -251,7 +258,7 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message.ToString()}')", true);
+                ClientScript.RegisterClientScriptBlock(typeof (string), "failed", $"alert('{ex.Message}')", true);
             }
         }
     }

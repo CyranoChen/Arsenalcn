@@ -1,7 +1,6 @@
 ﻿using System;
-
-using Arsenalcn.Core.Logger;
 using Arsenalcn.Core;
+using Arsenalcn.Core.Logger;
 
 namespace Arsenal.Web
 {
@@ -9,27 +8,27 @@ namespace Arsenal.Web
     {
         private readonly IRepository repo = new Repository();
 
-        protected void Page_Load(object sender, EventArgs e)
-        {
-            ctrlAdminFieldToolBar.AdminUserName = this.Username;
-
-            if (!IsPostBack)
-            {
-                InitForm();
-            }
-        }
-
         private int LogID
         {
             get
             {
                 int _logID;
-                if (!string.IsNullOrEmpty(Request.QueryString["LogID"]) && int.TryParse(Request.QueryString["LogID"], out _logID))
+                if (!string.IsNullOrEmpty(Request.QueryString["LogID"]) &&
+                    int.TryParse(Request.QueryString["LogID"], out _logID))
                 {
                     return _logID;
                 }
-                else
-                    return int.MinValue;
+                return int.MinValue;
+            }
+        }
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            ctrlAdminFieldToolBar.AdminUserName = Username;
+
+            if (!IsPostBack)
+            {
+                InitForm();
             }
         }
 
@@ -39,7 +38,7 @@ namespace Arsenal.Web
             {
                 var l = repo.Single<Log>(LogID);
 
-                ltrlLogID.Text = string.Format("详细日志查 <em>({0})</em>", LogID.ToString());
+                ltrlLogID.Text = string.Format("详细日志查 <em>({0})</em>", LogID);
                 tbLogger.Text = l.Logger;
                 tbCreateTime.Text = l.CreateTime.ToString("yyyy-MM-dd HH:mm:ss");
                 tbLevel.Text = l.Level.ToString();
@@ -62,7 +61,7 @@ namespace Arsenal.Web
         {
             if (LogID > 0)
             {
-                Response.Redirect("AdminLog.aspx?LogID=" + LogID.ToString());
+                Response.Redirect("AdminLog.aspx?LogID=" + LogID);
             }
             else
             {

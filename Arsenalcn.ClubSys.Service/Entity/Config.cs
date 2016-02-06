@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-
 using Arsenalcn.Common;
 using Arsenalcn.Common.Entity;
 
@@ -9,26 +8,22 @@ namespace Arsenalcn.ClubSys.Entity
 {
     public class ConfigGlobal : Config
     {
-        ConfigGlobal() { }
+        private const ConfigSystem currSystem = ConfigSystem.AcnClub;
 
-        const ConfigSystem currSystem = ConfigSystem.AcnClub;
+        private ConfigGlobal()
+        {
+        }
 
         #region Members and Properties
 
         public static SqlConnection SQLConnectionStrings
         {
-            get
-            {
-                return SQLConn.GetConnection();
-            }
+            get { return SQLConn.GetConnection(); }
         }
 
         public static Dictionary<string, string> ConfigDictionary
         {
-            get
-            {
-                return Config.GetDictionaryByConfigSystem(currSystem);
-            }
+            get { return GetDictionaryByConfigSystem(currSystem); }
         }
 
         public static string[] PluginAdmin
@@ -42,26 +37,17 @@ namespace Arsenalcn.ClubSys.Entity
 
         public static string PluginName
         {
-            get
-            {
-                return ConfigDictionary["PluginName"];
-            }
+            get { return ConfigDictionary["PluginName"]; }
         }
 
         public static string PluginVersion
         {
-            get
-            {
-                return ConfigDictionary["PluginVersion"];
-            }
+            get { return ConfigDictionary["PluginVersion"]; }
         }
 
         public static string PluginDisplayName
         {
-            get
-            {
-                return ConfigDictionary["PluginDisplayName"];
-            }
+            get { return ConfigDictionary["PluginDisplayName"]; }
         }
 
         public static bool PluginActive
@@ -103,9 +89,10 @@ namespace Arsenalcn.ClubSys.Entity
                     var tmpID = ConfigDictionary["ArsenalTeamGuid"];
 
                     if (!string.IsNullOrEmpty(tmpID))
-                    { return new Guid(tmpID); }
-                    else
-                    { return Guid.Empty; }
+                    {
+                        return new Guid(tmpID);
+                    }
+                    return Guid.Empty;
                 }
                 catch
                 {
@@ -122,25 +109,18 @@ namespace Arsenalcn.ClubSys.Entity
 
                 if (!string.IsNullOrEmpty(tmpUrl))
                     return tmpUrl;
-                else
-                    return "http://ftp.arsenalcn.com/playervideo/";
+                return "http://ftp.arsenalcn.com/playervideo/";
             }
         }
 
         public static string SysNotice
         {
-            get
-            {
-                return ConfigDictionary["SysNotice"];
-            }
+            get { return ConfigDictionary["SysNotice"]; }
         }
 
         public static string AuthPrivateKey
         {
-            get
-            {
-                return ConfigDictionary["AuthPrivateKey"];
-            }
+            get { return ConfigDictionary["AuthPrivateKey"]; }
         }
 
         public static int BingoPlayCountPerHour
@@ -220,26 +200,17 @@ namespace Arsenalcn.ClubSys.Entity
 
         public static string ChampionsTitle
         {
-            get
-            {
-                return ConfigDictionary["Champions.Title"];
-            }
+            get { return ConfigDictionary["Champions.Title"]; }
         }
 
         public static string ClubLogoPath
         {
-            get
-            {
-                return ConfigDictionary["ClubLogoPath"];
-            }
+            get { return ConfigDictionary["ClubLogoPath"]; }
         }
 
         public static int ClubDefaultRankLevel
         {
-            get
-            {
-                return 0;
-            }
+            get { return 0; }
         }
 
         public static float ClubFortuneIncrementVariable
@@ -259,10 +230,7 @@ namespace Arsenalcn.ClubSys.Entity
 
         public static string DefaultClubLogoName
         {
-            get
-            {
-                return ConfigDictionary["DefaultClubLogoName"];
-            }
+            get { return ConfigDictionary["DefaultClubLogoName"]; }
         }
 
         public static int DailyClubEquipmentCount
@@ -319,8 +287,7 @@ namespace Arsenalcn.ClubSys.Entity
                     var tmpID = ConfigDictionary["DailyVideoGuid"];
                     if (!string.IsNullOrEmpty(tmpID))
                         return new Guid(tmpID);
-                    else
-                        return Guid.Empty;
+                    return Guid.Empty;
                 }
                 catch
                 {

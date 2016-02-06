@@ -1,6 +1,6 @@
 ﻿using System.Data;
-using Microsoft.ApplicationBlocks.Data;
 using Arsenalcn.Common;
+using Microsoft.ApplicationBlocks.Data;
 
 namespace Arsenalcn.CasinoSys.DataAccess
 {
@@ -38,8 +38,7 @@ namespace Arsenalcn.CasinoSys.DataAccess
 
             if (ds.Tables[0].Rows.Count == 0)
                 return null;
-            else
-                return ds.Tables[0];
+            return ds.Tables[0];
         }
 
         //public static DataTable GetAllLeagues(bool isActive)

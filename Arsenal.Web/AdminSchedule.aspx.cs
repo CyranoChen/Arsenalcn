@@ -2,7 +2,6 @@
 using System.Reflection;
 using System.Threading;
 using System.Web.UI.WebControls;
-
 using Arsenalcn.Core.Logger;
 using Arsenalcn.Core.Scheduler;
 
@@ -12,7 +11,7 @@ namespace Arsenal.Web
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            ctrlAdminFieldToolBar.AdminUserName = this.Username;
+            ctrlAdminFieldToolBar.AdminUserName = Username;
 
             if (!IsPostBack)
             {
@@ -29,7 +28,7 @@ namespace Arsenal.Web
         protected void gvSchedule_SelectedIndexChanged(object sender, EventArgs e)
         {
             ILog log = new AppLog();
-            var logInfo = new LogInfo()
+            var logInfo = new LogInfo
             {
                 MethodInstance = MethodBase.GetCurrentMethod(),
                 ThreadInstance = Thread.CurrentThread
@@ -44,7 +43,7 @@ namespace Arsenal.Web
                     var s = Schedule.Single(key);
 
                     var instance = s.IScheduleInstance;
-                    ManagedThreadPool.QueueUserWorkItem(new WaitCallback(instance.Execute));
+                    ManagedThreadPool.QueueUserWorkItem(instance.Execute);
 
                     s.LastCompletedTime = DateTime.Now;
                     s.Update();
@@ -98,7 +97,8 @@ namespace Arsenal.Web
                 }
                 catch (Exception ex)
                 {
-                    this.ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}');", ex.Message.ToString()), true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "failed",
+                        string.Format("alert('{0}');", ex.Message), true);
                 }
             }
 

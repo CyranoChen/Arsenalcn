@@ -1,8 +1,8 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="PortalClubList.ascx.cs"
-    Inherits="Arsenalcn.ClubSys.Web.Control.PortalClubList" %>
+Inherits="Arsenalcn.ClubSys.Web.Control.PortalClubList" %>
 <%@ OutputCache Duration="3600" VaryByParam="none" %>
 <asp:GridView ID="gvClubList" runat="server" OnRowDataBound="gvClubList_RowDataBound"
-    OnPageIndexChanging="gvClubList_PageIndexChanging">
+              OnPageIndexChanging="gvClubList_PageIndexChanging">
     <Columns>
         <asp:TemplateField HeaderStyle-Width="90" HeaderText="球会标志">
             <ItemTemplate>
@@ -32,12 +32,18 @@
             <ItemTemplate>
                 <div class="ClubSys_DVRankItemPanel">
                     <ul>
-                        <li>1.会员数：<em><asp:Literal ID="ltrlMemberCount" runat="server"></asp:Literal></em><asp:Literal
-                            ID="ltrlIsAppliable" runat="server" Text="(已关闭)"></asp:Literal></li>
+                        <li>
+                            1.会员数：<em>
+                                <asp:Literal ID="ltrlMemberCount" runat="server"></asp:Literal>
+                            </em><asp:Literal
+                                     ID="ltrlIsAppliable" runat="server" Text="(已关闭)">
+                            </asp:Literal>
+                        </li>
                         <li>2.财富数：<em><%#Convert.ToInt32(DataBinder.Eval(Container.DataItem, "Fortune")).ToString("N0") %></em></li>
                         <li>3.总积分：<em><%#Convert.ToInt32(DataBinder.Eval(Container.DataItem, "MemberCredit")).ToString("N0") %></em></li>
                         <li>4.总RP值：<em><%#Convert.ToInt32(DataBinder.Eval(Container.DataItem, "MemberRP")).ToString("N0") %></em></li>
-                        <li>5.装备数：<asp:Literal ID="ltrlEquipmentCount" runat="server"></asp:Literal></li></ul>
+                        <li>5.装备数：<asp:Literal ID="ltrlEquipmentCount" runat="server"></asp:Literal></li>
+                    </ul>
                 </div>
             </ItemTemplate>
         </asp:TemplateField>
@@ -47,9 +53,11 @@
                     <ul>
                         <asp:Repeater ID="rptClubLeads" runat="server">
                             <ItemTemplate>
-                                <li<%# DataBinder.Eval(Container.DataItem, "AdditionalData2") %>><%# DataBinder.Eval(Container.DataItem, "AdditionalData") %>: 
-                                        <a href="MyPlayerProfile.aspx?userid=<%#DataBinder.Eval(Container.DataItem, "Userid") %>" target="_blank">
-                                        <%#DataBinder.Eval(Container.DataItem, "UserName") %></a>
+                                <li<%# DataBinder.Eval(Container.DataItem, "AdditionalData2") %>>
+                                    <%# DataBinder.Eval(Container.DataItem, "AdditionalData") %>:
+                                    <a href="MyPlayerProfile.aspx?userid=<%#DataBinder.Eval(Container.DataItem, "Userid") %>" target="_blank">
+                                        <%#DataBinder.Eval(Container.DataItem, "UserName") %>
+                                    </a>
                                 </li>
                             </ItemTemplate>
                         </asp:Repeater>

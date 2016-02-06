@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using Arsenalcn.Common;
 using Arsenalcn.ClubSys.Entity;
+using Arsenalcn.Common;
 
 namespace Arsenalcn.ClubSys.Service
 {
@@ -17,7 +17,7 @@ namespace Arsenalcn.ClubSys.Service
                 var com = new SqlCommand(sql, con);
                 com.Parameters.Add(new SqlParameter("@userid", userId));
                 com.Parameters.Add(new SqlParameter("@username", userName));
-                com.Parameters.Add(new SqlParameter("@typeCode", (int)type));
+                com.Parameters.Add(new SqlParameter("@typeCode", (int) type));
                 com.Parameters.Add(new SqlParameter("@typeDesc", desc));
 
                 con.Open();
@@ -46,7 +46,7 @@ namespace Arsenalcn.ClubSys.Service
 
                 sda.Fill(dt);
 
-               //con.Close();
+                //con.Close();
 
                 foreach (DataRow dr in dt.Rows)
                 {
@@ -75,7 +75,8 @@ namespace Arsenalcn.ClubSys.Service
 
     public class ActivateCardDesc : PlayerHistoryDescGenerator
     {
-        private Card _un = null;
+        private readonly Card _un;
+
         public ActivateCardDesc(Card un)
         {
             _un = un;
@@ -87,7 +88,7 @@ namespace Arsenalcn.ClubSys.Service
         {
             var _pName = Player.Cache.Load(_un.ArsenalPlayerGuid.Value).DisplayName;
 
-            return string.Format("激活卡片{0}({1})", _pName, _un.ID.ToString());
+            return string.Format("激活卡片{0}({1})", _pName, _un.ID);
         }
 
         #endregion
@@ -95,7 +96,8 @@ namespace Arsenalcn.ClubSys.Service
 
     public class ActivateVideoDesc : PlayerHistoryDescGenerator
     {
-        private Card _un = null;
+        private readonly Card _un;
+
         public ActivateVideoDesc(Card un)
         {
             _un = un;
@@ -113,8 +115,8 @@ namespace Arsenalcn.ClubSys.Service
 
     public class ConsolidateCardsDesc : PlayerHistoryDescGenerator
     {
-        private Card _un1 = null;
-        private Card _un2 = null;
+        private readonly Card _un1;
+        private readonly Card _un2;
 
         public ConsolidateCardsDesc(Card un1, Card un2)
         {
@@ -123,22 +125,24 @@ namespace Arsenalcn.ClubSys.Service
         }
 
         #region PlayerHistoryDescGenerator Members
+
         public string Generate()
         {
             var _pName1 = Player.Cache.Load(_un1.ArsenalPlayerGuid.Value).DisplayName;
             var _pName2 = Player.Cache.Load(_un2.ArsenalPlayerGuid.Value).DisplayName;
 
-            return string.Format("融合卡片{0}({1})和卡片{2}({3})", _pName1, _un1.ID.ToString(), _pName2, _un2.ID.ToString());
+            return string.Format("融合卡片{0}({1})和卡片{2}({3})", _pName1, _un1.ID, _pName2, _un2.ID);
         }
+
         #endregion
     }
 
     public class AwardDesc : PlayerHistoryDescGenerator
     {
-        float _cash = 0;
-        float _rp = 0;
-        bool _card = false;
-        bool _video = false;
+        private readonly bool _card;
+        private readonly float _cash;
+        private readonly float _rp;
+        private readonly bool _video;
 
         public AwardDesc(float cash, float rp, bool card, bool video)
         {

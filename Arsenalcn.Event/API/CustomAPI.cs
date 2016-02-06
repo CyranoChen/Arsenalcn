@@ -4,7 +4,7 @@
 
 namespace Arsenalcn.Event
 {
-    class CustomAPI
+    internal class CustomAPI
     {
         //public static void UpdateArsenalMatchResult()
         //{

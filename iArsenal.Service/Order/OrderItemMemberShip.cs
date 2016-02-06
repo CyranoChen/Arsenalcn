@@ -1,11 +1,10 @@
 ﻿using System;
+using System.Data.SqlClient;
 
 namespace iArsenal.Service
 {
     public class OrdrItmMemberShip : OrderItem
     {
-        public OrdrItmMemberShip() { }
-
         public void Init()
         {
             var _para = Remark.Split('|');
@@ -31,21 +30,21 @@ namespace iArsenal.Service
                 throw new Exception("Can't get EndDate of OrdrItmMemShip.Size");
             }
 
-            Season = string.Format("{0}/{1}", EndDate.AddYears(-1).Year.ToString(), EndDate.ToString("yy"));
+            Season = string.Format("{0}/{1}", EndDate.AddYears(-1).Year, EndDate.ToString("yy"));
         }
 
-        public override void Place(Member m, Product p, System.Data.SqlClient.SqlTransaction trans = null)
+        public override void Place(Member m, Product p, SqlTransaction trans = null)
         {
             if (!string.IsNullOrEmpty(AlterMethod))
             {
-                this.Remark = string.Format("{0}|{1}", MemberCardNo, AlterMethod);
+                Remark = string.Format("{0}|{1}", MemberCardNo, AlterMethod);
             }
             else
             {
-                this.Remark = MemberCardNo;
+                Remark = MemberCardNo;
             }
 
-            this.Size = EndDate.ToString("yyyy-MM-dd");
+            Size = EndDate.ToString("yyyy-MM-dd");
 
             base.Place(m, p, trans);
         }
@@ -65,8 +64,6 @@ namespace iArsenal.Service
 
     public class OrdrItmMemShipCore : OrdrItmMemberShip
     {
-        public OrdrItmMemShipCore() { }
-
         public new void Init()
         {
             base.Init();
@@ -80,7 +77,7 @@ namespace iArsenal.Service
                 throw new Exception("The OrderItem is not the type of MemberShipCore.");
         }
 
-        public void Place(Member m, System.Data.SqlClient.SqlTransaction trans = null)
+        public void Place(Member m, SqlTransaction trans = null)
         {
             var product = Product.Cache.ProductList.Find(p =>
                 p.ProductType.Equals(ProductType.MemberShipCore));
@@ -91,8 +88,6 @@ namespace iArsenal.Service
 
     public class OrdrItmMemShipPremier : OrdrItmMemberShip
     {
-        public OrdrItmMemShipPremier() { }
-
         public new void Init()
         {
             base.Init();
@@ -106,7 +101,7 @@ namespace iArsenal.Service
                 throw new Exception("The OrderItem is not the type of MemberShipPremier.");
         }
 
-        public void Place(Member m, System.Data.SqlClient.SqlTransaction trans = null)
+        public void Place(Member m, SqlTransaction trans = null)
         {
             var product = Product.Cache.ProductList.Find(p =>
                 p.ProductType.Equals(ProductType.MemberShipPremier));

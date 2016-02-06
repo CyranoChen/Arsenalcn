@@ -2,14 +2,21 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-
 using Arsenalcn.Common;
 
 namespace Arsenalcn.CasinoSys.Entity
 {
     public sealed class SingleChoice : CasinoItem
     {
-        internal SingleChoice() { }
+        internal SingleChoice()
+        {
+        }
+
+        public bool FloatingRate { get; set; }
+
+        public string Result { get; set; }
+
+        public List<ChoiceOption> Options { get; set; } = new List<ChoiceOption>();
 
         public override Guid Save(SqlTransaction trans)
         {
@@ -17,7 +24,6 @@ namespace Arsenalcn.CasinoSys.Entity
 
             if (!ItemGuid.HasValue)
             {
-
                 DataAccess.SingleChoice.InsertSingleChoice(newGuid, FloatingRate, trans);
 
                 foreach (var option in Options)
@@ -48,7 +54,7 @@ namespace Arsenalcn.CasinoSys.Entity
             foreach (DataRow drOption in dt.Rows)
             {
                 var option = new ChoiceOption();
-                option.CasinoItemGuid = (Guid)drOption["CasinoItemGuid"];
+                option.CasinoItemGuid = (Guid) drOption["CasinoItemGuid"];
                 option.OptionValue = Convert.ToString(drOption["OptionValue"]);
                 option.OptionDisplay = Convert.ToString(drOption["OptionDisplay"]);
 
@@ -59,27 +65,7 @@ namespace Arsenalcn.CasinoSys.Entity
 
                 option.OrderID = Convert.ToInt32(drOption["OrderID"]);
 
-                _options.Add(option);
-            }
-        }
-
-        private List<ChoiceOption> _options = new List<ChoiceOption>();
-
-        public bool FloatingRate
-        { get; set; }
-
-        public string Result
-        { get; set; }
-
-        public List<ChoiceOption> Options
-        {
-            get
-            {
-                return _options;
-            }
-            set
-            {
-                _options = value;
+                Options.Add(option);
             }
         }
     }
@@ -88,7 +74,8 @@ namespace Arsenalcn.CasinoSys.Entity
     {
         public void Insert(Guid itemGuid, SqlTransaction trans)
         {
-            DataAccess.ChoiceOption.InsertChoiceOption(itemGuid, OptionDisplay, OptionValue, OptionRate.Value, OrderID, trans);
+            DataAccess.ChoiceOption.InsertChoiceOption(itemGuid, OptionDisplay, OptionValue, OptionRate.Value, OrderID,
+                trans);
         }
 
         public static void CleanNoCasinoItemChoiceOption()
@@ -106,7 +93,7 @@ namespace Arsenalcn.CasinoSys.Entity
                 {
                     trans.Rollback();
                 }
-                
+
                 //conn.Close();
             }
         }
@@ -121,20 +108,15 @@ namespace Arsenalcn.CasinoSys.Entity
             return DataAccess.ChoiceOption.GetOptionTotalCount(itemGuid, optionValue);
         }
 
-        public Guid CasinoItemGuid
-        { get; set; }
+        public Guid CasinoItemGuid { get; set; }
 
-        public string OptionValue
-        { get; set; }
+        public string OptionValue { get; set; }
 
-        public string OptionDisplay
-        { get; set; }
+        public string OptionDisplay { get; set; }
 
-        public float? OptionRate
-        { get; set; }
+        public float? OptionRate { get; set; }
 
-        public int OrderID
-        { get; set; }
+        public int OrderID { get; set; }
     }
 
     public static class MatchChoiceOption

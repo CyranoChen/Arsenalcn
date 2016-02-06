@@ -1,16 +1,15 @@
 ﻿using System;
+using System.Web.UI;
 
 namespace Arsenalcn.CasinoSys.Web.Control
 {
-    public partial class MenuTabBar : System.Web.UI.UserControl
+    public partial class MenuTabBar : UserControl
     {
+        public CasinoMenuType CurrentMenu { get; set; }
+
         protected void Page_Load(object sender, EventArgs e)
         {
-
         }
-
-        public CasinoMenuType CurrentMenu
-        { get; set; }
     }
 
     public enum CasinoMenuType

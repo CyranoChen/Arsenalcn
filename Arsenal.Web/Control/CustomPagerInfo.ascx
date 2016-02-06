@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="CustomPagerInfo.ascx.cs"
-    Inherits="Arsenal.Web.Control.CustomPagerInfo" %>
+Inherits="Arsenal.Web.Control.CustomPagerInfo" %>
 <div id="DataPagerInfo">
     <asp:Literal ID="ltrlPagerInfo" runat="server"></asp:Literal>
     <asp:TextBox ID="tbPagerIndex" runat="server" CssClass="GotoTxt"></asp:TextBox>

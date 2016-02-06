@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Web.UI.WebControls;
 using System.Linq;
-
-using Arsenalcn.Core;
+using System.Web.UI.WebControls;
 using Arsenal.Service;
+using Arsenalcn.Core;
 
 namespace Arsenal.Web
 {
@@ -53,7 +52,7 @@ namespace Arsenal.Web
                 }
                 catch (Exception ex)
                 {
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message}');", true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "failed", $"alert('{ex.Message}');", true);
                 }
             }
 
@@ -91,11 +90,12 @@ namespace Arsenal.Web
                 Team.Cache.RefreshCache();
                 Video.Cache.RefreshCache();
 
-                ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('更新全部缓存成功');window.location.href=window.location.href", true);
+                ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                    "alert('更新全部缓存成功');window.location.href=window.location.href", true);
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message}');", true);
+                ClientScript.RegisterClientScriptBlock(typeof (string), "failed", $"alert('{ex.Message}');", true);
             }
         }
     }

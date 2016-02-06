@@ -5,58 +5,34 @@ namespace Arsenalcn.ClubSys.Entity
 {
     public class Card : ClubSysObject
     {
+        public Card()
+        {
+        }
+
+        public Card(DataRow dr)
+            : base(dr)
+        {
+        }
+
         #region Members and Properties
 
-        private int _id;
         /// <summary>
-        /// ID
+        ///     ID
         /// </summary>
         [ClubSysDbColumn("ID")]
-        public int ID
-        {
-            get
-            {
-                return _id;
-            }
-            set
-            {
-                _id = value;
-            }
-        }
+        public int ID { get; set; }
 
-        private int _userId;
         /// <summary>
-        /// User ID
+        ///     User ID
         /// </summary>
         [ClubSysDbColumn("UserID")]
-        public int UserID
-        {
-            get
-            {
-                return _userId;
-            }
-            set
-            {
-                _userId = value;
-            }
-        }
+        public int UserID { get; set; }
 
-        private string _userName;
         /// <summary>
-        /// User Name
+        ///     User Name
         /// </summary>
         [ClubSysDbColumn("UserName")]
-        public string UserName
-        {
-            get
-            {
-                return _userName;
-            }
-            set
-            {
-                _userName = value;
-            }
-        }
+        public string UserName { get; set; }
 
         //private int _num;
         ///// <summary>
@@ -75,100 +51,36 @@ namespace Arsenalcn.ClubSys.Entity
         //    }
         //}
 
-        private Guid? _guid;
         /// <summary>
-        /// card player guid
+        ///     card player guid
         /// </summary>
         [ClubSysDbColumn("ArsenalPlayerGuid")]
-        public Guid? ArsenalPlayerGuid
-        {
-            get
-            {
-                return _guid;
-            }
-            set
-            {
-                _guid = value;
-            }
-        }
+        public Guid? ArsenalPlayerGuid { get; set; }
 
-        private bool _isInUse;
         /// <summary>
-        /// Is in use
+        ///     Is in use
         /// </summary>
         [ClubSysDbColumn("IsInUse")]
-        public bool IsInUse
-        {
-            get
-            {
-                return _isInUse;
-            }
-            set
-            {
-                _isInUse = value;
-            }
-        }
+        public bool IsInUse { get; set; }
 
-        private bool _isActive;
         /// <summary>
-        /// IsActive
+        ///     IsActive
         /// </summary>
         [ClubSysDbColumn("IsActive")]
-        public bool IsActive
-        {
-            get
-            {
-                return _isActive;
-            }
-            set
-            {
-                _isActive = value;
-            }
-        }
+        public bool IsActive { get; set; }
 
-        private DateTime _gainDate;
         /// <summary>
-        /// Gain Date
+        ///     Gain Date
         /// </summary>
         [ClubSysDbColumn("GainDate")]
-        public DateTime GainDate
-        {
-            get
-            {
-                return _gainDate;
-            }
-            set
-            {
-                _gainDate = value;
-            }
-        }
+        public DateTime GainDate { get; set; }
 
-        private DateTime? _activeDate = null;
         /// <summary>
-        /// Active Date
+        ///     Active Date
         /// </summary>
         [ClubSysDbColumn("ActiveDate")]
-        public DateTime? ActiveDate
-        {
-            get
-            {
-                return _activeDate;
-            }
-            set
-            {
-                _activeDate = value;
-            }
-        }
+        public DateTime? ActiveDate { get; set; } = null;
 
         #endregion
-
-        public Card()
-        {
-        }
-
-        public Card(DataRow dr)
-            : base(dr)
-        {
-        }
     }
 }

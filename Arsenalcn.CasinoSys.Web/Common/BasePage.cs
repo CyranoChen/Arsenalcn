@@ -1,26 +1,23 @@
 ﻿using System;
-
 using Arsenalcn.CasinoSys.Entity;
+using Discuz.Forum;
 
 namespace Arsenalcn.CasinoSys.Web.Common
 {
-    public class BasePage : Discuz.Forum.PageBase //Page 
+    public class BasePage : PageBase //Page 
     {
+        protected bool AdminPage = false;
         //public int userid = 1;
         //public string username = "cao262";
         //public string userkey = "kkkk222";
 
 
         /// <summary>
-        /// anonymous user will be redirected to login page if set true
+        ///     anonymous user will be redirected to login page if set true
         /// </summary>
-        public bool AnonymousRedirect
-        { get; set; }
+        public bool AnonymousRedirect { get; set; }
 
-        public Gambler CurrentGambler
-        { get; set; }
-
-        protected bool AdminPage = false;
+        public Gambler CurrentGambler { get; set; }
 
         protected override void OnInitComplete(EventArgs e)
         {

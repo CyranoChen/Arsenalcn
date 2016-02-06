@@ -1,8 +1,8 @@
 ﻿/* Javascript Version iArsenal */
-/* Version: 1.8.3 || Date: 2015-06-02 || Author: Cyrano */
+/* Version: 1.8.4 || Date: 2016-02-06 || Author: Cyrano */
 /* type="text/javascript" */
 
-$(document).ready(function () {
+$(function () {
     var $pageInfo = $("#DataPagerInfo");
     var $gvPager = $(".DataView .Pager > td");
 
@@ -35,9 +35,9 @@ $(document).ready(function () {
 
 function GridViewCheckBoxBindImpl(obj) {
     obj.find("input:checkbox").next("label").hide();
-    obj.find("a.checkAll").click(function () {
+    obj.find("a.checkAll").click(function() {
         obj.find("input:checkbox:not(:checked)")
-            .each(function () {
+            .each(function() {
                 $(this).prop("checked", true);
             });
     });
@@ -49,25 +49,24 @@ function BulkOrderClickImpl(obj) {
     if ($cblOrderID.length > 0) {
         var arraySelectedItems = new Array();
 
-        $cblOrderID.each(function (i, entry) {
+        $cblOrderID.each(function(i, entry) {
             arraySelectedItems.push($(entry).next("label").text());
         });
 
         $.getJSON("ServerBulkOrder.ashx",
-            { SelectedOrderIDs: arraySelectedItems.join('|') }, function (data, status, xhr) {
-                if (status == "success" && data != null) {
-                    if (data.result != "error" && JSON.stringify(data) != "[]") {
-                        alert($.format("选择订单共{0}个，其中下单成功{1}个，下单失败{2}个",
-                            data.countTotal, data.countSucceed, data.countFailed));
+        { SelectedOrderIDs: arraySelectedItems.join("|") }, function(data, status, xhr) {
+            if (status == "success" && data != null) {
+                if (data.result != "error" && JSON.stringify(data) != "[]") {
+                    alert($.format("选择订单共{0}个，其中下单成功{1}个，下单失败{2}个",
+                        data.countTotal, data.countSucceed, data.countFailed));
 
-                        window.location.href = window.location.href;
-                    }
-                } else {
-                    alert("调用服务接口失败(BulkOrder)");
+                    window.location.href = window.location.href;
                 }
-            });
-    }
-    else {
+            } else {
+                alert("调用服务接口失败(BulkOrder)");
+            }
+        });
+    } else {
         alert("请选择需要下单的订单");
     }
 }
@@ -85,15 +84,15 @@ function NationDataBindImpl(obj) {
     var $tbRegion1 = obj.find("input.Region1");
     var $tbRegion2 = obj.find("input.Region2");
 
-    $ddlNation.change(function () {
+    $ddlNation.change(function() {
         SwitchNationDataControl($("#tdRegion"));
     });
 
-    $.getJSON("ServerRegionCheck.ashx", { RegionID: "0" }, function (data, status, xhr) {
+    $.getJSON("ServerRegionCheck.ashx", { RegionID: "0" }, function(data, status, xhr) {
         if (status == "success" && data != null) {
             if (data.result != "error" && JSON.stringify(data) != "[]") {
                 $ddlRegion1.empty();
-                $.each(data, function (entryIndex, entry) {
+                $.each(data, function(entryIndex, entry) {
                     $ddlRegion1.append($("<option>", { value: entry.ID }).text(entry.Name));
                 });
 
@@ -101,7 +100,7 @@ function NationDataBindImpl(obj) {
                     $ddlRegion1.val($.trim($tbRegion1.val()));
                     RegionDataBindImpl($.trim($tbRegion1.val()), $ddlRegion2, $.trim($tbRegion2.val()));
                 } else {
-                    $ddlRegion1.prepend($("<option>", { value: "" }).text("--请选择所在地区--"))
+                    $ddlRegion1.prepend($("<option>", { value: "" }).text("--请选择所在地区--"));
                 }
 
             } else {
@@ -115,24 +114,24 @@ function NationDataBindImpl(obj) {
         }
     });
 
-    $ddlRegion1.change(function () {
+    $ddlRegion1.change(function() {
         $tbRegion1.val($.trim($(this).val()));
         $tbRegion2.val("");
         RegionDataBindImpl($.trim($(this).val()), $ddlRegion2, $.trim($tbRegion2.val()));
     });
 
-    $ddlRegion2.change(function () {
+    $ddlRegion2.change(function() {
         $tbRegion2.val($.trim($(this).val()));
     });
 }
 
 function RegionDataBindImpl(rid, obj, value) {
-    $.getJSON("ServerRegionCheck.ashx", { RegionID: rid }, function (data, status, xhr) {
+    $.getJSON("ServerRegionCheck.ashx", { RegionID: rid }, function(data, status, xhr) {
         if (status == "success" && data != null) {
             if (data.result != "error" && JSON.stringify(data) != "[]") {
                 obj.empty();
 
-                $.each(data, function (entryIndex, entry) {
+                $.each(data, function(entryIndex, entry) {
                     obj.append($("<option>", { value: entry.ID }).text(entry.Name));
                 });
 
@@ -140,7 +139,7 @@ function RegionDataBindImpl(rid, obj, value) {
                     obj.val(value);
 
                 } else {
-                    obj.prepend($("<option>", { value: "" }).text("--请选择所在地区--"))
+                    obj.prepend($("<option>", { value: "" }).text("--请选择所在地区--"));
                 }
 
                 obj.show();
@@ -169,8 +168,7 @@ function SwitchNationDataControl(obj) {
 
         if ($.trim($tbRegion2.val()) != "") {
             $ddlRegion2.show();
-        }
-        else {
+        } else {
             $ddlRegion2.hide();
         }
 
@@ -195,7 +193,7 @@ function AcnCheck() {
     $btnSubmit.prop("disabled", true);
 
     if ($.trim($tbAcnID.val()) != "") {
-        $.getJSON("ServerAcnCheck.ashx", { AcnID: $.trim($tbAcnID.val()), SessionKey: $.trim($tbAcnSessionKey.val()) }, function (data, status, xhr) {
+        $.getJSON("ServerAcnCheck.ashx", { AcnID: $.trim($tbAcnID.val()), SessionKey: $.trim($tbAcnSessionKey.val()) }, function(data, status, xhr) {
             if (status == "success" && data != null) {
                 if (data.result != "error" && JSON.stringify(data) != "{}") {
                     $tbAcnName.val(data.username);
@@ -226,7 +224,7 @@ function ProductCheck() {
     $btnSubmit.prop("disabled", true);
 
     if ($.trim($tbProductCode.val()) != "") {
-        $.getJSON("ServerProductCheck.ashx", { ProductCode: $.trim($tbProductCode.val()) }, function (data, status, xhr) {
+        $.getJSON("ServerProductCheck.ashx", { ProductCode: $.trim($tbProductCode.val()) }, function(data, status, xhr) {
             if (status == "success" && data != null) {
                 if (data.result != "error" && JSON.stringify(data) != "{}") {
                     $tbProductCode.val(data.Code);
@@ -258,7 +256,7 @@ function ProductCheckByID(pGuid) {
     $img = $("#pnlProductImage img");
 
     if (pGuid != "") {
-        $.getJSON("ServerProductCheck.ashx", { ProductGuid: pGuid }, function (data, status, xhr) {
+        $.getJSON("ServerProductCheck.ashx", { ProductGuid: pGuid }, function(data, status, xhr) {
             if (status == "success" && data != null) {
                 if (data.result != "error" && JSON.stringify(data) != "{}") {
                     $img.attr("src", data.ImageURL);
@@ -286,7 +284,7 @@ function MemberCheck() {
     $btnSubmit.prop("disabled", true);
 
     if ($.trim($tbMemberID.val()) != "") {
-        $.getJSON("ServerMemberCheck.ashx", { MemberID: $.trim($tbMemberID.val()) }, function (data, status, xhr) {
+        $.getJSON("ServerMemberCheck.ashx", { MemberID: $.trim($tbMemberID.val()) }, function(data, status, xhr) {
             if (status == "success" && data != null) {
                 if (data.result != "error" && JSON.stringify(data) != "{}") {
                     $tbMemberName.val(data.Name);
@@ -310,7 +308,7 @@ function InsertWishItem(obj) {
     var $trWishItem = obj.find("tr.WishItem").first().clone();
     var $trWishRemark = obj.find("tr.WishRemark");
 
-    $trWishItem.find("input.TextBox").each(function () { $(this).val(""); });
+    $trWishItem.find("input.TextBox").each(function() { $(this).val(""); });
     $trWishItem.find("span").text("");
 
     AutoCompleteProductImpl($trWishItem);
@@ -326,9 +324,12 @@ function DeleteWishItem(obj) {
 
     if ($trWishItem.length > 1) {
         if ($.trim($tbWishProductCode.val()) != "") {
-            if (confirm($.format("移除当前许愿商品【{0}】?", $.trim($tbWishProductCode.val())))) { obj.remove(); }
+            if (confirm($.format("移除当前许愿商品【{0}】?", $.trim($tbWishProductCode.val())))) {
+                obj.remove();
+            }
+        } else {
+            obj.remove();
         }
-        else { obj.remove(); }
     }
 }
 
@@ -339,9 +340,9 @@ function AutoCompleteProductImpl(obj) {
         source: cacheProductCodeList,
         minLength: 2,
         autoFocus: true,
-        select: function (event, ui) {
+        select: function(event, ui) {
             if ($.trim(ui.item.value) != "") {
-                $.getJSON("ServerProductCheck.ashx", { ProductCode: $.trim(ui.item.value) }, function (data, status, xhr) {
+                $.getJSON("ServerProductCheck.ashx", { ProductCode: $.trim(ui.item.value) }, function(data, status, xhr) {
                     if (status == "success" && data != null) {
                         AutoFillProductImpl(obj, data);
                     } else {
@@ -352,9 +353,9 @@ function AutoCompleteProductImpl(obj) {
         }
     });
 
-    $tbWishProductCode.change(function () {
+    $tbWishProductCode.change(function() {
         if ($.trim($(this).val()) != "") {
-            $.getJSON("ServerProductCheck.ashx", { ProductCode: $.trim($(this).val()) }, function (data, status, xhr) {
+            $.getJSON("ServerProductCheck.ashx", { ProductCode: $.trim($(this).val()) }, function(data, status, xhr) {
                 if (status == "success" && data != null) {
                     AutoFillProductImpl(obj, data);
                 } else {
@@ -388,7 +389,7 @@ function AutoFillProductImpl(obj, data) {
 function AutoCalculateProductImpl(obj) {
     var $tbWishProductQuantity = obj.find("input.ProductQuantity");
 
-    $tbWishProductQuantity.change(function () {
+    $tbWishProductQuantity.change(function() {
         var $tbWishProductPrice = $(this).parents("tr.WishItem").find("input.ProductPrice");
         var $lblWishProductPriceInfo = $(this).parents("tr.WishItem").find("span.ProductPriceInfo");
 
@@ -413,7 +414,7 @@ function UnPackageWishOrderItemList(obj) {
         var _jsonOrderItemList = JSON.parse($.trim($tbWishOrderItemListInfo.val()));
         var $trWishRemark = obj.find("tr.WishRemark");
 
-        $.each(_jsonOrderItemList, function (entryIndex, entry) {
+        $.each(_jsonOrderItemList, function(entryIndex, entry) {
             var $trWishItemClone = $trWishItem.clone();
 
             UnPackageWishOrderItem($trWishItemClone, entry);
@@ -441,7 +442,7 @@ function UnPackageWishOrderItem(obj, entry) {
     obj.find("input.ProductSize").val(entry.Size);
     obj.find("input.ProductQuantity").val(entry.Quantity);
 
-    $.getJSON("ServerProductCheck.ashx", { ProductCode: entry.Code }, function (data, status, xhr) {
+    $.getJSON("ServerProductCheck.ashx", { ProductCode: entry.Code }, function(data, status, xhr) {
         if (status == "success" && data != null) {
             if (data.ID != undefined) {
                 if (data.SaleInfo != "") {
@@ -471,7 +472,7 @@ function PackageWishOrderItemList(obj) {
     var _arrayOrderItemList = new Array();
     var _strOrderItem = "";
 
-    $trWishItem.each(function () {
+    $trWishItem.each(function() {
         _strOrderItem = PackageWishOrderItem($(this));
 
         if (_strOrderItem != "") {
@@ -503,31 +504,36 @@ function PackageWishOrderItem(obj) {
 
     if ($.trim($tbWishProductGuid.val()) == "" && $.trim($tbWishProductCode.val()) == "") {
         return "";
-    }
-    else if (_quantity == "" || isNaN(_quantity) || _quantity <= 0) {
+    } else if (_quantity == "" || isNaN(_quantity) || _quantity <= 0) {
         return "";
-    }
-    else {
-        if ($.trim(obj.find("input.ProductGuid").val()) != "")
-        { _jsonOrderItem.ProductGuid = $.trim(obj.find("input.ProductGuid").val()); }
+    } else {
+        if ($.trim(obj.find("input.ProductGuid").val()) != "") {
+            _jsonOrderItem.ProductGuid = $.trim(obj.find("input.ProductGuid").val());
+        }
 
-        if ($.trim(obj.find("input.ProductCode").val()) != "")
-        { _jsonOrderItem.Code = $.trim(obj.find("input.ProductCode").val()); }
+        if ($.trim(obj.find("input.ProductCode").val()) != "") {
+            _jsonOrderItem.Code = $.trim(obj.find("input.ProductCode").val());
+        }
 
-        if ($.trim(obj.find("input.ProductName").val()) != "")
-        { _jsonOrderItem.ProductName = $.trim(obj.find("input.ProductName").val()); }
+        if ($.trim(obj.find("input.ProductName").val()) != "") {
+            _jsonOrderItem.ProductName = $.trim(obj.find("input.ProductName").val());
+        }
 
-        if ($.trim(obj.find("input.ProductSize").val()) != "")
-        { _jsonOrderItem.Size = $.trim(obj.find("input.ProductSize").val()); }
+        if ($.trim(obj.find("input.ProductSize").val()) != "") {
+            _jsonOrderItem.Size = $.trim(obj.find("input.ProductSize").val());
+        }
 
-        if ($.trim(obj.find("input.ProductQuantity").val()) != "")
-        { _jsonOrderItem.Quantity = $.trim(obj.find("input.ProductQuantity").val()); }
+        if ($.trim(obj.find("input.ProductQuantity").val()) != "") {
+            _jsonOrderItem.Quantity = $.trim(obj.find("input.ProductQuantity").val());
+        }
 
-        if ($.trim(obj.find("input.ProductPrice").val()) != "")
-        { _jsonOrderItem.UnitPrice = $.trim(obj.find("input.ProductPrice").val()); }
+        if ($.trim(obj.find("input.ProductPrice").val()) != "") {
+            _jsonOrderItem.UnitPrice = $.trim(obj.find("input.ProductPrice").val());
+        }
 
-        if ($.trim(obj.find("span.ProductPriceInfo").text()) != "")
-        { _jsonOrderItem.Remark = $.trim(obj.find("span.ProductPriceInfo").text()); }
+        if ($.trim(obj.find("span.ProductPriceInfo").text()) != "") {
+            _jsonOrderItem.Remark = $.trim(obj.find("span.ProductPriceInfo").text());
+        }
 
         _jsonOrderItem.CreateTime = $.datenow();
         _jsonOrderItem.IsActive = true;
@@ -540,12 +546,11 @@ function PackageWishOrderItem(obj) {
 
 function SwitchLeftPanel(className) {
     if (className == "CtrlLeftPanelCol") {
-        $('#MainPanel').width('100%');
-        $.cookie('leftPanel', 'hidden', { expires: 30 });
-    }
-    else {
-        $('#MainPanel').width('78%');
-        $.cookie('leftPanel', null);
+        $("#MainPanel").width("100%");
+        $.cookie("leftPanel", "hidden", { expires: 30 });
+    } else {
+        $("#MainPanel").width("78%");
+        $.cookie("leftPanel", null);
     }
 }
 
@@ -555,7 +560,7 @@ function SwitchLeftPanel(className) {
 
 // override jQuery get date now 
 
-jQuery.datenow = function () {
+jQuery.datenow = function() {
     var date = new Date();
     var seperator1 = "-";
     var seperator2 = ":";
@@ -568,16 +573,14 @@ jQuery.datenow = function () {
         strDate = "0" + strDate;
     }
     var currentdate = date.getYear() + seperator1 + month + seperator1 + strDate
-            + " " + date.getHours() + seperator2 + date.getMinutes()
-            + seperator2 + date.getSeconds();
+        + " " + date.getHours() + seperator2 + date.getMinutes()
+        + seperator2 + date.getSeconds();
     return currentdate;
-}
+}; // override jQuery string format
 
-// override jQuery string format
-
-jQuery.format = function (source, params) {
+jQuery.format = function(source, params) {
     if (arguments.length == 1)
-        return function () {
+        return function() {
             var args = $.makeArray(arguments);
             args.unshift(source);
             return $.format.apply(this, args);
@@ -588,7 +591,7 @@ jQuery.format = function (source, params) {
     if (params.constructor != Array) {
         params = [params];
     }
-    $.each(params, function (i, n) {
+    $.each(params, function(i, n) {
         source = source.replace(new RegExp("\\{" + i + "\\}", "g"), n);
     });
     return source;
@@ -596,36 +599,36 @@ jQuery.format = function (source, params) {
 
 // override jQuery cookie
 
-jQuery.cookie = function (name, value, options) {
-    if (typeof value != 'undefined') {
+jQuery.cookie = function(name, value, options) {
+    if (typeof value != "undefined") {
         options = options || {};
         if (value === null) {
-            value = '';
+            value = "";
             options = $.extend({}, options);
             options.expires = -1;
         }
-        var expires = '';
-        if (options.expires && (typeof options.expires == 'number' || options.expires.toUTCString)) {
+        var expires = "";
+        if (options.expires && (typeof options.expires == "number" || options.expires.toUTCString)) {
             var date;
-            if (typeof options.expires == 'number') {
+            if (typeof options.expires == "number") {
                 date = new Date();
                 date.setTime(date.getTime() + (options.expires * 24 * 60 * 60 * 1000));
             } else {
                 date = options.expires;
             }
-            expires = '; expires=' + date.toUTCString();
+            expires = "; expires=" + date.toUTCString();
         }
-        var path = options.path ? '; path=' + (options.path) : '';
-        var domain = options.domain ? '; domain=' + (options.domain) : '';
-        var secure = options.secure ? '; secure' : '';
-        document.cookie = [name, '=', encodeURIComponent(value), expires, path, domain, secure].join('');
+        var path = options.path ? "; path=" + (options.path) : "";
+        var domain = options.domain ? "; domain=" + (options.domain) : "";
+        var secure = options.secure ? "; secure" : "";
+        document.cookie = [name, "=", encodeURIComponent(value), expires, path, domain, secure].join("");
     } else {
         var cookieValue = null;
-        if (document.cookie && document.cookie != '') {
-            var cookies = document.cookie.split(';');
+        if (document.cookie && document.cookie != "") {
+            var cookies = document.cookie.split(";");
             for (var i = 0; i < cookies.length; i++) {
                 var cookie = jQuery.trim(cookies[i]);
-                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                if (cookie.substring(0, name.length + 1) == (name + "=")) {
                     cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
                     break;
                 }

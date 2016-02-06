@@ -1,5 +1,4 @@
 ﻿using System;
-
 using Arsenal.Service;
 
 namespace Arsenal.Web
@@ -17,7 +16,7 @@ namespace Arsenal.Web
             {
                 ltrlPluginName.Text = string.Format("<strong>欢迎进入{0}</strong>", ConfigGlobal.PluginDisplayName);
 
-                if (ConfigGlobal.IsPluginAdmin(this.UID))
+                if (ConfigGlobal.IsPluginAdmin(UID))
                     pnlAdmin.Visible = true;
                 else
                     pnlAdmin.Visible = false;

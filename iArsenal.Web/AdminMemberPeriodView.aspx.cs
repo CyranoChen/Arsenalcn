@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-
 using Arsenalcn.Core;
 using iArsenal.Service;
 
@@ -9,27 +8,28 @@ namespace iArsenal.Web
     public partial class AdminMemberPeriodView : AdminPageBase
     {
         private readonly IRepository repo = new Repository();
-        protected void Page_Load(object sender, EventArgs e)
-        {
-            ctrlAdminFieldToolBar.AdminUserName = this.Username;
-
-            if (!IsPostBack)
-            {
-                InitForm();
-            }
-        }
 
         private int MemberPeriodID
         {
             get
             {
                 int _MemberPeriodID;
-                if (!string.IsNullOrEmpty(Request.QueryString["MemberPeriodID"]) && int.TryParse(Request.QueryString["MemberPeriodID"], out _MemberPeriodID))
+                if (!string.IsNullOrEmpty(Request.QueryString["MemberPeriodID"]) &&
+                    int.TryParse(Request.QueryString["MemberPeriodID"], out _MemberPeriodID))
                 {
                     return _MemberPeriodID;
                 }
-                else
-                    return int.MinValue;
+                return int.MinValue;
+            }
+        }
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            ctrlAdminFieldToolBar.AdminUserName = Username;
+
+            if (!IsPostBack)
+            {
+                InitForm();
             }
         }
 
@@ -46,7 +46,7 @@ namespace iArsenal.Web
                 tbMemberID.Text = mp.MemberID.ToString();
                 tbMemberName.Text = mp.MemberName;
                 cbIsActive.Checked = mp.IsActive;
-                ddlMemberClass.SelectedValue = ((int)mp.MemberClass).ToString();
+                ddlMemberClass.SelectedValue = ((int) mp.MemberClass).ToString();
                 tbMemberCardNo.Text = mp.MemberCardNo;
 
                 if (mp.OrderID.HasValue)
@@ -70,10 +70,6 @@ namespace iArsenal.Web
                 tbDescription.Text = mp.Description;
                 tbRemark.Text = mp.Remark;
             }
-            else
-            {
-                //lblMemberPeriodInfo.Text = "会员姓名:";
-            }
         }
 
         protected void btnSubmit_Click(object sender, EventArgs e)
@@ -96,7 +92,8 @@ namespace iArsenal.Web
                 mp.IsActive = cbIsActive.Checked;
 
                 if (!string.IsNullOrEmpty(ddlMemberClass.SelectedValue))
-                    mp.MemberClass = (MemberClassType)Enum.Parse(typeof(MemberClassType), ddlMemberClass.SelectedValue);
+                    mp.MemberClass =
+                        (MemberClassType) Enum.Parse(typeof (MemberClassType), ddlMemberClass.SelectedValue);
                 else
                     throw new Exception("MemberClass can't be empty");
 
@@ -116,7 +113,8 @@ namespace iArsenal.Web
                 {
                     repo.Update(mp);
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('更新成功');window.location.href=window.location.href", true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                        "alert('更新成功');window.location.href=window.location.href", true);
                 }
                 else
                 {
@@ -124,16 +122,17 @@ namespace iArsenal.Web
                     var list = repo.Query<MemberPeriod>(x => x.MemberID == mp.MemberID);
 
                     if (list.Any(x => x.StartDate <= mp.StartDate && x.EndDate >= mp.EndDate))
-                        throw new Exception($"The Member Period in active for this Member(No.{mp.MemberID.ToString()})");
+                        throw new Exception($"The Member Period in active for this Member(No.{mp.MemberID})");
 
                     repo.Insert(mp);
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('添加成功');window.location.href = 'AdminMemberPeriod.aspx'", true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                        "alert('添加成功');window.location.href = 'AdminMemberPeriod.aspx'", true);
                 }
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message.ToString()}')", true);
+                ClientScript.RegisterClientScriptBlock(typeof (string), "failed", $"alert('{ex.Message}')", true);
             }
         }
 
@@ -141,7 +140,7 @@ namespace iArsenal.Web
         {
             if (MemberPeriodID > 0)
             {
-                Response.Redirect("AdminMemberPeriod.aspx?MemberPeriodID=" + MemberPeriodID.ToString());
+                Response.Redirect("AdminMemberPeriod.aspx?MemberPeriodID=" + MemberPeriodID);
             }
             else
             {
@@ -154,7 +153,7 @@ namespace iArsenal.Web
             var mp = repo.Single<MemberPeriod>(MemberPeriodID);
 
             if (mp.MemberID > 0)
-                Response.Redirect("AdminMemberView.aspx?MemberID=" + mp.MemberID.ToString());
+                Response.Redirect("AdminMemberView.aspx?MemberID=" + mp.MemberID);
         }
 
         protected void btnDelete_Click(object sender, EventArgs e)
@@ -165,7 +164,8 @@ namespace iArsenal.Web
                 {
                     repo.Delete<MemberPeriod>(MemberPeriodID);
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('删除成功');window.location.href='AdminMemberPeriod.aspx'", true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                        "alert('删除成功');window.location.href='AdminMemberPeriod.aspx'", true);
                 }
                 else
                 {
@@ -174,7 +174,7 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message.ToString()}')", true);
+                ClientScript.RegisterClientScriptBlock(typeof (string), "failed", $"alert('{ex.Message}')", true);
             }
         }
     }

@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="C#" CodeBehind="CollectionInactiveVideo.ascx.cs" Inherits="Arsenalcn.ClubSys.Web.Control.CollectionInactiveVideo"
-    EnableViewState="false" %>
+EnableViewState="false" %>
 <div id="CollectionInfo" class="ClubSys_CollectionInfo">
     <asp:Repeater ID="rptVideo" runat="server" OnItemDataBound="rptVideo_ItemDataBound">
         <HeaderTemplate>

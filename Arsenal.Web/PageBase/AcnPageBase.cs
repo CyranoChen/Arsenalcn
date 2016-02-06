@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Web;
-
+using System.Web.UI;
 using Arsenal.Service;
 
 namespace Arsenal.Web
 {
-    public class AcnPageBase : System.Web.UI.Page
+    public class AcnPageBase : Page
     {
+        protected bool _adminPage = false;
+
         public int UID
         {
             get
@@ -16,10 +18,7 @@ namespace Arsenal.Web
                     //already login
                     return int.Parse(Request.Cookies["uid"].Value);
                 }
-                else
-                {
-                    return -1;
-                }
+                return -1;
             }
         }
 
@@ -29,8 +28,7 @@ namespace Arsenal.Web
             {
                 if (Request.Cookies["user_name"] != null && !string.IsNullOrEmpty(Request.Cookies["user_name"].Value))
                     return HttpUtility.UrlDecode(Request.Cookies["user_name"].Value);
-                else
-                    return string.Empty;
+                return string.Empty;
             }
         }
 
@@ -38,16 +36,14 @@ namespace Arsenal.Web
         {
             get
             {
-                if (Request.Cookies["session_key"] != null && !string.IsNullOrEmpty(Request.Cookies["session_key"].Value))
+                if (Request.Cookies["session_key"] != null &&
+                    !string.IsNullOrEmpty(Request.Cookies["session_key"].Value))
                     return Request.Cookies["session_key"].Value;
-                else
-                    return string.Empty;
+                return string.Empty;
             }
         }
 
         protected bool AnonymousRedirect { get; set; }
-
-        protected bool _adminPage = false;
 
         protected override void OnInitComplete(EventArgs e)
         {
@@ -70,7 +66,8 @@ namespace Arsenal.Web
 
                 Response.Clear();
 
-                var loginURL = string.Format("{0}?api_key={1}&next={2}", ConfigGlobal.APILoginURL, ConfigGlobal.APIAppKey, Request.Url.PathAndQuery);
+                var loginURL = string.Format("{0}?api_key={1}&next={2}", ConfigGlobal.APILoginURL,
+                    ConfigGlobal.APIAppKey, Request.Url.PathAndQuery);
 
                 Response.Redirect(loginURL, false);
 
@@ -78,9 +75,9 @@ namespace Arsenal.Web
             }
 
             //Set Master Page Info
-            if (this.Master != null && this.Master is DefaultMaster)
+            if (Master != null && Master is DefaultMaster)
             {
-                var masterPage = this.Master as DefaultMaster;
+                var masterPage = Master as DefaultMaster;
 
                 masterPage.UserID = UID;
                 masterPage.UserName = Username;

@@ -2,13 +2,13 @@
 <asp:Repeater ID="rptrWorkflowInfo" runat="server" OnItemDataBound="rptrWorkflowInfo_ItemDataBound">
     <HeaderTemplate>
         <div class="WorkflowInfo">
-            <ul>
+        <ul>
     </HeaderTemplate>
     <ItemTemplate>
         <asp:Literal ID="ltrlStateInfo" runat="server"></asp:Literal>
     </ItemTemplate>
     <FooterTemplate>
-        </ul></div>
+        </ul>
+        </div>
     </FooterTemplate>
 </asp:Repeater>
-

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Web.UI.WebControls;
-
 using Arsenal.Service;
+using Arsenal.Web.Control;
 using Arsenalcn.Core;
 
 namespace Arsenal.Web
@@ -10,95 +10,108 @@ namespace Arsenal.Web
     public partial class AdminPlayer : AdminPageBase
     {
         private readonly IRepository repo = new Repository();
-        protected void Page_Load(object sender, EventArgs e)
-        {
-            ctrlAdminFieldToolBar.AdminUserName = this.Username;
-            ctrlCustomPagerInfo.PageChanged += new Control.CustomPagerInfo.PageChangedEventHandler(ctrlCustomPagerInfo_PageChanged);
 
-            if (!IsPostBack)
-            {
-                #region Bind ddlSquadNumber
-                ddlSquadNumber.DataSource = Player.Cache.ColList_SquadNumber;
-                ddlSquadNumber.DataBind();
+        private Guid? _playerGuid;
 
-                ddlSquadNumber.Items.Insert(0, new ListItem("--球员号码--", string.Empty));
-                #endregion
-
-                #region Bind ddlPosition
-                ddlPosition.DataSource = Player.Cache.ColList_Position;
-                ddlPosition.DataBind();
-
-                ddlPosition.Items.Insert(0, new ListItem("--球员位置--", string.Empty));
-                #endregion
-
-                BindData();
-            }
-        }
-
-        private Guid? _playerGuid = null;
         private Guid? PlayerGuid
         {
             get
             {
                 if (_playerGuid.HasValue && _playerGuid == Guid.Empty)
                     return _playerGuid;
-                else if (!string.IsNullOrEmpty(Request.QueryString["PlayerGuid"]))
+                if (!string.IsNullOrEmpty(Request.QueryString["PlayerGuid"]))
                 {
-                    try { return new Guid(Request.QueryString["PlayerGuid"]); }
-                    catch { return Guid.Empty; }
+                    try
+                    {
+                        return new Guid(Request.QueryString["PlayerGuid"]);
+                    }
+                    catch
+                    {
+                        return Guid.Empty;
+                    }
                 }
-                else
-                    return null;
+                return null;
             }
             set { _playerGuid = value; }
+        }
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            ctrlAdminFieldToolBar.AdminUserName = Username;
+            ctrlCustomPagerInfo.PageChanged += ctrlCustomPagerInfo_PageChanged;
+
+            if (!IsPostBack)
+            {
+                #region Bind ddlSquadNumber
+
+                ddlSquadNumber.DataSource = Player.Cache.ColList_SquadNumber;
+                ddlSquadNumber.DataBind();
+
+                ddlSquadNumber.Items.Insert(0, new ListItem("--球员号码--", string.Empty));
+
+                #endregion
+
+                #region Bind ddlPosition
+
+                ddlPosition.DataSource = Player.Cache.ColList_Position;
+                ddlPosition.DataBind();
+
+                ddlPosition.Items.Insert(0, new ListItem("--球员位置--", string.Empty));
+
+                #endregion
+
+                BindData();
+            }
         }
 
         private void BindData()
         {
             var list = repo.All<Player>().ToList().FindAll(x =>
+            {
+                var returnValue = true;
+                var tmpString = string.Empty;
+
+                if (ViewState["SquadNumber"] != null)
                 {
-                    var returnValue = true;
-                    var tmpString = string.Empty;
+                    tmpString = ViewState["SquadNumber"].ToString();
+                    if (!string.IsNullOrEmpty(tmpString))
+                        returnValue = returnValue && x.SquadNumber.Equals(Convert.ToInt16(tmpString));
+                }
 
-                    if (ViewState["SquadNumber"] != null)
-                    {
-                        tmpString = ViewState["SquadNumber"].ToString();
-                        if (!string.IsNullOrEmpty(tmpString))
-                            returnValue = returnValue && x.SquadNumber.Equals(Convert.ToInt16(tmpString));
-                    }
+                if (ViewState["Position"] != null)
+                {
+                    tmpString = ViewState["Position"].ToString();
+                    if (!string.IsNullOrEmpty(tmpString))
+                        returnValue = returnValue &&
+                                      x.Position.ToString().Equals(tmpString, StringComparison.OrdinalIgnoreCase);
+                }
 
-                    if (ViewState["Position"] != null)
-                    {
-                        tmpString = ViewState["Position"].ToString();
-                        if (!string.IsNullOrEmpty(tmpString))
-                            returnValue = returnValue && x.Position.ToString().Equals(tmpString, StringComparison.OrdinalIgnoreCase);
-                    }
+                if (ViewState["IsLegend"] != null)
+                {
+                    tmpString = ViewState["IsLegend"].ToString();
+                    if (!string.IsNullOrEmpty(tmpString))
+                        returnValue = returnValue && x.IsLegend.Equals(Convert.ToBoolean(tmpString));
+                }
 
-                    if (ViewState["IsLegend"] != null)
-                    {
-                        tmpString = ViewState["IsLegend"].ToString();
-                        if (!string.IsNullOrEmpty(tmpString))
-                            returnValue = returnValue && x.IsLegend.Equals(Convert.ToBoolean(tmpString));
-                    }
+                if (ViewState["DisplayName"] != null)
+                {
+                    tmpString = ViewState["DisplayName"].ToString();
+                    if (!string.IsNullOrEmpty(tmpString) && tmpString != "--球员姓名--")
+                        returnValue = returnValue && x.DisplayName.ToLower().Contains(tmpString.ToLower());
+                }
 
-                    if (ViewState["DisplayName"] != null)
-                    {
-                        tmpString = ViewState["DisplayName"].ToString();
-                        if (!string.IsNullOrEmpty(tmpString) && tmpString != "--球员姓名--")
-                            returnValue = returnValue && x.DisplayName.ToLower().Contains(tmpString.ToLower());
-                    }
-
-                    return returnValue;
-                });
+                return returnValue;
+            });
 
             #region set GridView Selected PageIndex
+
             if (PlayerGuid.HasValue && !PlayerGuid.Value.Equals(Guid.Empty))
             {
                 var i = list.FindIndex(x => x.ID.Equals(PlayerGuid));
                 if (i >= 0)
                 {
-                    gvPlayer.PageIndex = i / gvPlayer.PageSize;
-                    gvPlayer.SelectedIndex = i % gvPlayer.PageSize;
+                    gvPlayer.PageIndex = i/gvPlayer.PageSize;
+                    gvPlayer.SelectedIndex = i%gvPlayer.PageSize;
                 }
                 else
                 {
@@ -110,12 +123,14 @@ namespace Arsenal.Web
             {
                 gvPlayer.SelectedIndex = -1;
             }
+
             #endregion
 
             gvPlayer.DataSource = list;
             gvPlayer.DataBind();
 
             #region set Control Custom Pager
+
             if (gvPlayer.BottomPagerRow != null)
             {
                 gvPlayer.BottomPagerRow.Visible = true;
@@ -130,6 +145,7 @@ namespace Arsenal.Web
             {
                 ctrlCustomPagerInfo.Visible = false;
             }
+
             #endregion
         }
 
@@ -141,7 +157,7 @@ namespace Arsenal.Web
             BindData();
         }
 
-        protected void ctrlCustomPagerInfo_PageChanged(object sender, Control.CustomPagerInfo.DataNavigatorEventArgs e)
+        protected void ctrlCustomPagerInfo_PageChanged(object sender, CustomPagerInfo.DataNavigatorEventArgs e)
         {
             if (e.PageIndex > 0)
             {
@@ -156,7 +172,8 @@ namespace Arsenal.Web
         {
             if (gvPlayer.SelectedIndex != -1)
             {
-                Response.Redirect(string.Format("AdminPlayerView.aspx?PlayerGuid={0}", gvPlayer.DataKeys[gvPlayer.SelectedIndex].Value.ToString()));
+                Response.Redirect(string.Format("AdminPlayerView.aspx?PlayerGuid={0}",
+                    gvPlayer.DataKeys[gvPlayer.SelectedIndex].Value));
             }
         }
 
@@ -164,7 +181,8 @@ namespace Arsenal.Web
         {
             Player.Cache.RefreshCache();
 
-            ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('更新缓存成功');window.location.href=window.location.href", true);
+            ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                "alert('更新缓存成功');window.location.href=window.location.href", true);
         }
 
         protected void ddlSquadNumber_SelectedIndexChanged(object sender, EventArgs e)

@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
-
-using Microsoft.ApplicationBlocks.Data;
 using Arsenalcn.Common;
+using Microsoft.ApplicationBlocks.Data;
 
 namespace Arsenalcn.CasinoSys.DataAccess
 {
@@ -29,26 +28,27 @@ namespace Arsenalcn.CasinoSys.DataAccess
 
             if (ds.Tables[0].Rows.Count == 0)
                 return null;
-            else
-                return ds.Tables[0];
+            return ds.Tables[0];
         }
 
         public static bool ExistRelationLeagueTeam(Guid teamGuid, Guid leagueGuid)
         {
-            var sql = string.Format("SELECT * FROM Arsenal_RelationLeagueTeam WHERE TeamGuid = @teamGuid AND LeagueGuid = @leagueGuid");
+            var sql = "SELECT * FROM Arsenal_RelationLeagueTeam WHERE TeamGuid = @teamGuid AND LeagueGuid = @leagueGuid";
 
-            SqlParameter[] para = {
-                                      new SqlParameter("@teamGuid", teamGuid),
-                                      new SqlParameter("@leagueGuid", leagueGuid)
-                                  };
+            SqlParameter[] para =
+            {
+                new SqlParameter("@teamGuid", teamGuid),
+                new SqlParameter("@leagueGuid", leagueGuid)
+            };
 
             var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql, para);
 
             return ds.Tables[0].Rows.Count > 0;
         }
 
-        //public static void UpdateTeam(Guid teamGuid, string englishName, string displayName, string logo, string nickName, string founded, string ground, int? capacity, string chairman, string manager, Guid leagueGuid)
         //{
+
+        //public static void UpdateTeam(Guid teamGuid, string englishName, string displayName, string logo, string nickName, string founded, string ground, int? capacity, string chairman, string manager, Guid leagueGuid)
         //    string sql = "UPDATE dbo.Arsenal_Team SET TeamEnglishName = @englishName, TeamDisplayName = @displayName, TeamLogo = @logo, TeamNickName = @nickName, Founded = @founded, Ground = @ground, Capacity = @capacity, Chairman = @chairman, Manager = @manager, LeagueGuid = @leagueGuid WHERE TeamGuid = @teamGuid";
 
         //    SqlParameter[] para = { new SqlParameter("@teamGuid", teamGuid), new SqlParameter("@englishName", englishName), new SqlParameter("@displayName", displayName), new SqlParameter("@logo", logo), new SqlParameter("@nickName", nickName), new SqlParameter("@founded", founded), new SqlParameter("@ground", ground), new SqlParameter("@capacity", capacity), new SqlParameter("@chairman", chairman), new SqlParameter("@manager", manager), new SqlParameter("@leagueGuid", leagueGuid) };

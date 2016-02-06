@@ -1,22 +1,20 @@
 ﻿using System;
 using System.Reflection;
 using System.Threading;
-
+using Arsenal.Service.Casino;
 using Arsenalcn.Core;
 using Arsenalcn.Core.Logger;
 using Arsenalcn.Core.Scheduler;
 
-using Arsenal.Service.Casino;
-
 namespace Arsenal.Scheduler
 {
-    class AutoUpdateActiveBankerCash : ISchedule
+    internal class AutoUpdateActiveBankerCash : ISchedule
     {
         private readonly ILog log = new AppLog();
 
         public void Execute(object state)
         {
-            var logInfo = new LogInfo()
+            var logInfo = new LogInfo
             {
                 MethodInstance = MethodBase.GetCurrentMethod(),
                 ThreadInstance = Thread.CurrentThread

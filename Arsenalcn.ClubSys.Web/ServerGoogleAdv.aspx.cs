@@ -4,12 +4,12 @@ using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
-
 using Arsenalcn.ClubSys.Service;
+using Arsenalcn.ClubSys.Web.Common;
 
 namespace Arsenalcn.ClubSys.Web
 {
-    public partial class ServerGoogleAdv : Common.BasePage
+    public partial class ServerGoogleAdv : BasePage
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -54,9 +54,9 @@ namespace Arsenalcn.ClubSys.Web
 
                 try
                 {
-                    if (isLog && this.userid != -1)
+                    if (isLog && userid != -1)
                     {
-                        AdvLog.LogHistory(this.userid, this.username, AdvHistoryType.GoogleAdv, advURL, Request.UserHostAddress.ToString());
+                        AdvLog.LogHistory(userid, username, AdvHistoryType.GoogleAdv, advURL, Request.UserHostAddress);
                         Response.Write("success");
                     }
                     else
@@ -73,7 +73,7 @@ namespace Arsenalcn.ClubSys.Web
 
         public static string CrawlPageContent(string url)
         {
-            var request = HttpWebRequest.Create(url) as HttpWebRequest;
+            var request = WebRequest.Create(url) as HttpWebRequest;
 
             if (request != null)
             {
@@ -81,13 +81,12 @@ namespace Arsenalcn.ClubSys.Web
 
                 return reader.ReadToEnd();
             }
-            else
-                return string.Empty;
+            return string.Empty;
         }
 
         public static string CrawlPageContent(string url, string begin, string end, bool includeBegin, bool includeEnd)
         {
-            var request = HttpWebRequest.Create(url) as HttpWebRequest;
+            var request = WebRequest.Create(url) as HttpWebRequest;
 
             if (request != null)
             {
@@ -100,10 +99,7 @@ namespace Arsenalcn.ClubSys.Web
 
                 return $"{(includeBegin ? begin : string.Empty)}{retValue}{(includeEnd ? end : string.Empty)}";
             }
-            else
-            {
-                return string.Empty;
-            }
+            return string.Empty;
         }
 
         private static string GetStringBetweenBeginAndEnd(string input, string begin, string end)
@@ -111,8 +107,7 @@ namespace Arsenalcn.ClubSys.Web
             var pattern = $"(?<={begin})[\\W\\w]*?(?={end})";
             if (Regex.IsMatch(input, pattern))
                 return Regex.Match(input, pattern).Value;
-            else
-                return string.Empty;
+            return string.Empty;
         }
     }
 }

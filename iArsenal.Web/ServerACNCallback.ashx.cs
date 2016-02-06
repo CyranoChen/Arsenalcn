@@ -5,7 +5,6 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Web;
 using System.Xml;
-
 using iArsenal.Service;
 
 namespace iArsenal.Web
@@ -29,7 +28,7 @@ namespace iArsenal.Web
                     nextURL = context.Request.QueryString["next"];
 
                 //New HttpWebRequest for DiscuzNT Service API
-                var req = (HttpWebRequest)WebRequest.Create(ConfigGlobal.APIServiceURL);
+                var req = (HttpWebRequest) WebRequest.Create(ConfigGlobal.APIServiceURL);
 
                 req.Method = "POST";
                 req.ContentType = "application/x-www-form-urlencoded";
@@ -65,9 +64,12 @@ namespace iArsenal.Web
                         //Build Member & ACNUser Cookie Information
                         if (xml.HasChildNodes && !xml.FirstChild.NextSibling.Name.Equals("error_response"))
                         {
-                            context.Response.SetCookie(new HttpCookie("session_key", xml.GetElementsByTagName("session_key").Item(0).InnerText.Trim()));
-                            context.Response.SetCookie(new HttpCookie("uid", xml.GetElementsByTagName("uid").Item(0).InnerText.Trim()));
-                            context.Response.SetCookie(new HttpCookie("user_name", HttpUtility.UrlEncode(xml.GetElementsByTagName("user_name").Item(0).InnerText.Trim())));
+                            context.Response.SetCookie(new HttpCookie("session_key",
+                                xml.GetElementsByTagName("session_key").Item(0).InnerText.Trim()));
+                            context.Response.SetCookie(new HttpCookie("uid",
+                                xml.GetElementsByTagName("uid").Item(0).InnerText.Trim()));
+                            context.Response.SetCookie(new HttpCookie("user_name",
+                                HttpUtility.UrlEncode(xml.GetElementsByTagName("user_name").Item(0).InnerText.Trim())));
                         }
                         else
                         {
@@ -89,9 +91,14 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                var errorMsg = ex.Message.ToString();
+                var errorMsg = ex.Message;
                 context.Response.Redirect(nextURL);
             }
+        }
+
+        public bool IsReusable
+        {
+            get { return true; }
         }
 
         private string getMd5Hash(string input)
@@ -115,14 +122,6 @@ namespace iArsenal.Web
 
             // Return the hexadecimal string.
             return sBuilder.ToString();
-        }
-
-        public bool IsReusable
-        {
-            get
-            {
-                return true;
-            }
         }
     }
 }

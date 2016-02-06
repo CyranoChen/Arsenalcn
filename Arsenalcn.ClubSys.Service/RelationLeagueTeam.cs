@@ -5,7 +5,9 @@ namespace Arsenalcn.ClubSys.Service
 {
     public class RelationLeagueTeam
     {
-        public RelationLeagueTeam() { }
+        public RelationLeagueTeam()
+        {
+        }
 
         private RelationLeagueTeam(DataRow dr)
         {
@@ -16,8 +18,8 @@ namespace Arsenalcn.ClubSys.Service
         {
             if (dr != null)
             {
-                TeamGuid = (Guid)dr["TeamGuid"];
-                LeagueGuid = (Guid)dr["LeagueGuid"];
+                TeamGuid = (Guid) dr["TeamGuid"];
+                LeagueGuid = (Guid) dr["LeagueGuid"];
             }
         }
 
@@ -28,11 +30,9 @@ namespace Arsenalcn.ClubSys.Service
 
         #region Members and Properties
 
-        public Guid TeamGuid
-        { get; set; }
+        public Guid TeamGuid { get; set; }
 
-        public Guid LeagueGuid
-        { get; set; }
+        public Guid LeagueGuid { get; set; }
 
         #endregion
     }

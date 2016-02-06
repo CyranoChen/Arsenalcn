@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using iArsenal.Service.Arsenal;
 using iArsenal.Service.ServiceProvider;
 
@@ -11,6 +10,8 @@ namespace iArsenal.Service
     {
         public static class Cache
         {
+            public static List<Player> PlayerList;
+
             static Cache()
             {
                 InitCache();
@@ -32,8 +33,6 @@ namespace iArsenal.Service
             {
                 return PlayerList.Find(p => p.ID.Equals(guid));
             }
-
-            public static List<Player> PlayerList;
         }
     }
 }

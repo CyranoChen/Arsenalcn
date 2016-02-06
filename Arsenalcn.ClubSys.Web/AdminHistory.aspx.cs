@@ -1,32 +1,15 @@
 ﻿using System;
-using System.Web.UI.WebControls;
 using System.Collections.Generic;
-
-using Arsenalcn.ClubSys.Service;
+using System.Web.UI.WebControls;
 using Arsenalcn.ClubSys.Entity;
+using Arsenalcn.ClubSys.Service;
+using Arsenalcn.ClubSys.Web.Common;
 
 namespace Arsenalcn.ClubSys.Web
 {
-    public partial class AdminHistory : Common.AdminBasePage
+    public partial class AdminHistory : AdminBasePage
     {
-        protected void Page_Load(object sender, EventArgs e)
-        {
-            var item = new ListItem("--请选择球会--", Guid.Empty.ToString());
-
-            ddlClub.DataSource = ClubLogic.GetActiveClubs();
-            ddlClub.DataTextField = "FullName";
-            ddlClub.DataValueField = "ID";
-            ddlClub.DataBind();
-
-            ddlClub.Items.Insert(0, item);
-
-            if( ClubID != -1 )
-                ddlClub.SelectedValue = ClubID.ToString();
-
-            ctrlAdminFieldToolBar.AdminUserName = this.username;
-
-            BindClubHistory();
-        }
+        private List<Entity.ClubHistory> history;
 
         private int ClubID
         {
@@ -49,12 +32,30 @@ namespace Arsenalcn.ClubSys.Web
                 {
                     int.TryParse(ddlClub.SelectedValue, out clubID);
                 }
-                
+
                 return clubID;
             }
         }
 
-        private List<Arsenalcn.ClubSys.Entity.ClubHistory> history = null;
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            var item = new ListItem("--请选择球会--", Guid.Empty.ToString());
+
+            ddlClub.DataSource = ClubLogic.GetActiveClubs();
+            ddlClub.DataTextField = "FullName";
+            ddlClub.DataValueField = "ID";
+            ddlClub.DataBind();
+
+            ddlClub.Items.Insert(0, item);
+
+            if (ClubID != -1)
+                ddlClub.SelectedValue = ClubID.ToString();
+
+            ctrlAdminFieldToolBar.AdminUserName = username;
+
+            BindClubHistory();
+        }
+
         private void BindClubHistory()
         {
             if (history == null)
@@ -66,7 +67,7 @@ namespace Arsenalcn.ClubSys.Web
 
                 foreach (var ch in history)
                 {
-                    var actionType = (ClubHistoryActionType)Enum.Parse(typeof(ClubHistoryActionType), ch.ActionType);
+                    var actionType = (ClubHistoryActionType) Enum.Parse(typeof (ClubHistoryActionType), ch.ActionType);
                     switch (actionType)
                     {
                         case ClubHistoryActionType.JoinClub:

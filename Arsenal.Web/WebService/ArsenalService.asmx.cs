@@ -1,51 +1,50 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Web.Services;
-
 using Arsenal.Service;
 
 namespace Arsenal.WebService
 {
     [WebService(Namespace = "http://www.arsenal.cn/")]
     [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
-    [System.ComponentModel.ToolboxItem(false)]
-
+    [ToolboxItem(false)]
     public class ServiceArsenal : System.Web.Services.WebService
     {
         [WebMethod(Description = "Arsenal.Service.Match.Cache.MatchList")]
         public List<Match> GetMatchs()
         {
-            return Arsenal.Service.Match.Cache.MatchList;
+            return Match.Cache.MatchList;
         }
 
         [WebMethod(Description = "Arsenal.Service.Player.Cache.PlayerList")]
         public List<Player> GetPlayers()
         {
-            return Arsenal.Service.Player.Cache.PlayerList;
+            return Player.Cache.PlayerList;
         }
 
         [WebMethod(Description = "Arsenal.Service.Team.Cache.TeamList")]
         public List<Team> GetTeams()
         {
-            return Arsenal.Service.Team.Cache.TeamList;
+            return Team.Cache.TeamList;
         }
 
         [WebMethod(Description = "Arsenal.Service.Team.Cache.GetTeamsByLeagueGuid(Guid guid)")]
         public List<Team> GetTeamsByLeagueGuid(Guid guid)
         {
-            return Arsenal.Service.Team.Cache.GetTeamsByLeagueGuid(guid);
+            return Team.Cache.GetTeamsByLeagueGuid(guid);
         }
 
         [WebMethod(Description = "Arsenal.Service.League.Cache.LeagueList")]
         public List<League> GetLeagues()
         {
-            return Arsenal.Service.League.Cache.LeagueList;
+            return League.Cache.LeagueList;
         }
 
         [WebMethod(Description = "Arsenal.Service.Video.Cache.VideoList")]
         public List<Video> GetVideos()
         {
-            return Arsenal.Service.Video.Cache.VideoList;
+            return Video.Cache.VideoList;
         }
     }
 }

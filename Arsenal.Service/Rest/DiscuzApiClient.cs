@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics.Contracts;
 using System.Linq;
-
 using Arsenalcn.Core;
 
 namespace Arsenal.Service
@@ -8,12 +7,17 @@ namespace Arsenal.Service
     public class DiscuzApiClient : RestClient
     {
         public DiscuzApiClient()
-            : base()
         {
             ServiceUrl = ConfigGlobal.APIServiceURL;
             AppKey = ConfigGlobal.APIAppKey;
             CryptographicKey = ConfigGlobal.APICryptographicKey;
         }
+
+        #region Members and Properties
+
+        public string AuthToken { get; set; }
+
+        #endregion
 
         public string AuthValidate(string username, string password, string passwordFormat = "md5")
         {
@@ -29,7 +33,9 @@ namespace Arsenal.Service
             Parameters.Add("password", password);
 
             if (!string.IsNullOrEmpty(passwordFormat))
-            { Parameters.Add("password_format", passwordFormat); }
+            {
+                Parameters.Add("password_format", passwordFormat);
+            }
 
             return GetResponse();
         }
@@ -50,7 +56,9 @@ namespace Arsenal.Service
             Parameters.Add("email", email);
 
             if (!string.IsNullOrEmpty(passwordFormat))
-            { Parameters.Add("password_format", passwordFormat); }
+            {
+                Parameters.Add("password_format", passwordFormat);
+            }
 
             return GetResponse();
         }
@@ -72,7 +80,9 @@ namespace Arsenal.Service
             Parameters.Add("confirm_new_password", newPassword);
 
             if (!string.IsNullOrEmpty(passwordFormat))
-            { Parameters.Add("password_format", passwordFormat); }
+            {
+                Parameters.Add("password_format", passwordFormat);
+            }
 
             return GetResponse();
         }
@@ -106,12 +116,5 @@ namespace Arsenal.Service
 
             return GetResponse();
         }
-
-        #region Members and Properties
-
-        public string AuthToken
-        { get; set; }
-
-        #endregion
     }
 }

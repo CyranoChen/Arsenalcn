@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="C#" CodeBehind="ClubVideo.ascx.cs" Inherits="Arsenalcn.ClubSys.Web.Control.ClubVideo"
-    EnableViewState="false" %>
+EnableViewState="false" %>
 <div class="FunctionBar">
     <div class="DivFloatLeft">
         <asp:DropDownList ID="ddlGoalRank" runat="server" AutoPostBack="true">

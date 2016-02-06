@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Web;
-
+using System.Web.UI;
 using iArsenal.Service;
 
 namespace iArsenal.Web
 {
-    public class AcnPageBase : System.Web.UI.Page
+    public class AcnPageBase : Page
     {
+        protected bool _adminPage = false;
+
         public int UID
         {
             get
@@ -16,10 +18,7 @@ namespace iArsenal.Web
                     //already login
                     return int.Parse(Request.Cookies["uid"].Value);
                 }
-                else
-                {
-                    return -1;
-                }
+                return -1;
             }
         }
 
@@ -29,8 +28,7 @@ namespace iArsenal.Web
             {
                 if (Request.Cookies["user_name"] != null && !string.IsNullOrEmpty(Request.Cookies["user_name"].Value))
                     return HttpUtility.UrlDecode(Request.Cookies["user_name"].Value);
-                else
-                    return string.Empty;
+                return string.Empty;
             }
         }
 
@@ -38,16 +36,14 @@ namespace iArsenal.Web
         {
             get
             {
-                if (Request.Cookies["session_key"] != null && !string.IsNullOrEmpty(Request.Cookies["session_key"].Value))
+                if (Request.Cookies["session_key"] != null &&
+                    !string.IsNullOrEmpty(Request.Cookies["session_key"].Value))
                     return Request.Cookies["session_key"].Value;
-                else
-                    return string.Empty;
+                return string.Empty;
             }
         }
 
         protected bool AnonymousRedirect { get; set; }
-
-        protected bool _adminPage = false;
 
         protected override void OnInitComplete(EventArgs e)
         {
@@ -79,18 +75,18 @@ namespace iArsenal.Web
             }
 
             //Set Master Page Info
-            if (this.Master != null && this.Master is DefaultMaster)
+            if (Master != null && Master is DefaultMaster)
             {
-                var masterPage = this.Master as DefaultMaster;
+                var masterPage = Master as DefaultMaster;
 
                 masterPage.UserID = UID;
                 masterPage.UserName = Username;
                 masterPage.UserKey = SessionKey;
             }
 
-            if (this.Master != null && this.Master is iArsenalMaster)
+            if (Master != null && Master is iArsenalMaster)
             {
-                var masterPage = this.Master as iArsenalMaster;
+                var masterPage = Master as iArsenalMaster;
 
                 masterPage.UserID = UID;
                 masterPage.UserName = Username;

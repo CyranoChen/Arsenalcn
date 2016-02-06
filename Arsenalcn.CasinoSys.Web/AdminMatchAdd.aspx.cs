@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Web.UI.WebControls;
-
 using Arsenalcn.CasinoSys.Entity;
+using Arsenalcn.CasinoSys.Web.Common;
 
 namespace Arsenalcn.CasinoSys.Web
 {
-    public partial class AdminMatchAdd : Common.AdminBasePage
+    public partial class AdminMatchAdd : AdminBasePage
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -98,13 +98,14 @@ namespace Arsenalcn.CasinoSys.Web
                 //var drawRate = Convert.ToSingle(tbDrawRate.Text);
                 //var loseRate = Convert.ToSingle(tbLoseRate.Text);
 
-                m.Insert(userid, username, Convert.ToSingle(tbWinRate.Text), Convert.ToSingle(tbDrawRate.Text), Convert.ToSingle(tbLoseRate.Text));
+                m.Insert(userid, username, Convert.ToSingle(tbWinRate.Text), Convert.ToSingle(tbDrawRate.Text),
+                    Convert.ToSingle(tbLoseRate.Text));
 
-                ClientScript.RegisterClientScriptBlock(typeof(string), "save", "alert('比赛添加成功');", true);
+                ClientScript.RegisterClientScriptBlock(typeof (string), "save", "alert('比赛添加成功');", true);
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message}');", true);
+                ClientScript.RegisterClientScriptBlock(typeof (string), "failed", $"alert('{ex.Message}');", true);
             }
         }
     }

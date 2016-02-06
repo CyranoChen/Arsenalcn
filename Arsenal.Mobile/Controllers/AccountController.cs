@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Web.Mvc;
 using System.Web.Security;
-
 using Arsenal.Mobile.Models;
 using Arsenalcn.Core;
 using Arsenalcn.Core.Utility;
+using Membership = Arsenal.Service.Membership;
 
 namespace Arsenal.Mobile.Controllers
 {
     [Authorize]
     public class AccountController : Controller
     {
-        private IRepository _repo = new Repository();
+        private readonly IRepository _repo = new Repository();
 
         //
         // GET: /Account/Index
@@ -40,10 +40,10 @@ namespace Arsenal.Mobile.Controllers
         {
             if (ModelState.IsValid)
             {
-                Service.Membership mem;
+                Membership mem;
                 int acnUid;
 
-                if (MembershipDto.ValidateUser(model.UserName, membership: out mem))
+                if (MembershipDto.ValidateUser(model.UserName, out mem))
                 {
                     if (mem.Password.Equals(Encrypt.GetMd5Hash(model.Password)))
                     {
@@ -56,16 +56,10 @@ namespace Arsenal.Mobile.Controllers
                             TempData["DataUrl"] = $"data-url={returnUrl}";
                             return Redirect(returnUrl);
                         }
-                        else
-                        {
-                            TempData["DataUrl"] = "data-url=/";
-                            return RedirectToAction("Index", "Home");
-                        }
+                        TempData["DataUrl"] = "data-url=/";
+                        return RedirectToAction("Index", "Home");
                     }
-                    else
-                    {
-                        ModelState.AddModelError("Warn", "用户名或密码不正确");
-                    }
+                    ModelState.AddModelError("Warn", "用户名或密码不正确");
                 }
                 else if (MembershipDto.ValidateAcnUser(model.UserName, model.Password, out acnUid))
                 {
@@ -77,7 +71,7 @@ namespace Arsenal.Mobile.Controllers
                         var membership = new MembershipDto();
 
                         MembershipCreateStatus createStatus;
-                        membership.CreateAcnUser(acnUid, status: out createStatus);
+                        membership.CreateAcnUser(acnUid, out createStatus);
 
                         if (createStatus.Equals(MembershipCreateStatus.Success))
                         {
@@ -87,10 +81,7 @@ namespace Arsenal.Mobile.Controllers
                             TempData["DataUrl"] = "data-url=/";
                             return RedirectToAction("Index", "Home");
                         }
-                        else
-                        {
-                            ModelState.AddModelError("Warn", ErrorCodeToString(createStatus));
-                        }
+                        ModelState.AddModelError("Warn", ErrorCodeToString(createStatus));
                     }
                     else
                     {
@@ -144,20 +135,17 @@ namespace Arsenal.Mobile.Controllers
                 object userKey;
                 MembershipCreateStatus createStatus;
 
-                user.CreateUser(model.UserName, model.Email, model.Password, providerUserKey: out userKey, status: out createStatus);
+                user.CreateUser(model.UserName, model.Email, model.Password, out userKey, out createStatus);
 
                 if (createStatus.Equals(MembershipCreateStatus.Success))
                 {
-                    FormsAuthentication.SetAuthCookie(model.UserName, createPersistentCookie: false);
+                    FormsAuthentication.SetAuthCookie(model.UserName, false);
                     UserDto.SetSession(userKey);
 
                     TempData["DataUrl"] = "data-url=/";
                     return RedirectToAction("Index", "Home");
                 }
-                else
-                {
-                    ModelState.AddModelError("Warn", ErrorCodeToString(createStatus));
-                }
+                ModelState.AddModelError("Warn", ErrorCodeToString(createStatus));
             }
 
             // If we got this far, something failed, redisplay form
@@ -192,7 +180,7 @@ namespace Arsenal.Mobile.Controllers
             {
                 try
                 {
-                    var membership = MembershipDto.GetMembership(username: User.Identity.Name);
+                    var membership = MembershipDto.GetMembership(User.Identity.Name);
                     var user = UserDto.GetSession();
 
                     if (membership != null && user != null)
@@ -207,10 +195,7 @@ namespace Arsenal.Mobile.Controllers
                         TempData["DataUrl"] = "data-url=/";
                         return RedirectToAction("Index", "Account");
                     }
-                    else
-                    {
-                        ModelState.AddModelError("Warn", "当前用户不存在");
-                    }
+                    ModelState.AddModelError("Warn", "当前用户不存在");
                 }
                 catch (Exception ex)
                 {
@@ -245,11 +230,12 @@ namespace Arsenal.Mobile.Controllers
 
                 try
                 {
-                    var membership = MembershipDto.GetMembership(username: User.Identity.Name);
+                    var membership = MembershipDto.GetMembership(User.Identity.Name);
 
                     if (membership != null)
                     {
-                        changePasswordSucceeded = MembershipDto.ChangePassword(membership, model.OldPassword, model.NewPassword);
+                        changePasswordSucceeded = MembershipDto.ChangePassword(membership, model.OldPassword,
+                            model.NewPassword);
 
                         if (changePasswordSucceeded)
                         {
@@ -285,6 +271,7 @@ namespace Arsenal.Mobile.Controllers
         }
 
         #region Status Codes
+
         private static string ErrorCodeToString(MembershipCreateStatus createStatus)
         {
             // See http://go.microsoft.com/fwlink/?LinkID=177550 for
@@ -322,6 +309,7 @@ namespace Arsenal.Mobile.Controllers
                     return "发生未知错误，请联系管理员";
             }
         }
+
         #endregion
     }
 }

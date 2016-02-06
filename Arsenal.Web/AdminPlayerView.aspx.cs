@@ -1,5 +1,4 @@
 ﻿using System;
-
 using Arsenal.Service;
 using Arsenalcn.Core;
 
@@ -9,27 +8,32 @@ namespace Arsenal.Web
     {
         private readonly IRepository repo = new Repository();
 
-        protected void Page_Load(object sender, EventArgs e)
-        {
-            ctrlAdminFieldToolBar.AdminUserName = this.Username;
-
-            if (!IsPostBack)
-            {
-                InitForm();
-            }
-        }
-
         private Guid PlayerGuid
         {
             get
             {
                 if (!string.IsNullOrEmpty(Request.QueryString["PlayerGuid"]))
                 {
-                    try { return new Guid(Request.QueryString["PlayerGuid"]); }
-                    catch { return Guid.Empty; }
+                    try
+                    {
+                        return new Guid(Request.QueryString["PlayerGuid"]);
+                    }
+                    catch
+                    {
+                        return Guid.Empty;
+                    }
                 }
-                else
-                    return Guid.Empty;
+                return Guid.Empty;
+            }
+        }
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            ctrlAdminFieldToolBar.AdminUserName = Username;
+
+            if (!IsPostBack)
+            {
+                InitForm();
             }
         }
 
@@ -59,7 +63,9 @@ namespace Arsenal.Web
                 else
                     tbPrintingName.Text = string.Empty;
 
-                ddlPosition.SelectedValue = !p.Position.Equals(PlayerPositionType.None) ? p.Position.ToString() : string.Empty;
+                ddlPosition.SelectedValue = !p.Position.Equals(PlayerPositionType.None)
+                    ? p.Position.ToString()
+                    : string.Empty;
                 tbSquadNumber.Text = p.SquadNumber.ToString();
                 tbFaceURL.Text = p.FaceURL;
                 tbPhotoURL.Text = p.PhotoURL;
@@ -134,7 +140,7 @@ namespace Arsenal.Web
 
                 if (!string.IsNullOrEmpty(ddlPosition.SelectedValue))
                 {
-                    p.Position = (PlayerPositionType)Enum.Parse(typeof(PlayerPositionType), ddlPosition.SelectedValue);
+                    p.Position = (PlayerPositionType) Enum.Parse(typeof (PlayerPositionType), ddlPosition.SelectedValue);
                 }
                 else
                 {
@@ -149,7 +155,8 @@ namespace Arsenal.Web
                 p.IsLoan = cbLoan.Checked;
 
                 DateTime _birthday;
-                if (!string.IsNullOrEmpty(tbBirthday.Text.Trim()) && DateTime.TryParse(tbBirthday.Text.Trim(), out _birthday))
+                if (!string.IsNullOrEmpty(tbBirthday.Text.Trim()) &&
+                    DateTime.TryParse(tbBirthday.Text.Trim(), out _birthday))
                     p.Birthday = _birthday;
                 else
                     p.Birthday = null;
@@ -166,7 +173,8 @@ namespace Arsenal.Web
                 p.Goals = Convert.ToInt16(tbGoals.Text.Trim());
 
                 DateTime _joinDate;
-                if (!string.IsNullOrEmpty(tbJoinDate.Text.Trim()) && DateTime.TryParse(tbJoinDate.Text.Trim(), out _joinDate))
+                if (!string.IsNullOrEmpty(tbJoinDate.Text.Trim()) &&
+                    DateTime.TryParse(tbJoinDate.Text.Trim(), out _joinDate))
                     p.JoinDate = _joinDate;
                 else
                     p.JoinDate = null;
@@ -181,17 +189,20 @@ namespace Arsenal.Web
                 if (PlayerGuid != Guid.Empty)
                 {
                     repo.Update(p);
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('更新成功');window.location.href = window.location.href", true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                        "alert('更新成功');window.location.href = window.location.href", true);
                 }
                 else
                 {
                     repo.Insert(p);
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('添加成功');window.location.href = 'AdminPlayer.aspx'", true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                        "alert('添加成功');window.location.href = 'AdminPlayer.aspx'", true);
                 }
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}')", ex.Message.ToString()), true);
+                ClientScript.RegisterClientScriptBlock(typeof (string), "failed",
+                    string.Format("alert('{0}')", ex.Message), true);
             }
         }
 
@@ -199,7 +210,7 @@ namespace Arsenal.Web
         {
             if (PlayerGuid != Guid.Empty)
             {
-                Response.Redirect("AdminPlayer.aspx?PlayerGuid=" + PlayerGuid.ToString());
+                Response.Redirect("AdminPlayer.aspx?PlayerGuid=" + PlayerGuid);
             }
             else
             {
@@ -215,7 +226,8 @@ namespace Arsenal.Web
                 {
                     repo.Delete<Player>(PlayerGuid);
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('删除成功');window.location.href='AdminPlayer.aspx'", true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                        "alert('删除成功');window.location.href='AdminPlayer.aspx'", true);
                 }
                 else
                 {
@@ -224,7 +236,7 @@ namespace Arsenal.Web
             }
             catch
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", "alert('删除失败')", true);
+                ClientScript.RegisterClientScriptBlock(typeof (string), "failed", "alert('删除失败')", true);
             }
         }
     }

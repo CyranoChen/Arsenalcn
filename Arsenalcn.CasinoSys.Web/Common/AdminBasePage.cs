@@ -1,5 +1,4 @@
 ﻿using System;
-
 using Arsenalcn.CasinoSys.Entity;
 
 namespace Arsenalcn.CasinoSys.Web.Common

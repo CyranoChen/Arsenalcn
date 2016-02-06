@@ -5,8 +5,8 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script type="text/javascript">
-        $(function () {
-            $("#btnSubmit").click(function () {
+        $(function() {
+            $("#btnSubmit").click(function() {
                 if ($("#formGameBet").valid()) {
                     document.forms["formGameBet"].submit();
                 }
@@ -25,11 +25,11 @@
 }
 @section Footer {
     <div data-role="footer" style="text-align: center">
-        <input type="button" id="btnSubmit" value="提交投注" data-icon="check" />
+        <input type="button" id="btnSubmit" value="提交投注" data-icon="check"/>
     </div>
 }
 <div data-role="content">
-    @using (Html.BeginForm("SingleChoice", "Casino", FormMethod.Post, new { id = "formGameBet" }))
+    @using (Html.BeginForm("SingleChoice", "Casino", FormMethod.Post, new {id = "formGameBet"}))
     {
         <fieldset data-role="controlgroup" data-type="horizontal">
             <legend>投注选项</legend>

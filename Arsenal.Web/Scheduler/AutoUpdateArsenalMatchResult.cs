@@ -1,23 +1,21 @@
 ﻿using System;
 using System.Reflection;
 using System.Threading;
-
 using Arsenalcn.Core;
 using Arsenalcn.Core.Logger;
 using Arsenalcn.Core.Scheduler;
-
 using ArsenalMatch = Arsenal.Service.Match;
 using CasinoMatch = Arsenal.Service.Casino.Match;
 
 namespace Arsenal.Scheduler
 {
-    class AutoUpdateArsenalMatchResult : ISchedule
+    internal class AutoUpdateArsenalMatchResult : ISchedule
     {
         private readonly ILog log = new AppLog();
 
         public void Execute(object state)
         {
-            var logInfo = new LogInfo()
+            var logInfo = new LogInfo
             {
                 MethodInstance = MethodBase.GetCurrentMethod(),
                 ThreadInstance = Thread.CurrentThread
@@ -52,10 +50,7 @@ namespace Arsenal.Scheduler
                                 {
                                     return m.TeamGuid.Equals(x.Away) && m.PlayTime.Equals(x.PlayTime);
                                 }
-                                else
-                                {
-                                    return m.TeamGuid.Equals(x.Home) && m.PlayTime.Equals(x.PlayTime);
-                                }
+                                return m.TeamGuid.Equals(x.Home) && m.PlayTime.Equals(x.PlayTime);
                             });
                         }
 
@@ -76,7 +71,6 @@ namespace Arsenal.Scheduler
                         }
                         else
                         {
-                            continue;
                         }
                     }
                 }

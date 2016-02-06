@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Web.UI.WebControls;
+using Arsenalcn.CasinoSys.Entity;
+using Arsenalcn.CasinoSys.Web.Common;
 using Arsenalcn.Common.Entity;
 
 namespace Arsenalcn.CasinoSys.Web
 {
-    public partial class AdminConfig : Common.AdminBasePage
+    public partial class AdminConfig : AdminBasePage
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -18,7 +20,9 @@ namespace Arsenalcn.CasinoSys.Web
 
         private void BindData()
         {
-            var list = Config.GetConfigs().FindAll(delegate(Config c) { return c.ConfigSystem.Equals(ConfigSystem.AcnCasino); });
+            var list =
+                Config.GetConfigs()
+                    .FindAll(delegate(Config c) { return c.ConfigSystem.Equals(ConfigSystem.AcnCasino); });
 
             gvSysConfig.DataSource = list;
             gvSysConfig.DataBind();
@@ -50,7 +54,7 @@ namespace Arsenalcn.CasinoSys.Web
                 }
                 catch (Exception ex)
                 {
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message}');", true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "failed", $"alert('{ex.Message}');", true);
                 }
             }
 
@@ -79,14 +83,15 @@ namespace Arsenalcn.CasinoSys.Web
             {
                 Config.Cache.RefreshCache();
 
-                Entity.League.Cache.RefreshCache();
-                Entity.Team.Cache.RefreshCache();
+                League.Cache.RefreshCache();
+                Team.Cache.RefreshCache();
 
-                ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('更新全部缓存成功');window.location.href=window.location.href", true);
+                ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                    "alert('更新全部缓存成功');window.location.href=window.location.href", true);
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message}');", true);
+                ClientScript.RegisterClientScriptBlock(typeof (string), "failed", $"alert('{ex.Message}');", true);
             }
         }
     }

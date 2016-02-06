@@ -1,10 +1,11 @@
-﻿using Arsenalcn.Common;
-using System;
+﻿using System;
 using System.Web.UI.WebControls;
+using Arsenalcn.ClubSys.Web.Common;
+using Arsenalcn.Common;
 
 namespace Arsenalcn.ClubSys.Web
 {
-    public partial class AdminClubInfo : Common.AdminBasePage
+    public partial class AdminClubInfo : AdminBasePage
     {
         protected override void OnInit(EventArgs e)
         {
@@ -15,8 +16,7 @@ namespace Arsenalcn.ClubSys.Web
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            ctrlAdminFieldToolBar.AdminUserName = this.username;
-
+            ctrlAdminFieldToolBar.AdminUserName = username;
         }
 
         protected void gvClubInfo_RowEditing(object sender, GridViewEditEventArgs e)

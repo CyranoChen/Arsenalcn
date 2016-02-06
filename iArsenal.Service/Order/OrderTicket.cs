@@ -1,46 +1,52 @@
 ﻿using System;
+using System.Linq;
 using Arsenalcn.Core;
+using AutoMapper;
 
 namespace iArsenal.Service
 {
     public class OrdrTicket : Order
     {
-        public OrdrTicket() { }
-
         public void Init()
         {
             IRepository repo = new Repository();
 
-            var list = repo.Query<OrderItem>(x => x.OrderID == ID && x.IsActive == true)
-                .FindAll(x => Product.Cache.Load(x.ProductGuid) != null);
+            var list = repo.Query<OrderItem>(x => x.OrderID == ID)
+                .FindAll(x => x.IsActive && Product.Cache.Load(x.ProductGuid) != null);
 
-            if (list != null && list.Count > 0)
+            if (list.Any())
             {
                 OrderItem oiBase = null;
 
                 oiBase = list.Find(x => Product.Cache.Load(x.ProductGuid).ProductType.Equals(ProductType.MatchTicket));
                 if (oiBase != null)
                 {
-                    AutoMapper.Mapper.CreateMap<OrderItem, OrdrItmMatchTicket>().AfterMap((s, d) => d.Init());
-                    OIMatchTicket = AutoMapper.Mapper.Map<OrdrItmMatchTicket>(oiBase);
+                    var mapperMatchTicket = new MapperConfiguration(cfg =>
+                        cfg.CreateMap<OrderItem, OrdrItmMatchTicket>().AfterMap((s, d) => d.Init()))
+                        .CreateMapper();
+
+                    OIMatchTicket = mapperMatchTicket.Map<OrdrItmMatchTicket>(oiBase);
                 }
 
                 oiBase = list.Find(x => Product.Cache.Load(x.ProductGuid).ProductType.Equals(ProductType.TicketBeijing));
                 if (oiBase != null)
                 {
-                    AutoMapper.Mapper.CreateMap<OrderItem, OrdrItm2012TicketBeijing>().AfterMap((s, d) => d.Init());
-                    OITicketBeijing = AutoMapper.Mapper.Map<OrdrItm2012TicketBeijing>(oiBase);
+                    var mapperTicketBeijing = new MapperConfiguration(cfg =>
+                        cfg.CreateMap<OrderItem, OrdrItm2012TicketBeijing>().AfterMap((s, d) => d.Init()))
+                        .CreateMapper();
+
+                    OITicketBeijing = mapperTicketBeijing.Map<OrdrItm2012TicketBeijing>(oiBase);
                 }
 
                 // Set the value of URLOrderView;
 
                 if (OIMatchTicket != null)
                 {
-                    base.UrlOrderView = "iArsenalOrderView_MatchTicket.aspx";
+                    UrlOrderView = "iArsenalOrderView_MatchTicket.aspx";
                 }
                 else if (OITicketBeijing != null)
                 {
-                    base.UrlOrderView = "iArsenalOrderView_TicketBeijing.aspx";
+                    UrlOrderView = "iArsenalOrderView_TicketBeijing.aspx";
                 }
                 else
                 {
@@ -52,18 +58,18 @@ namespace iArsenal.Service
 
             var _strWorkflow = "{{ \"StatusType\": \"{0}\", \"StatusInfo\": \"{1}\" }}";
 
-            string[] _workflowInfo = {
-                                      string.Format(_strWorkflow, ((int)OrderStatusType.Draft).ToString(), "未提交"),
-                                      string.Format(_strWorkflow, ((int)OrderStatusType.Submitted).ToString(), "审核中"),
-                                      string.Format(_strWorkflow, ((int)OrderStatusType.Confirmed).ToString(), "已付款"),
-                                      string.Format(_strWorkflow, ((int)OrderStatusType.Ordered).ToString(), "已下单"),
-                                      string.Format(_strWorkflow, ((int)OrderStatusType.Delivered).ToString(), "已出票")
-                                  };
+            string[] _workflowInfo =
+            {
+                string.Format(_strWorkflow, ((int) OrderStatusType.Draft), "未提交"),
+                string.Format(_strWorkflow, ((int) OrderStatusType.Submitted), "审核中"),
+                string.Format(_strWorkflow, ((int) OrderStatusType.Confirmed), "已付款"),
+                string.Format(_strWorkflow, ((int) OrderStatusType.Ordered), "已下单"),
+                string.Format(_strWorkflow, ((int) OrderStatusType.Delivered), "已出票")
+            };
 
-            base.StatusWorkflowInfo = _workflowInfo;
+            StatusWorkflowInfo = _workflowInfo;
 
             #endregion
-
         }
 
         #region Members and Properties
@@ -73,6 +79,5 @@ namespace iArsenal.Service
         public OrdrItm2012TicketBeijing OITicketBeijing { get; set; }
 
         #endregion
-
     }
 }

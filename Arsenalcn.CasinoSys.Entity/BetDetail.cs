@@ -4,8 +4,6 @@ namespace Arsenalcn.CasinoSys.Entity
 {
     public class BetDetail
     {
-        public BetDetail() { }
-
         //public BetDetail(int betDetailID)
         //{
         //    //DataRow dr = DataAccess.Bet.GetBetByID(betID);

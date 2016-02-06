@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.UI.WebControls;
-
 using Arsenal.Service;
 using Arsenalcn.Core;
 
@@ -11,13 +10,34 @@ namespace Arsenal.Web
     public partial class AdminMatchView : AdminPageBase
     {
         private readonly IRepository repo = new Repository();
+
+        private Guid MatchGuid
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(Request.QueryString["MatchGuid"]))
+                {
+                    try
+                    {
+                        return new Guid(Request.QueryString["MatchGuid"]);
+                    }
+                    catch
+                    {
+                        return Guid.Empty;
+                    }
+                }
+                return Guid.Empty;
+            }
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            ctrlAdminFieldToolBar.AdminUserName = this.Username;
+            ctrlAdminFieldToolBar.AdminUserName = Username;
 
             if (!IsPostBack)
             {
                 #region Bind ddlLeague
+
                 var list = League.Cache.LeagueList;
 
                 ddlLeague.DataSource = list;
@@ -26,23 +46,10 @@ namespace Arsenal.Web
                 ddlLeague.DataBind();
 
                 ddlLeague.Items.Insert(0, new ListItem("--请选择比赛分类--", string.Empty));
+
                 #endregion
 
                 InitForm();
-            }
-        }
-
-        private Guid MatchGuid
-        {
-            get
-            {
-                if (!string.IsNullOrEmpty(Request.QueryString["MatchGuid"]))
-                {
-                    try { return new Guid(Request.QueryString["MatchGuid"]); }
-                    catch { return Guid.Empty; }
-                }
-                else
-                    return Guid.Empty;
             }
         }
 
@@ -96,9 +103,9 @@ namespace Arsenal.Web
                 else
                     tbGroupGuid.Text = string.Empty;
 
-                tbReportImageURL.Text = m.ReportImageURL.ToString();
-                tbReportURL.Text = m.ReportURL.ToString();
-                tbTopicURL.Text = m.TopicURL.ToString();
+                tbReportImageURL.Text = m.ReportImageURL;
+                tbReportURL.Text = m.ReportURL;
+                tbTopicURL.Text = m.TopicURL;
                 tbRemark.Text = m.Remark;
             }
             else
@@ -175,17 +182,20 @@ namespace Arsenal.Web
                 if (MatchGuid != Guid.Empty)
                 {
                     repo.Update(m);
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('更新成功');window.location.href = window.location.href", true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                        "alert('更新成功');window.location.href = window.location.href", true);
                 }
                 else
                 {
                     repo.Insert(m);
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('添加成功');window.location.href = 'AdminMatch.aspx'", true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                        "alert('添加成功');window.location.href = 'AdminMatch.aspx'", true);
                 }
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}')", ex.Message.ToString()), true);
+                ClientScript.RegisterClientScriptBlock(typeof (string), "failed",
+                    string.Format("alert('{0}')", ex.Message), true);
             }
         }
 
@@ -193,7 +203,7 @@ namespace Arsenal.Web
         {
             if (MatchGuid != Guid.Empty)
             {
-                Response.Redirect("AdminMatch.aspx?MatchGuid=" + MatchGuid.ToString());
+                Response.Redirect("AdminMatch.aspx?MatchGuid=" + MatchGuid);
             }
             else
             {
@@ -209,7 +219,8 @@ namespace Arsenal.Web
                 {
                     repo.Delete<Match>(MatchGuid);
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('删除成功');window.location.href='AdminMatch.aspx'", true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                        "alert('删除成功');window.location.href='AdminMatch.aspx'", true);
                 }
                 else
                 {
@@ -218,7 +229,7 @@ namespace Arsenal.Web
             }
             catch
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", "alert('删除失败')", true);
+                ClientScript.RegisterClientScriptBlock(typeof (string), "failed", "alert('删除失败')", true);
             }
         }
 

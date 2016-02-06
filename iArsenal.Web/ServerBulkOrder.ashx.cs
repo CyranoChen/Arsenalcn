@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Web;
 using System.Web.Script.Serialization;
-
-using iArsenal.Service;
 using Arsenalcn.Core;
+using iArsenal.Service;
 
 namespace iArsenal.Web
 {
@@ -43,33 +42,26 @@ namespace iArsenal.Web
                                         repo.Update(o);
 
                                         countSucceed++;
-                                        continue;
                                     }
                                     else
                                     {
                                         countFailed++;
-                                        continue;
                                     }
                                 }
                                 catch
                                 {
                                     countFailed++;
-                                    continue;
                                 }
                             }
-                            else
-                            {
-                                countFailed++;
-                                continue;
-                            }
+                            countFailed++;
                         }
 
                         var returnObj = new
                         {
                             result = "success",
                             countTotal = arrayOrderIDs.Length,
-                            countSucceed = countSucceed,
-                            countFailed = countFailed
+                            countSucceed,
+                            countFailed
                         };
 
                         var jsonSerializer = new JavaScriptSerializer();
@@ -96,10 +88,7 @@ namespace iArsenal.Web
 
         public bool IsReusable
         {
-            get
-            {
-                return false;
-            }
+            get { return false; }
         }
     }
 }

@@ -1,23 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-
-using Arsenalcn.ClubSys.Service;
 using Arsenalcn.ClubSys.Entity;
-
-using Discuz.Entity;
+using Arsenalcn.ClubSys.Service;
+using Arsenalcn.ClubSys.Web.Common;
 using Discuz.Forum;
+using UserVideo = Arsenalcn.ClubSys.Entity.UserVideo;
 
 namespace Arsenalcn.ClubSys.Web
 {
-    public partial class MyPlayerProfile : Common.BasePage
+    public partial class MyPlayerProfile : BasePage
     {
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-
-            AnonymousRedirect = true;
-        }
-
         public int ProfileUserID
         {
             get
@@ -28,11 +19,9 @@ namespace Arsenalcn.ClubSys.Web
 
                     if (int.TryParse(Request.QueryString["UserID"], out profileUserID))
                         return profileUserID;
-                    else
-                        return this.userid;
+                    return userid;
                 }
-                else
-                    return this.userid;
+                return userid;
             }
         }
 
@@ -40,28 +29,33 @@ namespace Arsenalcn.ClubSys.Web
         {
             get
             {
-                if (ProfileUserID == this.userid)
-                    return this.username;
-                else
-                {
-                    var sUser = AdminUsers.GetShortUserInfo(ProfileUserID);
-                    return sUser.Username.Trim();
-                }
+                if (ProfileUserID == userid)
+                    return username;
+                var sUser = Users.GetShortUserInfo(ProfileUserID);
+                return sUser.Username.Trim();
             }
+        }
+
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+
+            AnonymousRedirect = true;
         }
 
         protected void Page_Load(object sender, EventArgs e)
         {
             #region SetControlProperty
-            ctrlLeftPanel.UserID = this.userid;
-            ctrlLeftPanel.UserName = this.username;
-            ctrlLeftPanel.UserKey = this.userkey;
 
-            ctrlFieldToolBar.UserID = this.userid;
-            ctrlFieldToolBar.UserName = this.username;
+            ctrlLeftPanel.UserID = userid;
+            ctrlLeftPanel.UserName = username;
+            ctrlLeftPanel.UserKey = userkey;
 
-            ctrlPlayerHeader.UserID = this.userid;
-            ctrlPlayerHeader.ProfileUserID = this.ProfileUserID;
+            ctrlFieldToolBar.UserID = userid;
+            ctrlFieldToolBar.UserName = username;
+
+            ctrlPlayerHeader.UserID = userid;
+            ctrlPlayerHeader.ProfileUserID = ProfileUserID;
 
             #endregion
 
@@ -72,8 +66,8 @@ namespace Arsenalcn.ClubSys.Web
 
             var queryStrUserID = string.Empty;
 
-            if (ProfileUserID != this.userid)
-                queryStrUserID = "&userid=" + ProfileUserID.ToString();
+            if (ProfileUserID != userid)
+                queryStrUserID = "&userid=" + ProfileUserID;
 
             //btnVideoActive.OnClientClick = string.Format("window.location.href='MyCollection.aspx?type=Video{0}';", queryStrUserID);
             //btnCardActive.OnClientClick = string.Format("window.location.href='MyCollection.aspx?type=Card{0}';", queryStrUserID);
@@ -81,7 +75,7 @@ namespace Arsenalcn.ClubSys.Web
             btnCardActive.PostBackUrl = $"MyCollection.aspx?type=Card{queryStrUserID}";
 
             //DataTable dtVideo = Service.UserVideo.GetUserVideo(ProfileUserID);
-            lblVideoActiveCount.Text = Entity.UserVideo.GetUserVideosByUserID(ProfileUserID).Count.ToString();
+            lblVideoActiveCount.Text = UserVideo.GetUserVideosByUserID(ProfileUserID).Count.ToString();
 
             var items = PlayerStrip.GetMyNumbers(ProfileUserID);
             items.RemoveAll(delegate(Card un) { return un.ArsenalPlayerGuid.HasValue; });

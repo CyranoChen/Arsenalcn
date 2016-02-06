@@ -1,10 +1,12 @@
 ﻿using System;
-
+using Arsenalcn.CasinoSys.Entity;
+using Arsenalcn.CasinoSys.Web.Common;
+using Arsenalcn.CasinoSys.Web.Control;
 using Discuz.Forum;
 
 namespace Arsenalcn.CasinoSys.Web
 {
-    public partial class MyGambler : Common.BasePage
+    public partial class MyGambler : BasePage
     {
         protected override void OnInit(EventArgs e)
         {
@@ -22,7 +24,7 @@ namespace Arsenalcn.CasinoSys.Web
 
             ctrlFieldTooBar.UserId = userid;
 
-            ctrlMenuTabBar.CurrentMenu = Control.CasinoMenuType.CasinoPortal;
+            ctrlMenuTabBar.CurrentMenu = CasinoMenuType.CasinoPortal;
 
             ctrlGamblerHeader.UserId = userid;
             ctrlGamblerHeader.UserName = username;
@@ -38,7 +40,7 @@ namespace Arsenalcn.CasinoSys.Web
 
             //int maxCash = (int)(qsb / (1 + Entity.ConfigGlobal.ExchangeFee) * Entity.ConfigGlobal.ExchangeRate);
 
-            var maxCash = (int)(qsb * Entity.ConfigGlobal.ExchangeRate);
+            var maxCash = (int) (qsb*ConfigGlobal.ExchangeRate);
             ltrlMaxCash.Text = maxCash.ToString("N0");
 
             if (maxCash >= 10)
@@ -46,7 +48,7 @@ namespace Arsenalcn.CasinoSys.Web
             else
                 rvToCash.MaximumValue = "10";
 
-            var maxQsb = (int)(CurrentGambler.Cash * (1 - Entity.ConfigGlobal.ExchangeFee) / Entity.ConfigGlobal.ExchangeRate);
+            var maxQsb = (int) (CurrentGambler.Cash*(1 - ConfigGlobal.ExchangeFee)/ConfigGlobal.ExchangeRate);
             ltrlMaxQSB.Text = maxQsb.ToString("N0");
 
             if (maxQsb >= 1)
@@ -60,10 +62,10 @@ namespace Arsenalcn.CasinoSys.Web
             try
             {
                 // Remove ExchangeFee
-                
+
                 //int qsb = (int)(Convert.ToInt32(tbCash.Text) * (1 + Entity.ConfigGlobal.ExchangeFee) / Entity.ConfigGlobal.ExchangeRate);
 
-                var qsb = (int)(Convert.ToInt32(tbCash.Text) / Entity.ConfigGlobal.ExchangeRate);
+                var qsb = Convert.ToInt32(tbCash.Text)/ConfigGlobal.ExchangeRate;
 
                 if (qsb > Users.GetUserExtCredits(userid, 2) || qsb <= 0)
                     throw new Exception("Insufficient Founds");
@@ -71,17 +73,18 @@ namespace Arsenalcn.CasinoSys.Web
                 CurrentGambler.Cash += Convert.ToInt32(tbCash.Text.Trim());
                 CurrentGambler.Update(null);
 
-                var banker = new Entity.Banker(Entity.Banker.DefaultBankerID);
-                banker.Cash += qsb * Entity.ConfigGlobal.ExchangeFee * Entity.ConfigGlobal.ExchangeRate;
+                var banker = new Banker(Banker.DefaultBankerID);
+                banker.Cash += qsb*ConfigGlobal.ExchangeFee*ConfigGlobal.ExchangeRate;
                 banker.Update(null);
 
                 Users.UpdateUserExtCredits(userid, 2, -qsb);
 
-                ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('充值博彩币成功');window.location.href = window.location.href;", true);
+                ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                    "alert('充值博彩币成功');window.location.href = window.location.href;", true);
             }
             catch
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", "alert('充值失败');", true);
+                ClientScript.RegisterClientScriptBlock(typeof (string), "failed", "alert('充值失败');", true);
             }
         }
 
@@ -89,7 +92,7 @@ namespace Arsenalcn.CasinoSys.Web
         {
             try
             {
-                var cash = (int)(Convert.ToInt32(tbQSB.Text) / (1 - Entity.ConfigGlobal.ExchangeFee) * Entity.ConfigGlobal.ExchangeRate);
+                var cash = (int) (Convert.ToInt32(tbQSB.Text)/(1 - ConfigGlobal.ExchangeFee)*ConfigGlobal.ExchangeRate);
 
                 if (cash > CurrentGambler.Cash || cash <= 0)
                     throw new Exception("Insufficient Founds");
@@ -97,16 +100,17 @@ namespace Arsenalcn.CasinoSys.Web
                 CurrentGambler.Cash -= cash;
                 CurrentGambler.Update(null);
 
-                var banker = new Entity.Banker(Entity.Banker.DefaultBankerID);
-                banker.Cash += cash * Entity.ConfigGlobal.ExchangeFee;
+                var banker = new Banker(Banker.DefaultBankerID);
+                banker.Cash += cash*ConfigGlobal.ExchangeFee;
                 banker.Update(null);
 
                 Users.UpdateUserExtCredits(userid, 2, Convert.ToInt32(tbQSB.Text));
-                ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('套现枪手币成功');window.location.href = window.location.href;", true);
+                ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                    "alert('套现枪手币成功');window.location.href = window.location.href;", true);
             }
             catch
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", "alert('套现失败');", true);
+                ClientScript.RegisterClientScriptBlock(typeof (string), "failed", "alert('套现失败');", true);
             }
         }
     }

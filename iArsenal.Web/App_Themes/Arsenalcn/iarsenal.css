@@ -14,12 +14,11 @@
 }
 
 /* ASC MainInfo */
-.ASC_MainInfo {
-    background: #f7f7f7 url(images/listbg.jpg) no-repeat top left;
-}
 
-    .ASC_MainInfo em {
-        font-weight: bold;
-        font-family: Georgia, Tahoma, Verdana;
-        font-size: 13px;
-    }
+.ASC_MainInfo { background: #f7f7f7 url(images/listbg.jpg) no-repeat top left; }
+
+.ASC_MainInfo em {
+    font-family: Georgia, Tahoma, Verdana;
+    font-size: 13px;
+    font-weight: bold;
+}

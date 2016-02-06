@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web.UI.WebControls;
-
 using Arsenalcn.Core;
 using iArsenal.Service;
 using ArsenalPlayer = iArsenal.Service.Arsenal.Player;
@@ -13,6 +11,99 @@ namespace iArsenal.Web
     public partial class iArsenalOrder_ReplicaKit : MemberPageBase
     {
         private readonly IRepository repo = new Repository();
+
+        private int OrderID
+        {
+            get
+            {
+                int _orderID;
+                if (!string.IsNullOrEmpty(Request.QueryString["OrderID"]) &&
+                    int.TryParse(Request.QueryString["OrderID"], out _orderID))
+                {
+                    return _orderID;
+                }
+                return int.MinValue;
+            }
+        }
+
+        private ProductType CurrProductType
+        {
+            get
+            {
+                var _pt = ProductType.ReplicaKitHome;
+
+                # region Check whether home or away replicakit
+
+                if (OrderID > 0)
+                {
+                    var o = (OrdrReplicaKit)Order.Select(OrderID);
+
+                    OrderItem oi_ReplicaKit = null;
+
+                    if (o.OIReplicaKitAway != null && o.OIReplicaKitAway.IsActive)
+                    {
+                        oi_ReplicaKit = o.OIReplicaKitAway;
+                    }
+                    else if (o.OIReplicaKitCup != null && o.OIReplicaKitCup.IsActive)
+                    {
+                        oi_ReplicaKit = o.OIReplicaKitCup;
+                    }
+                    else if (o.OIReplicaKitHome != null && o.OIReplicaKitHome.IsActive)
+                    {
+                        oi_ReplicaKit = o.OIReplicaKitHome;
+                    }
+                    else
+                    {
+                        throw new Exception("此订单未购买球衣商品");
+                    }
+
+                    _pt = Product.Cache.Load(oi_ReplicaKit.ProductGuid).ProductType;
+                }
+                else
+                {
+                    if (!string.IsNullOrEmpty(Request.QueryString["Type"]) &&
+                        Request.QueryString["Type"].Equals("Away", StringComparison.OrdinalIgnoreCase))
+                    {
+                        _pt = ProductType.ReplicaKitAway;
+                    }
+                    else if (!string.IsNullOrEmpty(Request.QueryString["Type"]) &&
+                             Request.QueryString["Type"].Equals("Cup", StringComparison.OrdinalIgnoreCase))
+                    {
+                        _pt = ProductType.ReplicaKitCup;
+                    }
+                    else
+                    {
+                        _pt = ProductType.ReplicaKitHome;
+                    }
+                }
+
+                #endregion
+
+                if (_pt.Equals(ProductType.ReplicaKitAway))
+                {
+                    Page.Title = "阿森纳2015/16赛季客场PUMA球衣许愿单";
+                    hlReplicaKitPage.NavigateUrl =
+                        "http://arsenaldirect.arsenal.com/puma-kit/puma-away-kit/icat/pumaaway";
+                    ltrlBannerImage.Text = $"<img src=\"uploadfiles/banner/banner20150714.png\" alt=\"{Page.Title}\" />";
+                }
+                else if (_pt.Equals(ProductType.ReplicaKitCup))
+                {
+                    Page.Title = "阿森纳2015/16赛季杯赛PUMA球衣许愿单";
+                    hlReplicaKitPage.NavigateUrl = "http://arsenaldirect.arsenal.com/puma-kit/puma-cup-kit/icat/pumacup";
+                    ltrlBannerImage.Text = $"<img src=\"uploadfiles/banner/banner20150813.png\" alt=\"{Page.Title}\" />";
+                }
+                else
+                {
+                    Page.Title = "阿森纳2015/16赛季主场PUMA球衣许愿单";
+                    hlReplicaKitPage.NavigateUrl =
+                        "http://arsenaldirect.arsenal.com/puma-kit/puma-home-kit/icat/pumahome";
+                    ltrlBannerImage.Text = $"<img src=\"uploadfiles/banner/banner20150715.png\" alt=\"{Page.Title}\" />";
+                }
+
+                return _pt;
+            }
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -21,7 +112,8 @@ namespace iArsenal.Web
 
                 try
                 {
-                    var list = Arsenal_Player.Cache.PlayerList.FindAll(p => !p.IsLegend && !p.IsLoan && p.SquadNumber > 0);
+                    var list =
+                        Arsenal_Player.Cache.PlayerList.FindAll(p => !p.IsLegend && !p.IsLoan && p.SquadNumber > 0);
 
                     if (list != null && list.Count > 0)
                     {
@@ -47,99 +139,12 @@ namespace iArsenal.Web
             }
         }
 
-        private int OrderID
-        {
-            get
-            {
-                int _orderID;
-                if (!string.IsNullOrEmpty(Request.QueryString["OrderID"]) && int.TryParse(Request.QueryString["OrderID"], out _orderID))
-                {
-                    return _orderID;
-                }
-                else
-                    return int.MinValue;
-            }
-        }
-
-        private ProductType CurrProductType
-        {
-            get
-            {
-                var _pt = ProductType.ReplicaKitHome;
-
-                # region Check whether home or away replicakit
-
-                if (OrderID > 0)
-                {
-                    var o = (OrdrReplicaKit)Order.Select(OrderID);
-
-                    OrderItem oi_ReplicaKit = null;
-
-                    if (o.OIReplicaKitAway != null && o.OIReplicaKitAway.IsActive)
-                    {
-                        oi_ReplicaKit = (OrdrItmReplicaKitAway)o.OIReplicaKitAway;
-                    }
-                    else if (o.OIReplicaKitCup != null && o.OIReplicaKitCup.IsActive)
-                    {
-                        oi_ReplicaKit = (OrdrItmReplicaKitCup)o.OIReplicaKitCup;
-                    }
-                    else if (o.OIReplicaKitHome != null && o.OIReplicaKitHome.IsActive)
-                    {
-                        oi_ReplicaKit = (OrdrItmReplicaKitHome)o.OIReplicaKitHome;
-                    }
-                    else
-                    {
-                        throw new Exception("此订单未购买球衣商品");
-                    }
-
-                    _pt = Product.Cache.Load(oi_ReplicaKit.ProductGuid).ProductType;
-                }
-                else
-                {
-                    if (!string.IsNullOrEmpty(Request.QueryString["Type"]) && Request.QueryString["Type"].Equals("Away", StringComparison.OrdinalIgnoreCase))
-                    {
-                        _pt = ProductType.ReplicaKitAway;
-                    }
-                    else if (!string.IsNullOrEmpty(Request.QueryString["Type"]) && Request.QueryString["Type"].Equals("Cup", StringComparison.OrdinalIgnoreCase))
-                    {
-                        _pt = ProductType.ReplicaKitCup;
-                    }
-                    else
-                    {
-                        _pt = ProductType.ReplicaKitHome;
-                    }
-                }
-                #endregion
-
-                if (_pt.Equals(ProductType.ReplicaKitAway))
-                {
-                    Page.Title = "阿森纳2015/16赛季客场PUMA球衣许愿单";
-                    hlReplicaKitPage.NavigateUrl = "http://arsenaldirect.arsenal.com/puma-kit/puma-away-kit/icat/pumaaway";
-                    ltrlBannerImage.Text = $"<img src=\"uploadfiles/banner/banner20150714.png\" alt=\"{Page.Title}\" />";
-                }
-                else if (_pt.Equals(ProductType.ReplicaKitCup))
-                {
-                    Page.Title = "阿森纳2015/16赛季杯赛PUMA球衣许愿单";
-                    hlReplicaKitPage.NavigateUrl = "http://arsenaldirect.arsenal.com/puma-kit/puma-cup-kit/icat/pumacup";
-                    ltrlBannerImage.Text = $"<img src=\"uploadfiles/banner/banner20150813.png\" alt=\"{Page.Title}\" />";
-                }
-                else
-                {
-                    Page.Title = "阿森纳2015/16赛季主场PUMA球衣许愿单";
-                    hlReplicaKitPage.NavigateUrl = "http://arsenaldirect.arsenal.com/puma-kit/puma-home-kit/icat/pumahome";
-                    ltrlBannerImage.Text = $"<img src=\"uploadfiles/banner/banner20150715.png\" alt=\"{Page.Title}\" />";
-                }
-
-                return _pt;
-            }
-        }
-
         private void InitForm()
         {
             try
             {
-                lblMemberName.Text = $"<b>{this.MemberName}</b> (<em>NO.{this.MID.ToString()}</em>)";
-                lblMemberACNInfo.Text = $"<b>{this.Username}</b> (<em>ID.{this.UID.ToString()}</em>)";
+                lblMemberName.Text = $"<b>{MemberName}</b> (<em>NO.{MID}</em>)";
+                lblMemberACNInfo.Text = $"<b>{Username}</b> (<em>ID.{UID}</em>)";
 
                 var _list = Product.Cache.ProductList;
 
@@ -171,22 +176,25 @@ namespace iArsenal.Web
                 {
                     var o = (OrdrReplicaKit)Order.Select(OrderID);
 
-                    if (o == null || !o.IsActive) { throw new Exception("此订单无效"); }
+                    if (o == null || !o.IsActive)
+                    {
+                        throw new Exception("此订单无效");
+                    }
 
                     // Whether Home or Away ReplicaKit
                     OrderItem oiReplicaKit = null;
 
                     if (CurrProductType.Equals(ProductType.ReplicaKitAway))
                     {
-                        oiReplicaKit = (OrdrItmReplicaKitAway)o.OIReplicaKitAway;
+                        oiReplicaKit = o.OIReplicaKitAway;
                     }
                     else if (o.OIReplicaKitCup != null && o.OIReplicaKitCup.IsActive)
                     {
-                        oiReplicaKit = (OrdrItmReplicaKitCup)o.OIReplicaKitCup;
+                        oiReplicaKit = o.OIReplicaKitCup;
                     }
                     else if (CurrProductType.Equals(ProductType.ReplicaKitHome))
                     {
-                        oiReplicaKit = (OrdrItmReplicaKitHome)o.OIReplicaKitHome;
+                        oiReplicaKit = o.OIReplicaKitHome;
                     }
                     else
                     {
@@ -195,7 +203,7 @@ namespace iArsenal.Web
 
                     if (ConfigGlobal.IsPluginAdmin(UID) || o.MemberID.Equals(MID))
                     {
-                        lblMemberName.Text = $"<b>{o.MemberName}</b> (<em>NO.{o.MemberID.ToString()}</em>)";
+                        lblMemberName.Text = $"<b>{o.MemberName}</b> (<em>NO.{o.MemberID}</em>)";
 
                         var m = repo.Single<Member>(o.MemberID);
 
@@ -203,10 +211,7 @@ namespace iArsenal.Web
                         {
                             throw new Exception("无此会员信息");
                         }
-                        else
-                        {
-                            lblMemberACNInfo.Text = $"<b>{m.AcnName}</b> (<em>ID.{m.AcnID.ToString()}</em>)";
-                        }
+                        lblMemberACNInfo.Text = $"<b>{m.AcnName}</b> (<em>ID.{m.AcnID}</em>)";
                     }
                     else
                     {
@@ -247,14 +252,16 @@ namespace iArsenal.Web
 
                     var oiNumber = o.OIPlayerNumber;
                     var oiName = o.OIPlayerName;
-                    var oiFont = o.OIArsenalFont; ;
+                    var oiFont = o.OIArsenalFont;
+                    ;
                     var oiPremierPatch = o.OIPremiershipPatch;
                     var oiChampionPatch = o.OIChampionshipPatch;
 
                     var p = Product.Cache.Load(oiReplicaKit.ProductGuid);
 
                     ddlReplicaKit.Items.Insert(0, new ListItem(
-                        $"({p.Code}) {p.DisplayName} - 售价{oiReplicaKit.UnitPrice.ToString("f2")}元", oiReplicaKit.ProductGuid.ToString()));
+                        $"({p.Code}) {p.DisplayName} - 售价{oiReplicaKit.UnitPrice.ToString("f2")}元",
+                        oiReplicaKit.ProductGuid.ToString()));
                     tbOrderItemSize.Text = oiReplicaKit.Size;
                     hlReplicaKitPage.Visible = false;
 
@@ -277,8 +284,15 @@ namespace iArsenal.Web
 
                         if (oiNumber.Remark.Equals(oiName.Remark, StringComparison.OrdinalIgnoreCase))
                         {
-                            try { _playerGuid = new Guid(oiNumber.Remark); }
-                            catch { _playerGuid = Guid.Empty; };
+                            try
+                            {
+                                _playerGuid = new Guid(oiNumber.Remark);
+                            }
+                            catch
+                            {
+                                _playerGuid = Guid.Empty;
+                            }
+                            ;
                         }
                         else
                         {
@@ -292,7 +306,7 @@ namespace iArsenal.Web
                             ddlPlayerDetail.SelectedValue = player.ID.ToString();
                         }
                         else if (oiNumber.Remark.Equals("custom", StringComparison.OrdinalIgnoreCase)
-                            && oiName.Remark.Equals("custom", StringComparison.OrdinalIgnoreCase))
+                                 && oiName.Remark.Equals("custom", StringComparison.OrdinalIgnoreCase))
                         {
                             // Custom Player Number & Name Printing
                             ddlPlayerDetail.SelectedValue = "custom";
@@ -307,8 +321,8 @@ namespace iArsenal.Web
                             {
                                 player = Arsenal_Player.Cache.PlayerList.Find(ap =>
                                     (ap.PrintingName.Equals(oiName.Size, StringComparison.OrdinalIgnoreCase)
-                                    || ap.LastName.Equals(oiName.Size, StringComparison.OrdinalIgnoreCase)
-                                    || ap.FirstName.Equals(oiName.Size, StringComparison.OrdinalIgnoreCase))
+                                     || ap.LastName.Equals(oiName.Size, StringComparison.OrdinalIgnoreCase)
+                                     || ap.FirstName.Equals(oiName.Size, StringComparison.OrdinalIgnoreCase))
                                     && ap.SquadNumber.Equals(Convert.ToInt16(oiNumber.Size)));
 
                                 if (player != null)
@@ -357,7 +371,7 @@ namespace iArsenal.Web
                 else
                 {
                     //Fill Member draft information into textbox
-                    var m = repo.Single<Member>(this.MID);
+                    var m = repo.Single<Member>(MID);
 
                     tbOrderMobile.Text = m.Mobile;
                     tbAlipay.Text = m.TaobaoName;
@@ -365,7 +379,7 @@ namespace iArsenal.Web
 
                     var list = Product.Cache.Load(CurrProductType).FindAll(x => x.IsActive).OrderBy(x => x.Code).ToList();
 
-                    if (list != null && list.Count() > 0)
+                    if (list.Any())
                     {
                         ddlReplicaKit.DataSource = list;
                         ddlReplicaKit.DataValueField = "ID";
@@ -382,7 +396,7 @@ namespace iArsenal.Web
             catch (Exception ex)
             {
                 ClientScript.RegisterClientScriptBlock(typeof(string), "failed",
-                    $"alert('{ex.Message.ToString()}');window.location.href = 'Default.aspx'", true);
+                    $"alert('{ex.Message}');window.location.href = 'Default.aspx'", true);
             }
         }
 
@@ -396,9 +410,11 @@ namespace iArsenal.Web
                 try
                 {
                     if (string.IsNullOrEmpty(ddlReplicaKit.SelectedValue))
-                    { throw new Exception("请选择需要订购的球衣"); }
+                    {
+                        throw new Exception("请选择需要订购的球衣");
+                    }
 
-                    var m = repo.Single<Member>(this.MID);
+                    var m = repo.Single<Member>(MID);
 
                     //New Order
                     var o = new Order();
@@ -414,7 +430,8 @@ namespace iArsenal.Web
 
                     if (rblOrderPayment.SelectedValue.Equals("Bank", StringComparison.OrdinalIgnoreCase))
                     {
-                        o.Payment = "{" + rblOrderPayment.SelectedValue + "|" + tbBankName.Text.Trim() + "|" + tbBankAccount.Text.Trim() + "}";
+                        o.Payment = "{" + rblOrderPayment.SelectedValue + "|" + tbBankName.Text.Trim() + "|" +
+                                    tbBankAccount.Text.Trim() + "}";
                     }
                     else
                     {
@@ -508,7 +525,8 @@ namespace iArsenal.Web
                         {
                             // Custom Printing
 
-                            if (string.IsNullOrEmpty(tbPlayerNumber.Text.Trim()) || string.IsNullOrEmpty(tbPlayerName.Text.Trim()))
+                            if (string.IsNullOrEmpty(tbPlayerNumber.Text.Trim()) ||
+                                string.IsNullOrEmpty(tbPlayerName.Text.Trim()))
                                 throw new Exception("请填写自定义印字印号");
 
                             // New Order Item for Arsenal Font
@@ -659,13 +677,15 @@ namespace iArsenal.Web
 
                     trans.Commit();
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", string.Format("alert('订单({0})保存成功');window.location.href = 'ServerOrderView.ashx?OrderID={0}'", _newID.ToString()), true);
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
+                        string.Format("alert('订单({0})保存成功');window.location.href = 'ServerOrderView.ashx?OrderID={0}'",
+                            _newID), true);
                 }
                 catch (Exception ex)
                 {
                     trans.Rollback();
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message.ToString()}')", true);
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message}')", true);
                 }
 
                 //conn.Close();
@@ -690,7 +710,7 @@ namespace iArsenal.Web
 
                 if (p != null)
                 {
-                    li.Text = string.Format("{1} ({0})", p.SquadNumber.ToString(), GetArsenalPlayerPrintingName(p).ToUpper());
+                    li.Text = string.Format("{1} ({0})", p.SquadNumber, GetArsenalPlayerPrintingName(p).ToUpper());
                     //li.Value = string.Format("{0}|{1}", p.SquadNumber.ToString(), p.LastName);
                 }
             }
@@ -715,7 +735,6 @@ namespace iArsenal.Web
                     else if (!string.IsNullOrEmpty(ap.FirstName))
                     {
                         _strPrintingName = ap.FirstName;
-
                     }
                     else
                     {
@@ -725,10 +744,7 @@ namespace iArsenal.Web
 
                 return _strPrintingName;
             }
-            else
-            {
-                return null;
-            }
+            return null;
         }
     }
 }

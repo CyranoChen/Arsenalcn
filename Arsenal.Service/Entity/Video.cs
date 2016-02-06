@@ -1,32 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-
 using Arsenalcn.Core;
+using DataReaderMapper;
 
 namespace Arsenal.Service
 {
     [DbSchema("Arsenal_Video", Key = "VideoGuid", Sort = "GoalYear DESC, GoalRank DESC, TeamworkRank DESC")]
     public class Video : Entity<Guid>
     {
-        public Video() : base() { }
-
         public static void CreateMap()
         {
-            var map = AutoMapper.Mapper.CreateMap<IDataReader, Video>();
+            var map = Mapper.CreateMap<IDataReader, Video>();
 
-            map.ForMember(d => d.ID, opt => opt.MapFrom(s => (Guid)s.GetValue("VideoGuid")));
+            map.ForMember(d => d.ID, opt => opt.MapFrom(s => (Guid) s.GetValue("VideoGuid")));
             //map.ForMember(d => d.VideoType, opt => opt.MapFrom(s =>
             //    (VideoFileType)Enum.Parse(typeof(VideoFileType), s.GetValue("VideoType").ToString())));
 
             map.ForMember(d => d.VideoFilePath, opt => opt.MapFrom(s =>
                 string.Format("{0}{1}.{2}", ConfigGlobal.ArsenalVideoUrl,
-                s.GetValue("VideoGuid").ToString(),
-                ((VideoFileType)Enum.Parse(typeof(VideoFileType), s.GetValue("VideoType").ToString())).ToString())));
+                    s.GetValue("VideoGuid").ToString(),
+                    ((VideoFileType) Enum.Parse(typeof (VideoFileType), s.GetValue("VideoType").ToString())).ToString())));
         }
 
         public static class Cache
         {
+            public static List<Video> VideoList;
+            public static List<Video> VideoList_Legend;
+
+            public static IEnumerable<string> ColList_GoalYear;
+
             static Cache()
             {
                 InitCache();
@@ -54,73 +57,53 @@ namespace Arsenal.Service
             {
                 return VideoList.Find(x => x.ID.Equals(guid));
             }
-
-            public static List<Video> VideoList;
-            public static List<Video> VideoList_Legend;
-
-            public static IEnumerable<string> ColList_GoalYear;
         }
 
         #region Members and Properties
 
         [DbColumn("FileName")]
-        public string FileName
-        { get; set; }
+        public string FileName { get; set; }
 
         [DbColumn("ArsenalMatchGuid")]
-        public Guid? ArsenalMatchGuid
-        { get; set; }
+        public Guid? ArsenalMatchGuid { get; set; }
 
         [DbColumn("GoalPLayerGuid")]
-        public Guid? GoalPlayerGuid
-        { get; set; }
+        public Guid? GoalPlayerGuid { get; set; }
 
         [DbColumn("GoalPlayerName")]
-        public string GoalPlayerName
-        { get; set; }
+        public string GoalPlayerName { get; set; }
 
         [DbColumn("AssistPlayerGuid")]
-        public Guid? AssistPlayerGuid
-        { get; set; }
+        public Guid? AssistPlayerGuid { get; set; }
 
         [DbColumn("AssistPlayerName")]
-        public string AssistPlayerName
-        { get; set; }
+        public string AssistPlayerName { get; set; }
 
         [DbColumn("GoalRank")]
-        public string GoalRank
-        { get; set; }
+        public string GoalRank { get; set; }
 
         [DbColumn("TeamworkRank")]
-        public string TeamworkRank
-        { get; set; }
+        public string TeamworkRank { get; set; }
 
         [DbColumn("VideoType")]
-        public VideoFileType VideoType
-        { get; set; }
+        public VideoFileType VideoType { get; set; }
 
         [DbColumn("VideoLength")]
-        public int VideoLength
-        { get; set; }
+        public int VideoLength { get; set; }
 
         [DbColumn("VideoWidth")]
-        public int VideoWidth
-        { get; set; }
+        public int VideoWidth { get; set; }
 
         [DbColumn("VideoHeight")]
-        public int VideoHeight
-        { get; set; }
+        public int VideoHeight { get; set; }
 
         [DbColumn("GoalYear")]
-        public string GoalYear
-        { get; set; }
+        public string GoalYear { get; set; }
 
         [DbColumn("Opponent")]
-        public string Opponent
-        { get; set; }
+        public string Opponent { get; set; }
 
-        public string VideoFilePath
-        { get; set; }
+        public string VideoFilePath { get; set; }
 
         #endregion
     }

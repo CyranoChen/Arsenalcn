@@ -1,19 +1,19 @@
 ﻿using System;
-using System.Web.UI.WebControls;
 using System.Collections.Generic;
-
+using System.Web.UI.WebControls;
 using Arsenalcn.ClubSys.Service;
-
-using Discuz.Forum;
+using Arsenalcn.ClubSys.Web.Common;
 using Discuz.Entity;
+using Discuz.Forum;
+using UserVideo = Arsenalcn.ClubSys.Entity.UserVideo;
 
 namespace Arsenalcn.ClubSys.Web
 {
-    public partial class AdminAward : Common.AdminBasePage
+    public partial class AdminAward : AdminBasePage
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            ctrlAdminFieldToolBar.AdminUserName = this.username;
+            ctrlAdminFieldToolBar.AdminUserName = username;
             tbVideoGuid.ToolTip = Guid.Empty.ToString();
 
             if (!IsPostBack)
@@ -29,8 +29,7 @@ namespace Arsenalcn.ClubSys.Web
             {
                 if (p1.SquadNumber == p2.SquadNumber)
                     return Comparer<string>.Default.Compare(p1.DisplayName, p2.DisplayName);
-                else
-                    return p1.SquadNumber - p2.SquadNumber;
+                return p1.SquadNumber - p2.SquadNumber;
             });
 
             lstPlayer.DataSource = list;
@@ -50,7 +49,7 @@ namespace Arsenalcn.ClubSys.Web
         {
             //validate user id and user name
             var awardUserID = int.Parse(tbUserID.Text);
-            var sUser = AdminUsers.GetShortUserInfo(awardUserID);
+            var sUser = Users.GetShortUserInfo(awardUserID);
 
             var awardUserName = tbUserName.Text;
 
@@ -67,7 +66,8 @@ namespace Arsenalcn.ClubSys.Web
                 {
                     if (!float.TryParse(tbCash.Text.Trim(), out cashIncrement))
                     {
-                        ClientScript.RegisterClientScriptBlock(typeof(string), "invalidCash", "alert('枪手币格式无法转换！');", true);
+                        ClientScript.RegisterClientScriptBlock(typeof (string), "invalidCash", "alert('枪手币格式无法转换！');",
+                            true);
                         return;
                     }
                 }
@@ -76,7 +76,7 @@ namespace Arsenalcn.ClubSys.Web
                 {
                     if (!float.TryParse(tbRP.Text.Trim(), out rp))
                     {
-                        ClientScript.RegisterClientScriptBlock(typeof(string), "invalidRP", "alert('RP格式无法转换！');", true);
+                        ClientScript.RegisterClientScriptBlock(typeof (string), "invalidRP", "alert('RP格式无法转换！');", true);
                         return;
                     }
                 }
@@ -89,13 +89,14 @@ namespace Arsenalcn.ClubSys.Web
                     }
                     catch
                     {
-                        ClientScript.RegisterClientScriptBlock(typeof(string), "invalidGuid", "alert('Guid格式无法转换！');", true);
+                        ClientScript.RegisterClientScriptBlock(typeof (string), "invalidGuid", "alert('Guid格式无法转换！');",
+                            true);
                         return;
                     }
                 }
                 if (tbNotes.Text.Trim() != string.Empty)
                 {
-                    AwardNotes = tbNotes.Text.ToString();
+                    AwardNotes = tbNotes.Text;
                 }
 
                 //is actually something awarded?
@@ -106,7 +107,7 @@ namespace Arsenalcn.ClubSys.Web
                 //add cash
                 if (cashIncrement != 0)
                 {
-                    AdminUsers.UpdateUserExtCredits(awardUserID, 2, cashIncrement);
+                    Users.UpdateUserExtCredits(awardUserID, 2, cashIncrement);
 
                     awardMessageBody += $" 枪手币+{cashIncrement}";
 
@@ -116,7 +117,7 @@ namespace Arsenalcn.ClubSys.Web
                 //add rp
                 if (rp != 0)
                 {
-                    AdminUsers.UpdateUserExtCredits(awardUserID, 4, rp);
+                    Users.UpdateUserExtCredits(awardUserID, 4, rp);
 
                     awardMessageBody += $" RP+{rp}, ";
 
@@ -126,7 +127,8 @@ namespace Arsenalcn.ClubSys.Web
                 //add card
                 if (!string.IsNullOrEmpty(lstPlayer.SelectedValue) && lstPlayer.SelectedValue != Guid.Empty.ToString())
                 {
-                    PlayerStrip.AddCard(awardUserID, awardUserName, new Guid(lstPlayer.SelectedValue), cbCardActive.Checked);
+                    PlayerStrip.AddCard(awardUserID, awardUserName, new Guid(lstPlayer.SelectedValue),
+                        cbCardActive.Checked);
 
                     awardMessageBody += $" 球星卡一张({(cbCardActive.Checked ? string.Empty : "未")}激活)";
 
@@ -141,7 +143,7 @@ namespace Arsenalcn.ClubSys.Web
                         //active
                         //UserVideo.InsertActiveVideo(awardUserID, awardUserName, videoGuid.Value);
 
-                        var uv = new Entity.UserVideo();
+                        var uv = new UserVideo();
                         uv.UserID = awardUserID;
                         uv.UserName = awardUserName;
                         uv.VideoGuid = videoGuid.Value;
@@ -164,12 +166,15 @@ namespace Arsenalcn.ClubSys.Web
 
                 if (!string.IsNullOrEmpty(AwardNotes))
                 {
-                    awardMessageBody += $" 奖励原因：{AwardNotes.ToString()}";
+                    awardMessageBody += $" 奖励原因：{AwardNotes}";
                 }
 
                 if (realAwarded)
                 {
-                    PlayerLog.LogHistory(awardUserID, awardUserName, PlayerHistoryType.Award, new AwardDesc(cashIncrement, rp, (!string.IsNullOrEmpty(lstPlayer.SelectedValue) && lstPlayer.SelectedValue != Guid.Empty.ToString()), videoGuid != null).Generate());
+                    PlayerLog.LogHistory(awardUserID, awardUserName, PlayerHistoryType.Award,
+                        new AwardDesc(cashIncrement, rp,
+                            (!string.IsNullOrEmpty(lstPlayer.SelectedValue) &&
+                             lstPlayer.SelectedValue != Guid.Empty.ToString()), videoGuid != null).Generate());
 
                     var pm = new PrivateMessageInfo();
 
@@ -186,12 +191,12 @@ namespace Arsenalcn.ClubSys.Web
 
                     PrivateMessages.CreatePrivateMessage(pm, 0);
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('成功颁奖！');", true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed", "alert('成功颁奖！');", true);
                 }
             }
             else
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "alert", "alert('用户ID与用户名不匹配！');", true);
+                ClientScript.RegisterClientScriptBlock(typeof (string), "alert", "alert('用户ID与用户名不匹配！');", true);
             }
 
             InitDropDownList();
@@ -201,7 +206,7 @@ namespace Arsenalcn.ClubSys.Web
         {
             var awardUserID = int.Parse(tbUserID.Text);
 
-            var sUser = AdminUsers.GetShortUserInfo(awardUserID);
+            var sUser = Users.GetShortUserInfo(awardUserID);
             tbUserName.Text = sUser.Username.Trim();
 
             InitDropDownList();
@@ -213,7 +218,7 @@ namespace Arsenalcn.ClubSys.Web
             {
                 var p = Player.Cache.Load(new Guid(li.Value));
 
-                li.Text = $"(NO.{p.SquadNumber.ToString()}) - {p.DisplayName} - {(!p.IsLegend ? "在队" : "离队")}";
+                li.Text = $"(NO.{p.SquadNumber}) - {p.DisplayName} - {(!p.IsLegend ? "在队" : "离队")}";
             }
         }
     }

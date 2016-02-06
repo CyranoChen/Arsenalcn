@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
 
 namespace Arsenalcn.Common.Entity
 {
     public class Config
     {
-        public Config() { }
+        public Config()
+        {
+        }
 
         public Config(DataRow dr)
         {
@@ -18,7 +19,7 @@ namespace Arsenalcn.Common.Entity
         {
             if (dr != null)
             {
-                ConfigSystem = (ConfigSystem)Enum.Parse(typeof(ConfigSystem), dr["ConfigSystem"].ToString());
+                ConfigSystem = (ConfigSystem) Enum.Parse(typeof (ConfigSystem), dr["ConfigSystem"].ToString());
                 ConfigKey = dr["ConfigKey"].ToString();
                 ConfigValue = dr["ConfigValue"].ToString();
             }
@@ -99,7 +100,7 @@ namespace Arsenalcn.Common.Entity
 
         protected static Dictionary<string, string> GetDictionaryByConfigSystem(ConfigSystem cs)
         {
-            var list = Config.Cache.ConfigList.FindAll(delegate(Config c) { return c.ConfigSystem.Equals(cs); });
+            var list = Cache.ConfigList.FindAll(delegate(Config c) { return c.ConfigSystem.Equals(cs); });
 
             if (list != null && list.Count > 0)
             {
@@ -107,20 +108,24 @@ namespace Arsenalcn.Common.Entity
 
                 foreach (var c in list)
                 {
-                    try { dict.Add(c.ConfigKey, c.ConfigValue); }
-                    catch { continue; }
+                    try
+                    {
+                        dict.Add(c.ConfigKey, c.ConfigValue);
+                    }
+                    catch
+                    {
+                    }
                 }
 
                 return dict;
             }
-            else
-            {
-                return null;
-            }
+            return null;
         }
 
         public static class Cache
         {
+            public static List<Config> ConfigList;
+
             static Cache()
             {
                 InitCache();
@@ -133,32 +138,28 @@ namespace Arsenalcn.Common.Entity
 
             private static void InitCache()
             {
-                ConfigList = Config.GetConfigs();
+                ConfigList = GetConfigs();
             }
 
             public static Config Load(ConfigSystem cs, string key)
             {
-                return ConfigList.Find(delegate(Config c) { return c.ConfigSystem.Equals(cs) && c.ConfigKey.Equals(key); });
+                return
+                    ConfigList.Find(delegate(Config c) { return c.ConfigSystem.Equals(cs) && c.ConfigKey.Equals(key); });
             }
 
             public static string LoadDict(ConfigSystem cs, string key)
             {
                 return GetDictionaryByConfigSystem(cs)[key];
             }
-
-            public static List<Config> ConfigList;
         }
 
         #region Members and Properties
 
-        public ConfigSystem ConfigSystem
-        { get; set; }
+        public ConfigSystem ConfigSystem { get; set; }
 
-        public string ConfigKey
-        { get; set; }
+        public string ConfigKey { get; set; }
 
-        public string ConfigValue
-        { get; set; }
+        public string ConfigValue { get; set; }
 
         #endregion
     }

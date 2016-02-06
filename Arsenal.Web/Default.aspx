@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" MasterPageFile="DefaultMaster.master" CodeBehind="Default.aspx.cs"
-    Inherits="Arsenal.Web._Default" Title="阿森纳中国官方球迷会" Theme="Arsenalcn" %>
+Inherits="Arsenal.Web._Default" Title="阿森纳中国官方球迷会" Theme="Arsenalcn" %>
 
 <asp:Content ID="cphHead" ContentPlaceHolderID="cphHead" runat="server">
 </asp:Content>
@@ -12,7 +12,8 @@
                 <a href="AdminConfig.aspx">后台管理</a>
             </asp:Panel>
         </div>
-        <div><span>系统已关闭。请联系管理员。</span></div>
+        <div>
+            <span>系统已关闭。请联系管理员。</span></div>
     </div>
     <div class="Clear">
     </div>

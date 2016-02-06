@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" MasterPageFile="DefaultMaster.master" AutoEventWireup="true"
-    CodeBehind="MyBetLog.aspx.cs" Inherits="Arsenalcn.CasinoSys.Web.MyBetLog" Title="我的中奖查询" %>
+CodeBehind="MyBetLog.aspx.cs" Inherits="Arsenalcn.CasinoSys.Web.MyBetLog" Title="我的中奖查询" %>
 
 <%@ Register Src="Control/LeftPanel.ascx" TagName="LeftPanel" TagPrefix="uc1" %>
 <%@ Register Src="Control/FieldTooBar.ascx" TagName="FieldTooBar" TagPrefix="uc2" %>
@@ -8,20 +8,21 @@
 <asp:Content ID="cphHead" ContentPlaceHolderID="cphHead" runat="server">
 </asp:Content>
 <asp:Content ID="cphMain" ContentPlaceHolderID="cphMain" runat="server">
-    <uc1:LeftPanel ID="ctrlLeftPanel" runat="server" />
+    <uc1:LeftPanel ID="ctrlLeftPanel" runat="server"/>
     <div id="MainPanel">
-        <uc2:FieldTooBar ID="ctrlFieldTooBar" runat="server" />
-        <uc3:MenuTabBar ID="ctrlMenuTabBar" runat="server" />
-        <uc4:GamblerHeader ID="ctrlGamblerHeader" runat="server" />
+        <uc2:FieldTooBar ID="ctrlFieldTooBar" runat="server"/>
+        <uc3:MenuTabBar ID="ctrlMenuTabBar" runat="server"/>
+        <uc4:GamblerHeader ID="ctrlGamblerHeader" runat="server"/>
         <asp:GridView ID="gvBetLog" runat="server" OnPageIndexChanging="gvBetLog_PageIndexChanging"
-            OnRowDataBound="gvBetLog_RowDataBound" OnRowCommand="gvBetLog_RowCommand" PageSize="20">
+                      OnRowDataBound="gvBetLog_RowDataBound" OnRowCommand="gvBetLog_RowCommand" PageSize="20">
             <Columns>
-                <asp:BoundField DataField="ID" Visible="false" />
+                <asp:BoundField DataField="ID" Visible="false"/>
                 <asp:TemplateField HeaderText="结果">
                     <ItemTemplate>
                         <asp:Literal ID="ltrlBetResult" runat="server"></asp:Literal>
                         <asp:LinkButton ID="btnReturnBet" runat="server" Text="退注" CssClass="LinkBtn" CommandName="ReturnBet"
-                            OnClientClick="return confirm('确认取消投注?')"></asp:LinkButton>
+                                        OnClientClick="return confirm('确认取消投注?')">
+                        </asp:LinkButton>
                     </ItemTemplate>
                 </asp:TemplateField>
                 <asp:TemplateField HeaderText="主队" ItemStyle-HorizontalAlign="Right">
@@ -39,19 +40,19 @@
                         <asp:HyperLink ID="hlAway" runat="server" class="StrongLink"></asp:HyperLink>
                     </ItemTemplate>
                 </asp:TemplateField>
-                <asp:BoundField DataField="BetTime" DataFormatString="{0:yyyy-MM-dd HH:mm:ss}" HeaderText="投注时间" />
+                <asp:BoundField DataField="BetTime" DataFormatString="{0:yyyy-MM-dd HH:mm:ss}" HeaderText="投注时间"/>
                 <asp:TemplateField HeaderText="预测结果">
                     <ItemTemplate>
                         <asp:Literal ID="ltrlResult" runat="server"></asp:Literal>
                     </ItemTemplate>
                 </asp:TemplateField>
-                <asp:BoundField DataField="Bet" HeaderText="投注金额" DataFormatString="{0:N0}" NullDisplayText="/" />
+                <asp:BoundField DataField="Bet" HeaderText="投注金额" DataFormatString="{0:N0}" NullDisplayText="/"/>
                 <asp:TemplateField HeaderText="投注赔率">
                     <ItemTemplate>
                         <asp:Literal ID="ltrlBetRate" runat="server"></asp:Literal>
                     </ItemTemplate>
                 </asp:TemplateField>
-                <asp:BoundField DataField="EarningDesc" HeaderText="奖金" NullDisplayText="/" />
+                <asp:BoundField DataField="EarningDesc" HeaderText="奖金" NullDisplayText="/"/>
             </Columns>
         </asp:GridView>
     </div>

@@ -8,14 +8,12 @@ using System.Reflection;
 using System.Threading;
 using System.Web;
 using System.Web.Security;
-using Newtonsoft.Json.Linq;
-
 using Arsenal.Service;
 using Arsenal.Service.Casino;
 using Arsenalcn.Core;
 using Arsenalcn.Core.Logger;
 using Arsenalcn.Core.Utility;
-
+using Newtonsoft.Json.Linq;
 using Membership = Arsenal.Service.Membership;
 
 namespace Arsenal.Mobile.Models
@@ -23,8 +21,6 @@ namespace Arsenal.Mobile.Models
     public class MembershipDto : Membership
     {
         private readonly ILog _log = new AppLog();
-
-        public MembershipDto() : base() { }
 
         private void Init()
         {
@@ -165,18 +161,24 @@ namespace Arsenal.Mobile.Models
         {
             acnUid = -1;
 
-            if (!ConfigGlobal.AcnSync) { return false; }
+            if (!ConfigGlobal.AcnSync)
+            {
+                return false;
+            }
 
             var client = new DiscuzApiClient();
 
             var uid = client.AuthValidate(username, Encrypt.GetMd5Hash(password));
 
-            return Int32.TryParse(uid.Replace("\"", ""), out acnUid);
+            return int.TryParse(uid.Replace("\"", ""), out acnUid);
         }
 
         public static int GetAcnId(string username)
         {
-            if (!ConfigGlobal.AcnSync) { return -1; }
+            if (!ConfigGlobal.AcnSync)
+            {
+                return -1;
+            }
 
             var client = new DiscuzApiClient();
 
@@ -184,14 +186,11 @@ namespace Arsenal.Mobile.Models
 
             int acnUid;
 
-            if (Int32.TryParse(uid.Replace("\"", ""), out acnUid))
+            if (int.TryParse(uid.Replace("\"", ""), out acnUid))
             {
                 return acnUid;
             }
-            else
-            {
-                return 0;
-            }
+            return 0;
         }
 
         // Summary:
@@ -201,17 +200,24 @@ namespace Arsenal.Mobile.Models
         {
             status = MembershipCreateStatus.UserRejected;
 
-            if (!ConfigGlobal.AcnSync) { return; }
+            if (!ConfigGlobal.AcnSync)
+            {
+                return;
+            }
 
             #region Get Acn UserInfo to init the intance of MembershipDto
+
             var client = new DiscuzApiClient();
 
-            int[] uids = { uid };
-            string[] fields = { "user_name", "password", "email", "mobile", "join_date" };
+            int[] uids = {uid};
+            string[] fields = {"user_name", "password", "email", "mobile", "join_date"};
 
             var responseResult = client.UsersGetInfo(uids, fields);
 
-            if (string.IsNullOrEmpty(responseResult)) { return; }
+            if (string.IsNullOrEmpty(responseResult))
+            {
+                return;
+            }
 
             var jlist = JArray.Parse(responseResult);
             var json = jlist[0];
@@ -224,6 +230,7 @@ namespace Arsenal.Mobile.Models
             Email = json["email"].ToString();
             CreateDate = Convert.ToDateTime(json["join_date"].ToString());
             Remark = $"{{\"AcnID\": {uid}}}";
+
             #endregion
 
             using (var conn = new SqlConnection(DataAccess.ConnectString))
@@ -241,7 +248,7 @@ namespace Arsenal.Mobile.Models
 
                     var user = new User
                     {
-                        ID = (Guid)providerUserKey,
+                        ID = (Guid) providerUserKey,
                         UserName = UserName,
                         IsAnonymous = false,
                         LastActivityDate = DateTime.Now,
@@ -286,7 +293,8 @@ namespace Arsenal.Mobile.Models
         //   System.Web.Security.MembershipCreateUserException:
         //     The user was not created. Check the System.Web.Security.MembershipCreateUserException.StatusCode
         //     property for a System.Web.Security.MembershipCreateStatus value.
-        public void CreateUser(string username, string email, string password, out object providerUserKey, out MembershipCreateStatus status)
+        public void CreateUser(string username, string email, string password, out object providerUserKey,
+            out MembershipCreateStatus status)
         {
             using (var conn = new SqlConnection(DataAccess.ConnectString))
             {
@@ -320,7 +328,7 @@ namespace Arsenal.Mobile.Models
                         return;
                     }
 
-                    if (GetMembership(username: username) != null)
+                    if (GetMembership(username) != null)
                     {
                         status = MembershipCreateStatus.DuplicateUserName;
                         return;
@@ -348,12 +356,13 @@ namespace Arsenal.Mobile.Models
 
                     var user = new User();
 
-                    user.ID = (Guid)providerUserKey;
+                    user.ID = (Guid) providerUserKey;
                     user.UserName = UserName;
                     user.IsAnonymous = false;
                     user.LastActivityDate = DateTime.Now;
 
                     #region Register new Acn User
+
                     if (ConfigGlobal.AcnSync)
                     {
                         var client = new DiscuzApiClient();
@@ -368,6 +377,7 @@ namespace Arsenal.Mobile.Models
                         user.AcnID = null;
                         user.AcnUserName = string.Empty;
                     }
+
                     #endregion
 
                     user.MemberID = null;
@@ -385,7 +395,7 @@ namespace Arsenal.Mobile.Models
                 {
                     trans.Rollback();
 
-                    _log.Error(ex, new LogInfo()
+                    _log.Error(ex, new LogInfo
                     {
                         MethodInstance = MethodBase.GetCurrentMethod(),
                         ThreadInstance = Thread.CurrentThread
@@ -429,10 +439,14 @@ namespace Arsenal.Mobile.Models
             Contract.Requires(!string.IsNullOrEmpty(newPassword));
 
             if (oldPassword.Equals(newPassword, StringComparison.OrdinalIgnoreCase))
-            { throw new Exception("新密码应与旧密码不同"); }
+            {
+                throw new Exception("新密码应与旧密码不同");
+            }
 
             if (!instance.Password.Equals(Encrypt.GetMd5Hash(oldPassword)))
-            { throw new Exception("用户旧密码验证不正确"); }
+            {
+                throw new Exception("用户旧密码验证不正确");
+            }
 
             using (var conn = new SqlConnection(DataAccess.ConnectString))
             {
@@ -448,22 +462,25 @@ namespace Arsenal.Mobile.Models
                     repo.Update(instance, trans);
 
                     #region Sync Acn User Password
+
                     if (ConfigGlobal.AcnSync)
                     {
                         var user = repo.Single<User>(instance.ID);
 
                         if (user != null && user.AcnID.HasValue)
                         {
-
                             var client = new DiscuzApiClient();
 
                             var result = client.UsersChangePassword(user.AcnID.Value,
                                 Encrypt.GetMd5Hash(oldPassword), Encrypt.GetMd5Hash(newPassword));
 
                             if (!Convert.ToBoolean(result.Replace("\"", "")))
-                            { throw new Exception("ACN同步失败"); }
+                            {
+                                throw new Exception("ACN同步失败");
+                            }
                         }
                     }
+
                     #endregion
 
                     trans.Commit();
@@ -482,8 +499,6 @@ namespace Arsenal.Mobile.Models
 
     public class UserDto : User
     {
-        public UserDto() : base() { }
-
         public static User GetUser(object providerUserKey)
         {
             Contract.Requires(providerUserKey != null);
@@ -499,23 +514,20 @@ namespace Arsenal.Mobile.Models
             {
                 return HttpContext.Current.Session["AuthorizedUser"] as User;
             }
-            else
+            if (!string.IsNullOrEmpty(HttpContext.Current.User.Identity.Name))
             {
-                if (!string.IsNullOrEmpty(HttpContext.Current.User.Identity.Name))
-                {
-                    // Get username from User.Indentity.Name
-                    var membership = MembershipDto.GetMembership(HttpContext.Current.User.Identity.Name);
+                // Get username from User.Indentity.Name
+                var membership = MembershipDto.GetMembership(HttpContext.Current.User.Identity.Name);
 
-                    if (membership == null) { return null; }
-
-                    SetSession(membership.ID);
-                    return HttpContext.Current.Session["AuthorizedUser"] as User;
-                }
-                else
+                if (membership == null)
                 {
                     return null;
                 }
+
+                SetSession(membership.ID);
+                return HttpContext.Current.Session["AuthorizedUser"] as User;
             }
+            return null;
         }
 
         public static void SetSession(object providerUserKey)
@@ -530,6 +542,7 @@ namespace Arsenal.Mobile.Models
         }
 
         #region Casino Gambler Sync
+
         private static int UserGamblerSync(object providerUserKey)
         {
             Contract.Requires(providerUserKey != null);
@@ -575,6 +588,7 @@ namespace Arsenal.Mobile.Models
 
             return gamblerKey != null ? Convert.ToInt32(gamblerKey) : 0;
         }
+
         #endregion
     }
 

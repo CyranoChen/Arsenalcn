@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-
-using AutoMapper;
-
 using Arsenal.Mobile.Models;
 using Arsenal.Mobile.Models.Casino;
 using Arsenal.Service.Casino;
 using Arsenalcn.Core;
+using AutoMapper;
 
 namespace Arsenal.Mobile.Controllers
 {
@@ -16,7 +14,7 @@ namespace Arsenal.Mobile.Controllers
     public class CasinoController : Controller
     {
         private readonly int _acnId = UserDto.GetSession() != null ? UserDto.GetSession().AcnID.Value : 0;
-        private IRepository _repo = new Repository();
+        private readonly IRepository _repo = new Repository();
 
         // 可投注比赛
         // GET: /Casino
@@ -32,9 +30,9 @@ namespace Arsenal.Mobile.Controllers
                 .OrderBy(x => x.PlayTime)
                 .Many<MatchView, ChoiceOption, Guid>(t => t.CasinoItem.ID);
 
-            MatchDto.CreateMap();
+            var mapper = MatchDto.ConfigMapper().CreateMapper();
 
-            var list = Mapper.Map<IEnumerable<MatchDto>>(source: query.AsEnumerable());
+            var list = mapper.Map<IEnumerable<MatchDto>>(query.AsEnumerable());
 
             model.Matches = list;
             model.CasinoValidDays = days;
@@ -52,9 +50,9 @@ namespace Arsenal.Mobile.Controllers
             var query = _repo.Query<BetView>(criteria, x => x.UserID == _acnId)
                 .Many<BetView, BetDetail, int>(t => t.ID);
 
-            BetDto.CreateMap();
+            var mapper = BetDto.ConfigMapper().CreateMapper();
 
-            var list = Mapper.Map<IEnumerable<BetDto>>(source: query.AsEnumerable());
+            var list = mapper.Map<IEnumerable<BetDto>>(query.AsEnumerable());
 
             model.Criteria = criteria;
             model.Data = list;
@@ -81,18 +79,18 @@ namespace Arsenal.Mobile.Controllers
 
             var query = _repo.Query<MatchView>(criteria, x => x.ResultHome.HasValue && x.ResultAway.HasValue);
 
-            var map = Mapper.CreateMap<MatchView, MatchDto>();
+            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<MatchView, MatchDto>()
+                .ConstructUsing(s => new MatchDto
+                {
+                    ID = s.ID,
+                    TeamHomeName = s.Home.TeamDisplayName,
+                    TeamHomeLogo = s.Home.TeamLogo,
+                    TeamAwayName = s.Away.TeamDisplayName,
+                    TeamAwayLogo = s.Away.TeamLogo
+                }))
+                .CreateMapper();
 
-            map.ConstructUsing(s => new MatchDto
-            {
-                ID = s.ID,
-                TeamHomeName = s.Home.TeamDisplayName,
-                TeamHomeLogo = s.Home.TeamLogo,
-                TeamAwayName = s.Away.TeamDisplayName,
-                TeamAwayLogo = s.Away.TeamLogo,
-            });
-
-            var list = Mapper.Map<IEnumerable<MatchDto>>(source: query.AsEnumerable());
+            var list = mapper.Map<IEnumerable<MatchDto>>(query.AsEnumerable());
 
             model.Criteria = criteria;
             model.Data = list;
@@ -112,9 +110,9 @@ namespace Arsenal.Mobile.Controllers
             var query = _repo.Query<BetView>(x => x.CasinoItem.MatchGuid == id)
                 .Many<BetView, BetDetail, int>(t => t.ID);
 
-            BetDto.CreateMap();
+            var mapper = BetDto.ConfigMapper().CreateMapper();
 
-            var list = Mapper.Map<IEnumerable<BetDto>>(source: query.AsEnumerable());
+            var list = mapper.Map<IEnumerable<BetDto>>(query.AsEnumerable());
 
             model.Bets = list;
 
@@ -138,9 +136,9 @@ namespace Arsenal.Mobile.Controllers
                 x.UserID == _acnId && x.CasinoItem.MatchGuid == id)
                 .Many<BetView, BetDetail, int>(t => t.ID);
 
-            BetDto.CreateMap();
+            var mapperBetDto = BetDto.ConfigMapper().CreateMapper();
 
-            var bList = Mapper.Map<IEnumerable<BetDto>>(source: betsQuery.AsEnumerable());
+            var bList = mapperBetDto.Map<IEnumerable<BetDto>>(betsQuery.AsEnumerable());
 
             model.MyBets = bList;
 
@@ -149,20 +147,20 @@ namespace Arsenal.Mobile.Controllers
 
             var matchesQuery = _repo.Query<MatchView>(x => x.ResultHome.HasValue && x.ResultAway.HasValue)
                 .FindAll(x => x.Home.ID.Equals(match.Home) && x.Away.ID.Equals(match.Away) ||
-                x.Home.ID.Equals(match.Away) && x.Away.ID.Equals(match.Home));
+                              x.Home.ID.Equals(match.Away) && x.Away.ID.Equals(match.Home));
 
-            var map = Mapper.CreateMap<MatchView, MatchDto>();
+            var mapperMatchDto = new MapperConfiguration(cfg => cfg.CreateMap<MatchView, MatchDto>()
+                .ConstructUsing(s => new MatchDto
+                {
+                    ID = s.ID,
+                    TeamHomeName = s.Home.TeamDisplayName,
+                    TeamHomeLogo = s.Home.TeamLogo,
+                    TeamAwayName = s.Away.TeamDisplayName,
+                    TeamAwayLogo = s.Away.TeamLogo
+                }))
+                .CreateMapper();
 
-            map.ConstructUsing(s => new MatchDto
-            {
-                ID = s.ID,
-                TeamHomeName = s.Home.TeamDisplayName,
-                TeamHomeLogo = s.Home.TeamLogo,
-                TeamAwayName = s.Away.TeamDisplayName,
-                TeamAwayLogo = s.Away.TeamLogo,
-            });
-
-            var mlist = Mapper.Map<IEnumerable<MatchDto>>(source: matchesQuery.AsEnumerable());
+            var mlist = mapperMatchDto.Map<IEnumerable<MatchDto>>(matchesQuery.AsEnumerable());
 
             model.HistoryMatches = mlist;
 
@@ -226,7 +224,7 @@ namespace Arsenal.Mobile.Controllers
                     //投注成功
 
                     TempData["DataUrl"] = $"data-url=/Casino/GameBet/{id}";
-                    return RedirectToAction("GameBet", new { id });
+                    return RedirectToAction("GameBet", new {id});
                 }
                 catch (Exception ex)
                 {
@@ -312,7 +310,7 @@ namespace Arsenal.Mobile.Controllers
                     //投注成功
 
                     TempData["DataUrl"] = $"data-url=/Casino/GameBet/{id}";
-                    return RedirectToAction("GameBet", new { id });
+                    return RedirectToAction("GameBet", new {id});
                 }
                 catch (Exception ex)
                 {

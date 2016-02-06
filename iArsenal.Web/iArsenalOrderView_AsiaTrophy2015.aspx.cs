@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-
+using System.Text;
 using Arsenalcn.Core;
 using iArsenal.Service;
 
@@ -9,6 +8,21 @@ namespace iArsenal.Web
     public partial class iArsenalOrderView_AsiaTrophy2015 : MemberPageBase
     {
         private readonly IRepository repo = new Repository();
+
+        private int OrderID
+        {
+            get
+            {
+                int _orderID;
+                if (!string.IsNullOrEmpty(Request.QueryString["OrderID"]) &&
+                    int.TryParse(Request.QueryString["OrderID"], out _orderID))
+                {
+                    return _orderID;
+                }
+                return int.MinValue;
+            }
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -17,33 +31,19 @@ namespace iArsenal.Web
             }
         }
 
-        private int OrderID
-        {
-            get
-            {
-                int _orderID;
-                if (!string.IsNullOrEmpty(Request.QueryString["OrderID"]) && int.TryParse(Request.QueryString["OrderID"], out _orderID))
-                {
-                    return _orderID;
-                }
-                else
-                    return int.MinValue;
-            }
-        }
-
         private void InitForm()
         {
             try
             {
-                lblMemberName.Text = $"<b>{this.MemberName}</b> (<em>NO.{this.MID.ToString()}</em>)";
+                lblMemberName.Text = $"<b>{MemberName}</b> (<em>NO.{MID}</em>)";
 
                 if (OrderID > 0)
                 {
-                    var o = (OrdrTravel)Order.Select(OrderID);
+                    var o = (OrdrTravel) Order.Select(OrderID);
 
                     if (ConfigGlobal.IsPluginAdmin(UID) && o != null)
                     {
-                        lblMemberName.Text = $"<b>{o.MemberName}</b> (<em>NO.{o.MemberID.ToString()}</em>)";
+                        lblMemberName.Text = $"<b>{o.MemberName}</b> (<em>NO.{o.MemberID}</em>)";
                     }
                     else
                     {
@@ -66,6 +66,7 @@ namespace iArsenal.Web
                     lblOrderMobile.Text = $"<em>{o.Mobile}</em>";
 
                     #region Set Member Nation & Region
+
                     if (!string.IsNullOrEmpty(m.Nation))
                     {
                         if (m.Nation.Equals("中国"))
@@ -94,6 +95,7 @@ namespace iArsenal.Web
                     {
                         lblMemberRegion.Text = "无";
                     }
+
                     #endregion
 
                     lblMemberIDCardNo.Text = m.IDCardNo;
@@ -102,7 +104,7 @@ namespace iArsenal.Web
                     lblMemberQQ.Text = $"<em>{m.QQ}</em>";
                     lblMemberEmail.Text = $"<em>{m.Email}</em>";
 
-                    lblOrderID.Text = $"<em>{o.ID.ToString()}</em>";
+                    lblOrderID.Text = $"<em>{o.ID}</em>";
                     lblOrderCreateTime.Text = o.CreateTime.ToString("yyyy-MM-dd HH:mm");
                     lblOrderDescription.Text = o.Description;
 
@@ -120,7 +122,7 @@ namespace iArsenal.Web
                     var price = default(double);
                     var priceInfo = string.Empty;
 
-                    var oiAsiaTrophy = o.OITravelPlan.MapTo<OrdrItmTravelPlan2015AsiaTrophy>();
+                    var oiAsiaTrophy = o.OITravelPlan.MapTo<OrdrItmTravelPlan, OrdrItmTravelPlan2015AsiaTrophy>();
                     oiAsiaTrophy.Init();
 
                     if (oiAsiaTrophy.IsActive)
@@ -145,14 +147,34 @@ namespace iArsenal.Web
                             $"<em>{(oiAsiaTrophy.IsTicketOnly ? "仅购票" : "观赛团")}：</em>{_strMatchInfo}";
 
                         // Set Order Travel Option
-                        var sb = new System.Text.StringBuilder();
+                        var sb = new StringBuilder();
 
-                        if (oiAsiaTrophy.TravelOption.IsVisa) { sb.Append("【代办签证】"); }
-                        if (oiAsiaTrophy.TravelOption.IsFlight) { sb.Append("【购买机票】"); }
-                        if (oiAsiaTrophy.TravelOption.IsHotel) { sb.Append("【预订宾馆】"); }
-                        if (oiAsiaTrophy.TravelOption.IsTraining) { sb.Append("【训练课】"); }
-                        if (oiAsiaTrophy.TravelOption.IsParty) { sb.Append("【球员见面会】"); };
-                        if (oiAsiaTrophy.TravelOption.IsSingapore) { sb.Append("【当地团】"); };
+                        if (oiAsiaTrophy.TravelOption.IsVisa)
+                        {
+                            sb.Append("【代办签证】");
+                        }
+                        if (oiAsiaTrophy.TravelOption.IsFlight)
+                        {
+                            sb.Append("【购买机票】");
+                        }
+                        if (oiAsiaTrophy.TravelOption.IsHotel)
+                        {
+                            sb.Append("【预订宾馆】");
+                        }
+                        if (oiAsiaTrophy.TravelOption.IsTraining)
+                        {
+                            sb.Append("【训练课】");
+                        }
+                        if (oiAsiaTrophy.TravelOption.IsParty)
+                        {
+                            sb.Append("【球员见面会】");
+                        }
+                        ;
+                        if (oiAsiaTrophy.TravelOption.IsSingapore)
+                        {
+                            sb.Append("【当地团】");
+                        }
+                        ;
 
                         lblOrderItem_TravelOption.Text = sb.ToString();
                     }
@@ -187,7 +209,8 @@ namespace iArsenal.Web
                             }
 
                             lblOrderItem_TravelPartner.Text = string.Format("<em>{0}</em>{5}，{1}，{2}；护照：（{3}）{4}",
-                                pa.Name, pa.Gender ? "男" : "女", pa.IDCardNo, pa.PassportNo, pa.PassportName, _strParterRelation);
+                                pa.Name, pa.Gender ? "男" : "女", pa.IDCardNo, pa.PassportNo, pa.PassportName,
+                                _strParterRelation);
                         }
 
                         phOrderPartner.Visible = true;
@@ -252,8 +275,8 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed",
-                    $"alert('{ex.Message.ToString()}');window.location.href = 'iArsenalOrder.aspx'", true);
+                ClientScript.RegisterClientScriptBlock(typeof (string), "failed",
+                    $"alert('{ex.Message}');window.location.href = 'iArsenalOrder.aspx'", true);
             }
         }
 
@@ -274,8 +297,9 @@ namespace iArsenal.Web
 
                     repo.Update(o);
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
-                        $"alert('谢谢您的预订报名，您的订单已经提交成功。\\r\\n请耐心等待审核，并由观赛组织人会与您联系。\\r\\n订单号为：{o.ID.ToString()}'); window.location.href = window.location.href", true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                        $"alert('谢谢您的预订报名，您的订单已经提交成功。\\r\\n请耐心等待审核，并由观赛组织人会与您联系。\\r\\n订单号为：{o.ID}'); window.location.href = window.location.href",
+                        true);
                 }
                 else
                 {
@@ -284,7 +308,7 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message.ToString()}');", true);
+                ClientScript.RegisterClientScriptBlock(typeof (string), "failed", $"alert('{ex.Message}');", true);
             }
         }
 
@@ -299,8 +323,8 @@ namespace iArsenal.Web
                     if (o == null || !o.MemberID.Equals(MID) || !o.IsActive)
                         throw new Exception("此订单无效或非当前用户订单");
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
-                        $"window.location.href = 'iArsenalOrder_AsiaTrophy2015.aspx?OrderID={o.ID.ToString()}'", true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                        $"window.location.href = 'iArsenalOrder_AsiaTrophy2015.aspx?OrderID={o.ID}'", true);
                 }
                 else
                 {
@@ -309,7 +333,7 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message.ToString()}');", true);
+                ClientScript.RegisterClientScriptBlock(typeof (string), "failed", $"alert('{ex.Message}');", true);
             }
         }
 
@@ -330,8 +354,8 @@ namespace iArsenal.Web
 
                     repo.Update(o);
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
-                        $"alert('此订单({o.ID.ToString()})已经取消');window.location.href = 'iArsenalOrder.aspx'", true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                        $"alert('此订单({o.ID})已经取消');window.location.href = 'iArsenalOrder.aspx'", true);
                 }
                 else
                 {
@@ -340,7 +364,7 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message.ToString()}');", true);
+                ClientScript.RegisterClientScriptBlock(typeof (string), "failed", $"alert('{ex.Message}');", true);
             }
         }
     }

@@ -1,17 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 using System.Web;
-
 using Arsenalcn.ClubSys.Entity;
 using Arsenalcn.ClubSys.Service;
-
-
+using Arsenalcn.ClubSys.Web.Common;
+using UserVideo = Arsenalcn.ClubSys.Entity.UserVideo;
 
 namespace Arsenalcn.ClubSys.Web
 {
-    public partial class ServerXml : Common.BasePage
+    public partial class ServerXml : BasePage
     {
         private int ClubID
         {
@@ -20,10 +18,7 @@ namespace Arsenalcn.ClubSys.Web
                 int tmp;
                 if (int.TryParse(Request.QueryString["ClubID"], out tmp))
                     return tmp;
-                else
-                {
-                    return -1;
-                }
+                return -1;
             }
         }
 
@@ -34,27 +29,18 @@ namespace Arsenalcn.ClubSys.Web
                 int tmp;
                 if (int.TryParse(Request.QueryString["UserID"], out tmp))
                     return tmp;
-                else
-                {
-                    return -1;
-                }
+                return -1;
             }
         }
 
         private string PlayerGuid
         {
-            get
-            {
-                return Request.QueryString["PlayerGuid"];
-            }
+            get { return Request.QueryString["PlayerGuid"]; }
         }
 
         private string VideoGuid
         {
-            get
-            {
-                return Request.QueryString["VideoGuid"];
-            }
+            get { return Request.QueryString["VideoGuid"]; }
         }
 
         private int CardID
@@ -64,10 +50,7 @@ namespace Arsenalcn.ClubSys.Web
                 int tmp;
                 if (int.TryParse(Request.QueryString["CardID"], out tmp))
                     return tmp;
-                else
-                {
-                    return -1;
-                }
+                return -1;
             }
         }
 
@@ -78,10 +61,7 @@ namespace Arsenalcn.ClubSys.Web
                 int tmp;
                 if (int.TryParse(Request.QueryString["UserVideoID"], out tmp))
                     return tmp;
-                else
-                {
-                    return -1;
-                }
+                return -1;
             }
         }
 
@@ -92,10 +72,7 @@ namespace Arsenalcn.ClubSys.Web
                 bool tmp;
                 if (bool.TryParse(Request.QueryString["CurrArsenalPlayer"], out tmp))
                     return tmp;
-                else
-                {
-                    return false;
-                }
+                return false;
             }
         }
 
@@ -117,7 +94,8 @@ namespace Arsenalcn.ClubSys.Web
                     xmlContent.AppendFormat("<RankItem name=\"总财富\" value=\"{0}\" />", ra.ClubFortuneRank);
                     xmlContent.AppendFormat("<RankItem name=\"总积分\" value=\"{0}\" />", ra.MemberCreditRank);
                     xmlContent.AppendFormat("<RankItem name=\"总RP值\" value=\"{0}\" />", ra.MemberRPRank);
-                    xmlContent.AppendFormat("<RankItem name=\"装备数\" value=\"{0}\" /></RankChart>", ra.MemberEquipmentRank);
+                    xmlContent.AppendFormat("<RankItem name=\"装备数\" value=\"{0}\" /></RankChart>",
+                        ra.MemberEquipmentRank);
                     Response.Write(xmlContent.ToString());
                 }
             }
@@ -138,18 +116,25 @@ namespace Arsenalcn.ClubSys.Web
                     if (player.Sock < playerLv)
                         playerLv = player.Sock;
 
-                    xmlContent.AppendFormat("<UserItems username=\"{0}\" userid=\"{1}\" userlv=\"{2}\" ", player.UserName, player.UserID, ((playerLv > ConfigGlobal.PlayerMaxLv) ? ConfigGlobal.PlayerMaxLv.ToString() + "+" : playerLv.ToString()));
+                    xmlContent.AppendFormat("<UserItems username=\"{0}\" userid=\"{1}\" userlv=\"{2}\" ",
+                        player.UserName, player.UserID,
+                        ((playerLv > ConfigGlobal.PlayerMaxLv) ? ConfigGlobal.PlayerMaxLv + "+" : playerLv.ToString()));
                     var CardCount = PlayerStrip.GetMyNumbers(UserID).Count;
-                    var VideoCount = Entity.UserVideo.GetUserVideosByUserID(UserID).Count;
-                    var InactiveCount = PlayerStrip.GetMyNumbers(UserID).FindAll(delegate (Card c) { return !c.ArsenalPlayerGuid.HasValue; }).Count;
+                    var VideoCount = UserVideo.GetUserVideosByUserID(UserID).Count;
+                    var InactiveCount =
+                        PlayerStrip.GetMyNumbers(UserID)
+                            .FindAll(delegate(Card c) { return !c.ArsenalPlayerGuid.HasValue; })
+                            .Count;
 
-                    xmlContent.AppendFormat("ShirtCount=\"{0}\" ShortsCount=\"{1}\" SockCount=\"{2}\" CardCount=\"{3}\" VideoCount=\"{4}\">", player.Shirt, player.Shorts, player.Sock, CardCount - InactiveCount, VideoCount + InactiveCount);
+                    xmlContent.AppendFormat(
+                        "ShirtCount=\"{0}\" ShortsCount=\"{1}\" SockCount=\"{2}\" CardCount=\"{3}\" VideoCount=\"{4}\">",
+                        player.Shirt, player.Shorts, player.Sock, CardCount - InactiveCount, VideoCount + InactiveCount);
 
                     xmlContent.AppendFormat("<UserVideo>");
 
                     //DataView dv = Service.UserVideo.GetUserPublicVideo(UserID);
-                    var list = Entity.UserVideo.GetUserVideosByUserID(UserID)
-                        .FindAll(delegate (Entity.UserVideo uv) { return uv.IsPublic; });
+                    var list = UserVideo.GetUserVideosByUserID(UserID)
+                        .FindAll(delegate(UserVideo uv) { return uv.IsPublic; });
 
                     foreach (var uv in list)
                     {
@@ -166,34 +151,52 @@ namespace Arsenalcn.ClubSys.Web
                                 xmlContent.Append("<VideoItem ");
 
                                 // build UserVideo xml info
-                                foreach (var properInfo in uv.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
+                                foreach (
+                                    var properInfo in
+                                        uv.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
                                 {
                                     // remove the property VideoGuid of UserVideo
                                     if (!properInfo.Name.Equals("VideoGuid"))
                                     {
                                         _value = properInfo.GetValue(uv, null);
-                                        if (_value == null) { _value = string.Empty; }
+                                        if (_value == null)
+                                        {
+                                            _value = string.Empty;
+                                        }
 
-                                        xmlContent.AppendFormat("{0}=\"{1}\" ", properInfo.Name, HttpUtility.HtmlAttributeEncode(_value.ToString()));
+                                        xmlContent.AppendFormat("{0}=\"{1}\" ", properInfo.Name,
+                                            HttpUtility.HtmlAttributeEncode(_value.ToString()));
                                     }
                                 }
 
                                 // build ArsenalVideo xml info
-                                foreach (var properInfo in v.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
+                                foreach (
+                                    var properInfo in
+                                        v.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
                                 {
                                     _value = properInfo.GetValue(v, null);
-                                    if (_value == null) { _value = string.Empty; }
+                                    if (_value == null)
+                                    {
+                                        _value = string.Empty;
+                                    }
 
-                                    xmlContent.AppendFormat("{0}=\"{1}\" ", properInfo.Name, HttpUtility.HtmlAttributeEncode(_value.ToString()));
+                                    xmlContent.AppendFormat("{0}=\"{1}\" ", properInfo.Name,
+                                        HttpUtility.HtmlAttributeEncode(_value.ToString()));
                                 }
 
                                 // build ArsenalPlayer xml info
-                                foreach (var properInfo in p.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
+                                foreach (
+                                    var properInfo in
+                                        p.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
                                 {
                                     _value = properInfo.GetValue(p, null);
-                                    if (_value == null) { _value = string.Empty; }
+                                    if (_value == null)
+                                    {
+                                        _value = string.Empty;
+                                    }
 
-                                    xmlContent.AppendFormat("{0}=\"{1}\" ", properInfo.Name, HttpUtility.HtmlAttributeEncode(_value.ToString()));
+                                    xmlContent.AppendFormat("{0}=\"{1}\" ", properInfo.Name,
+                                        HttpUtility.HtmlAttributeEncode(_value.ToString()));
                                 }
 
                                 xmlContent.Append("></VideoItem>");
@@ -205,7 +208,7 @@ namespace Arsenalcn.ClubSys.Web
 
                     xmlContent.Append("<UserCard>");
                     var cards = PlayerStrip.GetMyNumbers(UserID);
-                    cards.RemoveAll(delegate (Card un) { return !un.ArsenalPlayerGuid.HasValue; });
+                    cards.RemoveAll(delegate(Card un) { return !un.ArsenalPlayerGuid.HasValue; });
 
                     foreach (var c in cards)
                     {
@@ -213,14 +216,19 @@ namespace Arsenalcn.ClubSys.Web
                         xmlContent.AppendFormat("UserNumberID=\"{0}\" IsActive=\"{1}\" ", c.ID, c.IsActive);
 
                         var p = Player.Cache.Load(c.ArsenalPlayerGuid.Value);
-                        Object _value;
+                        object _value;
 
-                        foreach (var properInfo in p.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
+                        foreach (
+                            var properInfo in p.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
                         {
                             _value = properInfo.GetValue(p, null);
-                            if (_value == null) { _value = string.Empty; }
+                            if (_value == null)
+                            {
+                                _value = string.Empty;
+                            }
 
-                            xmlContent.AppendFormat("{0}=\"{1}\" ", properInfo.Name, HttpUtility.HtmlAttributeEncode(_value.ToString()));
+                            xmlContent.AppendFormat("{0}=\"{1}\" ", properInfo.Name,
+                                HttpUtility.HtmlAttributeEncode(_value.ToString()));
                         }
 
                         xmlContent.Append("></CardItem>");
@@ -238,7 +246,7 @@ namespace Arsenalcn.ClubSys.Web
 
                 //DataRow rowInfo = Arsenal_Player.Cache.GetInfo(new Guid(PlayerGuid));
                 var p = Player.Cache.Load(new Guid(PlayerGuid));
-                Object _value;
+                object _value;
 
                 if (p != null)
                 {
@@ -248,9 +256,13 @@ namespace Arsenalcn.ClubSys.Web
                     foreach (var properInfo in p.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
                     {
                         _value = properInfo.GetValue(p, null);
-                        if (_value == null) { _value = string.Empty; }
+                        if (_value == null)
+                        {
+                            _value = string.Empty;
+                        }
 
-                        xmlContent.AppendFormat("{0}=\"{1}\" ", properInfo.Name, HttpUtility.HtmlAttributeEncode(_value.ToString()));
+                        xmlContent.AppendFormat("{0}=\"{1}\" ", properInfo.Name,
+                            HttpUtility.HtmlAttributeEncode(_value.ToString()));
                     }
 
                     xmlContent.Append("></PlayerInfo>");
@@ -269,19 +281,25 @@ namespace Arsenalcn.ClubSys.Web
                     {
                         //DataRow rowInfo = Arsenal_Player.Cache.GetInfo(c.ArsenalPlayerGuid.Value);
                         var p = Player.Cache.Load(c.ArsenalPlayerGuid.Value);
-                        Object _value;
+                        object _value;
 
                         if (p != null)
                         {
                             var xmlContent = new StringBuilder("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
                             xmlContent.AppendFormat("<CardInfo CardID=\"{0}\" ", CardID);
 
-                            foreach (var properInfo in p.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
+                            foreach (
+                                var properInfo in p.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                                )
                             {
                                 _value = properInfo.GetValue(p, null);
-                                if (_value == null) { _value = string.Empty; }
+                                if (_value == null)
+                                {
+                                    _value = string.Empty;
+                                }
 
-                                xmlContent.AppendFormat("{0}=\"{1}\" ", properInfo.Name, HttpUtility.HtmlAttributeEncode(_value.ToString()));
+                                xmlContent.AppendFormat("{0}=\"{1}\" ", properInfo.Name,
+                                    HttpUtility.HtmlAttributeEncode(_value.ToString()));
                             }
 
                             xmlContent.Append("></CardInfo>");
@@ -303,7 +321,7 @@ namespace Arsenalcn.ClubSys.Web
                 //DataRow rowInfo = Service.UserVideo.GetVideoInfoByUserVideoID(UserVideoID);
                 try
                 {
-                    var uv = new Entity.UserVideo();
+                    var uv = new UserVideo();
                     uv.UserVideoID = UserVideoID;
                     uv.Select();
 
@@ -321,34 +339,52 @@ namespace Arsenalcn.ClubSys.Web
                             xmlContent.Append("<VideoInfo ");
 
                             // build UserVideo xml info
-                            foreach (var properInfo in uv.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
+                            foreach (
+                                var properInfo in
+                                    uv.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
                             {
                                 // remove the property VideoGuid of UserVideo
                                 if (!properInfo.Name.Equals("VideoGuid"))
                                 {
                                     _value = properInfo.GetValue(uv, null);
-                                    if (_value == null) { _value = string.Empty; }
+                                    if (_value == null)
+                                    {
+                                        _value = string.Empty;
+                                    }
 
-                                    xmlContent.AppendFormat("{0}=\"{1}\" ", properInfo.Name, HttpUtility.HtmlAttributeEncode(_value.ToString()));
+                                    xmlContent.AppendFormat("{0}=\"{1}\" ", properInfo.Name,
+                                        HttpUtility.HtmlAttributeEncode(_value.ToString()));
                                 }
                             }
 
                             // build ArsenalVideo xml info
-                            foreach (var properInfo in v.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
+                            foreach (
+                                var properInfo in v.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                                )
                             {
                                 _value = properInfo.GetValue(v, null);
-                                if (_value == null) { _value = string.Empty; }
+                                if (_value == null)
+                                {
+                                    _value = string.Empty;
+                                }
 
-                                xmlContent.AppendFormat("{0}=\"{1}\" ", properInfo.Name, HttpUtility.HtmlAttributeEncode(_value.ToString()));
+                                xmlContent.AppendFormat("{0}=\"{1}\" ", properInfo.Name,
+                                    HttpUtility.HtmlAttributeEncode(_value.ToString()));
                             }
 
                             // build ArsenalPlayer xml info
-                            foreach (var properInfo in p.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
+                            foreach (
+                                var properInfo in p.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                                )
                             {
                                 _value = properInfo.GetValue(p, null);
-                                if (_value == null) { _value = string.Empty; }
+                                if (_value == null)
+                                {
+                                    _value = string.Empty;
+                                }
 
-                                xmlContent.AppendFormat("{0}=\"{1}\" ", properInfo.Name, HttpUtility.HtmlAttributeEncode(_value.ToString()));
+                                xmlContent.AppendFormat("{0}=\"{1}\" ", properInfo.Name,
+                                    HttpUtility.HtmlAttributeEncode(_value.ToString()));
                             }
 
                             xmlContent.Append("></VideoInfo>");
@@ -357,12 +393,14 @@ namespace Arsenalcn.ClubSys.Web
                         }
                     }
                 }
-                catch { }
+                catch
+                {
+                }
             }
             else if (VideoGuid != null)
             {
                 //DataRow rowInfo = Service.UserVideo.GetVideoInfoByVideoGuid(new Guid(VideoGuid));
-                Object _value;
+                object _value;
 
                 var v = Video.Cache.Load(new Guid(VideoGuid));
 
@@ -376,21 +414,31 @@ namespace Arsenalcn.ClubSys.Web
                         xmlContent.Append("<VideoInfo ");
 
                         // build ArsenalVideo xml info
-                        foreach (var properInfo in v.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
+                        foreach (
+                            var properInfo in v.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
                         {
                             _value = properInfo.GetValue(v, null);
-                            if (_value == null) { _value = string.Empty; }
+                            if (_value == null)
+                            {
+                                _value = string.Empty;
+                            }
 
-                            xmlContent.AppendFormat("{0}=\"{1}\" ", properInfo.Name, HttpUtility.HtmlAttributeEncode(_value.ToString()));
+                            xmlContent.AppendFormat("{0}=\"{1}\" ", properInfo.Name,
+                                HttpUtility.HtmlAttributeEncode(_value.ToString()));
                         }
 
                         // build ArsenalPlayer xml info
-                        foreach (var properInfo in p.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
+                        foreach (
+                            var properInfo in p.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
                         {
                             _value = properInfo.GetValue(p, null);
-                            if (_value == null) { _value = string.Empty; }
+                            if (_value == null)
+                            {
+                                _value = string.Empty;
+                            }
 
-                            xmlContent.AppendFormat("{0}=\"{1}\" ", properInfo.Name, HttpUtility.HtmlAttributeEncode(_value.ToString()));
+                            xmlContent.AppendFormat("{0}=\"{1}\" ", properInfo.Name,
+                                HttpUtility.HtmlAttributeEncode(_value.ToString()));
                         }
 
                         xmlContent.Append("></VideoInfo>");
@@ -399,7 +447,7 @@ namespace Arsenalcn.ClubSys.Web
                     }
                 }
             }
-            else if (CurrArsenalPlayer == true)
+            else if (CurrArsenalPlayer)
             {
                 var list = Player.Cache.PlayerList.FindAll(p => !p.IsLegend && !p.IsLoan && p.SquadNumber >= 0);
 
@@ -410,7 +458,9 @@ namespace Arsenalcn.ClubSys.Web
 
                 foreach (var p in list)
                 {
-                    xmlContent.AppendFormat("<PlayerInfo Guid=\"{0}\" DisplayName=\"{1}\" SquadNumber=\"{2}\" FaceURL=\"{3}\" />", p.ID.ToString(), p.DisplayName, p.SquadNumber.ToString(), p.FaceURL);
+                    xmlContent.AppendFormat(
+                        "<PlayerInfo Guid=\"{0}\" DisplayName=\"{1}\" SquadNumber=\"{2}\" FaceURL=\"{3}\" />", p.ID,
+                        p.DisplayName, p.SquadNumber, p.FaceURL);
                 }
                 xmlContent.Append("</CurrArsenalPlayer>");
 

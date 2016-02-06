@@ -1,32 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web.UI.WebControls;
-
-using Arsenalcn.ClubSys.Service;
 using Arsenalcn.ClubSys.Entity;
-
+using Arsenalcn.ClubSys.Service;
+using Arsenalcn.ClubSys.Web.Common;
 
 namespace Arsenalcn.ClubSys.Web.Control
 {
-    public partial class CollectionCard : Common.CollectionBase
+    public partial class CollectionCard : CollectionBase
     {
-        private Gamer _playerInfo = null;
-
-        protected void Page_Load(object sender, EventArgs e)
-        {
-            if (ProfileUserID > 0)
-            {
-                _playerInfo = PlayerStrip.GetPlayerInfo(ProfileUserID);
-
-                var list = PlayerStrip.GetMyCards(ProfileUserID).FindAll(delegate(Card un)
-                { return un.IsActive && un.ArsenalPlayerGuid.HasValue && un.ActiveDate.HasValue; });
-
-                list = SortUserNumberListByOrderClause(list, OrderClause);
-
-                rptCard.DataSource = list;
-                rptCard.DataBind();
-            }
-        }
+        private Gamer _playerInfo;
 
         private string OrderClause
         {
@@ -34,8 +17,28 @@ namespace Arsenalcn.ClubSys.Web.Control
             {
                 if (!string.IsNullOrEmpty(ddlCardOrder.SelectedValue))
                     return ddlCardOrder.SelectedValue;
-                else
-                    return string.Empty;
+                return string.Empty;
+            }
+        }
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            if (ProfileUserID > 0)
+            {
+                _playerInfo = PlayerStrip.GetPlayerInfo(ProfileUserID);
+
+                var list =
+                    PlayerStrip.GetMyCards(ProfileUserID)
+                        .FindAll(
+                            delegate(Card un)
+                            {
+                                return un.IsActive && un.ArsenalPlayerGuid.HasValue && un.ActiveDate.HasValue;
+                            });
+
+                list = SortUserNumberListByOrderClause(list, OrderClause);
+
+                rptCard.DataSource = list;
+                rptCard.DataBind();
             }
         }
 
@@ -52,13 +55,16 @@ namespace Arsenalcn.ClubSys.Web.Control
 
                         if (p1.SquadNumber.Equals(p2.SquadNumber))
                             return Comparer<string>.Default.Compare(p1.DisplayName, p2.DisplayName);
-                        else
-                            return p1.SquadNumber - p2.SquadNumber;
+                        return p1.SquadNumber - p2.SquadNumber;
                     });
                 }
                 else if (orderClause.Equals("ActiveDate DESC"))
                 {
-                    list.Sort(delegate(Card un1, Card un2) { return Comparer<DateTime>.Default.Compare(un2.ActiveDate.Value, un1.ActiveDate.Value); });
+                    list.Sort(
+                        delegate(Card un1, Card un2)
+                        {
+                            return Comparer<DateTime>.Default.Compare(un2.ActiveDate.Value, un1.ActiveDate.Value);
+                        });
                 }
                 else if (orderClause.Equals("Legend, SquadNumber"))
                 {
@@ -71,18 +77,18 @@ namespace Arsenalcn.ClubSys.Web.Control
                         {
                             if (p1.SquadNumber.Equals(p2.SquadNumber))
                                 return Comparer<string>.Default.Compare(p1.DisplayName, p2.DisplayName);
-                            else
-                                return p1.SquadNumber - p2.SquadNumber;
+                            return p1.SquadNumber - p2.SquadNumber;
                         }
-                        else
-                        {
-                            return Comparer<Boolean>.Default.Compare(p1.IsLegend, p2.IsLegend);
-                        }
+                        return Comparer<bool>.Default.Compare(p1.IsLegend, p2.IsLegend);
                     });
                 }
                 else
                 {
-                    list.Sort(delegate(Card un1, Card un2) { return Comparer<DateTime>.Default.Compare(un2.GainDate, un1.GainDate); });
+                    list.Sort(
+                        delegate(Card un1, Card un2)
+                        {
+                            return Comparer<DateTime>.Default.Compare(un2.GainDate, un1.GainDate);
+                        });
                 }
             }
 
@@ -102,9 +108,9 @@ namespace Arsenalcn.ClubSys.Web.Control
 
                 lblPlayerCardID.Text = un.ID.ToString();
                 lblPlayerCardPath.Text =
-                    $"swf/PlayerCardActive.swf?XMLURL=ServerXml.aspx%3FPlayerGuid={un.ArsenalPlayerGuid.ToString()}";
+                    $"swf/PlayerCardActive.swf?XMLURL=ServerXml.aspx%3FPlayerGuid={un.ArsenalPlayerGuid}";
 
-                if (ProfileUserID == this.CurrentUserID)
+                if (ProfileUserID == CurrentUserID)
                 {
                     //setCurrent button
                     if (_playerInfo == null)
@@ -170,12 +176,12 @@ namespace Arsenalcn.ClubSys.Web.Control
                     PlayerStrip.UpdatePlayerCurrentNum(CurrentUserID, userNumID);
 
                     var script = "alert('球衣已被换上'); window.location.href = window.location.href;";
-                    this.Page.ClientScript.RegisterClientScriptBlock(typeof(string), "SetCurrentSucceed", script, true);
+                    Page.ClientScript.RegisterClientScriptBlock(typeof (string), "SetCurrentSucceed", script, true);
                 }
                 else
                 {
                     var script = "alert('您不能换上该球衣');";
-                    this.Page.ClientScript.RegisterClientScriptBlock(typeof(string), "SetCurrentFailed", script, true);
+                    Page.ClientScript.RegisterClientScriptBlock(typeof (string), "SetCurrentFailed", script, true);
                 }
             }
             else if (e.CommandName == "CancelCurrent")
@@ -189,12 +195,12 @@ namespace Arsenalcn.ClubSys.Web.Control
                     PlayerStrip.RemovePlayerCurrentNum(CurrentUserID, userNumID);
 
                     var script = "alert('球衣已被换下'); window.location.href = window.location.href;";
-                    this.Page.ClientScript.RegisterClientScriptBlock(typeof(string), "SetCurrentSucceed", script, true);
+                    Page.ClientScript.RegisterClientScriptBlock(typeof (string), "SetCurrentSucceed", script, true);
                 }
                 else
                 {
                     var script = "alert('您不能换下该球衣');";
-                    this.Page.ClientScript.RegisterClientScriptBlock(typeof(string), "SetCurrentFailed", script, true);
+                    Page.ClientScript.RegisterClientScriptBlock(typeof (string), "SetCurrentFailed", script, true);
                 }
             }
         }

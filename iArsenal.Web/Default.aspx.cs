@@ -16,10 +16,10 @@ namespace iArsenal.Web
                     {
                         HttpCookie mycookie;
                         mycookie = Request.Cookies["session_key"];
-                        var ts = new TimeSpan(0, 0, 0, 0);//时间跨度 
-                        mycookie.Expires = DateTime.Now.Add(ts);//立即过期 
-                        Response.Cookies.Remove("session_key");//清除 
-                        Response.Cookies.Add(mycookie);//写入立即过期的*/
+                        var ts = new TimeSpan(0, 0, 0, 0); //时间跨度 
+                        mycookie.Expires = DateTime.Now.Add(ts); //立即过期 
+                        Response.Cookies.Remove("session_key"); //清除 
+                        Response.Cookies.Add(mycookie); //写入立即过期的*/
                         Response.Cookies["session_key"].Expires = DateTime.Now.AddDays(-1);
                     }
 
@@ -27,10 +27,10 @@ namespace iArsenal.Web
                     {
                         HttpCookie mycookie;
                         mycookie = Request.Cookies["uid"];
-                        var ts = new TimeSpan(0, 0, 0, 0);//时间跨度 
-                        mycookie.Expires = DateTime.Now.Add(ts);//立即过期 
-                        Response.Cookies.Remove("uid");//清除 
-                        Response.Cookies.Add(mycookie);//写入立即过期的*/
+                        var ts = new TimeSpan(0, 0, 0, 0); //时间跨度 
+                        mycookie.Expires = DateTime.Now.Add(ts); //立即过期 
+                        Response.Cookies.Remove("uid"); //清除 
+                        Response.Cookies.Add(mycookie); //写入立即过期的*/
                         Response.Cookies["uid"].Expires = DateTime.Now.AddDays(-1);
                     }
 
@@ -38,10 +38,10 @@ namespace iArsenal.Web
                     {
                         HttpCookie mycookie;
                         mycookie = Request.Cookies["user_name"];
-                        var ts = new TimeSpan(0, 0, 0, 0);//时间跨度 
-                        mycookie.Expires = DateTime.Now.Add(ts);//立即过期 
-                        Response.Cookies.Remove("user_name");//清除 
-                        Response.Cookies.Add(mycookie);//写入立即过期的*/
+                        var ts = new TimeSpan(0, 0, 0, 0); //时间跨度 
+                        mycookie.Expires = DateTime.Now.Add(ts); //立即过期 
+                        Response.Cookies.Remove("user_name"); //清除 
+                        Response.Cookies.Add(mycookie); //写入立即过期的*/
                         Response.Cookies["user_name"].Expires = DateTime.Now.AddDays(-1);
                     }
 
@@ -49,10 +49,10 @@ namespace iArsenal.Web
                     {
                         HttpCookie mycookie;
                         mycookie = Request.Cookies["mid"];
-                        var ts = new TimeSpan(0, 0, 0, 0);//时间跨度 
-                        mycookie.Expires = DateTime.Now.Add(ts);//立即过期 
-                        Response.Cookies.Remove("mid");//清除 
-                        Response.Cookies.Add(mycookie);//写入立即过期的*/
+                        var ts = new TimeSpan(0, 0, 0, 0); //时间跨度 
+                        mycookie.Expires = DateTime.Now.Add(ts); //立即过期 
+                        Response.Cookies.Remove("mid"); //清除 
+                        Response.Cookies.Add(mycookie); //写入立即过期的*/
                         Response.Cookies["mid"].Expires = DateTime.Now.AddDays(-1);
                     }
 
@@ -60,10 +60,10 @@ namespace iArsenal.Web
                     {
                         HttpCookie mycookie;
                         mycookie = Request.Cookies["member_name"];
-                        var ts = new TimeSpan(0, 0, 0, 0);//时间跨度 
-                        mycookie.Expires = DateTime.Now.Add(ts);//立即过期 
-                        Response.Cookies.Remove("member_name");//清除 
-                        Response.Cookies.Add(mycookie);//写入立即过期的*/
+                        var ts = new TimeSpan(0, 0, 0, 0); //时间跨度 
+                        mycookie.Expires = DateTime.Now.Add(ts); //立即过期 
+                        Response.Cookies.Remove("member_name"); //清除 
+                        Response.Cookies.Add(mycookie); //写入立即过期的*/
                         Response.Cookies["member_name"].Expires = DateTime.Now.AddDays(-1);
                     }
 

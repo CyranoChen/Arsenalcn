@@ -1,16 +1,11 @@
 ﻿using System;
+using Arsenalcn.ClubSys.Web.Common;
+using Arsenalcn.ClubSys.Web.Control;
 
 namespace Arsenalcn.ClubSys.Web
 {
-    public partial class MyCollection : Common.BasePage
+    public partial class MyCollection : BasePage
     {
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-
-            AnonymousRedirect = true;
-        }
-
         public int ProfileUserID
         {
             get
@@ -21,48 +16,54 @@ namespace Arsenalcn.ClubSys.Web
 
                     if (int.TryParse(Request.QueryString["UserID"], out profileUserID))
                         return profileUserID;
-                    else
-                        return this.userid;
+                    return userid;
                 }
-                else
-                    return this.userid;
+                return userid;
             }
+        }
+
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+
+            AnonymousRedirect = true;
         }
 
         protected void Page_Load(object sender, EventArgs e)
         {
             #region SetControlProperty
-            ctrlLeftPanel.UserID = this.userid;
-            ctrlLeftPanel.UserName = this.username;
-            ctrlLeftPanel.UserKey = this.userkey;
 
-            ctrlFieldToolBar.UserID = this.userid;
-            ctrlFieldToolBar.UserName = this.username;
+            ctrlLeftPanel.UserID = userid;
+            ctrlLeftPanel.UserName = username;
+            ctrlLeftPanel.UserKey = userkey;
 
-            ctrlPlayerHeader.UserID = this.userid;
-            ctrlPlayerHeader.ProfileUserID = this.ProfileUserID;
+            ctrlFieldToolBar.UserID = userid;
+            ctrlFieldToolBar.UserName = username;
 
-            if (this.ProfileUserID != this.userid)
-                ctrlTabBar.ProfileUserID = this.ProfileUserID;
+            ctrlPlayerHeader.UserID = userid;
+            ctrlPlayerHeader.ProfileUserID = ProfileUserID;
+
+            if (ProfileUserID != userid)
+                ctrlTabBar.ProfileUserID = ProfileUserID;
             else
-                ctrlTabBar.ProfileUserID = this.userid;
+                ctrlTabBar.ProfileUserID = userid;
 
             #endregion
 
-            Common.CollectionBase collection = null;
+            CollectionBase collection = null;
 
             switch (ctrlTabBar.Current)
             {
-                case Arsenalcn.ClubSys.Web.Control.CollectionTab.Card:
+                case CollectionTab.Card:
                     collection = ctrlCard;
                     break;
-                case Arsenalcn.ClubSys.Web.Control.CollectionTab.InactiveCard:
+                case CollectionTab.InactiveCard:
                     collection = ctrlInvalidCard;
                     break;
-                case Arsenalcn.ClubSys.Web.Control.CollectionTab.InactiveVideo:
+                case CollectionTab.InactiveVideo:
                     collection = ctrlInvalidVideo;
                     break;
-                case Arsenalcn.ClubSys.Web.Control.CollectionTab.Video:
+                case CollectionTab.Video:
                     collection = ctrlVideo;
                     break;
             }
@@ -71,7 +72,7 @@ namespace Arsenalcn.ClubSys.Web
             {
                 collection.Visible = true;
                 collection.ProfileUserID = ProfileUserID;
-                collection.CurrentUserID = this.userid;
+                collection.CurrentUserID = userid;
             }
         }
     }

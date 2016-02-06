@@ -1,41 +1,48 @@
 ﻿using System;
 using System.Web.UI.WebControls;
-
-using iArsenal.Service;
 using Arsenalcn.Core;
+using iArsenal.Service;
+using iArsenal.Web.Control;
 
 namespace iArsenal.Web
 {
     public partial class AdminProduct : AdminPageBase
     {
         private readonly IRepository repo = new Repository();
-        protected void Page_Load(object sender, EventArgs e)
-        {
-            ctrlAdminFieldToolBar.AdminUserName = this.Username;
-            ctrlCustomPagerInfo.PageChanged += new Control.CustomPagerInfo.PageChangedEventHandler(ctrlCustomPagerInfo_PageChanged);
 
-            if (!IsPostBack)
-            {
-                BindData();
-            }
-        }
+        private Guid? _productGuid;
 
-        private Guid? _productGuid = null;
         private Guid? ProductGuid
         {
             get
             {
                 if (_productGuid.HasValue && _productGuid == Guid.Empty)
                     return _productGuid;
-                else if (!string.IsNullOrEmpty(Request.QueryString["ProductGuid"]))
+                if (!string.IsNullOrEmpty(Request.QueryString["ProductGuid"]))
                 {
-                    try { return new Guid(Request.QueryString["ProductGuid"]); }
-                    catch { return Guid.Empty; }
+                    try
+                    {
+                        return new Guid(Request.QueryString["ProductGuid"]);
+                    }
+                    catch
+                    {
+                        return Guid.Empty;
+                    }
                 }
-                else
-                    return null;
+                return null;
             }
             set { _productGuid = value; }
+        }
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            ctrlAdminFieldToolBar.AdminUserName = Username;
+            ctrlCustomPagerInfo.PageChanged += ctrlCustomPagerInfo_PageChanged;
+
+            if (!IsPostBack)
+            {
+                BindData();
+            }
         }
 
         private void BindData()
@@ -70,7 +77,7 @@ namespace iArsenal.Web
                 {
                     tmpString = ViewState["ProductType"].ToString();
                     if (!string.IsNullOrEmpty(tmpString))
-                        returnValue = returnValue && ((int)x.ProductType).Equals(Convert.ToInt32(tmpString));
+                        returnValue = returnValue && ((int) x.ProductType).Equals(Convert.ToInt32(tmpString));
                 }
 
                 if (ViewState["IsActive"] != null)
@@ -84,13 +91,14 @@ namespace iArsenal.Web
             });
 
             #region set GridView Selected PageIndex
+
             if (ProductGuid.HasValue && ProductGuid != Guid.Empty)
             {
                 var i = list.FindIndex(x => x.ID.Equals(ProductGuid));
                 if (i >= 0)
                 {
-                    gvProduct.PageIndex = i / gvProduct.PageSize;
-                    gvProduct.SelectedIndex = i % gvProduct.PageSize;
+                    gvProduct.PageIndex = i/gvProduct.PageSize;
+                    gvProduct.SelectedIndex = i%gvProduct.PageSize;
                 }
                 else
                 {
@@ -102,12 +110,14 @@ namespace iArsenal.Web
             {
                 gvProduct.SelectedIndex = -1;
             }
+
             #endregion
 
             gvProduct.DataSource = list;
             gvProduct.DataBind();
 
             #region set Control Custom Pager
+
             if (gvProduct.BottomPagerRow != null)
             {
                 gvProduct.BottomPagerRow.Visible = true;
@@ -122,6 +132,7 @@ namespace iArsenal.Web
             {
                 ctrlCustomPagerInfo.Visible = false;
             }
+
             #endregion
         }
 
@@ -133,7 +144,7 @@ namespace iArsenal.Web
             BindData();
         }
 
-        protected void ctrlCustomPagerInfo_PageChanged(object sender, Control.CustomPagerInfo.DataNavigatorEventArgs e)
+        protected void ctrlCustomPagerInfo_PageChanged(object sender, CustomPagerInfo.DataNavigatorEventArgs e)
         {
             if (e.PageIndex > 0)
             {
@@ -149,7 +160,7 @@ namespace iArsenal.Web
             if (gvProduct.SelectedIndex != -1)
             {
                 Response.Redirect(
-                    $"AdminProductView.aspx?ProductGuid={gvProduct.DataKeys[gvProduct.SelectedIndex].Value.ToString()}");
+                    $"AdminProductView.aspx?ProductGuid={gvProduct.DataKeys[gvProduct.SelectedIndex].Value}");
             }
         }
 
@@ -157,7 +168,8 @@ namespace iArsenal.Web
         {
             Product.Cache.RefreshCache();
 
-            ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('更新缓存成功');window.location.href=window.location.href", true);
+            ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                "alert('更新缓存成功');window.location.href=window.location.href", true);
         }
 
         protected void btnFilter_Click(object sender, EventArgs e)

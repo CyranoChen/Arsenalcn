@@ -5,12 +5,11 @@
 
 @if (Model.Criteria.MaxPage > 0)
 {
-    @section Footer {
-        <div data-role="footer" data-position="fixed" class="pager">
-            @Html.Partial("_PagerPartial", Model.Criteria)
-        </div>
-    }
-}
+@section Footer {
+    <div data-role="footer" data-position="fixed" class="pager">
+        @Html.Partial("_PagerPartial", Model.Criteria)
+    </div>
+}}
 <div data-role="content">
     <ul data-role="listview" data-inset="true">
         <li data-role="list-divider">
@@ -22,7 +21,7 @@
             foreach (var m in Model.Data)
             {
                 <li>
-                    <a data-transition="slide" href="@Url.Action("Detail", "Casino", new { id = m.ID.ToString() })">
+                    <a data-transition="slide" href="@Url.Action("Detail", "Casino", new {id = m.ID.ToString()})">
                         @Html.Partial("Casino/_MatchInfoPartial", m)
                     </a>
                 </li>

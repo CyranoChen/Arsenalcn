@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Web.UI.WebControls;
-
 using Arsenalcn.CasinoSys.Entity;
-
+using Arsenalcn.CasinoSys.Web.Common;
 using Discuz.Forum;
 
 namespace Arsenalcn.CasinoSys.Web
 {
-    public partial class AdminGambler : Common.AdminBasePage
+    public partial class AdminGambler : AdminBasePage
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -26,7 +25,7 @@ namespace Arsenalcn.CasinoSys.Web
             if (ViewState["username"] != null)
                 queryUsername = ViewState["username"].ToString();
 
-            var list = Gambler.GetGamblers().FindAll(delegate (Gambler g)
+            var list = Gambler.GetGamblers().FindAll(delegate(Gambler g)
             {
                 var returnValue = true;
                 var tmpString = string.Empty;
@@ -110,7 +109,7 @@ namespace Arsenalcn.CasinoSys.Web
             var tbWin = gvGambler.Rows[gvGambler.EditIndex].FindControl("tbWin") as TextBox;
             var tbLose = gvGambler.Rows[gvGambler.EditIndex].FindControl("tbLose") as TextBox;
 
-            var gambler = new Gambler((int)gvGambler.DataKeys[gvGambler.EditIndex].Value);
+            var gambler = new Gambler((int) gvGambler.DataKeys[gvGambler.EditIndex].Value);
 
             if (tbCash != null && tbWin != null && tbLose != null)
             {
@@ -122,11 +121,11 @@ namespace Arsenalcn.CasinoSys.Web
 
                     gambler.Update();
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "success", "alert('修改玩家信息成功');", true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "success", "alert('修改玩家信息成功');", true);
                 }
                 catch
                 {
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "failed", "alert('修改玩家信息失败');", true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "failed", "alert('修改玩家信息失败');", true);
                 }
             }
 
@@ -157,11 +156,11 @@ namespace Arsenalcn.CasinoSys.Web
                 {
                     Gambler.GamblerStatistics(Convert.ToInt32(e.CommandArgument));
 
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "success", "alert('统计玩家信息成功');", true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "success", "alert('统计玩家信息成功');", true);
                 }
                 catch (Exception ex)
                 {
-                    ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message}');", true);
+                    ClientScript.RegisterClientScriptBlock(typeof (string), "failed", $"alert('{ex.Message}');", true);
                 }
             }
         }

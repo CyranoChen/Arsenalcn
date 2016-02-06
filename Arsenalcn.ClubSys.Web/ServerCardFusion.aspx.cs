@@ -1,12 +1,14 @@
 ﻿using System;
+using System.Security.Cryptography;
 using System.Text;
-
 using Arsenalcn.ClubSys.Entity;
 using Arsenalcn.ClubSys.Service;
+using Arsenalcn.ClubSys.Web.Common;
+using UserVideo = Arsenalcn.ClubSys.Service.UserVideo;
 
 namespace Arsenalcn.ClubSys.Web
 {
-    public partial class ServerCardFusion : Common.BasePage
+    public partial class ServerCardFusion : BasePage
     {
         private string responseResult = "-1";
 
@@ -14,11 +16,11 @@ namespace Arsenalcn.ClubSys.Web
         {
             try
             {
-                if (this.userid != -1)
+                if (userid != -1)
                 {
                     if (Request.Form["FusionResult"] == "start")
                     {
-                        responseResult = this.userid.ToString();
+                        responseResult = userid.ToString();
                     }
                     else
                     {
@@ -28,20 +30,23 @@ namespace Arsenalcn.ClubSys.Web
                         var fusionResult = Request.Form["FusionResult"];
                         var authKey = Request.Form["AuthKey"];
 
-                        if (!string.IsNullOrEmpty(leftCardID) && !string.IsNullOrEmpty(rightCardID) && !string.IsNullOrEmpty(fusionResult) && !string.IsNullOrEmpty(authKey))
+                        if (!string.IsNullOrEmpty(leftCardID) && !string.IsNullOrEmpty(rightCardID) &&
+                            !string.IsNullOrEmpty(fusionResult) && !string.IsNullOrEmpty(authKey))
                         {
                             int card1, card2, result;
 
-                            if (int.TryParse(leftCardID, out card1) && int.TryParse(rightCardID, out card2) && int.TryParse(fusionResult, out result))
+                            if (int.TryParse(leftCardID, out card1) && int.TryParse(rightCardID, out card2) &&
+                                int.TryParse(fusionResult, out result))
                             {
-                                if (ValidateAuthKey(card1.ToString(), card2.ToString(), this.userid.ToString(), authKey))
+                                if (ValidateAuthKey(card1.ToString(), card2.ToString(), userid.ToString(), authKey))
                                 {
                                     var un1 = PlayerStrip.GetUserNumber(card1);
                                     var un2 = PlayerStrip.GetUserNumber(card2);
 
-                                    if (un1 != null && un2 != null && un1.UserID == this.userid && un2.UserID == this.userid)
+                                    if (un1 != null && un2 != null && un1.UserID == userid && un2.UserID == userid)
                                     {
-                                        if (!un1.IsActive && !un2.IsActive && un1.ArsenalPlayerGuid.Value == un2.ArsenalPlayerGuid.Value)
+                                        if (!un1.IsActive && !un2.IsActive &&
+                                            un1.ArsenalPlayerGuid.Value == un2.ArsenalPlayerGuid.Value)
                                         {
                                             //rule 1 -- two inactive cards of same player
 
@@ -49,8 +54,10 @@ namespace Arsenalcn.ClubSys.Web
                                             {
                                                 //remove two cards and insert 1 video
 
-                                                Service.UserVideo.ConsolidateCards(this.userid, this.username, card1, card2);
-                                                PlayerLog.LogHistory(this.userid, this.username, PlayerHistoryType.ConsolidateCards, new ConsolidateCardsDesc(un1, un2).Generate());
+                                                UserVideo.ConsolidateCards(userid, username, card1, card2);
+                                                PlayerLog.LogHistory(userid, username,
+                                                    PlayerHistoryType.ConsolidateCards,
+                                                    new ConsolidateCardsDesc(un1, un2).Generate());
 
                                                 responseResult = "1";
                                             }
@@ -63,8 +70,10 @@ namespace Arsenalcn.ClubSys.Web
                                             {
                                                 //remove two cards and insert 1 video
 
-                                                Service.UserVideo.ConsolidateCards(this.userid, this.username, card1, card2);
-                                                PlayerLog.LogHistory(this.userid, this.username, PlayerHistoryType.ConsolidateCards, new ConsolidateCardsDesc(un1, un2).Generate());
+                                                UserVideo.ConsolidateCards(userid, username, card1, card2);
+                                                PlayerLog.LogHistory(userid, username,
+                                                    PlayerHistoryType.ConsolidateCards,
+                                                    new ConsolidateCardsDesc(un1, un2).Generate());
 
                                                 responseResult = "1";
                                             }
@@ -91,7 +100,7 @@ namespace Arsenalcn.ClubSys.Web
 
             var bytes = Encoding.UTF8.GetBytes(originStr);
 
-            var resultBytes = System.Security.Cryptography.MD5.Create().ComputeHash(bytes);
+            var resultBytes = MD5.Create().ComputeHash(bytes);
 
             var sTemp = "";
             for (var i = 0; i < resultBytes.Length; i++)

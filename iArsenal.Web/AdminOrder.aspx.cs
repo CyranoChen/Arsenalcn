@@ -2,28 +2,21 @@
 using System.Data;
 using System.Linq;
 using System.Web.UI.WebControls;
-
 using Arsenalcn.Core;
 using Arsenalcn.Core.Utility;
 using iArsenal.Service;
+using iArsenal.Web.Control;
 
 namespace iArsenal.Web
 {
     public partial class AdminOrder : AdminPageBase
     {
         private readonly IRepository repo = new Repository();
-        protected void Page_Load(object sender, EventArgs e)
-        {
-            ctrlAdminFieldToolBar.AdminUserName = this.Username;
-            ctrlCustomPagerInfo.PageChanged += new Control.CustomPagerInfo.PageChangedEventHandler(ctrlCustomPagerInfo_PageChanged);
 
-            if (!IsPostBack)
-            {
-                BindData();
-            }
-        }
+        private int _memberID = int.MinValue;
 
         private int _orderID = int.MinValue;
+
         private int OrderID
         {
             get
@@ -31,15 +24,14 @@ namespace iArsenal.Web
                 int _res;
                 if (_orderID == 0)
                     return _orderID;
-                else if (!string.IsNullOrEmpty(Request.QueryString["OrderID"]) && int.TryParse(Request.QueryString["OrderID"], out _res))
+                if (!string.IsNullOrEmpty(Request.QueryString["OrderID"]) &&
+                    int.TryParse(Request.QueryString["OrderID"], out _res))
                     return _res;
-                else
-                    return int.MinValue;
+                return int.MinValue;
             }
             set { _orderID = value; }
         }
 
-        private int _memberID = int.MinValue;
         private int MemberID
         {
             get
@@ -47,12 +39,23 @@ namespace iArsenal.Web
                 int _res;
                 if (_memberID == 0)
                     return _memberID;
-                else if (!string.IsNullOrEmpty(Request.QueryString["MemberID"]) && int.TryParse(Request.QueryString["MemberID"], out _res))
+                if (!string.IsNullOrEmpty(Request.QueryString["MemberID"]) &&
+                    int.TryParse(Request.QueryString["MemberID"], out _res))
                     return _res;
-                else
-                    return int.MinValue;
+                return int.MinValue;
             }
             set { _memberID = value; }
+        }
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            ctrlAdminFieldToolBar.AdminUserName = Username;
+            ctrlCustomPagerInfo.PageChanged += ctrlCustomPagerInfo_PageChanged;
+
+            if (!IsPostBack)
+            {
+                BindData();
+            }
         }
 
         private void BindData()
@@ -99,14 +102,15 @@ namespace iArsenal.Web
                 {
                     tmpString = ViewState["ProductType"].ToString();
                     if (!string.IsNullOrEmpty(tmpString))
-                        returnValue = returnValue && x.OrderType.ToString().Equals(tmpString, StringComparison.OrdinalIgnoreCase);
+                        returnValue = returnValue &&
+                                      x.OrderType.ToString().Equals(tmpString, StringComparison.OrdinalIgnoreCase);
                 }
 
                 if (ViewState["Status"] != null)
                 {
                     tmpString = ViewState["Status"].ToString();
                     if (!string.IsNullOrEmpty(tmpString))
-                        returnValue = returnValue && ((int)x.Status).Equals(Convert.ToInt32(tmpString));
+                        returnValue = returnValue && ((int) x.Status).Equals(Convert.ToInt32(tmpString));
                 }
 
                 if (ViewState["IsActive"] != null)
@@ -120,13 +124,14 @@ namespace iArsenal.Web
             });
 
             #region set GridView Selected PageIndex
+
             if (OrderID > 0)
             {
                 var i = list.FindIndex(x => x.ID.Equals(OrderID));
                 if (i >= 0)
                 {
-                    gvOrder.PageIndex = i / gvOrder.PageSize;
-                    gvOrder.SelectedIndex = i % gvOrder.PageSize;
+                    gvOrder.PageIndex = i/gvOrder.PageSize;
+                    gvOrder.SelectedIndex = i%gvOrder.PageSize;
                 }
                 else
                 {
@@ -138,12 +143,14 @@ namespace iArsenal.Web
             {
                 gvOrder.SelectedIndex = -1;
             }
+
             #endregion
 
             gvOrder.DataSource = list;
             gvOrder.DataBind();
 
             #region set Control Custom Pager
+
             if (gvOrder.BottomPagerRow != null)
             {
                 gvOrder.BottomPagerRow.Visible = true;
@@ -158,6 +165,7 @@ namespace iArsenal.Web
             {
                 ctrlCustomPagerInfo.Visible = false;
             }
+
             #endregion
         }
 
@@ -169,7 +177,7 @@ namespace iArsenal.Web
             BindData();
         }
 
-        protected void ctrlCustomPagerInfo_PageChanged(object sender, Control.CustomPagerInfo.DataNavigatorEventArgs e)
+        protected void ctrlCustomPagerInfo_PageChanged(object sender, CustomPagerInfo.DataNavigatorEventArgs e)
         {
             if (e.PageIndex > 0)
             {
@@ -185,7 +193,7 @@ namespace iArsenal.Web
             if (gvOrder.SelectedIndex != -1)
             {
                 Response.Redirect(
-                    $"AdminOrderView.aspx?OrderID={gvOrder.DataKeys[gvOrder.SelectedIndex].Value.ToString()}");
+                    $"AdminOrderView.aspx?OrderID={gvOrder.DataKeys[gvOrder.SelectedIndex].Value}");
             }
         }
 
@@ -232,6 +240,7 @@ namespace iArsenal.Web
             try
             {
                 #region Get the Order List
+
                 var list = repo.All<Order>().FindAll(x =>
                 {
                     var returnValue = x.IsActive; // Export the active order
@@ -269,18 +278,21 @@ namespace iArsenal.Web
                     {
                         tmpString = ViewState["Status"].ToString();
                         if (!string.IsNullOrEmpty(tmpString))
-                            returnValue = returnValue && ((int)x.Status).Equals(Convert.ToInt32(tmpString));
+                            returnValue = returnValue && ((int) x.Status).Equals(Convert.ToInt32(tmpString));
                     }
 
                     return returnValue;
                 });
+
                 #endregion
 
                 #region Convert List to DataTable
+
                 var dt = new DataTable();
                 var t = Type.GetType("System.String");
 
                 #region Create DataTable and DataColumn
+
                 var dcMemberAcnName = new DataColumn("User", t);
                 var dcOrderMemberName = new DataColumn("Member", t);
                 var dcOrderMobile = new DataColumn("Contact", t);
@@ -312,6 +324,7 @@ namespace iArsenal.Web
                 dt.Columns.Add(dcOrderItemTotalPrice);
                 dt.Columns.Add(dcOrderPriceInfo);
                 dt.Columns.Add(dcOrderRemark);
+
                 #endregion
 
                 if (list != null && list.Count > 0)
@@ -329,31 +342,32 @@ namespace iArsenal.Web
 
                                 #region Convert ReplicaKit Order to DataRow
 
-                                var oReplicaKit = (OrdrReplicaKit)Order.Select(o.ID);
+                                var oReplicaKit = (OrdrReplicaKit) Order.Select(o.ID);
 
                                 // Whether Home or Away or Cup ReplicaKit
                                 OrderItem oiReplicaKit = null;
 
                                 if (oReplicaKit.OIReplicaKitHome != null && oReplicaKit.OIReplicaKitHome.IsActive)
                                 {
-                                    oiReplicaKit = (OrdrItmReplicaKitHome)oReplicaKit.OIReplicaKitHome;
+                                    oiReplicaKit = oReplicaKit.OIReplicaKitHome;
                                 }
                                 else if (oReplicaKit.OIReplicaKitAway != null && oReplicaKit.OIReplicaKitAway.IsActive)
                                 {
-                                    oiReplicaKit = (OrdrItmReplicaKitAway)oReplicaKit.OIReplicaKitAway;
+                                    oiReplicaKit = oReplicaKit.OIReplicaKitAway;
                                 }
                                 else if (oReplicaKit.OIReplicaKitCup != null && oReplicaKit.OIReplicaKitCup.IsActive)
                                 {
-                                    oiReplicaKit = (OrdrItmReplicaKitCup)oReplicaKit.OIReplicaKitCup;
+                                    oiReplicaKit = oReplicaKit.OIReplicaKitCup;
                                 }
                                 else
                                 {
-                                    throw new Exception($"此订单未购买球衣商品(OrderID:{oReplicaKit.ID.ToString()})");
+                                    throw new Exception($"此订单未购买球衣商品(OrderID:{oReplicaKit.ID})");
                                 }
 
                                 var oiNumber = oReplicaKit.OIPlayerNumber;
                                 var oiName = oReplicaKit.OIPlayerName;
-                                var oiFont = oReplicaKit.OIArsenalFont; ;
+                                var oiFont = oReplicaKit.OIArsenalFont;
+                                ;
                                 var oiPremierPatch = oReplicaKit.OIPremiershipPatch;
                                 var oiChampionPatch = oReplicaKit.OIChampionshipPatch;
 
@@ -364,8 +378,8 @@ namespace iArsenal.Web
                                 p = Product.Cache.Load(oiReplicaKit.ProductGuid);
 
                                 var dr = dt.NewRow();
-                                dr["User"] = $"{m.AcnName}({m.AcnID.ToString()})";
-                                dr["Member"] = $"{o.MemberName}({o.MemberID.ToString()})";
+                                dr["User"] = $"{m.AcnName}({m.AcnID})";
+                                dr["Member"] = $"{o.MemberName}({o.MemberID})";
                                 dr["Contact"] = o.Mobile;
 
                                 dr["OID"] = o.ID;
@@ -385,7 +399,7 @@ namespace iArsenal.Web
                                 }
 
                                 dr["Qty"] = oiReplicaKit.Quantity;
-                                dr["GBP Price"] = (float)dr["Unit"] * oiReplicaKit.Quantity;
+                                dr["GBP Price"] = (float) dr["Unit"]*oiReplicaKit.Quantity;
                                 dr["CNY Price"] = oiReplicaKit.TotalPrice;
 
                                 dr["Order Price"] = o.PriceInfo;
@@ -419,11 +433,11 @@ namespace iArsenal.Web
                                     {
                                         if (pFont.Sale.HasValue)
                                         {
-                                            dr["Unit"] = pFont.Sale / 2;
+                                            dr["Unit"] = pFont.Sale/2;
                                         }
                                         else
                                         {
-                                            dr["Unit"] = pFont.Price / 2;
+                                            dr["Unit"] = pFont.Price/2;
                                         }
                                     }
                                     else
@@ -439,7 +453,7 @@ namespace iArsenal.Web
                                     }
 
                                     dr["Qty"] = oiName.Quantity;
-                                    dr["GBP Price"] = (float)dr["Unit"] * oiName.Quantity;
+                                    dr["GBP Price"] = (float) dr["Unit"]*oiName.Quantity;
                                     dr["CNY Price"] = oiName.TotalPrice;
 
                                     dt.Rows.Add(dr);
@@ -458,11 +472,11 @@ namespace iArsenal.Web
                                     {
                                         if (pFont.Sale.HasValue)
                                         {
-                                            dr["Unit"] = pFont.Sale / 2;
+                                            dr["Unit"] = pFont.Sale/2;
                                         }
                                         else
                                         {
-                                            dr["Unit"] = pFont.Price / 2;
+                                            dr["Unit"] = pFont.Price/2;
                                         }
                                     }
                                     else
@@ -478,7 +492,7 @@ namespace iArsenal.Web
                                     }
 
                                     dr["Qty"] = oiNumber.Quantity;
-                                    dr["GBP Price"] = (float)dr["Unit"] * oiNumber.Quantity;
+                                    dr["GBP Price"] = (float) dr["Unit"]*oiNumber.Quantity;
                                     dr["CNY Price"] = oiNumber.TotalPrice;
 
                                     dt.Rows.Add(dr);
@@ -505,7 +519,7 @@ namespace iArsenal.Web
                                     }
 
                                     dr["Qty"] = oiPremierPatch.Quantity;
-                                    dr["GBP Price"] = (float)dr["Unit"] * oiPremierPatch.Quantity;
+                                    dr["GBP Price"] = (float) dr["Unit"]*oiPremierPatch.Quantity;
                                     dr["CNY Price"] = oiPremierPatch.TotalPrice;
 
                                     dt.Rows.Add(dr);
@@ -532,7 +546,7 @@ namespace iArsenal.Web
                                     }
 
                                     dr["Qty"] = oiChampionPatch.Quantity;
-                                    dr["GBP Price"] = (float)dr["Unit"] * oiChampionPatch.Quantity;
+                                    dr["GBP Price"] = (float) dr["Unit"]*oiChampionPatch.Quantity;
                                     dr["CNY Price"] = oiChampionPatch.TotalPrice;
 
                                     dt.Rows.Add(dr);
@@ -546,13 +560,13 @@ namespace iArsenal.Web
 
                                 #region Convert Wish Order to DataRow
 
-                                var oWish = (OrdrWish)Order.Select(o.ID);
+                                var oWish = (OrdrWish) Order.Select(o.ID);
 
                                 // get Member Info By Order
                                 m = repo.Single<Member>(o.MemberID);
 
                                 var query = repo.Query<OrderItem>(x =>
-                                    x.OrderID == o.ID && x.IsActive == true).OrderBy(x => x.ID);
+                                    x.OrderID == o.ID && x.IsActive).OrderBy(x => x.ID);
 
                                 if (query != null && query.Count() > 0)
                                 {
@@ -564,8 +578,8 @@ namespace iArsenal.Web
 
                                         if (_listCount.Equals(0))
                                         {
-                                            dr["User"] = $"{m.AcnName}({m.AcnID.ToString()})";
-                                            dr["Member"] = $"{o.MemberName}({o.MemberID.ToString()})";
+                                            dr["User"] = $"{m.AcnName}({m.AcnID})";
+                                            dr["Member"] = $"{o.MemberName}({o.MemberID})";
                                             dr["Contact"] = o.Mobile;
 
                                             dr["OID"] = o.ID;
@@ -594,7 +608,7 @@ namespace iArsenal.Web
                                             }
 
                                             dr["Qty"] = oi.Quantity;
-                                            dr["GBP Price"] = (float)dr["Unit"] * oi.Quantity;
+                                            dr["GBP Price"] = (float) dr["Unit"]*oi.Quantity;
                                             dr["CNY Price"] = oi.TotalPrice;
                                         }
                                         else
@@ -629,6 +643,7 @@ namespace iArsenal.Web
                         }
                     }
                 }
+
                 #endregion
 
                 if (dt.Rows.Count > 0)
@@ -651,7 +666,7 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message.ToString()}')", true);
+                ClientScript.RegisterClientScriptBlock(typeof (string), "failed", $"alert('{ex.Message}')", true);
             }
         }
 
@@ -672,7 +687,7 @@ namespace iArsenal.Web
                     cbOrderID.Text = o.ID.ToString();
 
                     hlOrderID.Text = o.ID.ToString();
-                    hlOrderID.NavigateUrl = $"ServerOrderView.ashx?OrderID={o.ID.ToString()}";
+                    hlOrderID.NavigateUrl = $"ServerOrderView.ashx?OrderID={o.ID}";
                 }
 
                 if (hlName != null)

@@ -6,7 +6,9 @@ namespace Arsenalcn.ClubSys.Service
 {
     public class Match
     {
-        public Match() { }
+        public Match()
+        {
+        }
 
         private Match(DataRow dr)
         {
@@ -17,8 +19,8 @@ namespace Arsenalcn.ClubSys.Service
         {
             if (dr != null)
             {
-                ID = (Guid)dr["MatchGuid"];
-                TeamGuid = (Guid)dr["TeamGuid"];
+                ID = (Guid) dr["MatchGuid"];
+                TeamGuid = (Guid) dr["TeamGuid"];
                 TeamName = dr["TeamName"].ToString();
                 IsHome = Convert.ToBoolean(dr["IsHome"]);
 
@@ -37,7 +39,7 @@ namespace Arsenalcn.ClubSys.Service
                 if (Convert.IsDBNull(dr["LeagueGuid"]))
                     LeagueGuid = null;
                 else
-                    LeagueGuid = (Guid)dr["LeagueGuid"];
+                    LeagueGuid = (Guid) dr["LeagueGuid"];
 
                 LeagueName = dr["LeagueName"].ToString();
 
@@ -68,46 +70,11 @@ namespace Arsenalcn.ClubSys.Service
             return list;
         }
 
-        #region Members and Properties
-
-        public Guid ID
-        { get; set; }
-
-        public Guid TeamGuid
-        { get; set; }
-
-        public string TeamName
-        { get; set; }
-
-        public Boolean IsHome
-        { get; set; }
-
-        public short? ResultHome
-        { get; set; }
-
-        public short? ResultAway
-        { get; set; }
-
-        public DateTime PlayTime
-        { get; set; }
-
-        public Guid? LeagueGuid
-        { get; set; }
-
-        public string LeagueName
-        { get; set; }
-
-        public short? Round
-        { get; set; }
-
-        public Boolean IsActive
-        { get; set; }
-
-        #endregion
-
 
         public static class Cache
         {
+            public static List<Match> MatchList;
+
             static Cache()
             {
                 InitCache();
@@ -127,8 +94,32 @@ namespace Arsenalcn.ClubSys.Service
             {
                 return MatchList.Find(x => x.ID.Equals(guid));
             }
-
-            public static List<Match> MatchList;
         }
+
+        #region Members and Properties
+
+        public Guid ID { get; set; }
+
+        public Guid TeamGuid { get; set; }
+
+        public string TeamName { get; set; }
+
+        public bool IsHome { get; set; }
+
+        public short? ResultHome { get; set; }
+
+        public short? ResultAway { get; set; }
+
+        public DateTime PlayTime { get; set; }
+
+        public Guid? LeagueGuid { get; set; }
+
+        public string LeagueName { get; set; }
+
+        public short? Round { get; set; }
+
+        public bool IsActive { get; set; }
+
+        #endregion
     }
 }

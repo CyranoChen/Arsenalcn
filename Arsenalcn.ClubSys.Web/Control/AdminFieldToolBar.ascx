@@ -1,7 +1,7 @@
 ﻿<%@ Control Language="C#" CodeBehind="AdminFieldToolBar.ascx.cs" Inherits="Arsenalcn.ClubSys.Web.Control.AdminFieldToolBar"
-    EnableViewState="false" %>
+EnableViewState="false" %>
 <div class="FieldToolBar">
-    <div class="CtrlLeftPanelExp" onclick="$(this).toggleClass('CtrlLeftPanelExp'); $(this).toggleClass('CtrlLeftPanelCol'); $('#LeftPanel').toggle(); SwitchLeftPanel($(this).attr('class'))">
+    <div class="CtrlLeftPanelExp" onclick="$(this).toggleClass('CtrlLeftPanelExp'); $(this).toggleClass('CtrlLeftPanelCol'); $('#LeftPanel').toggle(); SwitchLeftPanel($(this).attr('class'));">
         <asp:Literal ID="ltrlAdminInfo" runat="server"></asp:Literal>
     </div>
     <div class="HeaderBtnBar">

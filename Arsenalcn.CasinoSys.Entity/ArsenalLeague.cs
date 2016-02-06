@@ -6,7 +6,9 @@ namespace Arsenalcn.CasinoSys.Entity
 {
     public class League
     {
-        public League() { }
+        public League()
+        {
+        }
 
         private League(DataRow dr)
         {
@@ -17,7 +19,7 @@ namespace Arsenalcn.CasinoSys.Entity
         {
             if (dr != null)
             {
-                ID = (Guid)dr["LeagueGuid"];
+                ID = (Guid) dr["LeagueGuid"];
                 LeagueName = dr["LeagueName"].ToString();
                 LeagueOrgName = dr["LeagueOrgName"].ToString();
                 LeagueSeason = dr["LeagueSeason"].ToString();
@@ -48,42 +50,11 @@ namespace Arsenalcn.CasinoSys.Entity
             return list;
         }
 
-        #region Members and Properties
-
-        public Guid ID
-        { get; set; }
-
-        public string LeagueName
-        { get; set; }
-
-        public string LeagueOrgName
-        { get; set; }
-
-        public string LeagueSeason
-        { get; set; }
-
-        public DateTime LeagueTime
-        { get; set; }
-
-        public string LeagueLogo
-        { get; set; }
-
-        public int LeagueOrder
-        { get; set; }
-
-        public bool IsActive
-        { get; set; }
-
-        public int TeamCountInfo
-        { get; set; }
-
-        public string LeagueNameInfo
-        { get; set; }
-
-        #endregion
-
         public static class Cache
         {
+            public static List<League> LeagueList;
+            public static List<League> LeagueList_Active;
+
             static Cache()
             {
                 InitCache();
@@ -109,9 +80,30 @@ namespace Arsenalcn.CasinoSys.Entity
             {
                 return LeagueList.FindAll(l => l.LeagueName.Equals(Load(guid).LeagueName));
             }
-
-            public static List<League> LeagueList;
-            public static List<League> LeagueList_Active;
         }
+
+        #region Members and Properties
+
+        public Guid ID { get; set; }
+
+        public string LeagueName { get; set; }
+
+        public string LeagueOrgName { get; set; }
+
+        public string LeagueSeason { get; set; }
+
+        public DateTime LeagueTime { get; set; }
+
+        public string LeagueLogo { get; set; }
+
+        public int LeagueOrder { get; set; }
+
+        public bool IsActive { get; set; }
+
+        public int TeamCountInfo { get; set; }
+
+        public string LeagueNameInfo { get; set; }
+
+        #endregion
     }
 }

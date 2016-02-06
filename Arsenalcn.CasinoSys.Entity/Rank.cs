@@ -4,8 +4,6 @@ namespace Arsenalcn.CasinoSys.Entity
 {
     public class Rank
     {
-        public Rank() { }
-
         public static DataTable GetTopGamblerMonthly()
         {
             return DataAccess.Rank.GetTopGamblerMonthly();

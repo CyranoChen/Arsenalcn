@@ -62,7 +62,7 @@ namespace iArsenal.Service
                     ? Product.Cache.Load(ProductCode).Name
                     : string.Empty;
 
-                Deadline = (DateTime) dr["Deadline"];
+                Deadline = (DateTime)dr["Deadline"];
 
                 if (!Convert.IsDBNull(dr["AllowMemberClass"]))
                     AllowMemberClass = Convert.ToInt16(dr["AllowMemberClass"]);
@@ -116,7 +116,7 @@ namespace iArsenal.Service
             var sql = string.Format("SELECT * FROM {0} WHERE MatchGuid = @key",
                 Repository.GetTableAttr<MatchTicket>().Name);
 
-            SqlParameter[] para = {new SqlParameter("@key", ID)};
+            SqlParameter[] para = { new SqlParameter("@key", ID) };
 
             var ds = DataAccess.ExecuteDataset(sql, para);
 
@@ -138,7 +138,7 @@ namespace iArsenal.Service
                 if (ds.Tables[0].Rows.Count > 0)
                 {
                     var dt = ds.Tables[0];
-                    dt.PrimaryKey = new[] {dt.Columns["MatchGuid"]};
+                    dt.PrimaryKey = new[] { dt.Columns["MatchGuid"] };
                 }
 
                 var list = new List<MatchTicket>();
@@ -217,7 +217,7 @@ namespace iArsenal.Service
             var sql = string.Format("DELETE FROM {0} WHERE MatchGuid = @key",
                 Repository.GetTableAttr<MatchTicket>().Name);
 
-            SqlParameter[] para = {new SqlParameter("@key", ID)};
+            SqlParameter[] para = { new SqlParameter("@key", ID) };
 
             DataAccess.ExecuteNonQuery(sql, para, trans);
         }
@@ -226,15 +226,14 @@ namespace iArsenal.Service
         {
             var list = Cache.MatchTicketList.FindAll(mt => mt.IsActive);
 
-            if (list != null && list.Count > 0)
+            if (list.Any())
             {
                 IRepository repo = new Repository();
 
-                var oQuery = repo.Query<Order>(o =>
-                    o.IsActive && o.OrderType == OrderBaseType.Ticket)
-                    .FindAll(o => !o.Status.Equals(OrderStatusType.Error));
-                var oiQuery = repo.Query<OrderItem>(oi =>
-                    oi.IsActive && oi.Remark != string.Empty);
+                var oQuery = repo.Query<Order>(o => o.OrderType == OrderBaseType.Ticket)
+                    .FindAll(o => o.IsActive && !o.Status.Equals(OrderStatusType.Error));
+                var oiQuery = repo.Query<OrderItem>(oi => oi.Remark != string.Empty)
+                    .FindAll(x => x.IsActive);
 
                 foreach (var mt in list)
                 {
@@ -267,12 +266,12 @@ namespace iArsenal.Service
             var endDST = new DateTime(date.Year, 11, 1);
 
             if (begDST.DayOfWeek != DayOfWeek.Sunday)
-                begDST = begDST.AddDays(-((int) begDST.DayOfWeek));
+                begDST = begDST.AddDays(-((int)begDST.DayOfWeek));
 
             if (endDST.DayOfWeek == DayOfWeek.Sunday)
                 endDST = endDST.AddDays(-7);
             else
-                endDST = endDST.AddDays(-((int) endDST.DayOfWeek));
+                endDST = endDST.AddDays(-((int)endDST.DayOfWeek));
 
             if (date.AddHours(-7) > begDST && date.AddHours(-7) < endDST)
             {
@@ -288,7 +287,7 @@ namespace iArsenal.Service
 
             if (AllowMemberClass.HasValue)
             {
-                if (mp != null && mp.IsActive && (int) mp.MemberClass >= AllowMemberClass.Value)
+                if (mp != null && mp.IsActive && (int)mp.MemberClass >= AllowMemberClass.Value)
                 {
                     return true;
                 }

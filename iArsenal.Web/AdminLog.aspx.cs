@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Web.UI.WebControls;
 using Arsenalcn.Core;
 using Arsenalcn.Core.Logger;
@@ -17,12 +18,12 @@ namespace iArsenal.Web
         {
             get
             {
-                int _res;
+                int res;
                 if (_logID == 0)
                     return _logID;
                 if (!string.IsNullOrEmpty(Request.QueryString["LogID"]) &&
-                    int.TryParse(Request.QueryString["LogID"], out _res))
-                    return _res;
+                    int.TryParse(Request.QueryString["LogID"], out res))
+                    return res;
                 return int.MinValue;
             }
             set { _logID = value; }
@@ -35,18 +36,24 @@ namespace iArsenal.Web
 
             if (!IsPostBack)
             {
-                if (!string.IsNullOrEmpty(ddlException.SelectedValue))
-                    ViewState["Exception"] = ddlException.SelectedValue;
-                else
-                    ViewState["Exception"] = string.Empty;
-
                 BindData();
             }
         }
 
         private void BindData()
         {
-            var list = repo.All<Log>().FindAll(x =>
+            List<Log> list;
+
+            if (!Convert.ToBoolean(ddlException.SelectedValue))
+            {
+                list = repo.Query<Log>(x => x.StackTrace == string.Empty);
+            }
+            else
+            {
+                list = repo.Query<Log>(x => x.StackTrace != string.Empty);
+            }
+
+            list = list.FindAll(x =>
             {
                 var returnValue = true;
                 var tmpString = string.Empty;
@@ -67,13 +74,13 @@ namespace iArsenal.Web
                                       x.Level.ToString().Equals(tmpString, StringComparison.OrdinalIgnoreCase);
                 }
 
-                if (ViewState["Exception"] != null)
-                {
-                    tmpString = ViewState["Exception"].ToString();
-                    if (!string.IsNullOrEmpty(tmpString))
-                        returnValue = returnValue &&
-                                      !string.IsNullOrEmpty(x.StackTrace).Equals(Convert.ToBoolean(tmpString));
-                }
+                //if (ViewState["Exception"] != null)
+                //{
+                //    tmpString = ViewState["Exception"].ToString();
+                //    if (!string.IsNullOrEmpty(tmpString))
+                //        returnValue = returnValue &&
+                //                      !string.IsNullOrEmpty(x.StackTrace).Equals(Convert.ToBoolean(tmpString));
+                //}
 
                 if (ViewState["Method"] != null)
                 {
@@ -137,8 +144,8 @@ namespace iArsenal.Web
                 var i = list.FindIndex(x => x.ID.Equals(LogID));
                 if (i >= 0)
                 {
-                    gvLog.PageIndex = i/gvLog.PageSize;
-                    gvLog.SelectedIndex = i%gvLog.PageSize;
+                    gvLog.PageIndex = i / gvLog.PageSize;
+                    gvLog.SelectedIndex = i % gvLog.PageSize;
                 }
                 else
                 {
@@ -246,10 +253,10 @@ namespace iArsenal.Web
 
         protected void ddlException_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(ddlException.SelectedValue))
-                ViewState["Exception"] = ddlException.SelectedValue;
-            else
-                ViewState["Exception"] = string.Empty;
+            //if (!string.IsNullOrEmpty(ddlException.SelectedValue))
+            //    ViewState["Exception"] = ddlException.SelectedValue;
+            //else
+            //    ViewState["Exception"] = string.Empty;
 
             LogID = 0;
             gvLog.PageIndex = 0;

@@ -12,7 +12,7 @@ namespace Arsenalcn.Core
 {
     public static class DataAccess
     {
-        public static string ConnectString;
+        public static readonly string ConnectString;
 
         static DataAccess()
         {

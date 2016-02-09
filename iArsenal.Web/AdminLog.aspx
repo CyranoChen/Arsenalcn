@@ -37,7 +37,6 @@ CodeBehind="AdminLog.aspx.cs" Inherits="iArsenal.Web.AdminLog" Title="后台管�
                     <asp:ListItem Value="Fatal" Text="Fatal"></asp:ListItem>
                 </asp:DropDownList>
                 <asp:DropDownList ID="ddlException" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlException_SelectedIndexChanged">
-                    <asp:ListItem Value="" Text="--是否出错--"></asp:ListItem>
                     <asp:ListItem Value="true" Text="异常" Selected="True"></asp:ListItem>
                     <asp:ListItem Value="false" Text="正常"></asp:ListItem>
                 </asp:DropDownList>

@@ -6,13 +6,16 @@ namespace iArsenal.Web.Control
 {
     public partial class iArsenalFooter : UserControl
     {
-        public string pluginName = string.Empty;
-        public string pluginVersion = string.Empty;
-
         protected void Page_Load(object sender, EventArgs e)
         {
-            pluginName = ConfigGlobal.PluginName;
-            pluginVersion = ConfigGlobal.PluginVersion;
+            ltrlCopyright.Text = $"<p id=\"copyright\">Powered by " +
+                     $"<a href=\"default.aspx\" title=\"{ConfigGlobal.Assembly.Title} {ConfigGlobal.Assembly.Version} (.NET Framework 4.5)\">" +
+                     $"{ConfigGlobal.Assembly.Title} </a> <em>{ConfigGlobal.Assembly.FileVersion}</em> " +
+                     $"{ConfigGlobal.Assembly.Copyright} - {DateTime.Now.Year} " +
+                     $"<a href =\"http://www.iarsenal.com\" target =\"_blank\">{ConfigGlobal.Assembly.Product}</a></p>";
+
+            ltrlDebugInfo.Text = $"<p id=\"debuginfo\">{ConfigGlobal.Assembly.Company} &copy; 2003 - {DateTime.Now.Year} Willing co., ltd.</p>";
+
         }
     }
 }

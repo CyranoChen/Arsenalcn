@@ -11,5 +11,23 @@ namespace iArsenal.Web.Control {
     
     
     public partial class iArsenalFooter {
+        
+        /// <summary>
+        /// ltrlCopyright control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ltrlCopyright;
+        
+        /// <summary>
+        /// ltrlDebugInfo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ltrlDebugInfo;
     }
 }

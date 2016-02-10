@@ -9,7 +9,7 @@ using CasinoMatch = Arsenal.Service.Casino.Match;
 namespace Arsenalcn.Scheduler.Tests
 {
     [TestClass]
-    public class CasinoTest
+    public class AcnCasinoTest
     {
         [TestMethod]
         public void AutoUpdateArsenalMatchResult_Test()

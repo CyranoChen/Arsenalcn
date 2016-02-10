@@ -9,7 +9,7 @@ using Match = Arsenal.Service.Match;
 namespace Arsenalcn.Scheduler.Tests
 {
     [TestClass]
-    public class RefreshCache
+    public class RefreshCacheTest
     {
         [TestMethod]
         public void ArsenalServiceRefreshCache_Test()

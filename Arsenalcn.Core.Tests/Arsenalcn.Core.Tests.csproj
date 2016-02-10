@@ -69,8 +69,10 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="AutoMapper_Tests.cs" />
+    <Compile Include="Common_Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repository.cs" />
+    <Compile Include="Repository_Tests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Arsenal.Service\Arsenal.Service.csproj">

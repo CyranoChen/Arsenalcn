@@ -147,10 +147,10 @@ namespace Arsenalcn.Core
                 var attrCol = Repository.GetColumnAttr(propertyInfo);
                 if (attrCol == null) return m;
 
-                // Convert text to nchar
+                // Convert text to nvarchar
                 if (propertyInfo.PropertyType == typeof(string))
                 {
-                    m_conditionParts.Push($"CAST([{attrCol.Name}] as NVARCHAR)");
+                    m_conditionParts.Push($"CAST([{attrCol.Name}] as NVARCHAR(MAX))");
                 }
                 else
                 {

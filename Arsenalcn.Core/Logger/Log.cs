@@ -16,15 +16,15 @@ namespace Arsenalcn.Core.Logger
             var map = Mapper.CreateMap<IDataReader, Log>();
 
             map.ForMember(d => d.Level, opt => opt.MapFrom(s =>
-                (LogLevel) Enum.Parse(typeof (LogLevel), s.GetValue("LogLevel").ToString())));
+                (LogLevel)Enum.Parse(typeof(LogLevel), s.GetValue("LogLevel").ToString())));
         }
 
         protected static void Logging(string logger, DateTime createTime, LogLevel level, string message,
             string stackTrace, UserClientInfo userClient = null)
         {
             var sql =
-                @"INSERT INTO {0} (Logger, CreateTime, LogLevel, Message, StackTrace, Thread, Method, UserID, UserIP, UserBrowser, UserOS) 
-                               VALUES (@logger, @createTime, @logLevel, @message, @stackTrace, @thread, @method, @userID, @userIP, @userBrowser, @userOS)";
+                @"INSERT INTO {0} (Logger, CreateTime, LogLevel, Message, IsException, StackTrace, Thread, Method, UserID, UserIP, UserBrowser, UserOS) 
+                               VALUES (@logger, @createTime, @logLevel, @message, @isException, @stackTrace, @thread, @method, @userID, @userIP, @userBrowser, @userOS)";
 
             sql = string.Format(sql, Repository.GetTableAttr<Log>().Name);
 
@@ -34,6 +34,7 @@ namespace Arsenalcn.Core.Logger
                 new SqlParameter("@createTime", createTime),
                 new SqlParameter("@logLevel", level.ToString()),
                 new SqlParameter("@message", message),
+                new SqlParameter("@isException", !string.IsNullOrEmpty(stackTrace)),
                 new SqlParameter("@stackTrace", stackTrace),
                 new SqlParameter("@thread", string.Empty),
                 new SqlParameter("@method", string.Empty),
@@ -51,8 +52,8 @@ namespace Arsenalcn.Core.Logger
             string stackTrace, Thread thread, MethodBase method, UserClientInfo userClient = null)
         {
             var sql =
-                @"INSERT INTO {0} (Logger, CreateTime, LogLevel, Message, StackTrace, Thread, Method, UserID, UserIP, UserBrowser, UserOS) 
-                               VALUES (@logger, @createTime, @logLevel, @message, @stackTrace, @thread, @method, @userID, @userIP, @userBrowser, @userOS)";
+                @"INSERT INTO {0} (Logger, CreateTime, LogLevel, Message, IsException, StackTrace, Thread, Method, UserID, UserIP, UserBrowser, UserOS) 
+                               VALUES (@logger, @createTime, @logLevel, @message, @isException, @stackTrace, @thread, @method, @userID, @userIP, @userBrowser, @userOS)";
 
             sql = string.Format(sql, Repository.GetTableAttr<Log>().Name);
 
@@ -62,6 +63,7 @@ namespace Arsenalcn.Core.Logger
                 new SqlParameter("@createTime", createTime),
                 new SqlParameter("@logLevel", level.ToString()),
                 new SqlParameter("@message", message),
+                new SqlParameter("@isException", !string.IsNullOrEmpty(stackTrace)),
                 new SqlParameter("@stackTrace", stackTrace),
                 new SqlParameter("@thread", thread.Name ?? thread.ManagedThreadId.ToString()),
                 new SqlParameter("@method", method != null
@@ -90,74 +92,6 @@ namespace Arsenalcn.Core.Logger
             }
         }
 
-        //public Log(DataRow dr)
-        //{
-        //    Contract.Requires(dr != null);
-
-        //    Init(dr);
-        //}
-
-        //private void Init(DataRow dr)
-        //{
-        //    if (dr != null)
-        //    {
-        //        ID = Convert.ToInt32(dr["ID"]);
-        //        Logger = dr["Logger"].ToString();
-        //        CreateTime = Convert.ToDateTime(dr["CreateTime"]);
-        //        Level = (LogLevel)Enum.Parse(typeof(LogLevel), dr["LogLevel"].ToString());
-        //        Message = dr["Message"].ToString();
-        //        StackTrace = dr["StackTrace"].ToString();
-        //        Thread = dr["Thread"].ToString();
-        //        Method = dr["Method"].ToString();
-        //        UserID = Convert.ToInt32(dr["UserID"]);
-        //        UserIP = dr["UserIP"].ToString();
-        //        UserBrowser = dr["UserBrowser"].ToString();
-        //        UserOS = dr["UserOS"].ToString();
-        //    }
-        //    else
-        //        throw new Exception("Unable to init Log.");
-        //}
-
-        //public void Single()
-        //{
-        //    string sql = string.Format("SELECT * FROM {0} WHERE ID = @key",
-        //        Repository.GetTableAttr<Log>().Name);
-
-        //    SqlParameter[] para = { new SqlParameter("@key", ID) };
-
-        //    DataSet ds = DataAccess.ExecuteDataset(sql, para);
-
-        //    var dt = ds.Tables[0];
-
-        //    if (dt.Rows.Count == 0) { return null; }
-
-        //    using (var reader = dt.CreateDataReader())
-        //    {
-        //        return reader.DataReaderMapTo<T>().FirstOrDefault();
-        //    }
-        //}
-
-        //public static List<Log> All()
-        //{
-        //    var list = new List<Log>();
-
-        //    var attr = Repository.GetTableAttr<Log>();
-
-        //    string sql = string.Format("SELECT * FROM {0} ORDER BY {1}", attr.Name, attr.Sort);
-
-        //    DataSet ds = DataAccess.ExecuteDataset(sql);
-
-        //    if (ds.Tables[0].Rows.Count > 0)
-        //    {
-        //        foreach (DataRow dr in ds.Tables[0].Rows)
-        //        {
-        //            list.Add(new Log(dr));
-        //        }
-        //    }
-
-        //    return list;
-        //}
-
         #region Members and Properties
 
         //[DbColumn("ID", IsKey = true)]
@@ -175,6 +109,9 @@ namespace Arsenalcn.Core.Logger
 
         [DbColumn("Message")]
         public string Message { get; set; }
+
+        [DbColumn("IsException")]
+        public bool IsException { get; set; }
 
         [DbColumn("StackTrace")]
         public string StackTrace { get; set; }

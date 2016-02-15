@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Web.UI.WebControls;
 using Arsenalcn.Core;
 using Arsenalcn.Core.Logger;
@@ -42,18 +41,8 @@ namespace iArsenal.Web
 
         private void BindData()
         {
-            List<Log> list;
-
-            if (!Convert.ToBoolean(ddlException.SelectedValue))
-            {
-                list = repo.Query<Log>(x => x.StackTrace == string.Empty);
-            }
-            else
-            {
-                list = repo.Query<Log>(x => x.StackTrace != string.Empty);
-            }
-
-            list = list.FindAll(x =>
+            var list = repo.Query<Log>(x => x.IsException == Convert.ToBoolean(ddlException.SelectedValue))
+                .FindAll(x =>
             {
                 var returnValue = true;
                 var tmpString = string.Empty;

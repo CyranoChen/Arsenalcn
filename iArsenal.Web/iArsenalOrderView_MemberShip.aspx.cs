@@ -40,7 +40,7 @@ namespace iArsenal.Web
 
                 if (OrderID > 0)
                 {
-                    var o = (OrdrMembership) Order.Select(OrderID);
+                    var o = (OrdrMembership)Order.Select(OrderID);
 
                     if (ConfigGlobal.IsPluginAdmin(UID) && o != null)
                     {
@@ -210,7 +210,7 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof (string), "failed",
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed",
                     $"alert('{ex.Message}');window.location.href = 'iArsenalOrder.aspx'", true);
             }
         }
@@ -232,7 +232,7 @@ namespace iArsenal.Web
 
                     repo.Update(o);
 
-                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
                         $"alert('谢谢您的订购，您的订单已经提交成功。\\r\\n请尽快付款以完成订单确认，订单号为：{o.ID}'); window.location.href = window.location.href",
                         true);
                 }
@@ -243,7 +243,7 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof (string), "failed", $"alert('{ex.Message}');", true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message}');", true);
             }
         }
 
@@ -258,7 +258,7 @@ namespace iArsenal.Web
                     if (o == null || !o.MemberID.Equals(MID) || !o.IsActive)
                         throw new Exception("此订单无效或非当前用户订单");
 
-                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
                         $"window.location.href = 'iArsenalOrder_MemberShip.aspx?OrderID={o.ID}'", true);
                 }
                 else
@@ -268,7 +268,7 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof (string), "failed", $"alert('{ex.Message}');", true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message}');", true);
             }
         }
 
@@ -289,7 +289,7 @@ namespace iArsenal.Web
 
                     repo.Update(o);
 
-                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
                         $"alert('此订单({o.ID})已经取消');window.location.href = 'iArsenalMemberPeriod.aspx'", true);
                 }
                 else
@@ -299,7 +299,7 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof (string), "failed", $"alert('{ex.Message}');", true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message}');", true);
             }
         }
 
@@ -314,7 +314,7 @@ namespace iArsenal.Web
                 {
                     if (OrderID > 0)
                     {
-                        var o = (OrdrMembership) Order.Select(OrderID);
+                        var o = (OrdrMembership)Order.Select(OrderID);
 
                         if (ConfigGlobal.IsPluginAdmin(UID) && o != null && o.Status.Equals(OrderStatusType.Confirmed))
                         {
@@ -343,12 +343,13 @@ namespace iArsenal.Web
 
                             // Get all Member Period of current season
                             var list = repo.Query<MemberPeriod>(x =>
-                                x.IsActive && x.StartDate <= DateTime.Now && x.EndDate >= DateTime.Now);
+                                x.StartDate <= DateTime.Now && x.EndDate >= DateTime.Now)
+                                .FindAll(x => x.IsActive);
 
                             var _updateFlag = false;
 
                             // Valiate the Member Period Information
-                            if (list != null && list.Count > 0)
+                            if (list.Any())
                             {
                                 if (list.Exists(x =>
                                     x.MemberID.Equals(o.MemberID) && x.MemberName.Equals(o.MemberName)
@@ -435,7 +436,7 @@ namespace iArsenal.Web
 
                             trans.Commit();
 
-                            ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                            ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
                                 $"alert('【{p.ProductType}】会籍 (卡号：{oiMemberShip.MemberCardNo}) 保存成功');window.location.href = window.location.href",
                                 true);
                         }
@@ -453,7 +454,7 @@ namespace iArsenal.Web
                 {
                     trans.Rollback();
 
-                    ClientScript.RegisterClientScriptBlock(typeof (string), "failed", $"alert('{ex.Message}')", true);
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message}')", true);
                 }
 
                 //conn.Close();

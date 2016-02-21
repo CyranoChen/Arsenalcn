@@ -43,7 +43,7 @@ namespace iArsenal.Web
 
                 if (OrderID > 0)
                 {
-                    var o = (OrdrWish) Order.Select(OrderID);
+                    var o = (OrdrWish)Order.Select(OrderID);
 
                     if (o == null || !o.IsActive)
                     {
@@ -72,10 +72,9 @@ namespace iArsenal.Web
                     tbOrderAddress.Text = o.Address;
                     tbOrderDescription.Text = o.Description;
 
-                    var query = repo.Query<OrderItem>(x =>
-                        x.OrderID == o.ID && x.IsActive).OrderBy(x => x.ID);
+                    var query = repo.Query<OrderItem>(x => x.OrderID == o.ID).FindAll(x => x.IsActive).OrderBy(x => x.ID);
 
-                    if (query != null && query.Count() > 0)
+                    if (query.Any())
                     {
                         var jsonSerializer = new JavaScriptSerializer();
                         tbWishOrderItemListInfo.Text = jsonSerializer.Serialize(query.ToList());
@@ -97,7 +96,7 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof (string), "failed",
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed",
                     $"alert('{ex.Message}');window.location.href = 'Default.aspx'", true);
             }
         }
@@ -261,7 +260,7 @@ namespace iArsenal.Web
 
                     trans.Commit();
 
-                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
                         string.Format(
                             "alert('订单({0})保存成功');window.location.href = 'iArsenalOrderView_ArsenalDirect.aspx?OrderID={0}'",
                             _newID), true);
@@ -270,7 +269,7 @@ namespace iArsenal.Web
                 {
                     trans.Rollback();
 
-                    ClientScript.RegisterClientScriptBlock(typeof (string), "failed",
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "failed",
                         $"alert('{ex.Message}');window.location.href = window.location.href", true);
                 }
 

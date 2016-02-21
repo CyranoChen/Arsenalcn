@@ -110,7 +110,7 @@ namespace iArsenal.Web
                 {
                     tmpString = ViewState["Status"].ToString();
                     if (!string.IsNullOrEmpty(tmpString))
-                        returnValue = returnValue && ((int) x.Status).Equals(Convert.ToInt32(tmpString));
+                        returnValue = returnValue && ((int)x.Status).Equals(Convert.ToInt32(tmpString));
                 }
 
                 if (ViewState["IsActive"] != null)
@@ -130,8 +130,8 @@ namespace iArsenal.Web
                 var i = list.FindIndex(x => x.ID.Equals(OrderID));
                 if (i >= 0)
                 {
-                    gvOrder.PageIndex = i/gvOrder.PageSize;
-                    gvOrder.SelectedIndex = i%gvOrder.PageSize;
+                    gvOrder.PageIndex = i / gvOrder.PageSize;
+                    gvOrder.SelectedIndex = i % gvOrder.PageSize;
                 }
                 else
                 {
@@ -278,7 +278,7 @@ namespace iArsenal.Web
                     {
                         tmpString = ViewState["Status"].ToString();
                         if (!string.IsNullOrEmpty(tmpString))
-                            returnValue = returnValue && ((int) x.Status).Equals(Convert.ToInt32(tmpString));
+                            returnValue = returnValue && ((int)x.Status).Equals(Convert.ToInt32(tmpString));
                     }
 
                     return returnValue;
@@ -342,7 +342,7 @@ namespace iArsenal.Web
 
                                 #region Convert ReplicaKit Order to DataRow
 
-                                var oReplicaKit = (OrdrReplicaKit) Order.Select(o.ID);
+                                var oReplicaKit = (OrdrReplicaKit)Order.Select(o.ID);
 
                                 // Whether Home or Away or Cup ReplicaKit
                                 OrderItem oiReplicaKit = null;
@@ -399,7 +399,7 @@ namespace iArsenal.Web
                                 }
 
                                 dr["Qty"] = oiReplicaKit.Quantity;
-                                dr["GBP Price"] = (float) dr["Unit"]*oiReplicaKit.Quantity;
+                                dr["GBP Price"] = (float)dr["Unit"] * oiReplicaKit.Quantity;
                                 dr["CNY Price"] = oiReplicaKit.TotalPrice;
 
                                 dr["Order Price"] = o.PriceInfo;
@@ -433,11 +433,11 @@ namespace iArsenal.Web
                                     {
                                         if (pFont.Sale.HasValue)
                                         {
-                                            dr["Unit"] = pFont.Sale/2;
+                                            dr["Unit"] = pFont.Sale / 2;
                                         }
                                         else
                                         {
-                                            dr["Unit"] = pFont.Price/2;
+                                            dr["Unit"] = pFont.Price / 2;
                                         }
                                     }
                                     else
@@ -453,7 +453,7 @@ namespace iArsenal.Web
                                     }
 
                                     dr["Qty"] = oiName.Quantity;
-                                    dr["GBP Price"] = (float) dr["Unit"]*oiName.Quantity;
+                                    dr["GBP Price"] = (float)dr["Unit"] * oiName.Quantity;
                                     dr["CNY Price"] = oiName.TotalPrice;
 
                                     dt.Rows.Add(dr);
@@ -472,11 +472,11 @@ namespace iArsenal.Web
                                     {
                                         if (pFont.Sale.HasValue)
                                         {
-                                            dr["Unit"] = pFont.Sale/2;
+                                            dr["Unit"] = pFont.Sale / 2;
                                         }
                                         else
                                         {
-                                            dr["Unit"] = pFont.Price/2;
+                                            dr["Unit"] = pFont.Price / 2;
                                         }
                                     }
                                     else
@@ -492,7 +492,7 @@ namespace iArsenal.Web
                                     }
 
                                     dr["Qty"] = oiNumber.Quantity;
-                                    dr["GBP Price"] = (float) dr["Unit"]*oiNumber.Quantity;
+                                    dr["GBP Price"] = (float)dr["Unit"] * oiNumber.Quantity;
                                     dr["CNY Price"] = oiNumber.TotalPrice;
 
                                     dt.Rows.Add(dr);
@@ -519,7 +519,7 @@ namespace iArsenal.Web
                                     }
 
                                     dr["Qty"] = oiPremierPatch.Quantity;
-                                    dr["GBP Price"] = (float) dr["Unit"]*oiPremierPatch.Quantity;
+                                    dr["GBP Price"] = (float)dr["Unit"] * oiPremierPatch.Quantity;
                                     dr["CNY Price"] = oiPremierPatch.TotalPrice;
 
                                     dt.Rows.Add(dr);
@@ -546,7 +546,7 @@ namespace iArsenal.Web
                                     }
 
                                     dr["Qty"] = oiChampionPatch.Quantity;
-                                    dr["GBP Price"] = (float) dr["Unit"]*oiChampionPatch.Quantity;
+                                    dr["GBP Price"] = (float)dr["Unit"] * oiChampionPatch.Quantity;
                                     dr["CNY Price"] = oiChampionPatch.TotalPrice;
 
                                     dt.Rows.Add(dr);
@@ -560,15 +560,14 @@ namespace iArsenal.Web
 
                                 #region Convert Wish Order to DataRow
 
-                                var oWish = (OrdrWish) Order.Select(o.ID);
+                                var oWish = (OrdrWish)Order.Select(o.ID);
 
                                 // get Member Info By Order
                                 m = repo.Single<Member>(o.MemberID);
 
-                                var query = repo.Query<OrderItem>(x =>
-                                    x.OrderID == o.ID && x.IsActive).OrderBy(x => x.ID);
+                                var query = repo.Query<OrderItem>(x => x.OrderID == o.ID).FindAll(x => x.IsActive).OrderBy(x => x.ID);
 
-                                if (query != null && query.Count() > 0)
+                                if (query.Any())
                                 {
                                     var _listCount = 0;
 
@@ -608,7 +607,7 @@ namespace iArsenal.Web
                                             }
 
                                             dr["Qty"] = oi.Quantity;
-                                            dr["GBP Price"] = (float) dr["Unit"]*oi.Quantity;
+                                            dr["GBP Price"] = (float)dr["Unit"] * oi.Quantity;
                                             dr["CNY Price"] = oi.TotalPrice;
                                         }
                                         else
@@ -666,7 +665,7 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof (string), "failed", $"alert('{ex.Message}')", true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message}')", true);
             }
         }
 

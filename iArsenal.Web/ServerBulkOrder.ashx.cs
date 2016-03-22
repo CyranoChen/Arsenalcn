@@ -53,7 +53,10 @@ namespace iArsenal.Web
                                     countFailed++;
                                 }
                             }
-                            countFailed++;
+                            else
+                            {
+                                countFailed++;
+                            }
                         }
 
                         var returnObj = new

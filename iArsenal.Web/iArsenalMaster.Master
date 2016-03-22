@@ -13,7 +13,7 @@ Inherits="iArsenal.Web.iArsenalMaster" %>
     <meta name="keywords" content="Arsenal,Arsenalcn,ACN,iArsenal,阿森纳中国官方球迷会,阿森纳论坛,阿森纳,阿森纳球迷"/>
     <meta name="description" content="阿森纳中国球迷会,官方,官方球迷会,阿森纳中国,中国分会"/>
     <script type="text/javascript" src="scripts/jquery-2.2.0.min.js"></script>
-    <script type="text/javascript" src="scripts/iarsenal.js"></script>
+    <script type="text/javascript" src="scripts/iarsenal.min.js"></script>
     <asp:ContentPlaceHolder ID="cphHead" runat="server">
     </asp:ContentPlaceHolder>
 </head>

@@ -1,5 +1,5 @@
 ﻿/* Javascript Version iArsenal */
-/* Version: 1.8.4 || Date: 2016-02-06 || Author: Cyrano */
+/* Version: 1.8.5 || Date: 2016-03-22 || Author: Cyrano */
 /* type="text/javascript" */
 
 $(function () {
@@ -35,7 +35,7 @@ $(function () {
 
 function GridViewCheckBoxBindImpl(obj) {
     obj.find("input:checkbox").next("label").hide();
-    obj.find("a.checkAll").click(function() {
+    obj.find("a.CheckAll").click(function() {
         obj.find("input:checkbox:not(:checked)")
             .each(function() {
                 $(this).prop("checked", true);

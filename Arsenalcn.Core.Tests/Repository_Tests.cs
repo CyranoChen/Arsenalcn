@@ -228,6 +228,21 @@ namespace Arsenalcn.Core.Tests
             Assert.IsNotNull(instance2);
             Assert.IsInstanceOfType(instance2, typeof(MatchView));
             Assert.IsNull(instance2.ChoiceOptions);
+
+        }
+
+        [TestMethod]
+        public void Test_All_Viewer_Many_Sql_Large()
+        {
+            IRepository repo = new Repository();
+
+            var query1 = repo.All<BetView>(new Pager { PagingSize = 1000 }).ToList();
+
+            query1.Many<BetView, BetDetail, int>(t => t.ID);
+
+            Assert.IsNotNull(query1);
+            Assert.IsInstanceOfType(query1, typeof(List<BetView>));
+            Assert.IsTrue(query1.Last().BetDetails.Any());
         }
 
         [Ignore]

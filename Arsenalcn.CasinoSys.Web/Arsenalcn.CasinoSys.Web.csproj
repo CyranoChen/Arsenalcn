@@ -328,6 +328,7 @@
     <Content Include="UploadFiles\League\EmiratesCup.gif" />
     <Content Include="UploadFiles\League\England.gif" />
     <Content Include="UploadFiles\League\EuroCup2012.gif" />
+    <Content Include="UploadFiles\League\EuroCup2016.gif" />
     <Content Include="UploadFiles\League\FACup.gif" />
     <Content Include="UploadFiles\League\FALogo.gif" />
     <Content Include="UploadFiles\League\FIFA.gif" />
@@ -452,6 +453,7 @@
     <Content Include="UploadFiles\Team\Italy\Siena.gif" />
     <Content Include="UploadFiles\Team\Italy\Torino.gif" />
     <Content Include="UploadFiles\Team\Italy\Udinese.gif" />
+    <Content Include="UploadFiles\Team\Nation\Albania.gif" />
     <Content Include="UploadFiles\Team\Nation\Algeria.gif" />
     <Content Include="UploadFiles\Team\Nation\Argentina.gif" />
     <Content Include="UploadFiles\Team\Nation\Australia.gif" />
@@ -481,6 +483,7 @@
     <Content Include="UploadFiles\Team\Nation\Greece.gif" />
     <Content Include="UploadFiles\Team\Nation\Honduras.gif" />
     <Content Include="UploadFiles\Team\Nation\Hungary.gif" />
+    <Content Include="UploadFiles\Team\Nation\Iceland.gif" />
     <Content Include="UploadFiles\Team\Nation\Indonesia.gif" />
     <Content Include="UploadFiles\Team\Nation\Iran.gif" />
     <Content Include="UploadFiles\Team\Nation\Iraq.gif" />

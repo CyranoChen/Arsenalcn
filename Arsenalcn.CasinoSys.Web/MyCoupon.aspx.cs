@@ -74,7 +74,7 @@ namespace Arsenalcn.CasinoSys.Web
 
                 if (drv != null)
                 {
-                    var m = new Match((Guid) drv["MatchGuid"]);
+                    var m = new Match((Guid)drv["MatchGuid"]);
 
                     var ltrlLeagueInfo = e.Row.FindControl("ltrlLeagueInfo") as Literal;
 
@@ -120,7 +120,7 @@ namespace Arsenalcn.CasinoSys.Web
 
                         if (item != null)
                         {
-                            var options = ((SingleChoice) item).Options;
+                            var options = ((SingleChoice)item).Options;
 
                             var winOption = options.Find(option => option.OptionValue == MatchChoiceOption.HomeWinValue);
                             var drawOption = options.Find(option => option.OptionValue == MatchChoiceOption.DrawValue);
@@ -202,7 +202,7 @@ namespace Arsenalcn.CasinoSys.Web
 
                 if (tbHomeScore != null && tbAwayScore != null && gvMatch.DataKeys[row.RowIndex] != null)
                 {
-                    var matchGuid = (Guid) gvMatch.DataKeys[row.RowIndex].Value;
+                    var matchGuid = (Guid)gvMatch.DataKeys[row.RowIndex].Value;
 
                     var guid = CasinoItem.GetCasinoItemGuidByMatch(matchGuid, CasinoType.MatchResult);
 
@@ -212,15 +212,9 @@ namespace Arsenalcn.CasinoSys.Web
 
                         if (item?.ItemGuid != null)
                         {
-                            var bets = Bet.GetUserCasinoItemAllBet(userid, item.ItemGuid.Value);
-
-                            if (bets.Count != 0)
-                            {
-                                //already bet
-                            }
                             short homeScore, awayScore;
-                            if (short.TryParse(tbHomeScore.Text, out homeScore) &&
-                                short.TryParse(tbAwayScore.Text, out awayScore))
+
+                            if (short.TryParse(tbHomeScore.Text, out homeScore) && short.TryParse(tbAwayScore.Text, out awayScore))
                             {
                                 //save
                                 if (CasinoItem.GetCasinoItem(guid.Value).CloseTime < DateTime.Now)
@@ -233,27 +227,39 @@ namespace Arsenalcn.CasinoSys.Web
                                     continue;
                                 }
 
+                                var bets = Bet.GetUserCasinoItemAllBet(userid, item.ItemGuid.Value);
+
+                                if (bets.Count > 0)
+                                {
+                                    //already bet
+                                    continue;
+                                }
+
                                 try
                                 {
-                                    var bet = new Bet();
-                                    bet.BetAmount = null;
-                                    bet.BetRate = null;
-                                    bet.CasinoItemGuid = guid.Value;
-                                    bet.UserID = userid;
-                                    bet.UserName = username;
+                                    var bet = new Bet
+                                    {
+                                        BetAmount = null,
+                                        BetRate = null,
+                                        CasinoItemGuid = guid.Value,
+                                        UserID = userid,
+                                        UserName = username
+                                    };
 
                                     if (bet.BetCheck())
                                     {
-                                        var matchResult = new MatchResultBetDetail();
-                                        matchResult.Home = homeScore;
-                                        matchResult.Away = awayScore;
+                                        var matchResult = new MatchResultBetDetail
+                                        {
+                                            Home = homeScore,
+                                            Away = awayScore
+                                        };
 
                                         bet.Insert(matchResult);
                                     }
                                 }
                                 catch
                                 {
-                                    ClientScript.RegisterClientScriptBlock(typeof (string), "failed",
+                                    ClientScript.RegisterClientScriptBlock(typeof(string), "failed",
                                         "alert('投注失败'); window.location.href = window.location.href;", true);
                                 }
                             }
@@ -262,7 +268,7 @@ namespace Arsenalcn.CasinoSys.Web
                 }
             }
 
-            ClientScript.RegisterClientScriptBlock(typeof (string), "failed",
+            ClientScript.RegisterClientScriptBlock(typeof(string), "failed",
                 "alert('您的投注单已提交'); window.location.href = window.location.href;", true);
         }
     }

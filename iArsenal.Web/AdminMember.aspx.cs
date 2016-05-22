@@ -77,14 +77,21 @@ namespace iArsenal.Web
                 {
                     tmpString = ViewState["MemberType"].ToString();
                     if (!string.IsNullOrEmpty(tmpString) && tmpString != "0")
-                        returnValue = returnValue && ((int) x.MemberType).ToString().Equals(tmpString);
+                        returnValue = returnValue && ((int)x.MemberType).ToString().Equals(tmpString);
                 }
 
                 if (ViewState["Evalution"] != null)
                 {
                     tmpString = ViewState["Evalution"].ToString();
                     if (!string.IsNullOrEmpty(tmpString) && tmpString != "0")
-                        returnValue = returnValue && ((int) x.Evalution).ToString().Equals(tmpString);
+                        returnValue = returnValue && ((int)x.Evalution).ToString().Equals(tmpString);
+                }
+
+                if (ViewState["OfficialSync"] != null)
+                {
+                    tmpString = ViewState["OfficialSync"].ToString();
+                    if (!string.IsNullOrEmpty(tmpString))
+                        returnValue = returnValue && x.OfficialSync.Equals(tmpString);
                 }
 
                 return returnValue;
@@ -97,8 +104,8 @@ namespace iArsenal.Web
                 var i = list.FindIndex(x => x.ID.Equals(MemberID));
                 if (i >= 0)
                 {
-                    gvMember.PageIndex = i/gvMember.PageSize;
-                    gvMember.SelectedIndex = i%gvMember.PageSize;
+                    gvMember.PageIndex = i / gvMember.PageSize;
+                    gvMember.SelectedIndex = i % gvMember.PageSize;
                 }
                 else
                 {
@@ -168,7 +175,7 @@ namespace iArsenal.Web
         {
             Member.Cache.RefreshCache();
 
-            ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+            ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
                 "alert('更新缓存成功');window.location.href=window.location.href", true);
         }
 
@@ -203,6 +210,11 @@ namespace iArsenal.Web
                 ViewState["Evalution"] = ddlEvalution.SelectedValue;
             else
                 ViewState["Evalution"] = string.Empty;
+
+            if (!string.IsNullOrEmpty(ddlOfficialSync.SelectedValue))
+                ViewState["OfficialSync"] = ddlOfficialSync.SelectedValue;
+            else
+                ViewState["OfficialSync"] = string.Empty;
 
             MemberID = 0;
             gvMember.PageIndex = 0;

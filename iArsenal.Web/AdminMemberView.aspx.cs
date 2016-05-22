@@ -46,6 +46,7 @@ namespace iArsenal.Web
 
                 tbName.Text = m.Name;
                 cbIsActive.Checked = m.IsActive;
+                ddlOfficialSync.SelectedValue = m.OfficialSync;
                 ddlEvalution.SelectedValue = ((int) m.Evalution).ToString();
                 ddlMemberType.SelectedValue = ((int) m.MemberType).ToString();
                 tbMemberCardNo.Text = m.MemberCardNo;
@@ -59,9 +60,9 @@ namespace iArsenal.Web
                 tbJoinDate.Text = m.JoinDate.ToString("yyyy-MM-dd");
                 tbLastLoginTime.Text = m.LastLoginTime.ToString("yyyy-MM-dd HH:mm:ss");
 
-                DateTime _birthday;
-                if (m.Birthday.HasValue && DateTime.TryParse(m.Birthday.ToString(), out _birthday))
-                    tbBirthday.Text = _birthday.ToString("yyyy-MM-dd");
+                DateTime birthday;
+                if (m.Birthday.HasValue && DateTime.TryParse(m.Birthday.ToString(), out birthday))
+                    tbBirthday.Text = birthday.ToString("yyyy-MM-dd");
                 else
                     tbBirthday.Text = string.Empty;
 
@@ -156,6 +157,7 @@ namespace iArsenal.Web
 
                 m.Name = tbName.Text.Trim();
                 m.IsActive = cbIsActive.Checked;
+                m.OfficialSync = ddlOfficialSync.SelectedValue;
                 m.Evalution = (MemberEvalution) Enum.Parse(typeof (MemberEvalution), ddlEvalution.SelectedValue);
                 m.MemberType = (MemberType) Enum.Parse(typeof (MemberType), ddlMemberType.SelectedValue);
                 m.MemberCardNo = tbMemberCardNo.Text.Trim();

@@ -23,8 +23,8 @@ namespace Arsenal.Service
 
         private void Init(DataRow dr)
         {
-            TeamGuid = (Guid) dr["TeamGuid"];
-            LeagueGuid = (Guid) dr["LeagueGuid"];
+            TeamGuid = (Guid)dr["TeamGuid"];
+            LeagueGuid = (Guid)dr["LeagueGuid"];
         }
 
         public void Single()
@@ -48,8 +48,8 @@ namespace Arsenal.Service
 
         public bool Any()
         {
-            var sql = string.Format("SELECT * FROM {0} WHERE TeamGuid = @teamGuid AND LeagueGuid = @leagueGuid",
-                Repository.GetTableAttr<RelationLeagueTeam>().Name);
+            var sql =
+                $"SELECT * FROM {Repository.GetTableAttr<RelationLeagueTeam>().Name} WHERE TeamGuid = @teamGuid AND LeagueGuid = @leagueGuid";
 
             SqlParameter[] para =
             {
@@ -66,7 +66,7 @@ namespace Arsenal.Service
         {
             var list = new List<RelationLeagueTeam>();
 
-            var sql = string.Format("SELECT * FROM {0}", Repository.GetTableAttr<RelationLeagueTeam>().Name);
+            var sql = $"SELECT * FROM {Repository.GetTableAttr<RelationLeagueTeam>().Name}";
 
             var ds = DataAccess.ExecuteDataset(sql);
 
@@ -88,7 +88,7 @@ namespace Arsenal.Service
             var sql = string.Format("SELECT * FROM {0} WHERE LeagueGuid = @leagueGuid",
                 Repository.GetTableAttr<RelationLeagueTeam>().Name);
 
-            SqlParameter[] para = {new SqlParameter("@leagueGuid", lGuid)};
+            SqlParameter[] para = { new SqlParameter("@leagueGuid", lGuid) };
 
             var ds = DataAccess.ExecuteDataset(sql, para);
 
@@ -110,7 +110,7 @@ namespace Arsenal.Service
             var sql = string.Format("SELECT * FROM {0} WHERE TeamGuid = @teamGuid",
                 Repository.GetTableAttr<RelationLeagueTeam>().Name);
 
-            SqlParameter[] para = {new SqlParameter("@teamGuid", tGuid)};
+            SqlParameter[] para = { new SqlParameter("@teamGuid", tGuid) };
 
             var ds = DataAccess.ExecuteDataset(sql, para);
 
@@ -130,7 +130,7 @@ namespace Arsenal.Service
             var sql = string.Format("INSERT INTO {0} (TeamGuid, LeagueGuid) VALUES (@teamGuid, @leagueGuid)",
                 Repository.GetTableAttr<RelationLeagueTeam>().Name);
 
-            SqlParameter[] para = {new SqlParameter("@teamGuid", TeamGuid), new SqlParameter("@leagueGuid", LeagueGuid)};
+            SqlParameter[] para = { new SqlParameter("@teamGuid", TeamGuid), new SqlParameter("@leagueGuid", LeagueGuid) };
 
             DataAccess.ExecuteNonQuery(sql, para, trans);
         }
@@ -150,7 +150,7 @@ namespace Arsenal.Service
             var sql = string.Format("DELETE FROM {0} WHERE TeamGuid = @teamGuid AND LeagueGuid = @leagueGuid",
                 Repository.GetTableAttr<RelationLeagueTeam>().Name);
 
-            SqlParameter[] para = {new SqlParameter("@teamGuid", TeamGuid), new SqlParameter("@leagueGuid", LeagueGuid)};
+            SqlParameter[] para = { new SqlParameter("@teamGuid", TeamGuid), new SqlParameter("@leagueGuid", LeagueGuid) };
 
             DataAccess.ExecuteNonQuery(sql, para, trans);
         }

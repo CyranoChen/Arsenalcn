@@ -522,6 +522,7 @@
     <Compile Include="iArsenalMaster.Master.designer.cs">
       <DependentUpon>iArsenalMaster.Master</DependentUpon>
     </Compile>
+    <Compile Include="Scheduler\OfficialSync.cs" />
     <Compile Include="Scheduler\RefreshCache.cs" />
     <Compile Include="ServerACNCallback.ashx.cs">
       <DependentUpon>ServerACNCallback.ashx</DependentUpon>

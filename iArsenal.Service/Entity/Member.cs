@@ -187,6 +187,9 @@ namespace iArsenal.Service
         [DbColumn("MemberCardNo")]
         public string MemberCardNo { get; set; }
 
+        [DbColumn("OfficialSync")]
+        public string OfficialSync { get; set; }
+
         [DbColumn("JoinDate")]
         public DateTime JoinDate { get; set; }
 

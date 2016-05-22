@@ -70,6 +70,7 @@ namespace iArsenal.Web
                 else
                 {
                     m.IsActive = true;
+                    m.OfficialSync = "0000";
                     m.Evalution = MemberEvalution.None;
                     m.MemberType = MemberType.Buyer;
                     m.MemberCardNo = string.Empty;

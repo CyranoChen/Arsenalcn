@@ -58,6 +58,15 @@ namespace iArsenal.Web {
         protected global::System.Web.UI.WebControls.CheckBox cbIsActive;
         
         /// <summary>
+        /// ddlOfficialSync control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlOfficialSync;
+        
+        /// <summary>
         /// ddlMemberType control.
         /// </summary>
         /// <remarks>

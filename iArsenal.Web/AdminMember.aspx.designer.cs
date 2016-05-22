@@ -85,6 +85,15 @@ namespace iArsenal.Web {
         protected global::System.Web.UI.WebControls.DropDownList ddlEvalution;
         
         /// <summary>
+        /// ddlOfficialSync control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlOfficialSync;
+        
+        /// <summary>
         /// btnFilter control.
         /// </summary>
         /// <remarks>

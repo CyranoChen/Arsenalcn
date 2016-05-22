@@ -13,7 +13,7 @@ namespace Arsenalcn.Core
             string contentType = "application/x-www-form-urlencoded")
         {
             //New HttpWebRequest for DiscuzNT Service API
-            var req = (HttpWebRequest) WebRequest.Create(ServiceUrl);
+            var req = (HttpWebRequest)WebRequest.Create(ServiceUrl);
 
             req.Method = method.ToString();
             req.ContentType = contentType;
@@ -49,9 +49,16 @@ namespace Arsenalcn.Core
             using (var response = req.GetResponse())
             {
                 var receiveStream = response.GetResponseStream();
-                var readStream = new StreamReader(receiveStream, Encoding.UTF8);
 
-                return readStream.ReadToEnd();
+                if (receiveStream != null)
+                {
+                    var readStream = new StreamReader(receiveStream, Encoding.UTF8);
+                    return readStream.ReadToEnd();
+                }
+                else
+                {
+                    return null;
+                }
             }
         }
 

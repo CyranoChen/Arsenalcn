@@ -66,16 +66,16 @@ namespace iArsenal.Scheduler
                             member.OfficialSync = season;
                             repo.Update(member);
 
-                            uLog.Info($"官方会员信息同步成功(随机码：{result}, {season}会员：{member.Name})", logPara);
+                            uLog.Info($"官方会员信息同步成功 (随机码：{result}, {season}会员：{member.Name})", logPara);
                         }
                         else
                         {
-                            uLog.Error($"官方会员信息同步失败(随机码：{result}, {season}会员：{member.Name})", logPara);
+                            uLog.Error($"官方会员信息同步失败 (随机码：{result}, {season}会员：{member.Name})", logPara);
                         }
                     }
                 }
 
-                log.Info("Scheduler End: (OfficialSync)", logInfo);
+                log.Info($"Scheduler End: (OfficialSync ({result}))", logInfo);
             }
             catch (Exception ex)
             {
@@ -115,6 +115,14 @@ namespace iArsenal.Scheduler
 
             #region Member Property getting and setting
 
+            // birthDate
+            var birthDate = DateTime.Parse("1970-01-01").AddDays((new Random()).Next((DateTime.Parse("2000-12-31") - DateTime.Parse("1970-01-01")).Days)); ;
+
+            if (m.Birthday.HasValue)
+            {
+                birthDate = m.Birthday.Value;
+            }
+
             // address2
             var address2 = "无";
 
@@ -128,16 +136,13 @@ namespace iArsenal.Scheduler
                 }
             }
 
-            // ctx datetime now
-
-
             #endregion
 
             #region Set PostParas
 
             var postData = new Dictionary<string, string>
             {
-                {"recipient__birthDate", m.Birthday?.ToString("dd-MM-yyyy") },
+                {"recipient__birthDate", birthDate.ToString("dd/MM/yyyy") },
                 {"recipient__email", m.Email},
                 {"recipient__firstName", m.Name.Substring(1, m.Name.Length-1)},
                 {"recipient__lastName", m.Name.Substring(0, 1)},
@@ -224,7 +229,9 @@ namespace iArsenal.Scheduler
                 {
                     var readStream = new StreamReader(receiveStream, Encoding.UTF8);
 
-                    return readStream.ReadToEnd().ToLower().Contains("thank");
+                    var result = readStream.ReadToEnd();
+
+                    return result.ToLower().Contains("thank");
                 }
             }
 

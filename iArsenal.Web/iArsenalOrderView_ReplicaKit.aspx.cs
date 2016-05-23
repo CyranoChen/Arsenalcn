@@ -41,7 +41,7 @@ namespace iArsenal.Web
                     var o = (OrdrReplicaKit) Order.Select(OrderID);
 
                     // Whether Home or Away ReplicaKit
-                    OrderItem oiReplicaKit = null;
+                    OrderItem oiReplicaKit;
 
                     if (o.OIReplicaKitHome != null && o.OIReplicaKitHome.IsActive)
                     {
@@ -60,13 +60,13 @@ namespace iArsenal.Web
                         throw new Exception("此订单未购买球衣商品");
                     }
 
-                    if (ConfigGlobal.IsPluginAdmin(UID) && o != null)
+                    if (ConfigGlobal.IsPluginAdmin(UID))
                     {
                         lblMemberName.Text = $"<b>{o.MemberName}</b> (<em>NO.{o.MemberID}</em>)";
                     }
                     else
                     {
-                        if (o == null || !o.MemberID.Equals(MID) || !o.IsActive)
+                        if (!o.MemberID.Equals(MID) || !o.IsActive)
                             throw new Exception("此订单无效或非当前用户订单");
                     }
 
@@ -98,13 +98,13 @@ namespace iArsenal.Web
                     }
 
                     // Should be Calculator in this Page
-                    var price = default(double);
-                    var priceInfo = string.Empty;
+                    double price;
+                    string priceInfo;
 
                     var oiNumber = o.OIPlayerNumber;
                     var oiName = o.OIPlayerName;
                     var oiFont = o.OIArsenalFont;
-                    ;
+                    
                     var oiPremierPatch = o.OIPremiershipPatch;
                     var oiChampionPatch = o.OIChampionshipPatch;
 

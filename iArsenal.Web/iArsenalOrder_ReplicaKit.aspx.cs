@@ -30,7 +30,7 @@ namespace iArsenal.Web
         {
             get
             {
-                var _pt = ProductType.ReplicaKitHome;
+                var pt = ProductType.ReplicaKitHome;
 
                 # region Check whether home or away replicakit
 
@@ -38,55 +38,54 @@ namespace iArsenal.Web
                 {
                     var o = (OrdrReplicaKit)Order.Select(OrderID);
 
-                    OrderItem oi_ReplicaKit = null;
+                    OrderItem oiReplicaKit;
 
                     if (o.OIReplicaKitAway != null && o.OIReplicaKitAway.IsActive)
                     {
-                        oi_ReplicaKit = o.OIReplicaKitAway;
+                        oiReplicaKit = o.OIReplicaKitAway;
                     }
                     else if (o.OIReplicaKitCup != null && o.OIReplicaKitCup.IsActive)
                     {
-                        oi_ReplicaKit = o.OIReplicaKitCup;
+                        oiReplicaKit = o.OIReplicaKitCup;
                     }
                     else if (o.OIReplicaKitHome != null && o.OIReplicaKitHome.IsActive)
                     {
-                        oi_ReplicaKit = o.OIReplicaKitHome;
+                        oiReplicaKit = o.OIReplicaKitHome;
                     }
                     else
                     {
                         throw new Exception("此订单未购买球衣商品");
                     }
 
-                    _pt = Product.Cache.Load(oi_ReplicaKit.ProductGuid).ProductType;
+                    pt = Product.Cache.Load(oiReplicaKit.ProductGuid).ProductType;
                 }
                 else
                 {
                     if (!string.IsNullOrEmpty(Request.QueryString["Type"]) &&
                         Request.QueryString["Type"].Equals("Away", StringComparison.OrdinalIgnoreCase))
                     {
-                        _pt = ProductType.ReplicaKitAway;
+                        pt = ProductType.ReplicaKitAway;
                     }
                     else if (!string.IsNullOrEmpty(Request.QueryString["Type"]) &&
                              Request.QueryString["Type"].Equals("Cup", StringComparison.OrdinalIgnoreCase))
                     {
-                        _pt = ProductType.ReplicaKitCup;
+                        pt = ProductType.ReplicaKitCup;
                     }
                     else
                     {
-                        _pt = ProductType.ReplicaKitHome;
+                        pt = ProductType.ReplicaKitHome;
                     }
                 }
 
                 #endregion
 
-                if (_pt.Equals(ProductType.ReplicaKitAway))
+                if (pt.Equals(ProductType.ReplicaKitAway))
                 {
                     Page.Title = "阿森纳2015/16赛季客场PUMA球衣许愿单";
-                    hlReplicaKitPage.NavigateUrl =
-                        "http://arsenaldirect.arsenal.com/puma-kit/puma-away-kit/icat/pumaaway";
+                    hlReplicaKitPage.NavigateUrl = "http://arsenaldirect.arsenal.com/puma-kit/puma-away-kit/icat/pumaaway";
                     ltrlBannerImage.Text = $"<img src=\"uploadfiles/banner/banner20150714.png\" alt=\"{Page.Title}\" />";
                 }
-                else if (_pt.Equals(ProductType.ReplicaKitCup))
+                else if (pt.Equals(ProductType.ReplicaKitCup))
                 {
                     Page.Title = "阿森纳2015/16赛季杯赛PUMA球衣许愿单";
                     hlReplicaKitPage.NavigateUrl = "http://arsenaldirect.arsenal.com/puma-kit/puma-cup-kit/icat/pumacup";
@@ -94,13 +93,12 @@ namespace iArsenal.Web
                 }
                 else
                 {
-                    Page.Title = "阿森纳2015/16赛季主场PUMA球衣许愿单";
-                    hlReplicaKitPage.NavigateUrl =
-                        "http://arsenaldirect.arsenal.com/puma-kit/puma-home-kit/icat/pumahome";
-                    ltrlBannerImage.Text = $"<img src=\"uploadfiles/banner/banner20150715.png\" alt=\"{Page.Title}\" />";
+                    Page.Title = "阿森纳2016/17赛季主场PUMA球衣许愿单";
+                    hlReplicaKitPage.NavigateUrl = "http://arsenaldirect.arsenal.com/puma-kit/puma-home-kit/icat/pumahome";
+                    ltrlBannerImage.Text = $"<img src=\"uploadfiles/banner/banner20160524.png\" alt=\"{Page.Title}\" />";
                 }
 
-                return _pt;
+                return pt;
             }
         }
 
@@ -112,10 +110,9 @@ namespace iArsenal.Web
 
                 try
                 {
-                    var list =
-                        Arsenal_Player.Cache.PlayerList.FindAll(p => !p.IsLegend && !p.IsLoan && p.SquadNumber > 0);
+                    var list = Arsenal_Player.Cache.PlayerList.FindAll(p => !p.IsLegend && !p.IsLoan && p.SquadNumber > 0);
 
-                    if (list != null && list.Count > 0)
+                    if (list.Count > 0)
                     {
                         ddlPlayerDetail.Items.Clear();
                         ddlPlayerDetail.DataSource = list;
@@ -145,8 +142,6 @@ namespace iArsenal.Web
             {
                 lblMemberName.Text = $"<b>{MemberName}</b> (<em>NO.{MID}</em>)";
                 lblMemberACNInfo.Text = $"<b>{Username}</b> (<em>ID.{UID}</em>)";
-
-                var _list = Product.Cache.ProductList;
 
                 var pNumber = Product.Cache.Load(ProductType.PlayerNumber).Find(p => p.IsActive);
                 var pName = Product.Cache.Load(ProductType.PlayerName).Find(p => p.IsActive);
@@ -182,7 +177,7 @@ namespace iArsenal.Web
                     }
 
                     // Whether Home or Away ReplicaKit
-                    OrderItem oiReplicaKit = null;
+                    OrderItem oiReplicaKit;
 
                     if (CurrProductType.Equals(ProductType.ReplicaKitAway))
                     {
@@ -253,7 +248,7 @@ namespace iArsenal.Web
                     var oiNumber = o.OIPlayerNumber;
                     var oiName = o.OIPlayerName;
                     var oiFont = o.OIArsenalFont;
-                    ;
+
                     var oiPremierPatch = o.OIPremiershipPatch;
                     var oiChampionPatch = o.OIChampionshipPatch;
 
@@ -280,26 +275,25 @@ namespace iArsenal.Web
 
                         // Set Printing Number and Name
 
-                        var _playerGuid = Guid.Empty;
+                        Guid playerGuid;
 
                         if (oiNumber.Remark.Equals(oiName.Remark, StringComparison.OrdinalIgnoreCase))
                         {
                             try
                             {
-                                _playerGuid = new Guid(oiNumber.Remark);
+                                playerGuid = new Guid(oiNumber.Remark);
                             }
                             catch
                             {
-                                _playerGuid = Guid.Empty;
+                                playerGuid = Guid.Empty;
                             }
-                            ;
                         }
                         else
                         {
-                            _playerGuid = Guid.Empty;
+                            playerGuid = Guid.Empty;
                         }
 
-                        var player = Arsenal_Player.Cache.Load(_playerGuid);
+                        var player = Arsenal_Player.Cache.Load(playerGuid);
 
                         if (player != null)
                         {
@@ -418,7 +412,7 @@ namespace iArsenal.Web
 
                     //New Order
                     var o = new Order();
-                    var _newID = int.MinValue;
+                    int newId;
 
                     if (OrderID > 0)
                     {
@@ -448,7 +442,7 @@ namespace iArsenal.Web
                         repo.Update(o, trans);
 
                         // used by setting OrderItem foreign key
-                        _newID = OrderID;
+                        newId = OrderID;
                     }
                     else
                     {
@@ -465,15 +459,15 @@ namespace iArsenal.Web
                         o.Remark = string.Empty;
 
                         //Get the Order ID after Insert new one
-                        object _key = null;
-                        repo.Insert(o, out _key, trans);
-                        _newID = Convert.ToInt32(_key);
+                        object key;
+                        repo.Insert(o, out key, trans);
+                        newId = Convert.ToInt32(key);
                     }
 
                     //Remove Order Item of this Order
                     if (OrderID > 0 && o.ID.Equals(OrderID))
                     {
-                        var count = repo.Query<OrderItem>(x => x.OrderID == OrderID).Delete(trans);
+                        repo.Query<OrderItem>(x => x.OrderID == OrderID).Delete(trans);
                     }
 
                     //New Order Item for ReplicaKit
@@ -488,7 +482,7 @@ namespace iArsenal.Web
                     //bool isHongKongKit = pReplicaKit.Code.Equals("M74756HK", StringComparison.OrdinalIgnoreCase);
                     //float salePrinting = 61f;
 
-                    oi.OrderID = _newID;
+                    oi.OrderID = newId;
                     oi.Size = tbOrderItemSize.Text.Trim().ToUpper();
                     oi.Quantity = 1;
                     oi.Sale = null;
@@ -509,16 +503,16 @@ namespace iArsenal.Web
                         var oiNumber = new OrdrItmPlayerNumber();
                         var oiName = new OrdrItmPlayerName();
 
-                        oiFont.OrderID = _newID;
+                        oiFont.OrderID = newId;
                         oiFont.Size = string.Empty;
                         oiFont.Quantity = 1;
                         oiFont.Sale = null;
                         oiFont.Remark = string.Empty;
 
-                        oiNumber.OrderID = _newID;
+                        oiNumber.OrderID = newId;
                         oiNumber.Quantity = 1;
 
-                        oiName.OrderID = _newID;
+                        oiName.OrderID = newId;
                         oiName.Quantity = 1;
 
                         if (ddlPlayerDetail.SelectedValue.Equals("custom"))
@@ -582,7 +576,7 @@ namespace iArsenal.Web
                             if (player == null)
                                 throw new Exception("无球员信息，请联系管理员");
 
-                            var _printingName = GetArsenalPlayerPrintingName(player);
+                            var printingName = GetArsenalPlayerPrintingName(player);
 
                             // New Order Item for Arsenal Font
                             if (cbArsenalFont.Checked)
@@ -599,7 +593,7 @@ namespace iArsenal.Web
                                 oiNumber.Remark = player.ID.ToString();
                                 oiNumber.Place(m, trans);
 
-                                oiName.Size = _printingName;
+                                oiName.Size = printingName;
                                 oiName.Sale = 0f;
                                 oiName.Remark = player.ID.ToString();
                                 oiName.Place(m, trans);
@@ -617,7 +611,7 @@ namespace iArsenal.Web
                                 oiNumber.Remark = player.ID.ToString();
                                 oiNumber.Place(m, trans);
 
-                                oiName.Size = _printingName;
+                                oiName.Size = printingName;
 
                                 //if (isHongKongKit)
                                 //{ oiName.Sale = salePrinting; }
@@ -645,7 +639,7 @@ namespace iArsenal.Web
 
                         var oiPremierPatch = new OrdrItmPremiershipPatch();
 
-                        oiPremierPatch.OrderID = _newID;
+                        oiPremierPatch.OrderID = newId;
                         oiPremierPatch.Size = string.Empty;
                         oiPremierPatch.Quantity = Convert.ToInt32(rblPremierPatch.SelectedValue);
                         oiPremierPatch.Sale = null;
@@ -664,7 +658,7 @@ namespace iArsenal.Web
 
                         var oiChampionShipPatch = new OrdrItmChampionshipPatch();
 
-                        oiChampionShipPatch.OrderID = _newID;
+                        oiChampionShipPatch.OrderID = newId;
                         oiChampionShipPatch.Size = string.Empty;
                         oiChampionShipPatch.Quantity = Convert.ToInt32(rblChampionPatch.SelectedValue);
                         oiChampionShipPatch.Sale = null;
@@ -679,7 +673,7 @@ namespace iArsenal.Web
 
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
                         string.Format("alert('订单({0})保存成功');window.location.href = 'ServerOrderView.ashx?OrderID={0}'",
-                            _newID), true);
+                            newId), true);
                 }
                 catch (Exception ex)
                 {
@@ -718,31 +712,30 @@ namespace iArsenal.Web
 
         private string GetArsenalPlayerPrintingName(ArsenalPlayer ap)
         {
-            var _strPrintingName = string.Empty;
-
             if (ap != null)
             {
+                string strPrintingName;
                 if (!string.IsNullOrEmpty(ap.PrintingName))
                 {
-                    _strPrintingName = ap.PrintingName;
+                    strPrintingName = ap.PrintingName;
                 }
                 else
                 {
                     if (!string.IsNullOrEmpty(ap.LastName))
                     {
-                        _strPrintingName = ap.LastName;
+                        strPrintingName = ap.LastName;
                     }
                     else if (!string.IsNullOrEmpty(ap.FirstName))
                     {
-                        _strPrintingName = ap.FirstName;
+                        strPrintingName = ap.FirstName;
                     }
                     else
                     {
-                        _strPrintingName = ap.DisplayName;
+                        strPrintingName = ap.DisplayName;
                     }
                 }
 
-                return _strPrintingName;
+                return strPrintingName;
             }
             return null;
         }

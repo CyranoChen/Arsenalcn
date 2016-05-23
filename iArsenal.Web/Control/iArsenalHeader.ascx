@@ -27,13 +27,7 @@ Inherits="iArsenal.Web.Control.iArsenalHeader" %>
             <a href="default.aspx">首页</a>
         </li>
         <li>
-            <a href="iArsenalOrder_ReplicaKit.aspx?Type=Home">1516主场球衣</a>
-        </li>
-        <li>
-            <a href="iArsenalOrder_ReplicaKit.aspx?Type=Away">1516客场球衣</a>
-        </li>
-        <li>
-            <a href="iArsenalOrder_ReplicaKit.aspx?Type=Cup">1516杯赛球衣</a>
+            <a href="iArsenalOrder_ReplicaKit.aspx?Type=Home">阿森纳1617主场球衣预定</a>
         </li>
         <li>
             <a href="iArsenalOrder_MatchList.aspx">阿森纳主场球票预定</a>

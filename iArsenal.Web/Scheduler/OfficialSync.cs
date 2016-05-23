@@ -116,7 +116,7 @@ namespace iArsenal.Scheduler
             #region Member Property getting and setting
 
             // birthDate
-            var birthDate = DateTime.Parse("1970-01-01").AddDays((new Random()).Next((DateTime.Parse("2000-12-31") - DateTime.Parse("1970-01-01")).Days)); ;
+            var birthDate = DateTime.Parse("1970-01-01").AddDays((new Random()).Next((DateTime.Parse("2000-12-31") - DateTime.Parse("1970-01-01")).Days));
 
             if (m.Birthday.HasValue)
             {
@@ -143,10 +143,10 @@ namespace iArsenal.Scheduler
             var postData = new Dictionary<string, string>
             {
                 {"recipient__birthDate", birthDate.ToString("dd/MM/yyyy") },
-                {"recipient__email", m.Email},
+                {"recipient__email", !string.IsNullOrEmpty(m.Email)? m.Email : "webmaster@arsenalcn.com"},
                 {"recipient__firstName", m.Name.Substring(1, m.Name.Length-1)},
                 {"recipient__lastName", m.Name.Substring(0, 1)},
-                {"recipient__mobilePhone", m.Mobile},
+                {"recipient__mobilePhone", !string.IsNullOrEmpty(m.Mobile)? m.Mobile : m.Telephone},
                 {"recipient__salutation", m.Gender? "Mr" : "Ms"},
                 {"recipient_Country", "{43AE96A7-1EF1-E111-BFCA-005056A73E99}"},
                 {"recipient_location__address1", !string.IsNullOrEmpty(m.Address)? m.Address : "无"},

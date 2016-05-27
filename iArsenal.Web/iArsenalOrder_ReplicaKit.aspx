@@ -176,8 +176,8 @@ Title="阿森纳新赛季球衣许愿单" Theme="iArsenal" %>
             <td class="FieldColspan" colspan="3">
                 <asp:RadioButtonList ID="rblOrderPostage" runat="server" RepeatDirection="Horizontal"
                                      RepeatLayout="Flow" CssClass="RadioButtonList">
-                    <asp:ListItem Text="12元（江浙沪 - 顺丰速运）" Value="12"></asp:ListItem>
-                    <asp:ListItem Text="18元（全国其他地区 - 顺丰速运）" Value="18" Selected="True"></asp:ListItem>
+                    <asp:ListItem Text="包邮（江浙沪 - 顺丰速运）" Value="0"></asp:ListItem>
+                    <asp:ListItem Text="包邮（全国其他地区 - 顺丰速运）" Value="0" Selected="True"></asp:ListItem>
                 </asp:RadioButtonList>
             </td>
         </tr>

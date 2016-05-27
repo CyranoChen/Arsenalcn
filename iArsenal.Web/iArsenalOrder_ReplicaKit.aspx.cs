@@ -255,7 +255,7 @@ namespace iArsenal.Web
                     var p = Product.Cache.Load(oiReplicaKit.ProductGuid);
 
                     ddlReplicaKit.Items.Insert(0, new ListItem(
-                        $"({p.Code}) {p.DisplayName} - 售价{oiReplicaKit.UnitPrice.ToString("f2")}元",
+                        $"({p.Code}) {p.DisplayName} - {oiReplicaKit.UnitPrice.ToString("f2")}",
                         oiReplicaKit.ProductGuid.ToString()));
                     tbOrderItemSize.Text = oiReplicaKit.Size;
                     hlReplicaKitPage.Visible = false;
@@ -692,7 +692,7 @@ namespace iArsenal.Web
             {
                 var p = Product.Cache.Load(new Guid(li.Value));
 
-                li.Text = $"({p.Code}) {p.DisplayName} - 售价 ￥{p.PriceCNY.ToString("f2")}";
+                li.Text = $"({p.Code}) {p.DisplayName} - ￥{p.PriceCNY.ToString("f2")}";
             }
         }
 

@@ -46,9 +46,9 @@
     </script>
 </asp:Content>
 <asp:Content ID="cphMain" ContentPlaceHolderID="cphMain" runat="server">
-    <div id="banner" style="height: 400px">
+    <div id="banner" style="height: 270px">
         <a href="http://arsenaldirect.arsenal.com/" target="_blank">
-            <img src="uploadfiles/banner/banner20160413.png" alt="阿森纳官方纪念品团购服务" />
+            <img src="uploadfiles/banner/banner20160528.png" alt="阿森纳官方纪念品团购服务" />
         </a>
     </div>
     <div id="ACN_Main">

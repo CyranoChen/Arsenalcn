@@ -255,8 +255,9 @@ namespace iArsenal.Web
                     var p = Product.Cache.Load(oiReplicaKit.ProductGuid);
 
                     ddlReplicaKit.Items.Insert(0, new ListItem(
-                        $"({p.Code}) {p.DisplayName} - {oiReplicaKit.UnitPrice.ToString("f2")}",
+                        $"({p.Code}) {p.DisplayName} - ￥{oiReplicaKit.UnitPrice.ToString("f2")}",
                         oiReplicaKit.ProductGuid.ToString()));
+
                     tbOrderItemSize.Text = oiReplicaKit.Size;
                     hlReplicaKitPage.Visible = false;
 
@@ -373,7 +374,7 @@ namespace iArsenal.Web
 
                     var list = Product.Cache.Load(CurrProductType).FindAll(x => x.IsActive).OrderBy(x => x.Code).ToList();
 
-                    if (list.Any())
+                    if (list.Count > 0)
                     {
                         ddlReplicaKit.DataSource = list;
                         ddlReplicaKit.DataValueField = "ID";

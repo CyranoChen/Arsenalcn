@@ -83,7 +83,7 @@ Title="阿森纳新赛季球衣许愿单" Theme="iArsenal" %>
 </asp:Content>
 <asp:Content ID="cphMain" ContentPlaceHolderID="cphMain" runat="server">
 <div id="banner" style="height: 400px">
-    <a href="http://www.arsenal.com/news/news-archive/20160520/arsenal-and-puma-reveal-new-home-kit" target="_blank">
+    <a href="http://bbs.arsenalcn.com/showtopic-108362.aspx" target="_blank">
         <asp:Literal ID="ltrlBannerImage" runat="server"></asp:Literal>
     </a>
 </div>

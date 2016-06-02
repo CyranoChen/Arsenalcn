@@ -14,7 +14,7 @@ namespace Arsenal.Web
 
         protected void Application_Start(object sender, EventArgs e)
         {
-            if (_eventTimer == null && ConfigGlobal.SchedulerActive)
+            if (_eventTimer == null && ConfigGlobal_Arsenal.SchedulerActive)
             {
                 _eventTimer = new Timer(SchedulerCallback, null, 60 * 1000, ScheduleManager.TimerMinutesInterval * 60 * 1000);
             }
@@ -24,7 +24,7 @@ namespace Arsenal.Web
         {
             try
             {
-                if (ConfigGlobal.SchedulerActive)
+                if (ConfigGlobal_Arsenal.SchedulerActive)
                 {
                     var declaringType = MethodBase.GetCurrentMethod().DeclaringType;
 

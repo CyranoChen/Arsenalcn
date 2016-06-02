@@ -38,7 +38,7 @@ namespace Arsenal.Web
                 var strMatch1 = string.Empty;
                 var strMatch2 = string.Empty;
                 var strMatch3 = string.Empty;
-                var teamArsenal = Team.Cache.Load(ConfigGlobal.ArsenalTeamGuid);
+                var teamArsenal = Team.Cache.Load(ConfigGlobal_Arsenal.ArsenalTeamGuid);
                 Team tHome, tAway;
 
                 // Output First Match Before DateTime.Now

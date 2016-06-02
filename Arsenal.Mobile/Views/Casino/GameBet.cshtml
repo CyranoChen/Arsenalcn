@@ -28,7 +28,7 @@
         <div data-role="collapsible">
             <h3>历史交锋<span class="ui-li-count">@Model.HistoryMatches.Count()</span></h3>
             <ul id="pnlMatchList" data-role="listview" data-inset="true">
-                @if (Model.HistoryMatches != null && Model.HistoryMatches.Count() > 0)
+                @if (Model.HistoryMatches != null && Model.HistoryMatches.Any())
                 {
                     foreach (var m in Model.HistoryMatches)
                     {
@@ -44,7 +44,7 @@
         <div data-role="collapsible">
             <h3>我的投注<span class="ui-li-count">@Model.MyBets.Count()</span></h3>
             <ul id="pnlBetList" data-role="listview" data-inset="true">
-                @if (Model.MyBets != null && Model.MyBets.Count() > 0)
+                @if (Model.MyBets != null && Model.MyBets.Any())
                 {
                     foreach (var m in Model.MyBets)
                     {

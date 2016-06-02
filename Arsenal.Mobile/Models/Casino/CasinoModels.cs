@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Arsenal.Service.Casino;
 using Arsenalcn.Core;
 
 namespace Arsenal.Mobile.Models.Casino
@@ -10,6 +11,8 @@ namespace Arsenal.Mobile.Models.Casino
         public int CasinoValidDays { get; set; }
 
         public IEnumerable<MatchDto> Matches { get; set; }
+
+        public Gambler Gambler { get; set; }
     }
 
     public class GameBetDto

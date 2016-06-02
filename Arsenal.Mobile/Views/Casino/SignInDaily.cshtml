@@ -1,0 +1,31 @@
+﻿@model Arsenal.Mobile.Models.Casino.SingleChoiceDto
+@{
+    ViewBag.Title = "每日签到";
+}
+
+@section Header {
+    <div data-role="header">
+        <h1 style="overflow: visible">
+            <span></span>
+            <span> vs </span>
+            <span></span>
+        </h1>
+    </div>
+}
+
+<div data-role="content">
+    @using (Html.BeginForm("SingleChoice", "Casino", FormMethod.Post, new {id = "formGameBet"}))
+    {
+        <fieldset data-role="controlgroup" data-type="horizontal">
+            <legend>投注选项</legend>
+            <label for="home">[主队胜] </label>
+            <input type="radio" name="SelectedOption" id="home" value="home">
+            <label for="draw">[双方平] </label>
+            <input type="radio" name="SelectedOption" id="draw" value="draw">
+            <label for="away">[客队胜] </label>
+            <input type="radio" name="SelectedOption" id="away" value="away">
+        </fieldset>
+        
+        <input type="range" name="BetAmount" id="BetAmount" value="1000" data-highlight="true">
+    }
+</div>

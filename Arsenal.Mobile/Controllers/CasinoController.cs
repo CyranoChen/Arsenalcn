@@ -4,9 +4,11 @@ using System.Linq;
 using System.Web.Mvc;
 using Arsenal.Mobile.Models;
 using Arsenal.Mobile.Models.Casino;
+using Arsenal.Service;
 using Arsenal.Service.Casino;
 using Arsenalcn.Core;
 using AutoMapper;
+using Match = Arsenal.Service.Casino.Match;
 
 namespace Arsenal.Mobile.Controllers
 {
@@ -18,11 +20,12 @@ namespace Arsenal.Mobile.Controllers
 
         // 可投注比赛
         // GET: /Casino
+
         [AllowAnonymous]
         public ActionResult Index()
         {
             var model = new IndexDto();
-            var days = 7;
+            var days = ConfigGlobal_AcnCasino.CasinoValidDays;
 
             var query = _repo.Query<MatchView>(
                 x => x.PlayTime > DateTime.Now && x.PlayTime < DateTime.Now.AddDays(days))
@@ -37,8 +40,29 @@ namespace Arsenal.Mobile.Controllers
             model.Matches = list;
             model.CasinoValidDays = days;
 
+            if (_acnId > 0)
+            {
+                model.Gambler = _repo.Query<Gambler>(x => x.UserID == _acnId).FirstOrDefault();
+            }
+            else
+            {
+                model.Gambler = null;
+            }
+
             return View(model);
         }
+
+
+        // 比分投注单
+        // GET: /Casino/MyCoupon
+
+        public ActionResult MyCoupon()
+        {
+            // TODO
+
+            return View();
+        }
+
 
         // 我的中奖查询
         // GET: /Casino/Bet
@@ -60,6 +84,7 @@ namespace Arsenal.Mobile.Controllers
             return View(model);
         }
 
+
         // 我的盈亏情况
         // GET: /Casino/Bonus
 
@@ -70,8 +95,10 @@ namespace Arsenal.Mobile.Controllers
             return View();
         }
 
+
         // 比赛结果
         // GET: /Casino/Result
+
         [AllowAnonymous]
         public ActionResult Result(Criteria criteria)
         {
@@ -98,6 +125,7 @@ namespace Arsenal.Mobile.Controllers
             return View(model);
         }
 
+
         // 中奖查询
         // GET: /Casino/Detail/5
         [AllowAnonymous]
@@ -118,6 +146,7 @@ namespace Arsenal.Mobile.Controllers
 
             return View(model);
         }
+
 
         // 我要投注
         // GET: /Casino/GameBet
@@ -167,6 +196,7 @@ namespace Arsenal.Mobile.Controllers
             return View(model);
         }
 
+
         // 投输赢
         // GET: /Casino/SingleChoice/id
 
@@ -184,6 +214,7 @@ namespace Arsenal.Mobile.Controllers
 
             return View(model);
         }
+
 
         // 投输赢
         // POST: /Casino/SingleChoice
@@ -224,7 +255,7 @@ namespace Arsenal.Mobile.Controllers
                     //投注成功
 
                     TempData["DataUrl"] = $"data-url=/Casino/GameBet/{id}";
-                    return RedirectToAction("GameBet", new {id});
+                    return RedirectToAction("GameBet", new { id });
                 }
                 catch (Exception ex)
                 {
@@ -242,21 +273,21 @@ namespace Arsenal.Mobile.Controllers
             return View(model);
         }
 
+
         // 猜比分
         // GET: /Casino/MatchResult/id
 
         public ActionResult MatchResult(Guid id)
         {
-            var model = new MatchResultDto();
-
-            //var gambler = repo.Query<Gambler>(x => x.UserID == this.acnID).FirstOrDefault();
-            //model.MyCash = gambler != null ? gambler.Cash : 0f;
-
-            model.Match = MatchDto.Single(id);
-            model.MatchGuid = id;
+            var model = new MatchResultDto
+            {
+                Match = MatchDto.Single(id),
+                MatchGuid = id
+            };
 
             return View(model);
         }
+
 
         // 猜比分
         // POST: /Casino/MatchResult
@@ -310,7 +341,7 @@ namespace Arsenal.Mobile.Controllers
                     //投注成功
 
                     TempData["DataUrl"] = $"data-url=/Casino/GameBet/{id}";
-                    return RedirectToAction("GameBet", new {id});
+                    return RedirectToAction("GameBet", new { id });
                 }
                 catch (Exception ex)
                 {
@@ -326,6 +357,17 @@ namespace Arsenal.Mobile.Controllers
             //model.MatchGuid = model.MatchGuid;
 
             return View(model);
+        }
+
+
+        // 每日签到
+        // GET: /Casino/SignInDaily
+
+        public ActionResult SignInDaily()
+        {
+            // TODO
+
+            return View();
         }
     }
 }

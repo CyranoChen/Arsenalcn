@@ -53,7 +53,7 @@
     <Compile Include="Casino\Match.cs" />
     <Compile Include="Casino\Viewer\MatchView.cs" />
     <Compile Include="Entity\League.cs" />
-    <Compile Include="Config.cs" />
+    <Compile Include="Config\Config.cs" />
     <Compile Include="Entity\Match.cs">
       <SubType>Code</SubType>
     </Compile>

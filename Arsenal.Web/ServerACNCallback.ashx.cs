@@ -28,18 +28,18 @@ namespace Arsenal.Web
                     nextURL = context.Request.QueryString["next"];
 
                 //New HttpWebRequest for DiscuzNT Service API
-                var req = (HttpWebRequest) WebRequest.Create(ConfigGlobal.APIServiceURL);
+                var req = (HttpWebRequest) WebRequest.Create(ConfigGlobal_Arsenal.APIServiceURL);
 
                 req.Method = "POST";
                 req.ContentType = "application/x-www-form-urlencoded";
 
                 //Gen Digital Signature
-                var sig = string.Format("api_key={0}auth_token={1}method={2}{3}", ConfigGlobal.APIAppKey, authToken,
-                    "auth.getSession", ConfigGlobal.APICryptographicKey);
+                var sig = string.Format("api_key={0}auth_token={1}method={2}{3}", ConfigGlobal_Arsenal.APIAppKey, authToken,
+                    "auth.getSession", ConfigGlobal_Arsenal.APICryptographicKey);
 
                 //Set WebRequest Parameter
                 var para = string.Format("method={0}&api_key={1}&auth_token={2}&sig={3}", "auth.getSession",
-                    ConfigGlobal.APIAppKey, authToken, getMd5Hash(sig));
+                    ConfigGlobal_Arsenal.APIAppKey, authToken, getMd5Hash(sig));
 
                 var encodedBytes = Encoding.UTF8.GetBytes(para);
                 req.ContentLength = encodedBytes.Length;
@@ -82,8 +82,8 @@ namespace Arsenal.Web
                     }
                     else
                     {
-                        gotoURL = string.Format("{0}?api_key={1}&next={2}", ConfigGlobal.APILoginURL,
-                            ConfigGlobal.APIAppKey, nextURL);
+                        gotoURL = string.Format("{0}?api_key={1}&next={2}", ConfigGlobal_Arsenal.APILoginURL,
+                            ConfigGlobal_Arsenal.APIAppKey, nextURL);
                     }
 
                     context.Response.Redirect(gotoURL, false);

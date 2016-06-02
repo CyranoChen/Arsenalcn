@@ -30,7 +30,7 @@ namespace Arsenal.Scheduler
 
                 Config.UpdateAssemblyInfo(Assembly.GetExecutingAssembly(), ConfigSystem.Arsenal);
 
-                ConfigGlobal.Refresh();
+                ConfigGlobal_Arsenal.Refresh();
 
                 RelationLeagueTeam.Clean();
                 RelationLeagueTeam.Cache.RefreshCache();

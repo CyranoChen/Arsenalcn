@@ -22,7 +22,7 @@ namespace Arsenal.Mobile
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
-            if (_eventTimer == null && ConfigGlobal.SchedulerActive)
+            if (_eventTimer == null && ConfigGlobal_Arsenal.SchedulerActive)
             {
                 _eventTimer = new Timer(SchedulerCallback, null, 60 * 1000, ScheduleManager.TimerMinutesInterval * 60 * 1000);
             }
@@ -32,7 +32,7 @@ namespace Arsenal.Mobile
         {
             try
             {
-                if (ConfigGlobal.SchedulerActive)
+                if (ConfigGlobal_Arsenal.SchedulerActive)
                 {
                     var declaringType = MethodBase.GetCurrentMethod().DeclaringType;
 

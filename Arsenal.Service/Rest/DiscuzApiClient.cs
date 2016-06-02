@@ -8,9 +8,9 @@ namespace Arsenal.Service
     {
         public DiscuzApiClient()
         {
-            ServiceUrl = ConfigGlobal.APIServiceURL;
-            AppKey = ConfigGlobal.APIAppKey;
-            CryptographicKey = ConfigGlobal.APICryptographicKey;
+            ServiceUrl = ConfigGlobal_Arsenal.APIServiceURL;
+            AppKey = ConfigGlobal_Arsenal.APIAppKey;
+            CryptographicKey = ConfigGlobal_Arsenal.APICryptographicKey;
         }
 
         #region Members and Properties

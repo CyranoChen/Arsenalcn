@@ -49,7 +49,7 @@ namespace Arsenal.Web
         {
             base.OnInitComplete(e);
 
-            if (!ConfigGlobal.PluginActive && Request.Url.LocalPath.ToLower().IndexOf("default.aspx") < 0)
+            if (!ConfigGlobal_Arsenal.PluginActive && Request.Url.LocalPath.ToLower().IndexOf("default.aspx") < 0)
             {
                 if (!_adminPage)
                     Response.Redirect("Default.aspx");
@@ -66,8 +66,8 @@ namespace Arsenal.Web
 
                 Response.Clear();
 
-                var loginURL = string.Format("{0}?api_key={1}&next={2}", ConfigGlobal.APILoginURL,
-                    ConfigGlobal.APIAppKey, Request.Url.PathAndQuery);
+                var loginURL = string.Format("{0}?api_key={1}&next={2}", ConfigGlobal_Arsenal.APILoginURL,
+                    ConfigGlobal_Arsenal.APIAppKey, Request.Url.PathAndQuery);
 
                 Response.Redirect(loginURL, false);
 

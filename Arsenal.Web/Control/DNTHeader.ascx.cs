@@ -53,14 +53,14 @@ namespace Arsenal.Web.Control
                 phAnonymous.Visible = true;
                 phAthenticated.Visible = false;
 
-                hlLogin.NavigateUrl = string.Format("{0}?api_key={1}&next={2}", ConfigGlobal.APILoginURL,
-                    ConfigGlobal.APIAppKey, Request.Url.PathAndQuery);
+                hlLogin.NavigateUrl = string.Format("{0}?api_key={1}&next={2}", ConfigGlobal_Arsenal.APILoginURL,
+                    ConfigGlobal_Arsenal.APIAppKey, Request.Url.PathAndQuery);
             }
 
             ltrlTitle.Text =
                 string.Format(
                     "<a href=\"http://www.arsenalcn.com\">{0}</a> &raquo; <a href=\"default.aspx\">{1}</a> &raquo; <strong>{2}</strong>",
-                    "阿森纳中国官方球迷会", ConfigGlobal.PluginDisplayName, Page.Title);
+                    "阿森纳中国官方球迷会", ConfigGlobal_Arsenal.PluginDisplayName, Page.Title);
         }
 
         protected void btnLogout_Click(object sender, EventArgs e)

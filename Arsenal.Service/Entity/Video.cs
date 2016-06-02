@@ -18,7 +18,7 @@ namespace Arsenal.Service
             //    (VideoFileType)Enum.Parse(typeof(VideoFileType), s.GetValue("VideoType").ToString())));
 
             map.ForMember(d => d.VideoFilePath, opt => opt.MapFrom(s =>
-                string.Format("{0}{1}.{2}", ConfigGlobal.ArsenalVideoUrl,
+                string.Format("{0}{1}.{2}", ConfigGlobal_Arsenal.ArsenalVideoUrl,
                     s.GetValue("VideoGuid").ToString(),
                     ((VideoFileType) Enum.Parse(typeof (VideoFileType), s.GetValue("VideoType").ToString())).ToString())));
         }

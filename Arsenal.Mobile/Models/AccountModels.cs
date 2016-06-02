@@ -161,7 +161,7 @@ namespace Arsenal.Mobile.Models
         {
             acnUid = -1;
 
-            if (!ConfigGlobal.AcnSync)
+            if (!ConfigGlobal_Arsenal.AcnSync)
             {
                 return false;
             }
@@ -175,7 +175,7 @@ namespace Arsenal.Mobile.Models
 
         public static int GetAcnId(string username)
         {
-            if (!ConfigGlobal.AcnSync)
+            if (!ConfigGlobal_Arsenal.AcnSync)
             {
                 return -1;
             }
@@ -200,7 +200,7 @@ namespace Arsenal.Mobile.Models
         {
             status = MembershipCreateStatus.UserRejected;
 
-            if (!ConfigGlobal.AcnSync)
+            if (!ConfigGlobal_Arsenal.AcnSync)
             {
                 return;
             }
@@ -322,7 +322,7 @@ namespace Arsenal.Mobile.Models
                         return;
                     }
 
-                    if (ConfigGlobal.AcnSync && GetAcnId(username) > 0)
+                    if (ConfigGlobal_Arsenal.AcnSync && GetAcnId(username) > 0)
                     {
                         status = MembershipCreateStatus.DuplicateUserName;
                         return;
@@ -363,7 +363,7 @@ namespace Arsenal.Mobile.Models
 
                     #region Register new Acn User
 
-                    if (ConfigGlobal.AcnSync)
+                    if (ConfigGlobal_Arsenal.AcnSync)
                     {
                         var client = new DiscuzApiClient();
 
@@ -463,7 +463,7 @@ namespace Arsenal.Mobile.Models
 
                     #region Sync Acn User Password
 
-                    if (ConfigGlobal.AcnSync)
+                    if (ConfigGlobal_Arsenal.AcnSync)
                     {
                         var user = repo.Single<User>(instance.ID);
 

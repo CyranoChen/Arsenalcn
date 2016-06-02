@@ -16,7 +16,7 @@
             比赛结果
             <span class="ui-li-count">@Model.Criteria.TotalCount</span>
         </li>
-        @if (Model != null && Model.Data.Count() > 0)
+        @if (Model != null && Model.Data.Any())
         {
             foreach (var m in Model.Data)
             {

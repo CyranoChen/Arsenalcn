@@ -3,13 +3,24 @@
     ViewBag.Title = "可投注比赛";
 }
 
+@if (Model.Gambler != null)
+{
+    @section Header {
+        <div data-role="header" data-position="fixed">
+            @Html.Partial("_LoginPartial")
+            <h1>博彩币：@Model.Gambler.Cash.ToString("N2")</h1>
+            @Html.ActionLink("签到", "SignInDaily", "Casino", null, new { data_role = "button", data_icon = "clock", data_iconpos = "notext", data_rel = "dialog", data_transition = "pop" })
+        </div>
+    }
+}
+
 <div data-role="content">
     <ul data-role="listview" data-inset="true">
         <li data-role="list-divider">
             您可投注即将于 @Model.CasinoValidDays 天内开始的比赛
             <span class="ui-li-count">@Model.Matches.Count()</span>
         </li>
-        @if (Model.Matches != null && Model.Matches.Count() > 0)
+        @if (Model.Matches != null && Model.Matches.Any())
         {
             foreach (var m in Model.Matches)
             {

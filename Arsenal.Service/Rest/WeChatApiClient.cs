@@ -13,9 +13,9 @@ namespace Arsenal.Service
     {
         public WeChatApiClient()
         {
-            ServiceUrl = ConfigGlobal.WeChatServiceURL;
-            AppKey = ConfigGlobal.WeChatAppKey;
-            CryptographicKey = ConfigGlobal.WeChatAppSecret;
+            ServiceUrl = ConfigGlobal_Arsenal.WeChatServiceURL;
+            AppKey = ConfigGlobal_Arsenal.WeChatAppKey;
+            CryptographicKey = ConfigGlobal_Arsenal.WeChatAppSecret;
 
             Init();
         }

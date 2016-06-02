@@ -48,7 +48,7 @@ namespace Arsenal.Web
 
                     c.Save();
 
-                    ConfigGlobal.Refresh();
+                    ConfigGlobal_Arsenal.Refresh();
                 }
                 catch (Exception ex)
                 {
@@ -79,7 +79,7 @@ namespace Arsenal.Web
         {
             try
             {
-                ConfigGlobal.Refresh();
+                ConfigGlobal_Arsenal.Refresh();
 
                 RelationLeagueTeam.Clean();
                 RelationLeagueTeam.Cache.RefreshCache();

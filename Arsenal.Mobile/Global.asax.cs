@@ -24,7 +24,7 @@ namespace Arsenal.Mobile
 
             if (_eventTimer == null && ConfigGlobal.SchedulerActive)
             {
-                _eventTimer = new Timer(SchedulerCallback, null, 60*1000, ScheduleManager.TimerMinutesInterval*60*1000);
+                _eventTimer = new Timer(SchedulerCallback, null, 60 * 1000, ScheduleManager.TimerMinutesInterval * 60 * 1000);
             }
         }
 
@@ -34,9 +34,14 @@ namespace Arsenal.Mobile
             {
                 if (ConfigGlobal.SchedulerActive)
                 {
-                    var assembly = MethodBase.GetCurrentMethod().DeclaringType.Assembly.GetName().Name;
+                    var declaringType = MethodBase.GetCurrentMethod().DeclaringType;
 
-                    ScheduleManager.Execute(assembly);
+                    if (declaringType != null)
+                    {
+                        var assembly = declaringType.Assembly.GetName().Name;
+
+                        ScheduleManager.Execute(assembly);
+                    }
                 }
             }
             catch (Exception ex)

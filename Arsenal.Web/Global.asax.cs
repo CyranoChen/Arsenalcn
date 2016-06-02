@@ -10,13 +10,13 @@ namespace Arsenal.Web
 {
     public class Global : HttpApplication
     {
-        private static Timer eventTimer;
+        private static Timer _eventTimer;
 
         protected void Application_Start(object sender, EventArgs e)
         {
-            if (eventTimer == null && ConfigGlobal.SchedulerActive)
+            if (_eventTimer == null && ConfigGlobal.SchedulerActive)
             {
-                eventTimer = new Timer(SchedulerCallback, null, 60*1000, ScheduleManager.TimerMinutesInterval*60*1000);
+                _eventTimer = new Timer(SchedulerCallback, null, 60 * 1000, ScheduleManager.TimerMinutesInterval * 60 * 1000);
             }
         }
 
@@ -26,9 +26,14 @@ namespace Arsenal.Web
             {
                 if (ConfigGlobal.SchedulerActive)
                 {
-                    var assembly = MethodBase.GetCurrentMethod().DeclaringType.Assembly.GetName().Name;
+                    var declaringType = MethodBase.GetCurrentMethod().DeclaringType;
 
-                    ScheduleManager.Execute(assembly);
+                    if (declaringType != null)
+                    {
+                        var assembly = declaringType.Assembly.GetName().Name;
+
+                        ScheduleManager.Execute(assembly);
+                    }
                 }
             }
             catch (Exception ex)

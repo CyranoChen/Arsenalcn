@@ -27,6 +27,7 @@ namespace Arsenalcn.Core.Scheduler
 
             try
             {
+                // The application must run schedule task by it's own assembly name
                 var list = !string.IsNullOrEmpty(assembly)
                     ? Schedule.All().FindAll(x => x.IsActive && x.ScheduleType.Contains(assembly))
                     : Schedule.All().FindAll(x => x.IsActive);

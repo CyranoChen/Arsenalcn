@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web.Mvc;
@@ -108,6 +109,26 @@ namespace Arsenal.Mobile.Controllers
                     model.Tip = ex.Message;
                 }
             }
+
+            return View(model);
+        }
+
+
+        // 我的签到记录
+        // GET: /Club/MyLogSignIn
+
+        public ActionResult MyLogSignIn(Criteria criteria)
+        {
+            var model = new MyLogSignInDto();
+
+            var query = _repo.Query<LogSignIn>(criteria, x => x.UserGuid == _user.ID && x.SignInTime > DateTime.Now.AddMonths(-1));
+
+            var mapper = LogSignInDto.ConfigMapper().CreateMapper();
+
+            var list = mapper.Map<IEnumerable<LogSignInDto>>(query.AsEnumerable());
+
+            model.Criteria = criteria;
+            model.Data = list;
 
             return View(model);
         }

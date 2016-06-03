@@ -129,6 +129,7 @@
     <Compile Include="Models\Casino\CasinoModels.cs" />
     <Compile Include="Models\Casino\MatchModels.cs" />
     <Compile Include="Models\Club\ClubModel.cs" />
+    <Compile Include="Models\Club\LogSignInModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scheduler\RefreshCache.cs" />
   </ItemGroup>
@@ -410,6 +411,7 @@
     <Content Include="Views\Club\SignInDaily.cshtml" />
     <Content Include="Views\Club\Index.cshtml" />
     <Content Include="Views\Shared\_SignInPartial.cshtml" />
+    <Content Include="Views\Club\MyLogSignIn.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

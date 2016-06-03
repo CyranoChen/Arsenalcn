@@ -1,0 +1,41 @@
+﻿@model Arsenal.Mobile.Models.Club.MyLogSignInDto
+@{
+    ViewBag.Title = "我的签到记录";
+}
+
+@section Header {
+    <div data-role="header" data-position="fixed">
+        @Html.ActionLink("返回", "Index", "Home", null, new { data_icon = "arrow-l", data_rel = "back" })
+        <h1>@ViewBag.Title</h1>
+    </div>
+}
+
+@if (Model.Criteria.MaxPage > 0)
+{
+    @section Footer {
+        <div data-role="footer" data-position="fixed" class="pager">
+            @Html.Partial("_PagerPartial", Model.Criteria)
+        </div>
+    }
+}
+
+<div data-role="content">
+    <ul data-role="listview" data-inset="true">
+        <li data-role="list-divider">
+            最近1个月的签到记录
+            <span class="ui-li-count">@Model.Criteria.TotalCount</span>
+        </li>
+        @if (Model != null && Model.Data.Any())
+        {
+            foreach (var m in Model.Data)
+            {
+                <li>
+                    <h3>@m.Description - 连续签到：@m.SignInDays</h3>
+                    <p>@m.SignInTime.ToString("yyyy-MM-dd HH:mm:ss")</p>
+                    <span class="ui-li-count">+@m.Bonus.ToString("N0")</span>
+                </li>
+            }
+        }
+    </ul>
+</div>
+

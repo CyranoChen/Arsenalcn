@@ -2,12 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Arsenalcn.Core;
 
 namespace Arsenal.Mobile.Models.Club
 {
     public class IndexDto
     {
 
+    }
+
+    public class MyLogSignInDto : SearchModel<LogSignInDto>
+    {
     }
 
     public class SignInDailyDto

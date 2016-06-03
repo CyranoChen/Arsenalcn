@@ -52,6 +52,7 @@
     <Compile Include="Casino\Gambler.cs" />
     <Compile Include="Casino\Match.cs" />
     <Compile Include="Casino\Viewer\MatchView.cs" />
+    <Compile Include="Club\LogSignIn.cs" />
     <Compile Include="Entity\League.cs" />
     <Compile Include="Config\Config.cs" />
     <Compile Include="Entity\Match.cs">

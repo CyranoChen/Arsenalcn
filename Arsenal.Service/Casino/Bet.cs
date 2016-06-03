@@ -62,7 +62,7 @@ namespace Arsenal.Service.Casino
 
                     if (gambler.Cash < BetAmount.Value)
                     {
-                        throw new Exception(string.Format("博彩帐户余额不足(博彩币余额: {0})", gambler.Cash.ToString("f2")));
+                        throw new Exception($"博彩帐户余额不足(博彩币余额: {gambler.Cash.ToString("f2")})");
                     }
 
                     #endregion
@@ -102,13 +102,11 @@ namespace Arsenal.Service.Casino
                     BetTime = DateTime.Now;
                     BetRate = choiceOption.OptionRate;
 
-                    object _key = null;
-                    repo.Insert(this, out _key, trans);
-                    ID = Convert.ToInt32(_key);
+                    object key;
+                    repo.Insert(this, out key, trans);
+                    ID = Convert.ToInt32(key);
 
-                    var betDetail = new BetDetail();
-
-                    betDetail.BetID = ID;
+                    var betDetail = new BetDetail { BetID = ID };
 
                     if (selectedOption.ToLower() == "home")
                         betDetail.DetailName = "Home";
@@ -121,11 +119,11 @@ namespace Arsenal.Service.Casino
 
                     trans.Commit();
                 }
-                catch (Exception ex)
+                catch
                 {
                     trans.Rollback();
 
-                    throw ex;
+                    throw;
                 }
             }
         }
@@ -189,15 +187,17 @@ namespace Arsenal.Service.Casino
                     CasinoItemGuid = item.ID;
                     BetTime = DateTime.Now;
 
-                    object _key = null;
-                    repo.Insert(this, out _key, trans);
-                    ID = Convert.ToInt32(_key);
+                    object key;
+                    repo.Insert(this, out key, trans);
+                    ID = Convert.ToInt32(key);
 
-                    var betDetailHome = new BetDetail();
+                    var betDetailHome = new BetDetail
+                    {
+                        BetID = ID,
+                        DetailName = "Home",
+                        DetailValue = resultHome.ToString()
+                    };
 
-                    betDetailHome.BetID = ID;
-                    betDetailHome.DetailName = "Home";
-                    betDetailHome.DetailValue = resultHome.ToString();
 
                     repo.Insert(betDetailHome, trans);
 
@@ -211,11 +211,11 @@ namespace Arsenal.Service.Casino
 
                     trans.Commit();
                 }
-                catch (Exception ex)
+                catch
                 {
                     trans.Rollback();
 
-                    throw ex;
+                    throw;
                 }
             }
         }
@@ -223,9 +223,8 @@ namespace Arsenal.Service.Casino
         public static void Clean(SqlTransaction trans = null)
         {
             //DELETE FROM dbo.AcnCasino_Bet WHERE (CasinoItemGuid NOT IN(SELECT CasinoItemGuid FROM dbo.AcnCasino_CasinoItem))
-            var sql = string.Format(@"DELETE FROM {0} WHERE (CasinoItemGuid NOT IN (SELECT CasinoItemGuid FROM {1}))",
-                Repository.GetTableAttr<Bet>().Name,
-                Repository.GetTableAttr<CasinoItem>().Name);
+            var sql =
+                $@"DELETE FROM {Repository.GetTableAttr<Bet>().Name} WHERE (CasinoItemGuid NOT IN (SELECT CasinoItemGuid FROM {Repository.GetTableAttr<CasinoItem>().Name}))";
 
             DataAccess.ExecuteNonQuery(sql, null, trans);
         }

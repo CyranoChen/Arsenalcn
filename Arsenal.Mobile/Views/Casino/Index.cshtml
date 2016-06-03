@@ -9,7 +9,7 @@
         <div data-role="header" data-position="fixed">
             @Html.Partial("_LoginPartial")
             <h1>博彩币：@Model.Gambler.Cash.ToString("N2")</h1>
-            @Html.ActionLink("签到", "SignInDaily", "Casino", null, new { data_role = "button", data_icon = "clock", data_iconpos = "notext", data_rel = "dialog", data_transition = "pop" })
+            @Html.Partial("_SignInPartial")
         </div>
     }
 }

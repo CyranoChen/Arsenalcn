@@ -6,6 +6,7 @@ using Arsenal.Mobile.Models;
 using Arsenal.Mobile.Models.Casino;
 using Arsenal.Service;
 using Arsenal.Service.Casino;
+using Arsenal.Service.Club;
 using Arsenalcn.Core;
 using AutoMapper;
 using Match = Arsenal.Service.Casino.Match;
@@ -15,8 +16,23 @@ namespace Arsenal.Mobile.Controllers
     [Authorize]
     public class CasinoController : Controller
     {
-        private readonly int _acnId = UserDto.GetSession() != null ? UserDto.GetSession().AcnID.Value : 0;
         private readonly IRepository _repo = new Repository();
+        private readonly User _user = UserDto.GetSession();
+
+        public int AcnID
+        {
+            get
+            {
+                int acnId = 0;
+
+                if (_user?.AcnID != null)
+                {
+                    acnId = _user.AcnID.Value;
+                }
+
+                return acnId;
+            }
+        }
 
         // 可投注比赛
         // GET: /Casino
@@ -40,14 +56,7 @@ namespace Arsenal.Mobile.Controllers
             model.Matches = list;
             model.CasinoValidDays = days;
 
-            if (_acnId > 0)
-            {
-                model.Gambler = _repo.Query<Gambler>(x => x.UserID == _acnId).FirstOrDefault();
-            }
-            else
-            {
-                model.Gambler = null;
-            }
+            model.Gambler = AcnID > 0 ? _repo.Query<Gambler>(x => x.UserID == AcnID).FirstOrDefault() : null;
 
             return View(model);
         }
@@ -71,7 +80,7 @@ namespace Arsenal.Mobile.Controllers
         {
             var model = new MyBetDto();
 
-            var query = _repo.Query<BetView>(criteria, x => x.UserID == _acnId)
+            var query = _repo.Query<BetView>(criteria, x => x.UserID == AcnID)
                 .Many<BetView, BetDetail, int>(t => t.ID);
 
             var mapper = BetDto.ConfigMapper().CreateMapper();
@@ -131,9 +140,7 @@ namespace Arsenal.Mobile.Controllers
         [AllowAnonymous]
         public ActionResult Detail(Guid id)
         {
-            var model = new DetailDto();
-
-            model.Match = MatchDto.Single(id);
+            var model = new DetailDto { Match = MatchDto.Single(id) };
 
             var query = _repo.Query<BetView>(x => x.CasinoItem.MatchGuid == id)
                 .Many<BetView, BetDetail, int>(t => t.ID);
@@ -155,14 +162,14 @@ namespace Arsenal.Mobile.Controllers
         {
             var model = new GameBetDto();
 
-            var gambler = _repo.Query<Gambler>(x => x.UserID == _acnId).FirstOrDefault();
+            var gambler = _repo.Query<Gambler>(x => x.UserID == AcnID).FirstOrDefault();
             model.MyCash = gambler?.Cash ?? 0f;
 
             model.Match = MatchDto.Single(id);
 
             // model.MyBets
             var betsQuery = _repo.Query<BetView>(x =>
-                x.UserID == _acnId && x.CasinoItem.MatchGuid == id)
+                x.UserID == AcnID && x.CasinoItem.MatchGuid == id)
                 .Many<BetView, BetDetail, int>(t => t.ID);
 
             var mapperBetDto = BetDto.ConfigMapper().CreateMapper();
@@ -204,7 +211,7 @@ namespace Arsenal.Mobile.Controllers
         {
             var model = new SingleChoiceDto();
 
-            var gambler = _repo.Query<Gambler>(x => x.UserID == _acnId).FirstOrDefault();
+            var gambler = _repo.Query<Gambler>(x => x.UserID == AcnID).FirstOrDefault();
             model.MyCash = gambler?.Cash ?? 0f;
 
             model.BetLimit = model.MyCash < 50000f ? model.MyCash : 50000f;
@@ -232,20 +239,21 @@ namespace Arsenal.Mobile.Controllers
                     //Gambler in Lower could not bet above the SingleBetLimit of DefaultLeague (Contest)
 
                     // TODO
-                    //if (m.LeagueGuid.Equals(Arsenalcn.CasinoSys.Entity.ConfigGlobal.DefaultLeagueID))
+                    //if (m.LeagueGuid.Equals(ConfigGlobal_AcnCasino.DefaultLeagueID))
                     //{
-                    //    if (Gambler.GetGamblerTotalBetByUserID(this.acnID, m.LeagueGuid) < ConfigGlobal.TotalBetStandard)
+                    //    if (Gambler.GetGamblerTotalBetByUserID(this.acnID, m.LeagueGuid) < ConfigGlobal_AcnCasino.TotalBetStandard)
                     //    {
                     //        float _alreadyMatchBet = Arsenalcn.CasinoSys.Entity.Bet.GetUserMatchTotalBet(this.acnID, id);
 
-                    //        if (_alreadyMatchBet + ba > ConfigGlobal.SingleBetLimit)
-                    //        { throw new Exception(string.Format("下半赛区博彩玩家单场投注不能超过{0}博彩币", ConfigGlobal.SingleBetLimit.ToString("f2"))); }
+                    //        if (_alreadyMatchBet + ba > ConfigGlobal_AcnCasino.SingleBetLimit)
+                    //        { throw new Exception(
+                    //            $"下半赛区博彩玩家单场投注不能超过{ConfigGlobal_AcnCasino.SingleBetLimit.ToString("f2")}博彩币"); }
                     //    }
                     //}
 
                     var bet = new Bet
                     {
-                        UserID = _acnId,
+                        UserID = AcnID,
                         UserName = User.Identity.Name,
                         BetAmount = model.BetAmount
                     };
@@ -302,37 +310,9 @@ namespace Arsenal.Mobile.Controllers
                 {
                     var id = model.MatchGuid;
 
-                    //    Guid? guid = CasinoItem.GetCasinoItemGuidByMatch(id, CasinoType.MatchResult);
-
-                    //    if (guid.HasValue)
-                    //    {
-                    //        if (CasinoItem.GetCasinoItem(guid.Value).CloseTime < DateTime.Now)
-                    //        {
-                    //            ModelState.AddModelError("Warn", "已超出投注截止时间");
-                    //        }
-                    //        else if (Arsenalcn.CasinoSys.Entity.Bet.GetUserCasinoItemAllBet(this.acnID, guid.Value).Count > 0)
-                    //        {
-                    //            ModelState.AddModelError("Warn", "已经投过此注，不能重复猜比分");
-                    //        }
-                    //        else
-                    //        {
-                    //            Bet bet = new Bet();
-                    //            bet.BetAmount = null;
-                    //            bet.BetRate = null;
-                    //            bet.CasinoItemGuid = guid.Value;
-                    //            bet.UserID = this.acnID;
-                    //            bet.UserName = User.Identity.Name;
-
-                    //            MatchResultBetDetail matchResult = new MatchResultBetDetail();
-                    //            matchResult.Home = model.ResultHome;
-                    //            matchResult.Away = model.ResultAway;
-
-                    //            bet.Insert(matchResult);
-
-
                     var bet = new Bet
                     {
-                        UserID = _acnId,
+                        UserID = AcnID,
                         UserName = User.Identity.Name
                     };
 
@@ -357,17 +337,6 @@ namespace Arsenal.Mobile.Controllers
             //model.MatchGuid = model.MatchGuid;
 
             return View(model);
-        }
-
-
-        // 每日签到
-        // GET: /Casino/SignInDaily
-
-        public ActionResult SignInDaily()
-        {
-            // TODO
-
-            return View();
         }
     }
 }

@@ -1,0 +1,16 @@
+﻿@using Arsenal.Mobile.Models
+@using Arsenal.Service
+@using Arsenal.Service.Club
+@{
+    var authorizedUser = UserDto.GetSession();
+
+    var signInDays = ConfigGlobal_AcnClub.SignInActive ? LogSignIn.GetContinuousSignInDays(authorizedUser.ID) : -1;
+}
+
+@if (Request.IsAuthenticated && ConfigGlobal_AcnClub.SignInActive && signInDays > 0)
+{
+    @Html.ActionLink("签到", "SignInDaily", "Club", null, new { data_role = "button", data_icon = "clock", data_iconpos = "notext", data_rel = "dialog", data_transition = "pop" })}
+else
+{
+    @Html.ActionLink("首页", "Index", "Home", null, new { data_role = "button", data_icon = "grid", data_iconpos = "notext" })
+}

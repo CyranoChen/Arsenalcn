@@ -119,6 +119,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CasinoController.cs" />
+    <Compile Include="Controllers\ClubController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -127,6 +128,7 @@
     <Compile Include="Models\Casino\BetModels.cs" />
     <Compile Include="Models\Casino\CasinoModels.cs" />
     <Compile Include="Models\Casino\MatchModels.cs" />
+    <Compile Include="Models\Club\ClubModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scheduler\RefreshCache.cs" />
   </ItemGroup>
@@ -405,7 +407,9 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Casino\ReturnBet.cshtml" />
     <Content Include="Views\Casino\MyCoupon.cshtml" />
-    <Content Include="Views\Casino\SignInDaily.cshtml" />
+    <Content Include="Views\Club\SignInDaily.cshtml" />
+    <Content Include="Views\Club\Index.cshtml" />
+    <Content Include="Views\Shared\_SignInPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

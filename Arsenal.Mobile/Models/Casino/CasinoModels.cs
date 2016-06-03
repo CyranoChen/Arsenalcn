@@ -69,7 +69,7 @@ namespace Arsenal.Mobile.Models.Casino
         [Required]
         public Guid MatchGuid { get; set; }
 
-        //public double MyCash { get; set; }
+        //public double CurrentCash { get; set; }
 
         public MatchDto Match { get; set; }
     }

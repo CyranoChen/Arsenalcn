@@ -13,8 +13,6 @@ CodeBehind="AdminMatch.aspx.cs" Inherits="Arsenal.Web.AdminMatch" Title="后台�
                     $(this).val("");
                 });
             });
-
-            $(".DataView td.BtnColumn a.LinkBtn:contains('移除')").click(function() { return confirm('确认从当前分类移除?') });
         });
     </script>
 </asp:Content>

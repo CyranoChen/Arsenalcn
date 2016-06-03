@@ -217,30 +217,6 @@ namespace Arsenal.Service
 
         #region Members and Properties
 
-        public static string[] PluginAdmin
-        {
-            get
-            {
-                var admins = ConfigDictionary["PluginAdmin"];
-                return admins.Split('|');
-            }
-        }
-
-        public static string PluginName
-        {
-            get { return ConfigDictionary["PluginName"]; }
-        }
-
-        public static string PluginVersion
-        {
-            get { return ConfigDictionary["PluginVersion"]; }
-        }
-
-        public static string PluginDisplayName
-        {
-            get { return ConfigDictionary["PluginDisplayName"]; }
-        }
-
         public static bool PluginActive
         {
             get
@@ -254,26 +230,6 @@ namespace Arsenal.Service
                     return false;
                 }
             }
-        }
-
-        public static bool PluginContainerActive
-        {
-            get
-            {
-                try
-                {
-                    return Convert.ToBoolean(ConfigDictionary["PluginContainerActive"]);
-                }
-                catch
-                {
-                    return false;
-                }
-            }
-        }
-
-        public static string PluginAcnClubPath
-        {
-            get { return ConfigDictionary["PluginAcnClubPath"]; }
         }
 
         public static Guid DefaultBankerID
@@ -358,11 +314,6 @@ namespace Arsenal.Service
             }
         }
 
-        public static string SysNotice
-        {
-            get { return ConfigDictionary["SysNotice"]; }
-        }
-
         public static int ExchangeRate
         {
             get
@@ -393,6 +344,7 @@ namespace Arsenal.Service
             }
         }
 
+
         public static int CasinoValidDays
         {
             get
@@ -411,4 +363,74 @@ namespace Arsenal.Service
         #endregion
     }
 
+    public static class ConfigGlobal_AcnClub
+    {
+        static ConfigGlobal_AcnClub()
+        {
+            Init();
+        }
+
+        private static Dictionary<string, string> ConfigDictionary { get; set; }
+
+        public static void Refresh()
+        {
+            Init();
+        }
+
+        private static void Init()
+        {
+            Config.Cache.RefreshCache();
+            ConfigDictionary = Config.Cache.GetDictionaryByConfigSystem(ConfigSystem.AcnClub);
+        }
+
+        #region Members and Properties
+
+        public static bool SignInActive
+        {
+            get
+            {
+                try
+                {
+                    return Convert.ToBoolean(ConfigDictionary["SignInActive"]);
+                }
+                catch
+                {
+                    return false;
+                }
+            }
+        }
+
+        public static float SignInBonus
+        {
+            get
+            {
+                try
+                {
+                    return Convert.ToSingle(ConfigDictionary["SignInBonus"]);
+                }
+                catch
+                {
+                    // QSB
+                    return 100f;
+                }
+            }
+        }
+
+        public static int SignInMaxRate
+        {
+            get
+            {
+                try
+                {
+                    return Convert.ToInt16(ConfigDictionary["SignInMaxRate"]);
+                }
+                catch
+                {
+                    return 5;
+                }
+            }
+        }
+
+        #endregion
+    }
 }

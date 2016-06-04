@@ -12,9 +12,16 @@
             }
             else
             {
-                @DateTime.Now.ToString("yyyy年MM月dd日") 
+                @DateTime.Now.ToString("yyyy年MM月dd日")
             }
         </h1>
+
+    </div>
+}
+
+@section Footer {
+    <div data-role="footer" data-position="fixed">
+        @Html.ActionLink("返回首页", "Index", "Home", null, new { data_role = "button", data_icon = "grid" })
     </div>
 }
 

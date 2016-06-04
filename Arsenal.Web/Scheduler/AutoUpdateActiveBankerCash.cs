@@ -10,7 +10,7 @@ namespace Arsenal.Scheduler
 {
     internal class AutoUpdateActiveBankerCash : ISchedule
     {
-        private readonly ILog log = new AppLog();
+        private readonly ILog _log = new AppLog();
 
         public void Execute(object state)
         {
@@ -22,7 +22,7 @@ namespace Arsenal.Scheduler
 
             try
             {
-                log.Info("Scheduler Start: (AutoUpdateActiveBankerCash)", logInfo);
+                _log.Info("Scheduler Start: (AutoUpdateActiveBankerCash)", logInfo);
 
                 IRepository repo = new Repository();
 
@@ -33,11 +33,11 @@ namespace Arsenal.Scheduler
                     b.Statistics();
                 }
 
-                log.Info("Scheduler End: (AutoUpdateActiveBankerCash)", logInfo);
+                _log.Info("Scheduler End: (AutoUpdateActiveBankerCash)", logInfo);
             }
             catch (Exception ex)
             {
-                log.Warn(ex, logInfo);
+                _log.Warn(ex, logInfo);
             }
         }
     }

@@ -209,8 +209,8 @@ namespace Arsenal.Mobile.Models
 
             var client = new DiscuzApiClient();
 
-            int[] uids = {uid};
-            string[] fields = {"user_name", "password", "email", "mobile", "join_date"};
+            int[] uids = { uid };
+            string[] fields = { "user_name", "password", "email", "mobile", "join_date" };
 
             var responseResult = client.UsersGetInfo(uids, fields);
 
@@ -248,7 +248,7 @@ namespace Arsenal.Mobile.Models
 
                     var user = new User
                     {
-                        ID = (Guid) providerUserKey,
+                        ID = (Guid)providerUserKey,
                         UserName = UserName,
                         IsAnonymous = false,
                         LastActivityDate = DateTime.Now,
@@ -356,7 +356,7 @@ namespace Arsenal.Mobile.Models
 
                     var user = new User();
 
-                    user.ID = (Guid) providerUserKey;
+                    user.ID = (Guid)providerUserKey;
                     user.UserName = UserName;
                     user.IsAnonymous = false;
                     user.LastActivityDate = DateTime.Now;
@@ -458,6 +458,7 @@ namespace Arsenal.Mobile.Models
                     IRepository repo = new Repository();
 
                     instance.Password = Encrypt.GetMd5Hash(newPassword);
+                    instance.LastPasswordChangedDate = DateTime.Now;
 
                     repo.Update(instance, trans);
 
@@ -467,7 +468,7 @@ namespace Arsenal.Mobile.Models
                     {
                         var user = repo.Single<User>(instance.ID);
 
-                        if (user != null && user.AcnID.HasValue)
+                        if (user?.AcnID != null)
                         {
                             var client = new DiscuzApiClient();
 
@@ -536,6 +537,12 @@ namespace Arsenal.Mobile.Models
 
             var user = GetUser(providerUserKey);
 
+            // update user lastActivityDate
+            user.LastActivityDate = DateTime.Now;
+            IRepository repo = new Repository();
+            repo.Update(user);
+
+            // set user session
             HttpContext.Current.Session["AuthorizedUser"] = user;
 
             UserGamblerSync(providerUserKey);

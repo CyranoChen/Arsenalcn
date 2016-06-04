@@ -1,14 +1,8 @@
-﻿@using Arsenal.Mobile.Models
-@{
-    var authorizedUser = UserDto.GetSession();
-}
-
-@if (Request.IsAuthenticated && authorizedUser != null)
+﻿@if (Request.IsAuthenticated)
 {
-    @Html.ActionLink(string.Format("{0} ({1})", User.Identity.Name, authorizedUser.AcnID),
-        "Index", "Account", null, new {data_icon = "gear", data_transition = "slideup"})
+    @Html.ActionLink(User.Identity.Name, "Index", "Account", null, new { data_icon = "gear", data_transition = "slideup" })
 }
 else
 {
-    @Html.ActionLink("登录", "Login", "Account", null, new {data_icon = "gear", data_transition = "slidedown"})
+    @Html.ActionLink("登录", "Login", "Account", null, new { data_icon = "gear", data_transition = "slidedown" })
 }

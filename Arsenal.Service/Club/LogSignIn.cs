@@ -26,7 +26,7 @@ namespace Arsenal.Service.Club
             if (membership == null)
             { throw new Exception("无对应用户信息"); }
 
-            var rate = GetContinuousSignInDays(UserGuid);
+            var rate = GetContinuousSignInDays(userGuid);
 
             if (rate <= 0)
             { throw new Exception("您已经领取过今天的签到奖励"); }

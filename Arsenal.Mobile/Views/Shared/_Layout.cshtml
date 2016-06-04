@@ -47,7 +47,7 @@
     {
         <div data-role="header" data-position="fixed">
             @Html.Partial("_LoginPartial")
-            <h1>@ViewBag.Title</h1>
+            <h1 style="overflow: visible">@ViewBag.Title</h1>
             @Html.ActionLink("首页", "Index", "Home", null, new {data_role = "button", data_icon = "grid", data_iconpos = "notext"})
         </div>
     }

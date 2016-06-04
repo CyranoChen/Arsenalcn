@@ -103,6 +103,11 @@ namespace Arsenal.Mobile.Controllers
 
         public ActionResult LogOff()
         {
+            // update user lastActivityDate
+            var user = UserDto.GetSession();
+            user.LastActivityDate = DateTime.Now;
+            _repo.Update(user);
+
             FormsAuthentication.SignOut();
             Session.Abandon();
 

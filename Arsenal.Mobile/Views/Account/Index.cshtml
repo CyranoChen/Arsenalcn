@@ -1,21 +1,25 @@
 ﻿@using Arsenal.Mobile.Models
-@model Arsenal.Mobile.Models.LoginModel
+@using Arsenal.Service
+@model LoginModel
 @{
     ViewBag.Title = "会员管理中心";
 
     var authorizedUser = UserDto.GetSession();
 }
 
-@section Header {
-    <div data-role="header" data-position="fixed">
-        @Html.ActionLink("返回", "Index", "Home", null, new { data_icon = "arrow-l", data_rel = "back" })
-        <h1>@ViewBag.Title</h1>
-    </div>
+@*If admin, show the refresh buttion*@
+@if (authorizedUser.AcnID.HasValue && ConfigGlobal_Arsenal.IsPluginAdmin(authorizedUser.AcnID.Value))
+{
+    @section Footer {
+        <div data-role="footer" data-position="fixed">
+            <a style="float: right; margin-right: 5px" data-role="button" data-icon="refresh">更新缓存</a>
+        </div>
+    }
 }
 
 <div data-role="content">
     <p>
-        <b>@User.Identity.Name (@authorizedUser.AcnID)</b>
+        <b>@User.Identity.Name (@authorizedUser.AcnID) @authorizedUser.MemberName - @authorizedUser.LastActivityDate.ToString("yyyy-MM-dd HH:mm")</b>
     </p>
     <ul data-role="listview" data-inset="true">
         <li>@Html.ActionLink("用户信息", "UserProfile")</li>

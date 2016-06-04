@@ -1,4 +1,6 @@
-﻿using System.Web.Mvc;
+﻿using System.Reflection;
+using System.Web.Mvc;
+using Arsenal.Mobile.Models;
 
 namespace Arsenal.Mobile.Controllers
 {
@@ -21,6 +23,14 @@ namespace Arsenal.Mobile.Controllers
             ViewBag.Message = "Your contact page.";
 
             return View();
+        }
+
+        [OutputCache(Duration = 3600)]
+        public ActionResult _AssemblyPartial()
+        {
+            var model = new AssemblyDto(Assembly.GetExecutingAssembly());
+
+            return PartialView(model);
         }
     }
 }

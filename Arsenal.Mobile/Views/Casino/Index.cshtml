@@ -17,7 +17,7 @@
 <div data-role="content">
     <ul data-role="listview" data-inset="true">
         <li data-role="list-divider">
-            您可投注即将于 @Model.CasinoValidDays 天内开始的比赛
+            您可投注即将于<em>@Model.CasinoValidDays</em>天内开始的比赛
             <span class="ui-li-count">@Model.Matches.Count()</span>
         </li>
         @if (Model.Matches != null && Model.Matches.Any())

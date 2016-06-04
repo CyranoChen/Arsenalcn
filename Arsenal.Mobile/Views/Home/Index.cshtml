@@ -5,10 +5,7 @@
 
 @section Footer {
     <div data-role="footer" data-position="fixed">
-        <h1>
-            @ConfigGlobal_Arsenal.Assembly.Title @ConfigGlobal_Arsenal.Assembly.FileVersion
-            @ConfigGlobal_Arsenal.Assembly.Copyright - @DateTime.Now.Year
-        </h1>
+        @Html.Action("_AssemblyPartial")
     </div>
 }
 

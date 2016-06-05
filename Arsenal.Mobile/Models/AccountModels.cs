@@ -576,7 +576,7 @@ namespace Arsenal.Mobile.Models
                     var gambler = new Gambler();
                     if (user.AcnID != null) gambler.UserID = user.AcnID.Value;
                     gambler.UserName = user.AcnUserName.Trim();
-                    gambler.Cash = 1000f;
+                    gambler.Cash = 1000f; // initial fund
                     gambler.TotalBet = 0f;
                     gambler.Win = 0;
                     gambler.Lose = 0;

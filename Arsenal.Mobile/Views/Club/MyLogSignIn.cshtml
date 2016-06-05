@@ -1,4 +1,5 @@
-﻿@model Arsenal.Mobile.Models.Club.MyLogSignInDto
+﻿@using Arsenal.Service
+@model Arsenal.Mobile.Models.Club.MyLogSignInDto
 @{
     ViewBag.Title = "我的签到记录";
 }
@@ -20,6 +21,9 @@
 }
 
 <div data-role="content">
+    <p>
+        <b>当前每日签到获得的枪手币，将自动结转为博彩币记入账户。</b>
+    </p>
     <ul data-role="listview" data-inset="true">
         <li data-role="list-divider">
             最近1个月的签到记录

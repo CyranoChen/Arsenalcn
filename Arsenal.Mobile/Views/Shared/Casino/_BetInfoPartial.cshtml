@@ -1,7 +1,7 @@
 ﻿@using Arsenal.Service.Casino
 @model Arsenal.Mobile.Models.Casino.BetDto
-<li>
-    <a href="#" data-role="button" data-icon="@Model.BetIcon" data-iconpos="left">
+<li class="@Model.BetIcon">
+    <a href="#">
         <h3>
             @Model.TeamHomeName
             <span>vs</span>
@@ -28,4 +28,16 @@
             }
         }
     </a>
+    @if (!Model.IsWin.HasValue)
+    {
+        if (Model.CloseTime >= DateTime.Now)
+        {
+            @Html.ActionLink("退注", "ReturnBet", "Casino", new { id = Model.ID },
+                new { data_icon = "back", data_iconpos = "notext", data_rel = "dialog", data_transition = "pop" })
+        }
+    }
+    else
+    {
+        <a href="#" data-icon="@Model.BetIcon"></a>
+    }
 </li>

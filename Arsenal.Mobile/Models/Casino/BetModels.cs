@@ -11,9 +11,13 @@ namespace Arsenal.Mobile.Models.Casino
         public static MapperConfiguration ConfigMapper()
         {
             var config = new MapperConfiguration(cfg => cfg.CreateMap<BetView, BetDto>()
-                .ConstructUsing(s => new BetDto {ItemType = s.CasinoItem.ItemType})
-                .ForMember(d => d.TeamHomeName, opt => opt.MapFrom(s => s.Home.TeamDisplayName))
-                .ForMember(d => d.TeamAwayName, opt => opt.MapFrom(s => s.Away.TeamDisplayName))
+                .ConstructUsing(s => new BetDto
+                {
+                    ItemType = s.CasinoItem.ItemType,
+                    CloseTime = s.CasinoItem.CloseTime,
+                    TeamHomeName = s.Home.TeamDisplayName,
+                    TeamAwayName = s.Away.TeamDisplayName
+                })
                 .ForMember(d => d.BetResultHome, opt =>
                 {
                     opt.Condition(s => s.CasinoItem.ItemType.Equals(CasinoType.MatchResult));
@@ -35,7 +39,7 @@ namespace Arsenal.Mobile.Models.Casino
                 .ForMember(d => d.BetResult, opt =>
                 {
                     opt.Condition(s => s.CasinoItem.ItemType.Equals(CasinoType.SingleChoice));
-                    opt.MapFrom(s => Enum.Parse(typeof (BetResultType), s.BetDetails.FirstOrDefault().DetailName));
+                    opt.MapFrom(s => Enum.Parse(typeof(BetResultType), s.BetDetails.FirstOrDefault().DetailName));
                 })
                 .ForMember(d => d.BetIcon, opt => opt.ResolveUsing(s =>
                 {
@@ -92,6 +96,8 @@ namespace Arsenal.Mobile.Models.Casino
         public string UserName { get; set; }
 
         public CasinoType ItemType { get; set; }
+
+        public DateTime CloseTime { get; set; }
 
         public string TeamHomeName { get; set; }
 

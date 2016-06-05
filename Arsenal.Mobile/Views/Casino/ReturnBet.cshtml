@@ -1,4 +1,68 @@
-﻿@model Arsenal.Mobile.Models.Casino.ReturnBetDto
+﻿@using Arsenal.Service.Casino
+@model Arsenal.Mobile.Models.Casino.BetDto
 @{
-    ViewBag.Title = "比赛投注";
+    ViewBag.Title = "退还投注";
 }
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(function() {
+            $("#btnSubmit").click(function() {
+                if ($("#formReturnBet").valid()) {
+                    document.forms["formReturnBet"].submit();
+                }
+            });
+        });
+    </script>
+}
+
+@section Header {
+    <div data-role="header">
+        <h1 style="overflow: visible">
+            <span>@Model.TeamHomeName</span>
+            <em>vs</em>
+            <span>@Model.TeamAwayName</span>
+        </h1>
+    </div>
+}
+
+@if (!Model.IsWin.HasValue && Model.CloseTime > DateTime.Now && Model.UserName == User.Identity.Name)
+{
+    @section Footer {
+        <div data-role="footer" data-position="fixed">
+            <input type="button" id="btnSubmit" value="退还投注" data-icon="back" />
+        </div>
+    }
+}
+
+<div data-role="content">
+    @if (!Model.IsWin.HasValue && Model.CloseTime > DateTime.Now && Model.UserName == User.Identity.Name)
+    {
+        using (Html.BeginForm("ReturnBet", "Casino", FormMethod.Post, new { id = "formReturnBet" }))
+        {
+            <ul data-role="listview">
+                <li>投注时间<span class="ui-li-count">@Model.BetTime.ToString("yyyy-MM-dd HH:mm")</span></li>
+                <li>截止时间<span class="ui-li-count">@Model.CloseTime.ToString("yyyy-MM-dd HH:mm")</span></li>
+                @if (Model.ItemType.Equals(CasinoType.SingleChoice))
+                {
+                    <li>投注类型<span class="ui-li-count">投输赢</span></li>
+                    <li>投注输赢<span class="ui-li-count">[@Model.BetResult] [@Model.BetRate.Value.ToString("f2")] @Model.BetAmount.Value.ToString("N0")</span></li>
+                }
+                else if (Model.ItemType.Equals(CasinoType.MatchResult))
+                {
+                    <li>投注类型<span class="ui-li-count">猜比分</span></li>
+                    <li>投注结果<span class="ui-li-count">[Home] @Model.BetResultHome.Value : @Model.BetResultAway.Value [Away]</span></li>
+                }
+            </ul>
+
+            @Html.HiddenFor(m => m.ID)
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary()
+        }
+    }
+    else
+    {
+        <h2>您无法退还此投注。</h2>
+    }
+</div>

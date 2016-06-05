@@ -6,7 +6,6 @@ using Arsenal.Mobile.Models;
 using Arsenal.Mobile.Models.Casino;
 using Arsenal.Service;
 using Arsenal.Service.Casino;
-using Arsenal.Service.Club;
 using Arsenalcn.Core;
 using AutoMapper;
 using Match = Arsenal.Service.Casino.Match;
@@ -251,6 +250,9 @@ namespace Arsenal.Mobile.Controllers
                     //    }
                     //}
 
+                    if (model.BetAmount > ConfigGlobal_AcnCasino.SingleBetLimit)
+                    { throw new Exception($"移动版单场不能超过{ConfigGlobal_AcnCasino.SingleBetLimit.ToString("f0")}博彩币"); }
+
                     var bet = new Bet
                     {
                         UserID = AcnID,
@@ -335,6 +337,60 @@ namespace Arsenal.Mobile.Controllers
 
             model.Match = MatchDto.Single(model.MatchGuid);
             //model.MatchGuid = model.MatchGuid;
+
+            return View(model);
+        }
+
+
+        // 退还投注
+        // GET: /Casino/ReturnBet/id
+
+        public ActionResult ReturnBet(int id)
+        {
+            var model = BetDto.Single(id);
+
+            return View(model);
+        }
+
+
+        // 退还投注
+        // POST: /Casino/ReturnBet
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ReturnBet(BetDto model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var bet = _repo.Single<Bet>(model.ID);
+
+                    if (bet != null)
+                    {
+                        if (bet.IsWin.HasValue) { throw new Exception("此投注已经发放了奖励"); }
+
+                        if (bet.UserID != AcnID) { throw new Exception("此投注非当前用户的投注"); }
+
+                        bet.ReturnBet();
+
+                        //退注成功
+                    }
+
+                    TempData["DataUrl"] = "data-url=/Casino/MyBet";
+                    return RedirectToAction("MyBet");
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("Warn", ex.Message);
+                }
+            }
+            else
+            {
+                ModelState.AddModelError("Warn", "请正确填写比赛结果比分");
+            }
+
+            model = BetDto.Single(model.ID);
 
             return View(model);
         }

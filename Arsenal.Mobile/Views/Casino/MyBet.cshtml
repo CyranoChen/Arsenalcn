@@ -5,14 +5,15 @@
 
 @if (Model.Criteria.MaxPage > 0)
 {
-@section Footer {
-    <div data-role="footer" data-position="fixed" class="pager">
-        @Html.Partial("_PagerPartial", Model.Criteria)
-    </div>
-}}
+    @section Footer {
+        <div data-role="footer" data-position="fixed" class="pager">
+            @Html.Partial("_PagerPartial", Model.Criteria)
+        </div>
+    }
+}
 
 <div data-role="content">
-    <ul data-role="listview" data-inset="true">
+    <ul data-role="listview" data-inset="true" id="bet-info-list">
         <li data-role="list-divider">
             我的中奖查询
             <span class="ui-li-count">@Model.Criteria.TotalCount</span>
@@ -26,3 +27,4 @@
         }
     </ul>
 </div>
+

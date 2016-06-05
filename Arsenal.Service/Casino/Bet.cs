@@ -60,7 +60,12 @@ namespace Arsenal.Service.Casino
                         throw new Exception("当前用户不存在博彩帐户(Gambler)");
                     }
 
-                    if (gambler.Cash < BetAmount.Value)
+                    if (BetAmount == null)
+                    {
+                        throw new Exception("投注金额无效");
+                    }
+
+                    if (BetAmount != null && gambler.Cash < BetAmount.Value)
                     {
                         throw new Exception($"博彩帐户余额不足(博彩币余额: {gambler.Cash.ToString("f2")})");
                     }
@@ -91,11 +96,11 @@ namespace Arsenal.Service.Casino
                     #endregion
 
                     //update gambler statistics
-                    gambler.TotalBet += BetAmount.Value;
                     gambler.Cash -= BetAmount.Value;
-                    repo.Update(gambler, trans);
-
+                    gambler.TotalBet += BetAmount.Value;
                     banker.Cash += BetAmount.Value;
+
+                    repo.Update(gambler, trans);
                     repo.Update(banker, trans);
 
                     CasinoItemGuid = item.ID;
@@ -208,6 +213,63 @@ namespace Arsenal.Service.Casino
                     betDetailAway.DetailValue = resultAway.ToString();
 
                     repo.Insert(betDetailAway, trans);
+
+                    trans.Commit();
+                }
+                catch
+                {
+                    trans.Rollback();
+
+                    throw;
+                }
+            }
+        }
+
+        public void ReturnBet()
+        {
+            using (var conn = new SqlConnection(DataAccess.ConnectString))
+            {
+                conn.Open();
+                var trans = conn.BeginTransaction();
+
+                try
+                {
+                    IRepository repo = new Repository();
+
+                    if (BetAmount.HasValue && BetAmount >= 0f)
+                    {
+                        var betAmount = Convert.ToSingle(BetAmount);
+
+                        var item = repo.Single<CasinoItem>(CasinoItemGuid);
+                        if (item == null) { throw new Exception("此投注无对应投注项(CasinoItem)"); }
+
+                        if (item.CloseTime < DateTime.Now)
+                        {
+                            throw new Exception("已超出投注截止时间");
+                        }
+
+                        var banker = repo.Single<Banker>(item.BankerID);
+                        if (banker == null) { throw new Exception("此投注无对应庄家(Banker)"); }
+
+                        var gambler = repo.Query<Gambler>(x => x.UserID == UserID)[0];
+
+                        if (gambler == null) { throw new Exception("此投注无对应博彩帐户(Gambler)"); }
+
+                        // do return bet
+
+                        gambler.Cash += betAmount;
+                        gambler.TotalBet -= betAmount;
+                        banker.Cash -= betAmount;
+
+                        repo.Update(gambler, trans);
+                        repo.Update(banker, trans);
+                    }
+
+                    var list = repo.Query<BetDetail>(x => x.BetID == ID);
+
+                    list.Delete(trans);
+
+                    repo.Delete(this);
 
                     trans.Commit();
                 }

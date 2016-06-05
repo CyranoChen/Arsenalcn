@@ -1,5 +1,5 @@
 ﻿/* CSS Version Default */
-/* Version: 0.4 (Arsenal.Mobile) */
+/* Version: 0.5 (Arsenal.Mobile) */
 /* Cascading Style Sheets Level 2 Revision 1 */
 
 /* Styles for validation helpers
@@ -94,7 +94,7 @@
     text-shadow: none;
 }
 
-/* Arsenal.Mobile 
+/* Arsenal.Mobile Override
     -----------------------------------------------------------*/
 em {
     padding: 0 5px;
@@ -110,33 +110,44 @@ em {
 /* Arsenalcn.Casino 
 -----------------------------------------------------------*/
 
-.match-versus {
+#match-versus {
     text-align: center;
 }
 
-    .match-versus p {
+    #match-versus p {
         margin: 10px 0;
     }
 
-    .match-versus img {
+    #match-versus img {
         margin-top: 10px;
     }
 
-    .match-versus div.ui-input-text {
+    #match-versus div.ui-input-text {
         display: inline-block;
         width: 40px;
     }
 
-        .match-versus div.ui-input-text input {
+        #match-versus div.ui-input-text input {
             font-size: 22px;
             font-weight: bold;
             text-align: center;
         }
 
-    .match-versus span {
+    #match-versus span {
         padding: 5px;
     }
 
+#bet-info-list .star a {
+    background: #ffcccc;
+}
+
+#bet-info-list .back a {
+    background: #fffccc;
+}
+
+#bet-info-list .check a {
+    background: #ffcccc;
+}
 
 
 /* Origin Style */

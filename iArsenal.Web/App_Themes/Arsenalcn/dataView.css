@@ -216,8 +216,6 @@
     font-size: 12px;
 }
 
-.TreeView .ParentNode { }
-
 .TreeView .HoverNode { text-decoration: underline; }
 
 .TreeView .SelectedNode {

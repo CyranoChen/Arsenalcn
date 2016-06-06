@@ -1,5 +1,5 @@
 ﻿/* CSS Version Default */
-/* Version: 2.2 (DiscuzNT 3.6 / Arsenalcn 4.6) || Date: 2013-09-27 || Author: Cyrano */
+/* Version: 2.3.0 (DiscuzNT 3.6 / Arsenalcn 4.6) || Date: 2016-06-06 || Author: Cyrano */
 /* Cascading Style Sheets Level 2 Revision 1 */
 
 /*** Template for Arsenalcn ***/
@@ -8,79 +8,90 @@
     padding: 0;
 }
 
-body { background: #aa0000 url(images/BodyBg.png) repeat; }
-
-frameset {
-    border: none;
-    margin: 0;
-    padding: 0;
+body {
+    background: #aa0000 url(images/BodyBg.png) repeat;
 }
 
-h1, h2, h3, h4, h5 { font-size: 12px; }
+frameset {
+    margin: 0;
+    padding: 0;
+    border: none;
+}
+
+h1, h2, h3, h4, h5 {
+    font-size: 12px;
+}
 
 em, cite, strong, th {
     font-style: normal;
     font-weight: normal;
 }
 
-select option { padding-left: 4px; }
+select option {
+    padding-left: 4px;
+}
 
-ul, li { list-style: none; }
+ul, li {
+    list-style: none;
+}
 
 a {
     color: #333333;
     text-decoration: none;
 }
 
-a:hover {
-    color: #aa0000;
-    text-decoration: underline;
-}
+    a:hover {
+        color: #aa0000;
+        text-decoration: underline;
+    }
 
-a em { text-decoration: underline; }
+    a em {
+        text-decoration: underline;
+    }
 
-a:hover em {
-    color: #aa0000;
-    text-decoration: underline;
-}
+    a:hover em {
+        color: #aa0000;
+        text-decoration: underline;
+    }
 
 /** DiscuzNT.Header **/
-
 #header {
-    background: #aa0000 url(images/headbg.jpg) repeat-x;
+    width: 100%;
     overflow: hidden;
     padding: 5px 0;
-    width: 100%;
+    background: #aa0000 url(images/headbg.jpg) repeat-x;
 }
 
-#header h2 { float: left; }
+    #header h2 {
+        float: left;
+    }
 
-#header .avataonline {
-    color: #fff;
-    float: right;
-    margin: 10px;
-}
+    #header .avataonline {
+        float: right;
+        margin: 10px;
+        color: #fff;
+    }
 
-#header .avataonline a { color: #fff; }
+        #header .avataonline a {
+            color: #fff;
+        }
 
-#header .avataonline a:hover {
-    color: #f0d800;
-    text-decoration: underline;
-}
+            #header .avataonline a:hover {
+                color: #f0d800;
+                text-decoration: underline;
+            }
 
-#header cite {
-    color: #f0d800;
-    font-weight: bold;
-    padding: 0 2px;
-}
-
+    #header cite {
+        color: #f0d800;
+        font-weight: bold;
+        padding: 0 2px;
+    }
 /** DiscuzNT #menubar **/
-
 #menubar {
-    background: #000 url(images/menu_bg.gif) repeat-x;
     border: 1px solid #9c824a;
-    height: 33px;
+    background: #000 url(images/menu_bg.gif) repeat-x;
     overflow: hidden;
+    height: 33px;
 }
 
 #menu li {
@@ -89,75 +100,82 @@ a:hover em {
     line-height: 33px;
 }
 
-#menu li a {
-    background: url(images/menulia.gif) no-repeat right 0px;
-    color: #FFF;
-    float: left;
-    font-size: 14px;
-    font-weight: 700;
-    padding: 0 20px;
-    text-decoration: none;
-    white-space: nowrap;
-}
+    #menu li a {
+        float: left;
+        background: url(images/menulia.gif) no-repeat right 0;
+        color: #FFF;
+        padding: 0 20px;
+        white-space: nowrap;
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 14px;
+    }
 
-#menu li a:hover, #menu li a.current {
-    background: url(images/menuliaover.gif) no-repeat center top;
-    color: #f0d800;
-}
+        #menu li a:hover, #menu li a.current {
+            background: url(images/menuliaover.gif) no-repeat center top;
+            color: #f0d800;
+        }
 
 /** DiscuzNT.Nav **/
-
 #nav {
     background: #f1f1f1 url(images/navbg.gif) repeat-x left top;
     border: 1px solid #9c824a;
     border-top: none;
-    margin-bottom: 10px;
     padding: 8px;
+    margin-bottom: 10px;
 }
 
-#nav #sitepath {
-    background: url(images/sitepath.gif) no-repeat left 2px;
-    float: left;
-    padding: 3px 0px 3px 25px;
-}
+    #nav #sitepath {
+        float: left;
+        background: url(images/sitepath.gif) no-repeat left 2px;
+        padding: 3px 0 3px 25px;
+    }
 
 #sitepath strong {
-    color: #aa0000;
     font-weight: bold;
+    color: #aa0000;
 }
 
-#sitepath a:hover { text-decoration: underline; }
+#sitepath a:hover {
+    text-decoration: underline;
+}
 
 #nav #stats {
     float: right;
-    font-weight: bold;
     text-align: right;
-}
-
-#nav #stats cite {
-    color: #333;
     font-weight: bold;
 }
 
-#nav #stats em {
-    color: #da7b00;
-    font-family: Georgia, Tahoma, Verdana;
-    font-size: 14px;
-    font-weight: bold;
-    padding: 0 5px;
-}
+    #nav #stats cite {
+        font-weight: bold;
+        color: #333;
+    }
 
-#nav #stats a { font-weight: normal; }
+    #nav #stats em {
+        color: #da7b00;
+        padding: 0 5px;
+        font-weight: bold;
+        font-size: 14px;
+        font-family: Georgia, Tahoma, Verdana;
+    }
+
+    #nav #stats a {
+        font-weight: normal;
+    }
 
 /** DiscuzNT.Footer **/
-
 #footer {
-    background: #eeeeee url(images/forumfooterBg.png) repeat-x;
     border-top: 3px solid #550000;
-    clear: both;
+    background: #eeeeee url(images/forumfooterBg.png) repeat-x;
+    padding: 15px 0;
     margin: 0;
     margin-top: 10px;
-    padding: 15px 0;
+    clear: both;
+    -moz-min-width: 1100px;
+    -ms-min-width: 1100px;
+    -o-min-width: 1100px;
+    -webkit-min-width: 1100px;
+    min-width: 1100px;
 }
 
 #footlinks {
@@ -166,268 +184,208 @@ a:hover em {
     text-align: right;
 }
 
-#footlinks a { text-decoration: underline; }
+    #footlinks a {
+        text-decoration: underline;
+    }
 
-#footlinks p { margin-bottom: 5px; }
+    #footlinks p {
+        margin-bottom: 5px;
+    }
 
 #footer img {
     float: left;
     margin: 0 10px 0 10px;
 }
 
-#copyright, #debuginfo { font: 0.83em/1.5em Verdana, Arial, Helvetica, sans-serif; }
-
-#copyright a {
-    color: #aa0000;
-    font-weight: bold;
+#copyright, #debuginfo {
+    font: 0.83em/1.5em Verdana, Arial, Helvetica, sans-serif;
 }
 
-#copyright em {
-    color: #FF9D25;
-    font-weight: bold;
+    #copyright a {
+        color: #aa0000;
+        font-weight: bold;
+    }
+
+    #copyright em {
+        color: #FF9D25;
+        font-weight: bold;
+    }
+
+#debuginfo {
+    color: #999;
 }
 
-#debuginfo { color: #999; }
-
-.scrolltop { cursor: pointer; }
+.scrolltop {
+    cursor: pointer;
+}
 
 
 /** ACN_MainStyle **/
-
 #ACN_Wrap {
-    margin: 0 15px;
-    min-width: 900px;
     text-align: left;
+    margin: 0 15px;
+    -moz-min-width: 1080px;
+    -ms-min-width: 1080px;
+    -o-min-width: 1080px;
+    -webkit-min-width: 1080px;
+    min-width: 1080px;
 }
 
 #LeftPanel {
-    display: inline;
     float: left;
+    display: inline;
     width: 21%; /* IE 10 */
+    -moz-min-width: 225px;
+    -ms-min-width: 225px;
+    -o-min-width: 225px;
+    -webkit-min-width: 225px;
+    min-width: 225px;
 }
 
 #MainPanel {
+    float: left;
     background: #9c824a;
     display: inline;
-    float: left;
     width: 78%;
 }
 
-#MainPanel .FieldToolBar {
-    background: #aa0000 url(images/bbs_title_bg.jpg) no-repeat top right;
-    border: 1px solid #000;
-    height: 30px;
-    margin: 1px;
-}
+    #MainPanel .FieldToolBar {
+        background: #aa0000 url(images/bbs_title_bg.jpg) no-repeat top right;
+        height: 30px;
+        margin: 1px;
+        border: 1px solid #000;
+    }
 
-#MainPanel .FieldToolBar .CtrlLeftPanelCol {
-    background: url(images/collapsed_yes.gif) no-repeat 8px 8px;
-    cursor: pointer;
-    float: left;
-    padding-left: 20px;
-}
+        #MainPanel .FieldToolBar .CtrlLeftPanelCol {
+            padding-left: 20px;
+            float: left;
+            cursor: pointer;
+            background: url(images/collapsed_yes.gif) no-repeat 8px 8px;
+        }
 
-#MainPanel .FieldToolBar .CtrlLeftPanelExp {
-    background: url(images/collapsed_no.gif) no-repeat 6px 8px;
-    cursor: pointer;
-    float: left;
-    padding-left: 20px;
-}
+        #MainPanel .FieldToolBar .CtrlLeftPanelExp {
+            padding-left: 20px;
+            float: left;
+            cursor: pointer;
+            background: url(images/collapsed_no.gif) no-repeat 6px 8px;
+        }
 
-#MainPanel .FieldToolBar strong {
-    color: #fff;
-    float: left;
-    font-size: 12px;
-    font-weight: bold;
-    padding: 5px 10px;
-}
+        #MainPanel .FieldToolBar strong {
+            font-size: 12px;
+            font-weight: bold;
+            color: #fff;
+            float: left;
+            padding: 5px 10px;
+        }
 
-#MainPanel .FieldToolBar strong a {
-    color: #f0d800;
-    font-weight: bold;
-    padding: 0 2px;
-    text-decoration: underline;
-}
+            #MainPanel .FieldToolBar strong a {
+                font-weight: bold;
+                color: #f0d800;
+                padding: 0 2px;
+                text-decoration: underline;
+            }
 
-#MainPanel em {
-    color: #da7b00;
-    font-weight: bold;
-    padding: 0 5px;
-}
+    #MainPanel em {
+        color: #da7b00;
+        font-weight: bold;
+        padding: 0 5px;
+    }
 
 .HeaderBtnBar {
-    color: #f0d800;
     float: right;
-    font-weight: bold;
-    padding: 6px;
     text-align: right;
+    padding: 6px;
+    font-weight: bold;
+    color: #f0d800;
 }
 
 #MainPanel .FieldToolBar .HeaderBtnBar a {
-    color: #f0d800;
     font-weight: bold;
+    color: #f0d800;
     padding: 0 8px;
 }
 
-#MainPanel .FieldToolBar .HeaderBtnBar a:hover {
-    font-weight: bold;
-    text-decoration: underline;
-}
+    #MainPanel .FieldToolBar .HeaderBtnBar a:hover {
+        text-decoration: underline;
+        font-weight: bold;
+    }
 
 .FooterBtnBar {
+    padding: 5px;
+    text-align: center;
     background: #ccc;
     border: 1px solid #9c824a;
     border-top: none;
-    padding: 5px;
-    text-align: center;
 }
 
-.Collapse {
+/*.Collapse {
     background: url(images/collapse.gif) no-repeat center center;
-    cursor: pointer;
-    float: left;
-    height: 40px;
-    margin: 0;
     width: 15px;
+    height: 40px;
+    float: left;
+    cursor: pointer;
+    margin: 0px;
 }
 
 .Expand {
     background: url(images/expand.gif) no-repeat center center;
-    cursor: pointer;
-    float: left;
-    height: 40px;
-    margin: 0;
     width: 15px;
+    height: 40px;
+    float: left;
+    cursor: pointer;
+    margin: 0px;
 }
 
-.Collapse:hover, .Expand:hover { background-color: #eeeeee; }
+    .Collapse:hover, .Expand:hover {
+        background-color: #eeeeee;
+    }
+*/
 
-.PagerInfo { display: none; }
+.PagerInfo {
+    display: none;
+}
 
 /** MenuTabBar **/
-
 .MenuTabBar {
     background: url(images/title_bg.jpg) repeat-x;
-    border-bottom: 2px solid #9c824a;
+    overflow: hidden;
     height: 30px;
     margin: 1px;
-    overflow: hidden;
+    border-bottom: 2px solid #9c824a;
 }
 
-.MenuTabBar ul { margin-top: 5px; }
+    .MenuTabBar ul {
+        margin-top: 5px;
+    }
 
-.MenuTabBar ul li {
-    background: #000;
-    border: 1px solid #9c824a;
-    border-bottom: none;
-    display: inline;
-    float: left;
-    margin: 0 3px;
-    padding: 5px 15px;
-}
+        .MenuTabBar ul li {
+            float: left;
+            display: inline;
+            margin: 0 3px;
+            background: #000;
+            padding: 5px 15px;
+            border: 1px solid #9c824a;
+            border-bottom: none;
+        }
 
-.MenuTabBar ul li:hover { background: #333; }
+            .MenuTabBar ul li:hover {
+                background: #333;
+            }
 
-.MenuTabBar ul li a {
-    color: #eee;
-    font-size: 12px;
-    font-weight: bold;
-}
+            .MenuTabBar ul li a {
+                color: #eee;
+                font-size: 12px;
+                font-weight: bold;
+            }
 
-.MenuTabBar ul li a:hover { color: #fff; }
+                .MenuTabBar ul li a:hover {
+                    color: #fff;
+                }
 
-.MenuTabBar ul li.Current { background: #9c824a; }
+            .MenuTabBar ul li.Current {
+                background: #9c824a;
+            }
 
-.MenuTabBar ul li.Current a { color: #000; }
-
-/** Ajax Toolkit Style **/
-
-#PageCoverLayout {
-    -moz-opacity: 0.7; /* Moz + FF */
-    background-color: #000;
-    filter: alpha(opacity=70); /* IE */
-    height: 100%;
-    left: 0;
-    opacity: 0.7; /* 支持CSS3的浏览器（FF 1.5也支持）*/
-    position: absolute;
-    top: 0;
-    width: 100%;
-    z-index: 200;
-}
-
-#PageCoverLayoutAjax {
-    margin-top: 100px;
-    position: absolute;
-    text-align: center;
-    width: 100%;
-    z-index: 999;
-}
-
-#PageCoverLayoutAjax #btnClose {
-    background: #f2f2f2;
-    border: 1px solid #ccc;
-    color: #333;
-    font-weight: bold;
-    padding: 3px;
-    text-decoration: none;
-    width: 30px;
-}
-
-#PageCoverLayoutAjax #btnClose:hover {
-    color: #aa0000;
-    text-decoration: none;
-}
-
-.PanelModalDialogAjax {
-    background: #f9f9f9 url(images/panelbg.png) repeat-x left top;
-    border: 2px solid #333333;
-    border: 1px solid #333333;
-    padding: 8px;
-    width: 500px;
-}
-
-.PanelModalDialogAjaxAlert {
-    background: #F2F2F2;
-    color: #333333;
-    font-size: 12px;
-    font-weight: bold;
-    padding: 15px;
-}
-
-.PanelModalDialogAjaxDrag { cursor: move; }
-
-.DragTitleBar {
-    background: url(images/PanelTitleBarBg.gif) repeat-x left top;
-    cursor: move;
-    display: block;
-    padding: 5px;
-}
-
-.DragTitleBar a {
-    background: url(images/dot.gif) no-repeat 5px 2px;
-    color: #FFFFFF;
-    font-size: 13px;
-    font-weight: bold;
-    padding-left: 22px;
-    text-decoration: none;
-}
-
-.DragTitleBar a:hover {
-    color: #FFFFFF;
-    text-decoration: underline;
-}
-
-#ProcessingTip {
-    background: #eeeeee url(images/ajax_loading.gif) no-repeat 15px 5px;
-    border: 1px solid #666666;
-    bottom: 20px;
-    color: #333333;
-    font-size: 13px;
-    height: 20px;
-    padding: 10px;
-    position: absolute;
-    right: 15px;
-    text-align: center;
-    width: 250px;
-    z-index: 300;
-}
+                .MenuTabBar ul li.Current a {
+                    color: #000;
+                }

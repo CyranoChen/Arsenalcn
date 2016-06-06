@@ -2,12 +2,16 @@
 <div id="header">
     <h2>
         <a href="http://www.arsenalcn.com/" title="阿森纳中国官方球迷会">
-            <img src="App_Themes/arsenalcn/images/logo.png" alt="阿森纳中国官方球迷会"/>
+            <img src="http://www.arsenalcn.com/arsenalcn-logo.png" alt="阿森纳中国官方球迷会" />
+        </a>
+        <a href="#">
+            <img src="http://bbs.arsenalcn.com/images/qrcode-arsenalcn.png" alt="OfficialArsenalCN">
         </a>
     </h2>
     <asp:PlaceHolder ID="phAnonymous" runat="server">
         <span class="avataonline">
-            <asp:HyperLink ID="hlLogin" runat="server">登录</asp:HyperLink> | 
+            <asp:HyperLink ID="hlLogin" runat="server">登录</asp:HyperLink>
+            | 
             <a href="http://bbs.arsenalcn.com/register.aspx">注册</a>
         </span>
     </asp:PlaceHolder>
@@ -35,9 +39,6 @@
             <a href="http://e.weibo.com/arsenalcn/" target="_blank">微博</a>
         </li>
         <li>
-            <a href="http://bbs.arsenalcn.com/showalbumlist.aspx">相册</a>
-        </li>
-        <li>
             <a href="http://bbs.arsenalcn.com/showuser.aspx">会员</a>
         </li>
         <li>
@@ -54,7 +55,7 @@
     </div>
     <div id="stats">
         <script src="http://s22.cnzz.com/stat.php?id=4134306&web_id=4134306&online=1&show=line"
-                type="text/javascript"></script>
+            type="text/javascript"></script>
     </div>
     <div class="Clear">
     </div>

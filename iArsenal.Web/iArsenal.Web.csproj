@@ -1119,6 +1119,7 @@
     <Content Include="UploadFiles\Product\w74758201.jpg" />
     <Content Include="UploadFiles\Product\W74972601.jpg" />
     <Content Include="UploadFiles\Product\Walcott.jpg" />
+    <Content Include="UploadFiles\qrcode-arsenalcn.gif" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

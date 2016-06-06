@@ -2,18 +2,20 @@
 <div id="header">
     <h2>
         <a href="/index.aspx" title="阿森纳中国官方球迷会">
-            <img src="/App_Themes/arsenalcn/images/logo.png" alt="阿森纳中国官方球迷会"/>
+            <img src="http://www.arsenalcn.com/arsenalcn-logo.png" alt="阿森纳中国官方球迷会" />
+        </a>
+        <a href="#">
+            <img src="http://bbs.arsenalcn.com/images/qrcode-arsenalcn.png" alt="OfficialArsenalCN">
         </a>
     </h2>
     <asp:PlaceHolder ID="phAnonymous" runat="server">
-        <span class="avataonline"><a href="/login.aspx">
-        登录</a> | <a href="/register.aspx">注册</a></span> </asp:PlaceHolder>
+        <span class="avataonline"><a href="/login.aspx">登录</a> | <a href="/register.aspx">注册</a></span> </asp:PlaceHolder>
     <asp:PlaceHolder ID="phAthenticated" runat="server">
         <span class="avataonline">欢迎: <cite>
-        <asp:Literal ID="ltrlUserName" runat="server"></asp:Literal></cite> |
+            <asp:Literal ID="ltrlUserName" runat="server"></asp:Literal></cite> |
         <asp:HyperLink ID="linkLogout" runat="server" NavigateUrl="/logout.aspx?userkey="
             Text="退出"></asp:HyperLink>
-    </span></asp:PlaceHolder>
+        </span></asp:PlaceHolder>
     <div class="Clear">
     </div>
 </div>
@@ -30,9 +32,6 @@
         </li>
         <li>
             <a href="http://www.weibo.com/arsenalcn/" target="_blank">微博</a>
-        </li>
-        <li>
-            <a href="/showalbumlist.aspx">相册</a>
         </li>
         <li>
             <a href="/showuser.aspx">会员</a>
@@ -58,7 +57,7 @@
             </asp:Literal>
         </em>, 球员:<em>
             <asp:Literal ID="ltrlPlayerCount"
-                         runat="server">
+                runat="server">
             </asp:Literal>
         </em>
     </div>

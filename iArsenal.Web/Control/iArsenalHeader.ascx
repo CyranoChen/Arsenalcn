@@ -1,15 +1,19 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="iArsenalHeader.ascx.cs"
-Inherits="iArsenal.Web.Control.iArsenalHeader" %>
+    Inherits="iArsenal.Web.Control.iArsenalHeader" %>
 <div id="header">
     <h1>
         <a href="http://www.arsenalcn.com/">
-            <img src="uploadfiles/logo_ArsenalChina.png" alt="阿森纳中国官方球迷会"/>
+            <img src="uploadfiles/logo_ArsenalChina.png" alt="阿森纳中国官方球迷会" />
+        </a>
+        <a href="#">
+            <img src="uploadfiles/qrcode-arsenalcn.gif" alt="OfficialArsenalCN" />
         </a>
     </h1>
     <div id="userPanel">
         <h2 onclick="window.location.href = 'default.aspx'"></h2>
         <asp:Panel ID="pnlLoginUser" CssClass="UserInfo" runat="server">
-            <asp:Label ID="lblUserInfo" runat="server"></asp:Label> -
+            <asp:Label ID="lblUserInfo" runat="server"></asp:Label>
+            -
             <a href="http://bbs.arsenalcn.com/usercpinbox.aspx" target="_blank">短消息</a> -
             <a href="iArsenalMemberRegister.aspx">会员中心</a> -
             <asp:Literal ID="ltrlAdminConfig" runat="server"></asp:Literal>

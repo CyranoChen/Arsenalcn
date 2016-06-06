@@ -37,16 +37,8 @@
             </ul>
         </div>
     </asp:Panel>
-    <asp:Panel ID="pnlWeChat" runat="server" CssClass="InfoPanel">
-        <h3 class="Col" onclick="$(this).toggleClass('Col'); $(this).toggleClass('Exp'); $(this).next('div').toggle('normal');">
-            <a>ACN微信公众号</a>
-        </h3>
-        <div class="Block" style="text-align: center; background: #ffffff">
-            <img src="http://www.arsenalcn.com/arsenalcn-qrcode.png" alt="OfficialArsenalCN" />
-        </div>
-    </asp:Panel>
     <uc1:TopContestList ID="ctrlTopContestList" runat="server" />
-    <uc2:TopGamblerList ID="ctrlTopGamblerList" runat="server" Visible="False" />
+    <uc2:TopGamblerList ID="ctrlTopGamblerList" runat="server" />
     <uc3:TopMatchList ID="ctrlTopMatchList" runat="server" Visible="False" />
     <asp:Panel ID="pnlDev" runat="server" CssClass="InfoPanel" Visible="False">
         <h3 class="Col" onclick="$(this).toggleClass('Col'); $(this).toggleClass('Exp'); $(this).next('div').toggle('normal');">

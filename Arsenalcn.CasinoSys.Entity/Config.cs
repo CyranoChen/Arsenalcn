@@ -6,7 +6,7 @@ namespace Arsenalcn.CasinoSys.Entity
 {
     public class ConfigGlobal : Config
     {
-        private const ConfigSystem currSystem = ConfigSystem.AcnCasino;
+        private const ConfigSystem CurrSystem = ConfigSystem.AcnCasino;
 
         private ConfigGlobal()
         {
@@ -14,10 +14,7 @@ namespace Arsenalcn.CasinoSys.Entity
 
         #region Members and Properties
 
-        public static Dictionary<string, string> ConfigDictionary
-        {
-            get { return GetDictionaryByConfigSystem(currSystem); }
-        }
+        public static Dictionary<string, string> ConfigDictionary => GetDictionaryByConfigSystem(CurrSystem);
 
         public static string[] PluginAdmin
         {
@@ -28,20 +25,11 @@ namespace Arsenalcn.CasinoSys.Entity
             }
         }
 
-        public static string PluginName
-        {
-            get { return ConfigDictionary["PluginName"]; }
-        }
+        public static string PluginName => ConfigDictionary["PluginName"];
 
-        public static string PluginVersion
-        {
-            get { return ConfigDictionary["PluginVersion"]; }
-        }
+        public static string PluginVersion => ConfigDictionary["PluginVersion"];
 
-        public static string PluginDisplayName
-        {
-            get { return ConfigDictionary["PluginDisplayName"]; }
-        }
+        public static string PluginDisplayName => ConfigDictionary["PluginDisplayName"];
 
         public static bool PluginActive
         {
@@ -73,10 +61,7 @@ namespace Arsenalcn.CasinoSys.Entity
             }
         }
 
-        public static string PluginAcnClubPath
-        {
-            get { return ConfigDictionary["PluginAcnClubPath"]; }
-        }
+        public static string PluginAcnClubPath => ConfigDictionary["PluginAcnClubPath"];
 
         public static Guid DefaultBankerID
         {
@@ -84,9 +69,9 @@ namespace Arsenalcn.CasinoSys.Entity
             {
                 try
                 {
-                    var tmpID = ConfigDictionary["DefaultBankerID"];
-                    if (!string.IsNullOrEmpty(tmpID))
-                        return new Guid(tmpID);
+                    var tmpId = ConfigDictionary["DefaultBankerID"];
+                    if (!string.IsNullOrEmpty(tmpId))
+                        return new Guid(tmpId);
                     return new Guid("f2e3dfe0-2ef6-49df-8518-15e66cafe594");
                 }
                 catch
@@ -102,10 +87,10 @@ namespace Arsenalcn.CasinoSys.Entity
             {
                 try
                 {
-                    var tmpID = ConfigDictionary["DefaultLeagueID"];
+                    var tmpId = ConfigDictionary["DefaultLeagueID"];
 
-                    if (!string.IsNullOrEmpty(tmpID))
-                        return new Guid(tmpID);
+                    if (!string.IsNullOrEmpty(tmpId))
+                        return new Guid(tmpId);
                     return Guid.Empty;
                 }
                 catch
@@ -160,10 +145,29 @@ namespace Arsenalcn.CasinoSys.Entity
             }
         }
 
-        public static string SysNotice
+        public static int[] RankCondition
         {
-            get { return ConfigDictionary["SysNotice"]; }
+            get
+            {
+                try
+                {
+                    var configValue = ConfigDictionary["RankCondition"];
+                    var tmpStrings = configValue.Split('|');
+                    var retInts = new int[tmpStrings.Length];
+
+                    for (var i = 0; i < tmpStrings.Length; i++)
+                    {
+                        int.TryParse(tmpStrings[i], out retInts[i]);
+                    }
+
+                    return retInts;
+                }
+                catch
+                { return new[] { 5, 5000, 3 }; }
+            }
         }
+
+        public static string SysNotice => ConfigDictionary["SysNotice"];
 
         public static int ExchangeRate
         {
@@ -213,7 +217,7 @@ namespace Arsenalcn.CasinoSys.Entity
         #endregion
     }
 
-    public class ConfigAdmin
+    public static class ConfigAdmin
     {
         public static bool IsPluginAdmin(int userid)
         {

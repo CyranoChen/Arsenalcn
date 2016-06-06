@@ -41,7 +41,7 @@ namespace Arsenalcn.CasinoSys.Entity
 
                 if (TotalBet > 0f)
                 {
-                    ProfitRate = Profit/TotalBet*100;
+                    ProfitRate = Profit / TotalBet * 100;
                 }
                 else
                 {
@@ -51,7 +51,7 @@ namespace Arsenalcn.CasinoSys.Entity
                 if (RPBet.HasValue && RPBet.Value > 0
                     && RPBonus.HasValue && RPBonus.Value >= 0)
                 {
-                    RPRate = RPBonus/RPBet*100;
+                    RPRate = RPBonus / RPBet * 100;
                 }
                 else
                 {
@@ -92,23 +92,20 @@ namespace Arsenalcn.CasinoSys.Entity
             }
 
             // 进入最终名次排行榜的标准（评选要求）同时满足以下3个条件：
-            //1、赛季中必须投注博采币次数达到10个单场及以上（反复多次投注同一场比赛只能算是1次）；
+            //1、赛季中必须投注博采币次数达到5个单场及以上（反复多次投注同一场比赛只能算是1次）；
             //2、赛季中参与累计投注量达到5,000菠菜币及以上；
             //3、赛季中并且获得RP+3及以上，即猜对本赛季3场以上的比赛比分。
-            if (ConfigGlobal.ContestLimitIgnore)
-            {
-                return list;
-            }
-            return
-                list.FindAll(
-                    delegate(CasinoGambler cg) { return cg.MatchBet >= 10 && cg.TotalBet >= 5000f && cg.RPBonus >= 3; });
+            if (ConfigGlobal.ContestLimitIgnore) { return list; }
+
+            return list.FindAll(cg => cg.MatchBet >= ConfigGlobal.RankCondition[0]
+                && cg.TotalBet >= ConfigGlobal.RankCondition[1] && cg.RPBonus >= ConfigGlobal.RankCondition[2]);
         }
 
         public static List<CasinoGambler> SortCasinoGambler(List<CasinoGambler> list, string orderKeyword)
         {
             if (orderKeyword.Equals("ProfitRate", StringComparison.OrdinalIgnoreCase))
             {
-                list.Sort(delegate(CasinoGambler cg1, CasinoGambler cg2)
+                list.Sort(delegate (CasinoGambler cg1, CasinoGambler cg2)
                 {
                     return !cg2.ProfitRate.Equals(cg1.ProfitRate)
                         ? cg2.ProfitRate.CompareTo(cg1.ProfitRate)
@@ -117,7 +114,7 @@ namespace Arsenalcn.CasinoSys.Entity
             }
             else if (orderKeyword.Equals("TotalBet", StringComparison.OrdinalIgnoreCase))
             {
-                list.Sort(delegate(CasinoGambler cg1, CasinoGambler cg2)
+                list.Sort(delegate (CasinoGambler cg1, CasinoGambler cg2)
                 {
                     return !cg2.TotalBet.Equals(cg1.TotalBet)
                         ? cg2.TotalBet.CompareTo(cg1.TotalBet)
@@ -126,7 +123,7 @@ namespace Arsenalcn.CasinoSys.Entity
             }
             else if (orderKeyword.Equals("RPBonus", StringComparison.OrdinalIgnoreCase))
             {
-                list.Sort(delegate(CasinoGambler cg1, CasinoGambler cg2)
+                list.Sort(delegate (CasinoGambler cg1, CasinoGambler cg2)
                 {
                     if (!cg1.RPBonus.HasValue && !cg2.RPBonus.HasValue)
                     {
@@ -136,6 +133,7 @@ namespace Arsenalcn.CasinoSys.Entity
                     {
                         return -1;
                     }
+                    // ReSharper disable once ConditionIsAlwaysTrueOrFalse
                     if (!cg1.RPBonus.HasValue && cg2.RPBonus.HasValue)
                     {
                         return 1;
@@ -147,7 +145,7 @@ namespace Arsenalcn.CasinoSys.Entity
             }
             else
             {
-                list.Sort(delegate(CasinoGambler cg1, CasinoGambler cg2) { return cg2.Profit.CompareTo(cg1.Profit); });
+                list.Sort(delegate (CasinoGambler cg1, CasinoGambler cg2) { return cg2.Profit.CompareTo(cg1.Profit); });
             }
 
             //    orderClause = string.Format("{0} DESC, Profit DESC, RPBonus DESC, TotalBet DESC", orderKeyword);
@@ -158,11 +156,11 @@ namespace Arsenalcn.CasinoSys.Entity
             //else
             //    orderClause = "Profit DESC, RPBonus DESC, ProfitRate DESC, TotalBet DESC";
 
-            var _rank = 1;
+            var rank = 1;
 
             foreach (var cg in list)
             {
-                cg.Rank = _rank++;
+                cg.Rank = rank++;
                 cg.Credit = cg.Rank;
 
                 //dr["Profit"] = Convert.ToSingle(dr["Earning"]) - Convert.ToSingle(dr["TotalBet"]);
@@ -185,7 +183,7 @@ namespace Arsenalcn.CasinoSys.Entity
             if (list != null && list.Count > 0)
             {
                 var dictCasinoGambler = new Dictionary<int, int>();
-                string[] arrayOrderKeyword = {"ProfitRate", "TotalBet", "RPBonus", "Profit"};
+                string[] arrayOrderKeyword = { "ProfitRate", "TotalBet", "RPBonus", "Profit" };
 
                 // Sort List<CasinoGambler> by different orderKeywords
                 foreach (var s in arrayOrderKeyword)
@@ -216,17 +214,15 @@ namespace Arsenalcn.CasinoSys.Entity
                 }
 
                 // Sort the final list
-                list.Sort(delegate(CasinoGambler cg1, CasinoGambler cg2)
-                {
-                    return !cg1.Credit.Value.Equals(cg2.Credit.Value)
+                list.Sort(
+                    (cg1, cg2) => cg2.Credit != null && cg1.Credit != null && !cg1.Credit.Value.Equals(cg2.Credit.Value)
                         ? cg1.Credit.Value - cg2.Credit.Value
-                        : cg2.Profit.CompareTo(cg1.Profit);
-                });
+                        : cg2.Profit.CompareTo(cg1.Profit));
 
-                var _rank = 1;
+                var rank = 1;
                 foreach (var cg in list)
                 {
-                    cg.Rank = _rank++;
+                    cg.Rank = rank++;
                 }
             }
 

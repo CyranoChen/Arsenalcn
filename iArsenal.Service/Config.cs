@@ -56,35 +56,17 @@ namespace iArsenal.Service
 
         #region Members and Properties
 
-        public static string APIAppKey
-        {
-            get { return ConfigDictionary["APIAppKey"]; }
-        }
+        public static string APIAppKey => ConfigDictionary["APIAppKey"];
 
-        public static string APICryptographicKey
-        {
-            get { return ConfigDictionary["APICryptographicKey"]; }
-        }
+        public static string APICryptographicKey => ConfigDictionary["APICryptographicKey"];
 
-        public static string APILoginURL
-        {
-            get { return ConfigDictionary["APILoginURL"]; }
-        }
+        public static string APILoginURL => ConfigDictionary["APILoginURL"];
 
-        public static string APILogoutURL
-        {
-            get { return ConfigDictionary["APILogoutURL"]; }
-        }
+        public static string APILogoutURL => ConfigDictionary["APILogoutURL"];
 
-        public static string APIServiceURL
-        {
-            get { return ConfigDictionary["APIServiceURL"]; }
-        }
+        public static string APIServiceURL => ConfigDictionary["APIServiceURL"];
 
-        public static string AcnCasinoURL
-        {
-            get { return ConfigDictionary["AcnCasinoURL"]; }
-        }
+        public static string AcnCasinoURL => ConfigDictionary["AcnCasinoURL"];
 
         public static string[] PluginAdmin
         {
@@ -95,20 +77,11 @@ namespace iArsenal.Service
             }
         }
 
-        public static string PluginName
-        {
-            get { return ConfigDictionary["PluginName"]; }
-        }
+        public static string PluginName => ConfigDictionary["PluginName"];
 
-        public static string PluginVersion
-        {
-            get { return ConfigDictionary["PluginVersion"]; }
-        }
+        public static string PluginVersion => ConfigDictionary["PluginVersion"];
 
-        public static string PluginDisplayName
-        {
-            get { return ConfigDictionary["PluginDisplayName"]; }
-        }
+        public static string PluginDisplayName => ConfigDictionary["PluginDisplayName"];
 
         public static bool PluginActive
         {
@@ -152,10 +125,7 @@ namespace iArsenal.Service
             }
         }
 
-        public static string SysNotice
-        {
-            get { return ConfigDictionary["SysNotice"]; }
-        }
+        public static string SysNotice => ConfigDictionary["SysNotice"];
 
         public static string[] BulkOrderInfo
         {

@@ -18,16 +18,26 @@ namespace Arsenal.Mobile.Models.Casino
                     TeamHomeLogo = ConfigGlobal_Arsenal.PluginAcnCasinoPath + s.Home.TeamLogo,
                     TeamAwayName = s.Away.TeamDisplayName,
                     TeamAwayLogo = ConfigGlobal_Arsenal.PluginAcnCasinoPath + s.Away.TeamLogo,
-                    HomeRate =
-                        s.ChoiceOptions.SingleOrDefault(
-                            x => x.OptionName.Equals("home", StringComparison.OrdinalIgnoreCase)).OptionRate,
-                    DrawRate =
-                        s.ChoiceOptions.SingleOrDefault(
-                            x => x.OptionName.Equals("draw", StringComparison.OrdinalIgnoreCase)).OptionRate,
-                    AwayRate =
-                        s.ChoiceOptions.SingleOrDefault(
-                            x => x.OptionName.Equals("away", StringComparison.OrdinalIgnoreCase)).OptionRate
-                }));
+                })
+                .ForMember(d => d.HomeRate, opt =>
+                {
+                    opt.Condition(s => s.ChoiceOptions != null);
+                    opt.MapFrom(s => s.ChoiceOptions.SingleOrDefault(x =>
+                        x.OptionName.Equals("home", StringComparison.OrdinalIgnoreCase)).OptionRate);
+                })
+                .ForMember(d => d.DrawRate, opt =>
+                {
+                    opt.Condition(s => s.ChoiceOptions != null);
+                    opt.MapFrom(s => s.ChoiceOptions.SingleOrDefault(x =>
+                        x.OptionName.Equals("draw", StringComparison.OrdinalIgnoreCase)).OptionRate);
+                })
+                .ForMember(d => d.AwayRate, opt =>
+                {
+                    opt.Condition(s => s.ChoiceOptions != null);
+                    opt.MapFrom(s => s.ChoiceOptions.SingleOrDefault(x =>
+                        x.OptionName.Equals("away", StringComparison.OrdinalIgnoreCase)).OptionRate);
+                })
+            );
 
             return config;
         }
@@ -46,6 +56,7 @@ namespace Arsenal.Mobile.Models.Casino
 
         #region Members and Properties
 
+        // ReSharper disable once InconsistentNaming
         public Guid ID { get; set; }
 
         public string TeamHomeName { get; set; }

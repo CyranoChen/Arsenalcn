@@ -158,16 +158,7 @@ namespace Arsenal.Mobile.Controllers
 
             var query = _repo.Query<MatchView>(criteria, x => x.ResultHome.HasValue && x.ResultAway.HasValue);
 
-            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<MatchView, MatchDto>()
-                .ConstructUsing(s => new MatchDto
-                {
-                    ID = s.ID,
-                    TeamHomeName = s.Home.TeamDisplayName,
-                    TeamHomeLogo = s.Home.TeamLogo,
-                    TeamAwayName = s.Away.TeamDisplayName,
-                    TeamAwayLogo = s.Away.TeamLogo
-                }))
-                .CreateMapper();
+            var mapper = MatchDto.ConfigMapper().CreateMapper();
 
             var list = mapper.Map<IEnumerable<MatchDto>>(query.AsEnumerable());
 
@@ -215,9 +206,9 @@ namespace Arsenal.Mobile.Controllers
                 x.UserID == AcnID && x.CasinoItem.MatchGuid == id)
                 .Many<BetView, BetDetail, int>(t => t.ID);
 
-            var mapperBetDto = BetDto.ConfigMapper().CreateMapper();
+            var mapper = BetDto.ConfigMapper().CreateMapper();
 
-            var bList = mapperBetDto.Map<IEnumerable<BetDto>>(betsQuery.AsEnumerable());
+            var bList = mapper.Map<IEnumerable<BetDto>>(betsQuery.AsEnumerable());
 
             model.MyBets = bList;
 
@@ -228,18 +219,9 @@ namespace Arsenal.Mobile.Controllers
                 .FindAll(x => x.Home.ID.Equals(match.Home) && x.Away.ID.Equals(match.Away) ||
                               x.Home.ID.Equals(match.Away) && x.Away.ID.Equals(match.Home));
 
-            var mapperMatchDto = new MapperConfiguration(cfg => cfg.CreateMap<MatchView, MatchDto>()
-                .ConstructUsing(s => new MatchDto
-                {
-                    ID = s.ID,
-                    TeamHomeName = s.Home.TeamDisplayName,
-                    TeamHomeLogo = ConfigGlobal_Arsenal.PluginAcnCasinoPath + s.Home.TeamLogo,
-                    TeamAwayName = s.Away.TeamDisplayName,
-                    TeamAwayLogo = ConfigGlobal_Arsenal.PluginAcnCasinoPath + s.Away.TeamLogo,
-                }))
-                .CreateMapper();
+            mapper = MatchDto.ConfigMapper().CreateMapper();
 
-            var mlist = mapperMatchDto.Map<IEnumerable<MatchDto>>(matchesQuery.AsEnumerable());
+            var mlist = mapper.Map<IEnumerable<MatchDto>>(matchesQuery.AsEnumerable());
 
             model.HistoryMatches = mlist;
 

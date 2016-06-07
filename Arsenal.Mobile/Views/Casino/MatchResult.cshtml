@@ -13,7 +13,7 @@
                 }
             });
 
-            $("#match-versus input").each(function () {
+            $(".match-versus input").each(function () {
                 $(this).focus(function () {
                     $(this).val("");
                 });
@@ -27,17 +27,17 @@
     </div>
 }
 @section Footer {
-    <div data-role="footer">
+    <div data-role="footer" data-position="fixed">
         <input type="button" id="btnSubmit" value="提交投注" data-icon="check" />
     </div>
 }
 <div data-role="content">
     @using (Html.BeginForm("MatchResult", "Casino", FormMethod.Post, new { id = "formGameBet" }))
     {
-        <fieldset data-role="controlgroup" id="match-versus">
+        <fieldset data-role="controlgroup" class="match-versus">
             <div class="ui-grid-b">
                 <div class="ui-block-a">
-                    <img src="http://bbs.arsenalcn.com/plugin/acncasino/@Model.Match.TeamHomeLogo" />
+                    <img src="@Model.Match.TeamHomeLogo" />
                     <h2>@Model.Match.TeamHomeName</h2>
                 </div>
                 <div class="ui-block-b">
@@ -47,13 +47,13 @@
                     }
                     <p>
                         @Html.TextBoxFor(m => m.ResultHome)
-                        <span>vs</span>
+                        <span class="versus">vs</span>
                         @Html.TextBoxFor(m => m.ResultAway)
                     </p>
                     <p>@Model.Match.PlayTime.ToString("yyyy-MM-dd HH:mm")</p>
                 </div>
                 <div class="ui-block-c">
-                    <img src="http://bbs.arsenalcn.com/plugin/acncasino/@Model.Match.TeamAwayLogo" />
+                    <img src="@Model.Match.TeamAwayLogo" />
                     <h2>@Model.Match.TeamAwayName</h2>
                 </div>
             </div>

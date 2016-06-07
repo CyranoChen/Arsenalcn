@@ -28,6 +28,15 @@ namespace Arsenal.Mobile.Models.Casino
         public MatchDto Match { get; set; }
     }
 
+    public class MyCouponDto
+    {
+        public int CasinoValidDays { get; set; }
+
+        public bool IsShowSubmitButton { get; set; }
+
+        public IEnumerable<CouponDto> Coupons { get; set; }
+    }
+
     public class MyBetDto : SearchModel<BetDto>
     {
     }
@@ -57,12 +66,12 @@ namespace Arsenal.Mobile.Models.Casino
     public class MatchResultDto
     {
         [Required(ErrorMessage = "请填写{0}")]
-        [Range(0, 10, ErrorMessage = "请正确填写{0}")]
+        [Range(0, 20, ErrorMessage = "请正确填写{0}")]
         [Display(Name = "主队比分")]
         public short ResultHome { get; set; }
 
         [Required(ErrorMessage = "请填写{0}")]
-        [Range(0, 10, ErrorMessage = "请正确填写{0}")]
+        [Range(0, 20, ErrorMessage = "请正确填写{0}")]
         [Display(Name = "客队比分")]
         public short ResultAway { get; set; }
 

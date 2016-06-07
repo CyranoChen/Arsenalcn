@@ -8,6 +8,7 @@ using Arsenal.Service;
 using Arsenal.Service.Casino;
 using Arsenalcn.Core;
 using AutoMapper;
+using IndexDto = Arsenal.Mobile.Models.Casino.IndexDto;
 using Match = Arsenal.Service.Casino.Match;
 
 namespace Arsenal.Mobile.Controllers
@@ -18,6 +19,7 @@ namespace Arsenal.Mobile.Controllers
         private readonly IRepository _repo = new Repository();
         private readonly User _user = UserDto.GetSession();
 
+        // ReSharper disable once InconsistentNaming
         public int AcnID
         {
             get
@@ -44,7 +46,7 @@ namespace Arsenal.Mobile.Controllers
 
             var query = _repo.Query<MatchView>(
                 x => x.PlayTime > DateTime.Now && x.PlayTime < DateTime.Now.AddDays(days))
-                .FindAll(x => !x.ResultHome.HasValue && !x.ResultHome.HasValue)
+                .FindAll(x => !x.ResultHome.HasValue && !x.ResultAway.HasValue)
                 .OrderBy(x => x.PlayTime)
                 .Many<MatchView, ChoiceOption, Guid>(t => t.CasinoItem.ID);
 
@@ -62,13 +64,55 @@ namespace Arsenal.Mobile.Controllers
 
 
         // 比分投注单
-        // GET: /Casino/MyCoupon
+        // GET: /Casino/MyCouponDto
 
         public ActionResult MyCoupon()
         {
-            // TODO
+            var model = new MyCouponDto();
 
-            return View();
+            var days = ConfigGlobal_AcnCasino.CasinoValidDays;
+
+            var query = _repo.Query<MatchView>(
+                x => x.PlayTime > DateTime.Now && x.PlayTime < DateTime.Now.AddDays(days))
+                .FindAll(x => !x.ResultHome.HasValue && !x.ResultAway.HasValue)
+                .OrderBy(x => x.PlayTime)
+                .Many<MatchView, ChoiceOption, Guid>(t => t.CasinoItem.ID);
+
+            var mapper = MatchDto.ConfigMapper().CreateMapper();
+
+            var mList = mapper.Map<IEnumerable<MatchDto>>(query.AsEnumerable());
+
+            mapper = new MapperConfiguration(cfg => cfg.CreateMap<MatchDto, CouponDto>()
+                .ForMember(d => d.MatchGuid, opt => opt.MapFrom(s => s.ID))).CreateMapper();
+
+            var list = mapper.Map<IEnumerable<CouponDto>>(mList).ToList();
+
+            if (list.Count > 0)
+            {
+                // 查找当前用户的比分投注项
+                var coupons = _repo.Query<CouponView>(x => x.UserID == AcnID);
+
+                if (coupons.Count > 0)
+                {
+                    mapper = CouponDto.ConfigMapper().CreateMapper();
+
+                    foreach (var c in coupons)
+                    {
+                        var i = list.FindIndex(x => x.MatchGuid.Equals(c.MatchGuid));
+
+                        if (i >= 0)
+                        {
+                            list[i] = mapper.Map<CouponDto>(c);
+                        }
+                    }
+                }
+            }
+
+            model.Coupons = list;
+            model.CasinoValidDays = days;
+            model.IsShowSubmitButton = list.Count > 0 && list.Any(x => !x.BetResultHome.HasValue && !x.BetResultAway.HasValue);
+
+            return View(model);
         }
 
 
@@ -189,9 +233,9 @@ namespace Arsenal.Mobile.Controllers
                 {
                     ID = s.ID,
                     TeamHomeName = s.Home.TeamDisplayName,
-                    TeamHomeLogo = s.Home.TeamLogo,
+                    TeamHomeLogo = ConfigGlobal_Arsenal.PluginAcnCasinoPath + s.Home.TeamLogo,
                     TeamAwayName = s.Away.TeamDisplayName,
-                    TeamAwayLogo = s.Away.TeamLogo
+                    TeamAwayLogo = ConfigGlobal_Arsenal.PluginAcnCasinoPath + s.Away.TeamLogo,
                 }))
                 .CreateMapper();
 

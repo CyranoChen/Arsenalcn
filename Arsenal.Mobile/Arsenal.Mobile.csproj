@@ -128,6 +128,7 @@
     <Compile Include="Models\AssemblyModels.cs" />
     <Compile Include="Models\Casino\BetModels.cs" />
     <Compile Include="Models\Casino\CasinoModels.cs" />
+    <Compile Include="Models\Casino\CouponModel.cs" />
     <Compile Include="Models\Casino\MatchModels.cs" />
     <Compile Include="Models\Club\ClubModels.cs" />
     <Compile Include="Models\Club\LogSignInModels.cs" />

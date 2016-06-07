@@ -14,6 +14,7 @@
         });
     </script>
 }
+
 @section Header {
     <div data-role="header">
         <h1 style="overflow: visible">
@@ -23,11 +24,13 @@
         </h1>
     </div>
 }
+
 @section Footer {
-    <div data-role="footer" style="text-align: center">
+    <div data-role="footer" data-position="fixed">
         <input type="button" id="btnSubmit" value="提交投注" data-icon="check"/>
     </div>
 }
+
 <div data-role="content">
     @using (Html.BeginForm("SingleChoice", "Casino", FormMethod.Post, new {id = "formGameBet"}))
     {

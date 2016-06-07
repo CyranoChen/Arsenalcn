@@ -108,20 +108,7 @@ namespace Arsenal.Service
             }
         }
 
-        //public static bool PluginContainerActive
-        //{
-        //    get
-        //    {
-        //        try
-        //        {
-        //            return Convert.ToBoolean(ConfigDictionary["PluginContainerActive"]);
-        //        }
-        //        catch
-        //        {
-        //            return false;
-        //        }
-        //    }
-        //}
+        public static string PluginAcnCasinoPath => ConfigDictionary["PluginAcnCasinoPath"];
 
         public static bool SchedulerActive
         {

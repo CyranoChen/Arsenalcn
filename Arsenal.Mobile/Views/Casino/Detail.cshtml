@@ -13,7 +13,7 @@
 
 <div data-role="content">
     @Html.Partial("Casino/_MatchInfoPartial", Model.Match)
-    <ul data-role="listview" data-inset="true" id="bet-info-list">
+    <ul data-role="listview" data-inset="true" class="bet-info-list">
         <li data-role="list-divider">
             比赛投注中奖查询
             <span class="ui-li-count">@Model.Bets.Count()</span>

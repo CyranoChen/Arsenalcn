@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Arsenal.Service;
 using Arsenal.Service.Casino;
 using Arsenalcn.Core;
 using AutoMapper;
@@ -14,9 +15,9 @@ namespace Arsenal.Mobile.Models.Casino
                 .ConstructUsing(s => new MatchDto
                 {
                     TeamHomeName = s.Home.TeamDisplayName,
-                    TeamHomeLogo = s.Home.TeamLogo,
+                    TeamHomeLogo = ConfigGlobal_Arsenal.PluginAcnCasinoPath + s.Home.TeamLogo,
                     TeamAwayName = s.Away.TeamDisplayName,
-                    TeamAwayLogo = s.Away.TeamLogo,
+                    TeamAwayLogo = ConfigGlobal_Arsenal.PluginAcnCasinoPath + s.Away.TeamLogo,
                     HomeRate =
                         s.ChoiceOptions.SingleOrDefault(
                             x => x.OptionName.Equals("home", StringComparison.OrdinalIgnoreCase)).OptionRate,

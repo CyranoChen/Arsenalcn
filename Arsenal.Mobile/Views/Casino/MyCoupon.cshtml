@@ -1,7 +1,92 @@
-﻿@model Arsenal.Mobile.Models.Casino.MyBonusDto
+﻿@model Arsenal.Mobile.Models.Casino.MyCouponDto
 @{
-    ViewBag.Title = "Bonus";
+    ViewBag.Title = "我的投注单";
 }
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(function () {
+            $("#btnSubmit").click(function () {
+                if ($("#fromMyCoupon").valid()) {
+                    //document.forms["fromMyCoupon"].submit();
+                }
+            });
+
+            $(".match-versus input").each(function () {
+                $(this).focus(function () {
+                    $(this).val("");
+                });
+            });
+        });
+    </script>
+}
+
+@if (Model.IsShowSubmitButton)
+{
+    @section Footer {
+        <div data-role="footer" data-position="fixed">
+            <input type="button" id="btnSubmit" value="暂未开通" data-icon="check" />
+        </div>
+    }
+}
+
 <div data-role="content">
-    <h2>暂未开通</h2>
+    @using (Html.BeginForm("MyCoupon", "Casino", FormMethod.Post, new { id = "fromMyCoupon" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary()
+        <ul data-role="listview" data-inset="true">
+            <li data-role="list-divider">
+                您可投注即将于<em>@Model.CasinoValidDays</em>天内开始的比赛
+                <span class="ui-li-count">@Model.Coupons.Count()</span>
+            </li>
+            @if (Model != null && Model.Coupons.Any())
+            {
+                foreach (var m in Model.Coupons)
+                {
+                    <li>
+                        <a href="#" data-role="button">
+                            <fieldset data-role="controlgroup" class="match-versus">
+                                <div class="ui-grid-b">
+                                    <div class="ui-block-a">
+                                        <img src="@m.TeamHomeLogo" />
+                                        <h2>@m.TeamHomeName</h2>
+                                    </div>
+                                    <div class="ui-block-b">
+                                        <p>@m.LeagueName</p>
+                                        @if (m.BetResultHome.HasValue && m.BetResultAway.HasValue)
+                                        {
+                                            <p>
+                                                <span>@m.BetResultHome.Value</span>
+                                                <span class="versus">vs</span>
+                                                <span>@m.BetResultAway.Value</span>
+                                            </p>
+                                        }
+                                        else
+                                        {
+                                            <p>
+                                                <input data-val="true" data-val-number="主队比分必须是数字 - @m.TeamHomeName"
+                                                       data-val-range="请正确填写主队比分 - @m.TeamHomeName" data-val-range-max="20" data-val-range-min="0"
+                                                       name="ResultHome" type="text" value="" aria-invalid="true" class="input-validation-error" aria-describedby="ResultHome-error">
+                                                <span class="versus">vs</span>
+                                                <input data-val="true" data-val-number="客队比分必须是数字 - @m.TeamAwayName"
+                                                       data-val-range="请正确填写客队比分 - @m.TeamAwayName" data-val-range-max="20" data-val-range-min="0" 
+                                                       name="ResultAway" type="text" value="" aria-invalid="true" class="input-validation-error" aria-describedby="ResultAway-error">
+                                            </p>
+                                        }
+                                        <p>@m.PlayTime.ToString("yyyy-MM-dd HH:mm")</p>
+                                    </div>
+                                    <div class="ui-block-c">
+                                        <img src="@m.TeamAwayLogo" />
+                                        <h2>@m.TeamAwayName</h2>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </a>
+                    </li>
+                }
+            }
+        </ul>
+    }
 </div>

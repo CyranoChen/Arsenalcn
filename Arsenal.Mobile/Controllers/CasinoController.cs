@@ -64,7 +64,7 @@ namespace Arsenal.Mobile.Controllers
 
 
         // 比分投注单
-        // GET: /Casino/MyCouponDto
+        // GET: /Casino/MyCoupon
 
         public ActionResult MyCoupon()
         {
@@ -113,6 +113,43 @@ namespace Arsenal.Mobile.Controllers
             model.IsShowSubmitButton = list.Count > 0 && list.Any(x => !x.BetResultHome.HasValue && !x.BetResultAway.HasValue);
 
             return View(model);
+        }
+
+
+        // 比分投注单
+        // POST: /Casino/MyCoupon
+
+        [HttpPost]
+        public JsonResult MyCoupon(MyCouponDto model)
+        {
+            if (model != null && model.Coupons.Any())
+            {
+                foreach (var c in model.Coupons)
+                {
+                    try
+                    {
+                        if (c.MatchGuid != Guid.Empty && c.BetResultHome.HasValue && c.BetResultAway.HasValue)
+                        {
+                            var bet = new Bet
+                            {
+                                UserID = AcnID,
+                                UserName = User.Identity.Name
+                            };
+
+                            bet.Place(c.MatchGuid, c.BetResultHome.Value, c.BetResultAway.Value);
+
+                            //投注成功
+                        }
+                    }
+                    catch
+                    {
+                        // ignored
+                    }
+                }
+            }
+
+            // 不管保存结果，直接返回success后，客户端刷新页面
+            return Json(new { result = "success" });
         }
 
 

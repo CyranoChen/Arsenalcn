@@ -9,7 +9,35 @@
         $(function () {
             $("#btnSubmit").click(function () {
                 if ($("#fromMyCoupon").valid()) {
-                    //document.forms["fromMyCoupon"].submit();
+                    var json = { "Coupons": [] };
+                    var $coupons = $(".match-versus p.coupon");
+
+                    if ($coupons.length > 0) {
+                        $.each($coupons, function (i, entry) {
+                            var id = $(entry).prop("id");
+                            var home = $(entry).find("input:first").val();
+                            var away = $(entry).find("input:last").val();
+
+                            if (id !== "" && home >= 0 && away >= 0) {
+
+                                var coupon = {
+                                    "MatchGuid": id,
+                                    "BetResultHome": home,
+                                    "BetResultAway": away
+                                };
+
+                                json.Coupons.push(coupon);
+                            }
+                        });
+                    }
+
+                    if (json.Coupons.length > 0) {
+                        $.post("/Casino/MyCoupon", json, function (data) {
+                            if (data.result === "success") {
+                                window.location.href = window.location.href;
+                            }
+                        });
+                    }
                 }
             });
 
@@ -26,7 +54,7 @@
 {
     @section Footer {
         <div data-role="footer" data-position="fixed">
-            <input type="button" id="btnSubmit" value="暂未开通" data-icon="check" />
+            <input type="button" id="btnSubmit" value="保存并投注单" data-icon="check" />
         </div>
     }
 }
@@ -65,13 +93,13 @@
                                         }
                                         else
                                         {
-                                            <p>
+                                            <p class="coupon" id="@m.MatchGuid">
                                                 <input data-val="true" data-val-number="主队比分必须是数字 - @m.TeamHomeName"
                                                        data-val-range="请正确填写主队比分 - @m.TeamHomeName" data-val-range-max="20" data-val-range-min="0"
                                                        name="ResultHome" type="text" value="" aria-invalid="true" class="input-validation-error" aria-describedby="ResultHome-error">
                                                 <span class="versus">vs</span>
                                                 <input data-val="true" data-val-number="客队比分必须是数字 - @m.TeamAwayName"
-                                                       data-val-range="请正确填写客队比分 - @m.TeamAwayName" data-val-range-max="20" data-val-range-min="0" 
+                                                       data-val-range="请正确填写客队比分 - @m.TeamAwayName" data-val-range-max="20" data-val-range-min="0"
                                                        name="ResultAway" type="text" value="" aria-invalid="true" class="input-validation-error" aria-describedby="ResultAway-error">
                                             </p>
                                         }

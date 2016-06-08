@@ -32,6 +32,15 @@ namespace Arsenal.Mobile.Tests
 
                     Assert.IsInstanceOfType(couponDtos[0], typeof(CouponDto));
                 }
+
+                var myCouponDto = new MyCouponDto
+                {
+                    Coupons = couponDtos
+                };
+
+                json = jsonSerializer.Serialize(myCouponDto);
+
+                Assert.IsTrue(!string.IsNullOrEmpty(json));
             }
         }
     }

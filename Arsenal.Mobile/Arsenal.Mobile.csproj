@@ -121,6 +121,10 @@
     <Compile Include="Controllers\CasinoController.cs" />
     <Compile Include="Controllers\ClubController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Extensions\JsonModelBinder.cs" />
+    <Compile Include="Extensions\JsonpActionResult.cs" />
+    <Compile Include="Extensions\JsonRequestExtensions.cs" />
+    <Compile Include="Extensions\MultipleResponseFormatsAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

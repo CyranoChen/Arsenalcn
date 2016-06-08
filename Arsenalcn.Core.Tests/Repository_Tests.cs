@@ -346,6 +346,7 @@ namespace Arsenalcn.Core.Tests
             IRepository repo = new Repository();
 
             // correct value of argument
+            // ReSharper disable once RedundantBoolCompare
             var query1 = repo.Query<League>(x => x.IsActive == true);
 
             Assert.IsNotNull(query1);
@@ -370,7 +371,9 @@ namespace Arsenalcn.Core.Tests
 
             Assert.IsFalse(pager1.TotalCount > 0);
 
+            // ReSharper disable once RedundantBoolCompare
             var query1 = repo.Query<League>(pager1, x => x.IsActive == true, "LeagueOrder, LeagueOrgName");
+            // ReSharper disable once RedundantBoolCompare
             var queryVal = repo.Query<League>(x => x.IsActive == true);
 
             Assert.IsNotNull(query1);
@@ -385,6 +388,7 @@ namespace Arsenalcn.Core.Tests
             // large pagingSize
             IPager pager2 = new Pager(0) { PagingSize = 1000 };
 
+            // ReSharper disable once RedundantBoolCompare
             var query2 = repo.Query<League>(pager2, x => x.IsActive == true, "LeagueOrder, LeagueOrgName");
 
             Assert.IsNotNull(query2);
@@ -398,6 +402,7 @@ namespace Arsenalcn.Core.Tests
             // max currentPage
             IPager pager3 = new Pager(1000) { PagingSize = 20 };
 
+            // ReSharper disable once RedundantBoolCompare
             var query3 = repo.Query<League>(pager3, x => x.IsActive == true, "LeagueOrder, LeagueOrgName");
 
             Assert.IsNotNull(query3);

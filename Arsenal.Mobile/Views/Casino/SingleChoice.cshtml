@@ -5,8 +5,8 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script type="text/javascript">
-        $(function() {
-            $("#btnSubmit").click(function() {
+        $(function () {
+            $("#btnSubmit").click(function () {
                 if ($("#formGameBet").valid()) {
                     document.forms["formGameBet"].submit();
                 }
@@ -27,25 +27,24 @@
 
 @section Footer {
     <div data-role="footer" data-position="fixed">
-        <input type="button" id="btnSubmit" value="提交投注" data-icon="check"/>
+        <input type="button" id="btnSubmit" value="提交投注" data-icon="check" />
     </div>
 }
 
 <div data-role="content">
-    @using (Html.BeginForm("SingleChoice", "Casino", FormMethod.Post, new {id = "formGameBet"}))
+    @using (Html.BeginForm("SingleChoice", "Casino", FormMethod.Post, new { id = "formGameBet" }))
     {
         <fieldset data-role="controlgroup" data-type="horizontal">
             <legend>投注选项</legend>
-            <label for="home">[主队胜] @Model.Match.HomeRate.ToString("f2")</label>
+            <label for="home">[主胜] @Model.Match.HomeRate.ToString("f2")</label>
             <input type="radio" name="SelectedOption" id="home" value="home">
-            <label for="draw">[双方平] @Model.Match.DrawRate.ToString("f2")</label>
+            <label for="draw">[平] @Model.Match.DrawRate.ToString("f2")</label>
             <input type="radio" name="SelectedOption" id="draw" value="draw">
-            <label for="away">[客队胜] @Model.Match.AwayRate.ToString("f2")</label>
+            <label for="away">[客胜] @Model.Match.AwayRate.ToString("f2")</label>
             <input type="radio" name="SelectedOption" id="away" value="away">
         </fieldset>
         @Html.LabelFor(m => m.BetAmount)
         <input type="range" name="BetAmount" id="BetAmount" value="1000" min="100" max="@Model.BetLimit" data-highlight="true">
-
         @Html.HiddenFor(m => m.MatchGuid)
         @Html.AntiForgeryToken()
         @Html.ValidationSummary()

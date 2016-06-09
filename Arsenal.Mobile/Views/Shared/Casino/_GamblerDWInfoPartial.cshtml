@@ -1,0 +1,16 @@
+﻿@model Arsenal.Service.Casino.GamblerDW
+<li class="rank">
+    <a href="#">
+        <h3>@Model.UserName</h3>
+        <p>盈亏：@Model.Profit.ToString("N0") | 投注：@Model.TotalBet.ToString("N0")</p>
+        <span class="ui-li-count">@Model.ProfitRate.ToString("f1")% | RP+@(Model.RPBonus ?? 0) </span>
+    </a>
+    @if (Model.Rank <= 3)
+    {
+        <a href="#" data-icon="@(Model.Credit ?? 0)" class="icon @string.Format("top{0}", Model.Rank)"></a>
+    }
+    else
+    {
+        <a href="#" data-icon="@(Model.Credit ?? 0)" class="icon"></a>
+    }
+</li>

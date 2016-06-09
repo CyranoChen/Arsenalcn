@@ -301,6 +301,28 @@ namespace Arsenal.Service
             }
         }
 
+        public static int[] RankCondition
+        {
+            get
+            {
+                try
+                {
+                    var configValue = ConfigDictionary["RankCondition"];
+                    var tmpStrings = configValue.Split('|');
+                    var retInts = new int[tmpStrings.Length];
+
+                    for (var i = 0; i < tmpStrings.Length; i++)
+                    {
+                        int.TryParse(tmpStrings[i], out retInts[i]);
+                    }
+
+                    return retInts;
+                }
+                catch
+                { return new[] { 5, 5000, 3 }; }
+            }
+        }
+
         public static int ExchangeRate
         {
             get

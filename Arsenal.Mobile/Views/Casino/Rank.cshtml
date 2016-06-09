@@ -1,0 +1,53 @@
+﻿@model Arsenal.Mobile.Models.Casino.RankDto
+@{
+    ViewBag.Title = "实时排行榜";
+}
+
+@section Scripts {
+    <script type="text/javascript">
+        $(function () {
+            // TODO
+            $(".rank .icon").each(function (i, entry) {
+                $(entry).html($(entry).attr("data-icon"));
+            });
+        });
+    </script>
+}
+
+@if (Model.ContestLeague != null && (Model.UpperGamblers.Any() || Model.LowerGamblers.Any()))
+{
+    <div data-role="content">
+        <p>
+            <b>@Model.ContestLeague.LeagueNameInfo</b>
+        </p>
+        <ul data-role="listview" data-inset="true">
+            @if (Model.UpperGamblers.Any())
+            {
+                <li data-role="list-divider">
+                    上半区排行榜
+                    <span class="ui-li-count">@Model.UpperGamblers.Count()</span>
+                </li>
+                foreach (var m in Model.UpperGamblers)
+                {
+                    @Html.Partial("Casino/_GamblerDWInfoPartial", m)
+                }
+            }
+            @if (Model.LowerGamblers.Any())
+            {
+                <li data-role="list-divider">
+                    下半区排行榜
+                    <span class="ui-li-count">@Model.LowerGamblers.Count()</span>
+                </li>
+                foreach (var m in Model.LowerGamblers)
+                {
+                    @Html.Partial("Casino/_GamblerDWInfoPartial", m)
+                }
+            }
+        </ul>
+    </div>
+}
+else
+{
+    <h2>暂无排行榜信息</h2>
+}
+

@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Casino\GamblerDW.cs" />
     <Compile Include="Casino\Banker.cs" />
     <Compile Include="Casino\Bet.cs" />
     <Compile Include="Casino\BetDetail.cs" />

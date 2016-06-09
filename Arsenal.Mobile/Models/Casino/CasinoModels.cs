@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Arsenal.Service;
 using Arsenal.Service.Casino;
 using Arsenalcn.Core;
 
@@ -49,16 +50,18 @@ namespace Arsenal.Mobile.Models.Casino
     {
     }
 
+    public class RankDto
+    {
+        public League ContestLeague { get; set; }
+
+        public IEnumerable<GamblerDW> UpperGamblers { get; set; }
+
+        public IEnumerable<GamblerDW> LowerGamblers { get; set; }
+    }
+
     public class DetailDto
     {
         public IEnumerable<BetDto> Bets { get; set; }
-
-        public MatchDto Match { get; set; }
-    }
-
-    public class ReturnBetDto
-    {
-        public BetDto MyBet { get; set; }
 
         public MatchDto Match { get; set; }
     }

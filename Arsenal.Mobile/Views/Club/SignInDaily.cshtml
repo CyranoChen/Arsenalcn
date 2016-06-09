@@ -28,11 +28,11 @@
 <div data-role="content">
     @if (Model.ContinuousSignInDays > 0)
     {
-        <ul data-role="listview">
-            <li>当前日期<span class="ui-li-count">@DateTime.Now.ToString("yyyy年MM月dd日")</span></li>
-            <li>原持有现金<span class="ui-li-count">@Model.CurrentCash.ToString("N0")</span></li>
-            <li>签到奖金<span class="ui-li-count">+@Model.Bonus.ToString("N0")</span></li>
-            <li>当前现金<span class="ui-li-count">@Model.MyCash.ToString("N0")</span></li>
+        <ul data-role="listview" data-inset="true">
+            <li class="ui-field-contain">当前日期<span class="ui-li-count">@DateTime.Now.ToString("yyyy年MM月dd日")</span></li>
+            <li class="ui-field-contain">原持有现金<span class="ui-li-count">@Model.CurrentCash.ToString("N0")</span></li>
+            <li class="ui-field-contain">签到奖金<span class="ui-li-count">+@Model.Bonus.ToString("N0")</span></li>
+            <li class="ui-field-contain">当前现金<span class="ui-li-count">@Model.MyCash.ToString("N0")</span></li>
         </ul>
     }
     else if (Model.ContinuousSignInDays == 0)

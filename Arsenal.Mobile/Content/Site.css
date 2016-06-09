@@ -1,5 +1,5 @@
 ﻿/* CSS Version Default */
-/* Version: 0.5.1 (Arsenal.Mobile) */
+/* Version: 0.6 (Arsenal.Mobile) */
 /* Cascading Style Sheets Level 2 Revision 1 */
 
 /* Styles for validation helpers
@@ -155,6 +155,28 @@ em {
 
 .bet-info-list .check a {
     background: #ffcccc;
+}
+
+.rank a.icon {
+    text-indent: 0 !important;
+    text-align: center !important;
+    padding-top: 28px !important;
+    font-family: Arial;
+}
+
+.rank a.top1 {
+    color: #aa0000;
+    background: #ffcccc;
+}
+
+.rank a.top2 {
+    color: #aa0000;
+    background: #ffdddd;
+}
+
+.rank a.top3 {
+    color: #aa0000;
+    background: #ffeeee;
 }
 
 

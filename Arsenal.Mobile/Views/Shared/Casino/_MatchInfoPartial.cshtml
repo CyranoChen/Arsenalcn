@@ -31,13 +31,13 @@
     @if (Model.HomeRate > 0 && Model.DrawRate > 0 && Model.AwayRate > 0)
     {
         <div class="ui-grid-b">
-            <div class="ui-block-a" style="text-align: center">
+            <div class="ui-block-a">
                 @Model.HomeRate.ToString("f2")
             </div>
-            <div class="ui-block-b" style="text-align: center">
+            <div class="ui-block-b">
                 @Model.DrawRate.ToString("f2")
             </div>
-            <div class="ui-block-c" style="text-align: center">
+            <div class="ui-block-c">
                 @Model.AwayRate.ToString("f2")
             </div>
         </div>

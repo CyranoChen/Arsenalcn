@@ -1,6 +1,6 @@
 ﻿@model Arsenal.Mobile.Models.Casino.RankDto
 @{
-    ViewBag.Title = "实时排行榜";
+    ViewBag.Title = Model.ContestLeague.LeagueNameInfo + " 博彩排行榜";
 }
 
 @section Scripts {
@@ -13,14 +13,14 @@
     </script>
 }
 
-@if (Model.ContestLeague != null && (Model.UpperGamblers.Any() || Model.LowerGamblers.Any()))
-{
-    <div data-role="content">
-        <p>
-            <b>@Model.ContestLeague.LeagueNameInfo</b>
-        </p>
+<div data-role="content">
+    <p>
+        <b>入围条件：投注场次 >= @Model.RankCondition[0] ，投注量 >= @(Model.RankCondition[1].ToString("N0"))，RP >= @(Model.RankCondition[2])</b>
+    </p>
+    @if (Model.ContestLeague != null && (Model.UpperGamblers != null || Model.LowerGamblers != null))
+    {
         <ul data-role="listview" data-inset="true">
-            @if (Model.UpperGamblers.Any())
+            @if (Model.UpperGamblers != null && Model.UpperGamblers.Any())
             {
                 <li data-role="list-divider">
                     上半区排行榜
@@ -31,7 +31,7 @@
                     @Html.Partial("Casino/_GamblerDWInfoPartial", m)
                 }
             }
-            @if (Model.LowerGamblers.Any())
+            @if (Model.LowerGamblers != null && Model.LowerGamblers.Any())
             {
                 <li data-role="list-divider">
                     下半区排行榜
@@ -43,10 +43,6 @@
                 }
             }
         </ul>
-    </div>
-}
-else
-{
-    <h2>暂无排行榜信息</h2>
-}
+    }
+</div>
 

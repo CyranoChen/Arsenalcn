@@ -167,34 +167,40 @@ namespace Arsenal.Mobile.Controllers
             {
                 var list = GamblerDW.All(league.ID);
 
-                // 进入最终名次排行榜的标准（评选要求）同时满足以下3个条件：
-                //1、赛季中必须投注博采币次数达到5个单场及以上（反复多次投注同一场比赛只能算是1次）；
-                //2、赛季中参与累计投注量达到5,000菠菜币及以上；
-                //3、赛季中并且获得RP+3及以上，即猜对本赛季3场以上的比赛比分。
-                if (!ConfigGlobal_AcnCasino.ContestLimitIgnore)
+                if (list != null && list.Count > 0)
                 {
-                    list = list.FindAll(g => g.MatchBet >= ConfigGlobal_AcnCasino.RankCondition[0]
-                       && g.TotalBet >= ConfigGlobal_AcnCasino.RankCondition[1] && g.RPBonus >= ConfigGlobal_AcnCasino.RankCondition[2]);
+                    // 进入最终名次排行榜的标准（评选要求）同时满足以下3个条件：
+                    //1、赛季中必须投注博采币次数达到5个单场及以上（反复多次投注同一场比赛只能算是1次）；
+                    //2、赛季中参与累计投注量达到5,000菠菜币及以上；
+                    //3、赛季中并且获得RP+3及以上，即猜对本赛季3场以上的比赛比分。
+                    if (!ConfigGlobal_AcnCasino.ContestLimitIgnore)
+                    {
+                        list = list.FindAll(g => g.MatchBet >= ConfigGlobal_AcnCasino.RankCondition[0]
+                                                 && g.TotalBet >= ConfigGlobal_AcnCasino.RankCondition[1] &&
+                                                 g.RPBonus >= ConfigGlobal_AcnCasino.RankCondition[2]);
+                    }
+
+                    var tbs = ConfigGlobal_AcnCasino.TotalBetStandard;
+
+                    var listUpper = list.FindAll(g => g.TotalBet > tbs);
+
+                    var listLower = list.FindAll(g => g.TotalBet <= tbs);
+
+                    if (listUpper.Count > 0)
+                    {
+                        listUpper = GamblerDW.SortRank(listUpper);
+                    }
+
+                    if (listLower.Count > 0)
+                    {
+                        listLower = GamblerDW.SortRank(listLower);
+                    }
+
+                    model.UpperGamblers = listUpper.Take(6);
+                    model.LowerGamblers = listLower.Take(6);
                 }
 
-                var tbs = ConfigGlobal_AcnCasino.TotalBetStandard;
-
-                var listUpper = list.FindAll(g => g.TotalBet > tbs);
-
-                var listLower = list.FindAll(g => g.TotalBet <= tbs);
-
-                if (listUpper.Count > 0)
-                {
-                    listUpper = GamblerDW.SortRank(listUpper);
-                }
-
-                if (listLower.Count > 0)
-                {
-                    listLower = GamblerDW.SortRank(listLower);
-                }
-
-                model.UpperGamblers = listUpper.Take(6);
-                model.LowerGamblers = listLower.Take(6);
+                model.RankCondition = ConfigGlobal_AcnCasino.RankCondition;
                 model.ContestLeague = league;
             }
 

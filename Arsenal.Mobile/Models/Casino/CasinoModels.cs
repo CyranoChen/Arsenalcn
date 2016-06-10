@@ -54,6 +54,8 @@ namespace Arsenal.Mobile.Models.Casino
     {
         public League ContestLeague { get; set; }
 
+        public int[] RankCondition { get; set; }
+
         public IEnumerable<GamblerDW> UpperGamblers { get; set; }
 
         public IEnumerable<GamblerDW> LowerGamblers { get; set; }

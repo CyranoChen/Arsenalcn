@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 using Arsenalcn.Core;
 using DataReaderMapper;
 using DataReaderMapper.Mappers;
@@ -32,28 +33,57 @@ namespace Arsenal.Service.Casino
                     return 0f;
                 }
             }));
+        }
 
-            // TODO
-            //map.ForMember(d => d.RPRate, opt => opt.ResolveUsing(s =>
-            //{
-            //    var rpBet = (int?)s.GetValue("RPBet");
-            //    var rpBonus = (int?)s.GetValue("RPBonus");
+        public static GamblerDW Single(int key, Guid leagueGuid)
+        {
+            var sql = @"SELECT BetInfo.*, RPInfo.RPBet, RPInfo.RPBonus FROM
+                                        (SELECT UserID, UserName, 
+                                                    COUNT(CASE IsWin WHEN 1 THEN 1 ELSE NULL END) AS Win, 
+                                                    COUNT(CASE IsWin WHEN 0 THEN 0 ELSE NULL END) AS Lose, 
+                                                    COUNT(distinct CAST(CasinoItemGuid AS CHAR(50))) AS MatchBet, 
+                                                    SUM(ISNULL(Earning, 0)) AS Earning, 
+                                                    SUM(ISNULL(Bet, 0)) AS TotalBet
+                                        FROM dbo.vw_AcnCasino_BetInfo 
+                                        WHERE (UserID = @key) AND (Earning IS NOT NULL) AND (Bet IS NOT NULL) AND (LeagueGuid = @leagueGuid)
+                                        GROUP BY UserID, UserName) AS BetInfo
+                                    LEFT OUTER JOIN
+                                        (SELECT UserID, UserName, 
+                                                    COUNT(ID) AS RPBet, 
+                                                    COUNT(CASE EarningDesc WHEN 'RP+1' THEN 1 ELSE NULL END) AS RPBonus
+                                        FROM dbo.vw_AcnCasino_BetInfo 
+                                        WHERE (UserID = @key) AND (Earning = 0) AND (Bet IS NULL) AND (LeagueGuid = @leagueGuid)
+                                        GROUP BY UserID, UserName) AS RPInfo
+                                    ON BetInfo.UserID = RPInfo.UserID AND BetInfo.UserName = RPInfo.UserName
+                                    ORDER BY BetInfo.TotalBet DESC";
 
-            //    if (rpBet.HasValue && rpBet.Value > 0 && rpBonus.HasValue && rpBonus.Value >= 0)
-            //    {
-            //        return rpBonus / rpBet * 100;
-            //    }
-            //    else
-            //    {
-            //        return 0f;
-            //    }
-            //}));
+            SqlParameter[] para = { new SqlParameter("@key", key), new SqlParameter("@leagueGuid", leagueGuid) };
+
+            var ds = DataAccess.ExecuteDataset(sql, para);
+
+            var dt = ds.Tables[0];
+
+            if (dt.Rows.Count > 0)
+            {
+                using (var reader = dt.CreateDataReader())
+                {
+                    Mapper.Initialize(cfg =>
+                    {
+                        MapperRegistry.Mappers.Insert(0,
+                            new DataReaderMapper.DataReaderMapper { YieldReturnEnabled = false });
+
+                        CreateMap();
+                    });
+
+                    return Mapper.Map<IDataReader, IEnumerable<GamblerDW>>(reader).FirstOrDefault();
+                }
+            }
+
+            return null;
         }
 
         public static List<GamblerDW> All(Guid leagueGuid)
         {
-            var list = new List<GamblerDW>();
-
             var sql = @"SELECT BetInfo.*, RPInfo.RPBet, RPInfo.RPBonus FROM
                                         (SELECT UserID, UserName, 
                                                     COUNT(CASE IsWin WHEN 1 THEN 1 ELSE NULL END) AS Win, 
@@ -92,11 +122,33 @@ namespace Arsenal.Service.Casino
                         CreateMap();
                     });
 
-                    list = Mapper.Map<IDataReader, List<GamblerDW>>(reader);
+                    return Mapper.Map<IDataReader, IEnumerable<GamblerDW>>(reader).ToList();
                 }
             }
 
-            return list;
+            return null;
+        }
+
+        public static double GetGamblerBetLimit(int userId, Guid leagueGuid)
+        {
+            IRepository repo = new Repository();
+
+            var gambler = repo.Query<Gambler>(x => x.UserID == userId).FirstOrDefault();
+            var cash = gambler?.Cash ?? 0f;
+
+            if (leagueGuid.Equals(ConfigGlobal_AcnCasino.DefaultLeagueID))
+            {
+                var g = Single(userId, leagueGuid);
+
+                if (g != null && g.TotalBet < ConfigGlobal_AcnCasino.TotalBetStandard)
+                {
+                    var singleBetLimit = ConfigGlobal_AcnCasino.SingleBetLimit;
+
+                    return cash < singleBetLimit ? cash : singleBetLimit;
+                }
+            }
+
+            return cash;
         }
 
         public static List<GamblerDW> SortRank(List<GamblerDW> list, string orderKeyword)
@@ -234,8 +286,6 @@ namespace Arsenal.Service.Casino
         public double Profit { get; set; }
 
         public double ProfitRate { get; set; }
-
-        public double RPRate { get; set; }
 
         public int Rank { get; set; }
 

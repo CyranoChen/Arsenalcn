@@ -98,18 +98,51 @@
     -----------------------------------------------------------*/
 em {
     padding: 0 5px;
+    font-style: normal !important;
+    font-weight: bold !important;
+    color: #da7b00;
 }
 
-    em, em a {
-        font-style: normal !important;
-        font-weight: bold !important;
+    em a {
         color: #F0D804 !important;
+    }
+
+
+/* Arsenal.Mobile Pager
+-----------------------------------------------------------*/
+.pager {
+    text-align: center;
+}
+
+    .pager input {
+        text-align: center;
+    }
+
+    .pager a#pagePrev {
+        float: left;
+        margin-left: 5px;
+    }
+
+    .pager a#pageNext {
+        float: right;
+        margin-right: 5px;
+    }
+
+    .pager div.ui-input-text {
+        display: inline-block;
+        width: 60px;
+    }
+
+    .pager div.ui-select {
+        display: inline-block;
+        width: 60px;
     }
 
 
 /* Arsenalcn.Casino 
 -----------------------------------------------------------*/
 
+/* match-versus */
 .match-versus {
     text-align: center;
 }
@@ -145,6 +178,60 @@ em {
             font-weight: bold;
         }
 
+/* match-versus-lite */
+.match-versus-lite {
+    margin: 0 auto;
+    text-align: center;
+}
+
+    .match-versus-lite .ui-block-a {
+        text-align: right;
+        width: 30%;
+    }
+
+    .match-versus-lite .ui-block-b {
+        text-align: right;
+        width: 10%;
+    }
+
+        .match-versus-lite .ui-block-b img {
+            height: 32px;
+            width: 32px;
+        }
+
+    .match-versus-lite .ui-block-c {
+        text-align: center;
+        width: 20%;
+    }
+
+        .match-versus-lite .ui-block-c span {
+            font-weight: bolder;
+            font-size: 22px;
+        }
+
+            .match-versus-lite .ui-block-c span.versus {
+                font-family: Tahoma;
+                font-size: 18px;
+                font-weight: bold;
+                margin: 0 5px;
+            }
+
+    .match-versus-lite .ui-block-d {
+        text-align: left;
+        width: 10%;
+    }
+
+        .match-versus-lite .ui-block-d img {
+            height: 32px;
+            width: 32px;
+        }
+
+    .match-versus-lite .ui-block-e {
+        text-align: left;
+        width: 30%;
+    }
+
+/* bet-info-list */
 .bet-info-list .star a {
     background: #ffcccc;
 }
@@ -157,6 +244,7 @@ em {
     background: #ffcccc;
 }
 
+/* rank */
 .rank a.icon {
     text-indent: 0 !important;
     text-align: center !important;

@@ -4,41 +4,15 @@
     var actionName = ViewContext.RouteData.Values["action"].ToString();
 }
 
-<style type="text/css">
-    .pager { text-align: center; }
-
-    .pager input { text-align: center; }
-
-    .pager a#pagePrev {
-        float: left;
-        margin-left: 5px;
-    }
-
-    .pager a#pageNext {
-        float: right;
-        margin-right: 5px;
-    }
-
-    .pager div.ui-input-text {
-        display: inline-block;
-        width: 60px;
-    }
-
-    .pager div.ui-select {
-        display: inline-block;
-        width: 60px;
-    }
-</style>
 <script type="text/javascript">
-
-    $(function() {
-        $("#currentPage").change(function() {
+    $(document).on("pageinit", "#page", function () {
+        $("#currentPage").change(function () {
             SubmitForm();
         });
-        $("#pagingSize").change(function() {
+        $("#pagingSize").change(function () {
             SubmitForm();
         });
-        $("#pagePrev").click(function() {
+        $("#pagePrev").click(function () {
             var currentPage = $("#currentPage").val();
             if (currentPage != null && currentPage > 0) {
                 currentPage--;
@@ -46,7 +20,7 @@
             }
             SubmitForm();
         });
-        $("#pageNext").click(function() {
+        $("#pageNext").click(function () {
             var currentPage = $("#currentPage").val();
             if (currentPage) {
                 currentPage++;
@@ -60,16 +34,17 @@
         document.forms["formPager"].submit();
     }
 </script>
-@using (Html.BeginForm(actionName, controllerName, FormMethod.Post, new {id = "formPager"}))
+
+@using (Html.BeginForm(actionName, controllerName, FormMethod.Post, new { id = "formPager" }))
 {
     if (Model.CurrentPage > 0)
     {
         <a id="pagePrev" data-role="button" data-icon="arrow-l" data-iconpos="notext">上页</a>
     }
 
-    @Html.TextBoxFor(m => m.CurrentPage, new {id = "currentPage"})
+    @Html.TextBoxFor(m => m.CurrentPage, new { id = "currentPage" })
     <span> / @Model.MaxPage</span>
-    @Html.TextBoxFor(m => m.PagingSize, new {id = "pagingSize"})
+    @Html.TextBoxFor(m => m.PagingSize, new { id = "pagingSize" })
 
     if (Model.CurrentPage < Model.MaxPage)
     {

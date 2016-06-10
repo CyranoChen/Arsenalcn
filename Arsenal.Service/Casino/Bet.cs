@@ -2,6 +2,7 @@
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics.Contracts;
+using System.Linq;
 using Arsenalcn.Core;
 using DataReaderMapper;
 
@@ -37,7 +38,7 @@ namespace Arsenal.Service.Casino
                     #region Get CasinoItem & Check
 
                     var item = repo.Query<CasinoItem>(x =>
-                        x.MatchGuid == matchGuid && x.ItemType == CasinoType.SingleChoice)[0];
+                        x.MatchGuid == matchGuid && x.ItemType == CasinoType.SingleChoice).FirstOrDefault();
 
                     if (item == null)
                     {

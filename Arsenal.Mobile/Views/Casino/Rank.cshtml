@@ -5,8 +5,7 @@
 
 @section Scripts {
     <script type="text/javascript">
-        $(function () {
-            // TODO
+        $(document).on("pageinit", "#page", function () {
             $(".rank .icon").each(function (i, entry) {
                 $(entry).html($(entry).attr("data-icon"));
             });

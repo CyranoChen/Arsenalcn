@@ -6,7 +6,7 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script type="text/javascript">
-        $(function () {
+        $(document).on("pageinit", "#page", function () {
             $("#btnSubmit").click(function () {
                 if ($("#formGameBet").valid()) {
                     document.forms["formGameBet"].submit();

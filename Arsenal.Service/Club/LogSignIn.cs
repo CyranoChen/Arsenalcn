@@ -31,6 +31,9 @@ namespace Arsenal.Service.Club
             if (rate <= 0)
             { throw new Exception("您已经领取过今天的签到奖励"); }
 
+            // set SignInDay in advance
+            SignInDays = rate;
+
             if (rate > ConfigGlobal_AcnClub.SignInMaxRate)
             { rate = ConfigGlobal_AcnClub.SignInMaxRate; }
 
@@ -39,7 +42,6 @@ namespace Arsenal.Service.Club
             UserName = membership.UserName;
             SignInTime = DateTime.Now;
 
-            SignInDays = rate;
             Bonus = ConfigGlobal_AcnClub.SignInBonus * rate;
             Description = description;
 

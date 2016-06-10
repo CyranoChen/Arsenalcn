@@ -7,8 +7,8 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script type="text/javascript">
-        $(function() {
-            $("#btnSubmit").click(function() {
+        $(document).on("pageinit", "#page", function () {
+            $("#btnSubmit").click(function () {
                 if ($("#formReturnBet").valid()) {
                     document.forms["formReturnBet"].submit();
                 }

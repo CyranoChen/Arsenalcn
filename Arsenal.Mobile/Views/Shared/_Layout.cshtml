@@ -39,7 +39,7 @@
     @Scripts.Render("~/bundles/jquerymobile")
 </head>
 <body>
-<div data-role="page" data-theme="c" @TempData["DataUrl"]>
+<div id="page" data-role="page" data-theme="c" @TempData["DataUrl"]>
     @if (IsSectionDefined("Header"))
     {
         @RenderSection("Header")

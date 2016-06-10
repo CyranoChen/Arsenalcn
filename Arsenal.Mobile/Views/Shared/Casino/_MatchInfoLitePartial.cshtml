@@ -1,32 +1,32 @@
 ﻿@model Arsenal.Mobile.Models.Casino.MatchDto
-@*TODO: merge style to css*@
-<fieldset data-role="controlgroup" style="margin: 0 auto; text-align: center;">
+
+<fieldset data-role="controlgroup" class="match-versus-lite">
     <p>@Model.LeagueName</p>
     <div class="ui-grid-d">
-        <div class="ui-block-a" style="text-align: right; width: 30%;">
+        <div class="ui-block-a" style="">
             <h2>
                 @Model.TeamHomeName
             </h2>
         </div>
-        <div class="ui-block-b" style="text-align: right; width: 10%;">
-            <img src="@Model.TeamHomeLogo" style="height: 32px; width: 32px;"/>
+        <div class="ui-block-b">
+            <img src="@Model.TeamHomeLogo" />
         </div>
-        <div class="ui-block-c" style="text-align: center; width: 20%;">
+        <div class="ui-block-c" style="">
             @if (Model.ResultHome.HasValue && Model.ResultAway.HasValue)
             {
-                <span style="font-size: 22px; font-weight: bolder">@Model.ResultHome.Value</span>
-                <span style="font-size: 18px; font-weight: bolder; margin: 0 5px">vs</span>
-                <span style="font-size: 22px; font-weight: bolder">@Model.ResultAway.Value</span>
+                <span>@Model.ResultHome.Value</span>
+                <span class="versus">vs</span>
+                <span>@Model.ResultAway.Value</span>
             }
             else
             {
-                <span style="font-family: Tahoma; font-size: 18px; font-weight: bolder">vs</span>
+                <span class="versus">vs</span>
             }
         </div>
-        <div class="ui-block-d" style="text-align: left; width: 10%;">
-            <img src="@Model.TeamAwayLogo" style="height: 32px; width: 32px;"/>
+        <div class="ui-block-d">
+            <img src="@Model.TeamAwayLogo" />
         </div>
-        <div class="ui-block-e" style="text-align: left; width: 30%;">
+        <div class="ui-block-e">
             <h2>
                 @Model.TeamAwayName
             </h2>

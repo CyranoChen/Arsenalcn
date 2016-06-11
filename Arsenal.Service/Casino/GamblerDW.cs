@@ -50,7 +50,7 @@ namespace Arsenal.Service.Casino
                                     LEFT OUTER JOIN
                                         (SELECT UserID, UserName, 
                                                     COUNT(ID) AS RPBet, 
-                                                    COUNT(CASE EarningDesc WHEN 'RP+1' THEN 1 ELSE 0 END) AS RPBonus
+                                                    COUNT(CASE EarningDesc WHEN 'RP+1' THEN 1 ELSE NULL END) AS RPBonus
                                         FROM dbo.vw_AcnCasino_BetInfo 
                                         WHERE (UserID = @key) AND (Earning = 0) AND (Bet IS NULL) AND (LeagueGuid = @leagueGuid)
                                         GROUP BY UserID, UserName) AS RPInfo
@@ -97,7 +97,7 @@ namespace Arsenal.Service.Casino
                                     LEFT OUTER JOIN
                                         (SELECT UserID, UserName, 
                                                     COUNT(ID) AS RPBet, 
-                                                    COUNT(CASE EarningDesc WHEN 'RP+1' THEN 1 ELSE 0 END) AS RPBonus
+                                                    COUNT(CASE EarningDesc WHEN 'RP+1' THEN 1 ELSE NULL END) AS RPBonus
                                         FROM dbo.vw_AcnCasino_BetInfo 
                                         WHERE (Earning = 0) AND (Bet IS NULL) AND (LeagueGuid = @leagueGuid)
                                         GROUP BY UserID, UserName) AS RPInfo

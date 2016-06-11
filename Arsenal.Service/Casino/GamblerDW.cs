@@ -50,7 +50,7 @@ namespace Arsenal.Service.Casino
                                     LEFT OUTER JOIN
                                         (SELECT UserID, UserName, 
                                                     COUNT(ID) AS RPBet, 
-                                                    COUNT(CASE EarningDesc WHEN 'RP+1' THEN 1 ELSE NULL END) AS RPBonus
+                                                    COUNT(CASE EarningDesc WHEN 'RP+1' THEN 1 ELSE 0 END) AS RPBonus
                                         FROM dbo.vw_AcnCasino_BetInfo 
                                         WHERE (UserID = @key) AND (Earning = 0) AND (Bet IS NULL) AND (LeagueGuid = @leagueGuid)
                                         GROUP BY UserID, UserName) AS RPInfo
@@ -97,7 +97,7 @@ namespace Arsenal.Service.Casino
                                     LEFT OUTER JOIN
                                         (SELECT UserID, UserName, 
                                                     COUNT(ID) AS RPBet, 
-                                                    COUNT(CASE EarningDesc WHEN 'RP+1' THEN 1 ELSE NULL END) AS RPBonus
+                                                    COUNT(CASE EarningDesc WHEN 'RP+1' THEN 1 ELSE 0 END) AS RPBonus
                                         FROM dbo.vw_AcnCasino_BetInfo 
                                         WHERE (Earning = 0) AND (Bet IS NULL) AND (LeagueGuid = @leagueGuid)
                                         GROUP BY UserID, UserName) AS RPInfo
@@ -140,7 +140,8 @@ namespace Arsenal.Service.Casino
             {
                 var g = Single(userId, leagueGuid);
 
-                if (g != null && g.TotalBet < ConfigGlobal_AcnCasino.TotalBetStandard)
+                // 如果没有投过注，或投注量小于标准，判断是否在下半赛区
+                if (g == null || g.TotalBet < ConfigGlobal_AcnCasino.TotalBetStandard)
                 {
                     var singleBetLimit = ConfigGlobal_AcnCasino.SingleBetLimit;
 
@@ -155,41 +156,39 @@ namespace Arsenal.Service.Casino
         {
             if (orderKeyword.Equals("ProfitRate", StringComparison.OrdinalIgnoreCase))
             {
-                list.Sort((g1, g2) => !g2.ProfitRate.Equals(g1.ProfitRate)
-                    ? g2.ProfitRate.CompareTo(g1.ProfitRate)
-                    : g2.Profit.CompareTo(g1.Profit));
+                list = list.OrderByDescending(x => x.ProfitRate)
+                    .ThenByDescending(x => x.Profit)
+                    .ThenByDescending(x => x.RPBonus)
+                    .ThenByDescending(x => x.TotalBet)
+                    .ThenBy(x => x.UserID)
+                    .ToList();
             }
             else if (orderKeyword.Equals("TotalBet", StringComparison.OrdinalIgnoreCase))
             {
-                list.Sort((g1, g2) => !g2.TotalBet.Equals(g1.TotalBet)
-                    ? g2.TotalBet.CompareTo(g1.TotalBet)
-                    : g2.Profit.CompareTo(g1.Profit));
+                list = list.OrderByDescending(x => x.TotalBet)
+                    .ThenByDescending(x => x.ProfitRate)
+                    .ThenByDescending(x => x.Profit)
+                    .ThenByDescending(x => x.RPBonus)
+                    .ThenBy(x => x.UserID)
+                    .ToList();
             }
             else if (orderKeyword.Equals("RPBonus", StringComparison.OrdinalIgnoreCase))
             {
-                list.Sort((g1, g2) =>
-                {
-                    if (!g1.RPBonus.HasValue && !g2.RPBonus.HasValue)
-                    {
-                        return g2.Profit.CompareTo(g1.Profit);
-                    }
-                    if (g1.RPBonus.HasValue && !g2.RPBonus.HasValue)
-                    {
-                        return -1;
-                    }
-                    // ReSharper disable once ConditionIsAlwaysTrueOrFalse
-                    if (!g1.RPBonus.HasValue && g2.RPBonus.HasValue)
-                    {
-                        return 1;
-                    }
-                    return !g2.RPBonus.Value.Equals(g1.RPBonus.Value)
-                        ? g2.RPBonus.Value - g1.RPBonus.Value
-                        : g2.Profit.CompareTo(g1.Profit);
-                });
+                list = list.OrderByDescending(x => x.RPBonus)
+                    .ThenByDescending(x => x.ProfitRate)
+                    .ThenByDescending(x => x.Profit)
+                    .ThenByDescending(x => x.TotalBet)
+                    .ThenBy(x => x.UserID)
+                    .ToList();
             }
             else
             {
-                list.Sort((g1, g2) => g2.Profit.CompareTo(g1.Profit));
+                list = list.OrderByDescending(x => x.Profit)
+                    .ThenByDescending(x => x.ProfitRate)
+                    .ThenByDescending(x => x.RPBonus)
+                    .ThenByDescending(x => x.TotalBet)
+                    .ThenBy(x => x.UserID)
+                    .ToList();
             }
 
             var rank = 1;
@@ -278,10 +277,10 @@ namespace Arsenal.Service.Casino
         public double TotalBet { get; set; }
 
         [DbColumn("RPBet")]
-        public int? RPBet { get; set; }
+        public int RPBet { get; set; }
 
         [DbColumn("RPBonus")]
-        public int? RPBonus { get; set; }
+        public int RPBonus { get; set; }
 
         public double Profit { get; set; }
 

@@ -1,9 +1,9 @@
 ﻿@model Arsenal.Service.Casino.GamblerDW
 <li class="rank">
     <a href="#">
-        <h3>@Model.UserName</h3>
+        <h3>@Model.UserName (@Model.UserID)</h3>
         <p>盈亏：@Model.Profit.ToString("N0") | 投注：@Model.TotalBet.ToString("N0")</p>
-        <span class="ui-li-count">@Model.ProfitRate.ToString("f1")% | RP+@(Model.RPBonus ?? 0) </span>
+        <span class="ui-li-count">@Model.ProfitRate.ToString("f1")% | RP+@(Model.RPBonus) </span>
     </a>
     @if (Model.Rank <= 3)
     {

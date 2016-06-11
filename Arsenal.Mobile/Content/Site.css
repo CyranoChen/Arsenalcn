@@ -1,5 +1,5 @@
 ﻿/* CSS Version Default */
-/* Version: 0.6 (Arsenal.Mobile) */
+/* Version: 0.6.1 (Arsenal.Mobile) */
 /* Cascading Style Sheets Level 2 Revision 1 */
 
 /* Styles for validation helpers
@@ -76,6 +76,15 @@
     .ui-header h1 {
         overflow: visible;
     }
+
+.ui-slider .ui-slider-input {
+    width: 60px !important;
+    text-align: right !important;
+}
+
+.ui-slider .ui-slider-track {
+    margin-left: 88px !important;
+}
 
 
 /* Make listview buttons fill the whole horizontal width of the screen */

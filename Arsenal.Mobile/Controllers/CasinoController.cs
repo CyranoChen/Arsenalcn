@@ -357,34 +357,20 @@ namespace Arsenal.Mobile.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult SingleChoice(SingleChoiceDto model)
         {
+            var id = model.MatchGuid;
+            var leagueGuid = _repo.Single<Match>(id)?.LeagueGuid;
+
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var id = model.MatchGuid;
-
-                    var gambler = _repo.Query<Gambler>(x => x.UserID == AcnID).FirstOrDefault();
-
-                    model.MyCash = gambler?.Cash ?? 0f;
-
-                    var leagueGuid = _repo.Single<Match>(id)?.LeagueGuid;
-
-                    if (leagueGuid.HasValue)
-                    {
-                        model.BetLimit = GamblerDW.GetGamblerBetLimit(AcnID, leagueGuid.Value);
-                    }
-                    else
-                    {
-                        model.BetLimit = model.MyCash;
-                    }
-
                     //Gambler in Lower could not bet above the SingleBetLimit of DefaultLeague (Contest)
                     if (leagueGuid != null && leagueGuid.Equals(ConfigGlobal_AcnCasino.DefaultLeagueID))
                     {
                         var g = GamblerDW.Single(AcnID, leagueGuid.Value);
 
-                        // 判断是否在下半赛区
-                        if (g != null && g.TotalBet < ConfigGlobal_AcnCasino.TotalBetStandard)
+                        // 如果没有投过注，或投注量小于标准，判断是否在下半赛区
+                        if (g == null || g.TotalBet < ConfigGlobal_AcnCasino.TotalBetStandard)
                         {
                             var singleBetLimit = ConfigGlobal_AcnCasino.SingleBetLimit;
                             double? alreadyMatchBet = null;
@@ -432,6 +418,19 @@ namespace Arsenal.Mobile.Controllers
             else
             {
                 ModelState.AddModelError("Warn", "请正确填写投注单");
+            }
+
+            var gambler = _repo.Query<Gambler>(x => x.UserID == AcnID).FirstOrDefault();
+
+            model.MyCash = gambler?.Cash ?? 0f;
+
+            if (leagueGuid.HasValue)
+            {
+                model.BetLimit = GamblerDW.GetGamblerBetLimit(AcnID, leagueGuid.Value);
+            }
+            else
+            {
+                model.BetLimit = model.MyCash;
             }
 
             model.Match = MatchDto.Single(model.MatchGuid);

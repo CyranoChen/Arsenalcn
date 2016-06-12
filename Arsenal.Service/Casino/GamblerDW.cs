@@ -45,14 +45,14 @@ namespace Arsenal.Service.Casino
                                                     SUM(ISNULL(Earning, 0)) AS Earning, 
                                                     SUM(ISNULL(Bet, 0)) AS TotalBet
                                         FROM dbo.vw_AcnCasino_BetInfo 
-                                        WHERE (UserID = @key) AND (Earning IS NOT NULL) AND (Bet IS NOT NULL) AND (LeagueGuid = @leagueGuid)
+                                        WHERE (UserID = @key) AND (Earning IS NOT NULL) AND (Bet IS NOT NULL) AND (ItemType = 2) AND (LeagueGuid = @leagueGuid)
                                         GROUP BY UserID, UserName) AS BetInfo
                                     LEFT OUTER JOIN
                                         (SELECT UserID, UserName, 
                                                     COUNT(ID) AS RPBet, 
                                                     COUNT(CASE EarningDesc WHEN 'RP+1' THEN 1 ELSE NULL END) AS RPBonus
                                         FROM dbo.vw_AcnCasino_BetInfo 
-                                        WHERE (UserID = @key) AND (Earning = 0) AND (Bet IS NULL) AND (LeagueGuid = @leagueGuid)
+                                        WHERE (UserID = @key) AND (Earning = 0) AND (Bet IS NULL) AND (ItemType = 1) AND (LeagueGuid = @leagueGuid)
                                         GROUP BY UserID, UserName) AS RPInfo
                                     ON BetInfo.UserID = RPInfo.UserID AND BetInfo.UserName = RPInfo.UserName
                                     ORDER BY BetInfo.TotalBet DESC";
@@ -92,14 +92,14 @@ namespace Arsenal.Service.Casino
                                                     SUM(ISNULL(Earning, 0)) AS Earning, 
                                                     SUM(ISNULL(Bet, 0)) AS TotalBet
                                         FROM dbo.vw_AcnCasino_BetInfo 
-                                        WHERE (Earning IS NOT NULL) AND (Bet IS NOT NULL) AND (LeagueGuid = @leagueGuid)
+                                        WHERE (Earning IS NOT NULL) AND (Bet IS NOT NULL) AND (ItemType = 2) AND (LeagueGuid = @leagueGuid)
                                         GROUP BY UserID, UserName) AS BetInfo
                                     LEFT OUTER JOIN
                                         (SELECT UserID, UserName, 
                                                     COUNT(ID) AS RPBet, 
                                                     COUNT(CASE EarningDesc WHEN 'RP+1' THEN 1 ELSE NULL END) AS RPBonus
                                         FROM dbo.vw_AcnCasino_BetInfo 
-                                        WHERE (Earning = 0) AND (Bet IS NULL) AND (LeagueGuid = @leagueGuid)
+                                        WHERE (Earning = 0) AND (Bet IS NULL) AND (ItemType = 1) AND (LeagueGuid = @leagueGuid)
                                         GROUP BY UserID, UserName) AS RPInfo
                                     ON BetInfo.UserID = RPInfo.UserID AND BetInfo.UserName = RPInfo.UserName
                                     ORDER BY BetInfo.TotalBet DESC";

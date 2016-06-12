@@ -158,13 +158,13 @@ namespace Arsenalcn.CasinoSys.DataAccess
                                                 COUNT(distinct CAST(CasinoItemGuid AS CHAR(50))) AS MatchBet, 
                                                 SUM(ISNULL(Earning, 0)) AS Earning, 
                                                 SUM(ISNULL(Bet, 0)) AS TotalBet
-                                    FROM dbo.vw_AcnCasino_BetInfo WHERE (Earning IS NOT NULL) AND (Bet IS NOT NULL)
+                                    FROM dbo.vw_AcnCasino_BetInfo WHERE (Earning IS NOT NULL) AND (Bet IS NOT NULL) AND (ItemType = 2) 
                                     GROUP BY UserID, UserName) AS BetInfo
                                 LEFT OUTER JOIN
                                     (SELECT UserID, UserName, 
                                                 COUNT(ID) AS RPBet, 
                                                 COUNT(CASE EarningDesc WHEN 'RP+1' THEN 1 ELSE NULL END) AS RPBonus
-                                    FROM dbo.vw_AcnCasino_BetInfo WHERE (Earning = 0) AND (Bet IS NULL)
+                                    FROM dbo.vw_AcnCasino_BetInfo WHERE (Earning = 0) AND (Bet IS NULL) AND (ItemType = 1) 
                                     GROUP BY UserID, UserName) AS RPInfo
                                 ON BetInfo.UserID = RPInfo.UserID AND BetInfo.UserName = RPInfo.UserName
                                 ORDER BY BetInfo.TotalBet DESC";
@@ -186,14 +186,14 @@ namespace Arsenalcn.CasinoSys.DataAccess
                                                 SUM(ISNULL(Earning, 0)) AS Earning, 
                                                 SUM(ISNULL(Bet, 0)) AS TotalBet
                                     FROM dbo.vw_AcnCasino_BetInfo 
-                                    WHERE (Earning IS NOT NULL) AND (Bet IS NOT NULL) AND (LeagueGuid = @leagueGuid)
+                                    WHERE (Earning IS NOT NULL) AND (Bet IS NOT NULL) AND (ItemType = 2) AND (LeagueGuid = @leagueGuid)
                                     GROUP BY UserID, UserName) AS BetInfo
                                 LEFT OUTER JOIN
                                     (SELECT UserID, UserName, 
                                                 COUNT(ID) AS RPBet, 
                                                 COUNT(CASE EarningDesc WHEN 'RP+1' THEN 1 ELSE NULL END) AS RPBonus
                                     FROM dbo.vw_AcnCasino_BetInfo 
-                                    WHERE (Earning = 0) AND (Bet IS NULL) AND (LeagueGuid = @leagueGuid)
+                                    WHERE (Earning = 0) AND (Bet IS NULL) AND (ItemType = 1) AND (LeagueGuid = @leagueGuid)
                                     GROUP BY UserID, UserName) AS RPInfo
                                 ON BetInfo.UserID = RPInfo.UserID AND BetInfo.UserName = RPInfo.UserName
                                 ORDER BY BetInfo.TotalBet DESC";
@@ -209,7 +209,7 @@ namespace Arsenalcn.CasinoSys.DataAccess
         public static float GetGamblerTotalBetByUserID(int userid)
         {
             var sql = @"SELECT SUM(ISNULL(Bet, 0)) AS TotalBet FROM dbo.vw_AcnCasino_BetInfo 
-                                  WHERE (Earning IS NOT NULL) AND (Bet IS NOT NULL) AND (UserID = @userid)";
+                                  WHERE (Earning IS NOT NULL) AND (Bet IS NOT NULL) AND (ItemType = 2) AND (UserID = @userid)";
 
             var obj = SqlHelper.ExecuteScalar(SQLConn.GetConnection(), CommandType.Text, sql,
                 new SqlParameter("@userid", userid));
@@ -220,7 +220,7 @@ namespace Arsenalcn.CasinoSys.DataAccess
         public static float GetGamblerTotalBetByUserID(int userid, Guid leagueGuid)
         {
             var sql = @"SELECT SUM(ISNULL(Bet, 0)) AS TotalBet FROM dbo.vw_AcnCasino_BetInfo 
-                                  WHERE (Earning IS NOT NULL) AND (Bet IS NOT NULL) AND (UserID = @userid) AND (LeagueGuid = @leagueGuid)";
+                                  WHERE (Earning IS NOT NULL) AND (Bet IS NOT NULL) AND (ItemType = 2)  AND (UserID = @userid) AND (LeagueGuid = @leagueGuid)";
 
             var obj = SqlHelper.ExecuteScalar(SQLConn.GetConnection(), CommandType.Text, sql,
                 new SqlParameter("@userid", userid), new SqlParameter("@leagueGuid", leagueGuid));
@@ -242,7 +242,7 @@ namespace Arsenalcn.CasinoSys.DataAccess
         public static int GetGamblerRPByUserID(int userid, Guid leagueGuid)
         {
             var sql =
-                @"SELECT COUNT(*) AS RPBonus FROM dbo.vw_AcnCasino_BetInfo WHERE Earning = 0 AND EarningDesc = 'RP+1' AND IsWin = 1 AND UserID = @userid AND LeagueGuid = @guid";
+                @"SELECT COUNT(*) AS RPBonus FROM dbo.vw_AcnCasino_BetInfo WHERE Earning = 0 AND EarningDesc = 'RP+1' AND IsWin = 1  AND (ItemType = 1) AND UserID = @userid AND LeagueGuid = @guid";
 
             var obj = SqlHelper.ExecuteScalar(SQLConn.GetConnection(), CommandType.Text, sql,
                 new SqlParameter("@userid", userid), new SqlParameter("@guid", leagueGuid));

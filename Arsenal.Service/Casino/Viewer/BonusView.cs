@@ -5,24 +5,14 @@ using DataReaderMapper;
 
 namespace Arsenal.Service.Casino
 {
-    [DbSchema("AcnCasino_CouponView", Sort = "PlayTime, BetTime DESC")]
-    public class CouponView : Viewer
+    [DbSchema("AcnCasino_BonusView", Sort = "PlayTime DESC")]
+    public class BonusView : Viewer
     {
         public static void CreateMap()
         {
-            var map = Mapper.CreateMap<IDataReader, CouponView>();
+            var map = Mapper.CreateMap<IDataReader, BonusView>();
 
-            //map.ForMember(d => d.UserID, opt => opt.MapFrom(s => s.GetValue("UserID")));
-            map.ForMember(d => d.BetResultHome, opt => opt.MapFrom(s => Convert.ToInt16(s.GetValue("BetResultHome"))));
-            map.ForMember(d => d.BetResultAway, opt => opt.MapFrom(s => Convert.ToInt16(s.GetValue("BetResultAway"))));
-
-            #region CouponView.Bet
-
-            var bMap = Mapper.CreateMap<IDataReader, Bet>();
-
-            map.ForMember(d => d.Bet, opt => opt.MapFrom(s => Mapper.Map<Bet>(s)));
-
-            #endregion
+            map.ForMember(d => d.UserID, opt => opt.MapFrom(s => s.GetValue("UserID")));
 
             #region CouponView.League
 
@@ -68,8 +58,8 @@ namespace Arsenal.Service.Casino
 
         #region Members and Properties
 
-        [DbColumn("ID", IsKey = true)]
-        public int ID { get; set; }
+        [DbColumn("MatchGuid")]
+        public Guid MatchGuid { get; set; }
 
         [DbColumn("UserID")]
         public int UserID { get; set; }
@@ -77,14 +67,20 @@ namespace Arsenal.Service.Casino
         [DbColumn("UserName")]
         public string UserName { get; set; }
 
-        [DbColumn("MatchGuid")]
-        public Guid MatchGuid { get; set; }
+        [DbColumn("Win")]
+        public int? Win { get; set; }
 
-        [DbColumn("BetResultHome")]
-        public short BetResultHome { get; set; }
+        [DbColumn("Lose")]
+        public int? Lose { get; set; }
 
-        [DbColumn("BetResultAway")]
-        public short BetResultAway { get; set; }
+        [DbColumn("Earning")]
+        public double? Earning { get; set; }
+
+        [DbColumn("TotalBet")]
+        public double? TotalBet { get; set; }
+
+        [DbColumn("RPBonus")]
+        public int? RPBonus { get; set; }
 
         [DbColumn("PlayTime")]
         public DateTime PlayTime { get; set; }
@@ -96,9 +92,6 @@ namespace Arsenal.Service.Casino
         public short? Round { get; set; }
 
         // Complex Object
-
-        [DbColumn("b", Key = "ID")]
-        public Bet Bet { get; set; }
 
         [DbColumn("h", Key = "TeamGuid")]
         public Team Home { get; set; }

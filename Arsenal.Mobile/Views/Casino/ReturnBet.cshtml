@@ -18,7 +18,10 @@
 }
 
 @section Header {
-    <div data-role="header">
+    <div data-role="header" data-position="fixed">
+        @Html.ActionLink("返回", "GameBet", "Casino", new { id = Model.MatchGuid },
+            new { data_icon = "delete", data_transition = "slide", data_direction = "reverse", data_iconpos = "notext" })
+
         <h1 style="overflow: visible">
             <span>@Model.TeamHomeName</span>
             <em>vs</em>
@@ -27,42 +30,33 @@
     </div>
 }
 
-@if (!Model.IsWin.HasValue && Model.CloseTime > DateTime.Now && Model.UserName == User.Identity.Name)
-{
-    @section Footer {
-        <div data-role="footer" data-position="fixed">
-            <input type="button" id="btnSubmit" value="退还投注" data-icon="back" />
-        </div>
-    }
-}
-
 <div data-role="content">
-    @if (!Model.IsWin.HasValue && Model.CloseTime > DateTime.Now && Model.UserName == User.Identity.Name)
+    @using (Html.BeginForm("ReturnBet", "Casino", FormMethod.Post, new { id = "formReturnBet" }))
     {
-        using (Html.BeginForm("ReturnBet", "Casino", FormMethod.Post, new { id = "formReturnBet" }))
-        {
-            <ul data-role="listview">
-                <li class="ui-field-contain">投注时间<span class="ui-li-count">@Model.BetTime.ToString("yyyy-MM-dd HH:mm")</span></li>
-                <li class="ui-field-contain">截止时间<span class="ui-li-count">@Model.CloseTime.ToString("yyyy-MM-dd HH:mm")</span></li>
-                @if (Model.ItemType.Equals(CasinoType.SingleChoice))
-                {
-                    <li class="ui-field-contain">投注类型<span class="ui-li-count">投输赢</span></li>
-                    <li class="ui-field-contain">投注输赢<span class="ui-li-count">[@Model.BetResult] [@Model.BetRate.Value.ToString("f2")] @Model.BetAmount.Value.ToString("N0")</span></li>
-                }
-                else if (Model.ItemType.Equals(CasinoType.MatchResult))
-                {
-                    <li class="ui-field-contain">投注类型<span class="ui-li-count">猜比分</span></li>
-                    <li class="ui-field-contain">投注结果<span class="ui-li-count">[Home] @Model.BetResultHome.Value : @Model.BetResultAway.Value [Away]</span></li>
-                }
-            </ul>
+        <ul data-role="listview">
+            <li class="ui-field-contain">投注时间<span class="ui-li-count">@Model.BetTime.ToString("yyyy-MM-dd HH:mm")</span></li>
+            <li class="ui-field-contain">截止时间<span class="ui-li-count">@Model.CloseTime.ToString("yyyy-MM-dd HH:mm")</span></li>
+            @if (Model.ItemType.Equals(CasinoType.SingleChoice) && Model.BetRate.HasValue && Model.BetAmount.HasValue)
+            {
+                <li class="ui-field-contain">投注类型<span class="ui-li-count">投输赢</span></li>
+                <li class="ui-field-contain">投注输赢<span class="ui-li-count">[@Model.BetResult] [@Model.BetRate.Value.ToString("f2")] @Model.BetAmount.Value.ToString("N0")</span></li>
+            }
+            else if (Model.ItemType.Equals(CasinoType.MatchResult) && Model.BetResultHome.HasValue && Model.BetResultAway.HasValue)
+            {
+                <li class="ui-field-contain">投注类型<span class="ui-li-count">猜比分</span></li>
+                <li class="ui-field-contain">投注结果<span class="ui-li-count">[Home] @Model.BetResultHome.Value : @Model.BetResultAway.Value [Away]</span></li>
+            }
+            <li>
+                @Html.HiddenFor(m => m.ID)
+                @Html.HiddenFor(m => m.MatchGuid)
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary()
 
-            @Html.HiddenFor(m => m.ID)
-            @Html.AntiForgeryToken()
-            @Html.ValidationSummary()
-        }
-    }
-    else
-    {
-        <h2>您无法退还此投注。</h2>
+                @if (!Model.IsWin.HasValue && Model.CloseTime > DateTime.Now && Model.UserName == User.Identity.Name)
+                {
+                    <input type="button" id="btnSubmit" value="退还投注" data-icon="back" />
+                }
+            </li>
+        </ul>
     }
 </div>

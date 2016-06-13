@@ -22,15 +22,13 @@
     </script>
 }
 @section Header {
-    <div data-role="header">
+    <div data-role="header" data-position="fixed">
+        @Html.ActionLink("返回", "GameBet", "Casino", new { id = Model.MatchGuid },
+            new { data_icon = "delete", data_transition = "slide", data_direction = "reverse", data_iconpos = "notext" })
         <h1>@Model.Match.LeagueName</h1>
     </div>
 }
-@section Footer {
-    <div data-role="footer" data-position="fixed">
-        <input type="button" id="btnSubmit" value="提交投注" data-icon="check" />
-    </div>
-}
+
 <div data-role="content">
     @using (Html.BeginForm("MatchResult", "Casino", FormMethod.Post, new { id = "formGameBet" }))
     {
@@ -62,5 +60,10 @@
         @Html.HiddenFor(m => m.MatchGuid)
         @Html.AntiForgeryToken()
         @Html.ValidationSummary()
+
+        if (Model.Match.PlayTime > DateTime.Now)
+        {
+            <input type="button" id="btnSubmit" value="提交投注" data-icon="check" />
+        }
     }
 </div>

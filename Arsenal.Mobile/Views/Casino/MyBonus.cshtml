@@ -13,7 +13,7 @@
 }
 
 <div data-role="content">
-    <ul data-role="listview" data-inset="true" class="bet-info-list">
+    <ul data-role="listview" data-inset="true" class="bonus-info-list">
         <li data-role="list-divider">
             我的盈亏记录
             <span class="ui-li-count">@Model.Criteria.TotalCount</span>
@@ -24,14 +24,17 @@
             {
                 <li class="@m.BetIcon">
                     <a href="#">
+                        <img src="@m.LeagueLogo" alt="@m.LeagueName" class="league-logo" />
                         <h3>
+                            <img src="@m.TeamHomeLogo" alt="@m.TeamHomeName"/>
                             @m.TeamHomeName
-                            <span>vs</span>
+                            <em>vs</em>
+                            <img src="@m.TeamAwayLogo" alt="@m.TeamAwayName"/>
                             @m.TeamAwayName
                         </h3>
-                        @if (m.Earning.HasValue && m.TotalBet.HasValue)
+                        @if (m.Profit.HasValue && m.TotalBet.HasValue)
                         {
-                            <p>盈亏：@m.Earning.Value.ToString("N0") | 投注：@m.TotalBet.Value.ToString("N0")</p>
+                            <p>盈亏：@m.Profit.Value.ToString("N0") | 投注：@m.TotalBet.Value.ToString("N0")</p>
                         }
                         <p>@m.PlayTime.ToString("yyyy-MM-dd HH:mm")</p>
                         @if (m.RPBonus.HasValue)

@@ -6,21 +6,21 @@
 @section Header {
     <div data-role="header" data-position="fixed">
         @Html.ActionLink("返回", "Index", "Casino", null,
-            new {data_icon = "arrow-l", data_transition = "slide", data_direction = "reverse", data_iconpos = "notext"})
+            new { data_icon = "arrow-l", data_transition = "slide", data_direction = "reverse", data_iconpos = "notext" })
         <h1>博彩币：@Model.MyCash.ToString("N2")</h1>
     </div>
 }
 
 @if (Model.Match.PlayTime > DateTime.Now)
 {
-@section Footer {
-    <div data-role="footer" data-position="fixed">
-        <div data-role="controlgroup" data-type="horizontal">
-            <a href="@Url.Action("SingleChoice", "Casino", new {id = Model.Match.ID})" data-role="button" data-icon="plus" data-rel="dialog" data-transition="pop">投输赢</a>
-            <a href="@Url.Action("MatchResult", "Casino", new {id = Model.Match.ID})" data-role="button" data-icon="plus" data-rel="dialog" data-transition="pop">猜比分</a>
+    @section Footer {
+        <div data-role="footer" data-position="fixed">
+            <div data-role="controlgroup" data-type="horizontal">
+                <a href="@Url.Action("SingleChoice", "Casino", new {id = Model.Match.ID})" data-role="button" data-icon="plus" data-rel="dialog" data-transition="pop">投输赢</a>
+                <a href="@Url.Action("MatchResult", "Casino", new {id = Model.Match.ID})" data-role="button" data-icon="plus" data-rel="dialog" data-transition="pop">猜比分</a>
+            </div>
         </div>
-    </div>
-}}
+    }}
 
 <div data-role="content">
     @Html.Partial("Casino/_MatchInfoPartial", Model.Match)
@@ -33,7 +33,8 @@
                     foreach (var m in Model.HistoryMatches)
                     {
                         <li>
-                            <a data-transition="slide" data-role="button" href="@Url.Action("Detail", "Casino", new {id = m.ID.ToString()})">
+                            <a data-transition="slide" data-role="button" href="@Url.Action("Detail", "Casino", new {id = m.ID})">
+        >
                                 @Html.Partial("Casino/_MatchInfoLitePartial", m)
                             </a>
                         </li>

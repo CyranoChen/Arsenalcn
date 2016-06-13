@@ -2,11 +2,11 @@
 @model Arsenal.Mobile.Models.Casino.BetDto
 <li class="@Model.BetIcon">
     <a href="#">
-        @if (Model.ItemType.Equals(CasinoType.SingleChoice))
+        @if (Model.ItemType.Equals(CasinoType.SingleChoice) && Model.BetRate.HasValue && Model.BetAmount.HasValue)
         {
             <h3>投注：[@Model.BetResult] [@Model.BetRate.Value.ToString("f2")] @Model.BetAmount.Value.ToString("N0")</h3>
         }
-        else if (Model.ItemType.Equals(CasinoType.MatchResult))
+        else if (Model.ItemType.Equals(CasinoType.MatchResult) && Model.BetResultHome.HasValue && Model.BetResultAway.HasValue)
         {
             <h3>投注：[Home] @Model.BetResultHome.Value : @Model.BetResultAway.Value [Away]</h3>
         }

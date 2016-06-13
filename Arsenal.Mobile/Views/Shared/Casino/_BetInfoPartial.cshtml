@@ -2,16 +2,19 @@
 @model Arsenal.Mobile.Models.Casino.BetDto
 <li class="@Model.BetIcon">
     <a href="#">
+        <img src="@Model.LeagueLogo" alt="@Model.LeagueName" class="league-logo" />
         <h3>
+            <img src="@Model.TeamHomeLogo" alt="@Model.TeamHomeName"/>
             @Model.TeamHomeName
-            <span>vs</span>
+            <em>vs</em>
             @Model.TeamAwayName
+            <img src="@Model.TeamAwayLogo" alt="@Model.TeamAwayName"/>
         </h3>
-        @if (Model.ItemType.Equals(CasinoType.SingleChoice))
+        @if (Model.ItemType.Equals(CasinoType.SingleChoice) && Model.BetRate.HasValue && Model.BetAmount.HasValue)
         {
             <p>[@Model.BetResult] [@Model.BetRate.Value.ToString("f2")] @Model.BetAmount.Value.ToString("N0")</p>
         }
-        else if (Model.ItemType.Equals(CasinoType.MatchResult))
+        else if (Model.ItemType.Equals(CasinoType.MatchResult) && Model.BetResultHome.HasValue && Model.BetResultAway.HasValue)
         {
             <p>[Home] @Model.BetResultHome.Value : @Model.BetResultAway.Value [Away]</p>
         }

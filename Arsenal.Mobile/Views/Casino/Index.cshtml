@@ -25,7 +25,7 @@
             foreach (var m in Model.Matches)
             {
                 <li>
-                    <a data-transition="slide" href="@Url.Action("GameBet", "Casino", new {id = m.ID.ToString()})">
+                    <a data-transition="slide" href="@Url.Action("GameBet", "Casino", new {id = m.ID})">
                         @Html.Partial("Casino/_MatchInfoPartial", m)
                     </a>
                 </li>

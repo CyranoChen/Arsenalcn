@@ -40,7 +40,7 @@
         });
 
         // 点击标题栏，快速回到顶部
-        $(document).on("tap", "div[data-role='header']>h1", function () {
+        $(document).on("click", "div[data-role='header']>h1", function () {
             $("body, html").animate({ scrollTop: 0 }, 500);
             return false;
         });

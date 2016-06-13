@@ -541,8 +541,8 @@ namespace Arsenal.Mobile.Controllers
                         //退注成功
                     }
 
-                    TempData["DataUrl"] = "data-url=/Casino/MyBet";
-                    return RedirectToAction("MyBet");
+                    TempData["DataUrl"] = $"data-url=/Casino/GameBet/{model.MatchGuid}";
+                    return RedirectToAction("GameBet", "Casino", new { id = model.MatchGuid });
                 }
                 catch (Exception ex)
                 {

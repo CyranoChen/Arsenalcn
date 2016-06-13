@@ -17,17 +17,13 @@
 
 @section Header {
     <div data-role="header">
+        @Html.ActionLink("返回", "GameBet", "Casino", new { id = Model.MatchGuid },
+            new { data_icon = "delete", data_transition = "slide", data_direction = "reverse", data_iconpos = "notext" })
         <h1 style="overflow: visible">
             <span>@Model.Match.TeamHomeName</span>
             <em>vs</em>
             <span>@Model.Match.TeamAwayName</span>
         </h1>
-    </div>
-}
-
-@section Footer {
-    <div data-role="footer" data-position="fixed">
-        <input type="button" id="btnSubmit" value="提交投注" data-icon="check" />
     </div>
 }
 
@@ -44,9 +40,15 @@
             <input type="radio" name="SelectedOption" id="away" value="away">
         </fieldset>
         @Html.LabelFor(m => m.BetAmount)
-        <input type="range" name="BetAmount" id="BetAmount" value="1000" min="100" max="@Math.Round(Model.BetLimit,0)" data-highlight="true">
+        <input type="range" name="BetAmount" id="BetAmount" value="100" min="100" max="@Math.Round(Model.BetLimit,0)" data-highlight="true">
+        
         @Html.HiddenFor(m => m.MatchGuid)
         @Html.AntiForgeryToken()
         @Html.ValidationSummary()
+
+        if (Model.Match.PlayTime > DateTime.Now && Model.MyCash >= 100)
+        {
+            <input type="button" id="btnSubmit" value="提交投注" data-icon="check" />
+        }
     }
 </div>

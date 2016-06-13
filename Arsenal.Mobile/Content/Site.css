@@ -1,5 +1,5 @@
 ﻿/* CSS Version Default */
-/* Version: 0.6.2 (Arsenal.Mobile) */
+/* Version: 0.7 (Arsenal.Mobile) */
 /* Cascading Style Sheets Level 2 Revision 1 */
 
 /* Styles for validation helpers
@@ -164,6 +164,21 @@ em {
 
 /* Arsenalcn.Casino 
 -----------------------------------------------------------*/
+
+/* Logo */
+.bonus-info-list h3 > img, .bet-info-list h3 > img {
+    width: 16px;
+    height: 16px;
+}
+
+.league-logo {
+    background: #ccc;
+    border: 1px solid #9c824a;
+    height: 50px;
+    width: 50px;
+    padding: 2px;
+    margin: 15px 25px;
+}
 
 /* match-versus */
 .match-versus {

@@ -16,6 +16,12 @@ namespace Arsenal.Mobile.Models.Casino
                     TeamHomeLogo = ConfigGlobal_Arsenal.PluginAcnCasinoPath + s.Home.TeamLogo,
                     TeamAwayName = s.Away.TeamDisplayName,
                     TeamAwayLogo = ConfigGlobal_Arsenal.PluginAcnCasinoPath + s.Away.TeamLogo,
+                    LeagueLogo = ConfigGlobal_Arsenal.PluginAcnCasinoPath + s.League.LeagueLogo
+                })
+                .ForMember(d => d.Profit, opt =>
+                {
+                    opt.Condition(s => s.Earning.HasValue && s.TotalBet.HasValue);
+                    opt.MapFrom(s => s.Earning.Value - s.TotalBet.Value);
                 })
                 .ForMember(d => d.BetIcon, opt => opt.ResolveUsing(s =>
                 {
@@ -65,13 +71,11 @@ namespace Arsenal.Mobile.Models.Casino
 
         public string LeagueName { get; set; }
 
+        public string LeagueLogo { get; set; }
+
         public DateTime PlayTime { get; set; }
 
-        public int Win { get; set; }
-
-        public int Lose { get; set; }
-
-        public double? Earning { get; set; }
+        public double? Profit { get; set; }
 
         public double? TotalBet { get; set; }
 

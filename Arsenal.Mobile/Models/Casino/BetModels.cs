@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Arsenal.Service;
 using Arsenal.Service.Casino;
 using Arsenalcn.Core;
 using AutoMapper;
@@ -13,10 +14,15 @@ namespace Arsenal.Mobile.Models.Casino
             var config = new MapperConfiguration(cfg => cfg.CreateMap<BetView, BetDto>()
                 .ConstructUsing(s => new BetDto
                 {
+                    MatchGuid = s.Match.ID,
                     ItemType = s.CasinoItem.ItemType,
                     CloseTime = s.CasinoItem.CloseTime,
                     TeamHomeName = s.Home.TeamDisplayName,
-                    TeamAwayName = s.Away.TeamDisplayName
+                    TeamHomeLogo = ConfigGlobal_Arsenal.PluginAcnCasinoPath + s.Home.TeamLogo,
+                    TeamAwayName = s.Away.TeamDisplayName,
+                    TeamAwayLogo = ConfigGlobal_Arsenal.PluginAcnCasinoPath + s.Away.TeamLogo,
+                    LeagueName = s.Match.LeagueName,
+                    LeagueLogo = ConfigGlobal_Arsenal.PluginAcnCasinoPath + s.League.LeagueLogo
                 })
                 .ForMember(d => d.BetResultHome, opt =>
                 {
@@ -95,13 +101,23 @@ namespace Arsenal.Mobile.Models.Casino
 
         public string UserName { get; set; }
 
+        public Guid MatchGuid { get; set; }
+
         public CasinoType ItemType { get; set; }
 
         public DateTime CloseTime { get; set; }
 
         public string TeamHomeName { get; set; }
 
+        public string TeamHomeLogo { get; set; }
+
         public string TeamAwayName { get; set; }
+
+        public string TeamAwayLogo { get; set; }
+
+        public string LeagueName { get; set; }
+
+        public string LeagueLogo { get; set; }
 
         public BetIconType BetIcon { get; set; }
 

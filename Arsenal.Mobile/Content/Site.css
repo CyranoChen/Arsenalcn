@@ -1,5 +1,5 @@
 ﻿/* CSS Version Default */
-/* Version: 0.6.1 (Arsenal.Mobile) */
+/* Version: 0.6.2 (Arsenal.Mobile) */
 /* Cascading Style Sheets Level 2 Revision 1 */
 
 /* Styles for validation helpers
@@ -33,20 +33,34 @@
 /* jQuery mobile styles
 -----------------------------------------------------------*/
 
-.ui-overlay-c {
-    background: #666666 url("images/site-background.jpg") 50% 0 no-repeat fixed;
+/* ios background-attachment:fixed */
+.ui-overlay-c:before {
+    content: ' ';
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: #666666 url("images/site-background.jpg") center 0 no-repeat;
 }
-
 
 .ui-page-theme-c {
-    -moz-filter: Alpha(Opacity=92);
-    -ms-opacity: .92;
-    -o-filter: Alpha(Opacity=92);
-    -webkit-filter: Alpha(Opacity=92);
-    background: #eaeaea url("images/page-background.jpg") 50% 0 repeat-y;
-    filter: Alpha(Opacity=92);
-    opacity: .92;
+    background: transparent;
 }
+
+    .ui-page-theme-c .ui-content {
+        background: #eaeaea url("images/page-background.jpg") 50% 0 repeat-y;
+        /* older safari/Chrome browsers */
+        -webkit-opacity: 0.9;
+        /* Netscape and Older than Firefox 0.9 */
+        -moz-opacity: 0.9;
+        /* Safari 1.x (pre WebKit!) 老式khtml内核的Safari浏览器*/
+        -khtml-opacity: 0.9;
+        /* IE9 + etc...modern browsers */
+        -ms-opacity: .9;
+        /* IE9 + etc...modern browsers */
+        opacity: .9;
+    }
 
     .ui-page-theme-c .ui-listview li .ui-btn-active {
         -ms-text-shadow: none !important;

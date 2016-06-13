@@ -1,7 +1,47 @@
 ﻿@model Arsenal.Mobile.Models.Casino.MyBonusDto
 @{
-    ViewBag.Title = "Bonus";
+    ViewBag.Title = "我的盈亏记录";
 }
+
+@if (Model.Criteria.MaxPage > 0)
+{
+    @section Footer {
+        <div data-role="footer" data-position="fixed" class="pager">
+            @Html.Partial("_PagerPartial", Model.Criteria)
+        </div>
+    }
+}
+
 <div data-role="content">
-    <h2>暂未开通</h2>
+    <ul data-role="listview" data-inset="true" class="bet-info-list">
+        <li data-role="list-divider">
+            我的盈亏记录
+            <span class="ui-li-count">@Model.Criteria.TotalCount</span>
+        </li>
+        @if (Model != null && Model.Data.Any())
+        {
+            foreach (var m in Model.Data)
+            {
+                <li class="@m.BetIcon">
+                    <a href="#">
+                        <h3>
+                            @m.TeamHomeName
+                            <span>vs</span>
+                            @m.TeamAwayName
+                        </h3>
+                        @if (m.Earning.HasValue && m.TotalBet.HasValue)
+                        {
+                            <p>盈亏：@m.Earning.Value.ToString("N0") | 投注：@m.TotalBet.Value.ToString("N0")</p>
+                        }
+                        <p>@m.PlayTime.ToString("yyyy-MM-dd HH:mm")</p>
+                        @if (m.RPBonus.HasValue)
+                        {
+                            <span class="ui-li-count">RP+@m.RPBonus </span>
+                        }
+                    </a>
+                    <a href="#" data-icon="@m.BetIcon"></a>
+                </li>
+            }
+        }
+    </ul>
 </div>

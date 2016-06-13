@@ -232,11 +232,20 @@ namespace Arsenal.Mobile.Controllers
         // 我的盈亏情况
         // GET: /Casino/Bonus
 
-        public ActionResult MyBonus()
+        public ActionResult MyBonus(Criteria criteria)
         {
-            // TODO
+            var model = new MyBonusDto();
 
-            return View();
+            var query = _repo.Query<BonusView>(criteria, x => x.UserID == AcnID);
+
+            var mapper = BonusDto.ConfigMapper().CreateMapper();
+
+            var list = mapper.Map<IEnumerable<BonusDto>>(query.AsEnumerable());
+
+            model.Criteria = criteria;
+            model.Data = list;
+
+            return View(model);
         }
 
 

@@ -42,7 +42,7 @@ namespace Arsenal.Mobile.Models.Casino
     {
     }
 
-    public class MyBonusDto : SearchModel<BetDto>
+    public class MyBonusDto : SearchModel<BonusDto>
     {
     }
 

@@ -6,10 +6,10 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script type="text/javascript">
-        $(document).on("pageinit", "#page", function () {
-            $("#btnSubmit").click(function () {
-                if ($("#formGameBet").valid()) {
-                    document.forms["formGameBet"].submit();
+        $(document).on("pageinit", function () {
+            $("#btnMatchResult").click(function () {
+                if ($("#formMatchResult").valid()) {
+                    document.forms["formMatchResult"].submit();
                 }
             });
 
@@ -30,7 +30,7 @@
 }
 
 <div data-role="content">
-    @using (Html.BeginForm("MatchResult", "Casino", FormMethod.Post, new { id = "formGameBet" }))
+    @using (Html.BeginForm("MatchResult", "Casino", FormMethod.Post, new { id = "formMatchResult" }))
     {
         <fieldset data-role="controlgroup" class="match-versus">
             <div class="ui-grid-b">
@@ -63,7 +63,7 @@
 
         if (Model.Match.PlayTime > DateTime.Now)
         {
-            <input type="button" id="btnSubmit" value="提交投注" data-icon="check" />
+            <input type="button" id="btnMatchResult" value="提交投注" data-icon="check" />
         }
     }
 </div>

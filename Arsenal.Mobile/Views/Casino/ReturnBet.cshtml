@@ -7,8 +7,8 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script type="text/javascript">
-        $(document).on("pageinit", "#page", function () {
-            $("#btnSubmit").click(function () {
+        $(document).on("pageinit", function () {
+            $("#btnReturnBet").click(function () {
                 if ($("#formReturnBet").valid()) {
                     document.forms["formReturnBet"].submit();
                 }
@@ -54,7 +54,7 @@
 
                 @if (!Model.IsWin.HasValue && Model.CloseTime > DateTime.Now && Model.UserName == User.Identity.Name)
                 {
-                    <input type="button" id="btnSubmit" value="退还投注" data-icon="back" />
+                    <input type="button" id="btnReturnBet" value="退还投注" data-icon="back" />
                 }
             </li>
         </ul>

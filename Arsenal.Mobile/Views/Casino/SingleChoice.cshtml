@@ -5,10 +5,10 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script type="text/javascript">
-        $(document).on("pageinit", "#page", function () {
-            $("#btnSubmit").click(function () {
-                if ($("#formGameBet").valid()) {
-                    document.forms["formGameBet"].submit();
+        $(document).on("pageinit", function () {
+            $("#btnSingleChoice").click(function () {
+                if ($("#formSingleChoice").valid()) {
+                    document.forms["formSingleChoice"].submit();
                 }
             });
         });
@@ -28,7 +28,7 @@
 }
 
 <div data-role="content">
-    @using (Html.BeginForm("SingleChoice", "Casino", FormMethod.Post, new { id = "formGameBet" }))
+    @using (Html.BeginForm("SingleChoice", "Casino", FormMethod.Post, new { id = "formSingleChoice" }))
     {
         <fieldset data-role="controlgroup" data-type="horizontal">
             <legend>投注选项</legend>
@@ -40,15 +40,14 @@
             <input type="radio" name="SelectedOption" id="away" value="away">
         </fieldset>
         @Html.LabelFor(m => m.BetAmount)
-        <input type="range" name="BetAmount" id="BetAmount" value="100" min="100" max="@Math.Round(Model.BetLimit,0)" data-highlight="true">
-        
+        <input type="range" name="BetAmount" id="BetAmount" value="100" min="100" max="@Math.Round(Model.BetLimit, 0)" data-highlight="true">
         @Html.HiddenFor(m => m.MatchGuid)
         @Html.AntiForgeryToken()
         @Html.ValidationSummary()
 
         if (Model.Match.PlayTime > DateTime.Now && Model.MyCash >= 100)
-        {
-            <input type="button" id="btnSubmit" value="提交投注" data-icon="check" />
+                {
+            <input type="button" id="btnSingleChoice" value="提交投注" data-icon="check" />
         }
     }
 </div>

@@ -6,9 +6,9 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script type="text/javascript">
-        $(document).on("pageinit", "#page", function () {
-            $("#btnSubmit").click(function () {
-                if ($("#fromMyCoupon").valid()) {
+        $(document).on("pageinit", function () {
+            $("#btnMyCoupon").click(function () {
+                if ($("#formMyCoupon").valid()) {
                     var json = { "Coupons": [] };
                     var $coupons = $(".match-versus p.coupon");
 
@@ -19,7 +19,6 @@
                             var away = $(entry).find("input:last").val();
 
                             if (id !== "" && home >= 0 && away >= 0) {
-
                                 var coupon = {
                                     "MatchGuid": id,
                                     "BetResultHome": home,
@@ -50,17 +49,8 @@
     </script>
 }
 
-@if (Model.IsShowSubmitButton)
-{
-    @section Footer {
-        <div data-role="footer" data-position="fixed">
-            <input type="button" id="btnSubmit" value="保存并投注单" data-icon="check" />
-        </div>
-    }
-}
-
 <div data-role="content">
-    @using (Html.BeginForm("MyCoupon", "Casino", FormMethod.Post, new { id = "fromMyCoupon" }))
+    @using (Html.BeginForm("MyCoupon", "Casino", FormMethod.Post, new { id = "formMyCoupon" }))
     {
         @Html.AntiForgeryToken()
         @Html.ValidationSummary()
@@ -69,6 +59,12 @@
                 您可投注即将于<em>@Model.CasinoValidDays</em>天内开始的比赛
                 <span class="ui-li-count">@Model.Coupons.Count()</span>
             </li>
+            @if (Model.IsShowSubmitButton)
+            {
+                <li>
+                    <input type="button" id="btnMyCoupon" value="保存并投注单" data-icon="check" />
+                </li>
+            }
             @if (Model != null && Model.Coupons.Any())
             {
                 foreach (var m in Model.Coupons)
@@ -96,11 +92,11 @@
                                             <p class="coupon" id="@m.MatchGuid">
                                                 <input data-val="true" data-val-number="主队比分必须是数字 - @m.TeamHomeName"
                                                        data-val-range="请正确填写主队比分 - @m.TeamHomeName" data-val-range-max="20" data-val-range-min="0"
-                                                       name="ResultHome" type="text" value="" aria-invalid="true" class="input-validation-error" aria-describedby="ResultHome-error">
+                                                       name="ResultHome" type="number" value="" aria-invalid="true" class="input-validation-error" aria-describedby="ResultHome-error">
                                                 <span class="versus">vs</span>
                                                 <input data-val="true" data-val-number="客队比分必须是数字 - @m.TeamAwayName"
                                                        data-val-range="请正确填写客队比分 - @m.TeamAwayName" data-val-range-max="20" data-val-range-min="0"
-                                                       name="ResultAway" type="text" value="" aria-invalid="true" class="input-validation-error" aria-describedby="ResultAway-error">
+                                                       name="ResultAway" type="number" value="" aria-invalid="true" class="input-validation-error" aria-describedby="ResultAway-error">
                                             </p>
                                         }
                                         <p>@m.PlayTime.ToString("yyyy-MM-dd HH:mm")</p>

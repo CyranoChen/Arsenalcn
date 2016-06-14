@@ -52,9 +52,9 @@
                 @Html.AntiForgeryToken()
                 @Html.ValidationSummary()
 
-                @if (!Model.IsWin.HasValue && Model.CloseTime > DateTime.Now && Model.UserName == User.Identity.Name)
+                @if (!Model.IsWin.HasValue && Model.CloseTime > DateTime.Now && Model.UserName.Equals(User.Identity.Name, StringComparison.OrdinalIgnoreCase))
                 {
-                    <input type="button" id="btnReturnBet" value="退还投注" data-icon="back" />
+                <input type="button" id="btnReturnBet" value="退还投注" data-icon="back" />
                 }
             </li>
         </ul>

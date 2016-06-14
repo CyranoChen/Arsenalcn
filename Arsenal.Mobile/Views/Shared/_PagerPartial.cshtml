@@ -1,53 +1,61 @@
 ﻿@model Arsenalcn.Core.Criteria
 @{
-    var controllerName = ViewContext.RouteData.Values["controller"].ToString();
-    var actionName = ViewContext.RouteData.Values["action"].ToString();
+    var controllerName = ViewContext.RouteData.Values["controller"].ToString().ToLower();
+    var actionName = ViewContext.RouteData.Values["action"].ToString().ToLower();
+    var rand = Guid.NewGuid().ToString();
 }
 
 <script type="text/javascript">
-    $(document).on("pageinit", "#page", function () {
-        $("#currentPage").change(function () {
-            SubmitForm();
-        });
-        $("#pagingSize").change(function () {
-            SubmitForm();
-        });
-        $("#pagePrev").click(function () {
-            var currentPage = $("#currentPage").val();
-            if (currentPage != null && currentPage > 0) {
-                currentPage--;
-                $("#currentPage").val(currentPage);
-            }
-            SubmitForm();
-        });
-        $("#pageNext").click(function () {
-            var currentPage = $("#currentPage").val();
-            if (currentPage) {
-                currentPage++;
-                $("#currentPage").val(currentPage);
-            }
-            SubmitForm();
-        });
-    });
+    $(document).on("pageinit", "#@controllerName-@actionName", function () {
+        var num = @Model.CurrentPage;
+        // 为分页表单设置随机码，以确保每次只执行一次
+        var $form = $("form#pager-form-@rand");
+        var $curr = $form.find(".curr");
+        var $size = $form.find(".size");
 
-    function SubmitForm() {
-        document.forms["formPager"].submit();
-    }
+        var $prev = $form.find(".prev");
+        var $next = $form.find(".next");
+
+        $curr.change(function () {
+            $form.submit();
+        });
+
+        $size.change(function () {
+            $form.submit();
+        });
+
+        $prev.click(function () {
+            if (num != null && num >= 0) {
+                $curr.val(--num);
+                $form.submit();
+            }
+        });
+
+        $next.click(function () {
+            if (num != null && num >= 0) {
+                $curr.val(++num);
+                $form.submit();
+            }
+        });
+
+        // 每次跳转分页后，解绑确保pageinit只执行一次
+        $(document).off("pageinit", "#@controllerName-@actionName");
+    });
 </script>
 
-@using (Html.BeginForm(actionName, controllerName, FormMethod.Post, new { id = "formPager" }))
+@using (Html.BeginForm(actionName, controllerName, FormMethod.Post, new { id = "pager-form-" + rand }))
 {
     if (Model.CurrentPage > 0)
     {
-        <a id="pagePrev" data-role="button" data-icon="arrow-l" data-iconpos="notext">上页</a>
+        <a class="prev" data-role="button" data-icon="arrow-l">上页</a>
     }
 
-    @Html.TextBoxFor(m => m.CurrentPage, new { id = "currentPage" })
+    @Html.TextBoxFor(m => m.CurrentPage, new { @class = "curr" })
     <span> / @Model.MaxPage</span>
-    @Html.TextBoxFor(m => m.PagingSize, new { id = "pagingSize" })
+    @Html.TextBoxFor(m => m.PagingSize, new { @class = "size" })
 
     if (Model.CurrentPage < Model.MaxPage)
     {
-        <a id="pageNext" data-role="button" data-icon="arrow-r" data-iconpos="notext">下页</a>
+        <a class="next" data-role="button" data-icon="arrow-r">下页</a>
     }
 }

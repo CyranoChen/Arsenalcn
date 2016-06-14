@@ -48,7 +48,7 @@ namespace Arsenal.Mobile.Controllers
                     if (mem.Password.Equals(Encrypt.GetMd5Hash(model.Password)))
                     {
                         // Sign in
-                        FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
+                        FormsAuthentication.SetAuthCookie(mem.UserName, model.RememberMe);
                         UserDto.SetSession(mem.SignIn());
 
                         if (Url.IsLocalUrl(returnUrl))
@@ -56,6 +56,7 @@ namespace Arsenal.Mobile.Controllers
                             TempData["DataUrl"] = $"data-url={returnUrl}";
                             return Redirect(returnUrl);
                         }
+
                         TempData["DataUrl"] = "data-url=/";
                         return RedirectToAction("Index", "Home");
                     }
@@ -75,7 +76,7 @@ namespace Arsenal.Mobile.Controllers
 
                         if (createStatus.Equals(MembershipCreateStatus.Success))
                         {
-                            FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
+                            FormsAuthentication.SetAuthCookie(membership.UserName, model.RememberMe);
                             UserDto.SetSession(membership.SignIn());
 
                             TempData["DataUrl"] = "data-url=/";
@@ -144,6 +145,7 @@ namespace Arsenal.Mobile.Controllers
 
                 if (createStatus.Equals(MembershipCreateStatus.Success))
                 {
+                    // 注册成功后，直接将表单的用户名，存入cookie
                     FormsAuthentication.SetAuthCookie(model.UserName, false);
                     UserDto.SetSession(userKey);
 
@@ -197,7 +199,7 @@ namespace Arsenal.Mobile.Controllers
                         _repo.Update(user);
                         _repo.Update(membership);
 
-                        TempData["DataUrl"] = "data-url=/";
+                        TempData["DataUrl"] = "data-url=/Account";
                         return RedirectToAction("Index", "Account");
                     }
                     ModelState.AddModelError("Warn", "当前用户不存在");
@@ -229,23 +231,18 @@ namespace Arsenal.Mobile.Controllers
         {
             if (ModelState.IsValid)
             {
-                // ChangePassword will throw an exception rather
-                // than return false in certain failure scenarios.
-                bool changePasswordSucceeded;
-
                 try
                 {
                     var membership = MembershipDto.GetMembership(User.Identity.Name);
 
                     if (membership != null)
                     {
-                        changePasswordSucceeded = MembershipDto.ChangePassword(membership, model.OldPassword,
-                            model.NewPassword);
-
-                        if (changePasswordSucceeded)
+                        // ChangePassword will throw an exception rather
+                        // than return false in certain failure scenarios.
+                        if (MembershipDto.ChangePassword(membership, model.OldPassword, model.NewPassword))
                         {
-                            TempData["DataUrl"] = "data-url=/";
-                            return RedirectToAction("ChangePasswordSuccess");
+                            TempData["DataUrl"] = "data-url=/Account/ChangePasswordSuccess";
+                            return RedirectToAction("ChangePasswordSuccess", "Account");
                         }
                     }
                     else

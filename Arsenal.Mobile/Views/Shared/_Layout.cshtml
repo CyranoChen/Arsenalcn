@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@{
+    var controllerName = ViewContext.RouteData.Values["controller"].ToString().ToLower();
+    var actionName = ViewContext.RouteData.Values["action"].ToString().ToLower();
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -31,8 +35,8 @@
 
         // 设置content部分自动铺满背景，并考虑是否有footer
         $(document).on("pageinit", function () {
-            var $panelContent = $("#page[data-role='page']:last > div[data-role='content']");
-            if ($("#page[data-role='page']:last > div[data-role='footer']").length > 0) {
+            var $panelContent = $("div[data-role='page']:last > div[data-role='content']");
+            if ($("div[data-role='page']:last > div[data-role='footer']").length > 0) {
                 $panelContent.css("min-height", document.body.clientHeight - 132);
             } else {
                 $panelContent.css("min-height", document.body.clientHeight - 78);
@@ -49,7 +53,7 @@
     @Scripts.Render("~/bundles/jquerymobile")
 </head>
 <body>
-    <div id="page" data-role="page" data-theme="c" @TempData["DataUrl"]>
+    <div id="@controllerName-@actionName" data-role="page" data-theme="c" @TempData["DataUrl"]>
         @if (IsSectionDefined("Header"))
         {
             @RenderSection("Header")

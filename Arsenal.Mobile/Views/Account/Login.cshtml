@@ -32,7 +32,7 @@
             </li>
             <li data-role="fieldcontain">
                 @Html.LabelFor(m => m.RememberMe)
-                @Html.CheckBoxFor(m => m.RememberMe)
+                @Html.CheckBoxFor(m => m.RememberMe, new { @checked = true })
             </li>
             <li>
                 @Html.AntiForgeryToken()

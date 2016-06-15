@@ -44,9 +44,9 @@
                         <p>第 @Model.Match.Round.Value 轮</p>
                     }
                     <p>
-                        @Html.TextBoxFor(m => m.ResultHome)
+                        @Html.TextBoxFor(m => m.ResultHome, new { @type = "number"})
                         <span class="versus">vs</span>
-                        @Html.TextBoxFor(m => m.ResultAway)
+                        @Html.TextBoxFor(m => m.ResultAway, new { @type = "number" })
                     </p>
                     <p>@Model.Match.PlayTime.ToString("yyyy-MM-dd HH:mm")</p>
                 </div>

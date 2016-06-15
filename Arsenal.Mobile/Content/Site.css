@@ -1,5 +1,5 @@
 ﻿/* CSS Version Default */
-/* Version: 0.7.1 (Arsenal.Mobile) */
+/* Version: 0.8 (Arsenal.Mobile) */
 /* Cascading Style Sheets Level 2 Revision 1 */
 
 /* Styles for validation helpers
@@ -141,8 +141,13 @@ em {
         text-align: center;
     }
 
-    .pager input {
+    .pager .curr {
+        display: none;
+    }
+
+    .pager .curr-display, .pager .size {
         text-align: center;
+        font-size: 14px;
     }
 
     .pager a.prev {
@@ -184,11 +189,11 @@ em {
 
     .match-versus div.ui-input-text {
         display: inline-block;
-        width: 40px;
+        width: 45px;
     }
 
         .match-versus div.ui-input-text input {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: bold;
             text-align: center;
         }
@@ -204,6 +209,10 @@ em {
             font-size: 20px;
             font-weight: bold;
         }
+
+    .match-versus div.ui-block-a, .match-versus div.ui-block-b, .match-versus div.ui-block-c {
+        font-weight: bold;
+    }
 
 /* match-versus-lite */
 .match-versus-lite {
@@ -308,30 +317,3 @@ em {
     color: #aa0000;
     background: #ffeeee;
 }
-
-
-/* Origin Style */
-/*body {
-    padding-top: 50px;
-    padding-bottom: 20px;
-}*/
-
-/* Set padding to keep content from hitting the edges */
-/*.body-content {
-    padding-left: 15px;
-    padding-right: 15px;
-}*/
-
-/* Override the default bootstrap behavior where horizontal description lists 
-   will truncate terms that are too long to fit in the left column 
-*/
-/*.dl-horizontal dt {
-    white-space: normal;
-}*/
-
-/* Set width on the form input elements since they're 100% wide by default */
-/*input,
-select,
-textarea {
-    max-width: 280px;
-}*/

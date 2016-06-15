@@ -13,7 +13,7 @@
 
 @section Header {
     <div data-role="header" data-position="fixed">
-        @Html.ActionLink("返回", "Index", "Account", null, new {data_icon = "arrow-l", data_rel = "back"})
+        @Html.ActionLink("返回", "Index", "Account", null, new { data_icon = "arrow-l", data_rel = "back" })
         <h1>@ViewBag.Title</h1>
     </div>
 }
@@ -34,17 +34,17 @@
             </li>
             <li data-role="fieldcontain">
                 @Html.LabelFor(m => m.Mobile)
-                @Html.TextBoxFor(m => m.Mobile)
+                @Html.TextBoxFor(m => m.Mobile, new { @type = "tel" })
             </li>
             <li data-role="fieldcontain">
                 @Html.LabelFor(m => m.Email)
-                @Html.TextBoxFor(m => m.Email)
+                @Html.TextBoxFor(m => m.Email, new { @type = "email" })
             </li>
             <li>
                 @Html.AntiForgeryToken()
                 @Html.ValidationSummary()
             </li>
         </ul>
-        <input type="submit" id="btnUserProfile" value="保存信息" data-icon="check"/>
+        <input type="submit" id="btnUserProfile" value="保存信息" data-icon="check" />
     }
 </div>

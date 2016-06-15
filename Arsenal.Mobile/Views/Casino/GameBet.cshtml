@@ -34,7 +34,7 @@
                     {
                         <li>
                             <a data-transition="slide" data-role="button" href="@Url.Action("Detail", "Casino", new {id = m.ID})">
-        >
+                                >
                                 @Html.Partial("Casino/_MatchInfoLitePartial", m)
                             </a>
                         </li>
@@ -42,7 +42,7 @@
                 }
             </ul>
         </div>
-        <div data-role="collapsible">
+        <div data-role="collapsible" data-collapsed="false">
             <h3>我的投注<span class="ui-li-count">@Model.MyBets.Count()</span></h3>
             <ul id="pnlBetList" data-role="listview" data-inset="true">
                 @if (Model.MyBets != null && Model.MyBets.Any())

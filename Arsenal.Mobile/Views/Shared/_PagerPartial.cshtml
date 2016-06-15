@@ -11,17 +11,23 @@
         // 为分页表单设置随机码，以确保每次只执行一次
         var $form = $("form#pager-form-@rand");
         var $curr = $form.find(".curr");
+        var $currDisplay = $form.find(".curr-display");
         var $size = $form.find(".size");
 
         var $prev = $form.find(".prev");
         var $next = $form.find(".next");
 
-        $curr.change(function () {
-            $form.submit();
+        $currDisplay.change(function () {
+            if ($currDisplay.val() > 0) {
+                $curr.val($currDisplay.val() - 1);
+                $form.submit();
+            }
         });
 
         $size.change(function () {
-            $form.submit();
+            if ($size.val() >0) {
+                $form.submit();
+            }
         });
 
         $prev.click(function () {
@@ -50,9 +56,10 @@
         <a class="prev" data-role="button" data-icon="arrow-l">上页</a>
     }
 
-    @Html.TextBoxFor(m => m.CurrentPage, new { @class = "curr" })
-    <span> / @Model.MaxPage</span>
-    @Html.TextBoxFor(m => m.PagingSize, new { @class = "size" })
+    @Html.HiddenFor(m => m.CurrentPage, new { @class = "curr" })
+    <input type="number" value="@(Model.CurrentPage+1)" class="curr-display" />
+    <span> / @(Model.MaxPage + 1)</span>
+    @Html.TextBoxFor(m => m.PagingSize, new { @class = "size", @type = "number" })
 
     if (Model.CurrentPage < Model.MaxPage)
     {

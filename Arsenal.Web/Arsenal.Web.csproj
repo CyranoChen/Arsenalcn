@@ -330,6 +330,7 @@
     <Compile Include="Scheduler\AutoUpdateActiveCasinoItemEarning.cs" />
     <Compile Include="Scheduler\AutoUpdateActiveBankerCash.cs" />
     <Compile Include="Scheduler\AutoUpdateArsenalMatchResult.cs" />
+    <Compile Include="Scheduler\GroupTableStatistics.cs" />
     <Compile Include="Scheduler\RefreshCache.cs" />
     <Compile Include="ServerACNCallback.ashx.cs">
       <DependentUpon>ServerACNCallback.ashx</DependentUpon>

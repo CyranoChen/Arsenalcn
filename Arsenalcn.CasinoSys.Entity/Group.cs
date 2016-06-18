@@ -139,19 +139,6 @@ namespace Arsenalcn.CasinoSys.Entity
             DataAccess.Match.UpdateMatchGroupGuid(group.GroupGuid, group.LeagueGuid);
         }
 
-        public static void ActiveGroupTableStatistics()
-        {
-            var list = GetGroups().FindAll(delegate(Group g) { return League.Cache.Load(g.LeagueGuid).IsActive; });
-
-            if (list != null && list.Count > 0)
-            {
-                foreach (var g in list)
-                {
-                    GroupTableStatistics(g.GroupGuid);
-                }
-            }
-        }
-
         public static void GroupTableStatistics(Guid groupGuid)
         {
             var group = new Group(groupGuid);

@@ -2,13 +2,14 @@
 using System.Reflection;
 using System.Threading;
 using Arsenal.Service;
+using Arsenal.Service.Casino;
 using Arsenalcn.Core;
 using Arsenalcn.Core.Logger;
 using Arsenalcn.Core.Scheduler;
 
 namespace Arsenal.Scheduler
 {
-    internal class RefreshCache : ISchedule
+    public class GroupTableStatistics : ISchedule
     {
         private readonly ILog _log = new AppLog();
 
@@ -20,24 +21,23 @@ namespace Arsenal.Scheduler
                 ThreadInstance = Thread.CurrentThread
             };
 
-            //string _scheduleType = this.GetType().DeclaringType.FullName;
-
             try
             {
-                _log.Info("Scheduler Start: (RefreshCache)", logInfo);
+                _log.Info("Scheduler Start: (GroupTableStatistics)", logInfo);
 
-                Config.Cache.RefreshCache();
+                IRepository repo = new Repository();
 
-                RelationLeagueTeam.Cache.RefreshCache();
-                RelationGroupTeam.Cache.RefreshCache();
+                var list = repo.All<Group>().FindAll(x => League.Cache.Load(x.LeagueGuid).IsActive);
 
-                League.Cache.RefreshCache();
-                Match.Cache.RefreshCache();
-                Player.Cache.RefreshCache();
-                Team.Cache.RefreshCache();
-                Video.Cache.RefreshCache();
+                if (list.Count > 0)
+                {
+                    foreach (var g in list)
+                    {
+                        g.Statistic();
+                    }
+                }
 
-                _log.Info("Scheduler End: (RefreshCache)", logInfo);
+                _log.Info("Scheduler End: (GroupTableStatistics)", logInfo);
             }
             catch (Exception ex)
             {

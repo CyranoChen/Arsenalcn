@@ -139,6 +139,11 @@ namespace Arsenalcn.CasinoSys.Entity
             return list;
         }
 
+        public static int GetGamblerCount()
+        {
+            return DataAccess.Gambler.GetGamblerCount();
+        }
+
         public static float GetGamblerTotalBetByUserID(int userID, Guid? leagueGuid = null)
         {
             if (leagueGuid.HasValue)
@@ -274,36 +279,6 @@ namespace Arsenalcn.CasinoSys.Entity
                     }
                 }
                 iDay = iDay.AddMonths(-1);
-            }
-        }
-
-        public static class Cache
-        {
-            public static List<Gambler> GamblerList;
-
-            static Cache()
-            {
-                InitCache();
-            }
-
-            public static void RefreshCache()
-            {
-                InitCache();
-            }
-
-            private static void InitCache()
-            {
-                GamblerList = GetGamblers();
-            }
-
-            public static Gambler Load(Guid guid)
-            {
-                return GamblerList.Find(delegate(Gambler g) { return g.GamblerID.Equals(guid); });
-            }
-
-            public static Gambler LoadByUserID(int userID)
-            {
-                return GamblerList.Find(delegate(Gambler g) { return g.UserID.Equals(userID); });
             }
         }
 

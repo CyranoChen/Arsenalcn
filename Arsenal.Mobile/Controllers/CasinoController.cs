@@ -157,9 +157,9 @@ namespace Arsenal.Mobile.Controllers
         // GET: /Casino/Rank
 
         [AllowAnonymous]
-        public ActionResult Rank()
+        public ActionResult Contest()
         {
-            var model = new RankDto();
+            var model = new ContestDto();
 
             var league = League.Cache.Load(ConfigGlobal_AcnCasino.DefaultLeagueID);
 
@@ -175,9 +175,9 @@ namespace Arsenal.Mobile.Controllers
                     //3、赛季中并且获得RP+3及以上，即猜对本赛季3场以上的比赛比分。
                     if (!ConfigGlobal_AcnCasino.ContestLimitIgnore)
                     {
-                        list = list.FindAll(g => g.MatchBet >= ConfigGlobal_AcnCasino.RankCondition[0]
-                                                 && g.TotalBet >= ConfigGlobal_AcnCasino.RankCondition[1] &&
-                                                 g.RPBonus >= ConfigGlobal_AcnCasino.RankCondition[2]);
+                        list = list.FindAll(g => g.MatchBet >= ConfigGlobal_AcnCasino.ContestCondition[0]
+                                                 && g.TotalBet >= ConfigGlobal_AcnCasino.ContestCondition[1] &&
+                                                 g.RPBonus >= ConfigGlobal_AcnCasino.ContestCondition[2]);
                     }
 
                     var tbs = ConfigGlobal_AcnCasino.TotalBetStandard;
@@ -200,7 +200,7 @@ namespace Arsenal.Mobile.Controllers
                     model.LowerGamblers = listLower.Take(6);
                 }
 
-                model.RankCondition = ConfigGlobal_AcnCasino.RankCondition;
+                model.RankCondition = ConfigGlobal_AcnCasino.ContestCondition;
                 model.ContestLeague = league;
             }
 

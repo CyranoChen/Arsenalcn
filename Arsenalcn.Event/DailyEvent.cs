@@ -71,7 +71,7 @@ namespace Arsenalcn.Event
 
             try
             {
-                Group.ActiveGroupTableStatistics();
+                //Group.ActiveGroupTableStatistics();
             }
             catch (Exception ex)
             {
@@ -97,9 +97,9 @@ namespace Arsenalcn.Event
 
             try
             {
-                Gambler.GamblerStatistics();
+                //Gambler.GamblerStatistics();
                 Gambler.TopGamblerMonthlyStatistics();
-                Gambler.Cache.RefreshCache();
+                //Gambler.Cache.RefreshCache();
             }
             catch (Exception ex)
             {

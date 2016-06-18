@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Arsenal.Service;
 using Arsenal.Service.Casino;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ArsenalMatch = Arsenal.Service.Match;
@@ -24,7 +25,7 @@ namespace Arsenalcn.Core.Tests.Scheduler
                 {
                     foreach (var m in mList)
                     {
-                        Match cm;
+                        CasinoMatch cm;
 
                         if (m.CasinoMatchGuid.HasValue)
                         {
@@ -100,7 +101,30 @@ namespace Arsenalcn.Core.Tests.Scheduler
 
                 foreach (var b in list)
                 {
-                    b.Statistics();
+                    b.Statistic();
+                }
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.Message);
+            }
+        }
+
+        [TestMethod]
+        public void GroupTableStatistics_Test()
+        {
+            try
+            {
+                IRepository repo = new Repository();
+
+                var list = repo.All<Group>().FindAll(x => League.Cache.Load(x.LeagueGuid).IsActive);
+
+                if (list.Count > 0)
+                {
+                    foreach (var g in list)
+                    {
+                        g.Statistic();
+                    }
                 }
             }
             catch (Exception ex)

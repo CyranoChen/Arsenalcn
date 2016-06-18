@@ -3,47 +3,53 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics.Contracts;
+using System.Linq;
 using Arsenalcn.Core;
+using DataReaderMapper;
+using DataReaderMapper.Mappers;
 
 namespace Arsenal.Service
 {
     [DbSchema("Arsenal_RelationLeagueTeam", Key = "", Sort = "")]
     public class RelationLeagueTeam
     {
-        public RelationLeagueTeam()
+        private static void CreateMap()
         {
+            Mapper.CreateMap<IDataReader, RelationLeagueTeam>();
         }
 
-        public RelationLeagueTeam(DataRow dr)
+        public static RelationLeagueTeam Single(Guid teamGuid, Guid leagueGuid)
         {
-            Contract.Requires(dr != null);
-
-            Init(dr);
-        }
-
-        private void Init(DataRow dr)
-        {
-            TeamGuid = (Guid)dr["TeamGuid"];
-            LeagueGuid = (Guid)dr["LeagueGuid"];
-        }
-
-        public void Single()
-        {
-            var sql = string.Format("SELECT * FROM {0} WHERE TeamGuid = @teamGuid AND LeagueGuid = @leagueGuid",
-                Repository.GetTableAttr<RelationLeagueTeam>().Name);
+            var sql =
+                $"SELECT * FROM {Repository.GetTableAttr<RelationLeagueTeam>().Name} WHERE TeamGuid = @teamGuid AND LeagueGuid = @leagueGuid";
 
             SqlParameter[] para =
             {
-                new SqlParameter("@teamGuid", TeamGuid),
-                new SqlParameter("@leagueGuid", LeagueGuid)
+                new SqlParameter("@teamGuid", teamGuid),
+                new SqlParameter("@leagueGuid", leagueGuid)
             };
 
             var ds = DataAccess.ExecuteDataset(sql, para);
 
-            if (ds.Tables[0].Rows.Count > 0)
+            var dt = ds.Tables[0];
+
+            if (dt.Rows.Count > 0)
             {
-                Init(ds.Tables[0].Rows[0]);
+                using (var reader = dt.CreateDataReader())
+                {
+                    Mapper.Initialize(cfg =>
+                    {
+                        MapperRegistry.Mappers.Insert(0,
+                            new DataReaderMapper.DataReaderMapper { YieldReturnEnabled = false });
+
+                        CreateMap();
+                    });
+
+                    return Mapper.Map<IDataReader, IEnumerable<RelationLeagueTeam>>(reader).FirstOrDefault();
+                }
             }
+
+            return null;
         }
 
         public bool Any()
@@ -70,108 +76,116 @@ namespace Arsenal.Service
 
             var ds = DataAccess.ExecuteDataset(sql);
 
-            if (ds.Tables[0].Rows.Count > 0)
+            var dt = ds.Tables[0];
+
+            if (dt.Rows.Count > 0)
             {
-                foreach (DataRow dr in ds.Tables[0].Rows)
+                using (var reader = dt.CreateDataReader())
                 {
-                    list.Add(new RelationLeagueTeam(dr));
+                    Mapper.Initialize(cfg =>
+                    {
+                        MapperRegistry.Mappers.Insert(0,
+                            new DataReaderMapper.DataReaderMapper { YieldReturnEnabled = false });
+
+                        CreateMap();
+                    });
+
+                    list = Mapper.Map<IDataReader, IEnumerable<RelationLeagueTeam>>(reader).ToList();
                 }
             }
 
             return list;
         }
 
-        public static List<RelationLeagueTeam> QueryByLeagueGuid(Guid lGuid)
+        public static List<RelationLeagueTeam> QueryByLeagueGuid(Guid leagueGuid)
         {
             var list = new List<RelationLeagueTeam>();
 
-            var sql = string.Format("SELECT * FROM {0} WHERE LeagueGuid = @leagueGuid",
-                Repository.GetTableAttr<RelationLeagueTeam>().Name);
+            var sql =
+                $"SELECT * FROM {Repository.GetTableAttr<RelationLeagueTeam>().Name} WHERE LeagueGuid = @leagueGuid";
 
-            SqlParameter[] para = { new SqlParameter("@leagueGuid", lGuid) };
+            SqlParameter[] para = { new SqlParameter("@leagueGuid", leagueGuid) };
 
             var ds = DataAccess.ExecuteDataset(sql, para);
 
-            if (ds.Tables[0].Rows.Count > 0)
+            var dt = ds.Tables[0];
+
+            if (dt.Rows.Count > 0)
             {
-                foreach (DataRow dr in ds.Tables[0].Rows)
+                using (var reader = dt.CreateDataReader())
                 {
-                    list.Add(new RelationLeagueTeam(dr));
+                    Mapper.Initialize(cfg =>
+                    {
+                        MapperRegistry.Mappers.Insert(0,
+                            new DataReaderMapper.DataReaderMapper { YieldReturnEnabled = false });
+
+                        CreateMap();
+                    });
+
+                    list = Mapper.Map<IDataReader, IEnumerable<RelationLeagueTeam>>(reader).ToList();
                 }
             }
 
             return list;
         }
 
-        public static List<RelationLeagueTeam> QueryByTeamGuid(Guid tGuid)
+        public static List<RelationLeagueTeam> QueryByTeamGuid(Guid teamGuid)
         {
             var list = new List<RelationLeagueTeam>();
 
-            var sql = string.Format("SELECT * FROM {0} WHERE TeamGuid = @teamGuid",
-                Repository.GetTableAttr<RelationLeagueTeam>().Name);
+            var sql = $"SELECT * FROM {Repository.GetTableAttr<RelationLeagueTeam>().Name} WHERE TeamGuid = @teamGuid";
 
-            SqlParameter[] para = { new SqlParameter("@teamGuid", tGuid) };
+            SqlParameter[] para = { new SqlParameter("@teamGuid", teamGuid) };
 
             var ds = DataAccess.ExecuteDataset(sql, para);
 
-            if (ds.Tables[0].Rows.Count > 0)
+            var dt = ds.Tables[0];
+
+            if (dt.Rows.Count > 0)
             {
-                foreach (DataRow dr in ds.Tables[0].Rows)
+                using (var reader = dt.CreateDataReader())
                 {
-                    list.Add(new RelationLeagueTeam(dr));
+                    Mapper.Initialize(cfg =>
+                    {
+                        MapperRegistry.Mappers.Insert(0,
+                            new DataReaderMapper.DataReaderMapper { YieldReturnEnabled = false });
+
+                        CreateMap();
+                    });
+
+                    list = Mapper.Map<IDataReader, IEnumerable<RelationLeagueTeam>>(reader).ToList();
                 }
             }
 
             return list;
         }
 
-        public void Create(SqlTransaction trans = null)
+        public void Insert(SqlTransaction trans = null)
         {
-            var sql = string.Format("INSERT INTO {0} (TeamGuid, LeagueGuid) VALUES (@teamGuid, @leagueGuid)",
-                Repository.GetTableAttr<RelationLeagueTeam>().Name);
+            var sql =
+                $"INSERT INTO {Repository.GetTableAttr<RelationLeagueTeam>().Name} (TeamGuid, LeagueGuid) VALUES (@teamGuid, @leagueGuid)";
 
             SqlParameter[] para = { new SqlParameter("@teamGuid", TeamGuid), new SqlParameter("@leagueGuid", LeagueGuid) };
 
             DataAccess.ExecuteNonQuery(sql, para, trans);
-        }
-
-        public void Create(IEnumerable<RelationLeagueTeam> instances, SqlTransaction trans = null)
-        {
-            Contract.Requires(instances != null);
-
-            foreach (var instance in instances)
-            {
-                instance.Create(trans);
-            }
         }
 
         public void Delete(SqlTransaction trans = null)
         {
-            var sql = string.Format("DELETE FROM {0} WHERE TeamGuid = @teamGuid AND LeagueGuid = @leagueGuid",
-                Repository.GetTableAttr<RelationLeagueTeam>().Name);
+            var sql =
+                $"DELETE FROM {Repository.GetTableAttr<RelationLeagueTeam>().Name} WHERE TeamGuid = @teamGuid AND LeagueGuid = @leagueGuid";
 
             SqlParameter[] para = { new SqlParameter("@teamGuid", TeamGuid), new SqlParameter("@leagueGuid", LeagueGuid) };
 
             DataAccess.ExecuteNonQuery(sql, para, trans);
         }
 
-        public static void Delete(IEnumerable<RelationLeagueTeam> instances, SqlTransaction trans = null)
-        {
-            Contract.Requires(instances != null);
-
-            foreach (var instance in instances)
-            {
-                instance.Delete(trans);
-            }
-        }
-
         public static void Clean(SqlTransaction trans = null)
         {
-            var sql = string.Format(@"DELETE FROM {0} WHERE (TeamGuid NOT IN (SELECT TeamGuid FROM {1})) OR
-                               (LeagueGuid NOT IN (SELECT LeagueGuid FROM {2}))",
-                Repository.GetTableAttr<RelationLeagueTeam>().Name,
-                Repository.GetTableAttr<Team>().Name,
-                Repository.GetTableAttr<League>().Name);
+            var sql =
+                $@"DELETE FROM {Repository.GetTableAttr<RelationLeagueTeam>().Name} WHERE 
+                     (TeamGuid NOT IN (SELECT TeamGuid FROM {Repository.GetTableAttr<Team>().Name})) 
+                     OR (LeagueGuid NOT IN (SELECT LeagueGuid FROM {Repository.GetTableAttr<League>().Name}))";
 
             DataAccess.ExecuteNonQuery(sql, null, trans);
         }
@@ -205,5 +219,36 @@ namespace Arsenal.Service
         public Guid LeagueGuid { get; set; }
 
         #endregion
+    }
+
+    public static class RelationLeagueTeamExtensions
+    {
+        public static int Insert(this IEnumerable<RelationLeagueTeam> source, SqlTransaction trans = null)
+        {
+            Contract.Requires(source != null);
+
+            var list = source as IList<RelationLeagueTeam> ?? source.ToList();
+
+            foreach (var instance in list)
+            {
+                instance.Insert(trans);
+            }
+
+            return list.Count;
+        }
+
+        public static int Delete(this IEnumerable<RelationLeagueTeam> source, SqlTransaction trans = null)
+        {
+            Contract.Requires(source != null);
+
+            var list = source as IList<RelationLeagueTeam> ?? source.ToList();
+
+            foreach (var instance in list)
+            {
+                instance.Delete(trans);
+            }
+
+            return list.Count;
+        }
     }
 }

@@ -422,7 +422,7 @@
     <Content Include="Views\Club\MyLogSignIn.cshtml" />
     <Content Include="Views\Shared\_AssemblyPartial.cshtml" />
     <Content Include="Scripts\jquery-2.2.3.min.map" />
-    <Content Include="Views\Casino\Rank.cshtml" />
+    <Content Include="Views\Casino\Contest.cshtml" />
     <Content Include="Views\Shared\Casino\_GamblerDWInfoPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>

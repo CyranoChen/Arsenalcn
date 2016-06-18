@@ -85,16 +85,16 @@ namespace Arsenalcn.CasinoSys.DataAccess
 
         public static int GetMatchCasinoItemCount()
         {
-            var sql = "SELECT DISTINCT MatchGuid FROM dbo.AcnCasino_CasinoItem WHERE MatchGuid IS NOT NULL";
+            var sql = "SELECT COUNT(DISTINCT MatchGuid) FROM dbo.AcnCasino_CasinoItem WHERE MatchGuid IS NOT NULL";
 
-            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql);
+            var obj = SqlHelper.ExecuteScalar(SQLConn.GetConnection(), CommandType.Text, sql);
 
-            return ds.Tables[0].Rows.Count;
+            return obj.Equals(DBNull.Value) ? 0 : Convert.ToInt32(obj);
         }
 
         public static int GetOtherCasinoItemCount()
         {
-            var sql = "SELECT COUNT(*) FROM dbo.AcnCasino_CasinoItem WHERE MatchGuid IS NULL";
+            var sql = "SELECT COUNT(CasinoItemGuid) FROM dbo.AcnCasino_CasinoItem WHERE MatchGuid IS NULL";
 
             var obj = SqlHelper.ExecuteScalar(SQLConn.GetConnection(), CommandType.Text, sql);
 

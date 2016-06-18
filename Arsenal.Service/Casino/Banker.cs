@@ -8,7 +8,7 @@ namespace Arsenal.Service.Casino
     [DbSchema("AcnCasino_Banker")]
     public class Banker : Entity<Guid>
     {
-        public void Statistics()
+        public void Statistic()
         {
             Contract.Requires(ID != null && !ID.Equals(Guid.Empty));
 

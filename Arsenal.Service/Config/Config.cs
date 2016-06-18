@@ -301,13 +301,13 @@ namespace Arsenal.Service
             }
         }
 
-        public static int[] RankCondition
+        public static int[] ContestCondition
         {
             get
             {
                 try
                 {
-                    var configValue = ConfigDictionary["RankCondition"];
+                    var configValue = ConfigDictionary["ContestCondition"];
                     var tmpStrings = configValue.Split('|');
                     var retInts = new int[tmpStrings.Length];
 

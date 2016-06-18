@@ -97,8 +97,8 @@ namespace Arsenalcn.CasinoSys.Entity
             //3、赛季中并且获得RP+3及以上，即猜对本赛季3场以上的比赛比分。
             if (ConfigGlobal.ContestLimitIgnore) { return list; }
 
-            return list.FindAll(cg => cg.MatchBet >= ConfigGlobal.RankCondition[0]
-                && cg.TotalBet >= ConfigGlobal.RankCondition[1] && cg.RPBonus >= ConfigGlobal.RankCondition[2]);
+            return list.FindAll(cg => cg.MatchBet >= ConfigGlobal.ContestCondition[0]
+                && cg.TotalBet >= ConfigGlobal.ContestCondition[1] && cg.RPBonus >= ConfigGlobal.ContestCondition[2]);
         }
 
         public static List<CasinoGambler> SortCasinoGambler(List<CasinoGambler> list, string orderKeyword)

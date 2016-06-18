@@ -48,7 +48,7 @@
     <Compile Include="Casino\BetDetail.cs" />
     <Compile Include="Casino\CasinoItem.cs" />
     <Compile Include="Casino\ChoiceOption.cs" />
-    <Compile Include="Casino\Group.cs" />
+    <Compile Include="Entity\Group.cs" />
     <Compile Include="Casino\Viewer\BetView.cs" />
     <Compile Include="Casino\Gambler.cs" />
     <Compile Include="Casino\Match.cs" />
@@ -64,6 +64,7 @@
     <Compile Include="Entity\Player.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Entity\Relation\RelationGroupTeam.cs" />
     <Compile Include="Framework\Membership.cs" />
     <Compile Include="Framework\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

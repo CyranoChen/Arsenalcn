@@ -103,30 +103,30 @@ namespace Arsenal.Web
                 {
                     var leagueGuid = new Guid(ddlTeamLeague.SelectedValue);
 
-                    var rlt = new RelationLeagueTeam {TeamGuid = TeamGuid, LeagueGuid = leagueGuid};
+                    var rlt = new RelationLeagueTeam { TeamGuid = TeamGuid, LeagueGuid = leagueGuid };
 
                     if (!rlt.Any())
                     {
-                        rlt.Create();
+                        rlt.Insert();
                     }
                 }
 
                 if (TeamGuid != Guid.Empty)
                 {
                     repo.Update(t);
-                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
                         "alert('更新成功');window.location.href = window.location.href", true);
                 }
                 else
                 {
                     repo.Insert(t);
-                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
                         "alert('添加成功');window.location.href = 'AdminTeam.aspx'", true);
                 }
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof (string), "failed",
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed",
                     string.Format("alert('{0}')", ex.Message), true);
             }
         }
@@ -153,14 +153,12 @@ namespace Arsenal.Web
 
                     if (list != null && list.Count > 0)
                     {
-                        RelationLeagueTeam.Delete(list);
+                        var num = list.Delete();
+
+                        repo.Delete<Team>(TeamGuid);
+
+                        ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", $"alert('删除成功(包括{num}个分类关联)');window.location.href='AdminTeam.aspx'", true);
                     }
-
-                    repo.Delete<Team>(TeamGuid);
-
-                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
-                        string.Format("alert('删除成功(包括{0}个分类关联)');window.location.href='AdminTeam.aspx'", list.Count()),
-                        true);
                 }
                 else
                 {
@@ -169,7 +167,7 @@ namespace Arsenal.Web
             }
             catch
             {
-                ClientScript.RegisterClientScriptBlock(typeof (string), "failed", "alert('删除失败')", true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", "alert('删除失败')", true);
             }
         }
     }

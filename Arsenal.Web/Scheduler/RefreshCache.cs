@@ -35,6 +35,9 @@ namespace Arsenal.Scheduler
                 RelationLeagueTeam.Clean();
                 RelationLeagueTeam.Cache.RefreshCache();
 
+                RelationGroupTeam.Clean();
+                RelationLeagueTeam.Cache.RefreshCache();
+
                 League.Cache.RefreshCache();
                 Match.Cache.RefreshCache();
                 Player.Cache.RefreshCache();

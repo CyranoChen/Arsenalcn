@@ -30,7 +30,7 @@ namespace Arsenal.Scheduler
 
                 foreach (var b in list)
                 {
-                    b.Statistics();
+                    b.Statistic();
                 }
 
                 _log.Info("Scheduler End: (AutoUpdateActiveBankerCash)", logInfo);

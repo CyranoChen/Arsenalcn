@@ -84,6 +84,8 @@ namespace Arsenal.Service.Casino
 
         public static List<GamblerDW> All(Guid leagueGuid)
         {
+            var list = new List<GamblerDW>();
+
             var sql = @"SELECT BetInfo.*, RPInfo.RPBet, RPInfo.RPBonus FROM
                                         (SELECT UserID, UserName, 
                                                     COUNT(CASE IsWin WHEN 1 THEN 1 ELSE NULL END) AS Win, 
@@ -122,11 +124,11 @@ namespace Arsenal.Service.Casino
                         CreateMap();
                     });
 
-                    return Mapper.Map<IDataReader, IEnumerable<GamblerDW>>(reader).ToList();
+                    list = Mapper.Map<IDataReader, IEnumerable<GamblerDW>>(reader).ToList();
                 }
             }
 
-            return null;
+            return list;
         }
 
         public static double GetGamblerBetLimit(int userId, Guid leagueGuid)

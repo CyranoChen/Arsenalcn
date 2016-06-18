@@ -149,6 +149,15 @@ namespace Arsenalcn.CasinoSys.DataAccess
             return ds.Tables[0];
         }
 
+        public static int GetGamblerCount()
+        {
+            var sql = "SELECT COUNT(ID) FROM AcnCasino_Gambler";
+
+            var obj = SqlHelper.ExecuteScalar(SQLConn.GetConnection(), CommandType.Text, sql);
+
+            return obj.Equals(DBNull.Value) ? 0 : Convert.ToInt32(obj);
+        }
+
         public static DataTable GetGamblerProfitView()
         {
             var sql = @"SELECT BetInfo.*, RPInfo.RPBet, RPInfo.RPBonus FROM

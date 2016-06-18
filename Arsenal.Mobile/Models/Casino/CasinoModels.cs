@@ -50,7 +50,7 @@ namespace Arsenal.Mobile.Models.Casino
     {
     }
 
-    public class RankDto
+    public class ContestDto
     {
         public League ContestLeague { get; set; }
 

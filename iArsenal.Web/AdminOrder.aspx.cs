@@ -327,7 +327,7 @@ namespace iArsenal.Web
 
                 #endregion
 
-                if (list != null && list.Count > 0)
+                if (list.Count > 0)
                 {
                     // Tackle with Every Order and OrderItem
                     foreach (var o in list)
@@ -454,7 +454,7 @@ namespace iArsenal.Web
 
                                     dr["Qty"] = oiName.Quantity;
                                     dr["GBP Price"] = (float)dr["Unit"] * oiName.Quantity;
-                                    dr["CNY Price"] = oiName.TotalPrice;
+                                    dr["CNY Price"] = oiFont?.TotalPrice / 2 ?? oiName.TotalPrice;
 
                                     dt.Rows.Add(dr);
 
@@ -493,7 +493,7 @@ namespace iArsenal.Web
 
                                     dr["Qty"] = oiNumber.Quantity;
                                     dr["GBP Price"] = (float)dr["Unit"] * oiNumber.Quantity;
-                                    dr["CNY Price"] = oiNumber.TotalPrice;
+                                    dr["CNY Price"] = oiFont?.TotalPrice / 2 ?? oiNumber.TotalPrice;
 
                                     dt.Rows.Add(dr);
                                 }
@@ -565,13 +565,13 @@ namespace iArsenal.Web
                                 // get Member Info By Order
                                 m = repo.Single<Member>(o.MemberID);
 
-                                var query = repo.Query<OrderItem>(x => x.OrderID == o.ID).FindAll(x => x.IsActive).OrderBy(x => x.ID);
+                                //var query = repo.Query<OrderItem>(x => x.OrderID == o.ID).FindAll(x => x.IsActive).OrderBy(x => x.ID);
 
-                                if (query.Any())
+                                if (oWish.WishList_Existent != null && oWish.WishList_Existent.Count > 0)
                                 {
                                     var _listCount = 0;
 
-                                    foreach (var oi in query)
+                                    foreach (var oi in oWish.WishList_Existent)
                                     {
                                         dr = dt.NewRow();
 
@@ -586,7 +586,7 @@ namespace iArsenal.Web
                                             dr["Remark"] = o.Remark;
                                         }
 
-                                        if (!oi.ProductGuid.Equals(Guid.Empty) && oi.TotalPrice > 0)
+                                        if (!oi.ProductGuid.Equals(Guid.Empty) && oi.TotalPrice >= 0)
                                         {
                                             // get Product Info By OrderItem
                                             p = Product.Cache.Load(oi.ProductGuid);

@@ -326,6 +326,7 @@
     <Content Include="UploadFiles\League\CarlingCup.gif" />
     <Content Include="UploadFiles\League\Champions.gif" />
     <Content Include="UploadFiles\League\EmiratesCup.gif" />
+    <Content Include="UploadFiles\League\england-new.gif" />
     <Content Include="UploadFiles\League\England.gif" />
     <Content Include="UploadFiles\League\EuroCup2012.gif" />
     <Content Include="UploadFiles\League\EuroCup2016.gif" />

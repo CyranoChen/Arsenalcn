@@ -98,9 +98,9 @@ namespace Arsenalcn.CasinoSys.Web
                         Entity.CasinoGambler.GetCasinoGamblers(CurrentLeague).FindAll(delegate(Entity.CasinoGambler cg)
                         {
                             if (ContestArea == 1)
-                                return cg.TotalBet > tbs;
+                                return cg.TotalBet >= tbs;
                             if (ContestArea == 2)
-                                return cg.TotalBet <= tbs;
+                                return cg.TotalBet < tbs;
                             return true;
                         });
                 }

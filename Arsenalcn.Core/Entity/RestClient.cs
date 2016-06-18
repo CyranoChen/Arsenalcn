@@ -34,11 +34,11 @@ namespace Arsenalcn.Core
 
             sig.Append(CryptographicKey);
 
-            var _strParameter = string.Format("sig={0}{1}", Encrypt.GetMd5Hash(sig.ToString()), postData);
+            var strParameter = string.Format("sig={0}{1}", Encrypt.GetMd5Hash(sig.ToString()), postData);
 
             #endregion
 
-            var encodedBytes = Encoding.UTF8.GetBytes(_strParameter);
+            var encodedBytes = Encoding.UTF8.GetBytes(strParameter);
             req.ContentLength = encodedBytes.Length;
 
             // Write encoded data into request stream

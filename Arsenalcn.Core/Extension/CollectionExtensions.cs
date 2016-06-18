@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Diagnostics.Contracts;
 using System.Linq;
 
@@ -20,7 +19,9 @@ namespace Arsenalcn.Core
                 .FirstOrDefault(
                     x => (Nullable.GetUnderlyingType(x.PropertyType) ?? x.PropertyType) == typeof(IEnumerable<TMany>));
 
-            if (source != null && source.Any() && property != null)
+            var instances = source as IList<TOne> ?? source.ToList();
+
+            if (instances.Count > 0 && property != null)
             {
                 //var propertyName = string.Format("List{0}", typeof(TMany).Name);
                 //var property = typeof(TOne).GetProperty(propertyName, typeof(IEnumerable<TMany>));
@@ -41,7 +42,7 @@ namespace Arsenalcn.Core
 
                         if (pi != null)
                         {
-                            foreach (var instance in source)
+                            foreach (var instance in instances)
                             {
                                 var predicate = new Predicate<TMany>(t => func(instance, t));
 
@@ -59,7 +60,7 @@ namespace Arsenalcn.Core
                 }
             }
 
-            return source;
+            return instances;
         }
 
         // Many by T-SQL
@@ -76,7 +77,9 @@ namespace Arsenalcn.Core
                 .FirstOrDefault(
                     x => (Nullable.GetUnderlyingType(x.PropertyType) ?? x.PropertyType) == typeof(IEnumerable<TMany>));
 
-            if (source != null && source.Any() && property != null)
+            var instances = source as IList<TOne> ?? source.ToList();
+
+            if (instances.Count > 0 && property != null)
             {
                 //var propertyName = string.Format("List{0}", typeof(TMany).Name);
                 //var property = typeof(TOne).GetProperty(propertyName, typeof(IEnumerable<TMany>));
@@ -85,13 +88,11 @@ namespace Arsenalcn.Core
                 var attrCol = Repository.GetColumnAttr(property);
                 var fKey = typeof(TMany).GetProperty(attrCol.ForeignKey);
 
-                if (attr != null && !string.IsNullOrEmpty(attrCol?.ForeignKey) && fKey != null)
+                if (attr != null && !string.IsNullOrEmpty(attrCol.ForeignKey) && fKey != null)
                 {
-                    var list = new List<TMany>();
-
                     #region Get All T instances where ForeignKey in T.PrimaryKeys
 
-                    var keys = source.Select(keySelector).ToArray();
+                    var keys = instances.Select(keySelector).ToArray();
 
                     IRepository repo = new Repository();
 
@@ -99,45 +100,7 @@ namespace Arsenalcn.Core
                                 join key in keys on fKey.GetValue(many, null) equals key
                                 select many;
 
-                    var enumerable = query as TMany[] ?? query.ToArray();
-                    list = enumerable.ToList();
-
-                    //if (keys.Length <= 300 && keys.Length > 0)
-                    //{
-                    //    var names = new List<string>();
-                    //    var paras = new List<SqlParameter>();
-
-                    //    for (var i = 0; i < keys.Length; i++)
-                    //    {
-                    //        names.Add("@" + i);
-                    //        paras.Add(new SqlParameter("@" + i, keys[i]));
-                    //    }
-
-                    //    var sql =
-                    //        $"SELECT * FROM {attr.Name} WHERE {attrCol.ForeignKey} IN ({string.Join(", ", names)})";
-
-                    //    var ds = DataAccess.ExecuteDataset(sql, paras.ToArray());
-
-                    //    var dt = ds.Tables[0];
-
-                    //    if (dt.Rows.Count > 0)
-                    //    {
-                    //        using (var reader = dt.CreateDataReader())
-                    //        {
-                    //            list = reader.DataReaderMapTo<TMany>().ToList();
-                    //        }
-                    //    }
-                    //}
-                    //else
-                    //{
-                    //    IRepository repo = new Repository();
-
-                    //    var keyList = keys.ToList();
-
-                    //    // Filter the list<TMany> at First to improve performance
-                    //    list = repo.All<TMany>().FindAll(many => keyList.Exists(k => k.Equals(fKey.GetValue(many, null))));
-
-                    //}
+                    var list = (query as TMany[] ?? query.ToArray()).ToList();
 
                     #endregion
 
@@ -145,12 +108,11 @@ namespace Arsenalcn.Core
 
                     if (list.Count > 0)
                     {
-
                         var pi = typeof(TOne).GetProperty(property.Name, typeof(IEnumerable<TMany>));
 
                         if (pi != null)
                         {
-                            foreach (var instance in source)
+                            foreach (var instance in instances)
                             {
                                 var keyValue = keySelector(instance);
 
@@ -171,7 +133,7 @@ namespace Arsenalcn.Core
                 }
             }
 
-            return source;
+            return instances;
         }
 
 
@@ -191,19 +153,13 @@ namespace Arsenalcn.Core
             return source;
         }
 
-        public static IEnumerable<T> DistinctBy<T, TKey>(this IEnumerable<T> source, Func<T, TKey> keySelector)
+        private static IEnumerable<T> DistinctBy<T, TKey>(this IEnumerable<T> source, Func<T, TKey> keySelector)
         {
             Contract.Requires(source != null);
 
             var seenKeys = new HashSet<TKey>();
 
-            foreach (var instance in source)
-            {
-                if (seenKeys.Add(keySelector(instance)))
-                {
-                    yield return instance;
-                }
-            }
+            return source.Where(instance => seenKeys.Add(keySelector(instance)));
         }
 
         public static IEnumerable<TKey> DistinctOrderBy<T, TKey>(this IEnumerable<T> instances,

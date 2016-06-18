@@ -21,40 +21,6 @@ namespace Arsenalcn.Core
                 (ConfigSystem) Enum.Parse(typeof (ConfigSystem), s.GetValue("ConfigSystem").ToString())));
         }
 
-        //public Config(DataRow dr)
-        //{
-        //    Contract.Requires(dr != null);
-
-        //    Init(dr);
-        //}
-
-        //private void Init(DataRow dr)
-        //{
-        //    if (dr != null)
-        //    {
-        //        ConfigSystem = (ConfigSystem)Enum.Parse(typeof(ConfigSystem), dr["ConfigSystem"].ToString());
-        //        ConfigKey = dr["ConfigKey"].ToString();
-        //        ConfigValue = dr["ConfigValue"].ToString();
-        //    }
-        //    else
-        //        throw new Exception("Unable to init Config.");
-        //}
-
-        //public void Single()
-        //{
-        //    string sql = string.Format("SELECT * FROM {0} WHERE ConfigSystem = @configSystem AND ConfigKey = @configKey",
-        //        Repository.GetTableAttr<Config>().Name);
-
-        //    SqlParameter[] para = {
-        //                              new SqlParameter("@configSystem", ConfigSystem.ToString()), 
-        //                              new SqlParameter("@configKey", ConfigKey)
-        //                          };
-
-        //    DataSet ds = DataAccess.ExecuteDataset(sql, para);
-
-        //    if (ds.Tables[0].Rows.Count > 0) { Init(ds.Tables[0].Rows[0]); }
-        //}
-
         public bool Any()
         {
             var sql =

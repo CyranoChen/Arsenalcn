@@ -130,7 +130,7 @@ namespace Arsenalcn.Core
                     strOrderBy);
 
                 string sql =
-                    $"SELECT * FROM {innerSql} AS t WHERE t.RowNo BETWEEN {(pager.CurrentPage*pager.PagingSize + 1)} AND {((pager.CurrentPage + 1)*pager.PagingSize)};";
+                    $"SELECT * FROM {innerSql} AS t WHERE t.RowNo BETWEEN {pager.CurrentPage*pager.PagingSize + 1} AND {(pager.CurrentPage + 1)*pager.PagingSize};";
 
                 //sql += string.Format("SELECT COUNT({1}) AS TotalCount FROM {0}", attr.Name, attr.Key);
 
@@ -270,7 +270,7 @@ namespace Arsenalcn.Core
                     attr.Name, strOrderBy, condition.Condition);
 
                 string sql =
-                    $"SELECT * FROM {innerSql} AS t WHERE t.RowNo BETWEEN {(pager.CurrentPage*pager.PagingSize + 1)} AND {((pager.CurrentPage + 1)*pager.PagingSize)}";
+                    $"SELECT * FROM {innerSql} AS t WHERE t.RowNo BETWEEN {pager.CurrentPage*pager.PagingSize + 1} AND {(pager.CurrentPage + 1)*pager.PagingSize}";
 
                 //sql += string.Format("SELECT COUNT({1}) AS TotalCount FROM {0} WHERE {2}", attr.Name, attr.Key, condition.Condition);
 

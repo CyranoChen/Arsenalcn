@@ -13,12 +13,14 @@ namespace Arsenalcn.Core
 
             IRepository repo = new Repository();
 
-            foreach (var instance in source)
+            var list = source as IList<T> ?? source.ToList();
+
+            foreach (var instance in list)
             {
                 repo.Insert(instance, trans);
             }
 
-            return source.Count();
+            return list.Count;
         }
 
 
@@ -28,12 +30,14 @@ namespace Arsenalcn.Core
 
             IRepository repo = new Repository();
 
-            foreach (var instance in source)
+            var list = source as IList<T> ?? source.ToList();
+
+            foreach (var instance in list)
             {
                 repo.Update(instance, trans);
             }
 
-            return source.Count();
+            return list.Count;
         }
 
         public static int Delete<T>(this IEnumerable<T> source, SqlTransaction trans = null) where T : class, IEntity
@@ -42,12 +46,14 @@ namespace Arsenalcn.Core
 
             IRepository repo = new Repository();
 
-            foreach (var instance in source)
+            var list = source as IList<T> ?? source.ToList();
+
+            foreach (var instance in list)
             {
                 repo.Delete(instance, trans);
             }
 
-            return source.Count();
+            return list.Count;
         }
     }
 }

@@ -9,8 +9,8 @@ namespace Arsenalcn.Core
 {
     public class ConditionBuilder : ExpressionVisitor
     {
-        private List<object> m_arguments;
-        private Stack<string> m_conditionParts;
+        private List<object> _mArguments;
+        private Stack<string> _mConditionParts;
 
         public string Condition { get; private set; }
 
@@ -23,29 +23,29 @@ namespace Arsenalcn.Core
             var evaluator = new PartialEvaluator();
             var evaluatedExpression = evaluator.Eval(expression);
 
-            m_arguments = new List<object>();
-            m_conditionParts = new Stack<string>();
+            _mArguments = new List<object>();
+            _mConditionParts = new Stack<string>();
 
             Visit(evaluatedExpression);
 
-            Arguments = m_arguments.ToArray();
-            Condition = m_conditionParts.Count > 0 ? m_conditionParts.Pop() : null;
+            Arguments = _mArguments.ToArray();
+            Condition = _mConditionParts.Count > 0 ? _mConditionParts.Pop() : null;
 
             // Convert Arguments from List<object> to List<SqlParameter>
-            if (m_arguments.Count > 0)
+            if (_mArguments.Count > 0)
             {
                 SqlArguments = new List<SqlParameter>();
 
-                for (var i = 0; i < m_arguments.Count; i++)
+                for (var i = 0; i < _mArguments.Count; i++)
                 {
-                    SqlArguments.Add(new SqlParameter("@para" + i, m_arguments[i]));
+                    SqlArguments.Add(new SqlParameter("@para" + i, _mArguments[i]));
                 }
             }
         }
 
         protected override Expression VisitBinary(BinaryExpression b)
         {
-            if (b == null) return b;
+            if (b == null) return null;
 
             string opr;
             switch (b.NodeType)
@@ -93,38 +93,39 @@ namespace Arsenalcn.Core
             Visit(b.Left);
             Visit(b.Right);
 
-            var right = m_conditionParts.Pop();
-            var left = m_conditionParts.Pop();
+            var right = _mConditionParts.Pop();
+            var left = _mConditionParts.Pop();
 
             var condition = $"({left} {opr} {right})";
-            m_conditionParts.Push(condition);
+            _mConditionParts.Push(condition);
 
             return b;
         }
 
         protected override Expression VisitConstant(ConstantExpression c)
         {
-            if (c == null) return c;
+            if (c == null) return null;
 
             // Convent "" to '' in sql
             if (c.Value.ToString() == string.Empty)
             {
-                m_arguments.Add(string.Empty);
+                _mArguments.Add(string.Empty);
             }
-            else {
-                m_arguments.Add(c.Value);
+            else
+            {
+                _mArguments.Add(c.Value);
             }
 
             //this.m_conditionParts.Push(String.Format("{{{0}}}", this.m_arguments.Count - 1));
             //use @para{0} instead of {0}
-            m_conditionParts.Push($"@para{m_arguments.Count - 1}");
+            _mConditionParts.Push($"@para{_mArguments.Count - 1}");
 
             return c;
         }
 
         protected override Expression VisitMemberAccess(MemberExpression m)
         {
-            if (m == null) return m;
+            if (m == null) return null;
 
             // Except for property HasValue
             if (m.Member.Name.Equals("HasValue"))
@@ -136,7 +137,7 @@ namespace Arsenalcn.Core
                 var attrCol = Repository.GetColumnAttr(propertyInfo);
                 if (attrCol == null) return m;
 
-                m_conditionParts.Push($"[{attrCol.Name}] IS NOT NULL");
+                _mConditionParts.Push($"[{attrCol.Name}] IS NOT NULL");
             }
             else
             {
@@ -150,11 +151,11 @@ namespace Arsenalcn.Core
                 // Convert text to nvarchar
                 if (propertyInfo.PropertyType == typeof(string))
                 {
-                    m_conditionParts.Push($"CAST([{attrCol.Name}] as NVARCHAR(MAX))");
+                    _mConditionParts.Push($"CAST([{attrCol.Name}] as NVARCHAR(MAX))");
                 }
                 else
                 {
-                    m_conditionParts.Push($"[{attrCol.Name}]");
+                    _mConditionParts.Push($"[{attrCol.Name}]");
                 }
             }
 
@@ -164,8 +165,8 @@ namespace Arsenalcn.Core
 
     public class PartialEvaluator : ExpressionVisitor
     {
-        private HashSet<Expression> m_candidates;
-        private readonly Func<Expression, bool> m_fnCanBeEvaluated;
+        private HashSet<Expression> _mCandidates;
+        private readonly Func<Expression, bool> _mFnCanBeEvaluated;
 
         public PartialEvaluator()
             : this(CanBeEvaluatedLocally)
@@ -174,12 +175,12 @@ namespace Arsenalcn.Core
 
         public PartialEvaluator(Func<Expression, bool> fnCanBeEvaluated)
         {
-            m_fnCanBeEvaluated = fnCanBeEvaluated;
+            _mFnCanBeEvaluated = fnCanBeEvaluated;
         }
 
         public Expression Eval(Expression exp)
         {
-            m_candidates = new Nominator(m_fnCanBeEvaluated).Nominate(exp);
+            _mCandidates = new Nominator(_mFnCanBeEvaluated).Nominate(exp);
 
             return Visit(exp);
         }
@@ -191,7 +192,7 @@ namespace Arsenalcn.Core
                 return null;
             }
 
-            if (m_candidates.Contains(exp))
+            if (_mCandidates.Contains(exp))
             {
                 return Evaluate(exp);
             }
@@ -225,44 +226,44 @@ namespace Arsenalcn.Core
         /// </summary>
         private class Nominator : ExpressionVisitor
         {
-            private HashSet<Expression> m_candidates;
-            private bool m_cannotBeEvaluated;
-            private readonly Func<Expression, bool> m_fnCanBeEvaluated;
+            private HashSet<Expression> _mcandidates;
+            private bool _mCannotBeEvaluated;
+            private readonly Func<Expression, bool> _mFnCanBeEvaluated;
 
             internal Nominator(Func<Expression, bool> fnCanBeEvaluated)
             {
-                m_fnCanBeEvaluated = fnCanBeEvaluated;
+                _mFnCanBeEvaluated = fnCanBeEvaluated;
             }
 
             internal HashSet<Expression> Nominate(Expression expression)
             {
-                m_candidates = new HashSet<Expression>();
+                _mcandidates = new HashSet<Expression>();
                 Visit(expression);
-                return m_candidates;
+                return _mcandidates;
             }
 
             protected override Expression Visit(Expression expression)
             {
                 if (expression != null)
                 {
-                    var saveCannotBeEvaluated = m_cannotBeEvaluated;
-                    m_cannotBeEvaluated = false;
+                    var saveCannotBeEvaluated = _mCannotBeEvaluated;
+                    _mCannotBeEvaluated = false;
 
                     base.Visit(expression);
 
-                    if (!m_cannotBeEvaluated)
+                    if (!_mCannotBeEvaluated)
                     {
-                        if (m_fnCanBeEvaluated(expression))
+                        if (_mFnCanBeEvaluated(expression))
                         {
-                            m_candidates.Add(expression);
+                            _mcandidates.Add(expression);
                         }
                         else
                         {
-                            m_cannotBeEvaluated = true;
+                            _mCannotBeEvaluated = true;
                         }
                     }
 
-                    m_cannotBeEvaluated |= saveCannotBeEvaluated;
+                    _mCannotBeEvaluated |= saveCannotBeEvaluated;
                 }
 
                 return expression;
@@ -439,7 +440,7 @@ namespace Arsenalcn.Core
         {
             var obj = Visit(m.Object);
             IEnumerable<Expression> args = VisitExpressionList(m.Arguments);
-            if (obj != m.Object || args != m.Arguments)
+            if (obj != m.Object || !args.Equals(m.Arguments))
             {
                 return Expression.Call(obj, m.Method, args);
             }
@@ -486,7 +487,7 @@ namespace Arsenalcn.Core
         protected virtual MemberMemberBinding VisitMemberMemberBinding(MemberMemberBinding binding)
         {
             var bindings = VisitBindingList(binding.Bindings);
-            if (bindings != binding.Bindings)
+            if (!bindings.Equals(binding.Bindings))
             {
                 return Expression.MemberBind(binding.Member, bindings);
             }
@@ -496,7 +497,7 @@ namespace Arsenalcn.Core
         protected virtual MemberListBinding VisitMemberListBinding(MemberListBinding binding)
         {
             var initializers = VisitElementInitializerList(binding.Initializers);
-            if (initializers != binding.Initializers)
+            if (!initializers.Equals(binding.Initializers))
             {
                 return Expression.ListBind(binding.Member, initializers);
             }
@@ -566,7 +567,7 @@ namespace Arsenalcn.Core
         protected virtual NewExpression VisitNew(NewExpression nex)
         {
             IEnumerable<Expression> args = VisitExpressionList(nex.Arguments);
-            if (args != nex.Arguments)
+            if (!args.Equals(nex.Arguments))
             {
                 if (nex.Members != null)
                     return Expression.New(nex.Constructor, args, nex.Members);
@@ -579,7 +580,7 @@ namespace Arsenalcn.Core
         {
             var n = VisitNew(init.NewExpression);
             var bindings = VisitBindingList(init.Bindings);
-            if (n != init.NewExpression || bindings != init.Bindings)
+            if (n != init.NewExpression || !bindings.Equals(init.Bindings))
             {
                 return Expression.MemberInit(n, bindings);
             }
@@ -590,7 +591,7 @@ namespace Arsenalcn.Core
         {
             var n = VisitNew(init.NewExpression);
             var initializers = VisitElementInitializerList(init.Initializers);
-            if (n != init.NewExpression || initializers != init.Initializers)
+            if (n != init.NewExpression || !initializers.Equals(init.Initializers))
             {
                 return Expression.ListInit(n, initializers);
             }
@@ -600,7 +601,7 @@ namespace Arsenalcn.Core
         protected virtual Expression VisitNewArray(NewArrayExpression na)
         {
             IEnumerable<Expression> exprs = VisitExpressionList(na.Expressions);
-            if (exprs != na.Expressions)
+            if (!exprs.Equals(na.Expressions))
             {
                 if (na.NodeType == ExpressionType.NewArrayInit)
                 {
@@ -615,7 +616,7 @@ namespace Arsenalcn.Core
         {
             IEnumerable<Expression> args = VisitExpressionList(iv.Arguments);
             var expr = Visit(iv.Expression);
-            if (args != iv.Arguments || expr != iv.Expression)
+            if (!args.Equals(iv.Arguments) || expr != iv.Expression)
             {
                 return Expression.Invoke(expr, args);
             }

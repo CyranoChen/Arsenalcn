@@ -182,9 +182,9 @@ namespace Arsenal.Mobile.Controllers
 
                     var tbs = ConfigGlobal_AcnCasino.TotalBetStandard;
 
-                    var listUpper = list.FindAll(g => g.TotalBet > tbs);
+                    var listUpper = list.FindAll(g => g.TotalBet >= tbs);
 
-                    var listLower = list.FindAll(g => g.TotalBet <= tbs);
+                    var listLower = list.FindAll(g => g.TotalBet < tbs);
 
                     if (listUpper.Count > 0)
                     {

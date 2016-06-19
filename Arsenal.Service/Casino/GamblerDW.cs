@@ -16,23 +16,30 @@ namespace Arsenal.Service.Casino
         {
             var map = Mapper.CreateMap<IDataReader, GamblerDW>();
 
-            map.ForMember(d => d.Profit,
-                opt => opt.MapFrom(s => (double)s.GetValue("Earning") - (double)s.GetValue("TotalBet")));
-
-            map.ForMember(d => d.ProfitRate, opt => opt.ResolveUsing(s =>
+            map.ForMember(d => d.Profit, opt =>
             {
-                var earning = (double)s.GetValue("Earning");
-                var totalBet = (double)s.GetValue("TotalBet");
+                opt.Condition(s => s.GetValue("Earning") != null && s.GetValue("TotalBet") != null);
+                opt.MapFrom(s => (double)s.GetValue("Earning") - (double)s.GetValue("TotalBet"));
+            });
 
-                if (totalBet > 0)
+            map.ForMember(d => d.ProfitRate, opt =>
+            {
+                opt.Condition(s => s.GetValue("Earning") != null && s.GetValue("TotalBet") != null);
+                opt.ResolveUsing(s =>
                 {
-                    return (earning - totalBet) / totalBet * 100;
-                }
-                else
-                {
-                    return 0f;
-                }
-            }));
+                    var earning = (double)s.GetValue("Earning");
+                    var totalBet = (double)s.GetValue("TotalBet");
+
+                    if (totalBet > 0)
+                    {
+                        return (earning - totalBet) / totalBet * 100;
+                    }
+                    else
+                    {
+                        return (double)0;
+                    }
+                });
+            });
         }
 
         public static GamblerDW Single(int key, Guid leagueGuid)
@@ -253,6 +260,57 @@ namespace Arsenal.Service.Casino
             }
 
             return list;
+        }
+
+        public static GamblerDW GetTopGamblerMonthly(DateTime today, RankType rankType)
+        {
+            string sql;
+
+            var monthStart = today.AddDays(1 - today.Day);
+            var monthEnd = monthStart.AddMonths(1);
+
+            if (rankType == RankType.Winner || rankType == RankType.Loser)
+            {
+                var strOrder = rankType.Equals(RankType.Winner) ? "DESC" : string.Empty;
+
+                sql = $@"SELECT TOP 1 UserID, UserName, SUM(ISNULL(Earning, 0)) AS Earning, SUM(ISNULL(Bet, 0)) AS TotalBet, SUM(ISNULL(Earning, 0) - ISNULL(Bet, 0)) AS Profit 
+                                  FROM {Repository.GetTableAttr<Bet>().Name} WHERE (Earning IS NOT NULL) AND (Bet IS NOT NULL) AND (BetTime >= @monthStart) AND (BetTime < @monthEnd)
+                                  GROUP BY UserID, UserName ORDER BY Profit {strOrder}, TotalBet DESC";
+            }
+            else if (rankType == RankType.RP)
+            {
+                sql = $@"SELECT TOP 1 UserID, UserName, COUNT(EarningDesc) AS RPBonus, SUM(ISNULL(Earning, 0)) AS Earning, SUM(ISNULL(Bet, 0)) AS TotalBet 
+                                  FROM {Repository.GetTableAttr<Bet>().Name} WHERE (Earning = 0) AND (EarningDesc = 'RP+1') AND (IsWin = 1) AND (BetTime >= @monthStart) AND (BetTime < @monthEnd)
+                                  GROUP BY UserID, UserName ORDER BY RPBonus DESC";
+            }
+            else
+            {
+                return null;
+            }
+
+            SqlParameter[] para = { new SqlParameter("@monthStart", monthStart), new SqlParameter("@monthEnd", monthEnd) };
+
+            var ds = DataAccess.ExecuteDataset(sql, para);
+
+            var dt = ds.Tables[0];
+
+            if (dt.Rows.Count > 0)
+            {
+                using (var reader = dt.CreateDataReader())
+                {
+                    Mapper.Initialize(cfg =>
+                    {
+                        MapperRegistry.Mappers.Insert(0,
+                            new DataReaderMapper.DataReaderMapper { YieldReturnEnabled = false });
+
+                        CreateMap();
+                    });
+
+                    return Mapper.Map<IDataReader, IEnumerable<GamblerDW>>(reader).FirstOrDefault();
+                }
+            }
+
+            return null;
         }
 
         #region Members and Properties

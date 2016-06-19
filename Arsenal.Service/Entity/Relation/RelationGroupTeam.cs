@@ -175,25 +175,25 @@ namespace Arsenal.Service
 
             SqlParameter[] para =
             {
-                new SqlParameter("@positionNo", PositionNo),
-                new SqlParameter("@totalPlayed", TotalPlayed),
-                new SqlParameter("@totalPoints", TotalPoints),
+                new SqlParameter("@positionNo", !PositionNo.HasValue ? DBNull.Value : (object) PositionNo.Value),
+                new SqlParameter("@totalPlayed", !TotalPlayed.HasValue ? DBNull.Value : (object) TotalPlayed.Value),
+                new SqlParameter("@totalPoints", !TotalPoints.HasValue ? DBNull.Value : (object) TotalPoints.Value),
                 // Home
-                new SqlParameter("@homeWon", HomeWon),
-                new SqlParameter("@homeDraw", HomeDraw),
-                new SqlParameter("@homeLost", HomeLost),
-                new SqlParameter("@homePoints", HomePoints),
-                new SqlParameter("@homeGoalFor", HomeGoalFor),
-                new SqlParameter("@homeGoalAgainst", HomeGoalAgainst),
-                new SqlParameter("@homeGoalDiff", HomeGoalDiff),
+                new SqlParameter("@homeWon", !HomeWon.HasValue ? DBNull.Value : (object) HomeWon.Value),
+                new SqlParameter("@homeDraw", !HomeDraw.HasValue ? DBNull.Value : (object) HomeDraw.Value),
+                new SqlParameter("@homeLost", !HomeLost.HasValue ? DBNull.Value : (object) HomeLost.Value),
+                new SqlParameter("@homePoints", !HomePoints.HasValue ? DBNull.Value : (object) HomePoints.Value),
+                new SqlParameter("@homeGoalFor", !HomeGoalFor.HasValue ? DBNull.Value : (object) HomeGoalFor.Value),
+                new SqlParameter("@homeGoalAgainst", !HomeGoalAgainst.HasValue ? DBNull.Value : (object) HomeGoalAgainst.Value),
+                new SqlParameter("@homeGoalDiff", !HomeGoalDiff.HasValue ? DBNull.Value : (object) HomeGoalDiff.Value),
                 // Away
-                new SqlParameter("@awayWon", AwayWon),
-                new SqlParameter("@awayDraw", AwayDraw),
-                new SqlParameter("@awayLost", AwayLost),
-                new SqlParameter("@awayPoints", AwayPoints),
-                new SqlParameter("@awayGoalFor", AwayGoalFor),
-                new SqlParameter("@awayGoalAgainst", AwayGoalAgainst),
-                new SqlParameter("@awayGoalDiff", AwayGoalDiff),
+                new SqlParameter("@awayWon", !AwayWon.HasValue ? DBNull.Value : (object) AwayWon.Value),
+                new SqlParameter("@awayDraw", !AwayDraw.HasValue ? DBNull.Value : (object) AwayDraw.Value),
+                new SqlParameter("@awayLost", !AwayLost.HasValue ? DBNull.Value : (object) AwayLost.Value),
+                new SqlParameter("@awayPoints", !AwayPoints.HasValue ? DBNull.Value : (object) AwayPoints.Value),
+                new SqlParameter("@awayGoalFor", !AwayGoalFor.HasValue ? DBNull.Value : (object) AwayGoalFor.Value),
+                new SqlParameter("@awayGoalAgainst", !AwayGoalAgainst.HasValue ? DBNull.Value : (object) AwayGoalAgainst.Value),
+                new SqlParameter("@awayGoalDiff", !AwayGoalDiff.HasValue ? DBNull.Value : (object) AwayGoalDiff.Value),
                 // WHERE
                 new SqlParameter("@groupGuid", GroupGuid),
                 new SqlParameter("@teamGuid", TeamGuid)

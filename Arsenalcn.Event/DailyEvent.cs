@@ -98,7 +98,7 @@ namespace Arsenalcn.Event
             try
             {
                 //Gambler.GamblerStatistics();
-                Gambler.TopGamblerMonthlyStatistics();
+                //Gambler.TopGamblerMonthlyStatistics();
                 //Gambler.Cache.RefreshCache();
             }
             catch (Exception ex)

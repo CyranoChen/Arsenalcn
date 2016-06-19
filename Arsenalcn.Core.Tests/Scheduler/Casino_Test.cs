@@ -132,5 +132,52 @@ namespace Arsenalcn.Core.Tests.Scheduler
                 Assert.Fail(ex.Message);
             }
         }
+
+        [TestMethod]
+        public void AutoUpdateMonthlyRank_Test()
+        {
+            try
+            {
+                IRepository repo = new Repository();
+
+                var iDay = DateTime.Today;
+
+                var firstBetDate = repo.Single<Bet>(1).BetTime;
+
+                while (!(iDay.Year <= firstBetDate.Year && iDay.Month < firstBetDate.Month))
+                {
+                    var winner = GamblerDW.GetTopGamblerMonthly(iDay, RankType.Winner);
+                    var loser = GamblerDW.GetTopGamblerMonthly(iDay, RankType.Loser);
+                    var rper = GamblerDW.GetTopGamblerMonthly(iDay, RankType.RP);
+
+                    if (winner != null && loser != null)
+                    {
+                        var day = iDay;
+                        var rank = repo.Query<Rank>(x => x.RankYear == day.Year && x.RankMonth == day.Month).FirstOrDefault();
+
+                        if (rank != null)
+                        {
+                            //update
+                            rank.Initial(winner, loser, rper);
+
+                            repo.Update(rank);
+                        }
+                        else
+                        {
+                            //insert
+                            var instance = new Rank { RankYear = day.Year, RankMonth = day.Month };
+                            instance.Initial(winner, loser, rper);
+
+                            repo.Insert(instance);
+                        }
+                    }
+                    iDay = iDay.AddMonths(-1);
+                }
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.Message);
+            }
+        }
     }
 }

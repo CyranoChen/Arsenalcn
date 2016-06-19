@@ -19,7 +19,7 @@ namespace Arsenal.Service.Casino
                 WinnerUserID = winner.UserID;
                 WinnerUserName = winner.UserName;
                 WinnerProfit = winner.Profit;
-                WinnerTotalBet = WinnerTotalBet;
+                WinnerTotalBet = winner.TotalBet;
             }
 
             if (loser != null)

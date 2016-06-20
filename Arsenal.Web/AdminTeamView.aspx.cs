@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Web.UI.WebControls;
 using Arsenal.Service;
 using Arsenalcn.Core;
@@ -8,7 +7,7 @@ namespace Arsenal.Web
 {
     public partial class AdminTeamView : AdminPageBase
     {
-        private readonly IRepository repo = new Repository();
+        private readonly IRepository _repo = new Repository();
 
         private Guid TeamGuid
         {
@@ -56,7 +55,7 @@ namespace Arsenal.Web
         {
             if (TeamGuid != Guid.Empty)
             {
-                var t = repo.Single<Team>(TeamGuid);
+                var t = _repo.Single<Team>(TeamGuid);
 
                 tbTeamGuid.Text = t.ID.ToString();
                 tbTeamEnglishName.Text = t.TeamEnglishName;
@@ -65,7 +64,10 @@ namespace Arsenal.Web
                 tbTeamNickName.Text = t.TeamNickName;
                 tbTeamFounded.Text = t.Founded;
                 tbGround.Text = t.Ground;
-                tbCapacity.Text = t.Capacity.Value.ToString();
+
+                if (t.Capacity != null)
+                    tbCapacity.Text = t.Capacity.Value.ToString();
+
                 tbChairMan.Text = t.Chairman;
                 tbManager.Text = t.Manager;
                 ddlTeamLeague.SelectedValue = t.LeagueGuid.ToString();
@@ -85,7 +87,7 @@ namespace Arsenal.Web
 
                 if (!TeamGuid.Equals(Guid.Empty))
                 {
-                    t = repo.Single<Team>(TeamGuid);
+                    t = _repo.Single<Team>(TeamGuid);
                 }
 
                 t.TeamEnglishName = tbTeamEnglishName.Text.Trim();
@@ -113,21 +115,20 @@ namespace Arsenal.Web
 
                 if (TeamGuid != Guid.Empty)
                 {
-                    repo.Update(t);
+                    _repo.Update(t);
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
                         "alert('更新成功');window.location.href = window.location.href", true);
                 }
                 else
                 {
-                    repo.Insert(t);
+                    _repo.Insert(t);
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
                         "alert('添加成功');window.location.href = 'AdminTeam.aspx'", true);
                 }
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof(string), "failed",
-                    string.Format("alert('{0}')", ex.Message), true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message}')", true);
             }
         }
 
@@ -155,7 +156,7 @@ namespace Arsenal.Web
                     {
                         var num = list.Delete();
 
-                        repo.Delete<Team>(TeamGuid);
+                        _repo.Delete<Team>(TeamGuid);
 
                         ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", $"alert('删除成功(包括{num}个分类关联)');window.location.href='AdminTeam.aspx'", true);
                     }

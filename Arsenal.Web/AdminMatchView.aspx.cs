@@ -9,7 +9,7 @@ namespace Arsenal.Web
 {
     public partial class AdminMatchView : AdminPageBase
     {
-        private readonly IRepository repo = new Repository();
+        private readonly IRepository _repo = new Repository();
 
         private Guid MatchGuid
         {
@@ -57,7 +57,7 @@ namespace Arsenal.Web
         {
             if (MatchGuid != Guid.Empty)
             {
-                var m = repo.Single<Match>(MatchGuid);
+                var m = _repo.Single<Match>(MatchGuid);
 
                 tbMatchGuid.Text = m.ID.ToString();
 
@@ -122,7 +122,7 @@ namespace Arsenal.Web
 
                 if (!MatchGuid.Equals(Guid.Empty))
                 {
-                    m = repo.Single<Match>(MatchGuid);
+                    m = _repo.Single<Match>(MatchGuid);
                 }
 
                 if (!string.IsNullOrEmpty(ddlTeam.SelectedValue))
@@ -181,13 +181,13 @@ namespace Arsenal.Web
 
                 if (MatchGuid != Guid.Empty)
                 {
-                    repo.Update(m);
+                    _repo.Update(m);
                     ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
                         "alert('更新成功');window.location.href = window.location.href", true);
                 }
                 else
                 {
-                    repo.Insert(m);
+                    _repo.Insert(m);
                     ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
                         "alert('添加成功');window.location.href = 'AdminMatch.aspx'", true);
                 }
@@ -217,7 +217,7 @@ namespace Arsenal.Web
             {
                 if (MatchGuid != Guid.Empty)
                 {
-                    repo.Delete<Match>(MatchGuid);
+                    _repo.Delete<Match>(MatchGuid);
 
                     ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
                         "alert('删除成功');window.location.href='AdminMatch.aspx'", true);

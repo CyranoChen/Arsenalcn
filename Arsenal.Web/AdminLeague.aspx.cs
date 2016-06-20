@@ -8,7 +8,7 @@ namespace Arsenal.Web
 {
     public partial class AdminLeague : AdminPageBase
     {
-        private readonly IRepository repo = new Repository();
+        private readonly IRepository _repo = new Repository();
 
         private Guid? _leagueGuid;
 
@@ -47,17 +47,16 @@ namespace Arsenal.Web
 
         private void BindData()
         {
-            var list = repo.All<League>().FindAll(x =>
+            var list = _repo.All<League>().FindAll(x =>
             {
                 var returnValue = true;
-                var tmpString = string.Empty;
+                string tmpString;
 
                 if (ViewState["LeagueName"] != null)
                 {
                     tmpString = ViewState["LeagueName"].ToString();
                     if (!string.IsNullOrEmpty(tmpString) && tmpString != "--分类名称--")
-                        returnValue = returnValue &&
-                                      (x.LeagueName.ToLower().Contains(tmpString.ToLower()) ||
+                        returnValue = (x.LeagueName.ToLower().Contains(tmpString.ToLower()) ||
                                        x.LeagueOrgName.ToLower().Contains(tmpString.ToLower()));
                 }
 
@@ -139,7 +138,7 @@ namespace Arsenal.Web
             if (e.PageIndex > 0)
             {
                 gvLeague.PageIndex = e.PageIndex;
-                LeagueGuid = Guid.Empty;
+                LeagueGuid = null;
             }
 
             BindData();
@@ -149,8 +148,9 @@ namespace Arsenal.Web
         {
             if (gvLeague.SelectedIndex != -1)
             {
-                Response.Redirect(string.Format("AdminLeagueView.aspx?LeagueGuid={0}",
-                    gvLeague.DataKeys[gvLeague.SelectedIndex].Value));
+                var key = gvLeague.DataKeys[gvLeague.SelectedIndex];
+                if (key != null)
+                    Response.Redirect($"AdminLeagueView.aspx?LeagueGuid={key.Value}");
             }
         }
 
@@ -169,7 +169,7 @@ namespace Arsenal.Web
             else
                 ViewState["IsActive"] = string.Empty;
 
-            LeagueGuid = Guid.Empty;
+            LeagueGuid = null;
             gvLeague.PageIndex = 0;
 
             BindData();
@@ -187,7 +187,7 @@ namespace Arsenal.Web
             else
                 ViewState["LeagueSeason"] = string.Empty;
 
-            LeagueGuid = Guid.Empty;
+            LeagueGuid = null;
             gvLeague.PageIndex = 0;
 
             BindData();

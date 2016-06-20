@@ -9,7 +9,7 @@ namespace Arsenal.Web
 {
     public partial class AdminPlayer : AdminPageBase
     {
-        private readonly IRepository repo = new Repository();
+        private readonly IRepository _repo = new Repository();
 
         private Guid? _playerGuid;
 
@@ -66,16 +66,16 @@ namespace Arsenal.Web
 
         private void BindData()
         {
-            var list = repo.All<Player>().ToList().FindAll(x =>
+            var list = _repo.All<Player>().ToList().FindAll(x =>
             {
                 var returnValue = true;
-                var tmpString = string.Empty;
+                string tmpString;
 
                 if (ViewState["SquadNumber"] != null)
                 {
                     tmpString = ViewState["SquadNumber"].ToString();
                     if (!string.IsNullOrEmpty(tmpString))
-                        returnValue = returnValue && x.SquadNumber.Equals(Convert.ToInt16(tmpString));
+                        returnValue = x.SquadNumber.Equals(Convert.ToInt16(tmpString));
                 }
 
                 if (ViewState["Position"] != null)
@@ -152,7 +152,7 @@ namespace Arsenal.Web
         protected void gvPlayer_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
             gvPlayer.PageIndex = e.NewPageIndex;
-            PlayerGuid = Guid.Empty;
+            PlayerGuid = null;
 
             BindData();
         }
@@ -162,7 +162,7 @@ namespace Arsenal.Web
             if (e.PageIndex > 0)
             {
                 gvPlayer.PageIndex = e.PageIndex;
-                PlayerGuid = Guid.Empty;
+                PlayerGuid = null;
             }
 
             BindData();
@@ -172,8 +172,9 @@ namespace Arsenal.Web
         {
             if (gvPlayer.SelectedIndex != -1)
             {
-                Response.Redirect(string.Format("AdminPlayerView.aspx?PlayerGuid={0}",
-                    gvPlayer.DataKeys[gvPlayer.SelectedIndex].Value));
+                var key = gvPlayer.DataKeys[gvPlayer.SelectedIndex];
+                if (key != null)
+                    Response.Redirect($"AdminPlayerView.aspx?PlayerGuid={key.Value}");
             }
         }
 
@@ -192,7 +193,7 @@ namespace Arsenal.Web
             else
                 ViewState["SquadNumber"] = string.Empty;
 
-            PlayerGuid = Guid.Empty;
+            PlayerGuid = null;
             gvPlayer.PageIndex = 0;
 
             BindData();
@@ -205,7 +206,7 @@ namespace Arsenal.Web
             else
                 ViewState["Position"] = string.Empty;
 
-            PlayerGuid = Guid.Empty;
+            PlayerGuid = null;
             gvPlayer.PageIndex = 0;
 
             BindData();
@@ -218,7 +219,7 @@ namespace Arsenal.Web
             else
                 ViewState["IsLegend"] = string.Empty;
 
-            PlayerGuid = Guid.Empty;
+            PlayerGuid = null;
             gvPlayer.PageIndex = 0;
 
             BindData();
@@ -231,7 +232,7 @@ namespace Arsenal.Web
             else
                 ViewState["DisplayName"] = string.Empty;
 
-            PlayerGuid = Guid.Empty;
+            PlayerGuid = null;
             gvPlayer.PageIndex = 0;
 
             BindData();

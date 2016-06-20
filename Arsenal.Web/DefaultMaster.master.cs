@@ -21,6 +21,7 @@ namespace Arsenal.Web
         /// <summary>
         ///     Current User ID
         /// </summary>
+        // ReSharper disable once InconsistentNaming
         public int UserID
         {
             set { _userId = value; }

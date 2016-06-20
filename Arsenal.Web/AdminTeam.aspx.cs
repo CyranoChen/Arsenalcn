@@ -9,7 +9,7 @@ namespace Arsenal.Web
 {
     public partial class AdminTeam : AdminPageBase
     {
-        private readonly IRepository repo = new Repository();
+        private readonly IRepository _repo = new Repository();
 
         private Guid? _teamGuid;
 
@@ -61,17 +61,16 @@ namespace Arsenal.Web
 
         private void BindData()
         {
-            var list = repo.All<Team>().ToList().FindAll(x =>
+            var list = _repo.All<Team>().ToList().FindAll(x =>
             {
                 var returnValue = true;
-                var tmpString = string.Empty;
+                string tmpString;
 
                 if (ViewState["LeagueGuid"] != null)
                 {
                     tmpString = ViewState["LeagueGuid"].ToString();
                     if (!string.IsNullOrEmpty(tmpString))
-                        returnValue = returnValue &&
-                                      new RelationLeagueTeam {TeamGuid = x.ID, LeagueGuid = new Guid(tmpString)}.Any();
+                        returnValue = new RelationLeagueTeam { TeamGuid = x.ID, LeagueGuid = new Guid(tmpString) }.Any();
                 }
 
                 if (ViewState["TeamName"] != null)
@@ -92,8 +91,8 @@ namespace Arsenal.Web
                 var i = list.FindIndex(x => x.ID.Equals(TeamGuid));
                 if (i >= 0)
                 {
-                    gvTeam.PageIndex = i/gvTeam.PageSize;
-                    gvTeam.SelectedIndex = i%gvTeam.PageSize;
+                    gvTeam.PageIndex = i / gvTeam.PageSize;
+                    gvTeam.SelectedIndex = i % gvTeam.PageSize;
                 }
                 else
                 {
@@ -134,7 +133,7 @@ namespace Arsenal.Web
         protected void gvTeam_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
             gvTeam.PageIndex = e.NewPageIndex;
-            TeamGuid = Guid.Empty;
+            TeamGuid = null;
 
             BindData();
         }
@@ -144,7 +143,7 @@ namespace Arsenal.Web
             if (e.PageIndex > 0)
             {
                 gvTeam.PageIndex = e.PageIndex;
-                TeamGuid = Guid.Empty;
+                TeamGuid = null;
             }
 
             BindData();
@@ -154,42 +153,47 @@ namespace Arsenal.Web
         {
             if (gvTeam.SelectedIndex != -1)
             {
-                Response.Redirect(string.Format("AdminTeamView.aspx?TeamGuid={0}",
-                    gvTeam.DataKeys[gvTeam.SelectedIndex].Value));
+                var key = gvTeam.DataKeys[gvTeam.SelectedIndex];
+                if (key != null)
+                    Response.Redirect($"AdminTeamView.aspx?TeamGuid={key.Value}");
             }
         }
 
         protected void gvTeam_RowDeleting(object sender, GridViewDeleteEventArgs e)
         {
-            var teamGuid = (Guid) gvTeam.DataKeys[e.RowIndex].Value;
-            var leagueGuid = Guid.Empty;
-
-            try
+            var dataKey = gvTeam.DataKeys[e.RowIndex];
+            if (dataKey != null)
             {
-                if (!string.IsNullOrEmpty(ddlLeague.SelectedValue))
-                    leagueGuid = new Guid(ddlLeague.SelectedValue);
-                else
-                    throw new Exception("未选择比赛分类");
+                var teamGuid = (Guid)dataKey.Value;
 
-                var rlt = new RelationLeagueTeam {TeamGuid = teamGuid, LeagueGuid = leagueGuid};
-
-                if (rlt.Any())
+                try
                 {
-                    if (RelationLeagueTeam.QueryByTeamGuid(teamGuid).Count <= 1)
+                    Guid leagueGuid;
+
+                    if (!string.IsNullOrEmpty(ddlLeague.SelectedValue))
+                        leagueGuid = new Guid(ddlLeague.SelectedValue);
+                    else
+                        throw new Exception("未选择比赛分类");
+
+                    var rlt = new RelationLeagueTeam { TeamGuid = teamGuid, LeagueGuid = leagueGuid };
+
+                    if (rlt.Any())
                     {
-                        throw new Exception("该球队仅属于此分类，不能移除");
+                        if (RelationLeagueTeam.QueryByTeamGuid(teamGuid).Count <= 1)
+                        {
+                            throw new Exception("该球队仅属于此分类，不能移除");
+                        }
+                        rlt.Delete();
                     }
-                    rlt.Delete();
+                    else
+                    {
+                        throw new Exception("该球队未在此分类中");
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    throw new Exception("该球队未在此分类中");
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message}');", true);
                 }
-            }
-            catch (Exception ex)
-            {
-                ClientScript.RegisterClientScriptBlock(typeof (string), "failed",
-                    string.Format("alert('{0}');", ex.Message), true);
             }
 
             BindData();
@@ -199,7 +203,7 @@ namespace Arsenal.Web
         {
             Team.Cache.RefreshCache();
 
-            ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+            ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
                 "alert('更新缓存成功');window.location.href=window.location.href", true);
         }
 
@@ -210,7 +214,7 @@ namespace Arsenal.Web
             else
                 ViewState["TeamName"] = string.Empty;
 
-            TeamGuid = Guid.Empty;
+            TeamGuid = null;
             gvTeam.PageIndex = 0;
 
             BindData();
@@ -223,7 +227,7 @@ namespace Arsenal.Web
             else
                 ViewState["LeagueGuid"] = string.Empty;
 
-            TeamGuid = Guid.Empty;
+            TeamGuid = null;
             gvTeam.PageIndex = 0;
 
             BindData();

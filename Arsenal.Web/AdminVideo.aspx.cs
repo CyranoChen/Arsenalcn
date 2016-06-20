@@ -9,7 +9,7 @@ namespace Arsenal.Web
 {
     public partial class AdminVideo : AdminPageBase
     {
-        private readonly IRepository repo = new Repository();
+        private readonly IRepository _repo = new Repository();
 
         private Guid? _videoGuid;
 
@@ -57,16 +57,16 @@ namespace Arsenal.Web
 
         private void BindData()
         {
-            var list = repo.All<Video>().ToList().FindAll(x =>
+            var list = _repo.All<Video>().ToList().FindAll(x =>
             {
                 var returnValue = true;
-                var tmpString = string.Empty;
+                string tmpString;
 
                 if (ViewState["GoalYear"] != null)
                 {
                     tmpString = ViewState["GoalYear"].ToString();
                     if (!string.IsNullOrEmpty(tmpString))
-                        returnValue = returnValue && x.GoalYear.Equals(tmpString);
+                        returnValue = x.GoalYear.Equals(tmpString);
                 }
 
                 if (ViewState["GoalRank"] != null)
@@ -93,8 +93,8 @@ namespace Arsenal.Web
                 var i = list.FindIndex(x => x.ID.Equals(VideoGuid));
                 if (i >= 0)
                 {
-                    gvVideo.PageIndex = i/gvVideo.PageSize;
-                    gvVideo.SelectedIndex = i%gvVideo.PageSize;
+                    gvVideo.PageIndex = i / gvVideo.PageSize;
+                    gvVideo.SelectedIndex = i % gvVideo.PageSize;
                 }
                 else
                 {
@@ -155,8 +155,9 @@ namespace Arsenal.Web
         {
             if (gvVideo.SelectedIndex != -1)
             {
-                Response.Redirect(string.Format("AdminVideoView.aspx?VideoGuid={0}",
-                    gvVideo.DataKeys[gvVideo.SelectedIndex].Value));
+                var key = gvVideo.DataKeys[gvVideo.SelectedIndex];
+                if (key != null)
+                    Response.Redirect($"AdminVideoView.aspx?VideoGuid={key.Value}");
             }
         }
 
@@ -167,25 +168,19 @@ namespace Arsenal.Web
                 var v = e.Row.DataItem as Video;
                 var ltrlMatchOpponentInfo = e.Row.FindControl("ltrlMatchOpponentInfo") as Literal;
 
-                if (v.ArsenalMatchGuid.HasValue)
+                if (ltrlMatchOpponentInfo != null && v?.ArsenalMatchGuid != null)
                 {
                     var m = Match.Cache.Load(v.ArsenalMatchGuid.Value);
 
                     if (m != null)
                     {
                         ltrlMatchOpponentInfo.Text =
-                            string.Format(
-                                "<a href=\"AdminMatchView.aspx?MatchGuid={0}\" target=\"_blank\"><em>{1}</em></a>", m.ID,
-                                m.TeamName);
+                            $"<a href=\"AdminMatchView.aspx?MatchGuid={m.ID}\" target=\"_blank\"><em>{m.TeamName}</em></a>";
                     }
                     else
                     {
                         ltrlMatchOpponentInfo.Text = v.Opponent;
                     }
-                }
-                else
-                {
-                    ltrlMatchOpponentInfo.Text = v.Opponent;
                 }
             }
         }
@@ -195,7 +190,7 @@ namespace Arsenal.Web
         {
             Video.Cache.RefreshCache();
 
-            ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+            ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
                 "alert('更新缓存成功');window.location.href=window.location.href", true);
         }
 

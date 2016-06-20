@@ -6,7 +6,7 @@ namespace Arsenal.Web
 {
     public partial class AdminPlayerView : AdminPageBase
     {
-        private readonly IRepository repo = new Repository();
+        private readonly IRepository _repo = new Repository();
 
         private Guid PlayerGuid
         {
@@ -41,7 +41,7 @@ namespace Arsenal.Web
         {
             if (PlayerGuid != Guid.Empty)
             {
-                var p = repo.Single<Player>(PlayerGuid);
+                var p = _repo.Single<Player>(PlayerGuid);
 
                 lblPlayerBasicInfo.InnerHtml = string.Format("<em>{0}</em> 基本信息", p.DisplayName);
                 lblPlayerDetailInfo.InnerHtml = string.Format("<em>{0}</em> 详细信息", p.DisplayName);
@@ -73,9 +73,9 @@ namespace Arsenal.Web
                 cbLegend.Checked = p.IsLegend;
                 cbLoan.Checked = p.IsLoan;
 
-                DateTime _birthday;
-                if (p.Birthday.HasValue && DateTime.TryParse(p.Birthday.ToString(), out _birthday))
-                    tbBirthday.Text = _birthday.ToString("yyyy-MM-dd");
+                DateTime birthday;
+                if (p.Birthday.HasValue && DateTime.TryParse(p.Birthday.ToString(), out birthday))
+                    tbBirthday.Text = birthday.ToString("yyyy-MM-dd");
                 else
                     tbBirthday.Text = string.Empty;
 
@@ -84,9 +84,9 @@ namespace Arsenal.Web
                 tbSubs.Text = p.Subs.ToString();
                 tbGoals.Text = p.Goals.ToString();
 
-                DateTime _joinDate;
-                if (p.JoinDate.HasValue && DateTime.TryParse(p.JoinDate.ToString(), out _joinDate))
-                    tbJoinDate.Text = _joinDate.ToString("yyyy-MM-dd");
+                DateTime joinDate;
+                if (p.JoinDate.HasValue && DateTime.TryParse(p.JoinDate.ToString(), out joinDate))
+                    tbJoinDate.Text = joinDate.ToString("yyyy-MM-dd");
                 else
                     tbJoinDate.Text = string.Empty;
 
@@ -114,7 +114,7 @@ namespace Arsenal.Web
 
                 if (!PlayerGuid.Equals(Guid.Empty))
                 {
-                    p = repo.Single<Player>(PlayerGuid);
+                    p = _repo.Single<Player>(PlayerGuid);
                 }
 
                 if (!string.IsNullOrEmpty(tbFirstName.Text.Trim()))
@@ -127,9 +127,9 @@ namespace Arsenal.Web
                 else
                     p.LastName = null;
 
-                var _pName = string.Format("{0} {1}", tbFirstName.Text.Trim(), tbLastName.Text.Trim()).Trim();
-                if (!string.IsNullOrEmpty(_pName))
-                    p.DisplayName = _pName.Trim();
+                var pName = $"{tbFirstName.Text.Trim()} {tbLastName.Text.Trim()}".Trim();
+                if (!string.IsNullOrEmpty(pName))
+                    p.DisplayName = pName.Trim();
                 else
                     throw new Exception("请输入球员姓名");
 
@@ -154,10 +154,10 @@ namespace Arsenal.Web
                 p.IsLegend = cbLegend.Checked;
                 p.IsLoan = cbLoan.Checked;
 
-                DateTime _birthday;
+                DateTime birthday;
                 if (!string.IsNullOrEmpty(tbBirthday.Text.Trim()) &&
-                    DateTime.TryParse(tbBirthday.Text.Trim(), out _birthday))
-                    p.Birthday = _birthday;
+                    DateTime.TryParse(tbBirthday.Text.Trim(), out birthday))
+                    p.Birthday = birthday;
                 else
                     p.Birthday = null;
 
@@ -172,10 +172,10 @@ namespace Arsenal.Web
 
                 p.Goals = Convert.ToInt16(tbGoals.Text.Trim());
 
-                DateTime _joinDate;
+                DateTime joinDate;
                 if (!string.IsNullOrEmpty(tbJoinDate.Text.Trim()) &&
-                    DateTime.TryParse(tbJoinDate.Text.Trim(), out _joinDate))
-                    p.JoinDate = _joinDate;
+                    DateTime.TryParse(tbJoinDate.Text.Trim(), out joinDate))
+                    p.JoinDate = joinDate;
                 else
                     p.JoinDate = null;
 
@@ -188,13 +188,13 @@ namespace Arsenal.Web
 
                 if (PlayerGuid != Guid.Empty)
                 {
-                    repo.Update(p);
+                    _repo.Update(p);
                     ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
                         "alert('更新成功');window.location.href = window.location.href", true);
                 }
                 else
                 {
-                    repo.Insert(p);
+                    _repo.Insert(p);
                     ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
                         "alert('添加成功');window.location.href = 'AdminPlayer.aspx'", true);
                 }
@@ -224,7 +224,7 @@ namespace Arsenal.Web
             {
                 if (PlayerGuid != Guid.Empty)
                 {
-                    repo.Delete<Player>(PlayerGuid);
+                    _repo.Delete<Player>(PlayerGuid);
 
                     ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
                         "alert('删除成功');window.location.href='AdminPlayer.aspx'", true);

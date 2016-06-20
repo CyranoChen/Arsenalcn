@@ -7,7 +7,7 @@ namespace Arsenal.Web
 {
     public partial class AdminVideoView : AdminPageBase
     {
-        private readonly IRepository repo = new Repository();
+        private readonly IRepository _repo = new Repository();
 
         private Guid VideoGuid
         {
@@ -76,7 +76,7 @@ namespace Arsenal.Web
         {
             if (VideoGuid != Guid.Empty)
             {
-                var v = repo.Single<Video>(VideoGuid);
+                var v = _repo.Single<Video>(VideoGuid);
 
                 tbVideoGuid.Text = VideoGuid.ToString();
                 tbFileName.Text = v.FileName;
@@ -138,7 +138,7 @@ namespace Arsenal.Web
 
                 if (!VideoGuid.Equals(Guid.Empty))
                 {
-                    v = repo.Single<Video>(VideoGuid);
+                    v = _repo.Single<Video>(VideoGuid);
                 }
                 else
                 {
@@ -189,13 +189,13 @@ namespace Arsenal.Web
 
                 if (VideoGuid != Guid.Empty)
                 {
-                    repo.Update(v);
+                    _repo.Update(v);
                     ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
                         "alert('更新成功');window.location.href = window.location.href", true);
                 }
                 else
                 {
-                    repo.Insert(v);
+                    _repo.Insert(v);
                     ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
                         "alert('添加成功');window.location.href = window.location.href", true);
                 }
@@ -225,7 +225,7 @@ namespace Arsenal.Web
             {
                 if (VideoGuid != Guid.Empty)
                 {
-                    repo.Delete<Video>(VideoGuid);
+                    _repo.Delete<Video>(VideoGuid);
 
                     ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
                         "alert('删除成功');window.location.href='AdminVideo.aspx'", true);
@@ -241,25 +241,24 @@ namespace Arsenal.Web
             }
         }
 
-        private void BindMatchData(Guid LeagueGuid)
+        private void BindMatchData(Guid leagueGuid)
         {
-            var _strRound = string.Empty;
-
             ddlMatch.Items.Clear();
 
-            var query = Match.Cache.MatchList.FindAll(x => x.IsActive && x.LeagueGuid.Equals(LeagueGuid));
+            var query = Match.Cache.MatchList.FindAll(x => x.IsActive && x.LeagueGuid.Equals(leagueGuid));
 
-            if (query != null && query.Count > 0)
+            if (query.Count > 0)
             {
                 foreach (var m in query)
                 {
+                    string strRound;
                     if (m.Round.HasValue)
-                        _strRound = string.Format("【{0}】", m.Round.Value);
+                        strRound = string.Format("【{0}】", m.Round.Value);
                     else
-                        _strRound = string.Empty;
+                        strRound = string.Empty;
 
                     ddlMatch.Items.Add(
-                        new ListItem(string.Format("【{0}】-{1}- {2}", m.IsHome ? "主" : "客", _strRound, m.TeamName),
+                        new ListItem($"【{(m.IsHome ? "主" : "客")}】-{strRound}- {m.TeamName}",
                             m.ID.ToString()));
                 }
             }
@@ -271,9 +270,9 @@ namespace Arsenal.Web
             ddlMatch.Items.Insert(0, new ListItem("--请选择比赛对阵--", string.Empty));
         }
 
-        private void BindOponnentData(Guid MatchGuid)
+        private void BindOponnentData(Guid matchGuid)
         {
-            var m = Match.Cache.Load(MatchGuid);
+            var m = Match.Cache.Load(matchGuid);
 
             if (m != null)
             {

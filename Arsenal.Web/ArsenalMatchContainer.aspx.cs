@@ -76,9 +76,10 @@ namespace Arsenal.Web
                         strTeamInfo =
                             $"<span style=\"left:0px\">{m1.ResultHome.Value}</span><span style=\"right:0px\">{m1.ResultAway.Value}</span>{strTeamInfo}";
 
-                    strMatch1 = string.Format(strMatchInfoPrev, m1.LeagueGuid.Value, strLeagueInfo, strTeamInfo,
-                        m1.PlayTime.ToString("yyyy-MM-dd HH:mm"),
-                        m1.CasinoMatchGuid?.ToString() ?? string.Empty, m1.CasinoMatchGuid.HasValue ? "inline" : "none");
+                    if (m1.LeagueGuid != null)
+                        strMatch1 = string.Format(strMatchInfoPrev, m1.LeagueGuid.Value, strLeagueInfo, strTeamInfo,
+                            m1.PlayTime.ToString("yyyy-MM-dd HH:mm"),
+                            m1.CasinoMatchGuid?.ToString() ?? string.Empty, m1.CasinoMatchGuid.HasValue ? "inline" : "none");
                 }
 
                 // Output First Match After DateTime.Now
@@ -110,9 +111,11 @@ namespace Arsenal.Web
                     strTeamInfo = string.Format(strMatchTeamInfo, tHome.TeamEnglishName, tHome.TeamDisplayName,
                         tHome.TeamLogo, tAway.TeamLogo, tAway.TeamEnglishName, tAway.TeamDisplayName, tHome.ID, tAway.ID,
                         m2.CasinoMatchGuid?.ToString() ?? string.Empty);
-                    strMatch2 = string.Format(strMatchInfoNext, m2.LeagueGuid.Value, strLeagueInfo, strTeamInfo,
-                        m2.PlayTime.ToString("yyyy-MM-dd HH:mm"),
-                        m2.CasinoMatchGuid?.ToString() ?? string.Empty, m2.CasinoMatchGuid.HasValue ? "inline" : "none");
+
+                    if (m2.LeagueGuid != null)
+                        strMatch2 = string.Format(strMatchInfoNext, m2.LeagueGuid.Value, strLeagueInfo, strTeamInfo,
+                            m2.PlayTime.ToString("yyyy-MM-dd HH:mm"),
+                            m2.CasinoMatchGuid?.ToString() ?? string.Empty, m2.CasinoMatchGuid.HasValue ? "inline" : "none");
                 }
 
                 // Output Second Match After DateTime.Now
@@ -144,9 +147,11 @@ namespace Arsenal.Web
                     strTeamInfo = string.Format(strMatchTeamInfo, tHome.TeamEnglishName, tHome.TeamDisplayName,
                         tHome.TeamLogo, tAway.TeamLogo, tAway.TeamEnglishName, tAway.TeamDisplayName, tHome.ID, tAway.ID,
                         m3.CasinoMatchGuid?.ToString() ?? string.Empty);
-                    strMatch3 = string.Format(strMatchInfoNext, m3.LeagueGuid.Value, strLeagueInfo, strTeamInfo,
-                        m3.PlayTime.ToString("yyyy-MM-dd HH:mm"),
-                        m3.CasinoMatchGuid?.ToString() ?? string.Empty, m3.CasinoMatchGuid.HasValue ? "inline" : "none");
+
+                    if (m3.LeagueGuid != null)
+                        strMatch3 = string.Format(strMatchInfoNext, m3.LeagueGuid.Value, strLeagueInfo, strTeamInfo,
+                            m3.PlayTime.ToString("yyyy-MM-dd HH:mm"),
+                            m3.CasinoMatchGuid?.ToString() ?? string.Empty, m3.CasinoMatchGuid.HasValue ? "inline" : "none");
                 }
 
                 Response.Write(

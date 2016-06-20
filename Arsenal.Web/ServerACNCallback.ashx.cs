@@ -1,21 +1,27 @@
 ﻿using System;
 using System.IO;
 using System.Net;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
 using System.Web;
 using System.Xml;
 using Arsenal.Service;
+using Arsenalcn.Core.Logger;
+using Arsenalcn.Core.Utility;
 
 namespace Arsenal.Web
 {
     public class ServerACNCallback : IHttpHandler
     {
+        private readonly ILog _log = new UserLog();
+
         public void ProcessRequest(HttpContext context)
         {
-            var authToken = string.Empty;
-            var nextURL = "/default.aspx";
-            var gotoURL = string.Empty;
+            string authToken;
+            var nextUrl = "/default.aspx";
+            string gotoURL;
 
             try
             {
@@ -25,10 +31,10 @@ namespace Arsenal.Web
                     throw new Exception("auth_token is invalid");
 
                 if (!string.IsNullOrEmpty(context.Request.QueryString["next"]))
-                    nextURL = context.Request.QueryString["next"];
+                    nextUrl = context.Request.QueryString["next"];
 
                 //New HttpWebRequest for DiscuzNT Service API
-                var req = (HttpWebRequest) WebRequest.Create(ConfigGlobal_Arsenal.APIServiceURL);
+                var req = (HttpWebRequest)WebRequest.Create(ConfigGlobal_Arsenal.APIServiceURL);
 
                 req.Method = "POST";
                 req.ContentType = "application/x-www-form-urlencoded";
@@ -62,28 +68,51 @@ namespace Arsenal.Web
                         xml.Load(sr);
 
                         //Build Member & ACNUser Cookie Information
-                        if (xml.HasChildNodes && !xml.FirstChild.NextSibling.Name.Equals("error_response"))
+                        if (xml.HasChildNodes && xml.FirstChild.NextSibling != null && !xml.FirstChild.NextSibling.Name.Equals("error_response"))
                         {
-                            context.Response.SetCookie(new HttpCookie("session_key",
-                                xml.GetElementsByTagName("session_key").Item(0).InnerText));
-                            context.Response.SetCookie(new HttpCookie("uid",
-                                xml.GetElementsByTagName("uid").Item(0).InnerText));
-                            context.Response.SetCookie(new HttpCookie("user_name",
-                                HttpUtility.UrlEncode(xml.GetElementsByTagName("user_name").Item(0).InnerText)));
+                            var nodeSessionKey = xml.GetElementsByTagName("session_key").Item(0);
+                            var nodeUid = xml.GetElementsByTagName("uid").Item(0);
+                            var nodeUserName = xml.GetElementsByTagName("user_name").Item(0);
+
+                            if (nodeSessionKey != null && nodeUid != null && nodeUserName != null)
+                            {
+                                context.Response.SetCookie(new HttpCookie("session_key", nodeSessionKey.InnerText));
+                                context.Response.SetCookie(new HttpCookie("uid", nodeUid.InnerText));
+                                context.Response.SetCookie(new HttpCookie("user_name", HttpUtility.UrlEncode(nodeUserName.InnerText)));
+
+                                var logPara = new LogInfo
+                                {
+                                    MethodInstance = MethodBase.GetCurrentMethod(),
+                                    ThreadInstance = Thread.CurrentThread,
+                                    UserClient = new UserClientInfo
+                                    {
+                                        UserID = Convert.ToInt32(nodeUid.InnerText),
+                                        UserName = HttpUtility.UrlEncode(nodeUserName.InnerText),
+                                        UserIP = IPLocation.GetIP(),
+                                        UserBrowser = BrowserInfo.GetBrowser(),
+                                        UserOS = OSInfo.GetOS()
+                                    }
+                                };
+
+                                _log.Info("ACN用户验证登录成功", logPara);
+                            }
                         }
                         else
                         {
-                            var error_code = xml.GetElementsByTagName("error_code").Item(0).InnerText;
-                            var error_msg = xml.GetElementsByTagName("error_msg").Item(0).InnerText;
-                            throw new Exception(string.Format("({0}) {1}", error_code, error_msg));
+                            var nodeErrorCode = xml.GetElementsByTagName("error_code").Item(0);
+                            var nodeMsg = xml.GetElementsByTagName("error_msg").Item(0);
+                            if (nodeErrorCode != null && nodeMsg != null)
+                            {
+                                throw new Exception($"({nodeErrorCode.InnerText}) {nodeMsg.InnerText}");
+                            }
                         }
 
-                        gotoURL = nextURL;
+                        gotoURL = nextUrl;
                     }
                     else
                     {
-                        gotoURL = string.Format("{0}?api_key={1}&next={2}", ConfigGlobal_Arsenal.APILoginURL,
-                            ConfigGlobal_Arsenal.APIAppKey, nextURL);
+                        gotoURL =
+                            $"{ConfigGlobal_Arsenal.APILoginURL}?api_key={ConfigGlobal_Arsenal.APIAppKey}&next={nextUrl}";
                     }
 
                     context.Response.Redirect(gotoURL, false);
@@ -92,15 +121,27 @@ namespace Arsenal.Web
             }
             catch (Exception ex)
             {
-                var errorMsg = ex.Message;
-                context.Response.Redirect(nextURL);
+                var logPara = new LogInfo
+                {
+                    MethodInstance = MethodBase.GetCurrentMethod(),
+                    ThreadInstance = Thread.CurrentThread,
+                    UserClient = new UserClientInfo
+                    {
+                        UserID = -1,
+                        UserName = string.Empty,
+                        UserIP = IPLocation.GetIP(),
+                        UserBrowser = BrowserInfo.GetBrowser(),
+                        UserOS = OSInfo.GetOS()
+                    }
+                };
+
+                _log.Warn(ex, logPara);
+
+                context.Response.Redirect(nextUrl);
             }
         }
 
-        public bool IsReusable
-        {
-            get { return true; }
-        }
+        public bool IsReusable => true;
 
         private string getMd5Hash(string input)
         {

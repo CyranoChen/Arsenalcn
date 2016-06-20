@@ -10,7 +10,7 @@ namespace Arsenal.Web
 {
     public partial class AdminMatch : AdminPageBase
     {
-        private readonly IRepository repo = new Repository();
+        private readonly IRepository _repo = new Repository();
 
         private Guid? _matchGuid;
 
@@ -63,16 +63,16 @@ namespace Arsenal.Web
 
         private void BindData()
         {
-            var list = repo.All<Match>().FindAll(x =>
+            var list = _repo.All<Match>().FindAll(x =>
             {
                 var returnValue = true;
-                var tmpString = string.Empty;
+                string tmpString;
 
                 if (ViewState["LeagueGuid"] != null)
                 {
                     tmpString = ViewState["LeagueGuid"].ToString();
                     if (!string.IsNullOrEmpty(tmpString))
-                        returnValue = returnValue && x.LeagueGuid.Equals(new Guid(tmpString));
+                        returnValue = x.LeagueGuid.Equals(new Guid(tmpString));
                 }
 
                 if (ViewState["TeamGuid"] != null)
@@ -141,7 +141,7 @@ namespace Arsenal.Web
         protected void gvMatch_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
             gvMatch.PageIndex = e.NewPageIndex;
-            MatchGuid = Guid.Empty;
+            MatchGuid = null;
 
             BindData();
         }
@@ -151,7 +151,7 @@ namespace Arsenal.Web
             if (e.PageIndex > 0)
             {
                 gvMatch.PageIndex = e.PageIndex;
-                MatchGuid = Guid.Empty;
+                MatchGuid = null;
             }
 
             BindData();
@@ -161,8 +161,9 @@ namespace Arsenal.Web
         {
             if (gvMatch.SelectedIndex != -1)
             {
-                Response.Redirect(string.Format("AdminMatchView.aspx?MatchGuid={0}",
-                    gvMatch.DataKeys[gvMatch.SelectedIndex].Value));
+                var key = gvMatch.DataKeys[gvMatch.SelectedIndex];
+                if (key != null)
+                    Response.Redirect($"AdminMatchView.aspx?MatchGuid={key.Value}");
             }
         }
 
@@ -216,7 +217,7 @@ namespace Arsenal.Web
             else
                 ViewState["LeagueGuid"] = string.Empty;
 
-            MatchGuid = Guid.Empty;
+            MatchGuid = null;
             gvMatch.PageIndex = 0;
 
             BindData();
@@ -229,7 +230,7 @@ namespace Arsenal.Web
             else
                 ViewState["TeamGuid"] = string.Empty;
 
-            MatchGuid = Guid.Empty;
+            MatchGuid = null;
             gvMatch.PageIndex = 0;
 
             BindData();
@@ -242,7 +243,7 @@ namespace Arsenal.Web
             else
                 ViewState["IsHome"] = string.Empty;
 
-            MatchGuid = Guid.Empty;
+            MatchGuid = null;
             gvMatch.PageIndex = 0;
 
             BindData();

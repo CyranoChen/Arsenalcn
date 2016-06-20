@@ -14,7 +14,7 @@ namespace Arsenal.Web
             }
             else
             {
-                ltrlPluginName.Text = string.Format("<strong>欢迎进入{0}</strong>", ConfigGlobal_Arsenal.PluginDisplayName);
+                ltrlPluginName.Text = $"<strong>欢迎进入{ConfigGlobal_Arsenal.PluginDisplayName}</strong>";
 
                 if (ConfigGlobal_Arsenal.IsPluginAdmin(UID))
                     pnlAdmin.Visible = true;

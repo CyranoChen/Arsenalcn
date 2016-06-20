@@ -49,7 +49,7 @@ namespace Arsenal.Web
                 {
                     tmpString = ViewState["UserName"].ToString();
                     if (!string.IsNullOrEmpty(tmpString) && tmpString != "--会员用户名--")
-                        returnValue = returnValue && x.UserName.ToLower().Contains(tmpString.ToLower());
+                        returnValue = x.UserName.ToLower().Contains(tmpString.ToLower());
                 }
 
                 return returnValue;

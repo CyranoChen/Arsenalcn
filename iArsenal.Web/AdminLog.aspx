@@ -23,7 +23,6 @@ CodeBehind="AdminLog.aspx.cs" Inherits="iArsenal.Web.AdminLog" Title="后台管�
         <div class="FunctionBar">
             <div class="DivFloatLeft">
                 <asp:DropDownList ID="ddlLogger" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlLogger_SelectedIndexChanged">
-                    <asp:ListItem Value="" Text="--类型--"></asp:ListItem>
                     <asp:ListItem Value="UserLog" Text="用户"></asp:ListItem>
                     <asp:ListItem Value="AppLog" Text="应用"></asp:ListItem>
                     <asp:ListItem Value="DaoLog" Text="数据"></asp:ListItem>

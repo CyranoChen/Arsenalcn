@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Web.UI.WebControls;
 using Arsenalcn.Core;
 using Arsenalcn.Core.Logger;
@@ -41,19 +42,40 @@ namespace iArsenal.Web
 
         private void BindData()
         {
-            var list = repo.Query<Log>(x => x.IsException == Convert.ToBoolean(ddlException.SelectedValue))
-                .FindAll(x =>
+            List<Log> list;
+
+            if (!string.IsNullOrEmpty(ddlLogger.SelectedValue) && ddlLogger.SelectedValue.Equals("DaoLog", StringComparison.OrdinalIgnoreCase)
+                && !Convert.ToBoolean(ddlException.SelectedValue))
+            {
+                // DaoLog, NoException, 5 days' log
+                list = repo.Query<Log>(x =>
+                    x.IsException == Convert.ToBoolean(ddlException.SelectedValue) &&
+                    x.Logger == ddlLogger.SelectedValue && x.CreateTime >= DateTime.Now.AddDays(-5));
+            }
+            else if (!string.IsNullOrEmpty(ddlLogger.SelectedValue))
+            {
+                list = repo.Query<Log>(x =>
+                    x.IsException == Convert.ToBoolean(ddlException.SelectedValue) &&
+                    x.Logger == ddlLogger.SelectedValue);
+            }
+            else
+            {
+                list = repo.Query<Log>(x =>
+                    x.IsException == Convert.ToBoolean(ddlException.SelectedValue));
+            }
+
+            list = list.FindAll(x =>
             {
                 var returnValue = true;
                 var tmpString = string.Empty;
 
-                if (ViewState["Logger"] != null)
-                {
-                    tmpString = ViewState["Logger"].ToString();
-                    if (!string.IsNullOrEmpty(tmpString))
-                        returnValue = returnValue &&
-                                      x.Logger.ToString().Equals(tmpString, StringComparison.OrdinalIgnoreCase);
-                }
+                //if (ViewState["Logger"] != null)
+                //{
+                //    tmpString = ViewState["Logger"].ToString();
+                //    if (!string.IsNullOrEmpty(tmpString))
+                //        returnValue = returnValue &&
+                //                      x.Logger.ToString().Equals(tmpString, StringComparison.OrdinalIgnoreCase);
+                //}
 
                 if (ViewState["Level"] != null)
                 {
@@ -216,10 +238,10 @@ namespace iArsenal.Web
 
         protected void ddlLogger_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(ddlLogger.SelectedValue))
-                ViewState["Logger"] = ddlLogger.SelectedValue;
-            else
-                ViewState["Logger"] = string.Empty;
+            //if (!string.IsNullOrEmpty(ddlLogger.SelectedValue))
+            //    ViewState["Logger"] = ddlLogger.SelectedValue;
+            //else
+            //    ViewState["Logger"] = string.Empty;
 
             LogID = 0;
             gvLog.PageIndex = 0;

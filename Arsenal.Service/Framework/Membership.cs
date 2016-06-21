@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Data.SqlTypes;
 using Arsenalcn.Core;
 using DataReaderMapper;
 
@@ -13,6 +14,31 @@ namespace Arsenal.Service
             var map = Mapper.CreateMap<IDataReader, Membership>();
 
             map.ForMember(d => d.ID, opt => opt.MapFrom(s => (Guid) s.GetValue("UserGuid")));
+        }
+
+        public void Init()
+        {
+            var defaultMinDate = Convert.ToDateTime(SqlDateTime.MinValue.ToString());
+
+            UserName = string.Empty;
+            Password = string.Empty;
+            PasswordFormat = 1;
+            PasswordSalt = string.Empty;
+            Mobile = string.Empty;
+            Email = string.Empty;
+            PasswordQuestion = string.Empty;
+            PasswordAnswer = string.Empty;
+            IsApproved = true;
+            IsLockedOut = false;
+            CreateDate = DateTime.Now;
+            LastLoginDate = DateTime.Now;
+            LastPasswordChangedDate = DateTime.Now;
+            LastLockoutDate = defaultMinDate;
+            FailedPasswordAttemptCount = 0;
+            FailedPasswordAttemptWindowStart = defaultMinDate;
+            FailedPasswordAnswerAttemptCount = 0;
+            FailedPasswordAnswerAttemptWindowsStart = defaultMinDate;
+            Remark = string.Empty;
         }
 
         public object SignIn()

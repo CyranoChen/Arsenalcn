@@ -65,6 +65,7 @@
     <Content Include="AdminLogSignIn.aspx" />
     <Content Include="AdminLogView.aspx" />
     <Content Include="AdminLog.aspx" />
+    <Content Include="AdminMembershipView.aspx" />
     <Content Include="AdminSchedule.aspx" />
     <Content Include="AdminConfig.aspx" />
     <Content Include="AdminLeague.aspx" />
@@ -170,6 +171,13 @@
     </Compile>
     <Compile Include="AdminLog.aspx.designer.cs">
       <DependentUpon>AdminLog.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminMembershipView.aspx.cs">
+      <DependentUpon>AdminMembershipView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminMembershipView.aspx.designer.cs">
+      <DependentUpon>AdminMembershipView.aspx</DependentUpon>
     </Compile>
     <Compile Include="AdminSchedule.aspx.cs">
       <DependentUpon>AdminSchedule.aspx</DependentUpon>

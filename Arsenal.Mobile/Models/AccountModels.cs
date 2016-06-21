@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Data.SqlClient;
-using System.Data.SqlTypes;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Reflection;
@@ -21,31 +20,6 @@ namespace Arsenal.Mobile.Models
     public class MembershipDto : Membership
     {
         private readonly ILog _log = new AppLog();
-
-        private void Init()
-        {
-            var defaultMinDate = Convert.ToDateTime(SqlDateTime.MinValue.ToString());
-
-            UserName = string.Empty;
-            Password = string.Empty;
-            PasswordFormat = 1;
-            PasswordSalt = string.Empty;
-            Mobile = string.Empty;
-            Email = string.Empty;
-            PasswordQuestion = string.Empty;
-            PasswordAnswer = string.Empty;
-            IsApproved = true;
-            IsLockedOut = false;
-            CreateDate = DateTime.Now;
-            LastLoginDate = DateTime.Now;
-            LastPasswordChangedDate = defaultMinDate;
-            LastLockoutDate = defaultMinDate;
-            FailedPasswordAttemptCount = 0;
-            FailedPasswordAttemptWindowStart = defaultMinDate;
-            FailedPasswordAnswerAttemptCount = 0;
-            FailedPasswordAnswerAttemptWindowsStart = defaultMinDate;
-            Remark = string.Empty;
-        }
 
         //
         // Summary:

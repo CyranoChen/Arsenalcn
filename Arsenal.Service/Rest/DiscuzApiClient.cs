@@ -13,19 +13,13 @@ namespace Arsenal.Service
             CryptographicKey = ConfigGlobal_Arsenal.APICryptographicKey;
         }
 
-        #region Members and Properties
-
-        public string AuthToken { get; set; }
-
-        #endregion
-
         public string AuthValidate(string username, string password, string passwordFormat = "md5")
         {
             Contract.Requires(!string.IsNullOrEmpty(username));
             Contract.Requires(!string.IsNullOrEmpty(password));
 
             Method = "auth.validate";
-            Format = ResponseType.JSON;
+            Format = ResponseType.Json;
 
             SetDefaultParameters();
 
@@ -37,7 +31,7 @@ namespace Arsenal.Service
                 Parameters.Add("password_format", passwordFormat);
             }
 
-            return GetResponse();
+            return ApiPost();
         }
 
         public string AuthRegister(string username, string password, string email, string passwordFormat = "md5")
@@ -47,7 +41,7 @@ namespace Arsenal.Service
             Contract.Requires(!string.IsNullOrEmpty(email));
 
             Method = "auth.register";
-            Format = ResponseType.JSON;
+            Format = ResponseType.Json;
 
             SetDefaultParameters();
 
@@ -60,7 +54,7 @@ namespace Arsenal.Service
                 Parameters.Add("password_format", passwordFormat);
             }
 
-            return GetResponse();
+            return ApiPost();
         }
 
         public string UsersChangePassword(int uid, string oldPassword, string newPassword, string passwordFormat = "md5")
@@ -70,7 +64,7 @@ namespace Arsenal.Service
             Contract.Requires(!string.IsNullOrEmpty(newPassword));
 
             Method = "users.changepassword";
-            Format = ResponseType.JSON;
+            Format = ResponseType.Json;
 
             SetDefaultParameters();
 
@@ -84,21 +78,22 @@ namespace Arsenal.Service
                 Parameters.Add("password_format", passwordFormat);
             }
 
-            return GetResponse();
+            return ApiPost();
         }
 
+        // ReSharper disable once InconsistentNaming
         public string UsersGetID(string username)
         {
             Contract.Requires(!string.IsNullOrEmpty(username));
 
             Method = "users.getid";
-            Format = ResponseType.JSON;
+            Format = ResponseType.Json;
 
             SetDefaultParameters();
 
             Parameters.Add("user_name", username);
 
-            return GetResponse();
+            return ApiPost();
         }
 
         public string UsersGetInfo(int[] uids, string[] fields)
@@ -107,14 +102,14 @@ namespace Arsenal.Service
             Contract.Requires(fields.Length > 0);
 
             Method = "users.getinfo";
-            Format = ResponseType.JSON;
+            Format = ResponseType.Json;
 
             SetDefaultParameters();
 
             Parameters.Add("uids", string.Join(",", uids.ToArray()));
             Parameters.Add("fields", string.Join(",", fields.ToArray()));
 
-            return GetResponse();
+            return ApiPost();
         }
     }
 }

@@ -12,7 +12,7 @@ namespace Arsenal.Service.Casino
             Mapper.CreateMap<IDataReader, Rank>();
         }
 
-        public void Initial(GamblerDW winner, GamblerDW loser, GamblerDW rper)
+        public void Init(GamblerDW winner, GamblerDW loser, GamblerDW rper)
         {
             if (winner != null)
             {

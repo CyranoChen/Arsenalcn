@@ -158,7 +158,7 @@ namespace Arsenalcn.Core.Tests.Scheduler
                         if (rank != null)
                         {
                             //update
-                            rank.Initial(winner, loser, rper);
+                            rank.Init(winner, loser, rper);
 
                             repo.Update(rank);
                         }
@@ -166,7 +166,7 @@ namespace Arsenalcn.Core.Tests.Scheduler
                         {
                             //insert
                             var instance = new Rank { RankYear = day.Year, RankMonth = day.Month };
-                            instance.Initial(winner, loser, rper);
+                            instance.Init(winner, loser, rper);
 
                             repo.Insert(instance);
                         }

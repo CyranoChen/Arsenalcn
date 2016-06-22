@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Net;
-using System.Text;
 using System.Web;
 using System.Web.Caching;
 using Arsenalcn.Core;
+using Newtonsoft.Json.Linq;
 
 namespace Arsenal.Service
 {
@@ -16,18 +13,18 @@ namespace Arsenal.Service
             ServiceUrl = ConfigGlobal_Arsenal.WeChatServiceURL;
             AppKey = ConfigGlobal_Arsenal.WeChatAppKey;
             CryptographicKey = ConfigGlobal_Arsenal.WeChatAppSecret;
-
-            Init();
         }
 
         #region Members and Properties
 
-        public string AccessToken { get; set; }
+        protected string AccessToken { get; set; }
 
         #endregion
 
         private void Init()
         {
+            if (!ConfigGlobal_Arsenal.WeChatActive) { return; }
+
             var context = HttpContext.Current;
 
             // Get access_token by using System.Web.Caching
@@ -38,90 +35,47 @@ namespace Arsenal.Service
             else
             {
                 // Get access token
+                // http请求方式: GET
                 // https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET
                 // {"access_token":"ACCESS_TOKEN","expires_in":7200}
 
-                var uri = string.Format("{0}token?grant_type=client_credential&appid={1}&secret={2}",
-                    ServiceUrl, AppKey, CryptographicKey);
+                var uri = $"{ServiceUrl}token?grant_type=client_credential&appid={AppKey}&secret={CryptographicKey}";
 
-                var client = new WebClient();
+                var responseResult = ApiGet(uri);
 
-                using (var responseStream = client.OpenRead(uri))
+                if (string.IsNullOrEmpty(responseResult))
                 {
-                    var readStream = new StreamReader(responseStream, Encoding.UTF8);
+                    throw new Exception("WeChatApiClient.Init() responseResult is null");
+                }
 
-                    var responseResult = readStream.ReadToEnd();
+                var json = JToken.Parse(responseResult);
 
+                if (json["access_token"] != null && json["expires_in"] != null)
+                {
                     // Set access_token by using System.Web.Caching
-                    AddItemToCache("AccessToken", responseResult, 3600);
-
-                    AccessToken = context.Cache["AccessToken"].ToString();
+                    AccessToken = AddItemToCache("AccessToken",
+                        json["access_token"], json["expires_in"].Value<double>()).ToString();
+                }
+                else
+                {
+                    // TODO 反序列化成异常对象，并抛出
                 }
             }
         }
 
-        //static bool itemRemoved = false;
-        //static CacheItemRemovedReason reason;
-        //CacheItemRemovedCallback onRemove = null;
-
-        private void RemovedCallback(string k, object v, CacheItemRemovedReason r)
+        private object AddItemToCache(string key, object value, double expires)
         {
-            //itemRemoved = true;
-            //reason = r;
-        }
-
-        private void AddItemToCache(string key, object value, double expires)
-        {
-            //itemRemoved = false;
-
-            var onRemove = new CacheItemRemovedCallback(RemovedCallback);
-
             if (HttpContext.Current.Cache[key] == null)
                 HttpContext.Current.Cache.Add(key, value, null, DateTime.Now.AddSeconds(expires), TimeSpan.Zero,
-                    CacheItemPriority.High, onRemove);
+                    CacheItemPriority.High, null);
+
+            return value;
         }
+    }
 
-        //public void RemoveItemFromCache(Object sender, EventArgs e)
-        //{
-        //    if (Cache["Key1"] != null)
-        //        Cache.Remove("Key1");
-        //}
-
-        protected override void SetDefaultParameters()
-        {
-            Parameters = new SortedDictionary<string, string>();
-
-            if (!string.IsNullOrEmpty(AppKey))
-            {
-                Parameters.Add("api_key", AppKey);
-            }
-            else
-            {
-                throw new ArgumentNullException("AppKey");
-            }
-
-            if (!string.IsNullOrEmpty(Method))
-            {
-                Parameters.Add("method", Method);
-            }
-            else
-            {
-                throw new ArgumentNullException("Method");
-            }
-
-            if (!string.IsNullOrEmpty(AccessToken))
-            {
-                Parameters.Add("access_token", AccessToken);
-            }
-            else
-            {
-                throw new ArgumentNullException("AccessToken");
-            }
-
-            if (!string.IsNullOrEmpty(Format.ToString()))
-            {
-                Parameters.Add("format", Format.ToString());
-            }
-        }
+    public enum ScopeType
+    {
+        snsapi_base,
+        snsapi_userinfo
     }
 }

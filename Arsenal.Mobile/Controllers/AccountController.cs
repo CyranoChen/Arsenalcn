@@ -2,6 +2,8 @@
 using System.Web.Mvc;
 using System.Web.Security;
 using Arsenal.Mobile.Models;
+using Arsenal.Service;
+using Arsenal.Service.Rest;
 using Arsenalcn.Core;
 using Arsenalcn.Core.Utility;
 using Membership = Arsenal.Service.Membership;
@@ -30,6 +32,49 @@ namespace Arsenal.Mobile.Controllers
             return View();
         }
 
+        [AllowAnonymous]
+        public ActionResult LoginWeChat()
+        {
+            var user = UserDto.GetSession();
+
+            var client = new WeChatSnsClient();
+            var openUri = client.GetOpenUrl("http://mobile.arsenal.cn/Account/WeChatAuth", ScopeType.snsapi_base, user.ID.ToString());
+
+            if (!string.IsNullOrEmpty(openUri))
+            {
+                TempData["DataUrl"] = $"data-url={openUri}";
+                return Redirect(openUri);
+            }
+
+            TempData["DataUrl"] = "data-url=/";
+            return RedirectToAction("Login", "Account");
+        }
+
+        // 
+        // GET: /Account/WeChatAuth
+
+        public ActionResult WeChatAuth(string code, string state)
+        {
+            var client = new WeChatSnsClient();
+
+            client.SetUserBaseInfo(code, new Guid(state));
+
+            if (HttpContext.Session != null)
+            {
+                ViewBag.AccessToken = HttpContext.Session["access_token"].ToString();
+                ViewBag.ExpiresIn = HttpContext.Session["expires_in"].ToString();
+                ViewBag.RefreshToken = HttpContext.Session["refresh_token"].ToString();
+                ViewBag.OpenId = HttpContext.Session["openid"].ToString();
+                ViewBag.Scope = HttpContext.Session["scope"].ToString();
+            }
+
+            ViewBag.Browser = HttpContext.Request.Browser.Capabilities[""].ToString();
+            ViewBag.IP = IPLocation.GetIP();
+            ViewBag.OS = OSInfo.GetOS();
+
+            return View();
+        }
+
         //
         // POST: /Account/Login
 
@@ -42,6 +87,7 @@ namespace Arsenal.Mobile.Controllers
             {
                 Membership mem;
                 int acnUid;
+                var loginSuccess = false;
 
                 if (MembershipDto.ValidateUser(model.UserName, out mem))
                 {
@@ -51,16 +97,12 @@ namespace Arsenal.Mobile.Controllers
                         FormsAuthentication.SetAuthCookie(mem.UserName, model.RememberMe);
                         UserDto.SetSession(mem.SignIn());
 
-                        if (Url.IsLocalUrl(returnUrl))
-                        {
-                            TempData["DataUrl"] = $"data-url={returnUrl}";
-                            return Redirect(returnUrl);
-                        }
-
-                        TempData["DataUrl"] = "data-url=/";
-                        return RedirectToAction("Index", "Home");
+                        loginSuccess = true;
                     }
-                    ModelState.AddModelError("Warn", "用户名或密码不正确");
+                    else
+                    {
+                        ModelState.AddModelError("Warn", "用户名或密码不正确");
+                    }
                 }
                 else if (MembershipDto.ValidateAcnUser(model.UserName, model.Password, out acnUid))
                 {
@@ -79,10 +121,12 @@ namespace Arsenal.Mobile.Controllers
                             FormsAuthentication.SetAuthCookie(membership.UserName, model.RememberMe);
                             UserDto.SetSession(membership.SignIn());
 
-                            TempData["DataUrl"] = "data-url=/";
-                            return RedirectToAction("Index", "Home");
+                            loginSuccess = true;
                         }
-                        ModelState.AddModelError("Warn", ErrorCodeToString(createStatus));
+                        else
+                        {
+                            ModelState.AddModelError("Warn", ErrorCodeToString(createStatus));
+                        }
                     }
                     else
                     {
@@ -92,6 +136,28 @@ namespace Arsenal.Mobile.Controllers
                 else
                 {
                     ModelState.AddModelError("Warn", "用户名不存在或密码不正确");
+                }
+
+                // 处理登录跳转，如果开启微信授权则跳转微信OpenUrl, 否则跳转返回路径, 最后跳转首页
+                if (loginSuccess)
+                {
+                    //var client = new WeChatApiClient();
+                    //var openUri = client.GetSnsOpenUrl("http://localhost:50743/Account/WeChatAuth", ScopeType.snsapi_userinfo, "123");
+
+                    //if (!string.IsNullOrEmpty(openUri))
+                    //{
+                    //    TempData["DataUrl"] = $"data-url={openUri}";
+                    //    return Redirect(openUri);
+                    //}
+
+                    if (Url.IsLocalUrl(returnUrl))
+                    {
+                        TempData["DataUrl"] = $"data-url={returnUrl}";
+                        return Redirect(returnUrl);
+                    }
+
+                    TempData["DataUrl"] = "data-url=/";
+                    return RedirectToAction("Index", "Home");
                 }
             }
 

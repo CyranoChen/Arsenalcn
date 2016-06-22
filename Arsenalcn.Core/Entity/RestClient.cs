@@ -9,13 +9,32 @@ namespace Arsenalcn.Core
 {
     public class RestClient
     {
-        protected virtual string GetResponse(RequestMethod method = RequestMethod.POST,
-            string contentType = "application/x-www-form-urlencoded")
+        protected virtual string ApiGet(string url)
+        {
+            if (!string.IsNullOrEmpty(url))
+            {
+                var client = new WebClient();
+
+                using (var responseStream = client.OpenRead(url))
+                {
+                    if (responseStream != null)
+                    {
+                        var readStream = new StreamReader(responseStream, Encoding.UTF8);
+
+                        return readStream.ReadToEnd();
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        protected virtual string ApiPost(string contentType = "application/x-www-form-urlencoded")
         {
             //New HttpWebRequest for DiscuzNT Service API
             var req = (HttpWebRequest)WebRequest.Create(ServiceUrl);
 
-            req.Method = method.ToString();
+            req.Method = RequestMethod.Post.ToString();
             req.ContentType = contentType;
 
             #region Set Signature & PostParas
@@ -27,14 +46,14 @@ namespace Arsenalcn.Core
             {
                 if (!string.IsNullOrEmpty(para.Value))
                 {
-                    sig.Append(string.Format("{0}={1}", para.Key, para.Value));
-                    postData.Append(string.Format("&{0}={1}", para.Key, para.Value));
+                    sig.Append($"{para.Key}={para.Value}");
+                    postData.Append($"&{para.Key}={para.Value}");
                 }
             }
 
             sig.Append(CryptographicKey);
 
-            var strParameter = string.Format("sig={0}{1}", Encrypt.GetMd5Hash(sig.ToString()), postData);
+            var strParameter = $"sig={Encrypt.GetMd5Hash(sig.ToString())}{postData}";
 
             #endregion
 
@@ -55,10 +74,8 @@ namespace Arsenalcn.Core
                     var readStream = new StreamReader(receiveStream, Encoding.UTF8);
                     return readStream.ReadToEnd();
                 }
-                else
-                {
-                    return null;
-                }
+
+                return null;
             }
         }
 
@@ -92,30 +109,30 @@ namespace Arsenalcn.Core
 
         #region Members and Properties
 
-        public string ServiceUrl { get; set; }
+        protected string ServiceUrl { get; set; }
 
-        public string AppKey { get; set; }
+        protected string AppKey { get; set; }
 
-        public string CryptographicKey { get; set; }
+        protected string CryptographicKey { get; set; }
 
-        public string Method { get; set; }
+        protected string Method { get; set; }
 
-        public ResponseType Format { get; set; }
+        protected ResponseType Format { get; set; }
 
-        public SortedDictionary<string, string> Parameters { get; set; }
+        protected SortedDictionary<string, string> Parameters { get; set; }
 
         #endregion
     }
 
     public enum ResponseType
     {
-        XML,
-        JSON
+        Xml,
+        Json
     }
 
     public enum RequestMethod
     {
-        GET,
-        POST
+        Get,
+        Post
     }
 }

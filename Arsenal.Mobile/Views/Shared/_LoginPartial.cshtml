@@ -1,6 +1,7 @@
 ﻿@if (Request.IsAuthenticated)
 {
-    @Html.ActionLink(User.Identity.Name, "MyAvatar", "Account", null, new { data_icon = "gear", data_transition = "slidedown" })
+    @Html.ActionLink(User.Identity.Name, "MyAvatar", "Account", null,
+            new { data_icon = "gear", data_transition = "slidedown", data_ajax = "false" })
 }
 else
 {

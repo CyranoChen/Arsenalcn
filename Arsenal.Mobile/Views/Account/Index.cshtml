@@ -22,8 +22,8 @@
         <b>@User.Identity.Name (@authorizedUser.AcnID) @authorizedUser.MemberName - @authorizedUser.LastActivityDate.ToString("yyyy-MM-dd HH:mm")</b>
     </p>
     <ul data-role="listview" data-inset="true">
-        <li>@Html.ActionLink("用户信息", "UserProfile")</li>
-        <li>@Html.ActionLink("密码修改", "ChangePassword")</li>
+        <li>@Html.ActionLink("用户信息", "UserProfile", null, new { data_transition = "slide" })</li>
+        <li>@Html.ActionLink("密码修改", "ChangePassword", null, new { data_transition = "slide" })</li>
         <li>@Html.ActionLink("签到记录", "MyLogSignIn", "Club", null, new { data_transition = "slide" })</li>
         <li>@Html.ActionLink("退出登录", "LogOff", null, new { data_ajax = "false" })</li>
     </ul>

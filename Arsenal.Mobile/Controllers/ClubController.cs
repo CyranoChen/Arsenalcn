@@ -18,6 +18,7 @@ namespace Arsenal.Mobile.Controllers
         private readonly IRepository _repo = new Repository();
         private readonly User _user = UserDto.GetSession();
 
+        // ReSharper disable once InconsistentNaming
         public int AcnID
         {
             get
@@ -50,6 +51,7 @@ namespace Arsenal.Mobile.Controllers
         public ActionResult SignInDaily()
         {
             var model = new SignInDailyDto();
+            var user = UserDto.GetSession();
 
             using (var conn = new SqlConnection(DataAccess.ConnectString))
             {
@@ -58,7 +60,6 @@ namespace Arsenal.Mobile.Controllers
 
                 try
                 {
-                    var user = UserDto.GetSession();
 
                     if (user != null && ConfigGlobal_AcnClub.SignInActive)
                     {
@@ -110,17 +111,78 @@ namespace Arsenal.Mobile.Controllers
                 }
             }
 
+            // 确定是否有活动补助金
+            model.IsContestBonus =
+                !_repo.Any<LogSignIn>(x => x.UserGuid == user.ID && x.Description == "euro2016 - bonus");
+
             return View(model);
         }
 
 
         // 领取补助金
         // GET: /Club/ContestBonus
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult ContestBonus()
         {
+            using (var conn = new SqlConnection(DataAccess.ConnectString))
+            {
+                conn.Open();
+                var trans = conn.BeginTransaction();
 
+                try
+                {
+                    var user = UserDto.GetSession();
+
+                    if (user != null && ConfigGlobal_AcnClub.SignInActive)
+                    {
+                        if (user.AcnID.HasValue && user.AcnID == AcnID &&
+                            !_repo.Any<LogSignIn>(x => x.UserGuid == user.ID && x.Description == "euro2016 - bonus"))
+                        {
+                            var gambler = _repo.Query<Gambler>(x => x.UserID == AcnID).FirstOrDefault();
+
+                            if (gambler == null)
+                            {
+                                throw new Exception("无对应博彩玩家");
+                            }
+
+                            var bonus = Convert.ToDouble(SignInDailyDto.BonusAmount);
+
+                            // do Contest Bonus
+                            var logSignIn = new LogSignIn
+                            {
+                                UserGuid = user.ID,
+                                UserName = user.UserName,
+                                SignInTime = DateTime.Now,
+                                Bonus = bonus,
+                                SignInDays = -1,
+                                Description = "euro2016 - bonus"
+                            };
+
+                            _repo.Insert(logSignIn, trans);
+
+                            // QSB
+                            if (bonus > 0)
+                            {
+                                gambler.Cash += bonus * ConfigGlobal_AcnCasino.ExchangeRate;
+
+                                _repo.Update(gambler, trans);
+                            }
+
+                            trans.Commit();
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception("当前无法领取活动补助金");
+                    }
+                }
+                catch
+                {
+                    trans.Rollback();
+                }
+            }
 
             TempData["DataUrl"] = "data-url=/Club/MyLogSignIn";
             return RedirectToAction("MyLogSignIn");

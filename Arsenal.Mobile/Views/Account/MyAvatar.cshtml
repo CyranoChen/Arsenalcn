@@ -1,0 +1,47 @@
+﻿@model Arsenal.Mobile.Models.MyAvatarDto
+@{
+    ViewBag.Title = "我的用户切换";
+}
+
+@section Header {
+    <div data-role="header" data-position="fixed">
+        @Html.ActionLink(User.Identity.Name, "Index", "Account", null, new { data_icon = "gear", data_transition = "slide" })
+        <h1 style="overflow: visible">@ViewBag.Title</h1>
+        @Html.Partial("_SignInPartial")
+    </div>
+}
+
+<div data-role="content">
+    <ul data-role="listview" data-inset="true" class="avatar-info-list">
+        <li data-role="list-divider">
+            我的用户账号
+            <span class="ui-li-count">@Model.Avatars.Count()</span>
+        </li>
+        @if (Model != null && Model.Avatars.Any())
+        {
+            foreach (var m in Model.Avatars)
+            {
+                if (m.UserName.Equals(User.Identity.Name, StringComparison.OrdinalIgnoreCase))
+                {
+                    <li class="curr">
+                        <a href="@Url.Action("UserProfile", "Account")" data-transition="slide">
+                            <h3>@m.UserName (@m.AcnID) @m.MemberName</h3>
+                            <p>@m.LastActivityDate.ToString("yyyy-MM-dd HH:mm")</p>
+                        </a>
+                        @Html.ActionLink("会员管理中心", "Index", "Account", null,
+                            new { data_icon = "gear", data_transition = "slide", data_iconpos = "notext" })
+                    </li>
+                }
+                else
+                {
+                    <li>
+                        <a href="@Url.Action("AvatarLogin", "Account", new { userGuid = m.ID })" data-ajax="false">
+                            <h3>@m.UserName (@m.AcnID) @m.MemberName</h3>
+                            <p>@m.LastActivityDate.ToString("yyyy-MM-dd HH:mm")</p>
+                        </a>
+                    </li>
+                }
+            }
+        }
+    </ul>
+</div>

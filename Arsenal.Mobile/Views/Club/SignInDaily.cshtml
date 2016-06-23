@@ -1,10 +1,10 @@
-﻿@using Arsenal.Mobile.Models
+﻿@using Arsenal.Mobile.Models.Club
 @using Arsenal.Service
-@model Arsenal.Mobile.Models.Club.SignInDailyDto
+@model SignInDailyDto
 @{
     ViewBag.Title = "每日签到栏";
 
-    var authorizedUser = UserDto.GetSession();
+    var bonus = SignInDailyDto.BonusAmount * ConfigGlobal_AcnCasino.ExchangeRate;
 }
 
 @section Header {
@@ -39,10 +39,10 @@
                 <li class="ui-field-contain">原持有现金<span class="ui-li-count">@Model.CurrentCash.ToString("N0")</span></li>
                 <li class="ui-field-contain">签到奖金<span class="ui-li-count">+@Model.Bonus.ToString("N0")</span></li>
                 <li class="ui-field-contain">当前现金<span class="ui-li-count">@Model.MyCash.ToString("N0")</span></li>
-                @if (authorizedUser.AcnID.HasValue && ConfigGlobal_Arsenal.IsPluginAdmin(authorizedUser.AcnID.Value))
+                @if (Model.IsContestBonus)
                 {
                     <li>
-                        <input type="submit" value="欧锦赛淘汰赛补助金 + 30000" data-icon="check" />
+                        <input type="submit" value="欧锦赛淘汰赛补助金 +@bonus.ToString("N0")" data-icon="check" />
                     </li>
                 }
             </ul>
@@ -50,9 +50,9 @@
         else if (Model.ContinuousSignInDays == 0)
         {
             <h2 style="text-align: center">您已经领取过今天的签到奖励</h2>
-            if (authorizedUser.AcnID.HasValue && ConfigGlobal_Arsenal.IsPluginAdmin(authorizedUser.AcnID.Value))
+            if (Model.IsContestBonus)
             {
-                <input type="submit" value="欧锦赛淘汰赛补助金 + 30000" data-icon="check" />
+                <input type="submit" value="欧锦赛淘汰赛补助金 +@bonus.ToString("N0")" data-icon="check" />
             }
         }
         else

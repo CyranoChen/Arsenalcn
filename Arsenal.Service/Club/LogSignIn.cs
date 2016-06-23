@@ -56,7 +56,7 @@ namespace Arsenal.Service.Club
 
             var retValue = 1;
 
-            var lastSignIn = repo.Query<LogSignIn>(x => x.UserGuid == userGuid).FirstOrDefault();
+            var lastSignIn = repo.Query<LogSignIn>(x => x.UserGuid == userGuid && x.SignInDays > 0).FirstOrDefault();
 
             if (lastSignIn != null)
             {

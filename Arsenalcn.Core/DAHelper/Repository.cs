@@ -59,23 +59,37 @@ namespace Arsenalcn.Core
             }
         }
 
-        public bool Any<T>(object key) where T : class, IViewer, new()
+        public int Count<T>(Expression<Func<T, bool>> whereBy) where T : class, IViewer, new()
         {
             try
             {
-                Contract.Requires(key != null);
+                Contract.Requires(whereBy != null);
 
                 var attr = GetTableAttr<T>();
 
-                string sql = $"SELECT * FROM {attr.Name} WHERE {attr.Key} = @key";
+                var sql = new StringBuilder();
+                sql.Append("SELECT COUNT(*) FROM " + attr.Name);
 
-                SqlParameter[] para = { new SqlParameter("@key", key) };
+                var condition = new ConditionBuilder();
+                condition.Build(whereBy.Body);
 
-                var ds = DataAccess.ExecuteDataset(sql, para);
+                if (!string.IsNullOrEmpty(condition.Condition))
+                {
+                    sql.Append(" WHERE " + condition.Condition);
+                }
 
-                var dt = ds.Tables[0];
+                object count;
 
-                return dt.Rows.Count > 0;
+                if (condition.SqlArguments != null && condition.SqlArguments.Count > 0)
+                {
+                    count = DataAccess.ExecuteScalar(sql.ToString(), condition.SqlArguments.ToArray());
+                }
+                else
+                {
+                    count = DataAccess.ExecuteScalar(sql.ToString());
+                }
+
+                return Convert.ToInt32(count);
             }
             catch (Exception ex)
             {
@@ -88,6 +102,42 @@ namespace Arsenalcn.Core
                 throw;
             }
         }
+
+        public bool Any<T>(object key) where T : class, IEntity
+        {
+            try
+            {
+                Contract.Requires(key != null);
+
+                var attr = GetTableAttr<T>();
+
+                string sql = $"SELECT COUNT(*) FROM {attr.Name} WHERE {attr.Key} = @key";
+
+                SqlParameter[] para = { new SqlParameter("@key", key) };
+
+                var count = DataAccess.ExecuteScalar(sql, para);
+
+                return Convert.ToInt32(count) > 0;
+            }
+            catch (Exception ex)
+            {
+                _log.Debug(ex, new LogInfo
+                {
+                    MethodInstance = MethodBase.GetCurrentMethod(),
+                    ThreadInstance = Thread.CurrentThread
+                });
+
+                throw;
+            }
+        }
+
+        public bool Any<T>(Expression<Func<T, bool>> whereBy) where T : class, IViewer, new()
+        {
+            Contract.Requires(whereBy != null);
+
+            return Count(whereBy) > 0;
+        }
+
 
         public List<T> All<T>() where T : class, IViewer, new()
         {
@@ -559,17 +609,7 @@ namespace Arsenalcn.Core
 
                 var key = instance.GetType().GetProperty("ID").GetValue(instance, null);
 
-                var attr = GetTableAttr<T>();
-
-                string sql = $"SELECT * FROM {attr.Name} WHERE {attr.Key} = @key";
-
-                SqlParameter[] para = { new SqlParameter("@key", key) };
-
-                var ds = DataAccess.ExecuteDataset(sql, para);
-
-                var dt = ds.Tables[0];
-
-                if (dt.Rows.Count > 0)
+                if (Any<T>(key))
                 {
                     Update(instance, trans);
                 }

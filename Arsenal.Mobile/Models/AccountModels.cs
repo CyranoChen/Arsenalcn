@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data.SqlClient;
 using System.Diagnostics.Contracts;
@@ -38,7 +39,7 @@ namespace Arsenal.Mobile.Models
         // Exceptions:
         //   System.ArgumentNullException:
         //     providerUserKey is null.
-        public static Membership GetMembership(object providerUserKey)
+        public static Membership Single(object providerUserKey)
         {
             Contract.Requires(providerUserKey != null);
 
@@ -49,7 +50,7 @@ namespace Arsenal.Mobile.Models
             return membership;
         }
 
-        public static Membership GetMembership(string username)
+        public static Membership Single(string username)
         {
             Contract.Requires(!string.IsNullOrEmpty(username));
 
@@ -303,7 +304,7 @@ namespace Arsenal.Mobile.Models
                         return;
                     }
 
-                    if (GetMembership(username) != null)
+                    if (Single(username) != null)
                     {
                         status = MembershipCreateStatus.DuplicateUserName;
                         return;
@@ -475,7 +476,7 @@ namespace Arsenal.Mobile.Models
 
     public class UserDto : User
     {
-        public static User GetUser(object providerUserKey)
+        public static User Single(object providerUserKey)
         {
             Contract.Requires(providerUserKey != null);
 
@@ -493,7 +494,7 @@ namespace Arsenal.Mobile.Models
             if (!string.IsNullOrEmpty(HttpContext.Current.User.Identity.Name))
             {
                 // Get username from User.Indentity.Name
-                var membership = MembershipDto.GetMembership(HttpContext.Current.User.Identity.Name);
+                var membership = MembershipDto.Single(HttpContext.Current.User.Identity.Name);
 
                 if (membership == null)
                 {
@@ -510,7 +511,7 @@ namespace Arsenal.Mobile.Models
         {
             Contract.Requires(providerUserKey != null);
 
-            var user = GetUser(providerUserKey);
+            var user = Single(providerUserKey);
 
             // update user lastActivityDate
             user.LastActivityDate = DateTime.Now;
@@ -531,7 +532,7 @@ namespace Arsenal.Mobile.Models
 
             object gamblerKey = null;
 
-            var user = GetUser(providerUserKey);
+            var user = Single(providerUserKey);
 
             if (user.AcnID > 0 && !string.IsNullOrEmpty(user.AcnUserName))
             {
@@ -662,6 +663,11 @@ namespace Arsenal.Mobile.Models
                 }
             }
         }
+    }
+
+    public class MyAvatarDto
+    {
+        public IEnumerable<UserDto> Avatars { get; set; }
     }
 
     public class UserProfileDto

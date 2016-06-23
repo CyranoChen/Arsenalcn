@@ -424,6 +424,7 @@
     <Content Include="Scripts\jquery-2.2.3.min.map" />
     <Content Include="Views\Casino\Contest.cshtml" />
     <Content Include="Views\Shared\Casino\_GamblerDWInfoPartial.cshtml" />
+    <Content Include="Views\Account\MyAvatar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -9,7 +9,10 @@ namespace Arsenalcn.Core
     {
         T Single<T>(object key) where T : class, IViewer, new();
 
-        bool Any<T>(object key) where T : class, IViewer, new();
+        int Count<T>(Expression<Func<T, bool>> whereBy) where T : class, IViewer, new();
+
+        bool Any<T>(object key) where T : class, IEntity;
+        bool Any<T>(Expression<Func<T, bool>> whereBy) where T : class, IViewer, new();
 
         List<T> All<T>() where T : class, IViewer, new();
         List<T> All<T>(IPager pager, string orderBy = null) where T : class, IViewer, new();

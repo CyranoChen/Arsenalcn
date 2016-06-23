@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 using System.Web.Security;
 using Arsenal.Mobile.Models;
@@ -6,6 +8,7 @@ using Arsenal.Service;
 using Arsenal.Service.Rest;
 using Arsenalcn.Core;
 using Arsenalcn.Core.Utility;
+using AutoMapper;
 using Newtonsoft.Json.Linq;
 using Membership = Arsenal.Service.Membership;
 
@@ -16,7 +19,7 @@ namespace Arsenal.Mobile.Controllers
     {
         private readonly IRepository _repo = new Repository();
 
-        //
+        // 用户中心
         // GET: /Account/Index
 
         public ActionResult Index()
@@ -34,9 +37,9 @@ namespace Arsenal.Mobile.Controllers
         }
 
         // 
-        // GET: /Account/LoginWeChat
+        // GET: /Account/WeChatLogin
 
-        public ActionResult LoginWeChat(ScopeType scope)
+        public ActionResult WeChatLogin(ScopeType scope)
         {
             var user = UserDto.GetSession();
 
@@ -82,7 +85,7 @@ namespace Arsenal.Mobile.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        //
+        // 统一用户认证登录
         // POST: /Account/Login
 
         [AllowAnonymous]
@@ -150,8 +153,8 @@ namespace Arsenal.Mobile.Controllers
                 {
                     if (BrowserInfo.IsWeChatClient() && ConfigGlobal_Arsenal.WeChatActive)
                     {
-                        TempData["DataUrl"] = $"data-url=/Account/LoginWeChat/?scope={ScopeType.snsapi_userinfo}";
-                        return RedirectToAction("LoginWeChat", "Account", new { scope = ScopeType.snsapi_userinfo });
+                        TempData["DataUrl"] = $"data-url=/Account/WeChatLogin/?scope={ScopeType.snsapi_userinfo}";
+                        return RedirectToAction("WeChatLogin", "Account", new { scope = ScopeType.snsapi_userinfo });
                     }
 
                     if (Url.IsLocalUrl(returnUrl))
@@ -222,8 +225,8 @@ namespace Arsenal.Mobile.Controllers
                     // 如果开启微信授权则跳转微信OpenUrl, 跳转首页
                     if (BrowserInfo.IsWeChatClient() && ConfigGlobal_Arsenal.WeChatActive)
                     {
-                        TempData["DataUrl"] = $"data-url=/Account/LoginWeChat/?scope={ScopeType.snsapi_base}";
-                        return RedirectToAction("LoginWeChat", "Account", new { scope = ScopeType.snsapi_base });
+                        TempData["DataUrl"] = $"data-url=/Account/WeChatLogin/?scope={ScopeType.snsapi_base}";
+                        return RedirectToAction("WeChatLogin", "Account", new { scope = ScopeType.snsapi_base });
                     }
 
                     TempData["DataUrl"] = "data-url=/";
@@ -237,14 +240,85 @@ namespace Arsenal.Mobile.Controllers
             return View(model);
         }
 
-        //
+
+        // 我的用户切换
+        // GET: /Account/MyAvatar
+
+        public ActionResult MyAvatar()
+        {
+            var model = new MyAvatarDto();
+
+            // 判断当前用户是否有马甲
+            var user = UserDto.GetSession();
+
+            // 如果超过一个相同的微信OpenID账号，则跳转MyAvatar
+            if (!string.IsNullOrEmpty(user.WeChatOpenID))
+            {
+                var query = _repo.Query<User>(x => x.WeChatOpenID == user.WeChatOpenID);
+
+                if (query.Count > 1)
+                {
+                    var mapper = new MapperConfiguration(cfg => cfg.CreateMap<User, UserDto>()).CreateMapper();
+
+                    var list = mapper.Map<IEnumerable<UserDto>>(query.AsEnumerable());
+
+                    model.Avatars = list;
+
+                    return View(model);
+                }
+            }
+
+            TempData["DataUrl"] = "data-url=/Account";
+            return RedirectToAction("Index", "Account");
+        }
+
+        // 切换用户账号
+        // GET: /Account/AvatarLogin
+
+        public ActionResult AvatarLogin(Guid userGuid)
+        {
+            var user = UserDto.GetSession();
+            var newUser = UserDto.Single(userGuid);
+
+            if (user.WeChatOpenID != null && newUser.WeChatOpenID != null &&
+                user.WeChatOpenID == newUser.WeChatOpenID)
+            {
+                #region 注销当前用户
+
+                user.LastActivityDate = DateTime.Now;
+                _repo.Update(user);
+
+                FormsAuthentication.SignOut();
+                Session.Abandon();
+
+                #endregion
+
+                #region 登录新用户
+
+                var mem = MembershipDto.Single(userGuid);
+
+                FormsAuthentication.SetAuthCookie(mem.UserName, createPersistentCookie: true);
+                UserDto.SetSession(mem.SignIn());
+
+                newUser.IsAnonymous = true;
+                _repo.Update(newUser);
+
+                #endregion
+            }
+
+            TempData["DataUrl"] = "data-url=/";
+            return RedirectToAction("Index", "Home");
+        }
+
+
+        // 用户信息
         // GET: /Account/UserProfile
 
         public ActionResult UserProfile()
         {
             var model = new UserProfileDto();
 
-            var membership = MembershipDto.GetMembership(User.Identity.Name);
+            var membership = MembershipDto.Single(User.Identity.Name);
             var user = UserDto.GetSession();
 
             model.RealName = user.MemberName;
@@ -265,7 +339,7 @@ namespace Arsenal.Mobile.Controllers
             {
                 try
                 {
-                    var membership = MembershipDto.GetMembership(User.Identity.Name);
+                    var membership = MembershipDto.Single(User.Identity.Name);
                     var user = UserDto.GetSession();
 
                     if (membership != null && user != null)
@@ -311,7 +385,7 @@ namespace Arsenal.Mobile.Controllers
             {
                 try
                 {
-                    var membership = MembershipDto.GetMembership(User.Identity.Name);
+                    var membership = MembershipDto.Single(User.Identity.Name);
 
                     if (membership != null)
                     {

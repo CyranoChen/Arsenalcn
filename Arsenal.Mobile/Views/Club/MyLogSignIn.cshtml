@@ -1,5 +1,5 @@
-﻿@using Arsenal.Service
-@model Arsenal.Mobile.Models.Club.MyLogSignInDto
+﻿@using Arsenal.Mobile.Models.Club
+@model MyLogSignInDto
 @{
     ViewBag.Title = "我的签到记录";
 }
@@ -30,11 +30,18 @@
             <span class="ui-li-count">@Model.Criteria.TotalCount</span>
         </li>
         @if (Model != null && Model.Data.Any())
-        {
-            foreach (var m in Model.Data)
             {
+                foreach (var m in Model.Data)
+                {
                 <li>
-                    <h3>@m.Description - 连续签到：@m.SignInDays</h3>
+                    @if (@m.SignInDays > 0)
+                    {
+                        <h3>@m.Description - 连续签到：@m.SignInDays</h3>
+                    }
+                    else
+                    {
+                        <h3>@m.Description</h3>
+                    }
                     <p>@m.SignInTime.ToString("yyyy-MM-dd HH:mm:ss")</p>
                     <span class="ui-li-count">+@m.Bonus.ToString("N0")</span>
                 </li>
@@ -42,4 +49,3 @@
         }
     </ul>
 </div>
-

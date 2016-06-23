@@ -1,5 +1,5 @@
 ﻿/* CSS Version Default */
-/* Version: 0.8 (Arsenal.Mobile) */
+/* Version: 0.9 (Arsenal.Mobile) */
 /* Cascading Style Sheets Level 2 Revision 1 */
 
 /* Styles for validation helpers
@@ -266,6 +266,12 @@ em {
         text-align: left;
         width: 30%;
     }
+
+/* avatar-info-list */
+.avatar-info-list .curr a.ui-btn {
+    background: #ffcccc;
+}
+
 
 /* bet-info-list, bonus-info-list */
 .bet-info-list .star a, .bonus-info-list .star a {

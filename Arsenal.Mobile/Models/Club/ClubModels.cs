@@ -1,5 +1,4 @@
 ﻿using Arsenalcn.Core;
-using Microsoft.Web.Infrastructure.DynamicModuleHelper;
 
 namespace Arsenal.Mobile.Models.Club
 {
@@ -24,6 +23,9 @@ namespace Arsenal.Mobile.Models.Club
 
         public string Tip { get; set; }
 
-        public bool IsWeChatClient => Arsenalcn.Core.Utility.BrowserInfo.IsWeChatClient();
+        public bool IsContestBonus { get; set; }
+
+        // TODO ClubSys Bonus
+        public const int BonusAmount = 3000;
     }
 }

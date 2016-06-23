@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Security;
 using Arsenal.Service;
 using Arsenal.Service.Casino;
+using Arsenal.Service.Rest;
 using Arsenalcn.Core;
 using Arsenalcn.Core.Logger;
 using Arsenalcn.Core.Utility;
@@ -571,6 +572,96 @@ namespace Arsenal.Mobile.Models
         }
 
         #endregion
+    }
+
+    public class UserWeChatDto
+    {
+        public static UserWeChat Authorize(Guid userGuid, string accessToken, double expiresIn, string refreshToken,
+            string openId, ScopeType scope)
+        {
+            using (var conn = new SqlConnection(DataAccess.ConnectString))
+            {
+                conn.Open();
+                var trans = conn.BeginTransaction();
+
+                try
+                {
+                    IRepository repo = new Repository();
+
+                    // 保存微信用户
+                    var user = UserDto.GetSession();
+
+                    if (user != null && user.ID == userGuid)
+                    {
+                        var u = new UserWeChat();
+
+                        if (repo.Any<UserWeChat>(userGuid))
+                        {
+                            u = repo.Single<UserWeChat>(userGuid);
+                        }
+
+                        u.ID = userGuid;
+                        u.UserName = user.UserName;
+                        u.LastAuthorizeDate = DateTime.Now;
+
+                        u.AccessToken = accessToken;
+                        u.AccessTokenExpiredDate = DateTime.Now.AddSeconds(expiresIn);
+                        u.RefreshToken = refreshToken;
+                        u.RefreshTokenExpiredDate = DateTime.Now.AddDays(30);
+
+                        if (u.Province == null) u.Province = string.Empty;
+                        if (u.City == null) u.City = string.Empty;
+                        if (u.Country == null) u.Country = string.Empty;
+                        if (u.HeadImgUrl == null) u.HeadImgUrl = string.Empty;
+                        if (u.Privilege == null) u.Privilege = string.Empty;
+                        if (u.UnionID == null) u.UnionID = string.Empty;
+
+                        repo.Save(u, trans);
+
+                        // 更新普通用户
+                        user.WeChatOpenID = openId;
+
+                        // 按scope，获取微信用户详情
+                        if (scope.Equals(ScopeType.snsapi_userinfo))
+                        {
+                            var result = new WeChatSnsClient().GetUserInfo(accessToken, openId);
+
+                            if (!string.IsNullOrEmpty(result))
+                            {
+                                var json = JToken.Parse(result);
+
+                                user.WeChatNickName = json["nickname"].Value<string>();
+
+                                u.Gender = json["sex"].Value<bool>();
+                                u.Province = json["province"].Value<string>();
+                                u.City = json["city"].Value<string>();
+                                u.Country = json["country"].Value<string>();
+                                u.HeadImgUrl = json["headimgurl"].Value<string>();
+                                u.Privilege = json["privilege"].Value<JArray>().ToString();
+                                u.UnionID = json["unionid"] != null ? json["unionid"].Value<string>() : string.Empty;
+
+                                repo.Update(u, trans);
+                            }
+                        }
+
+                        // 更新user的openId, nickname
+                        repo.Update(user, trans);
+
+                        trans.Commit();
+
+                        return u;
+                    }
+
+                    return null;
+                }
+                catch
+                {
+                    trans.Rollback();
+
+                    throw;
+                }
+            }
+        }
     }
 
     public class UserProfileDto

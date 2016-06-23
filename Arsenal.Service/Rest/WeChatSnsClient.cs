@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Text;
 using System.Web;
-using Newtonsoft.Json.Linq;
 
 namespace Arsenal.Service.Rest
 {
@@ -18,9 +17,9 @@ namespace Arsenal.Service.Rest
             return $"{serverUrl}authorize?appid={AppKey}&redirect_uri={HttpUtility.UrlEncode(redirectUri, Encoding.UTF8)}&response_type=code&scope={scope}&state={HttpUtility.UrlEncode(state, Encoding.UTF8)}#wechat_redirect";
         }
 
-        public void SetUserBaseInfo(string code, Guid userGuid)
+        public string GetAccessToken(string code)
         {
-            if (!ConfigGlobal_Arsenal.WeChatActive) { return; }
+            if (!ConfigGlobal_Arsenal.WeChatActive) { return null; }
 
             //https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&secret=SECRET&code=CODE&grant_type=authorization_code 
 
@@ -32,26 +31,30 @@ namespace Arsenal.Service.Rest
 
             if (string.IsNullOrEmpty(responseResult))
             {
-                throw new Exception("WeChatApiClient.Init() responseResult is null");
+                throw new Exception("WeChatSnsClient.GetAccessToken() responseResult is null");
             }
 
-            var json = JToken.Parse(responseResult);
-
-            if (json["access_token"] != null && json["expires_in"] != null 
-                && json["refresh_token"] != null && json["openid"] != null && json["scope"] != null)
-            {
-                // TODO 持久化
-                HttpContext.Current.Session["access_token"] = json["access_token"];
-                HttpContext.Current.Session["expires_in"] = json["expires_in"];
-                HttpContext.Current.Session["refresh_token"] = json["refresh_token"];
-                HttpContext.Current.Session["openid"] = json["openid"];
-                HttpContext.Current.Session["scope"] = json["scope"];
-            }
-            else
-            {
-                // TODO 反序列化成异常对象，并抛出
-            }
+            return responseResult;
         }
 
+        public string GetUserInfo(string accessToken, string openId)
+        {
+            if (!ConfigGlobal_Arsenal.WeChatActive) { return null; }
+
+            //https://api.weixin.qq.com/sns/userinfo?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN
+
+            var serverUrl = "https://api.weixin.qq.com/sns/";
+
+            var uri = $"{serverUrl}userinfo?access_token={accessToken}&openid={openId}&lang=zh_CN";
+
+            var responseResult = ApiGet(uri);
+
+            if (string.IsNullOrEmpty(responseResult))
+            {
+                throw new Exception("WeChatSnsClient.GetUserInfo() responseResult is null");
+            }
+
+            return responseResult;
+        }
     }
 }

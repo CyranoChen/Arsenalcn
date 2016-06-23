@@ -98,7 +98,7 @@ namespace Arsenal.Mobile.Controllers
                     }
                     else
                     {
-                        throw new Exception("无对应用户信息");
+                        throw new Exception("当前无法签到");
                     }
                 }
                 catch (Exception ex)
@@ -111,6 +111,19 @@ namespace Arsenal.Mobile.Controllers
             }
 
             return View(model);
+        }
+
+
+        // 领取补助金
+        // GET: /Club/ContestBonus
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ContestBonus()
+        {
+
+
+            TempData["DataUrl"] = "data-url=/Club/MyLogSignIn";
+            return RedirectToAction("MyLogSignIn");
         }
 
 

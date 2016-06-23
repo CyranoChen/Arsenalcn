@@ -9,6 +9,8 @@ namespace Arsenalcn.Core
     {
         T Single<T>(object key) where T : class, IViewer, new();
 
+        bool Any<T>(object key) where T : class, IViewer, new();
+
         List<T> All<T>() where T : class, IViewer, new();
         List<T> All<T>(IPager pager, string orderBy = null) where T : class, IViewer, new();
 
@@ -21,6 +23,8 @@ namespace Arsenalcn.Core
         void Insert<T>(T instance, out object key, SqlTransaction trans = null) where T : class, IEntity;
 
         void Update<T>(T instance, SqlTransaction trans = null) where T : class, IEntity;
+
+        void Save<T>(T instance, SqlTransaction trans = null) where T : class, IEntity;
 
         void Delete<T>(object key, SqlTransaction trans = null) where T : class, IEntity;
         void Delete<T>(T instance, SqlTransaction trans = null) where T : class, IEntity;

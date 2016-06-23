@@ -1,6 +1,10 @@
-﻿@model Arsenal.Mobile.Models.Club.SignInDailyDto
+﻿@using Arsenal.Mobile.Models
+@using Arsenal.Service
+@model Arsenal.Mobile.Models.Club.SignInDailyDto
 @{
     ViewBag.Title = "每日签到栏";
+
+    var authorizedUser = UserDto.GetSession();
 }
 
 @section Header {
@@ -26,21 +30,35 @@
 }
 
 <div data-role="content">
-    @if (Model.ContinuousSignInDays > 0)
+    @using (Html.BeginForm("ContestBonus", "Club", FormMethod.Post))
     {
-        <ul data-role="listview">
-            <li class="ui-field-contain">当前日期<span class="ui-li-count">@DateTime.Now.ToString("yyyy年MM月dd日")</span></li>
-            <li class="ui-field-contain">原持有现金<span class="ui-li-count">@Model.CurrentCash.ToString("N0")</span></li>
-            <li class="ui-field-contain">签到奖金<span class="ui-li-count">+@Model.Bonus.ToString("N0")</span></li>
-            <li class="ui-field-contain">当前现金<span class="ui-li-count">@Model.MyCash.ToString("N0")</span></li>
-        </ul>
-    }
-    else if (Model.ContinuousSignInDays == 0)
-    {
-        <h2 style="text-align: center">您已经领取过今天的签到奖励</h2>
-    }
-    else
-    {
-        <h2>@Model.Tip</h2>
+        if (Model.ContinuousSignInDays > 0)
+        {
+            <ul data-role="listview">
+                <li class="ui-field-contain">当前日期<span class="ui-li-count">@DateTime.Now.ToString("yyyy年MM月dd日")</span></li>
+                <li class="ui-field-contain">原持有现金<span class="ui-li-count">@Model.CurrentCash.ToString("N0")</span></li>
+                <li class="ui-field-contain">签到奖金<span class="ui-li-count">+@Model.Bonus.ToString("N0")</span></li>
+                <li class="ui-field-contain">当前现金<span class="ui-li-count">@Model.MyCash.ToString("N0")</span></li>
+                @if (authorizedUser.AcnID.HasValue && ConfigGlobal_Arsenal.IsPluginAdmin(authorizedUser.AcnID.Value))
+                {
+                    <li>
+                        <input type="submit" value="欧锦赛淘汰赛补助金 + 30000" data-icon="check" />
+                    </li>
+                }
+            </ul>
+        }
+        else if (Model.ContinuousSignInDays == 0)
+        {
+            <h2 style="text-align: center">您已经领取过今天的签到奖励</h2>
+            if (authorizedUser.AcnID.HasValue && ConfigGlobal_Arsenal.IsPluginAdmin(authorizedUser.AcnID.Value))
+            {
+                <input type="submit" value="欧锦赛淘汰赛补助金 + 30000" data-icon="check" />
+            }
+        }
+        else
+        {
+            <h2>@Model.Tip</h2>
+        }
+        @Html.AntiForgeryToken()
     }
 </div>

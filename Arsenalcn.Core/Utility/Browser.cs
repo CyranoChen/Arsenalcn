@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using System.Web;
 
 namespace Arsenalcn.Core.Utility
@@ -29,6 +30,18 @@ namespace Arsenalcn.Core.Utility
             }
 
             return retValue.ToString();
+        }
+
+        public static bool IsWeChatClient()
+        {
+            if (HttpContext.Current == null)
+            {
+                return false;
+            }
+
+            var bc = HttpContext.Current.Request.Browser;
+
+            return bc.Capabilities[""].ToString().IndexOf("MicroMessenger", StringComparison.OrdinalIgnoreCase) > 0;
         }
     }
 }

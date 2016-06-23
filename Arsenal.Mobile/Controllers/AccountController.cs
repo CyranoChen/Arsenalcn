@@ -6,6 +6,7 @@ using Arsenal.Service;
 using Arsenal.Service.Rest;
 using Arsenalcn.Core;
 using Arsenalcn.Core.Utility;
+using Newtonsoft.Json.Linq;
 using Membership = Arsenal.Service.Membership;
 
 namespace Arsenal.Mobile.Controllers
@@ -32,13 +33,15 @@ namespace Arsenal.Mobile.Controllers
             return View();
         }
 
-        [AllowAnonymous]
-        public ActionResult LoginWeChat()
+        // 
+        // GET: /Account/LoginWeChat
+
+        public ActionResult LoginWeChat(ScopeType scope)
         {
             var user = UserDto.GetSession();
 
             var client = new WeChatSnsClient();
-            var openUri = client.GetOpenUrl("http://mobile.arsenal.cn/Account/WeChatAuth", ScopeType.snsapi_base, user.ID.ToString());
+            var openUri = client.GetOpenUrl("http://mobile.arsenal.cn/Account/WeChatAuth", scope, user.ID.ToString());
 
             if (!string.IsNullOrEmpty(openUri))
             {
@@ -46,8 +49,8 @@ namespace Arsenal.Mobile.Controllers
                 return Redirect(openUri);
             }
 
-            TempData["DataUrl"] = "data-url=/";
-            return RedirectToAction("Login", "Account");
+            TempData["DataUrl"] = "data-url=/Account";
+            return RedirectToAction("Index", "Account");
         }
 
         // 
@@ -55,24 +58,28 @@ namespace Arsenal.Mobile.Controllers
 
         public ActionResult WeChatAuth(string code, string state)
         {
+            // 获取微信授权access_token
             var client = new WeChatSnsClient();
+            var result = client.GetAccessToken(code);
 
-            client.SetUserBaseInfo(code, new Guid(state));
-
-            if (HttpContext.Session != null)
+            if (!string.IsNullOrEmpty(result))
             {
-                ViewBag.AccessToken = HttpContext.Session["access_token"].ToString();
-                ViewBag.ExpiresIn = HttpContext.Session["expires_in"].ToString();
-                ViewBag.RefreshToken = HttpContext.Session["refresh_token"].ToString();
-                ViewBag.OpenId = HttpContext.Session["openid"].ToString();
-                ViewBag.Scope = HttpContext.Session["scope"].ToString();
+                var json = JToken.Parse(result);
+
+                if (json["access_token"] != null && json["expires_in"] != null
+                    && json["refresh_token"] != null && json["openid"] != null && json["scope"] != null)
+                {
+                    var scope = (ScopeType)Enum.Parse(typeof(ScopeType), json["scope"].Value<string>());
+                    var accessToken = json["access_token"].Value<string>();
+                    var openId = json["openid"].Value<string>();
+
+                    UserWeChatDto.Authorize(new Guid(state), accessToken, json["expires_in"].Value<double>(),
+                        json["refresh_token"].Value<string>(), openId, scope);
+                }
             }
 
-            ViewBag.Browser = HttpContext.Request.Browser.Capabilities[""].ToString();
-            ViewBag.IP = IPLocation.GetIP();
-            ViewBag.OS = OSInfo.GetOS();
-
-            return View();
+            TempData["DataUrl"] = "data-url=/";
+            return RedirectToAction("Index", "Home");
         }
 
         //
@@ -141,14 +148,11 @@ namespace Arsenal.Mobile.Controllers
                 // 处理登录跳转，如果开启微信授权则跳转微信OpenUrl, 否则跳转返回路径, 最后跳转首页
                 if (loginSuccess)
                 {
-                    //var client = new WeChatApiClient();
-                    //var openUri = client.GetSnsOpenUrl("http://localhost:50743/Account/WeChatAuth", ScopeType.snsapi_userinfo, "123");
-
-                    //if (!string.IsNullOrEmpty(openUri))
-                    //{
-                    //    TempData["DataUrl"] = $"data-url={openUri}";
-                    //    return Redirect(openUri);
-                    //}
+                    if (BrowserInfo.IsWeChatClient() && ConfigGlobal_Arsenal.WeChatActive)
+                    {
+                        TempData["DataUrl"] = $"data-url=/Account/LoginWeChat/?scope={ScopeType.snsapi_userinfo}";
+                        return RedirectToAction("LoginWeChat", "Account", new { scope = ScopeType.snsapi_userinfo });
+                    }
 
                     if (Url.IsLocalUrl(returnUrl))
                     {
@@ -215,9 +219,17 @@ namespace Arsenal.Mobile.Controllers
                     FormsAuthentication.SetAuthCookie(model.UserName, false);
                     UserDto.SetSession(userKey);
 
+                    // 如果开启微信授权则跳转微信OpenUrl, 跳转首页
+                    if (BrowserInfo.IsWeChatClient() && ConfigGlobal_Arsenal.WeChatActive)
+                    {
+                        TempData["DataUrl"] = $"data-url=/Account/LoginWeChat/?scope={ScopeType.snsapi_base}";
+                        return RedirectToAction("LoginWeChat", "Account", new { scope = ScopeType.snsapi_base });
+                    }
+
                     TempData["DataUrl"] = "data-url=/";
                     return RedirectToAction("Index", "Home");
                 }
+
                 ModelState.AddModelError("Warn", ErrorCodeToString(createStatus));
             }
 

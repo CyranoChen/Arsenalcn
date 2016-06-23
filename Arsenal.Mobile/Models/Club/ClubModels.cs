@@ -1,4 +1,5 @@
 ﻿using Arsenalcn.Core;
+using Microsoft.Web.Infrastructure.DynamicModuleHelper;
 
 namespace Arsenal.Mobile.Models.Club
 {
@@ -22,5 +23,7 @@ namespace Arsenal.Mobile.Models.Club
         public double MyCash { get; set; }
 
         public string Tip { get; set; }
+
+        public bool IsWeChatClient => Arsenalcn.Core.Utility.BrowserInfo.IsWeChatClient();
     }
 }

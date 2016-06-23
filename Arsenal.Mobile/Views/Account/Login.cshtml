@@ -6,6 +6,15 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(document).on("pageinit", function () {
+            $("#btnLogin").click(function () {
+                if ($("#formLogin").valid()) {
+                    document.forms["formLogin"].submit();
+                }
+            });
+        });
+    </script>
 }
 
 @section Header {
@@ -16,7 +25,7 @@
 }
 
 <div data-role="content">
-    @using (Html.BeginForm())
+    @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { id = "formLogin" }))
     {
         <ul data-role="listview" data-inset="true">
             <li data-role="list-divider">
@@ -39,7 +48,6 @@
                 @Html.ValidationSummary()
             </li>
         </ul>
-
-        <input type="submit" id="btnLogin" value="登录" data-icon="check" />
+        <input type="button" id="btnLogin" value="登录" data-icon="check" />
     }
 </div>

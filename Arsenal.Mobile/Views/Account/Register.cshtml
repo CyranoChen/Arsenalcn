@@ -6,10 +6,19 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(document).on("pageinit", function () {
+            $("#btnRegister").click(function () {
+                if ($("#formRegister").valid()) {
+                    document.forms["formRegister"].submit();
+                }
+            });
+        });
+    </script>
 }
 
 <div data-role="content">
-    @using (Html.BeginForm())
+    @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { id = "formRegister" }))
     {
         <ul data-role="listview" data-inset="true">
             <li data-role="list-divider">密码至少 7 位</li>
@@ -34,6 +43,6 @@
                 @Html.ValidationSummary()
             </li>
         </ul>
-        <input type="submit" id="btnRegister" value="注册" data-icon="check" />
+        <input type="button" id="btnRegister" value="注册" data-icon="check" />
     }
 </div>

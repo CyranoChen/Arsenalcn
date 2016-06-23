@@ -72,6 +72,7 @@
     <Compile Include="Entity\Relation\RelationGroupTeam.cs" />
     <Compile Include="Framework\Membership.cs" />
     <Compile Include="Framework\User.cs" />
+    <Compile Include="Framework\UserWeChat.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Entity\Relation\RelationLeagueTeam.cs">
       <SubType>Code</SubType>

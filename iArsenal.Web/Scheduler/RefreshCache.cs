@@ -10,7 +10,7 @@ namespace iArsenal.Scheduler
 {
     internal class RefreshCache : ISchedule
     {
-        private readonly ILog log = new AppLog();
+        private readonly ILog _log = new AppLog();
 
         public void Execute(object state)
         {
@@ -24,7 +24,7 @@ namespace iArsenal.Scheduler
 
             try
             {
-                log.Info("Scheduler Start: (RefreshCache)", logInfo);
+                _log.Info("Scheduler Start: (RefreshCache)", logInfo);
 
                 Config.UpdateAssemblyInfo(Assembly.GetExecutingAssembly(), ConfigSystem.iArsenal);
 
@@ -38,16 +38,16 @@ namespace iArsenal.Scheduler
                 Member.Cache.RefreshCache();
                 Product.Cache.RefreshCache();
 
-                Order.RefreshOrderBaseType();
+                //Order.RefreshOrderBaseType();
 
                 // Clean Log
                 Log.Clean();
 
-                log.Info("Scheduler End: (RefreshCache)", logInfo);
+                _log.Info("Scheduler End: (RefreshCache)", logInfo);
             }
             catch (Exception ex)
             {
-                log.Warn(ex, logInfo);
+                _log.Warn(ex, logInfo);
             }
         }
     }

@@ -18,21 +18,21 @@ namespace iArsenal.Service
             {
                 #region Generate Member MemberTypeInfo
 
-                var retValue = string.Empty;
+                string retValue;
 
-                switch ((MemberType) ((int) s.GetValue("MemberType")))
+                switch ((MemberType)((int)s.GetValue("MemberType")))
                 {
+                    case MemberType.Buyer:
+                        retValue = "团购";
+                        break;
                     case MemberType.Match:
                         retValue = "观赛";
                         break;
-                    case MemberType.VIP:
-                        retValue = "VIP";
+                    case MemberType.Activity:
+                        retValue = "活动";
                         break;
                     case MemberType.Secretary:
                         retValue = "干事";
-                        break;
-                    case MemberType.Buyer:
-                        retValue = "团购";
                         break;
                     default:
                         retValue = string.Empty;
@@ -55,18 +55,18 @@ namespace iArsenal.Service
                 if (nation.Equals("中国"))
                 {
                     var regions = region.Split('|');
-                    var itemID = int.MinValue;
+                    int itemId;
                     if (regions.Length > 1)
                     {
                         foreach (var r in regions)
                         {
-                            if (int.TryParse(r, out itemID))
-                                retValue += DictionaryItem.Cache.Load(itemID).Name;
+                            if (int.TryParse(r, out itemId))
+                                retValue += DictionaryItem.Cache.Load(itemId).Name;
                         }
                     }
-                    else if (regions.Length == 1 && int.TryParse(regions[0], out itemID))
+                    else if (regions.Length == 1 && int.TryParse(regions[0], out itemId))
                     {
-                        retValue = DictionaryItem.Cache.Load(itemID).Name;
+                        retValue = DictionaryItem.Cache.Load(itemId).Name;
                     }
                     else
                     {
@@ -215,10 +215,10 @@ namespace iArsenal.Service
     public enum MemberType
     {
         None = 0,
-        Match = 1,
-        VIP = 2,
-        Secretary = 3,
-        Buyer = 4
+        Buyer = 1,
+        Match = 2,
+        Activity = 3,
+        Secretary = 4
     }
 
     public enum MemberEvalution

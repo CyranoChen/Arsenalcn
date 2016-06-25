@@ -4,10 +4,9 @@ using System.IO;
 using System.Net;
 using System.Text;
 using System.Web;
-
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Arsenalcn.Core.Tests.Scheduler
+namespace iArsenal.Tests.Scheduler
 {
     [TestClass]
     public class OfficialSyncTest

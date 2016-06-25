@@ -445,13 +445,13 @@ namespace iArsenal.Web
                     else
                         throw new Exception("请填写会员邮箱");
 
-                    m.MemberType = MemberType.Match;
+                    //m.MemberType = MemberType.Match;
 
                     repo.Update(m);
 
                     // New Order
                     var o = new Order();
-                    var _newID = int.MinValue;
+                    int newId;
 
                     if (OrderID > 0)
                     {
@@ -468,7 +468,7 @@ namespace iArsenal.Web
                         repo.Update(o, trans);
 
                         // used by setting OrderItem foreign key
-                        _newID = OrderID;
+                        newId = OrderID;
                     }
                     else
                     {
@@ -490,7 +490,7 @@ namespace iArsenal.Web
                         //Get the Order ID after Insert new one
                         object _key = null;
                         repo.Insert(o, out _key, trans);
-                        _newID = Convert.ToInt32(_key);
+                        newId = Convert.ToInt32(_key);
                     }
 
                     //New Order Items
@@ -538,7 +538,7 @@ namespace iArsenal.Web
 
                         oi.EndDate = CurrSeasonDeadline;
 
-                        oi.OrderID = _newID;
+                        oi.OrderID = newId;
                         oi.Quantity = 1;
 
                         if (IsUpgrade || IsRenew)
@@ -561,7 +561,7 @@ namespace iArsenal.Web
 
                     ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
                         string.Format("alert('订单({0})保存成功');window.location.href = 'ServerOrderView.ashx?OrderID={0}'",
-                            _newID), true);
+                            newId), true);
                 }
                 catch (Exception ex)
                 {

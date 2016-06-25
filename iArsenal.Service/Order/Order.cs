@@ -25,20 +25,20 @@ namespace iArsenal.Service
             {
                 #region Generate Order Payment Info
 
-                var retValue = string.Empty;
+                string retValue;
                 var payment = s.GetValue("Payment").ToString();
 
                 if (!string.IsNullOrEmpty(payment))
                 {
-                    var _strPayment = payment.Substring(1, payment.Length - 2).Split('|');
-                    if (_strPayment[0].Equals(OrderPaymentType.Alipay.ToString(), StringComparison.OrdinalIgnoreCase))
-                        retValue = string.Format("【支付宝】{0}", _strPayment[1]);
-                    else if (_strPayment[0].Equals(OrderPaymentType.Bank.ToString(), StringComparison.OrdinalIgnoreCase))
+                    var strPayment = payment.Substring(1, payment.Length - 2).Split('|');
+                    if (strPayment[0].Equals(OrderPaymentType.Alipay.ToString(), StringComparison.OrdinalIgnoreCase))
+                        retValue = $"【支付宝】{strPayment[1]}";
+                    else if (strPayment[0].Equals(OrderPaymentType.Bank.ToString(), StringComparison.OrdinalIgnoreCase))
                     {
-                        if (_strPayment.Length >= 3)
-                            retValue = string.Format("【{0}】{1}", _strPayment[1], _strPayment[2]);
+                        if (strPayment.Length >= 3)
+                            retValue = string.Format("【{0}】{1}", strPayment[1], strPayment[2]);
                         else
-                            retValue = _strPayment[1];
+                            retValue = strPayment[1];
                     }
                     else
                         retValue = string.Empty;
@@ -69,7 +69,7 @@ namespace iArsenal.Service
             {
                 #region Generate Order Status Info
 
-                var retValue = string.Empty;
+                string retValue;
 
                 switch ((OrderStatusType)((int)s.GetValue("Status")))
                 {
@@ -169,27 +169,27 @@ namespace iArsenal.Service
             var query = repo.Query<OrderItem>(x => x.OrderID == ID)
                 .FindAll(x => Product.Cache.Load(x.ProductGuid) != null);
 
-            if (query.Count() > 0)
+            if (query.Count > 0)
             {
-                OrderType = SetOrderType(query.ToList());
+                OrderType = GetOrderTypeByOrderItems(query.ToList());
             }
         }
 
-        private static OrderBaseType SetOrderType(List<OrderItem> list)
+        public static OrderBaseType GetOrderTypeByOrderItems(List<OrderItem> list)
         {
             if (list.Any(delegate (OrderItem x)
             {
-                var _type = Product.Cache.Load(x.ProductGuid).ProductType;
-                return _type.Equals(ProductType.ReplicaKitHome) || _type.Equals(ProductType.ReplicaKitAway) ||
-                       _type.Equals(ProductType.ReplicaKitCup);
+                var type = Product.Cache.Load(x.ProductGuid).ProductType;
+                return type.Equals(ProductType.ReplicaKitHome) || type.Equals(ProductType.ReplicaKitAway) ||
+                       type.Equals(ProductType.ReplicaKitCup);
             }))
             {
                 return OrderBaseType.ReplicaKit;
             }
             if (list.Any(delegate (OrderItem x)
             {
-                var _type = Product.Cache.Load(x.ProductGuid).ProductType;
-                return _type.Equals(ProductType.MatchTicket) || _type.Equals(ProductType.TicketBeijing);
+                var type = Product.Cache.Load(x.ProductGuid).ProductType;
+                return type.Equals(ProductType.MatchTicket) || type.Equals(ProductType.TicketBeijing);
             }))
             {
                 return OrderBaseType.Ticket;
@@ -211,41 +211,13 @@ namespace iArsenal.Service
             }
             if (list.Any(delegate (OrderItem x)
             {
-                var _type = Product.Cache.Load(x.ProductGuid).ProductType;
-                return _type.Equals(ProductType.MemberShipCore) || _type.Equals(ProductType.MemberShipPremier);
+                var type = Product.Cache.Load(x.ProductGuid).ProductType;
+                return type.Equals(ProductType.MemberShipCore) || type.Equals(ProductType.MemberShipPremier);
             }))
             {
                 return OrderBaseType.MemberShip;
             }
             return OrderBaseType.None;
-        }
-
-        // Don't place LINQ to Foreach, first ToList(), then use list.FindAll to improve performance
-        public static void RefreshOrderBaseType()
-        {
-            IRepository repo = new Repository();
-            var oList = repo.All<Order>();
-            var oiList = repo.All<OrderItem>().FindAll(x => Product.Cache.Load(x.ProductGuid) != null);
-
-            if (oList.Count > 0 && oiList.Count > 0)
-            {
-                foreach (var o in oList)
-                {
-                    var _type = o.OrderType;
-                    var list = oiList.FindAll(x => x.OrderID.Equals(o.ID));
-
-                    // Refresh the OrderType of instance
-                    if (list.Count > 0)
-                    {
-                        o.OrderType = SetOrderType(list);
-
-                        if (!_type.Equals(o.OrderType))
-                        {
-                            repo.Update(o);
-                        }
-                    }
-                }
-            }
         }
 
         #region Members and Properties

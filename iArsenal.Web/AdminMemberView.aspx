@@ -63,10 +63,10 @@
                         <td class="FieldColumn">
                             <asp:DropDownList ID="ddlMemberType" runat="server">
                                 <asp:ListItem Text="--请选择类型--" Value="0" Selected="True"></asp:ListItem>
-                                <asp:ListItem Text="观赛" Value="1"></asp:ListItem>
-                                <asp:ListItem Text="VIP" Value="2"></asp:ListItem>
-                                <asp:ListItem Text="干事" Value="3"></asp:ListItem>
-                                <asp:ListItem Text="团购" Value="4"></asp:ListItem>
+                                <asp:ListItem Text="团购" Value="1"></asp:ListItem>
+                                <asp:ListItem Text="观赛" Value="2"></asp:ListItem>
+                                <asp:ListItem Text="活动" Value="3"></asp:ListItem>
+                                <asp:ListItem Text="干事" Value="4"></asp:ListItem>
                             </asp:DropDownList>
                             <asp:DropDownList ID="ddlEvalution" runat="server">
                                 <asp:ListItem Text="--请选择评价--" Value="0" Selected="True"></asp:ListItem>

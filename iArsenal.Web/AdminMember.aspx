@@ -27,14 +27,14 @@
                 <asp:TextBox ID="tbRegion" runat="server" Text="--所在地区--" CssClass="TextBox" Width="100px"></asp:TextBox>
                 <asp:TextBox ID="tbMobile" runat="server" Text="--手机--" CssClass="TextBox" Width="100px"></asp:TextBox>
                 <asp:DropDownList ID="ddlMemberType" runat="server">
-                    <asp:ListItem Text="--全部--" Value="0" Selected="True"></asp:ListItem>
-                    <asp:ListItem Text="观赛" Value="1"></asp:ListItem>
-                    <asp:ListItem Text="VIP" Value="2"></asp:ListItem>
-                    <asp:ListItem Text="干事" Value="3"></asp:ListItem>
-                    <asp:ListItem Text="团购" Value="4"></asp:ListItem>
+                    <asp:ListItem Text="--全部--" Value="" Selected="True"></asp:ListItem>
+                    <asp:ListItem Text="团购" Value="1"></asp:ListItem>
+                    <asp:ListItem Text="观赛" Value="2"></asp:ListItem>
+                    <asp:ListItem Text="活动" Value="3"></asp:ListItem>
+                    <asp:ListItem Text="干事" Value="4"></asp:ListItem>
                 </asp:DropDownList>
                 <asp:DropDownList ID="ddlEvalution" runat="server">
-                    <asp:ListItem Text="--全部--" Value="0" Selected="True"></asp:ListItem>
+                    <asp:ListItem Text="--全部--" Value="" Selected="True"></asp:ListItem>
                     <asp:ListItem Text="黑名单" Value="1"></asp:ListItem>
                     <asp:ListItem Text="白名单" Value="2"></asp:ListItem>
                 </asp:DropDownList>

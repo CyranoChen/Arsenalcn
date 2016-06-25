@@ -8,7 +8,7 @@ namespace iArsenal.Web
 {
     public partial class AdminMember : AdminPageBase
     {
-        private readonly IRepository repo = new Repository();
+        private readonly IRepository _repo = new Repository();
 
         private int _memberID = int.MinValue;
 
@@ -16,12 +16,12 @@ namespace iArsenal.Web
         {
             get
             {
-                int _res;
+                int res;
                 if (_memberID == 0)
                     return _memberID;
                 if (!string.IsNullOrEmpty(Request.QueryString["MemberID"]) &&
-                    int.TryParse(Request.QueryString["MemberID"], out _res))
-                    return _res;
+                    int.TryParse(Request.QueryString["MemberID"], out res))
+                    return res;
                 return int.MinValue;
             }
             set { _memberID = value; }
@@ -40,16 +40,16 @@ namespace iArsenal.Web
 
         private void BindData()
         {
-            var list = repo.All<Member>().FindAll(x =>
+            var list = _repo.All<Member>().FindAll(x =>
             {
                 var returnValue = true;
-                var tmpString = string.Empty;
+                string tmpString;
 
                 if (ViewState["Name"] != null)
                 {
                     tmpString = ViewState["Name"].ToString();
                     if (!string.IsNullOrEmpty(tmpString) && tmpString != "--会员姓名--")
-                        returnValue = returnValue && x.Name.Contains(tmpString);
+                        returnValue = x.Name.Contains(tmpString);
                 }
 
                 if (ViewState["AcnName"] != null)
@@ -166,8 +166,9 @@ namespace iArsenal.Web
         {
             if (gvMember.SelectedIndex != -1)
             {
-                Response.Redirect(
-                    $"AdminMemberView.aspx?MemberID={gvMember.DataKeys[gvMember.SelectedIndex].Value}");
+                var key = gvMember.DataKeys[gvMember.SelectedIndex];
+                if (key != null)
+                    Response.Redirect($"AdminMemberView.aspx?MemberID={key.Value}");
             }
         }
 
@@ -201,12 +202,12 @@ namespace iArsenal.Web
             else
                 ViewState["Mobile"] = string.Empty;
 
-            if (!string.IsNullOrEmpty(ddlMemberType.SelectedValue) && !ddlMemberType.SelectedValue.Equals("0"))
+            if (!string.IsNullOrEmpty(ddlMemberType.SelectedValue))
                 ViewState["MemberType"] = ddlMemberType.SelectedValue;
             else
                 ViewState["MemberType"] = string.Empty;
 
-            if (!string.IsNullOrEmpty(ddlEvalution.SelectedValue) && !ddlEvalution.SelectedValue.Equals("0"))
+            if (!string.IsNullOrEmpty(ddlEvalution.SelectedValue))
                 ViewState["Evalution"] = ddlEvalution.SelectedValue;
             else
                 ViewState["Evalution"] = string.Empty;
@@ -230,7 +231,7 @@ namespace iArsenal.Web
 
                 var hlName = e.Row.FindControl("hlName") as HyperLink;
 
-                if (hlName != null)
+                if (hlName != null && m != null)
                 {
                     switch (m.Evalution)
                     {

@@ -17,8 +17,8 @@ namespace iArsenal.Scheduler
 {
     internal class OfficialSync : ISchedule
     {
-        private readonly ILog log = new AppLog();
-        private readonly IRepository repo = new Repository();
+        private readonly ILog _log = new AppLog();
+        private readonly IRepository _repo = new Repository();
 
         public void Execute(object state)
         {
@@ -30,7 +30,7 @@ namespace iArsenal.Scheduler
 
             try
             {
-                log.Info("Scheduler Start: (OfficialSync)", logInfo);
+                _log.Info("Scheduler Start: (OfficialSync)", logInfo);
 
                 var rand = new Random(Guid.NewGuid().GetHashCode());
                 var result = rand.Next(0, 500);
@@ -64,7 +64,7 @@ namespace iArsenal.Scheduler
                         if (success)
                         {
                             member.OfficialSync = season;
-                            repo.Update(member);
+                            _repo.Update(member);
 
                             uLog.Info($"官方会员信息同步成功 (随机码：{result}, {season}会员：{member.Name})", logPara);
                         }
@@ -75,11 +75,11 @@ namespace iArsenal.Scheduler
                     }
                 }
 
-                log.Info($"Scheduler End: (OfficialSync ({result}))", logInfo);
+                _log.Info($"Scheduler End: (OfficialSync ({result}))", logInfo);
             }
             catch (Exception ex)
             {
-                log.Warn(ex, logInfo);
+                _log.Warn(ex, logInfo);
             }
         }
 

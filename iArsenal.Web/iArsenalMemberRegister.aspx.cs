@@ -72,7 +72,7 @@ namespace iArsenal.Web
                     m.IsActive = true;
                     m.OfficialSync = "0000";
                     m.Evalution = MemberEvalution.None;
-                    m.MemberType = MemberType.Buyer;
+                    m.MemberType = MemberType.None;
                     m.MemberCardNo = string.Empty;
                     m.AcnID = UID;
                     m.AcnName = Username;

@@ -372,7 +372,7 @@ namespace iArsenal.Web
                     else
                         throw new Exception("请填写会员邮箱");
 
-                    m.MemberType = MemberType.Match;
+                    //m.MemberType = MemberType.Match;
 
                     repo.Update(m);
 

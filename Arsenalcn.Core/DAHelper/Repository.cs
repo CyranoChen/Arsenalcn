@@ -14,12 +14,7 @@ namespace Arsenalcn.Core
 {
     public class Repository : IRepository
     {
-        private readonly ILog _log;
-
-        public Repository()
-        {
-            _log = new DaoLog();
-        }
+        private readonly ILog _log = new DaoLog();
 
         public T Single<T>(object key) where T : class, IViewer, new()
         {
@@ -49,7 +44,7 @@ namespace Arsenalcn.Core
             }
             catch (Exception ex)
             {
-                _log.Debug(ex, new LogInfo
+                _log.Error(ex, new LogInfo
                 {
                     MethodInstance = MethodBase.GetCurrentMethod(),
                     ThreadInstance = Thread.CurrentThread
@@ -93,7 +88,7 @@ namespace Arsenalcn.Core
             }
             catch (Exception ex)
             {
-                _log.Debug(ex, new LogInfo
+                _log.Error(ex, new LogInfo
                 {
                     MethodInstance = MethodBase.GetCurrentMethod(),
                     ThreadInstance = Thread.CurrentThread
@@ -121,7 +116,7 @@ namespace Arsenalcn.Core
             }
             catch (Exception ex)
             {
-                _log.Debug(ex, new LogInfo
+                _log.Error(ex, new LogInfo
                 {
                     MethodInstance = MethodBase.GetCurrentMethod(),
                     ThreadInstance = Thread.CurrentThread
@@ -171,7 +166,7 @@ namespace Arsenalcn.Core
             }
             catch (Exception ex)
             {
-                _log.Debug(ex, new LogInfo
+                _log.Error(ex, new LogInfo
                 {
                     MethodInstance = MethodBase.GetCurrentMethod(),
                     ThreadInstance = Thread.CurrentThread
@@ -232,7 +227,7 @@ namespace Arsenalcn.Core
             }
             catch (Exception ex)
             {
-                _log.Debug(ex, new LogInfo
+                _log.Error(ex, new LogInfo
                 {
                     MethodInstance = MethodBase.GetCurrentMethod(),
                     ThreadInstance = Thread.CurrentThread
@@ -294,7 +289,7 @@ namespace Arsenalcn.Core
             }
             catch (Exception ex)
             {
-                _log.Debug(ex, new LogInfo
+                _log.Error(ex, new LogInfo
                 {
                     MethodInstance = MethodBase.GetCurrentMethod(),
                     ThreadInstance = Thread.CurrentThread
@@ -379,7 +374,7 @@ namespace Arsenalcn.Core
             }
             catch (Exception ex)
             {
-                _log.Debug(ex, new LogInfo
+                _log.Error(ex, new LogInfo
                 {
                     MethodInstance = MethodBase.GetCurrentMethod(),
                     ThreadInstance = Thread.CurrentThread
@@ -448,7 +443,7 @@ namespace Arsenalcn.Core
             }
             catch (Exception ex)
             {
-                _log.Debug(ex, new LogInfo
+                _log.Error(ex, new LogInfo
                 {
                     MethodInstance = MethodBase.GetCurrentMethod(),
                     ThreadInstance = Thread.CurrentThread
@@ -530,7 +525,7 @@ namespace Arsenalcn.Core
             }
             catch (Exception ex)
             {
-                _log.Debug(ex, new LogInfo
+                _log.Error(ex, new LogInfo
                 {
                     MethodInstance = MethodBase.GetCurrentMethod(),
                     ThreadInstance = Thread.CurrentThread
@@ -591,7 +586,7 @@ namespace Arsenalcn.Core
             }
             catch (Exception ex)
             {
-                _log.Debug(ex, new LogInfo
+                _log.Error(ex, new LogInfo
                 {
                     MethodInstance = MethodBase.GetCurrentMethod(),
                     ThreadInstance = Thread.CurrentThread
@@ -620,7 +615,7 @@ namespace Arsenalcn.Core
             }
             catch (Exception ex)
             {
-                _log.Debug(ex, new LogInfo
+                _log.Error(ex, new LogInfo
                 {
                     MethodInstance = MethodBase.GetCurrentMethod(),
                     ThreadInstance = Thread.CurrentThread
@@ -653,7 +648,7 @@ namespace Arsenalcn.Core
             }
             catch (Exception ex)
             {
-                _log.Debug(ex, new LogInfo
+                _log.Error(ex, new LogInfo
                 {
                     MethodInstance = MethodBase.GetCurrentMethod(),
                     ThreadInstance = Thread.CurrentThread

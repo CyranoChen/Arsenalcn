@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Diagnostics.Contracts;
 using System.Reflection;
 using System.Threading;
+using System.Web.Script.Serialization;
 using Arsenalcn.Core.Logger;
 using Microsoft.ApplicationBlocks.Data;
 
@@ -14,32 +15,39 @@ namespace Arsenalcn.Core
     {
         public static readonly string ConnectString;
 
+        private static bool _debugMode;
+
+        private static ILog _log = new DaoLog();
+
         static DataAccess()
         {
             ConnectString = ConfigurationManager.ConnectionStrings["Arsenalcn.ConnectionString"].ConnectionString;
+            _debugMode = ConfigurationManager.AppSettings["DebugMode"] != null &&
+                Convert.ToBoolean(ConfigurationManager.AppSettings["DebugMode"]);
         }
 
         public static DataSet ExecuteDataset(string sql, SqlParameter[] para = null)
         {
-            ILog log = new DaoLog();
-
             try
             {
                 Contract.Requires(!string.IsNullOrEmpty(sql));
 
                 var ds = SqlHelper.ExecuteDataset(ConnectString, CommandType.Text, sql, para);
 
-                log.Debug(sql, new LogInfo
+                if (_debugMode)
                 {
-                    MethodInstance = MethodBase.GetCurrentMethod(),
-                    ThreadInstance = Thread.CurrentThread
-                });
+                    _log.Debug(OutputSqlCommand(sql, para), new LogInfo
+                    {
+                        MethodInstance = MethodBase.GetCurrentMethod(),
+                        ThreadInstance = Thread.CurrentThread
+                    });
+                }
 
                 return ds;
             }
-            catch (Exception ex)
+            catch
             {
-                log.Debug(ex, new LogInfo
+                _log.Error(OutputSqlCommand(sql, para), new LogInfo
                 {
                     MethodInstance = MethodBase.GetCurrentMethod(),
                     ThreadInstance = Thread.CurrentThread
@@ -51,8 +59,6 @@ namespace Arsenalcn.Core
 
         public static void ExecuteNonQuery(string sql, SqlParameter[] para = null, SqlTransaction trans = null)
         {
-            ILog log = new DaoLog();
-
             try
             {
                 Contract.Requires(!string.IsNullOrEmpty(sql));
@@ -66,15 +72,18 @@ namespace Arsenalcn.Core
                     SqlHelper.ExecuteNonQuery(ConnectString, CommandType.Text, sql, para);
                 }
 
-                log.Debug(sql, new LogInfo
+                if (_debugMode)
                 {
-                    MethodInstance = MethodBase.GetCurrentMethod(),
-                    ThreadInstance = Thread.CurrentThread
-                });
+                    _log.Debug(OutputSqlCommand(sql, para), new LogInfo
+                    {
+                        MethodInstance = MethodBase.GetCurrentMethod(),
+                        ThreadInstance = Thread.CurrentThread
+                    });
+                }
             }
-            catch (Exception ex)
+            catch
             {
-                log.Debug(ex, new LogInfo
+                _log.Error(OutputSqlCommand(sql, para), new LogInfo
                 {
                     MethodInstance = MethodBase.GetCurrentMethod(),
                     ThreadInstance = Thread.CurrentThread
@@ -86,8 +95,6 @@ namespace Arsenalcn.Core
 
         public static object ExecuteScalar(string sql, SqlParameter[] para = null, SqlTransaction trans = null)
         {
-            ILog log = new DaoLog();
-
             Contract.Requires(!string.IsNullOrEmpty(sql));
 
             try
@@ -103,17 +110,20 @@ namespace Arsenalcn.Core
                     key = SqlHelper.ExecuteScalar(ConnectString, CommandType.Text, sql, para);
                 }
 
-                log.Debug(sql, new LogInfo
+                if (_debugMode)
                 {
-                    MethodInstance = MethodBase.GetCurrentMethod(),
-                    ThreadInstance = Thread.CurrentThread
-                });
+                    _log.Debug(OutputSqlCommand(sql, para), new LogInfo
+                    {
+                        MethodInstance = MethodBase.GetCurrentMethod(),
+                        ThreadInstance = Thread.CurrentThread
+                    });
+                }
 
                 return key;
             }
-            catch (Exception ex)
+            catch
             {
-                log.Debug(ex, new LogInfo
+                _log.Error(OutputSqlCommand(sql, para), new LogInfo
                 {
                     MethodInstance = MethodBase.GetCurrentMethod(),
                     ThreadInstance = Thread.CurrentThread
@@ -121,6 +131,30 @@ namespace Arsenalcn.Core
 
                 throw;
             }
+        }
+
+        private static string OutputSqlCommand(string sql, SqlParameter[] para = null)
+        {
+            if (para != null && para.Length > 0)
+            {
+                var jsonSerializer = new JavaScriptSerializer();
+
+                var result = new
+                {
+                    sql,
+                    para = para.MapToList<SqlParameter, SqlParameterDto>()
+                };
+
+                return jsonSerializer.Serialize(result);
+            }
+
+            return sql;
+        }
+
+        private class SqlParameterDto
+        {
+            public string ParameterName { get; set; }
+            public object Value { get; set; }
         }
     }
 }

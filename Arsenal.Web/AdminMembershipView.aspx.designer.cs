@@ -139,13 +139,13 @@ namespace Arsenal.Web {
         protected global::System.Web.UI.WebControls.TextBox tbMemberName;
         
         /// <summary>
-        /// tbWeChatOpenID control.
+        /// tbRemark control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbWeChatOpenID;
+        protected global::System.Web.UI.WebControls.TextBox tbRemark;
         
         /// <summary>
         /// tbWeChatNickName control.
@@ -157,13 +157,130 @@ namespace Arsenal.Web {
         protected global::System.Web.UI.WebControls.TextBox tbWeChatNickName;
         
         /// <summary>
-        /// tbRemark control.
+        /// tbGender control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbRemark;
+        protected global::System.Web.UI.WebControls.TextBox tbGender;
+        
+        /// <summary>
+        /// tbHeadImgUrl control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox tbHeadImgUrl;
+        
+        /// <summary>
+        /// tbLastAuthorizeDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox tbLastAuthorizeDate;
+        
+        /// <summary>
+        /// tbWeChatOpenID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox tbWeChatOpenID;
+        
+        /// <summary>
+        /// tbUnionID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox tbUnionID;
+        
+        /// <summary>
+        /// tbAccessToken control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox tbAccessToken;
+        
+        /// <summary>
+        /// tbAccessTokenExpiredDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox tbAccessTokenExpiredDate;
+        
+        /// <summary>
+        /// tbRefreshToken control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox tbRefreshToken;
+        
+        /// <summary>
+        /// tbRefreshTokenExpiredDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox tbRefreshTokenExpiredDate;
+        
+        /// <summary>
+        /// tbProvince control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox tbProvince;
+        
+        /// <summary>
+        /// tbCity control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox tbCity;
+        
+        /// <summary>
+        /// tbCountry control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox tbCountry;
+        
+        /// <summary>
+        /// tbPrivilege control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox tbPrivilege;
+        
+        /// <summary>
+        /// gvAvatar control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView gvAvatar;
         
         /// <summary>
         /// btnSubmit control.

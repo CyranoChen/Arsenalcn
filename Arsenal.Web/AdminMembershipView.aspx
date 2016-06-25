@@ -20,6 +20,10 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <tr class="CommandRow">
+                        <td colspan="4">-- 会员信息栏 --
+                        </td>
+                    </tr>
                     <tr class="Row">
                         <td class="FieldHeader">用户标识:
                         </td>
@@ -84,28 +88,107 @@
                         </td>
                     </tr>
                     <tr class="Row">
-                        <td class="FieldHeader">微信OpenID:
+                        <td class="FieldHeader">备注:
                         </td>
-                        <td class="FieldColumn">
-                            <asp:TextBox ID="tbWeChatOpenID" runat="server" CssClass="TextBox" Width="200px"></asp:TextBox>
+                        <td class="FieldColspan" colspan="3">
+                            <asp:TextBox ID="tbRemark" runat="server" CssClass="TextBox" Rows="3" Width="500px"
+                                TextMode="MultiLine">
+                            </asp:TextBox>
                         </td>
+                    </tr>
+                    <tr class="CommandRow">
+                        <td colspan="4">-- 微信信息栏 --
+                        </td>
+                    </tr>
+                    <tr class="Row">
                         <td class="FieldHeader">微信昵称:
                         </td>
                         <td class="FieldColumn">
                             <asp:TextBox ID="tbWeChatNickName" runat="server" CssClass="TextBox" Width="200px"></asp:TextBox>
                         </td>
+                        <td class="FieldHeader">微信性别:
+                        </td>
+                        <td class="FieldColumn">
+                            <asp:TextBox ID="tbGender" runat="server" CssClass="TextBox" Width="200px"></asp:TextBox>
+                        </td>
                     </tr>
                     <tr class="AlternatingRow">
-                        <td class="FieldHeader">备注:
+                        <td class="FieldHeader">头像:
                         </td>
-                        <td class="FieldColspan" colspan="3">
-                            <asp:TextBox ID="tbRemark" runat="server" CssClass="TextBox" Rows="5" Width="500px"
-                                TextMode="MultiLine">
-                            </asp:TextBox>
+                        <td class="FieldColspan">
+                            <asp:TextBox ID="tbHeadImgUrl" runat="server" CssClass="TextBox" Width="200px"></asp:TextBox>
+                        </td>
+                        <td class="FieldHeader">最新授权:
+                        </td>
+                        <td class="FieldColspan">
+                            <asp:TextBox ID="tbLastAuthorizeDate" runat="server" CssClass="TextBox" Width="200px"></asp:TextBox>
+                        </td>
+                    </tr>
+                    <tr class="Row">
+                        <td class="FieldHeader">微信OpenID:
+                        </td>
+                        <td class="FieldColumn">
+                            <asp:TextBox ID="tbWeChatOpenID" runat="server" CssClass="TextBox" Width="200px"></asp:TextBox>
+                        </td>
+                        <td class="FieldHeader">微信UnionID:
+                        </td>
+                        <td class="FieldColumn">
+                            <asp:TextBox ID="tbUnionID" runat="server" CssClass="TextBox" Width="200px"></asp:TextBox>
+                        </td>
+                    </tr>
+                    <tr class="AlternatingRow">
+                        <td class="FieldHeader">AccessToken:
+                        </td>
+                        <td class="FieldColumn">
+                            <asp:TextBox ID="tbAccessToken" runat="server" CssClass="TextBox" Width="200px"></asp:TextBox>
+                        </td>
+                        <td class="FieldHeader">AccessToken过期:
+                        </td>
+                        <td class="FieldColumn">
+                            <asp:TextBox ID="tbAccessTokenExpiredDate" runat="server" CssClass="TextBox" Width="200px"></asp:TextBox>
+                        </td>
+                    </tr>
+                    <tr class="Row">
+                        <td class="FieldHeader">RefreshToken:
+                        </td>
+                        <td class="FieldColumn">
+                            <asp:TextBox ID="tbRefreshToken" runat="server" CssClass="TextBox" Width="200px"></asp:TextBox>
+                        </td>
+                        <td class="FieldHeader">RefreshToken过期:
+                        </td>
+                        <td class="FieldColumn">
+                            <asp:TextBox ID="tbRefreshTokenExpiredDate" runat="server" CssClass="TextBox" Width="200px"></asp:TextBox>
+                        </td>
+                    </tr>
+                    <tr class="AlternatingRow">
+                        <td class="FieldHeader">所在地:
+                        </td>
+                        <td class="FieldColspan">
+                            <asp:TextBox ID="tbProvince" runat="server" CssClass="TextBox" Width="80px"></asp:TextBox>
+                            <asp:TextBox ID="tbCity" runat="server" CssClass="TextBox" Width="80px"></asp:TextBox>
+                            <asp:TextBox ID="tbCountry" runat="server" CssClass="TextBox" Width="80px"></asp:TextBox>
+                        </td>
+                        <td class="FieldHeader">权限:
+                        </td>
+                        <td class="FieldColspan">
+                            <asp:TextBox ID="tbPrivilege" runat="server" CssClass="TextBox" Width="200px"></asp:TextBox>
                         </td>
                     </tr>
                 </tbody>
             </table>
+            <asp:GridView ID="gvAvatar" runat="server" DataKeyNames="ID" OnSelectedIndexChanged="gvAvatar_SelectedIndexChanged">
+                <Columns>
+                    <asp:BoundField DataField="ID" Visible="false" />
+                    <asp:BoundField HeaderText="用户名" DataField="UserName" />
+                    <asp:BoundField HeaderText="手机" DataField="Mobile" />
+                    <asp:BoundField HeaderText="邮箱" DataField="Email" />
+                    <asp:BoundField HeaderText="注册时间" DataField="CreateDate" DataFormatString="{0:yyyy-MM-dd HH:mm}" />
+                    <asp:BoundField HeaderText="上次登录" DataField="LastLoginDate" DataFormatString="{0:yyyy-MM-dd HH:mm}" />
+                    <asp:BoundField HeaderText="备注" DataField="Remark" />
+                    <asp:CommandField ShowSelectButton="true" HeaderText="操作" EditText="修改" SelectText="详细"
+                        UpdateText="保存" CancelText="取消" DeleteText="删除" ControlStyle-CssClass="LinkBtn" />
+                </Columns>
+            </asp:GridView>
             <div class="FooterBtnBar">
                 <asp:Button ID="btnSubmit" runat="server" CssClass="InputBtn SubmitBtn" Text="保存用户"
                     OnClick="btnSubmit_Click" OnClientClick="return confirm('保存统一用户认证信息')" />

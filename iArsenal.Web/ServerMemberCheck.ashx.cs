@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Web;
 using System.Web.Script.Serialization;
 using Arsenalcn.Core;
@@ -8,7 +9,7 @@ namespace iArsenal.Web
 {
     public class ServerMemberCheck : IHttpHandler
     {
-        private readonly IRepository repo = new Repository();
+        private readonly IRepository _repo = new Repository();
 
         public void ProcessRequest(HttpContext context)
         {
@@ -18,18 +19,41 @@ namespace iArsenal.Web
             {
                 try
                 {
-                    var mID = context.Request.QueryString["MemberID"];
+                    var id = context.Request.QueryString["MemberID"];
 
-                    var m = repo.Single<Member>(Convert.ToInt32(mID));
+                    var m = _repo.Single<Member>(Convert.ToInt32(id));
 
                     if (m != null)
                     {
                         var jsonSerializer = new JavaScriptSerializer();
-                        responseText = jsonSerializer.Serialize(m);
+                        responseText = jsonSerializer.Serialize(new { m.Name });
                     }
                     else
                     {
                         throw new Exception("invalid Member ID");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    responseText = $"{{  \"result\": \"error\", \"error_msg\": \"{ex.Message}\" }}";
+                }
+            }
+            else if (!string.IsNullOrEmpty(context.Request.QueryString["AcnID"]))
+            {
+                try
+                {
+                    var id = context.Request.QueryString["AcnID"];
+
+                    var m = _repo.Query<Member>(x => x.AcnID == Convert.ToInt32(id)).FirstOrDefault();
+
+                    if (m != null)
+                    {
+                        var jsonSerializer = new JavaScriptSerializer();
+                        responseText = jsonSerializer.Serialize(new { m.ID, m.AcnName, m.Name, m.Mobile, m.Email });
+                    }
+                    else
+                    {
+                        throw new Exception("invalid Acn ID");
                     }
                 }
                 catch (Exception ex)

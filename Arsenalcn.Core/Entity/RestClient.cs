@@ -9,7 +9,7 @@ namespace Arsenalcn.Core
 {
     public class RestClient
     {
-        protected virtual string ApiGet(string url)
+        public virtual string ApiGet(string url)
         {
             if (!string.IsNullOrEmpty(url))
             {

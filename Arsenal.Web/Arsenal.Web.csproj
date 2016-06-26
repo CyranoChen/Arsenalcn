@@ -347,6 +347,7 @@
     <Compile Include="Scheduler\AutoUpdateActiveBankerCash.cs" />
     <Compile Include="Scheduler\AutoUpdateArsenalMatchResult.cs" />
     <Compile Include="Scheduler\AutoUpdateMonthlyRank.cs" />
+    <Compile Include="Scheduler\AutoUpdateUserInfo.cs" />
     <Compile Include="Scheduler\GroupTableStatistics.cs" />
     <Compile Include="Scheduler\RefreshCache.cs" />
     <Compile Include="ServerACNCallback.ashx.cs">

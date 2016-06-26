@@ -43,13 +43,17 @@ namespace Arsenal.Mobile.Controllers
         {
             var user = UserDto.GetSession();
 
-            var client = new WeChatSnsClient();
-            var openUri = client.GetOpenUrl("http://mobile.arsenal.cn/Account/WeChatAuth", scope, user.ID.ToString());
-
-            if (!string.IsNullOrEmpty(openUri))
+            if (HttpContext.Request.Url != null)
             {
-                TempData["DataUrl"] = $"data-url={openUri}";
-                return Redirect(openUri);
+                var client = new WeChatSnsClient();
+
+                var openUri = client.GetOpenUrl($"http://{HttpContext.Request.Url.Host}/Account/WeChatAuth", scope, user.ID.ToString());
+
+                if (!string.IsNullOrEmpty(openUri))
+                {
+                    TempData["DataUrl"] = $"data-url={openUri}";
+                    return Redirect(openUri);
+                }
             }
 
             TempData["DataUrl"] = "data-url=/Account";

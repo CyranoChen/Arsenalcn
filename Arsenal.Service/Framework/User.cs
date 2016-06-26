@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Data;
+using System.Data.SqlClient;
 using Arsenalcn.Core;
 using DataReaderMapper;
+using Newtonsoft.Json.Linq;
 
 namespace Arsenal.Service
 {
@@ -12,7 +14,60 @@ namespace Arsenal.Service
         {
             var map = Mapper.CreateMap<IDataReader, User>();
 
-            map.ForMember(d => d.ID, opt => opt.MapFrom(s => (Guid) s.GetValue("UserGuid")));
+            map.ForMember(d => d.ID, opt => opt.MapFrom(s => (Guid)s.GetValue("UserGuid")));
+        }
+
+        public void SyncUserByMember()
+        {
+            if (AcnID != null)
+            {
+                using (var conn = new SqlConnection(DataAccess.ConnectString))
+                {
+                    conn.Open();
+                    var trans = conn.BeginTransaction();
+
+                    try
+                    {
+                        IRepository repo = new Repository();
+
+                        var client = new RestClient();
+                        const string uri = "http://www.iarsenal.com/servermembercheck.ashx";
+
+                        var responseResult = client.ApiGet($"{uri}?acnid={AcnID.Value}");
+                        var json = JToken.Parse(responseResult);
+
+                        if (json["ID"] != null && AcnUserName == json["AcnName"].Value<string>())
+                        {
+                            if (MemberID != json["ID"].Value<int>() || MemberName != json["Name"].Value<string>())
+                            {
+                                MemberID = json["ID"].Value<int>();
+                                MemberName = json["Name"].Value<string>();
+
+                                repo.Update(this, trans);
+                            }
+
+                            var mem = repo.Single<Membership>(ID);
+
+                            if (mem.Mobile != json["Mobile"].Value<string>() ||
+                                mem.Email != json["Email"].Value<string>())
+                            {
+                                mem.Mobile = json["Mobile"].Value<string>();
+                                mem.Email = json["Email"].Value<string>();
+
+                                repo.Update(mem, trans);
+                            }
+
+                            trans.Commit();
+                        }
+                    }
+                    catch
+                    {
+                        trans.Rollback();
+
+                        throw;
+                    }
+                }
+            }
         }
 
         #region Members and Properties

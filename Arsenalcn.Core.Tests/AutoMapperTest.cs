@@ -34,7 +34,7 @@ namespace Arsenalcn.Core.Tests
         //}
 
         [TestMethod]
-        public void Test_AutoMapper_421()
+        public void Test_AutoMapper_500()
         {
             var list = new List<Person>
             {

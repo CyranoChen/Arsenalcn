@@ -119,6 +119,7 @@
     <Content Include="App_Themes\iArsenal\images\bg_iArsenalNav.gif" />
     <Content Include="App_Themes\iArsenal\images\bg_iArsenalTitle.png" />
     <Content Include="App_Themes\iArsenal\images\icon-cancel.gif" />
+    <Content Include="App_Themes\iArsenal\images\LiIcon.gif" />
     <Content Include="App_Themes\iArsenal\images\topItem_col.gif" />
     <Content Include="App_Themes\iArsenal\images\topItem_exp.gif" />
     <Content Include="App_Themes\iArsenal\images\pagination.png" />
@@ -189,9 +190,9 @@
       <DependentUpon>iarsenal.js</DependentUpon>
     </Content>
     <Content Include="packages.config" />
-    <None Include="Scripts\jquery-2.2.3.intellisense.js" />
-    <Content Include="Scripts\jquery-2.2.3.js" />
-    <Content Include="Scripts\jquery-2.2.3.min.js" />
+    <None Include="Scripts\jquery-2.2.4.intellisense.js" />
+    <Content Include="Scripts\jquery-2.2.4.js" />
+    <Content Include="Scripts\jquery-2.2.4.min.js" />
     <Content Include="Scripts\jquery-ui-1.11.4.js" />
     <Content Include="Scripts\jquery-ui-1.11.4.min.js" />
     <Content Include="Scripts\jquery.slides.min.js" />
@@ -1172,7 +1173,7 @@
       <DependentUpon>iarsenal.min.js</DependentUpon>
     </Content>
     <Content Include="ServerBulkOrder.ashx" />
-    <Content Include="Scripts\jquery-2.2.3.min.map" />
+    <Content Include="Scripts\jquery-2.2.4.min.map" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

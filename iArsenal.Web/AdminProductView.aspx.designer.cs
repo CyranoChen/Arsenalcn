@@ -148,13 +148,22 @@ namespace iArsenal.Web {
         protected global::System.Web.UI.WebControls.TextBox tbSale;
         
         /// <summary>
-        /// tbImageURL control.
+        /// tbImageUrl control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbImageURL;
+        protected global::System.Web.UI.WebControls.TextBox tbImageUrl;
+        
+        /// <summary>
+        /// tbQrCodeUrl control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox tbQrCodeUrl;
         
         /// <summary>
         /// tbDescription control.

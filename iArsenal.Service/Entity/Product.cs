@@ -26,7 +26,7 @@ namespace iArsenal.Service
             {
                 #region Generate Product Type Info
 
-                var retValue = string.Empty;
+                string retValue;
 
                 switch ((ProductType) ((int) s.GetValue("ProductType")))
                 {
@@ -117,27 +117,27 @@ namespace iArsenal.Service
                 var sale = (double?) s.GetValue("Sale");
                 var price = (double) s.GetValue("Price");
 
-                double _unitPrice;
+                double unitPrice;
 
                 if (sale.HasValue)
                 {
-                    _unitPrice = sale.Value;
+                    unitPrice = sale.Value;
                 }
                 else
                 {
-                    _unitPrice = price;
+                    unitPrice = price;
                 }
 
                 switch ((ProductCurrencyType) ((int) s.GetValue("Currency")))
                 {
                     case ProductCurrencyType.GBP:
-                        retValue = _unitPrice*ConfigGlobal.ExchangeRateGBP;
+                        retValue = unitPrice*ConfigGlobal.ExchangeRateGBP;
                         break;
                     case ProductCurrencyType.CNY:
-                        retValue = _unitPrice;
+                        retValue = unitPrice;
                         break;
                     case ProductCurrencyType.USD:
-                        retValue = _unitPrice*ConfigGlobal.ExchangeRateUSD;
+                        retValue = unitPrice*ConfigGlobal.ExchangeRateUSD;
                         break;
                 }
 
@@ -150,7 +150,7 @@ namespace iArsenal.Service
             {
                 #region Generate PriceInfo
 
-                var retValue = string.Empty;
+                string retValue;
                 var price = (double) s.GetValue("Price");
                 var currencyIcon = string.Empty;
 
@@ -185,7 +185,7 @@ namespace iArsenal.Service
             {
                 #region Generate SaleInfo
 
-                var retValue = string.Empty;
+                string retValue;
                 var sale = (double?) s.GetValue("Sale");
                 var currencyIcon = string.Empty;
 
@@ -268,8 +268,11 @@ namespace iArsenal.Service
         [DbColumn("ProductType")]
         public ProductType ProductType { get; set; }
 
-        [DbColumn("ImageURL")]
-        public string ImageURL { get; set; }
+        [DbColumn("ImageUrl")]
+        public string ImageUrl { get; set; }
+
+        [DbColumn("QrCodeUrl")]
+        public string QrCodeUrl { get; set; }
 
         [DbColumn("Material")]
         public string Material { get; set; }

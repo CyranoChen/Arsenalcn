@@ -229,40 +229,13 @@ namespace iArsenal.Web {
         protected global::System.Web.UI.WebControls.Label lblSaleInfo;
         
         /// <summary>
-        /// tbMemberCardNo control.
+        /// lblDatePeriod control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbMemberCardNo;
-        
-        /// <summary>
-        /// rfvMemberCardNo control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvMemberCardNo;
-        
-        /// <summary>
-        /// rvMemberCardNo control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RangeValidator rvMemberCardNo;
-        
-        /// <summary>
-        /// lblEndDate control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblEndDate;
+        protected global::System.Web.UI.WebControls.Label lblDatePeriod;
         
         /// <summary>
         /// tbOrderDescription control.

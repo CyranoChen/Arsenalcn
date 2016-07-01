@@ -238,13 +238,13 @@ namespace iArsenal.Web {
         protected global::System.Web.UI.WebControls.Button btnCancel;
         
         /// <summary>
-        /// ctrlPortalMatchInfo control.
+        /// ucPortalMatchInfo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::iArsenal.Web.Control.PortalMatchInfo ctrlPortalMatchInfo;
+        protected global::iArsenal.Web.Control.PortalMatchInfo ucPortalMatchInfo;
         
         /// <summary>
         /// ucPortalPaymentInfo control.
@@ -254,5 +254,14 @@ namespace iArsenal.Web {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::iArsenal.Web.Control.PortalPaymentInfo ucPortalPaymentInfo;
+        
+        /// <summary>
+        /// ucPortalProductQrCode control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::iArsenal.Web.Control.PortalProductQrCode ucPortalProductQrCode;
     }
 }

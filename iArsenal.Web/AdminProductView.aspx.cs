@@ -9,7 +9,7 @@ namespace iArsenal.Web
 {
     public partial class AdminProductView : AdminPageBase
     {
-        private readonly IRepository repo = new Repository();
+        private readonly IRepository _repo = new Repository();
 
         private Guid ProductGuid
         {
@@ -45,14 +45,15 @@ namespace iArsenal.Web
         {
             if (ProductGuid != Guid.Empty)
             {
-                var p = repo.Single<Product>(ProductGuid);
+                var p = _repo.Single<Product>(ProductGuid);
 
                 tbProductGuid.Text = ProductGuid.ToString();
                 tbCode.Text = p.Code;
                 tbName.Text = p.Name;
                 tbDisplayName.Text = p.DisplayName;
-                ddlProductType.SelectedValue = ((int) p.ProductType).ToString();
-                tbImageURL.Text = p.ImageURL;
+                ddlProductType.SelectedValue = ((int)p.ProductType).ToString();
+                tbImageUrl.Text = p.ImageUrl;
+                tbQrCodeUrl.Text = p.QrCodeUrl;
                 tbMaterial.Text = p.Material;
                 tbColour.Text = p.Colour;
                 ddlSize.SelectedValue = p.Size.ToString();
@@ -81,8 +82,8 @@ namespace iArsenal.Web
 
         private void BindItemData()
         {
-            var list = repo.Query<OrderItem>(x => x.ProductGuid == ProductGuid);
-            var query = repo.All<Order>().FindAll(o => list.Exists(x => x.OrderID.Equals(o.ID)));
+            var list = _repo.Query<OrderItem>(x => x.ProductGuid == ProductGuid);
+            var query = _repo.All<Order>().FindAll(o => list.Exists(x => x.OrderID.Equals(o.ID)));
 
             gvProductOrder.DataSource = query.ToList();
             gvProductOrder.DataBind();
@@ -128,8 +129,9 @@ namespace iArsenal.Web
         {
             if (gvProductOrder.SelectedIndex != -1)
             {
-                Response.Redirect(
-                    $"AdminOrderView.aspx?OrderID={gvProductOrder.DataKeys[gvProductOrder.SelectedIndex].Value}");
+                var key = gvProductOrder.DataKeys[gvProductOrder.SelectedIndex];
+                if (key != null)
+                    Response.Redirect($"AdminOrderView.aspx?OrderID={key.Value}");
             }
         }
 
@@ -137,19 +139,19 @@ namespace iArsenal.Web
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                var _strStatus = string.Empty;
                 var o = e.Row.DataItem as Order;
 
                 var lblOrderStatus = e.Row.FindControl("lblOrderStatus") as Label;
 
-                if (lblOrderStatus != null)
+                if (o != null && lblOrderStatus != null)
                 {
+                    string status;
                     if (o.Status.Equals(OrderStatusType.Confirmed))
-                        _strStatus = $"<em>{o.StatusInfo}</em>";
+                        status = $"<em>{o.StatusInfo}</em>";
                     else
-                        _strStatus = o.StatusInfo;
+                        status = o.StatusInfo;
 
-                    lblOrderStatus.Text = _strStatus;
+                    lblOrderStatus.Text = status;
                 }
             }
         }
@@ -162,7 +164,7 @@ namespace iArsenal.Web
 
                 if (!ProductGuid.Equals(Guid.Empty))
                 {
-                    p = repo.Single<Product>(ProductGuid);
+                    p = _repo.Single<Product>(ProductGuid);
                 }
 
                 if (!string.IsNullOrEmpty(tbCode.Text.Trim()))
@@ -172,17 +174,18 @@ namespace iArsenal.Web
 
                 p.Name = tbName.Text.Trim();
                 p.DisplayName = tbDisplayName.Text.Trim();
-                p.ProductType = (ProductType) Enum.Parse(typeof (ProductType), ddlProductType.SelectedValue);
-                p.ImageURL = tbImageURL.Text.Trim();
+                p.ProductType = (ProductType)Enum.Parse(typeof(ProductType), ddlProductType.SelectedValue);
+                p.ImageUrl = tbImageUrl.Text.Trim();
+                p.QrCodeUrl = tbQrCodeUrl.Text.Trim();
                 p.Material = tbMaterial.Text.Trim();
                 p.Colour = tbColour.Text.Trim();
 
                 if (!string.IsNullOrEmpty(ddlSize.SelectedValue))
-                    p.Size = (ProductSizeType) Enum.Parse(typeof (ProductSizeType), ddlSize.SelectedValue);
+                    p.Size = (ProductSizeType)Enum.Parse(typeof(ProductSizeType), ddlSize.SelectedValue);
                 else
                     p.Size = ProductSizeType.None;
 
-                p.Currency = (ProductCurrencyType) Enum.Parse(typeof (ProductCurrencyType), ddlCurrency.SelectedValue);
+                p.Currency = (ProductCurrencyType)Enum.Parse(typeof(ProductCurrencyType), ddlCurrency.SelectedValue);
                 p.Price = Convert.ToSingle(tbPrice.Text.Trim());
 
                 if (!string.IsNullOrEmpty(tbSale.Text.Trim()))
@@ -198,29 +201,29 @@ namespace iArsenal.Web
 
                 if (ProductGuid != Guid.Empty)
                 {
-                    repo.Update(p);
+                    _repo.Update(p);
 
                     Product.Cache.RefreshCache();
 
-                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
                         "alert('更新成功');window.location.href=window.location.href", true);
                 }
                 else
                 {
-                    if (repo.All<Product>().Any(x => x.Code.ToLower().Equals(tbCode.Text.Trim().ToLower())))
+                    if (_repo.All<Product>().Any(x => x.Code.ToLower().Equals(tbCode.Text.Trim().ToLower())))
                         throw new Exception("Product Code is already in use");
 
-                    repo.Insert(p);
+                    _repo.Insert(p);
 
                     Product.Cache.RefreshCache();
 
-                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
                         "alert('添加成功');window.location.href = 'AdminProduct.aspx'", true);
                 }
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof (string), "failed", $"alert('{ex.Message}')", true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message}')", true);
             }
         }
 
@@ -242,9 +245,9 @@ namespace iArsenal.Web
             {
                 if (ProductGuid != Guid.Empty)
                 {
-                    repo.Delete<Product>(ProductGuid);
+                    _repo.Delete<Product>(ProductGuid);
 
-                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
                         "alert('删除成功');window.location.href='AdminProduct.aspx'", true);
                 }
                 else
@@ -254,7 +257,7 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof (string), "failed", $"alert('{ex.Message}')", true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message}')", true);
             }
         }
     }

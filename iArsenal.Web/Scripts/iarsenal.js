@@ -1,5 +1,5 @@
 ﻿/* Javascript Version iArsenal */
-/* Version: 1.8.5 || Date: 2016-03-22 || Author: Cyrano */
+/* Version: 1.8.6 || Date: 2016-06-30 || Author: Cyrano */
 /* type="text/javascript" */
 
 $(function () {
@@ -259,7 +259,7 @@ function ProductCheckByID(pGuid) {
         $.getJSON("ServerProductCheck.ashx", { ProductGuid: pGuid }, function(data, status, xhr) {
             if (status == "success" && data != null) {
                 if (data.result != "error" && JSON.stringify(data) != "{}") {
-                    $img.attr("src", data.ImageURL);
+                    $img.attr("src", data.ImageUrl);
                     $img.attr("alt", data.DisplayName);
                     $pnlProductImage.show();
                 } else {

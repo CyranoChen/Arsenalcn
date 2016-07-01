@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data.SqlClient;
+using System.Globalization;
 using System.Linq;
 using Arsenalcn.Core;
 using iArsenal.Service;
@@ -8,17 +9,17 @@ namespace iArsenal.Web
 {
     public partial class iArsenalOrderView_MemberShip : MemberPageBase
     {
-        private readonly IRepository repo = new Repository();
+        private readonly IRepository _repo = new Repository();
 
         private int OrderID
         {
             get
             {
-                int _orderID;
+                int id;
                 if (!string.IsNullOrEmpty(Request.QueryString["OrderID"]) &&
-                    int.TryParse(Request.QueryString["OrderID"], out _orderID))
+                    int.TryParse(Request.QueryString["OrderID"], out id))
                 {
-                    return _orderID;
+                    return id;
                 }
                 return int.MinValue;
             }
@@ -68,7 +69,7 @@ namespace iArsenal.Web
 
                     #endregion
 
-                    var m = repo.Single<Member>(o.MemberID);
+                    var m = _repo.Single<Member>(o.MemberID);
 
                     lblOrderMobile.Text = $"<em>{o.Mobile}</em>";
 
@@ -81,16 +82,14 @@ namespace iArsenal.Web
                             lblMemberRegion.Text = "中国 ";
 
                             var region = m.Region.Split('|');
-                            var _regionID = int.MinValue;
 
-                            for (var i = 0; i < region.Length; i++)
+                            foreach (var t in region)
                             {
-                                if (int.TryParse(region[i], out _regionID))
+                                int regionId;
+                                if (int.TryParse(t, out regionId))
                                 {
-                                    lblMemberRegion.Text += DictionaryItem.Cache.Load(_regionID).Name + " ";
+                                    lblMemberRegion.Text += DictionaryItem.Cache.Load(regionId).Name + " ";
                                 }
-                                else
-                                    continue;
                             }
                         }
                         else
@@ -126,11 +125,11 @@ namespace iArsenal.Web
                     }
 
                     // Should be Calculator in this Page
-                    var price = default(double);
-                    var priceInfo = string.Empty;
+                    double price;
+                    string priceInfo;
 
                     // Whether Core or Premier MemberShip
-                    OrdrItmMemberShip oiMemberShip = null;
+                    OrdrItmMemberShip oiMemberShip;
 
                     if (o.OIMemberShipCore != null && o.OIMemberShipCore.IsActive)
                     {
@@ -161,7 +160,6 @@ namespace iArsenal.Web
 
                     var isUpgrade = oiMemberShip.AlterMethod.Equals("Upgrade", StringComparison.OrdinalIgnoreCase);
                     var isRenew = oiMemberShip.AlterMethod.Equals("Renew", StringComparison.OrdinalIgnoreCase);
-                    ;
 
                     // Set Order Price
 
@@ -169,7 +167,7 @@ namespace iArsenal.Web
                     priceInfo = string.Format("<合计> {2}：{0} × {1}", oiMemberShip.UnitPrice.ToString("f2"),
                         oiMemberShip.Quantity, Product.Cache.Load(oiMemberShip.ProductGuid).DisplayName);
 
-                    tbOrderPrice.Text = price.ToString();
+                    tbOrderPrice.Text = price.ToString(CultureInfo.CurrentCulture);
 
                     if (isUpgrade)
                     {
@@ -195,6 +193,8 @@ namespace iArsenal.Web
                         btnSubmit.Visible = false;
                         btnModify.Visible = false;
                         btnCancel.Visible = true;
+
+                        ucPortalProductQrCode.QrCodeUrl = p.QrCodeUrl;
                     }
                     else
                     {
@@ -221,7 +221,7 @@ namespace iArsenal.Web
             {
                 if (OrderID > 0)
                 {
-                    var o = repo.Single<Order>(OrderID);
+                    var o = _repo.Single<Order>(OrderID);
 
                     if (o == null || !o.MemberID.Equals(MID) || !o.IsActive)
                         throw new Exception("此订单无效或非当前用户订单");
@@ -230,7 +230,7 @@ namespace iArsenal.Web
                     o.UpdateTime = DateTime.Now;
                     o.Price = Convert.ToSingle(tbOrderPrice.Text.Trim());
 
-                    repo.Update(o);
+                    _repo.Update(o);
 
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
                         $"alert('谢谢您的订购，您的订单已经提交成功。\\r\\n请尽快付款以完成订单确认，订单号为：{o.ID}'); window.location.href = window.location.href",
@@ -253,7 +253,7 @@ namespace iArsenal.Web
             {
                 if (OrderID > 0)
                 {
-                    var o = repo.Single<Order>(OrderID);
+                    var o = _repo.Single<Order>(OrderID);
 
                     if (o == null || !o.MemberID.Equals(MID) || !o.IsActive)
                         throw new Exception("此订单无效或非当前用户订单");
@@ -278,7 +278,7 @@ namespace iArsenal.Web
             {
                 if (OrderID > 0)
                 {
-                    var o = repo.Single<Order>(OrderID);
+                    var o = _repo.Single<Order>(OrderID);
 
                     if (o == null || !o.MemberID.Equals(MID) || !o.IsActive)
                         throw new Exception("此订单无效或非当前用户订单");
@@ -287,7 +287,7 @@ namespace iArsenal.Web
                     o.UpdateTime = DateTime.Now;
                     o.Price = Convert.ToSingle(tbOrderPrice.Text.Trim());
 
-                    repo.Update(o);
+                    _repo.Update(o);
 
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
                         $"alert('此订单({o.ID})已经取消');window.location.href = 'iArsenalMemberPeriod.aspx'", true);
@@ -319,7 +319,7 @@ namespace iArsenal.Web
                         if (ConfigGlobal.IsPluginAdmin(UID) && o != null && o.Status.Equals(OrderStatusType.Confirmed))
                         {
                             // Whether Core or Premier MemberShip
-                            OrdrItmMemberShip oiMemberShip = null;
+                            OrdrItmMemberShip oiMemberShip;
 
                             if (o.OIMemberShipCore != null && o.OIMemberShipCore.IsActive)
                             {
@@ -342,11 +342,11 @@ namespace iArsenal.Web
                             }
 
                             // Get all Member Period of current season
-                            var list = repo.Query<MemberPeriod>(x =>
+                            var list = _repo.Query<MemberPeriod>(x =>
                                 x.StartDate <= DateTime.Now && x.EndDate >= DateTime.Now)
                                 .FindAll(x => x.IsActive);
 
-                            var _updateFlag = false;
+                            var updateFlag = false;
 
                             // Valiate the Member Period Information
                             if (list.Any())
@@ -362,10 +362,10 @@ namespace iArsenal.Web
                                     && x.MemberClass.Equals(MemberClassType.Core))
                                     && p.ProductType.Equals(ProductType.MemberShipPremier))
                                 {
-                                    _updateFlag = true;
+                                    updateFlag = true;
                                 }
 
-                                if (!_updateFlag && list.Exists(x => !x.MemberID.Equals(o.MemberID)
+                                if (!updateFlag && list.Exists(x => !x.MemberID.Equals(o.MemberID)
                                                                      &&
                                                                      x.MemberCardNo.Equals(oiMemberShip.MemberCardNo,
                                                                          StringComparison.OrdinalIgnoreCase)))
@@ -374,7 +374,7 @@ namespace iArsenal.Web
                                 }
                             }
 
-                            if (_updateFlag &&
+                            if (updateFlag &&
                                 oiMemberShip.AlterMethod.Equals("Upgrade", StringComparison.OrdinalIgnoreCase))
                             {
                                 // Level up the core member to premier for current season
@@ -382,19 +382,22 @@ namespace iArsenal.Web
                                     x.MemberID.Equals(o.MemberID) && x.MemberName.Equals(o.MemberName)
                                     && x.MemberClass.Equals(MemberClassType.Core));
 
-                                mpCore.MemberClass = MemberClassType.Premier;
+                                if (mpCore != null)
+                                {
+                                    mpCore.MemberClass = MemberClassType.Premier;
 
-                                // not update MemberCardNo of the core member
-                                oiMemberShip.MemberCardNo = mpCore.MemberCardNo;
+                                    // not update MemberCardNo of the core member
+                                    oiMemberShip.MemberCardNo = mpCore.MemberCardNo;
 
-                                mpCore.EndDate = oiMemberShip.EndDate;
+                                    mpCore.EndDate = oiMemberShip.EndDate;
 
-                                mpCore.Description =
-                                    $"Season {oiMemberShip.Season} 于 {DateTime.Now.ToString("yyyy-MM-dd HH:mm")} 升级为【{mpCore.MemberClass}】会籍，原会籍订单号：{mpCore.OrderID}";
+                                    mpCore.Description =
+                                        $"Season {oiMemberShip.Season} 于 {DateTime.Now.ToString("yyyy-MM-dd HH:mm")} 升级为【{mpCore.MemberClass}】会籍，原会籍订单号：{mpCore.OrderID}";
 
-                                mpCore.OrderID = OrderID;
+                                    mpCore.OrderID = OrderID;
 
-                                repo.Update(mpCore, trans);
+                                    _repo.Update(mpCore, trans);
+                                }
                             }
                             else
                             {
@@ -425,14 +428,14 @@ namespace iArsenal.Web
                                 mp.Description = $"Season {oiMemberShip.Season}";
                                 mp.Remark = string.Empty;
 
-                                repo.Insert(mp, trans);
+                                _repo.Insert(mp, trans);
                             }
 
                             // Update Order Status
                             o.Status = OrderStatusType.Delivered;
                             o.UpdateTime = DateTime.Now;
 
-                            repo.Update(o, trans);
+                            _repo.Update(o, trans);
 
                             trans.Commit();
 

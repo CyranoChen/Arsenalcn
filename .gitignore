@@ -159,3 +159,5 @@ $RECYCLE.BIN/
 
 # Mac desktop service store files
 .DS_Store
+/iArsenal.Web/UploadFiles/QrCode
+/iArsenal.Web/UploadFiles/QrCode

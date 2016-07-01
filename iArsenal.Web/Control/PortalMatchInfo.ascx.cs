@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Web.UI;
 using iArsenal.Service;
-using ArsenalTeam = iArsenal.Service.Arsenal.Team;
 
 namespace iArsenal.Web.Control
 {
@@ -17,25 +16,23 @@ namespace iArsenal.Web.Control
                 var tHome = Arsenal_Team.Cache.Load(ConfigGlobal.ArsenalTeamGuid);
                 var tAway = Arsenal_Team.Cache.Load(mt.TeamGuid);
 
-                if (mt != null)
-                {
-                    var _strLeagueInfo = mt.LeagueName;
+                var strLeagueInfo = mt.LeagueName;
 
-                    if (mt.Round.HasValue)
-                        _strLeagueInfo += $" 第{mt.Round.Value}轮";
+                if (mt.Round.HasValue)
+                    strLeagueInfo += $" 第{mt.Round.Value}轮";
 
-                    lblLeagueSeason.Text = _strLeagueInfo;
+                lblLeagueSeason.Text = strLeagueInfo;
 
-                    var _strTeamInfo =
-                        "<div class=\"MatchTicket_MatchInfo\"><a class=\"StrongLink\" title=\"{1}\">{0}</a><img src=\"{2}\" alt=\"{0}\" /><a><em>vs</em></a><img src=\"{5}\" alt=\"{3}\" /><a class=\"StrongLink\" title=\"{4}\">{3}</a></div>";
+                var _strTeamInfo =
+                    "<div class=\"MatchTicket_MatchInfo\"><a class=\"StrongLink\" title=\"{1}\">{0}</a><img src=\"{2}\" alt=\"{0}\" /><a><em>vs</em></a><img src=\"{5}\" alt=\"{3}\" /><a class=\"StrongLink\" title=\"{4}\">{3}</a></div>";
 
-                    ltrlTeamInfo.Text = string.Format(_strTeamInfo, tHome.TeamDisplayName, tHome.TeamEnglishName,
-                        ConfigGlobal.AcnCasinoURL + tHome.TeamLogo, tAway.TeamDisplayName, tAway.TeamEnglishName,
-                        ConfigGlobal.AcnCasinoURL + tAway.TeamLogo);
+                ltrlTeamInfo.Text = string.Format(_strTeamInfo, tHome.TeamDisplayName, tHome.TeamEnglishName,
+                    ConfigGlobal.AcnCasinoURL + tHome.TeamLogo, tAway.TeamDisplayName, tAway.TeamEnglishName,
+                    ConfigGlobal.AcnCasinoURL + tAway.TeamLogo);
 
-                    lblTicketInfo.Text = mt.ProductInfo;
-                    lblGameTime.Text = mt.PlayTimeLocal.ToString("yyyy-MM-dd HH:mm");
-                }
+                lblTicketInfo.Text = mt.ProductInfo;
+                lblGameTime.Text = mt.PlayTimeLocal.ToString("yyyy-MM-dd HH:mm");
+
             }
             else
             {

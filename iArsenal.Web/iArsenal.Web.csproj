@@ -47,6 +47,10 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Gma.QrCodeNet.Encoding, Version=0.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\QrCode.Net.0.4.0.0\lib\net45\Gma.QrCodeNet.Encoding.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -164,6 +168,7 @@
     <Content Include="Control\PortalBulkOrderInfo.ascx" />
     <Content Include="Control\PortalMatchInfo.ascx" />
     <Content Include="Control\PortalPaymentInfo.ascx" />
+    <Content Include="Control\PortalProductQrCode.ascx" />
     <Content Include="Control\PortalSitePath.ascx" />
     <Content Include="AdminOrderView.aspx" />
     <Content Include="AdminMatchTicket.aspx" />
@@ -337,6 +342,13 @@
     </Compile>
     <Compile Include="Control\PortalBulkOrderInfo.ascx.designer.cs">
       <DependentUpon>PortalBulkOrderInfo.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Control\PortalProductQrCode.ascx.cs">
+      <DependentUpon>PortalProductQrCode.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Control\PortalProductQrCode.ascx.designer.cs">
+      <DependentUpon>PortalProductQrCode.ascx</DependentUpon>
     </Compile>
     <Compile Include="Control\PortalWorkflowInfo.ascx.cs">
       <DependentUpon>PortalWorkflowInfo.ascx</DependentUpon>
@@ -1177,6 +1189,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="UploadFiles\QrCode\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

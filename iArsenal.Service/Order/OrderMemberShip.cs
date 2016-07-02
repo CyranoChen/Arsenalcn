@@ -18,34 +18,34 @@ namespace iArsenal.Service
             {
                 OrderItem oiBase = null;
 
-                oiBase = list.Find(x => Product.Cache.Load(x.ProductGuid).ProductType.Equals(ProductType.MemberShipCore));
+                oiBase = list.Find(x => Product.Cache.Load(x.ProductGuid).ProductType.Equals(ProductType.MembershipCore));
                 if (oiBase != null)
                 {
                     var mapperMemShipCore = new MapperConfiguration(cfg =>
                         cfg.CreateMap<OrderItem, OrdrItmMemShipCore>().AfterMap((s, d) => d.Init()))
                         .CreateMapper();
 
-                    OIMemberShipCore = mapperMemShipCore.Map<OrdrItmMemShipCore>(oiBase);
+                    OIMembershipCore = mapperMemShipCore.Map<OrdrItmMemShipCore>(oiBase);
                 }
 
                 oiBase =
-                    list.Find(x => Product.Cache.Load(x.ProductGuid).ProductType.Equals(ProductType.MemberShipPremier));
+                    list.Find(x => Product.Cache.Load(x.ProductGuid).ProductType.Equals(ProductType.MembershipPremier));
                 if (oiBase != null)
                 {
                     var mapperMemShipPremier = new MapperConfiguration(cfg =>
                         cfg.CreateMap<OrderItem, OrdrItmMemShipPremier>().AfterMap((s, d) => d.Init()))
                         .CreateMapper();
 
-                    OIMemberShipPremier = mapperMemShipPremier.Map<OrdrItmMemShipPremier>(oiBase);
+                    OIMembershipPremier = mapperMemShipPremier.Map<OrdrItmMemShipPremier>(oiBase);
                 }
 
-                if (OIMemberShipCore != null || OIMemberShipPremier != null)
+                if (OIMembershipCore != null || OIMembershipPremier != null)
                 {
-                    UrlOrderView = "iArsenalOrderView_MemberShip.aspx";
+                    UrlOrderView = "iArsenalOrderView_Membership.aspx";
                 }
                 else
                 {
-                    throw new Exception("Unable to init Order_MemberShip.");
+                    throw new Exception("Unable to init Order_Membership.");
                 }
             }
 
@@ -67,9 +67,9 @@ namespace iArsenal.Service
 
         #region Members and Properties
 
-        public OrdrItmMemShipCore OIMemberShipCore { get; set; }
+        public OrdrItmMemShipCore OIMembershipCore { get; set; }
 
-        public OrdrItmMemShipPremier OIMemberShipPremier { get; set; }
+        public OrdrItmMemShipPremier OIMembershipPremier { get; set; }
 
         #endregion
     }

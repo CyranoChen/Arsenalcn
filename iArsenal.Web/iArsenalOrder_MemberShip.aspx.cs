@@ -5,7 +5,7 @@ using iArsenal.Service;
 
 namespace iArsenal.Web
 {
-    public partial class iArsenalOrder_MemberShip : MemberPageBase
+    public partial class iArsenalOrder_Membership : MemberPageBase
     {
         private readonly IRepository _repo = new Repository();
 
@@ -35,39 +35,39 @@ namespace iArsenal.Web
                 {
                     var o = (OrdrMembership)Order.Select(OrderID);
 
-                    OrdrItmMemberShip oiMemberShip;
+                    OrdrItmMembership oiMembership;
 
-                    if (o.OIMemberShipCore != null && o.OIMemberShipCore.IsActive)
+                    if (o.OIMembershipCore != null && o.OIMembershipCore.IsActive)
                     {
-                        oiMemberShip = o.OIMemberShipCore;
+                        oiMembership = o.OIMembershipCore;
                     }
-                    else if (o.OIMemberShipPremier != null && o.OIMemberShipPremier.IsActive)
+                    else if (o.OIMembershipPremier != null && o.OIMembershipPremier.IsActive)
                     {
-                        oiMemberShip = o.OIMemberShipPremier;
+                        oiMembership = o.OIMembershipPremier;
                     }
                     else
                     {
                         throw new Exception("此订单未登记会籍信息");
                     }
 
-                    pt = Product.Cache.Load(oiMemberShip.ProductGuid).ProductType;
+                    pt = Product.Cache.Load(oiMembership.ProductGuid).ProductType;
                 }
                 else
                 {
                     if (!string.IsNullOrEmpty(Request.QueryString["Type"]) &&
                         Request.QueryString["Type"].Equals("Core", StringComparison.OrdinalIgnoreCase))
                     {
-                        pt = ProductType.MemberShipCore;
+                        pt = ProductType.MembershipCore;
                     }
                     else
                     {
-                        pt = ProductType.MemberShipPremier;
+                        pt = ProductType.MembershipPremier;
                     }
                 }
 
                 #endregion
 
-                if (pt.Equals(ProductType.MemberShipCore))
+                if (pt.Equals(ProductType.MembershipCore))
                 {
                     Page.Title =
                         $"ACN{CurrSeasonDeadline.AddYears(-1).Year}/{CurrSeasonDeadline.ToString("yy")}赛季普通(Core)会员登记";
@@ -112,7 +112,7 @@ namespace iArsenal.Web
                 CurrentCardNo = mp.MemberCardNo;
 
                 return mp.MemberClass.Equals(MemberClassType.Core) &&
-                       CurrProductType.Equals(ProductType.MemberShipPremier);
+                       CurrProductType.Equals(ProductType.MembershipPremier);
             }
         }
 
@@ -128,11 +128,11 @@ namespace iArsenal.Web
 
                 if (mp.MemberClass.Equals(MemberClassType.Core))
                 {
-                    return CurrProductType.Equals(ProductType.MemberShipCore);
+                    return CurrProductType.Equals(ProductType.MembershipCore);
                 }
                 if (mp.MemberClass.Equals(MemberClassType.Premier))
                 {
-                    return CurrProductType.Equals(ProductType.MemberShipPremier);
+                    return CurrProductType.Equals(ProductType.MembershipPremier);
                 }
                 return false;
             }
@@ -226,31 +226,31 @@ namespace iArsenal.Web
                         throw new Exception("此订单非当前用户订单");
                     }
 
-                    // Whether Core or Premier MemberShip
-                    OrdrItmMemberShip oiMemberShip;
+                    // Whether Core or Premier Membership
+                    OrdrItmMembership oiMembership;
 
-                    if (CurrProductType.Equals(ProductType.MemberShipCore))
+                    if (CurrProductType.Equals(ProductType.MembershipCore))
                     {
-                        oiMemberShip = o.OIMemberShipCore;
+                        oiMembership = o.OIMembershipCore;
                     }
-                    else if (CurrProductType.Equals(ProductType.MemberShipPremier))
+                    else if (CurrProductType.Equals(ProductType.MembershipPremier))
                     {
-                        oiMemberShip = o.OIMemberShipPremier;
+                        oiMembership = o.OIMembershipPremier;
                     }
                     else
                     {
                         throw new Exception("此订单未登记会籍信息");
                     }
 
-                    var pMemberShip = Product.Cache.Load(oiMemberShip.ProductGuid);
+                    var pMembership = Product.Cache.Load(oiMembership.ProductGuid);
 
-                    if (pMemberShip != null)
+                    if (pMembership != null)
                     {
-                        tbMemberClass.Text = ((int)pMemberShip.ProductType).ToString();
+                        tbMemberClass.Text = ((int)pMembership.ProductType).ToString();
                         lblMemberClass.Text =
-                            $"<em>ACN {oiMemberShip.Season}赛季【{pMemberShip.DisplayName}】- 售价 {pMemberShip.PriceInfo}</em>";
+                            $"<em>ACN {oiMembership.Season}赛季【{pMembership.DisplayName}】- 售价 {pMembership.PriceInfo}</em>";
 
-                        //tbMemberCardNo.Text = oiMemberShip.MemberCardNo;
+                        //tbMemberCardNo.Text = oiMembership.MemberCardNo;
 
                         lblDatePeriod.Text = $"<em>{DateTime.Now.ToString("yyyy-MM-dd")}</em> ~ <em>{CurrSeasonDeadline.ToString("yyyy-MM-dd")}</em>";
                     }
@@ -307,13 +307,13 @@ namespace iArsenal.Web
                     tbQQ.Text = m.QQ;
                     tbEmail.Text = m.Email;
 
-                    var pMemberShip = Product.Cache.Load(CurrProductType).Find(p => p.IsActive);
+                    var pMembership = Product.Cache.Load(CurrProductType).Find(p => p.IsActive);
 
-                    if (pMemberShip != null)
+                    if (pMembership != null)
                     {
-                        tbMemberClass.Text = ((int)pMemberShip.ProductType).ToString();
+                        tbMemberClass.Text = ((int)pMembership.ProductType).ToString();
                         lblMemberClass.Text =
-                            $"<em>ACN {CurrSeasonDeadline.AddYears(-1).Year}/{CurrSeasonDeadline.ToString("yy")}赛季【{pMemberShip.DisplayName}】- 售价 {pMemberShip.PriceInfo}</em>";
+                            $"<em>ACN {CurrSeasonDeadline.AddYears(-1).Year}/{CurrSeasonDeadline.ToString("yy")}赛季【{pMembership.DisplayName}】- 售价 {pMembership.PriceInfo}</em>";
 
                         lblDatePeriod.Text = $"<em>{DateTime.Now.ToString("yyyy-MM-dd")}</em> ~ <em>{CurrSeasonDeadline.ToString("yyyy-MM-dd")}</em>";
                     }
@@ -339,7 +339,7 @@ namespace iArsenal.Web
                     }
                     else if (IsRenew)
                     {
-                        var sale = CurrProductType.Equals(ProductType.MemberShipPremier)
+                        var sale = CurrProductType.Equals(ProductType.MembershipPremier)
                             ? Convert.ToSingle(Math.Floor(pPremier.PriceCNY * 0.88))
                             : pCore.PriceCNY;
 
@@ -462,7 +462,7 @@ namespace iArsenal.Web
                     o.Mobile = m.Mobile;
                     o.UpdateTime = DateTime.Now;
                     o.Description = tbOrderDescription.Text.Trim();
-                    o.OrderType = OrderBaseType.MemberShip;
+                    o.OrderType = OrderBaseType.Membership;
 
                     if (OrderID > 0)
                     {
@@ -495,7 +495,7 @@ namespace iArsenal.Web
                     }
 
                     //New Order Items
-                    var oi = new OrdrItmMemberShip();
+                    var oi = new OrdrItmMembership();
 
                     if (!string.IsNullOrEmpty(tbMemberClass.Text.Trim()))
                     {

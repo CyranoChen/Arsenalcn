@@ -152,10 +152,10 @@ namespace iArsenal.Service
                         var mapperWish = new MapperConfiguration(cfg =>
                             cfg.CreateMap<Order, OrdrWish>().AfterMap((s, d) => d.Init())).CreateMapper();
                         return mapperWish.Map<OrdrWish>(o);
-                    case OrderBaseType.MemberShip:
-                        var mapperMemberShip = new MapperConfiguration(cfg =>
+                    case OrderBaseType.Membership:
+                        var mapperMembership = new MapperConfiguration(cfg =>
                             cfg.CreateMap<Order, OrdrMembership>().AfterMap((s, d) => d.Init())).CreateMapper();
-                        return mapperMemberShip.Map<OrdrMembership>(o);
+                        return mapperMembership.Map<OrdrMembership>(o);
                     default:
                         return o;
                 }
@@ -212,10 +212,10 @@ namespace iArsenal.Service
             if (list.Any(delegate (OrderItem x)
             {
                 var type = Product.Cache.Load(x.ProductGuid).ProductType;
-                return type.Equals(ProductType.MemberShipCore) || type.Equals(ProductType.MemberShipPremier);
+                return type.Equals(ProductType.MembershipCore) || type.Equals(ProductType.MembershipPremier);
             }))
             {
-                return OrderBaseType.MemberShip;
+                return OrderBaseType.Membership;
             }
             return OrderBaseType.None;
         }
@@ -311,6 +311,6 @@ namespace iArsenal.Service
         Ticket = 2,
         Travel = 3,
         Wish = 4,
-        MemberShip = 5
+        Membership = 5
     }
 }

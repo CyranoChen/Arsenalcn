@@ -10,7 +10,7 @@
 namespace iArsenal.Web {
     
     
-    public partial class iArsenalOrderView_MemberShip {
+    public partial class iArsenalOrderView_Membership {
         
         /// <summary>
         /// ucPortalSitePath control.

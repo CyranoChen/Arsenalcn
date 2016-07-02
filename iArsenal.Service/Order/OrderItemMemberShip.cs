@@ -3,7 +3,7 @@ using System.Data.SqlClient;
 
 namespace iArsenal.Service
 {
-    public class OrdrItmMemberShip : OrderItem
+    public class OrdrItmMembership : OrderItem
     {
         public void Init()
         {
@@ -62,7 +62,7 @@ namespace iArsenal.Service
         #endregion
     }
 
-    public class OrdrItmMemShipCore : OrdrItmMemberShip
+    public class OrdrItmMemShipCore : OrdrItmMembership
     {
         public new void Init()
         {
@@ -73,20 +73,20 @@ namespace iArsenal.Service
 
             var p = Product.Cache.Load(ProductGuid);
 
-            if (!p.ProductType.Equals(ProductType.MemberShipCore))
-                throw new Exception("The OrderItem is not the type of MemberShipCore.");
+            if (!p.ProductType.Equals(ProductType.MembershipCore))
+                throw new Exception("The OrderItem is not the type of MembershipCore.");
         }
 
         public void Place(Member m, SqlTransaction trans = null)
         {
             var product = Product.Cache.ProductList.Find(p =>
-                p.ProductType.Equals(ProductType.MemberShipCore));
+                p.ProductType.Equals(ProductType.MembershipCore));
 
             base.Place(m, product, trans);
         }
     }
 
-    public class OrdrItmMemShipPremier : OrdrItmMemberShip
+    public class OrdrItmMemShipPremier : OrdrItmMembership
     {
         public new void Init()
         {
@@ -97,14 +97,14 @@ namespace iArsenal.Service
 
             var p = Product.Cache.Load(ProductGuid);
 
-            if (!p.ProductType.Equals(ProductType.MemberShipPremier))
-                throw new Exception("The OrderItem is not the type of MemberShipPremier.");
+            if (!p.ProductType.Equals(ProductType.MembershipPremier))
+                throw new Exception("The OrderItem is not the type of MembershipPremier.");
         }
 
         public void Place(Member m, SqlTransaction trans = null)
         {
             var product = Product.Cache.ProductList.Find(p =>
-                p.ProductType.Equals(ProductType.MemberShipPremier));
+                p.ProductType.Equals(ProductType.MembershipPremier));
 
             base.Place(m, product, trans);
         }

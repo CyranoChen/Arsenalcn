@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" MasterPageFile="iArsenalMaster.Master" AutoEventWireup="true"
-    CodeBehind="iArsenalOrderView_MemberShip.aspx.cs" Inherits="iArsenal.Web.iArsenalOrderView_MemberShip"
+    CodeBehind="iArsenalOrderView_Membership.aspx.cs" Inherits="iArsenal.Web.iArsenalOrderView_Membership"
     Title="订单信息查看" Theme="iArsenal" %>
 
 <%@ Register Src="Control/PortalSitePath.ascx" TagName="PortalSitePath" TagPrefix="uc1" %>

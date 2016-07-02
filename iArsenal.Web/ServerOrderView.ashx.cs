@@ -10,12 +10,12 @@ namespace iArsenal.Web
         {
             try
             {
-                var _strOrderID = context.Request.QueryString["OrderID"];
-                var _orderID = int.MinValue;
+                var strOrderId = context.Request.QueryString["OrderID"];
+                int orderId;
 
-                if (!string.IsNullOrEmpty(_strOrderID) && int.TryParse(_strOrderID, out _orderID))
+                if (!string.IsNullOrEmpty(strOrderId) && int.TryParse(strOrderId, out orderId))
                 {
-                    var o = Order.Select(_orderID);
+                    var o = Order.Select(orderId);
 
                     if (o != null)
                     {
@@ -42,9 +42,6 @@ namespace iArsenal.Web
             }
         }
 
-        public bool IsReusable
-        {
-            get { return true; }
-        }
+        public bool IsReusable => true;
     }
 }

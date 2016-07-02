@@ -66,10 +66,10 @@ namespace iArsenal.Service
                     case ProductType.TicketBeijing:
                         retValue = "友谊赛球票";
                         break;
-                    case ProductType.MemberShipCore:
+                    case ProductType.MembershipCore:
                         retValue = "会员费(Core)";
                         break;
-                    case ProductType.MemberShipPremier:
+                    case ProductType.MembershipPremier:
                         retValue = "会员费(Premier)";
                         break;
                     case ProductType.Other:
@@ -334,8 +334,8 @@ namespace iArsenal.Service
         TravelPartner = 11,
         MatchTicket = 20,
         TicketBeijing = 21,
-        MemberShipCore = 31,
-        MemberShipPremier = 32,
+        MembershipCore = 31,
+        MembershipPremier = 32,
         Other = 0
     }
 

@@ -41,7 +41,7 @@
                     <asp:ListItem Value="Wish" Text="团购"></asp:ListItem>
                     <asp:ListItem Value="Ticket" Text="球票"></asp:ListItem>
                     <asp:ListItem Value="Travel" Text="观赛"></asp:ListItem>
-                    <asp:ListItem Value="MemberShip" Text="会费"></asp:ListItem>
+                    <asp:ListItem Value="Membership" Text="会费"></asp:ListItem>
                     <asp:ListItem Value="None" Text="无" Enabled="false"></asp:ListItem>
                 </asp:DropDownList>
                 <asp:DropDownList ID="ddlStatus" runat="server">

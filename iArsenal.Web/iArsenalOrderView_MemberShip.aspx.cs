@@ -7,7 +7,7 @@ using iArsenal.Service;
 
 namespace iArsenal.Web
 {
-    public partial class iArsenalOrderView_MemberShip : MemberPageBase
+    public partial class iArsenalOrderView_Membership : MemberPageBase
     {
         private readonly IRepository _repo = new Repository();
 
@@ -128,44 +128,44 @@ namespace iArsenal.Web
                     double price;
                     string priceInfo;
 
-                    // Whether Core or Premier MemberShip
-                    OrdrItmMemberShip oiMemberShip;
+                    // Whether Core or Premier Membership
+                    OrdrItmMembership oiMembership;
 
-                    if (o.OIMemberShipCore != null && o.OIMemberShipCore.IsActive)
+                    if (o.OIMembershipCore != null && o.OIMembershipCore.IsActive)
                     {
-                        oiMemberShip = o.OIMemberShipCore;
+                        oiMembership = o.OIMembershipCore;
                     }
-                    else if (o.OIMemberShipPremier != null && o.OIMemberShipPremier.IsActive)
+                    else if (o.OIMembershipPremier != null && o.OIMembershipPremier.IsActive)
                     {
-                        oiMemberShip = o.OIMemberShipPremier;
+                        oiMembership = o.OIMembershipPremier;
                     }
                     else
                     {
                         throw new Exception("此订单未登记会籍信息");
                     }
 
-                    var p = Product.Cache.Load(oiMemberShip.ProductGuid);
+                    var p = Product.Cache.Load(oiMembership.ProductGuid);
 
                     if (p != null)
                     {
-                        lblMemberClass.Text = $"<em>ACN {oiMemberShip.Season}赛季【{p.DisplayName}】</em>";
+                        lblMemberClass.Text = $"<em>ACN {oiMembership.Season}赛季【{p.DisplayName}】</em>";
 
-                        lblMemberCardNo.Text = $"<em>{oiMemberShip.MemberCardNo}</em>";
-                        lblEndDate.Text = $"<em>{oiMemberShip.EndDate.ToString("yyyy-MM-dd")}</em>";
+                        lblMemberCardNo.Text = $"<em>{oiMembership.MemberCardNo}</em>";
+                        lblEndDate.Text = $"<em>{oiMembership.EndDate.ToString("yyyy-MM-dd")}</em>";
                     }
                     else
                     {
                         throw new Exception("无相关会籍可申请，请联系管理员");
                     }
 
-                    var isUpgrade = oiMemberShip.AlterMethod.Equals("Upgrade", StringComparison.OrdinalIgnoreCase);
-                    var isRenew = oiMemberShip.AlterMethod.Equals("Renew", StringComparison.OrdinalIgnoreCase);
+                    var isUpgrade = oiMembership.AlterMethod.Equals("Upgrade", StringComparison.OrdinalIgnoreCase);
+                    var isRenew = oiMembership.AlterMethod.Equals("Renew", StringComparison.OrdinalIgnoreCase);
 
                     // Set Order Price
 
-                    price = oiMemberShip.TotalPrice;
-                    priceInfo = string.Format("<合计> {2}：{0} × {1}", oiMemberShip.UnitPrice.ToString("f2"),
-                        oiMemberShip.Quantity, Product.Cache.Load(oiMemberShip.ProductGuid).DisplayName);
+                    price = oiMembership.TotalPrice;
+                    priceInfo = string.Format("<合计> {2}：{0} × {1}", oiMembership.UnitPrice.ToString("f2"),
+                        oiMembership.Quantity, Product.Cache.Load(oiMembership.ProductGuid).DisplayName);
 
                     tbOrderPrice.Text = price.ToString(CultureInfo.CurrentCulture);
 
@@ -259,7 +259,7 @@ namespace iArsenal.Web
                         throw new Exception("此订单无效或非当前用户订单");
 
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
-                        $"window.location.href = 'iArsenalOrder_MemberShip.aspx?OrderID={o.ID}'", true);
+                        $"window.location.href = 'iArsenalOrder_Membership.aspx?OrderID={o.ID}'", true);
                 }
                 else
                 {
@@ -318,23 +318,23 @@ namespace iArsenal.Web
 
                         if (ConfigGlobal.IsPluginAdmin(UID) && o != null && o.Status.Equals(OrderStatusType.Confirmed))
                         {
-                            // Whether Core or Premier MemberShip
-                            OrdrItmMemberShip oiMemberShip;
+                            // Whether Core or Premier Membership
+                            OrdrItmMembership oiMembership;
 
-                            if (o.OIMemberShipCore != null && o.OIMemberShipCore.IsActive)
+                            if (o.OIMembershipCore != null && o.OIMembershipCore.IsActive)
                             {
-                                oiMemberShip = o.OIMemberShipCore;
+                                oiMembership = o.OIMembershipCore;
                             }
-                            else if (o.OIMemberShipPremier != null && o.OIMemberShipPremier.IsActive)
+                            else if (o.OIMembershipPremier != null && o.OIMembershipPremier.IsActive)
                             {
-                                oiMemberShip = o.OIMemberShipPremier;
+                                oiMembership = o.OIMembershipPremier;
                             }
                             else
                             {
                                 throw new Exception("此订单未登记会籍信息");
                             }
 
-                            var p = Product.Cache.Load(oiMemberShip.ProductGuid);
+                            var p = Product.Cache.Load(oiMembership.ProductGuid);
 
                             if (p == null)
                             {
@@ -353,21 +353,21 @@ namespace iArsenal.Web
                             {
                                 if (list.Exists(x =>
                                     x.MemberID.Equals(o.MemberID) && x.MemberName.Equals(o.MemberName)
-                                    && p.ProductType.Equals(ProductType.MemberShipCore)))
+                                    && p.ProductType.Equals(ProductType.MembershipCore)))
                                 {
                                     throw new Exception("此会员当前赛季已经有会籍信息");
                                 }
                                 if (list.Exists(x =>
                                     x.MemberID.Equals(o.MemberID) && x.MemberName.Equals(o.MemberName)
                                     && x.MemberClass.Equals(MemberClassType.Core))
-                                    && p.ProductType.Equals(ProductType.MemberShipPremier))
+                                    && p.ProductType.Equals(ProductType.MembershipPremier))
                                 {
                                     updateFlag = true;
                                 }
 
                                 if (!updateFlag && list.Exists(x => !x.MemberID.Equals(o.MemberID)
                                                                      &&
-                                                                     x.MemberCardNo.Equals(oiMemberShip.MemberCardNo,
+                                                                     x.MemberCardNo.Equals(oiMembership.MemberCardNo,
                                                                          StringComparison.OrdinalIgnoreCase)))
                                 {
                                     throw new Exception("此会员卡号已被其他会员占用");
@@ -375,7 +375,7 @@ namespace iArsenal.Web
                             }
 
                             if (updateFlag &&
-                                oiMemberShip.AlterMethod.Equals("Upgrade", StringComparison.OrdinalIgnoreCase))
+                                oiMembership.AlterMethod.Equals("Upgrade", StringComparison.OrdinalIgnoreCase))
                             {
                                 // Level up the core member to premier for current season
                                 var mpCore = list.SingleOrDefault(x =>
@@ -387,12 +387,12 @@ namespace iArsenal.Web
                                     mpCore.MemberClass = MemberClassType.Premier;
 
                                     // not update MemberCardNo of the core member
-                                    oiMemberShip.MemberCardNo = mpCore.MemberCardNo;
+                                    oiMembership.MemberCardNo = mpCore.MemberCardNo;
 
-                                    mpCore.EndDate = oiMemberShip.EndDate;
+                                    mpCore.EndDate = oiMembership.EndDate;
 
                                     mpCore.Description =
-                                        $"Season {oiMemberShip.Season} 于 {DateTime.Now.ToString("yyyy-MM-dd HH:mm")} 升级为【{mpCore.MemberClass}】会籍，原会籍订单号：{mpCore.OrderID}";
+                                        $"Season {oiMembership.Season} 于 {DateTime.Now.ToString("yyyy-MM-dd HH:mm")} 升级为【{mpCore.MemberClass}】会籍，原会籍订单号：{mpCore.OrderID}";
 
                                     mpCore.OrderID = OrderID;
 
@@ -406,13 +406,13 @@ namespace iArsenal.Web
 
                                 mp.MemberID = o.MemberID;
                                 mp.MemberName = o.MemberName;
-                                mp.MemberCardNo = oiMemberShip.MemberCardNo;
+                                mp.MemberCardNo = oiMembership.MemberCardNo;
 
-                                if (p.ProductType.Equals(ProductType.MemberShipCore))
+                                if (p.ProductType.Equals(ProductType.MembershipCore))
                                 {
                                     mp.MemberClass = MemberClassType.Core;
                                 }
-                                else if (p.ProductType.Equals(ProductType.MemberShipPremier))
+                                else if (p.ProductType.Equals(ProductType.MembershipPremier))
                                 {
                                     mp.MemberClass = MemberClassType.Premier;
                                 }
@@ -423,9 +423,9 @@ namespace iArsenal.Web
 
                                 mp.OrderID = OrderID;
                                 mp.StartDate = DateTime.Now;
-                                mp.EndDate = oiMemberShip.EndDate;
+                                mp.EndDate = oiMembership.EndDate;
                                 mp.IsActive = true;
-                                mp.Description = $"Season {oiMemberShip.Season}";
+                                mp.Description = $"Season {oiMembership.Season}";
                                 mp.Remark = string.Empty;
 
                                 _repo.Insert(mp, trans);
@@ -440,7 +440,7 @@ namespace iArsenal.Web
                             trans.Commit();
 
                             ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
-                                $"alert('【{p.ProductType}】会籍 (卡号：{oiMemberShip.MemberCardNo}) 保存成功');window.location.href = window.location.href",
+                                $"alert('【{p.ProductType}】会籍 (卡号：{oiMembership.MemberCardNo}) 保存成功');window.location.href = window.location.href",
                                 true);
                         }
                         else

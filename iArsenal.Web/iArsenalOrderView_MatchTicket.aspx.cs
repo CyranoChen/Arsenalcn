@@ -196,8 +196,9 @@ namespace iArsenal.Web
                             if (!isMemberCouldPurchase)
                             {
                                 lblOrderRemark.Text =
-                                    @"<em style='line-height: 1.8'>由于球票供应有限，所有主场球票预订均只向(Core/Premier)会员开放。<br />
-                                <a href='iArsenalMemberPeriod.aspx' target='_blank' style='background: #fff48d'>【点击这里】请在续费或升级会员资格后，才能提交订单。</a></em>";
+                                    $@"<em style='line-height: 1.8'>由于球票供应有限，所有主场球票预订均只向(Core/Premier)会员开放。<br />
+                                        <a href='ServerMembershipCheck.ashx?OrderID={OrderID}' target='_blank' style='background: #fff48d'>
+                                        【点击这里】请在续费或升级会员资格后，才能提交订单。</a></em>";
                                 phOrderRemark.Visible = true;
 
                                 btnSubmit.Visible = false;

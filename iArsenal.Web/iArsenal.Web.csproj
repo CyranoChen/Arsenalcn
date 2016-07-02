@@ -180,12 +180,12 @@
     <Content Include="iArsenalOrderView_ArsenalDirect.aspx" />
     <Content Include="iArsenalOrderView_AsiaTrophy2015.aspx" />
     <Content Include="iArsenalOrderView_LondonTravel.aspx" />
-    <Content Include="iArsenalOrderView_MemberShip.aspx" />
+    <Content Include="iArsenalOrderView_Membership.aspx" />
     <Content Include="iArsenalOrder_ArsenalDirect.aspx" />
     <Content Include="iArsenalMemberPeriod.aspx" />
     <Content Include="iArsenalOrderView_MatchTicket.aspx" />
     <Content Include="iArsenalOrder_LondonTravel.aspx" />
-    <Content Include="iArsenalOrder_MemberShip.aspx" />
+    <Content Include="iArsenalOrder_Membership.aspx" />
     <Content Include="iArsenalOrder_MatchTicket.aspx" />
     <Content Include="iArsenalOrder_MatchList.aspx" />
     <Content Include="iArsenalOrderView_TicketBeijing.aspx" />
@@ -257,6 +257,7 @@
     <Content Include="AdminProductView.aspx" />
     <Content Include="Default.aspx" />
     <Content Include="Scripts\iarsenal.js" />
+    <Content Include="ServerMembershipCheck.ashx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdminLog.aspx.cs">
@@ -381,12 +382,12 @@
     <Compile Include="iArsenalOrderView_LondonTravel.aspx.designer.cs">
       <DependentUpon>iArsenalOrderView_LondonTravel.aspx</DependentUpon>
     </Compile>
-    <Compile Include="iArsenalOrderView_MemberShip.aspx.cs">
-      <DependentUpon>iArsenalOrderView_MemberShip.aspx</DependentUpon>
+    <Compile Include="iArsenalOrderView_Membership.aspx.cs">
+      <DependentUpon>iArsenalOrderView_Membership.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="iArsenalOrderView_MemberShip.aspx.designer.cs">
-      <DependentUpon>iArsenalOrderView_MemberShip.aspx</DependentUpon>
+    <Compile Include="iArsenalOrderView_Membership.aspx.designer.cs">
+      <DependentUpon>iArsenalOrderView_Membership.aspx</DependentUpon>
     </Compile>
     <Compile Include="iArsenalOrder_ArsenalDirect.aspx.cs">
       <DependentUpon>iArsenalOrder_ArsenalDirect.aspx</DependentUpon>
@@ -409,12 +410,12 @@
     <Compile Include="iArsenalOrder_LondonTravel.aspx.designer.cs">
       <DependentUpon>iArsenalOrder_LondonTravel.aspx</DependentUpon>
     </Compile>
-    <Compile Include="iArsenalOrder_MemberShip.aspx.cs">
-      <DependentUpon>iArsenalOrder_MemberShip.aspx</DependentUpon>
+    <Compile Include="iArsenalOrder_Membership.aspx.cs">
+      <DependentUpon>iArsenalOrder_Membership.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="iArsenalOrder_MemberShip.aspx.designer.cs">
-      <DependentUpon>iArsenalOrder_MemberShip.aspx</DependentUpon>
+    <Compile Include="iArsenalOrder_Membership.aspx.designer.cs">
+      <DependentUpon>iArsenalOrder_Membership.aspx</DependentUpon>
     </Compile>
     <Compile Include="PageBase\MemberPageBase.cs">
       <SubType>ASPXCodeBehind</SubType>
@@ -630,6 +631,9 @@
     </Compile>
     <Compile Include="ServerMemberCheck.ashx.cs">
       <DependentUpon>ServerMemberCheck.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="ServerMembershipCheck.ashx.cs">
+      <DependentUpon>ServerMembershipCheck.ashx</DependentUpon>
     </Compile>
     <Compile Include="ServerOrderItemCheck.ashx.cs">
       <DependentUpon>ServerOrderItemCheck.ashx</DependentUpon>

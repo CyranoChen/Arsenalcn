@@ -40,10 +40,10 @@ Theme="iArsenal" %>
             </div>
             <div class="MemberPeriod_Entrance">
                 <div class="ApplyContainer">
-                    <a class="Core" href="iArsenalOrder_MemberShip.aspx?Type=Core" title="注册本赛季ACN普通(Core)会员"></a>
+                    <a class="Core" href="iArsenalOrder_Membership.aspx?Type=Core" title="注册本赛季ACN普通(Core)会员"></a>
                 </div>
                 <div class="ApplyContainer">
-                    <a class="Premier" href="iArsenalOrder_MemberShip.aspx?Type=Premier" title="注册本赛季ACN高级(Premier)会员"></a>
+                    <a class="Premier" href="iArsenalOrder_Membership.aspx?Type=Premier" title="注册本赛季ACN高级(Premier)会员"></a>
                 </div>
             </div>
             <asp:GridView ID="gvMemberPeriod" runat="server" OnRowDataBound="gvMemberPeriod_RowDataBound"
@@ -59,10 +59,10 @@ Theme="iArsenal" %>
                     <asp:TemplateField HeaderText="操作">
                         <ItemTemplate>
                             <asp:HyperLink ID="btnUpgrade" runat="server" Text="升级" CssClass="LinkBtn"
-                                           OnClientClick="return confirm('确认将升级为Premier会员?')" NavigateUrl="iArsenalOrder_MemberShip.aspx?Type=Premier">
+                                           OnClientClick="return confirm('确认将升级为Premier会员?')" NavigateUrl="iArsenalOrder_Membership.aspx?Type=Premier">
                             </asp:HyperLink>
                             <asp:HyperLink ID="btnRenew" runat="server" Text="续期" CssClass="LinkBtn"
-                                           OnClientClick="return confirm('确认在本赛季续期此会员资格?')" NavigateUrl="iArsenalOrder_MemberShip.aspx?Type=Premier">
+                                           OnClientClick="return confirm('确认在本赛季续期此会员资格?')" NavigateUrl="iArsenalOrder_Membership.aspx?Type=Premier">
                             </asp:HyperLink>
                         </ItemTemplate>
                     </asp:TemplateField>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using Arsenalcn.Core;
 using iArsenal.Service;
 
@@ -6,17 +7,17 @@ namespace iArsenal.Web
 {
     public partial class iArsenalOrderView_ReplicaKit : MemberPageBase
     {
-        private readonly IRepository repo = new Repository();
+        private readonly IRepository _repo = new Repository();
 
         private int OrderID
         {
             get
             {
-                int _orderID;
+                int id;
                 if (!string.IsNullOrEmpty(Request.QueryString["OrderID"]) &&
-                    int.TryParse(Request.QueryString["OrderID"], out _orderID))
+                    int.TryParse(Request.QueryString["OrderID"], out id))
                 {
-                    return _orderID;
+                    return id;
                 }
                 return int.MinValue;
             }
@@ -109,7 +110,7 @@ namespace iArsenal.Web
                     var oiChampionPatch = o.OIChampionshipPatch;
 
                     lblOrderItem_ReplicaKit.Text = $"<em>{oiReplicaKit.ProductName}</em>";
-                    tbOrderItem_ReplicaKit.Text = oiReplicaKit.ProductGuid.ToString();
+                    //tbOrderItem_ReplicaKit.Text = oiReplicaKit.ProductGuid.ToString();
                     lblOrderItem_ReplicaKitSize.Text = oiReplicaKit.Size;
 
                     price = oiReplicaKit.TotalPrice;
@@ -177,7 +178,7 @@ namespace iArsenal.Web
                         lblOrderPrice.Text =
                             $"{priceInfo} = <em>{price.ToString("f2")}</em>元<br /><结算价>：<em>{o.Sale.Value.ToString("f2")}</em>元 (CNY)";
 
-                    tbOrderPrice.Text = price.ToString();
+                    tbOrderPrice.Text = price.ToString(CultureInfo.CurrentCulture);
 
                     if (o.Status.Equals(OrderStatusType.Draft))
                     {
@@ -196,6 +197,10 @@ namespace iArsenal.Web
                             lblOrderRemark.Text = "<em>请尽快按右侧提示框的付款方式进行球衣全额支付。<br />我们会在收到您的款项后，为您安排确认并下单。</em>";
                             phOrderRemark.Visible = true;
                         }
+
+                        ucPortalProductQrCode.QrCodeUrl = "~/UploadFiles/qrcode-alipay-vicky.png";
+                        ucPortalProductQrCode.QrCodeProvider = "支付宝";
+                        ucPortalProductQrCode.IsLocalUrl = true;
                     }
                     else
                     {
@@ -222,7 +227,7 @@ namespace iArsenal.Web
             {
                 if (OrderID > 0)
                 {
-                    var o = repo.Single<Order>(OrderID);
+                    var o = _repo.Single<Order>(OrderID);
 
                     if (o == null || !o.MemberID.Equals(MID) || !o.IsActive)
                         throw new Exception("此订单无效或非当前用户订单");
@@ -231,7 +236,7 @@ namespace iArsenal.Web
                     o.UpdateTime = DateTime.Now;
                     o.Price = Convert.ToSingle(tbOrderPrice.Text.Trim());
 
-                    repo.Update(o);
+                    _repo.Update(o);
 
                     ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
                         $"alert('谢谢您的订购，您的订单已经提交成功。\\r\\n请尽快通过支付宝或银行转帐付款，以完成订单确认。\\r\\n订单号为：{o.ID}'); window.location.href = window.location.href",
@@ -254,7 +259,7 @@ namespace iArsenal.Web
             {
                 if (OrderID > 0)
                 {
-                    var o = repo.Single<Order>(OrderID);
+                    var o = _repo.Single<Order>(OrderID);
 
                     if (o == null || !o.MemberID.Equals(MID) || !o.IsActive)
                         throw new Exception("此订单无效或非当前用户订单");
@@ -279,7 +284,7 @@ namespace iArsenal.Web
             {
                 if (OrderID > 0)
                 {
-                    var o = repo.Single<Order>(OrderID);
+                    var o = _repo.Single<Order>(OrderID);
 
                     if (o == null || !o.MemberID.Equals(MID) || !o.IsActive)
                         throw new Exception("此订单无效或非当前用户订单");
@@ -288,7 +293,7 @@ namespace iArsenal.Web
                     o.UpdateTime = DateTime.Now;
                     o.Price = Convert.ToSingle(tbOrderPrice.Text.Trim());
 
-                    repo.Update(o);
+                    _repo.Update(o);
 
                     ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
                         $"alert('此订单({o.ID})已经取消');window.location.href = 'iArsenalOrder.aspx'", true);

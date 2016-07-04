@@ -195,6 +195,7 @@ namespace iArsenal.Web
                         btnCancel.Visible = true;
 
                         ucPortalProductQrCode.QrCodeUrl = p.QrCodeUrl;
+                        ucPortalProductQrCode.QrCodeProvider = "微信";
                     }
                     else
                     {

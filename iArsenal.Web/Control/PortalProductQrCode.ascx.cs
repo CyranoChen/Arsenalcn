@@ -11,32 +11,61 @@ namespace iArsenal.Web.Control
     {
         public string QrCodeUrl { get; set; }
 
+        public string QrCodeProvider { get; set; }
+
+        public bool IsLocalUrl { get; set; }
+
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!string.IsNullOrEmpty(QrCodeProvider))
+            {
+                btnQrCodeProvider.Text = $"【{QrCodeProvider}】快捷支付通道";
+            }
+            else
+            {
+                btnQrCodeProvider.Text = "快捷支付通道";
+            }
+
             if (!string.IsNullOrEmpty(QrCodeUrl))
             {
-                using (var ms = new MemoryStream())
+                if (IsLocalUrl)
                 {
-                    if (GetQrCode(QrCodeUrl, ms))
+                    // 使用本地二维码图片
+                    imgQrCode.ImageUrl = QrCodeUrl;
+                }
+                else
+                {
+                    // 生成二维码
+                    using (var ms = new MemoryStream())
                     {
-                        //Response.ContentType = "image/png";
-                        //Response.OutputStream.Write(ms.GetBuffer(), 0, (int)ms.Length);
-                        const string fileUrl = "~/UploadFiles/QrCode/";
+                        if (GetQrCode(QrCodeUrl, ms))
+                        {
+                            //Response.ContentType = "image/png";
+                            //Response.OutputStream.Write(ms.GetBuffer(), 0, (int)ms.Length);
 
-                        var img = Image.FromStream(ms);
+                            const string fileUrl = "~/UploadFiles/QrCode/";
 
-                        var filename = DateTime.Now.ToString("yyyyMMddHHmmss");
-                        var path = $"{Server.MapPath(fileUrl)}{filename}.png";
+                            // 判断文件夹是否存在，不存在就创建
+                            if (!Directory.Exists(Server.MapPath(fileUrl)))
+                            {
+                                Directory.CreateDirectory(Server.MapPath(fileUrl));
+                            }
 
-                        img.Save(path);
+                            var img = Image.FromStream(ms);
 
-                        imgQrCode.ImageUrl = $"{fileUrl}{filename}.png";
+                            var filename = DateTime.Now.ToString("yyyyMMddHHmmss");
+                            var path = $"{Server.MapPath(fileUrl)}{filename}.png";
 
-                        //Response.End();
-                    }
-                    else
-                    {
-                        pnlQrCode.Visible = false;
+                            img.Save(path);
+
+                            imgQrCode.ImageUrl = $"{fileUrl}{filename}.png";
+
+                            //Response.End();
+                        }
+                        else
+                        {
+                            pnlQrCode.Visible = false;
+                        }
                     }
                 }
             }

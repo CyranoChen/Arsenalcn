@@ -1,6 +1,8 @@
 ﻿using System;
+using System.IO;
 using System.Reflection;
 using System.Threading;
+using System.Web;
 using Arsenalcn.Core;
 using Arsenalcn.Core.Logger;
 using Arsenalcn.Core.Scheduler;
@@ -38,16 +40,28 @@ namespace iArsenal.Scheduler
                 Member.Cache.RefreshCache();
                 Product.Cache.RefreshCache();
 
-                //Order.RefreshOrderBaseType();
-
                 // Clean Log
                 Log.Clean();
+
+                // Clean QrCode Files
+                CleanQrCodeFiles();
 
                 _log.Info("Scheduler End: (RefreshCache)", logInfo);
             }
             catch (Exception ex)
             {
                 _log.Warn(ex, logInfo);
+            }
+        }
+
+        private static void CleanQrCodeFiles()
+        {
+            const string fileUrl = "~/UploadFiles/QrCode/";
+
+            // 判断文件夹是否存在，存在就删除目录与文件
+            if (Directory.Exists(HttpContext.Current.Server.MapPath(fileUrl)))
+            {
+                Directory.Delete(HttpContext.Current.Server.MapPath(fileUrl), true);
             }
         }
     }

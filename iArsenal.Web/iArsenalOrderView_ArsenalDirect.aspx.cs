@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web.UI.WebControls;
 using Arsenalcn.Core;
@@ -9,17 +10,17 @@ namespace iArsenal.Web
 {
     public partial class iArsenalOrderView_ArsenalDirect : MemberPageBase
     {
-        private readonly IRepository repo = new Repository();
+        private readonly IRepository _repo = new Repository();
 
         private int OrderID
         {
             get
             {
-                int _orderID;
+                int id;
                 if (!string.IsNullOrEmpty(Request.QueryString["OrderID"]) &&
-                    int.TryParse(Request.QueryString["OrderID"], out _orderID))
+                    int.TryParse(Request.QueryString["OrderID"], out id))
                 {
-                    return _orderID;
+                    return id;
                 }
                 return int.MinValue;
             }
@@ -65,7 +66,7 @@ namespace iArsenal.Web
 
                     lblOrderMobile.Text = $"<em>{o.Mobile}</em>";
 
-                    var m = repo.Single<Member>(o.MemberID);
+                    var m = _repo.Single<Member>(o.MemberID);
 
                     if (m != null)
                     {
@@ -110,6 +111,10 @@ namespace iArsenal.Web
                         btnModify.Visible = false;
                         btnConfirm.Visible = false;
                         btnCancel.Visible = true;
+
+                        ucPortalProductQrCode.QrCodeUrl = "~/UploadFiles/qrcode-alipay-vicky.png";
+                        ucPortalProductQrCode.QrCodeProvider = "支付宝";
+                        ucPortalProductQrCode.IsLocalUrl = true;
                     }
                     else if (o.Status.Equals(OrderStatusType.Approved))
                     {
@@ -144,24 +149,24 @@ namespace iArsenal.Web
 
             // Should be Calculator in this Page
             var price = default(double);
-            var priceInfo = string.Empty;
-            var _lstPriceInfo = new List<string>();
+            string priceInfo;
+            var lstPriceInfo = new List<string>();
 
-            var list = repo.Query<OrderItem>(x => x.OrderID == o.ID).FindAll(x => x.IsActive).OrderBy(x => x.ID).ToList();
+            var list = _repo.Query<OrderItem>(x => x.OrderID == o.ID).FindAll(x => x.IsActive).OrderBy(x => x.ID).ToList();
 
-            if (list != null && list.Count > 0)
+            if (list.Count > 0)
             {
                 foreach (var oi in list)
                 {
                     if (!oi.ProductGuid.Equals(Guid.Empty) && oi.TotalPrice > 0)
                     {
                         price += oi.Sale ?? oi.TotalPrice;
-                        _lstPriceInfo.Add(
+                        lstPriceInfo.Add(
                             $"{oi.Code}: {(oi.Sale.HasValue ? "「折」" + oi.Sale.Value.ToString("f2") : oi.TotalPrice.ToString("f2"))}");
                     }
                     else
                     {
-                        _lstPriceInfo.Add($"{oi.Code}: /");
+                        lstPriceInfo.Add($"{oi.Code}: /");
                     }
                 }
 
@@ -173,9 +178,9 @@ namespace iArsenal.Web
                 throw new Exception("此订单未购买纪念品");
             }
 
-            priceInfo = string.Join(" + ", _lstPriceInfo.ToArray());
+            priceInfo = string.Join(" + ", lstPriceInfo.ToArray());
 
-            tbOrderPrice.Text = price.ToString();
+            tbOrderPrice.Text = price.ToString(CultureInfo.CurrentCulture);
 
             if (!o.Sale.HasValue)
             {
@@ -204,28 +209,32 @@ namespace iArsenal.Web
                 var lblWishPriceInfo = e.Row.FindControl("lblWishPriceInfo") as Label;
                 var lblWishTotalPriceInfo = e.Row.FindControl("lblWishTotalPriceInfo") as Label;
 
-                if (oi != null && !oi.ProductGuid.Equals(Guid.Empty) && Product.Cache.Load(oi.ProductGuid) != null)
+                if (oi != null && lblWishTotalPriceInfo != null && lblWishPriceInfo != null)
                 {
-                    var p = Product.Cache.Load(oi.ProductGuid);
-
-                    if (p.Sale.HasValue)
+                    if (!oi.ProductGuid.Equals(Guid.Empty) && Product.Cache.Load(oi.ProductGuid) != null)
                     {
-                        lblWishPriceInfo.Text = p.SaleInfo;
-                        lblWishPriceInfo.CssClass = "Sale";
+                        var p = Product.Cache.Load(oi.ProductGuid);
 
-                        lblWishTotalPriceInfo.Text =
-                            $"<em>{p.CurrencyInfo}{(p.Sale.Value * oi.Quantity).ToString("f2")}</em>";
+                        if (p.Sale.HasValue)
+                        {
+                            lblWishPriceInfo.Text = p.SaleInfo;
+                            lblWishPriceInfo.CssClass = "Sale";
+
+                            lblWishTotalPriceInfo.Text =
+                                $"<em>{p.CurrencyInfo}{(p.Sale.Value*oi.Quantity).ToString("f2")}</em>";
+                        }
+                        else
+                        {
+                            lblWishPriceInfo.Text = p.PriceInfo;
+                            lblWishTotalPriceInfo.Text =
+                                $"<em>{p.CurrencyInfo}{(p.Price*oi.Quantity).ToString("f2")}</em>";
+                        }
                     }
                     else
                     {
-                        lblWishPriceInfo.Text = p.PriceInfo;
-                        lblWishTotalPriceInfo.Text = $"<em>{p.CurrencyInfo}{(p.Price * oi.Quantity).ToString("f2")}</em>";
+                        lblWishPriceInfo.Text = "/";
+                        lblWishTotalPriceInfo.Text = "/";
                     }
-                }
-                else
-                {
-                    lblWishPriceInfo.Text = "/";
-                    lblWishTotalPriceInfo.Text = "/";
                 }
             }
         }
@@ -236,7 +245,7 @@ namespace iArsenal.Web
             {
                 if (OrderID > 0)
                 {
-                    var o = repo.Single<Order>(OrderID);
+                    var o = _repo.Single<Order>(OrderID);
 
                     if (o == null || !o.MemberID.Equals(MID) || !o.IsActive)
                         throw new Exception("此订单无效或非当前用户订单");
@@ -245,7 +254,7 @@ namespace iArsenal.Web
                     o.UpdateTime = DateTime.Now;
                     o.Price = Convert.ToSingle(tbOrderPrice.Text.Trim());
 
-                    repo.Update(o);
+                    _repo.Update(o);
 
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
                         $"alert('谢谢您的预订，您的订单已经提交成功。\\r\\n请在审核后完成订单确认，订单号为：{o.ID}'); window.location.href = window.location.href",
@@ -269,7 +278,7 @@ namespace iArsenal.Web
             {
                 if (OrderID > 0)
                 {
-                    var o = repo.Single<Order>(OrderID);
+                    var o = _repo.Single<Order>(OrderID);
 
                     if (o == null || !o.MemberID.Equals(MID) || !o.IsActive)
                         throw new Exception("此订单无效或非当前用户订单");
@@ -295,7 +304,7 @@ namespace iArsenal.Web
             {
                 if (OrderID > 0)
                 {
-                    var o = repo.Single<Order>(OrderID);
+                    var o = _repo.Single<Order>(OrderID);
 
                     if (o == null || !o.MemberID.Equals(MID) || !o.IsActive)
                         throw new Exception("此订单无效或非当前用户订单");
@@ -304,7 +313,7 @@ namespace iArsenal.Web
                     o.UpdateTime = DateTime.Now;
                     o.Price = Convert.ToSingle(tbOrderPrice.Text.Trim());
 
-                    repo.Update(o);
+                    _repo.Update(o);
 
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
                         $"alert('谢谢您的预订，您的订单已经确认成功。\\r\\n我们将在到货后与您联系，订单号为：{o.ID}'); window.location.href = window.location.href",
@@ -327,7 +336,7 @@ namespace iArsenal.Web
             {
                 if (OrderID > 0)
                 {
-                    var o = repo.Single<Order>(OrderID);
+                    var o = _repo.Single<Order>(OrderID);
 
                     if (o == null || !o.MemberID.Equals(MID) || !o.IsActive)
                         throw new Exception("此订单无效或非当前用户订单");
@@ -336,7 +345,7 @@ namespace iArsenal.Web
                     o.UpdateTime = DateTime.Now;
                     o.Price = Convert.ToSingle(tbOrderPrice.Text.Trim());
 
-                    repo.Update(o);
+                    _repo.Update(o);
 
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
                         $"alert('此订单({o.ID})已经取消');window.location.href = 'iArsenalOrder.aspx'", true);

@@ -2,7 +2,6 @@
 using System.IO;
 using System.Reflection;
 using System.Threading;
-using System.Web;
 using Arsenalcn.Core;
 using Arsenalcn.Core.Logger;
 using Arsenalcn.Core.Scheduler;
@@ -56,12 +55,20 @@ namespace iArsenal.Scheduler
 
         private static void CleanQrCodeFiles()
         {
-            const string fileUrl = "~/UploadFiles/QrCode/";
+            // TODO
+            const string fileUrl = "C:\\websoft\\wwwroot\\www.iarsenal.com\\UploadFiles\\QrCode";
 
             // 判断文件夹是否存在，存在就删除目录与文件
-            if (Directory.Exists(HttpContext.Current.Server.MapPath(fileUrl)))
+            if (Directory.Exists(fileUrl))
             {
-                Directory.Delete(HttpContext.Current.Server.MapPath(fileUrl), true);
+                try
+                {
+                    Directory.Delete(fileUrl, true);
+                }
+                catch
+                {
+                    // ignored
+                }
             }
         }
     }

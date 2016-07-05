@@ -284,16 +284,18 @@ namespace iArsenal.Service
         public bool CheckMemberCanPurchase(MemberPeriod mp)
         {
             // Check Member Class for Purchase the MatchTicket
+            bool retValue;
 
             if (AllowMemberClass.HasValue)
             {
-                if (mp != null && mp.IsActive && (int)mp.MemberClass >= AllowMemberClass.Value)
-                {
-                    return true;
-                }
-                return false;
+                retValue = mp != null && mp.IsActive && (int)mp.MemberClass >= AllowMemberClass.Value;
             }
-            return true;
+            else
+            {
+                retValue = true;
+            }
+
+            return retValue;
         }
 
         public static class Cache

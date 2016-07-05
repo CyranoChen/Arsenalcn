@@ -51,11 +51,11 @@ namespace iArsenal.Web
 
                                 var mpLast = MemberPeriod.GetCurrentMemberPeriodByMemberID(oTicket.MemberID, -1);
 
-                                if (mpLast.MemberClass.Equals(MemberClassType.Core))
+                                if (mpLast != null && mpLast.MemberClass.Equals(MemberClassType.Core))
                                 {
                                     isRenew = currProductType.Equals(ProductType.MembershipCore);
                                 }
-                                if (mpLast.MemberClass.Equals(MemberClassType.Premier))
+                                if (mpLast != null && mpLast.MemberClass.Equals(MemberClassType.Premier))
                                 {
                                     isRenew = currProductType.Equals(ProductType.MembershipPremier);
                                 }

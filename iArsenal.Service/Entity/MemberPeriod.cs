@@ -16,16 +16,12 @@ namespace iArsenal.Service
 
         public static MemberPeriod GetCurrentMemberPeriodByMemberID(int id, int year = 0)
         {
-            var htWhere = new Hashtable();
-            var _date = DateTime.Now.AddYears(year);
-
-            htWhere.Add("MemberID", id);
-            htWhere.Add("IsActive", true);
+            var date = DateTime.Now.AddYears(year);
 
             IRepository repo = new Repository();
 
             return repo.Query<MemberPeriod>(x =>
-                x.MemberID == id && x.StartDate <= _date && x.EndDate >= _date).Find(x => x.IsActive);
+                x.MemberID == id && x.StartDate <= date && x.EndDate >= date).Find(x => x.IsActive);
         }
 
         #region Members and Properties

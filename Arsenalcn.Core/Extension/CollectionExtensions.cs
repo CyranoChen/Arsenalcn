@@ -153,7 +153,7 @@ namespace Arsenalcn.Core
             return source;
         }
 
-        private static IEnumerable<T> DistinctBy<T, TKey>(this IEnumerable<T> source, Func<T, TKey> keySelector)
+        public static IEnumerable<T> DistinctBy<T, TKey>(this IEnumerable<T> source, Func<T, TKey> keySelector)
         {
             Contract.Requires(source != null);
 

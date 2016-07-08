@@ -1,11 +1,10 @@
 ﻿using System;
-using Arsenal.Service;
 using Arsenal.Service.Casino;
+using Arsenalcn.Core;
 using Arsenalcn.Core.Logger;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Match = Arsenal.Service.Match;
 
-namespace Arsenalcn.Core.Tests.Scheduler
+namespace Arsenal.Service.Tests.Scheduler
 {
     [TestClass]
     public class RefreshCacheTest

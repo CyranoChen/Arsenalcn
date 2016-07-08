@@ -74,7 +74,7 @@ namespace Arsenal.Web
                         tbAccessTokenExpiredDate.Text = userWeChat.AccessTokenExpiredDate.ToString("yyyy-MM-dd HH:mm:ss");
                         tbRefreshToken.Text = userWeChat.RefreshToken;
                         tbRefreshTokenExpiredDate.Text = userWeChat.RefreshTokenExpiredDate.ToString("yyyy-MM-dd HH:mm:ss");
-                        tbGender.Text = userWeChat.Gender.HasValue ? userWeChat.Gender.ToString() : string.Empty;
+                        tbGender.Text = userWeChat.Gender.ToString();
                         tbProvince.Text = userWeChat.Province;
                         tbCity.Text = userWeChat.City;
                         tbCountry.Text = userWeChat.Country;
@@ -247,6 +247,7 @@ namespace Arsenal.Web
                 {
                     _repo.Delete<Membership>(UserGuid);
                     _repo.Delete<User>(UserGuid);
+                    _repo.Delete<UserWeChat>(UserGuid);
 
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('删除成功');window.location.href='AdminMembership.aspx'", true);
                 }

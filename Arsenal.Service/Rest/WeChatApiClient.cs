@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Mime;
 using System.Web;
 using System.Web.Caching;
 using Arsenalcn.Core;
@@ -28,7 +29,7 @@ namespace Arsenal.Service
             var context = HttpContext.Current;
 
             // Get access_token by using System.Web.Caching
-            if (context.Cache["AccessToken"] != null)
+            if (context?.Cache["AccessToken"] != null)
             {
                 AccessToken = context.Cache["AccessToken"].ToString();
             }
@@ -63,11 +64,34 @@ namespace Arsenal.Service
             }
         }
 
+        public string BatchGetUserInfo(string openIds)
+        {
+            if (!ConfigGlobal_Arsenal.WeChatActive) { return null; }
+
+            Init();
+
+            //http请求方式: POST
+            //https://api.weixin.qq.com/cgi-bin/user/info/batchget?access_token=ACCESS_TOKEN
+
+            var uri = $"{ServiceUrl}user/info/batchget?access_token={AccessToken}";
+
+            var responseResult = ApiPost(uri, openIds);
+
+            if (string.IsNullOrEmpty(responseResult))
+            {
+                throw new Exception("WeChatApiClient.BatchGetUserInfo() responseResult is null");
+            }
+
+            return responseResult;
+        }
+
         private object AddItemToCache(string key, object value, double expires)
         {
-            if (HttpContext.Current.Cache[key] == null)
+            if (HttpContext.Current != null && HttpContext.Current.Cache[key] == null)
+            {
                 HttpContext.Current.Cache.Add(key, value, null, DateTime.Now.AddSeconds(expires), TimeSpan.Zero,
-                    CacheItemPriority.High, null);
+                     CacheItemPriority.High, null);
+            }
 
             return value;
         }

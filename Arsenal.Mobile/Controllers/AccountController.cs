@@ -157,8 +157,8 @@ namespace Arsenal.Mobile.Controllers
                 {
                     if (BrowserInfo.IsWeChatClient() && ConfigGlobal_Arsenal.WeChatActive)
                     {
-                        TempData["DataUrl"] = $"data-url=/Account/WeChatLogin/?scope={ScopeType.snsapi_userinfo}";
-                        return RedirectToAction("WeChatLogin", "Account", new { scope = ScopeType.snsapi_userinfo });
+                        TempData["DataUrl"] = $"data-url=/Account/WeChatLogin/?scope={ScopeType.snsapi_base}";
+                        return RedirectToAction("WeChatLogin", "Account", new { scope = ScopeType.snsapi_base });
                     }
 
                     if (Url.IsLocalUrl(returnUrl))
@@ -229,8 +229,8 @@ namespace Arsenal.Mobile.Controllers
                     // 如果开启微信授权则跳转微信OpenUrl, 跳转首页
                     if (BrowserInfo.IsWeChatClient() && ConfigGlobal_Arsenal.WeChatActive)
                     {
-                        TempData["DataUrl"] = $"data-url=/Account/WeChatLogin/?scope={ScopeType.snsapi_base}";
-                        return RedirectToAction("WeChatLogin", "Account", new { scope = ScopeType.snsapi_base });
+                        TempData["DataUrl"] = $"data-url=/Account/WeChatLogin/?scope={ScopeType.snsapi_userinfo}";
+                        return RedirectToAction("WeChatLogin", "Account", new { scope = ScopeType.snsapi_userinfo });
                     }
 
                     TempData["DataUrl"] = "data-url=/";
@@ -302,10 +302,7 @@ namespace Arsenal.Mobile.Controllers
                 var mem = MembershipDto.Single(userGuid);
 
                 FormsAuthentication.SetAuthCookie(mem.UserName, createPersistentCookie: true);
-                UserDto.SetSession(mem.SignIn());
-
-                newUser.IsAnonymous = true;
-                _repo.Update(newUser);
+                UserDto.SetSession(mem.SignIn(), isAnonymous: true);
 
                 #endregion
             }

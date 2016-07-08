@@ -507,15 +507,18 @@ namespace Arsenal.Mobile.Models
             return null;
         }
 
-        public static void SetSession(object providerUserKey)
+        public static void SetSession(object providerUserKey, bool isAnonymous = false)
         {
             Contract.Requires(providerUserKey != null);
 
             var user = Single(providerUserKey);
 
-            // update user lastActivityDate
-            user.LastActivityDate = DateTime.Now;
+            // update user lastActivityDate & isAnonymous
             IRepository repo = new Repository();
+
+            user.LastActivityDate = DateTime.Now;
+            user.IsAnonymous = isAnonymous;
+
             repo.Update(user);
 
             // set user session
@@ -578,7 +581,7 @@ namespace Arsenal.Mobile.Models
     public class UserWeChatDto
     {
         public static UserWeChat Authorize(Guid userGuid, string accessToken, double expiresIn, string refreshToken,
-            string openId, ScopeType scope)
+            string openId, ScopeType scope, bool anonymous = false)
         {
             using (var conn = new SqlConnection(DataAccess.ConnectString))
             {
@@ -590,7 +593,7 @@ namespace Arsenal.Mobile.Models
                     IRepository repo = new Repository();
 
                     // 保存微信用户
-                    var user = UserDto.GetSession();
+                    var user = anonymous ? repo.Single<User>(userGuid) : UserDto.GetSession();
 
                     if (user != null && user.ID == userGuid)
                     {
@@ -609,6 +612,8 @@ namespace Arsenal.Mobile.Models
                         u.AccessTokenExpiredDate = DateTime.Now.AddSeconds(expiresIn);
                         u.RefreshToken = refreshToken;
                         u.RefreshTokenExpiredDate = DateTime.Now.AddDays(30);
+
+                        u.Gender = 0;
 
                         if (u.Province == null) u.Province = string.Empty;
                         if (u.City == null) u.City = string.Empty;
@@ -633,7 +638,7 @@ namespace Arsenal.Mobile.Models
 
                                 user.WeChatNickName = json["nickname"].Value<string>();
 
-                                u.Gender = json["sex"].Value<bool>();
+                                u.Gender = json["sex"].Value<short>();
                                 u.Province = json["province"].Value<string>();
                                 u.City = json["city"].Value<string>();
                                 u.Country = json["country"].Value<string>();

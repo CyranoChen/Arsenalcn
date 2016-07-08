@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;
-using Arsenalcn.Core.Utility;
 
 namespace Arsenalcn.Core
 {
@@ -29,82 +27,22 @@ namespace Arsenalcn.Core
             return null;
         }
 
-        protected virtual string ApiPost(string contentType = "application/x-www-form-urlencoded")
+        protected virtual string ApiPost(string url, string data)
         {
-            //New HttpWebRequest for DiscuzNT Service API
-            var req = (HttpWebRequest)WebRequest.Create(ServiceUrl);
-
-            req.Method = RequestMethod.Post.ToString();
-            req.ContentType = contentType;
-
-            #region Set Signature & PostParas
-
-            var sig = new StringBuilder();
-            var postData = new StringBuilder();
-
-            foreach (var para in Parameters)
+            if (!string.IsNullOrEmpty(url))
             {
-                if (!string.IsNullOrEmpty(para.Value))
-                {
-                    sig.Append($"{para.Key}={para.Value}");
-                    postData.Append($"&{para.Key}={para.Value}");
-                }
+                var client = new WebClient();
+
+                client.Headers.Add("Content-Type", "application/x-www-form-urlencoded");
+                client.Headers.Add("ContentLength", data.Length.ToString());
+
+                var responseResult = client.UploadData(url, RequestMethod.Post.ToString().ToUpper()
+                    , Encoding.UTF8.GetBytes(data));
+
+                return Encoding.UTF8.GetString(responseResult);
             }
 
-            sig.Append(CryptographicKey);
-
-            var strParameter = $"sig={Encrypt.GetMd5Hash(sig.ToString())}{postData}";
-
-            #endregion
-
-            var encodedBytes = Encoding.UTF8.GetBytes(strParameter);
-            req.ContentLength = encodedBytes.Length;
-
-            // Write encoded data into request stream
-            var requestStream = req.GetRequestStream();
-            requestStream.Write(encodedBytes, 0, encodedBytes.Length);
-            requestStream.Close();
-
-            using (var response = req.GetResponse())
-            {
-                var receiveStream = response.GetResponseStream();
-
-                if (receiveStream != null)
-                {
-                    var readStream = new StreamReader(receiveStream, Encoding.UTF8);
-                    return readStream.ReadToEnd();
-                }
-
-                return null;
-            }
-        }
-
-        protected virtual void SetDefaultParameters()
-        {
-            Parameters = new SortedDictionary<string, string>();
-
-            if (!string.IsNullOrEmpty(AppKey))
-            {
-                Parameters.Add("api_key", AppKey);
-            }
-            else
-            {
-                throw new Exception("AppKey is null");
-            }
-
-            if (!string.IsNullOrEmpty(Method))
-            {
-                Parameters.Add("method", Method);
-            }
-            else
-            {
-                throw new Exception("Method is null");
-            }
-
-            if (!string.IsNullOrEmpty(Format.ToString()))
-            {
-                Parameters.Add("format", Format.ToString());
-            }
+            return null;
         }
 
         #region Members and Properties

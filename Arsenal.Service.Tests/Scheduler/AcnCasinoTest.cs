@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Linq;
-using Arsenal.Service;
 using Arsenal.Service.Casino;
+using Arsenalcn.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ArsenalMatch = Arsenal.Service.Match;
 using CasinoMatch = Arsenal.Service.Casino.Match;
 
-namespace Arsenalcn.Core.Tests.Scheduler
+namespace Arsenal.Service.Tests.Scheduler
 {
     [TestClass]
     public class AcnCasinoTest

@@ -36,7 +36,7 @@ namespace Arsenal.Service
         public DateTime RefreshTokenExpiredDate { get; set; }
 
         [DbColumn("Gender")]
-        public bool? Gender { get; set; }
+        public short Gender { get; set; }
 
         [DbColumn("Province")]
         public string Province { get; set; }

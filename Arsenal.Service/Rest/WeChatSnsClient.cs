@@ -37,6 +37,26 @@ namespace Arsenal.Service.Rest
             return responseResult;
         }
 
+        public string RefreshAccessToken(string refreshToken)
+        {
+            if (!ConfigGlobal_Arsenal.WeChatActive) { return null; }
+
+            //https://api.weixin.qq.com/sns/oauth2/refresh_token?appid=APPID&grant_type=refresh_token&refresh_token=REFRESH_TOKEN  
+
+            var serverUrl = "https://api.weixin.qq.com/sns/oauth2/";
+
+            var uri = $"{serverUrl}refresh_token?appid={AppKey}&grant_type=refresh_token&refresh_token={refreshToken}";
+
+            var responseResult = ApiGet(uri);
+
+            if (string.IsNullOrEmpty(responseResult))
+            {
+                throw new Exception("WeChatSnsClient.RefreshAccessToken() responseResult is null");
+            }
+
+            return responseResult;
+        }
+
         public string GetUserInfo(string accessToken, string openId)
         {
             if (!ConfigGlobal_Arsenal.WeChatActive) { return null; }

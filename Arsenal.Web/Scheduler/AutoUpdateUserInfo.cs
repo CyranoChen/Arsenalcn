@@ -116,11 +116,11 @@ namespace Arsenal.Scheduler
                                 {
                                     uWeChat.Gender = uResp.sex;
                                     uWeChat.LastAuthorizeDate = DateTime.Now;
-                                    uWeChat.City = uResp.city;
-                                    uWeChat.Province = uResp.province;
-                                    uWeChat.Country = uResp.country;
-                                    uWeChat.HeadImgUrl = uResp.headimgurl;
-                                    uWeChat.UnionID = uResp.unionid;
+                                    uWeChat.City = uResp.city ?? string.Empty;
+                                    uWeChat.Province = uResp.province ?? string.Empty;
+                                    uWeChat.Country = uResp.country ?? string.Empty;
+                                    uWeChat.HeadImgUrl = uResp.headimgurl ?? string.Empty;
+                                    uWeChat.UnionID = uResp.unionid ?? string.Empty;
 
                                     repo.Update(uWeChat);
                                 }
@@ -136,12 +136,12 @@ namespace Arsenal.Scheduler
                                         RefreshToken = string.Empty,
                                         RefreshTokenExpiredDate = DateTime.MinValue,
                                         Gender = uResp.sex,
-                                        Province = uResp.province,
-                                        City = uResp.city,
-                                        Country = uResp.country,
-                                        HeadImgUrl = uResp.headimgurl,
+                                        Province = uResp.province ?? string.Empty,
+                                        City = uResp.city ?? string.Empty,
+                                        Country = uResp.country ?? string.Empty,
+                                        HeadImgUrl = uResp.headimgurl ?? string.Empty,
                                         Privilege = string.Empty,
-                                        UnionID = uResp.unionid
+                                        UnionID = uResp.unionid ?? string.Empty
                                     };
 
                                     repo.Insert(instance);

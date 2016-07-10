@@ -18,6 +18,29 @@ namespace Arsenal.Service
             map.ForMember(d => d.ID, opt => opt.MapFrom(s => (Guid)s.GetValue("GroupGuid")));
         }
 
+        public void BindMatches()
+        {
+            IRepository repo = new Repository();
+
+            var list = repo.Query<CasinoMatch>(x => x.LeagueGuid == LeagueGuid);
+            var teams = RelationGroupTeam.QueryByGroupGuid(ID);
+
+            list = list.FindAll(x => teams.Exists(t => t.TeamGuid == x.Home) && teams.Exists(t => t.TeamGuid == x.Away));
+
+            if (list.Count > 0)
+            {
+                foreach (var m in list)
+                {
+                    if (!m.GroupGuid.HasValue || m.GroupGuid != ID)
+                    {
+                        m.GroupGuid = ID;
+                        
+                        repo.Update(m);
+                    }
+                }
+            }
+        }
+
         public void Statistic()
         {
             IRepository repo = new Repository();
@@ -62,14 +85,30 @@ namespace Arsenal.Service
 
             if (listRgt.Count > 0)
             {
-                // 根据总积分、净胜球、进球数、失球数排序
-                listRgt = listRgt.OrderByDescending(x => x.TotalPoints)
-                    .ThenByDescending(x => x.HomeGoalDiff + x.AwayGoalDiff)
-                    .ThenByDescending(x => x.HomeGoalFor + x.AwayGoalFor)
-                    .ThenBy(x => x.HomeGoalAgainst + x.AwayGoalAgainst)
-                    .ThenBy(x => Team.Cache.Load(x.TeamGuid).TeamEnglishName)
-                    .ToList();
+                if (RankMethod == RankMethodType.VersusHist)
+                {
+                    // 设置双方交战比较规则
+                    var comparer = new GroupRankComparer { Matches = listMatch };
 
+                    // 根据总积分、双方交战记录、净胜球、进球数、失球数排序
+                    listRgt = listRgt.OrderByDescending(x => x.TotalPoints)
+                        .ThenByDescending(x => x.TeamGuid, comparer)
+                        .ThenByDescending(x => x.HomeGoalDiff + x.AwayGoalDiff)
+                        .ThenByDescending(x => x.HomeGoalFor + x.AwayGoalFor)
+                        .ThenBy(x => x.HomeGoalAgainst + x.AwayGoalAgainst)
+                        .ThenBy(x => Team.Cache.Load(x.TeamGuid).TeamEnglishName)
+                        .ToList();
+                }
+                else
+                {
+                    // 根据总积分、净胜球、进球数、失球数排序
+                    listRgt = listRgt.OrderByDescending(x => x.TotalPoints)
+                        .ThenByDescending(x => x.HomeGoalDiff + x.AwayGoalDiff)
+                        .ThenByDescending(x => x.HomeGoalFor + x.AwayGoalFor)
+                        .ThenBy(x => x.HomeGoalAgainst + x.AwayGoalAgainst)
+                        .ThenBy(x => Team.Cache.Load(x.TeamGuid).TeamEnglishName)
+                        .ToList();
+                }
                 // 更新排名并持久化
                 short positionNo = 0;
 
@@ -95,6 +134,63 @@ namespace Arsenal.Service
         [DbColumn("IsTable")]
         public bool IsTable { get; set; }
 
+        [DbColumn("RankMethod")]
+        public RankMethodType RankMethod { get; set; }
+
         #endregion
+    }
+
+    public class GroupRankComparer : IComparer<Guid>
+    {
+        public List<CasinoMatch> Matches { get; set; }
+
+        public int Compare(Guid id1, Guid id2)
+        {
+            var matchResult = Matches.FindAll(x => x.ResultHome.HasValue && x.ResultAway.HasValue
+                                                   && (x.Home == id1 && x.Away == id2 || x.Home == id2 && x.Away == id1));
+
+            if (matchResult.Count > 0)
+            {
+                short goal1 = 0;
+                short goal2 = 0;
+                short goalAway1 = 0;
+                short goalAway2 = 0;
+
+                foreach (var m in matchResult)
+                {
+                    if (m.Home == id1 && m.ResultHome.HasValue && m.ResultAway.HasValue)
+                    {
+                        goal1 += m.ResultHome.Value;
+                        goal2 += m.ResultAway.Value;
+                        goalAway2 += m.ResultAway.Value;
+                    }
+                    else if (m.Home == id2 && m.ResultHome.HasValue && m.ResultAway.HasValue)
+                    {
+                        goal2 += m.ResultHome.Value;
+                        goal1 += m.ResultAway.Value;
+                        goalAway1 += m.ResultAway.Value;
+                    }
+                }
+
+                if (goal1 == goal2)
+                {
+                    return goalAway1.CompareTo(goalAway2);
+                }
+                else
+                {
+                    return goal1.CompareTo(goal2);
+                }
+            }
+            else
+            {
+                return 0;
+            }
+        }
+    }
+
+    public enum RankMethodType
+    {
+        VersusHist = 0,
+        GoalDiff = 1
     }
 }

@@ -62,6 +62,9 @@
                     <a href="AdminTeam.aspx">球队管理</a>
                 </li>
                 <li>
+                    <a href="AdminGroup.aspx">分组管理</a>
+                </li>
+                <li>
                     <a href="AdminLeague.aspx">分类管理</a>
                 </li>
             </ul>

@@ -81,13 +81,6 @@
     <Compile Include="AdminConfig.aspx.designer.cs">
       <DependentUpon>AdminConfig.aspx</DependentUpon>
     </Compile>
-    <Compile Include="AdminGroup.aspx.cs">
-      <DependentUpon>AdminGroup.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="AdminGroup.aspx.designer.cs">
-      <DependentUpon>AdminGroup.aspx</DependentUpon>
-    </Compile>
     <Compile Include="AdminMatch.aspx.cs">
       <DependentUpon>AdminMatch.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -314,7 +307,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="AdminGroup.aspx" />
     <Content Include="CasinoBetClubLog.aspx" />
     <Content Include="Control\TopContestList.ascx" />
     <Content Include="DefaultMaster.master" />

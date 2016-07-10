@@ -8,18 +8,14 @@ namespace Arsenalcn.CasinoSys.Entity
 {
     public class Gambler
     {
-        public Gambler()
-        {
-        }
-
         private Gambler(DataRow dr)
         {
             InitGambler(dr);
         }
 
-        public Gambler(int userID, SqlTransaction trans = null)
+        public Gambler(int userId, SqlTransaction trans = null)
         {
-            var dr = DataAccess.Gambler.GetGamblerByUserID(userID, trans);
+            var dr = DataAccess.Gambler.GetGamblerByUserId(userId, trans);
 
             if (dr != null)
             {
@@ -29,8 +25,8 @@ namespace Arsenalcn.CasinoSys.Entity
             {
                 #region Insert new Gambler for new user
 
-                UserID = userID;
-                UserName = Users.GetShortUserInfo(userID).Username.Trim();
+                UserID = userId;
+                UserName = Users.GetShortUserInfo(userId).Username.Trim();
                 Cash = 0f;
                 TotalBet = 0f;
                 Win = 0;
@@ -88,21 +84,21 @@ namespace Arsenalcn.CasinoSys.Entity
                 throw new Exception("Unable to init Gambler.");
         }
 
-        public void Select()
-        {
-            var dr = DataAccess.Gambler.GetGamblerByID(GamblerID);
+        //public void Select()
+        //{
+        //    var dr = DataAccess.Gambler.GetGamblerByID(GamblerID);
 
-            if (dr != null)
-                InitGambler(dr);
-        }
+        //    if (dr != null)
+        //        InitGambler(dr);
+        //}
 
-        public void Select(int userID)
-        {
-            var dr = DataAccess.Gambler.GetGamblerByUserID(userID);
+        //public void Select(int userID)
+        //{
+        //    var dr = DataAccess.Gambler.GetGamblerByUserID(userID);
 
-            if (dr != null)
-                InitGambler(dr);
-        }
+        //    if (dr != null)
+        //        InitGambler(dr);
+        //}
 
         public void Update(SqlTransaction trans = null)
         {
@@ -118,10 +114,10 @@ namespace Arsenalcn.CasinoSys.Entity
                 Banker, JoinDate, IsActive, Description, Remark, trans);
         }
 
-        public void Delete(SqlTransaction trans = null)
-        {
-            DataAccess.Gambler.DeleteGambler(GamblerID, trans);
-        }
+        //public void Delete(SqlTransaction trans = null)
+        //{
+        //    DataAccess.Gambler.DeleteGambler(GamblerID, trans);
+        //}
 
         public static List<Gambler> GetGamblers()
         {
@@ -144,75 +140,73 @@ namespace Arsenalcn.CasinoSys.Entity
             return DataAccess.Gambler.GetGamblerCount();
         }
 
-        public static float GetGamblerTotalBetByUserID(int userID, Guid? leagueGuid = null)
+        public static float GetGamblerTotalBetByUserId(int id, Guid? leagueGuid = null)
         {
-            if (leagueGuid.HasValue)
-                return DataAccess.Gambler.GetGamblerTotalBetByUserID(userID, leagueGuid.Value);
-            return DataAccess.Gambler.GetGamblerTotalBetByUserID(userID);
+            if (leagueGuid.HasValue) { return DataAccess.Gambler.GetGamblerTotalBetByUserID(id, leagueGuid.Value); }
+
+            return DataAccess.Gambler.GetGamblerTotalBetByUserID(id);
         }
 
-        public static int GetGamblerRPByUserID(int userID, Guid? leagueGuid = null)
+        //public static int GetGamblerRPByUserID(int userID, Guid? leagueGuid = null)
+        //{
+        //    if (leagueGuid.HasValue)
+        //        return DataAccess.Gambler.GetGamblerRPByUserID(userID, leagueGuid.Value);
+        //    return DataAccess.Gambler.GetGamblerRPByUserID(userID);
+        //}
+
+        //public static void GamblerStatistics()
+        //{
+        //    var listGambler = GetGamblers();
+        //    var listCasinoGambler = CasinoGambler.GetCasinoGamblers();
+
+        //    var listCasinoCamblerContest = CasinoGambler.GetCasinoGamblers(ConfigGlobal.DefaultLeagueID);
+
+        //    if (listCasinoCamblerContest != null && listCasinoCamblerContest.Count > 0)
+        //    {
+        //        listCasinoCamblerContest = CasinoGambler.SortCasinoGambler(listCasinoCamblerContest);
+        //    }
+
+        //    if (listGambler != null && listGambler.Count > 0 && listCasinoGambler != null && listCasinoGambler.Count > 0)
+        //    {
+        //        foreach (var g in listGambler)
+        //        {
+        //            var cg = listCasinoGambler.Find(
+        //                delegate (CasinoGambler casinoGambler) { return casinoGambler.UserID.Equals(g.UserID); });
+
+        //            if (cg != null)
+        //                g.InitGambler(cg);
+
+        //            var cgc = listCasinoCamblerContest.Find(
+        //                delegate (CasinoGambler casinoGambler) { return casinoGambler.UserID.Equals(g.UserID); });
+
+        //            if (cgc != null)
+        //                g.ContestRank = cgc.Rank;
+        //            else
+        //                g.ContestRank = null;
+
+        //            g.Update();
+        //        }
+        //    }
+        //}
+
+        public static void GamblerStatistics(int id)
         {
-            if (leagueGuid.HasValue)
-                return DataAccess.Gambler.GetGamblerRPByUserID(userID, leagueGuid.Value);
-            return DataAccess.Gambler.GetGamblerRPByUserID(userID);
-        }
+            var g = new Gambler(id);
+            var cg = CasinoGambler.GetCasinoGamblers().Find(x => x.UserID.Equals(id));
 
-        public static void GamblerStatistics()
-        {
-            var listGambler = GetGamblers();
-            var listCasinoGambler = CasinoGambler.GetCasinoGamblers();
-
-            var listCasinoCamblerContest = CasinoGambler.GetCasinoGamblers(ConfigGlobal.DefaultLeagueID);
-
-            if (listCasinoCamblerContest != null && listCasinoCamblerContest.Count > 0)
-            {
-                listCasinoCamblerContest = CasinoGambler.SortCasinoGambler(listCasinoCamblerContest);
-            }
-
-            if (listGambler != null && listGambler.Count > 0 && listCasinoGambler != null && listCasinoGambler.Count > 0)
-            {
-                foreach (var g in listGambler)
-                {
-                    var cg = listCasinoGambler.Find(
-                        delegate(CasinoGambler casinoGambler) { return casinoGambler.UserID.Equals(g.UserID); });
-
-                    if (cg != null)
-                        g.InitGambler(cg);
-
-                    var cgc = listCasinoCamblerContest.Find(
-                        delegate(CasinoGambler casinoGambler) { return casinoGambler.UserID.Equals(g.UserID); });
-
-                    if (cgc != null)
-                        g.ContestRank = cgc.Rank;
-                    else
-                        g.ContestRank = null;
-
-                    g.Update();
-                }
-            }
-        }
-
-        public static void GamblerStatistics(int userID)
-        {
-            var g = new Gambler(userID);
-            var cg = CasinoGambler.GetCasinoGamblers().Find(
-                delegate(CasinoGambler casinoGambler) { return casinoGambler.UserID.Equals(userID); });
             CasinoGambler cgc = null;
 
             var listCasinoCamblerContest = CasinoGambler.GetCasinoGamblers(ConfigGlobal.DefaultLeagueID);
 
             if (listCasinoCamblerContest != null && listCasinoCamblerContest.Count > 0 &&
-                listCasinoCamblerContest.Exists(
-                    delegate(CasinoGambler casinoGambler) { return casinoGambler.UserID.Equals(userID); }))
+                listCasinoCamblerContest.Exists(x => x.UserID.Equals(id)))
             {
                 listCasinoCamblerContest = CasinoGambler.SortCasinoGambler(listCasinoCamblerContest);
-                cgc =
-                    listCasinoCamblerContest.Find(
-                        delegate(CasinoGambler casinoGambler) { return casinoGambler.UserID.Equals(userID); });
+
+                cgc = listCasinoCamblerContest.Find(x => x.UserID.Equals(id));
             }
 
-            if (g != null && cg != null)
+            if (cg != null)
             {
                 g.InitGambler(cg);
 
@@ -240,47 +234,47 @@ namespace Arsenalcn.CasinoSys.Entity
             }
         }
 
-        public static void TopGamblerMonthlyStatistics()
-        {
-            var iDay = DateTime.Today;
+        //public static void TopGamblerMonthlyStatistics()
+        //{
+        //    var iDay = DateTime.Today;
 
-            var lastBetTime = DataAccess.Bet.GetLastBetTime();
-            var sql = string.Empty;
+        //    var lastBetTime = DataAccess.Bet.GetLastBetTime();
+        //    var sql = string.Empty;
 
-            while (!(iDay.Year <= lastBetTime.Year && iDay.Month < lastBetTime.Month))
-            {
-                var dtWinner = DataAccess.Rank.GetTopGamblerMonthly(true, iDay);
-                var dtLoser = DataAccess.Rank.GetTopGamblerMonthly(false, iDay);
-                var dtRP = DataAccess.Rank.GetTopGamblerMonthly(true, iDay, true);
+        //    while (!(iDay.Year <= lastBetTime.Year && iDay.Month < lastBetTime.Month))
+        //    {
+        //        var dtWinner = DataAccess.Rank.GetTopGamblerMonthly(true, iDay);
+        //        var dtLoser = DataAccess.Rank.GetTopGamblerMonthly(false, iDay);
+        //        var dtRP = DataAccess.Rank.GetTopGamblerMonthly(true, iDay, true);
 
-                if (dtWinner != null && dtLoser != null && dtRP != null)
-                {
-                    var dtRanks = DataAccess.Rank.GetAllRanks(iDay.Year, iDay.Month);
+        //        if (dtWinner != null && dtLoser != null && dtRP != null)
+        //        {
+        //            var dtRanks = DataAccess.Rank.GetAllRanks(iDay.Year, iDay.Month);
 
-                    if (dtRanks != null)
-                    {
-                        //insert
-                        DataAccess.Rank.UpdateRank(iDay.Year, iDay.Month, Convert.ToInt32(dtWinner.Rows[0]["UserID"]),
-                            dtWinner.Rows[0]["UserName"].ToString().Trim(), Convert.ToSingle(dtWinner.Rows[0]["profit"]),
-                            Convert.ToSingle(dtWinner.Rows[0]["TotalBet"]), Convert.ToInt32(dtLoser.Rows[0]["UserID"]),
-                            dtLoser.Rows[0]["UserName"].ToString().Trim(), Convert.ToSingle(dtLoser.Rows[0]["profit"]),
-                            Convert.ToSingle(dtLoser.Rows[0]["TotalBet"]), Convert.ToInt32(dtRP.Rows[0]["UserID"]),
-                            dtRP.Rows[0]["UserName"].ToString().Trim(), Convert.ToInt32(dtRP.Rows[0]["RPBonus"]));
-                    }
-                    else
-                    {
-                        //update
-                        DataAccess.Rank.InsertRank(iDay.Year, iDay.Month, Convert.ToInt32(dtWinner.Rows[0]["UserID"]),
-                            dtWinner.Rows[0]["UserName"].ToString().Trim(), Convert.ToSingle(dtWinner.Rows[0]["profit"]),
-                            Convert.ToSingle(dtWinner.Rows[0]["TotalBet"]), Convert.ToInt32(dtLoser.Rows[0]["UserID"]),
-                            dtLoser.Rows[0]["UserName"].ToString().Trim(), Convert.ToSingle(dtLoser.Rows[0]["profit"]),
-                            Convert.ToSingle(dtLoser.Rows[0]["TotalBet"]), Convert.ToInt32(dtRP.Rows[0]["UserID"]),
-                            dtRP.Rows[0]["UserName"].ToString().Trim(), Convert.ToInt32(dtRP.Rows[0]["RPBonus"]));
-                    }
-                }
-                iDay = iDay.AddMonths(-1);
-            }
-        }
+        //            if (dtRanks != null)
+        //            {
+        //                //insert
+        //                DataAccess.Rank.UpdateRank(iDay.Year, iDay.Month, Convert.ToInt32(dtWinner.Rows[0]["UserID"]),
+        //                    dtWinner.Rows[0]["UserName"].ToString().Trim(), Convert.ToSingle(dtWinner.Rows[0]["profit"]),
+        //                    Convert.ToSingle(dtWinner.Rows[0]["TotalBet"]), Convert.ToInt32(dtLoser.Rows[0]["UserID"]),
+        //                    dtLoser.Rows[0]["UserName"].ToString().Trim(), Convert.ToSingle(dtLoser.Rows[0]["profit"]),
+        //                    Convert.ToSingle(dtLoser.Rows[0]["TotalBet"]), Convert.ToInt32(dtRP.Rows[0]["UserID"]),
+        //                    dtRP.Rows[0]["UserName"].ToString().Trim(), Convert.ToInt32(dtRP.Rows[0]["RPBonus"]));
+        //            }
+        //            else
+        //            {
+        //                //update
+        //                DataAccess.Rank.InsertRank(iDay.Year, iDay.Month, Convert.ToInt32(dtWinner.Rows[0]["UserID"]),
+        //                    dtWinner.Rows[0]["UserName"].ToString().Trim(), Convert.ToSingle(dtWinner.Rows[0]["profit"]),
+        //                    Convert.ToSingle(dtWinner.Rows[0]["TotalBet"]), Convert.ToInt32(dtLoser.Rows[0]["UserID"]),
+        //                    dtLoser.Rows[0]["UserName"].ToString().Trim(), Convert.ToSingle(dtLoser.Rows[0]["profit"]),
+        //                    Convert.ToSingle(dtLoser.Rows[0]["TotalBet"]), Convert.ToInt32(dtRP.Rows[0]["UserID"]),
+        //                    dtRP.Rows[0]["UserName"].ToString().Trim(), Convert.ToInt32(dtRP.Rows[0]["RPBonus"]));
+        //            }
+        //        }
+        //        iDay = iDay.AddMonths(-1);
+        //    }
+        //}
 
         #region Members and Properties
 

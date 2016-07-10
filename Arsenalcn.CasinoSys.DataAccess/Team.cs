@@ -6,7 +6,7 @@ using Microsoft.ApplicationBlocks.Data;
 
 namespace Arsenalcn.CasinoSys.DataAccess
 {
-    public class Team
+    public static class Team
     {
         //public static DataRow GetTeamByID(Guid teamGuid)
         //{

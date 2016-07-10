@@ -6,10 +6,6 @@ namespace Arsenalcn.CasinoSys.Entity
 {
     public class League
     {
-        public League()
-        {
-        }
-
         private League(DataRow dr)
         {
             InitLeague(dr);
@@ -53,7 +49,7 @@ namespace Arsenalcn.CasinoSys.Entity
         public static class Cache
         {
             public static List<League> LeagueList;
-            public static List<League> LeagueList_Active;
+            public static List<League> LeagueListActive;
 
             static Cache()
             {
@@ -68,7 +64,7 @@ namespace Arsenalcn.CasinoSys.Entity
             private static void InitCache()
             {
                 LeagueList = GetLeagues();
-                LeagueList_Active = LeagueList.FindAll(x => x.IsActive);
+                LeagueListActive = LeagueList.FindAll(x => x.IsActive);
             }
 
             public static League Load(Guid guid)

@@ -45,7 +45,7 @@ namespace Arsenalcn.CasinoSys.Web
 
                 if (drv != null)
                 {
-                    var m = new Match((Guid) drv["MatchGuid"]);
+                    var m = new Match((Guid)drv["MatchGuid"]);
 
                     var ltrlLeagueInfo = e.Row.FindControl("ltrlLeagueInfo") as Literal;
 
@@ -91,26 +91,11 @@ namespace Arsenalcn.CasinoSys.Web
 
                         if (item != null)
                         {
-                            var options = ((SingleChoice) item).Options;
+                            var options = ((SingleChoice)item).Options;
 
-                            var winOption =
-                                options.Find(
-                                    delegate(ChoiceOption option)
-                                    {
-                                        return option.OptionValue == MatchChoiceOption.HomeWinValue;
-                                    });
-                            var drawOption =
-                                options.Find(
-                                    delegate(ChoiceOption option)
-                                    {
-                                        return option.OptionValue == MatchChoiceOption.DrawValue;
-                                    });
-                            var loseOption =
-                                options.Find(
-                                    delegate(ChoiceOption option)
-                                    {
-                                        return option.OptionValue == MatchChoiceOption.AwayWinValue;
-                                    });
+                            var winOption = options.Find(option => option.OptionValue == MatchChoiceOption.HomeWinValue);
+                            var drawOption = options.Find(option => option.OptionValue == MatchChoiceOption.DrawValue);
+                            var loseOption = options.Find(option => option.OptionValue == MatchChoiceOption.AwayWinValue);
 
                             if (!string.IsNullOrEmpty(winOption.OptionValue) &&
                                 !string.IsNullOrEmpty(drawOption.OptionValue) &&
@@ -120,7 +105,8 @@ namespace Arsenalcn.CasinoSys.Web
                                 var ltrlDrawRate = e.Row.FindControl("ltrlDrawRate") as Literal;
                                 var ltrlLoseRate = e.Row.FindControl("ltrlLoseRate") as Literal;
 
-                                if (ltrlWinRate != null && ltrlDrawRate != null && ltrlLoseRate != null)
+                                if (ltrlWinRate != null && ltrlDrawRate != null && ltrlLoseRate != null &&
+                                    winOption.OptionRate.HasValue && drawOption.OptionRate.HasValue && loseOption.OptionRate.HasValue)
                                 {
                                     ltrlWinRate.Text =
                                         $"<em title=\"主队胜赔率\">{Convert.ToSingle(winOption.OptionRate.Value).ToString("f2")}</em>";
@@ -161,23 +147,6 @@ namespace Arsenalcn.CasinoSys.Web
                                     }
                                 }
                             }
-
-                            // Adv Bodog Bet Button
-
-                            //HyperLink btnBetBodog = e.Row.FindControl("btnBet_Bodog") as HyperLink;
-
-                            ////管理人员或100积分以上会员看不到广告
-                            //if (btnBetBodog == null || this.useradminid > 0 || this.usergroupid > 12)
-                            //{
-                            //    btnBetBodog.Visible = false;
-                            //}
-
-                            //if (btnBetBodog != null && this.CurrentGambler != null)
-                            //{
-                            //    btnBetBodog.Text = "博狗投注 <span class=\"CasinoSys_BetInfo\">Bodog</span>";
-                            //    btnBetBodog.NavigateUrl = "http://record.slk61.com/_S9AEnQlJCqtPt_LV3gWenWNd7ZgqdRLk/68/?tc=olm36230";
-                            //    btnBetBodog.Target = "_blank";
-                            //}
                         }
                     }
                 }

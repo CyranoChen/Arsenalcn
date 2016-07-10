@@ -20,21 +20,16 @@ namespace Arsenalcn.CasinoSys.Web
 
         private void BindData()
         {
-            var queryUsername = string.Empty;
-
-            if (ViewState["username"] != null)
-                queryUsername = ViewState["username"].ToString();
-
-            var list = Gambler.GetGamblers().FindAll(delegate(Gambler g)
+            var list = Gambler.GetGamblers().FindAll(delegate (Gambler g)
             {
                 var returnValue = true;
-                var tmpString = string.Empty;
+                string tmpString;
 
                 if (ViewState["username"] != null)
                 {
                     tmpString = ViewState["username"].ToString();
                     if (!string.IsNullOrEmpty(tmpString) && tmpString != "-请输入用户名-")
-                        returnValue = returnValue && g.UserName.Contains(tmpString);
+                        returnValue = g.UserName.Contains(tmpString);
                 }
 
                 return returnValue;
@@ -109,23 +104,27 @@ namespace Arsenalcn.CasinoSys.Web
             var tbWin = gvGambler.Rows[gvGambler.EditIndex].FindControl("tbWin") as TextBox;
             var tbLose = gvGambler.Rows[gvGambler.EditIndex].FindControl("tbLose") as TextBox;
 
-            var gambler = new Gambler((int) gvGambler.DataKeys[gvGambler.EditIndex].Value);
-
-            if (tbCash != null && tbWin != null && tbLose != null)
+            var key = gvGambler.DataKeys[gvGambler.EditIndex];
+            if (key != null)
             {
-                try
-                {
-                    gambler.Cash = Convert.ToSingle(tbCash.Text);
-                    gambler.Win = Convert.ToInt16(tbWin.Text);
-                    gambler.Lose = Convert.ToInt16(tbLose.Text);
+                var gambler = new Gambler((int)key.Value);
 
-                    gambler.Update();
-
-                    ClientScript.RegisterClientScriptBlock(typeof (string), "success", "alert('修改玩家信息成功');", true);
-                }
-                catch
+                if (tbCash != null && tbWin != null && tbLose != null)
                 {
-                    ClientScript.RegisterClientScriptBlock(typeof (string), "failed", "alert('修改玩家信息失败');", true);
+                    try
+                    {
+                        gambler.Cash = Convert.ToSingle(tbCash.Text);
+                        gambler.Win = Convert.ToInt16(tbWin.Text);
+                        gambler.Lose = Convert.ToInt16(tbLose.Text);
+
+                        gambler.Update();
+
+                        ClientScript.RegisterClientScriptBlock(typeof(string), "success", "alert('修改玩家信息成功');", true);
+                    }
+                    catch
+                    {
+                        ClientScript.RegisterClientScriptBlock(typeof(string), "failed", "alert('修改玩家信息失败');", true);
+                    }
                 }
             }
 
@@ -156,11 +155,11 @@ namespace Arsenalcn.CasinoSys.Web
                 {
                     Gambler.GamblerStatistics(Convert.ToInt32(e.CommandArgument));
 
-                    ClientScript.RegisterClientScriptBlock(typeof (string), "success", "alert('统计玩家信息成功');", true);
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "success", "alert('统计玩家信息成功');", true);
                 }
                 catch (Exception ex)
                 {
-                    ClientScript.RegisterClientScriptBlock(typeof (string), "failed", $"alert('{ex.Message}');", true);
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message}');", true);
                 }
             }
         }

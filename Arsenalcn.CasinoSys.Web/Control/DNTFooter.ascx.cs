@@ -6,8 +6,8 @@ namespace Arsenalcn.CasinoSys.Web.Control
 {
     public partial class DntFooter : UserControl
     {
-        public string PluginName = string.Empty;
-        public string PluginVersion = string.Empty;
+        protected string PluginName = string.Empty;
+        protected string PluginVersion = string.Empty;
 
         protected void Page_Load(object sender, EventArgs e)
         {

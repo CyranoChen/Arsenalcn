@@ -22,12 +22,12 @@ namespace Arsenalcn.CasinoSys.Web
         {
             var dt = CasinoItem.GetMatchCasinoItemView(false);
 
-            dt.Columns.Add("HomeDisplay", typeof (string));
-            dt.Columns.Add("AwayDisplay", typeof (string));
+            dt.Columns.Add("HomeDisplay", typeof(string));
+            dt.Columns.Add("AwayDisplay", typeof(string));
 
             foreach (DataRow dr in dt.Rows)
             {
-                var m = new Match((Guid) dr["MatchGuid"]);
+                var m = new Match((Guid)dr["MatchGuid"]);
 
                 dr["HomeDisplay"] = Team.Cache.Load(m.Home).TeamDisplayName;
                 dr["AwayDisplay"] = Team.Cache.Load(m.Away).TeamDisplayName;
@@ -46,7 +46,7 @@ namespace Arsenalcn.CasinoSys.Web
 
                 if (drv != null)
                 {
-                    var m = new Match((Guid) drv["MatchGuid"]);
+                    var m = new Match((Guid)drv["MatchGuid"]);
 
                     var matchResult = e.Row.FindControl("ltrlMatchResult") as Literal;
                     var btnCalcBonus = e.Row.FindControl("btnCalcBonus") as LinkButton;
@@ -69,59 +69,60 @@ namespace Arsenalcn.CasinoSys.Web
                         tbAway.Text = m.ResultAway.ToString();
                     }
 
-                    if (matchResult != null && m.ResultHome.HasValue && m.ResultAway.HasValue)
+                    if (btnCalcBonus != null && btnReturnBet != null && lblBonus != null)
                     {
-                        matchResult.Text = $"{m.ResultHome}：{m.ResultAway}";
-
-                        var matchGuid = m.MatchGuid;
-
-                        var itemGuid = CasinoItem.GetCasinoItemGuidByMatch(matchGuid, CasinoType.SingleChoice);
-
-                        if (itemGuid.HasValue)
+                        if (matchResult != null && m.ResultHome.HasValue && m.ResultAway.HasValue)
                         {
-                            var item = CasinoItem.GetCasinoItem(itemGuid.Value);
+                            matchResult.Text = $"{m.ResultHome}：{m.ResultAway}";
 
-                            if (item.Earning.HasValue)
-                            {
-                                //hide button calc bonus
-                                btnCalcBonus.Visible = false;
-                                btnReturnBet.Visible = false;
-                                lblBonus.Text = item.Earning.Value.ToString("N2");
-                                lblBonus.Visible = true;
-                            }
-                            else
-                            {
-                                //show button calc bonus                        
-                                btnCalcBonus.Visible = true;
-                                btnReturnBet.Visible = false;
-                                lblBonus.Visible = false;
+                            var matchGuid = m.MatchGuid;
 
-                                //set button command argument
-                                if (btnCalcBonus != null)
+                            var itemGuid = CasinoItem.GetCasinoItemGuidByMatch(matchGuid, CasinoType.SingleChoice);
+
+                            if (itemGuid.HasValue)
+                            {
+                                var item = CasinoItem.GetCasinoItem(itemGuid.Value);
+
+                                if (item.Earning.HasValue)
+                                {
+                                    //hide button calc bonus
+                                    btnCalcBonus.Visible = false;
+                                    btnReturnBet.Visible = false;
+                                    lblBonus.Text = item.Earning.Value.ToString("N2");
+                                    lblBonus.Visible = true;
+                                }
+                                else
+                                {
+                                    //show button calc bonus                        
+                                    btnCalcBonus.Visible = true;
+                                    btnReturnBet.Visible = false;
+                                    lblBonus.Visible = false;
+
+                                    //set button command argument
                                     btnCalcBonus.CommandArgument = m.MatchGuid.ToString();
+                                }
                             }
                         }
-                    }
-                    else
-                    {
-                        var betList = Bet.GetMatchAllBet(m.MatchGuid);
+                        else
+                        {
+                            var betList = Bet.GetMatchAllBet(m.MatchGuid);
 
-                        var betCount = 0;
-                        if (betList != null && betList.Count > 0)
-                            betCount = betList.Count;
+                            var betCount = 0;
+                            if (betList != null && betList.Count > 0)
+                                betCount = betList.Count;
 
-                        btnReturnBet.Text = $"退还:{betCount}注";
-                        btnReturnBet.Visible = true;
+                            btnReturnBet.Text = $"退还:{betCount}注";
+                            btnReturnBet.Visible = true;
 
-                        btnCalcBonus.Visible = false;
-                        lblBonus.Visible = false;
+                            btnCalcBonus.Visible = false;
+                            lblBonus.Visible = false;
 
-                        if (btnReturnBet != null)
                             btnReturnBet.CommandArgument = m.MatchGuid.ToString();
 
-                        if (betCount <= 0)
-                        {
-                            btnReturnBet.Enabled = false;
+                            if (betCount <= 0)
+                            {
+                                btnReturnBet.Enabled = false;
+                            }
                         }
                     }
                 }
@@ -135,11 +136,14 @@ namespace Arsenalcn.CasinoSys.Web
             var tbPlayTime = gvMatch.Rows[gvMatch.EditIndex].FindControl("tbPlayTime") as TextBox;
             var tbRound = gvMatch.Rows[gvMatch.EditIndex].FindControl("tbRound") as TextBox;
 
-            if (tbHome != null && tbAway != null && tbPlayTime != null && tbRound != null)
+            var key = gvMatch.DataKeys[gvMatch.EditIndex];
+
+
+            if (tbHome != null && tbAway != null && tbPlayTime != null && tbRound != null && key != null)
             {
                 try
                 {
-                    var guid = (Guid) gvMatch.DataKeys[gvMatch.EditIndex].Value;
+                    var guid = (Guid)key.Value;
 
                     var m = new Match(guid);
 
@@ -175,7 +179,7 @@ namespace Arsenalcn.CasinoSys.Web
                 }
                 catch (Exception ex)
                 {
-                    ClientScript.RegisterClientScriptBlock(typeof (string), "failed", $"alert('{ex.Message}');", true);
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message}');", true);
                 }
             }
 
@@ -186,16 +190,19 @@ namespace Arsenalcn.CasinoSys.Web
 
         protected void gvMatch_RowDeleting(object sender, GridViewDeleteEventArgs e)
         {
-            var guid = (Guid) gvMatch.DataKeys[e.RowIndex].Value;
+            var key = gvMatch.DataKeys[e.RowIndex];
 
-            try
+            if (key != null)
             {
-                var m = new Match(guid);
-                m.Delete();
-            }
-            catch (Exception ex)
-            {
-                ClientScript.RegisterClientScriptBlock(typeof (string), "failed", $"alert('{ex.Message}');", true);
+                try
+                {
+                    var m = new Match((Guid)key.Value);
+                    m.Delete();
+                }
+                catch (Exception ex)
+                {
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message}');", true);
+                }
             }
 
             BindData();
@@ -227,7 +234,7 @@ namespace Arsenalcn.CasinoSys.Web
                     var m = new Match(guid);
                     m.ReturnBet();
 
-                    ClientScript.RegisterClientScriptBlock(typeof (string), "success", "alert('投注退还成功');", true);
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "success", "alert('投注退还成功');", true);
 
                     BindData();
                 }
@@ -238,14 +245,14 @@ namespace Arsenalcn.CasinoSys.Web
                     var m = new Match(guid);
                     m.CalcBonus();
 
-                    ClientScript.RegisterClientScriptBlock(typeof (string), "success", "alert('奖金发放成功');", true);
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "success", "alert('奖金发放成功');", true);
 
                     BindData();
                 }
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof (string), "failed", $"alert('{ex.Message}');", true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message}');", true);
             }
         }
 

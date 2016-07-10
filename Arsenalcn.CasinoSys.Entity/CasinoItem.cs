@@ -39,12 +39,10 @@ namespace Arsenalcn.CasinoSys.Entity
             switch (itemType)
             {
                 case CasinoType.SingleChoice:
-                    item = new SingleChoice();
-                    item.ItemType = CasinoType.SingleChoice;
+                    item = new SingleChoice { ItemType = CasinoType.SingleChoice };
                     break;
                 case CasinoType.MatchResult:
-                    item = new MatchResult();
-                    item.ItemType = CasinoType.MatchResult;
+                    item = new MatchResult { ItemType = CasinoType.MatchResult };
                     break;
                 default:
                     throw new Exception("Unknown Casino Item Type.");
@@ -55,40 +53,34 @@ namespace Arsenalcn.CasinoSys.Entity
 
         protected abstract void BuildDetail();
 
-        public static CasinoItem GetCasinoItem(Guid itemID)
+        public static CasinoItem GetCasinoItem(Guid key)
         {
-            var dr = DataAccess.CasinoItem.GetCasinoItemByID(itemID);
+            var dr = DataAccess.CasinoItem.GetCasinoItemById(key);
 
             if (dr != null)
             {
-                var itemType = (CasinoType) Enum.Parse(typeof (CasinoType), Convert.ToString(dr["ItemType"]));
+                var itemType = (CasinoType)Enum.Parse(typeof(CasinoType), Convert.ToString(dr["ItemType"]));
 
                 var item = CreateInstance(itemType);
 
-                item.ItemGuid = itemID;
+                item.ItemGuid = key;
 
                 item.ItemType = itemType;
 
                 if (Convert.IsDBNull(dr["MatchGuid"]))
                     item.MatchGuid = null;
                 else
-                    item.MatchGuid = (Guid) dr["MatchGuid"];
+                    item.MatchGuid = (Guid)dr["MatchGuid"];
 
-                if (Convert.IsDBNull(dr["ItemTitle"]))
-                    item.ItemTitle = null;
-                else
-                    item.ItemTitle = Convert.ToString(dr["ItemTitle"]);
+                item.ItemTitle = Convert.IsDBNull(dr["ItemTitle"]) ? null : Convert.ToString(dr["ItemTitle"]);
 
-                if (Convert.IsDBNull(dr["ItemBody"]))
-                    item.ItemBody = null;
-                else
-                    item.ItemBody = Convert.ToString(dr["ItemBody"]);
+                item.ItemBody = Convert.IsDBNull(dr["ItemBody"]) ? null : Convert.ToString(dr["ItemBody"]);
 
                 item.CreateTime = Convert.ToDateTime(dr["CreateTime"]);
                 item.PublishTime = Convert.ToDateTime(dr["PublishTime"]);
                 item.CloseTime = Convert.ToDateTime(dr["CloseTime"]);
 
-                item.BankerID = (Guid) dr["BankerID"];
+                item.BankerID = (Guid)dr["BankerID"];
                 item.BankerName = Convert.ToString(dr["BankerName"]);
 
                 if (Convert.IsDBNull(dr["Earning"]))
@@ -119,7 +111,7 @@ namespace Arsenalcn.CasinoSys.Entity
                 return ItemGuid.Value;
             }
             //insert
-            var newGuid = DataAccess.CasinoItem.InsertCasinoItem((int) ItemType, MatchGuid, ItemTitle, ItemBody,
+            var newGuid = DataAccess.CasinoItem.InsertCasinoItem((int)ItemType, MatchGuid, ItemTitle, ItemBody,
                 PublishTime, CloseTime, BankerID, BankerName, OwnerID, OwnerUserName, trans);
 
             return newGuid;
@@ -132,28 +124,28 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public static Guid? GetCasinoItemGuidByMatch(Guid matchGuid, CasinoType type)
         {
-            return DataAccess.CasinoItem.GetCasinoItemGuidByMatch(matchGuid, (int) type, null);
+            return DataAccess.CasinoItem.GetCasinoItemGuidByMatch(matchGuid, (int)type, null);
         }
 
-        public static void ActiveCasinoItemStatistics()
-        {
-            var dt = DataAccess.CasinoItem.GetActiveCasinoItem();
+        //public static void ActiveCasinoItemStatistics()
+        //{
+        //    var dt = DataAccess.CasinoItem.GetActiveCasinoItem();
 
-            if (dt != null)
-            {
-                foreach (DataRow dr in dt.Rows)
-                {
-                    var item = GetCasinoItem((Guid) dr["CasinoItemGuid"]);
-                    item.Earning = DataAccess.Bet.GetTotalEarningByCasinoItemGuid((Guid) dr["CasinoItemGuid"]);
+        //    if (dt != null)
+        //    {
+        //        foreach (DataRow dr in dt.Rows)
+        //        {
+        //            var item = GetCasinoItem((Guid)dr["CasinoItemGuid"]);
+        //            item.Earning = DataAccess.Bet.GetTotalEarningByCasinoItemGuid((Guid)dr["CasinoItemGuid"]);
 
-                    item.Save(null);
-                }
-            }
-        }
+        //            item.Save(null);
+        //        }
+        //    }
+        //}
 
         public static DataTable GetMatchCasinoItemView(bool isOpen)
         {
-            DataTable dt = null;
+            DataTable dt;
 
             if (isOpen)
             {
@@ -186,21 +178,7 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public static DataTable GetEndViewByTeam(Guid teamGuid)
         {
-            var dt = DataAccess.CasinoItem.GetEndMatchViewByTeamGuid(teamGuid);
-
-            //if (dt != null)
-            //{
-            //    dt.Columns.Add("LeagueDisplayName", typeof(string));
-            //    foreach (DataRow dr in dt.Rows)
-            //    {
-            //        if (!Convert.IsDBNull(dr["Round"]))
-            //            dr["LeagueDisplayName"] = string.Format("{0}{1}(第{2}轮)", dr["LeagueName"].ToString(), dr["LeagueSeason"].ToString(), dr["Round"].ToString());
-            //        else
-            //            dr["LeagueDisplayName"] = string.Format("{0}{1}", dr["LeagueName"].ToString(), dr["LeagueSeason"].ToString());
-            //    }
-            //}
-
-            return dt;
+            return DataAccess.CasinoItem.GetEndMatchViewByTeamGuid(teamGuid);
         }
 
         public static DataTable GetHistoryViewByMatch(Guid matchGuid)
@@ -208,18 +186,6 @@ namespace Arsenalcn.CasinoSys.Entity
             var match = new Match(matchGuid);
 
             var dt = DataAccess.CasinoItem.GetEndMatchViewByTeams(match.Home, match.Away);
-
-            //if (dt != null)
-            //{
-            //    dt.Columns.Add("LeagueDisplayName", typeof(string));
-            //    foreach (DataRow dr in dt.Rows)
-            //    {
-            //        if (!Convert.IsDBNull(dr["Round"]))
-            //            dr["LeagueDisplayName"] = string.Format("{0}{1}(第{2}轮)", dr["LeagueName"].ToString(), dr["LeagueSeason"].ToString(), dr["Round"].ToString());
-            //        else
-            //            dr["LeagueDisplayName"] = string.Format("{0}{1}", dr["LeagueName"].ToString(), dr["LeagueSeason"].ToString());
-            //    }
-            //}
 
             return dt;
         }
@@ -239,7 +205,7 @@ namespace Arsenalcn.CasinoSys.Entity
             {
                 foreach (DataRow dr in dt.Rows)
                 {
-                    var historyMatch = new Match((Guid) dr["MatchGuid"]);
+                    var historyMatch = new Match((Guid)dr["MatchGuid"]);
 
                     if (match.Home == historyMatch.Home && match.Away == historyMatch.Away)
                     {

@@ -54,7 +54,7 @@ namespace Arsenalcn.CasinoSys.Web
                     }
 
                     var ltrlResult = e.Row.FindControl("ltrlResult") as Literal;
-                    var dt = BetDetail.GetBetDetailByBetID(bet.ID);
+                    var dt = BetDetail.GetBetDetailByBetId(bet.ID);
 
                     if (dt != null && ltrlResult != null)
                     {

@@ -14,10 +14,7 @@ namespace Arsenalcn.CasinoSys.Web
             {
                 ltrlPluginName.Text = $"<strong>欢迎进入{ConfigGlobal.PluginDisplayName}</strong>";
 
-                if (ConfigAdmin.IsPluginAdmin(userid))
-                    pnlAdmin.Visible = true;
-                else
-                    pnlAdmin.Visible = false;
+                pnlAdmin.Visible = ConfigAdmin.IsPluginAdmin(userid);
             }
         }
     }

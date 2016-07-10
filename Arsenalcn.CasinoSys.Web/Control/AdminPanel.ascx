@@ -17,9 +17,6 @@ Inherits="Arsenalcn.CasinoSys.Web.Control.AdminPanel" %>
                     <a href="AdminGambler.aspx">玩家管理</a>
                 </li>
                 <li>
-                    <a href="AdminGroup.aspx">分组管理</a>
-                </li>
-                <li>
                     <a href="AdminBet.aspx">投注日志</a>
                 </li>
             </ul>

@@ -2,7 +2,7 @@
 
 namespace Arsenalcn.CasinoSys.Entity
 {
-    public class Rank
+    public static class Rank
     {
         public static DataTable GetTopGamblerMonthly()
         {
@@ -14,6 +14,7 @@ namespace Arsenalcn.CasinoSys.Entity
             return DataAccess.Rank.GetTopGamblerProfit(out months);
         }
 
+        // ReSharper disable once InconsistentNaming
         public static DataTable GetTopGamblerRP(out int months)
         {
             return DataAccess.Rank.GetTopGamblerRP(out months);

@@ -6,34 +6,34 @@ using Microsoft.ApplicationBlocks.Data;
 
 namespace Arsenalcn.CasinoSys.DataAccess
 {
-    public class Gambler
+    public static class Gambler
     {
-        public static DataRow GetGamblerByID(int gID)
+        //public static DataRow GetGamblerByID(int gID)
+        //{
+        //    var sql = "SELECT * FROM dbo.AcnCasino_Gambler WHERE ID = @gID";
+
+        //    var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql,
+        //        new SqlParameter("@gID", gID));
+
+        //    if (ds.Tables[0].Rows.Count == 0)
+        //        return null;
+        //    return ds.Tables[0].Rows[0];
+        //}
+
+        public static DataRow GetGamblerByUserId(int id, SqlTransaction trans = null)
         {
-            var sql = "SELECT * FROM dbo.AcnCasino_Gambler WHERE ID = @gID";
+            var sql = "SELECT * FROM dbo.AcnCasino_Gambler WHERE UserID = @id";
 
-            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql,
-                new SqlParameter("@gID", gID));
-
-            if (ds.Tables[0].Rows.Count == 0)
-                return null;
-            return ds.Tables[0].Rows[0];
-        }
-
-        public static DataRow GetGamblerByUserID(int userID, SqlTransaction trans = null)
-        {
-            var sql = "SELECT * FROM dbo.AcnCasino_Gambler WHERE UserID = @userID";
-
-            DataSet ds = null;
+            DataSet ds;
 
             if (trans == null)
             {
                 ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql,
-                    new SqlParameter("@userID", userID));
+                    new SqlParameter("@id", id));
             }
             else
             {
-                ds = SqlHelper.ExecuteDataset(trans, CommandType.Text, sql, new SqlParameter("@userID", userID));
+                ds = SqlHelper.ExecuteDataset(trans, CommandType.Text, sql, new SqlParameter("@id", id));
             }
 
             if (ds.Tables[0].Rows.Count == 0)
@@ -115,26 +115,25 @@ namespace Arsenalcn.CasinoSys.DataAccess
             {
                 return Convert.ToInt32(SqlHelper.ExecuteScalar(SQLConn.GetConnection(), CommandType.Text, sql, para));
             }
+
             return Convert.ToInt32(SqlHelper.ExecuteScalar(trans, CommandType.Text, sql, para));
-
-            //SqlHelper.ExecuteNonQuery(SQLConn.GetConnection(), CommandType.Text, sql, new SqlParameter("@userid", userid), new SqlParameter("@username", username));
         }
 
-        public static void DeleteGambler(int gID, SqlTransaction trans = null)
-        {
-            var sql = "DELETE dbo.AcnCasino_Gambler WHERE ID = @gID";
+        //public static void DeleteGambler(int gID, SqlTransaction trans = null)
+        //{
+        //    var sql = "DELETE dbo.AcnCasino_Gambler WHERE ID = @gID";
 
-            SqlParameter[] para = {new SqlParameter("@gID", gID)};
+        //    SqlParameter[] para = {new SqlParameter("@gID", gID)};
 
-            if (trans == null)
-            {
-                SqlHelper.ExecuteNonQuery(SQLConn.GetConnection(), CommandType.Text, sql, para);
-            }
-            else
-            {
-                SqlHelper.ExecuteNonQuery(trans, CommandType.Text, sql, para);
-            }
-        }
+        //    if (trans == null)
+        //    {
+        //        SqlHelper.ExecuteNonQuery(SQLConn.GetConnection(), CommandType.Text, sql, para);
+        //    }
+        //    else
+        //    {
+        //        SqlHelper.ExecuteNonQuery(trans, CommandType.Text, sql, para);
+        //    }
+        //}
 
         public static DataTable GetGamblers()
         {
@@ -237,26 +236,26 @@ namespace Arsenalcn.CasinoSys.DataAccess
             return obj.Equals(DBNull.Value) ? 0f : Convert.ToSingle(obj);
         }
 
-        public static int GetGamblerRPByUserID(int userid)
-        {
-            var sql =
-                @"SELECT COUNT(*) AS RPBonus FROM dbo.AcnCasino_Bet WHERE Earning = 0 AND EarningDesc = 'RP+1' AND IsWin = 1 AND UserID = @userid";
+        //public static int GetGamblerRPByUserID(int userid)
+        //{
+        //    var sql =
+        //        @"SELECT COUNT(*) AS RPBonus FROM dbo.AcnCasino_Bet WHERE Earning = 0 AND EarningDesc = 'RP+1' AND IsWin = 1 AND UserID = @userid";
 
-            var obj = SqlHelper.ExecuteScalar(SQLConn.GetConnection(), CommandType.Text, sql,
-                new SqlParameter("@userid", userid));
+        //    var obj = SqlHelper.ExecuteScalar(SQLConn.GetConnection(), CommandType.Text, sql,
+        //        new SqlParameter("@userid", userid));
 
-            return obj.Equals(DBNull.Value) ? 0 : Convert.ToInt32(obj);
-        }
+        //    return obj.Equals(DBNull.Value) ? 0 : Convert.ToInt32(obj);
+        //}
 
-        public static int GetGamblerRPByUserID(int userid, Guid leagueGuid)
-        {
-            var sql =
-                @"SELECT COUNT(*) AS RPBonus FROM dbo.vw_AcnCasino_BetInfo WHERE Earning = 0 AND EarningDesc = 'RP+1' AND IsWin = 1  AND (ItemType = 1) AND UserID = @userid AND LeagueGuid = @guid";
+        //public static int GetGamblerRPByUserID(int userid, Guid leagueGuid)
+        //{
+        //    var sql =
+        //        @"SELECT COUNT(*) AS RPBonus FROM dbo.vw_AcnCasino_BetInfo WHERE Earning = 0 AND EarningDesc = 'RP+1' AND IsWin = 1  AND (ItemType = 1) AND UserID = @userid AND LeagueGuid = @guid";
 
-            var obj = SqlHelper.ExecuteScalar(SQLConn.GetConnection(), CommandType.Text, sql,
-                new SqlParameter("@userid", userid), new SqlParameter("@guid", leagueGuid));
+        //    var obj = SqlHelper.ExecuteScalar(SQLConn.GetConnection(), CommandType.Text, sql,
+        //        new SqlParameter("@userid", userid), new SqlParameter("@guid", leagueGuid));
 
-            return obj.Equals(DBNull.Value) ? 0 : Convert.ToInt32(obj);
-        }
+        //    return obj.Equals(DBNull.Value) ? 0 : Convert.ToInt32(obj);
+        //}
     }
 }

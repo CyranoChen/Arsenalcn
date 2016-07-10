@@ -6,12 +6,11 @@ using Microsoft.ApplicationBlocks.Data;
 
 namespace Arsenalcn.CasinoSys.DataAccess
 {
-    public class UserClub
+    public static class UserClub
     {
         public static DataRow GetUserClubHistoryInfo(int userID, DateTime betTime)
         {
-            var sql =
-                @"SELECT dbo.AcnClub_Club.FullName AS ClubName, dbo.AcnClub_RelationUserClub.* FROM dbo.AcnClub_Club 
+            var sql = @"SELECT dbo.AcnClub_Club.FullName AS ClubName, dbo.AcnClub_RelationUserClub.* FROM dbo.AcnClub_Club 
                                   INNER JOIN dbo.AcnClub_RelationUserClub ON dbo.AcnClub_Club.ClubUid = dbo.AcnClub_RelationUserClub.ClubUid 
                                   WHERE (dbo.AcnClub_RelationUserClub.UserID = @userID) AND (dbo.AcnClub_RelationUserClub.FromDate < @betTime) AND 
                                   (ISNULL(dbo.AcnClub_RelationUserClub.ToDate, GETDATE()) > @betTime)";

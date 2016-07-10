@@ -115,10 +115,7 @@ namespace Arsenalcn.CasinoSys.Web
                 dt = CasinoItem.GetEndViewByMatch();
             }
 
-            if (dt != null)
-                ltrlMatchCount.Text = dt.Rows.Count.ToString();
-            else
-                ltrlMatchCount.Text = "0";
+            ltrlMatchCount.Text = dt?.Rows.Count.ToString() ?? "0";
 
             gvMatch.DataSource = dt;
             gvMatch.DataBind();

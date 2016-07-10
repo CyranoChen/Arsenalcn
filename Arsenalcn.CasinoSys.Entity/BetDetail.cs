@@ -4,33 +4,9 @@ namespace Arsenalcn.CasinoSys.Entity
 {
     public class BetDetail
     {
-        //public BetDetail(int betDetailID)
-        //{
-        //    //DataRow dr = DataAccess.Bet.GetBetByID(betID);
-        //    DataRow dr = null;
-
-        //    if (dr != null)
-        //        InitBet(dr);
-        //}
-
-        //public BetDetail(DataRow dr)
-        //{
-        //    InitBet(dr);
-        //}
-
-        //private void InitBet(DataRow dr)
-        //{
-        //    if (dr != null)
-        //    {
-
-        //    }
-        //    else
-        //        throw new Exception("Unable to init BetDetail.");
-        //}
-
-        public static DataTable GetBetDetailByBetID(int betID)
+        public static DataTable GetBetDetailByBetId(int id)
         {
-            return DataAccess.BetDetail.GetBetDetailByBetID(betID);
+            return DataAccess.BetDetail.GetBetDetailByBetId(id);
         }
     }
 }

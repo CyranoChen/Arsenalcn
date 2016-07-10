@@ -13,10 +13,7 @@ namespace Arsenalcn.CasinoSys.Web
 
         private string _home = string.Empty;
 
-        public int TimeDiff
-        {
-            get { return int.Parse(ddlTimeDiff.SelectedValue); }
-        }
+        public int TimeDiff => int.Parse(ddlTimeDiff.SelectedValue);
 
         public Guid CurrentMatch
         {
@@ -95,13 +92,11 @@ namespace Arsenalcn.CasinoSys.Web
                 betList = Bet.GetMatchAllBet(CurrentMatch);
             }
 
-            ltrlSingleChoiceCount.Text =
-                betList.FindAll(delegate(Bet bet) { return bet.BetAmount.HasValue; }).Count.ToString();
-            ltrlMatchResultCount.Text =
-                betList.FindAll(delegate(Bet bet) { return !bet.BetAmount.HasValue; }).Count.ToString();
+            ltrlSingleChoiceCount.Text = betList.FindAll(bet => bet.BetAmount.HasValue).Count.ToString();
+            ltrlMatchResultCount.Text = betList.FindAll(bet => !bet.BetAmount.HasValue).Count.ToString();
 
             float totalBetCount = 0;
-            betList.ForEach(delegate(Bet bet) { totalBetCount += bet.BetAmount.GetValueOrDefault(0f); });
+            betList.ForEach(delegate (Bet bet) { totalBetCount += bet.BetAmount.GetValueOrDefault(0f); });
             ltrlTotalBetCount.Text = totalBetCount.ToString("N0");
 
             gvBet.DataSource = betList;
@@ -160,7 +155,7 @@ namespace Arsenalcn.CasinoSys.Web
                     }
 
                     var ltrlResult = e.Row.FindControl("ltrlResult") as Literal;
-                    var dt = BetDetail.GetBetDetailByBetID(bet.ID);
+                    var dt = BetDetail.GetBetDetailByBetId(bet.ID);
 
                     if (dt != null && ltrlResult != null)
                     {
@@ -214,14 +209,7 @@ namespace Arsenalcn.CasinoSys.Web
 
                     if (ltrlBetRate != null)
                     {
-                        if (bet.BetRate.HasValue)
-                        {
-                            ltrlBetRate.Text = Convert.ToSingle(bet.BetRate).ToString("f2");
-                        }
-                        else
-                        {
-                            ltrlBetRate.Text = "/";
-                        }
+                        ltrlBetRate.Text = bet.BetRate.HasValue ? Convert.ToSingle(bet.BetRate).ToString("f2") : "/";
                     }
                 }
             }

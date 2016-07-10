@@ -8,13 +8,11 @@ namespace Arsenalcn.CasinoSys.Entity
     {
         private const ConfigSystem CurrSystem = ConfigSystem.AcnCasino;
 
-        private ConfigGlobal()
-        {
-        }
+        private ConfigGlobal() { }
 
         #region Members and Properties
 
-        public static Dictionary<string, string> ConfigDictionary => GetDictionaryByConfigSystem(CurrSystem);
+        private static Dictionary<string, string> ConfigDictionary => GetDictionaryByConfigSystem(CurrSystem);
 
         public static string[] PluginAdmin
         {
@@ -46,23 +44,9 @@ namespace Arsenalcn.CasinoSys.Entity
             }
         }
 
-        public static bool PluginContainerActive
-        {
-            get
-            {
-                try
-                {
-                    return Convert.ToBoolean(ConfigDictionary["PluginContainerActive"]);
-                }
-                catch
-                {
-                    return false;
-                }
-            }
-        }
-
         public static string PluginAcnClubPath => ConfigDictionary["PluginAcnClubPath"];
 
+        // ReSharper disable once InconsistentNaming
         public static Guid DefaultBankerID
         {
             get
@@ -81,6 +65,7 @@ namespace Arsenalcn.CasinoSys.Entity
             }
         }
 
+        // ReSharper disable once InconsistentNaming
         public static Guid DefaultLeagueID
         {
             get

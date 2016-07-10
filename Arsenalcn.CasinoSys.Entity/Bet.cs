@@ -13,9 +13,9 @@ namespace Arsenalcn.CasinoSys.Entity
         {
         }
 
-        public Bet(int betID)
+        public Bet(int key)
         {
-            var dr = DataAccess.Bet.GetBetByID(betID);
+            var dr = DataAccess.Bet.GetBetById(key);
 
             if (dr != null)
                 InitBet(dr);
@@ -78,10 +78,7 @@ namespace Arsenalcn.CasinoSys.Entity
                 else
                     Earning = Convert.ToSingle(dr["Earning"]);
 
-                if (Convert.IsDBNull(dr["EarningDesc"]))
-                    EarningDesc = null;
-                else
-                    EarningDesc = Convert.ToString(dr["EarningDesc"]);
+                EarningDesc = Convert.IsDBNull(dr["EarningDesc"]) ? null : Convert.ToString(dr["EarningDesc"]);
             }
             else
                 throw new Exception("Unable to init Bet.");
@@ -114,8 +111,8 @@ namespace Arsenalcn.CasinoSys.Entity
                         banker.Cash += BetAmount.GetValueOrDefault(0f);
                         banker.Update(trans);
 
-                        var betID = DataAccess.Bet.InsertBet(UserID, UserName, CasinoItemGuid, BetAmount, BetRate, trans);
-                        matchResult.Save(betID, trans);
+                        var key = DataAccess.Bet.InsertBet(UserID, UserName, CasinoItemGuid, BetAmount, BetRate, trans);
+                        matchResult.Save(key, trans);
 
                         trans.Commit();
                     }
@@ -153,8 +150,8 @@ namespace Arsenalcn.CasinoSys.Entity
                         banker.Cash += BetAmount.GetValueOrDefault(0f);
                         banker.Update(trans);
 
-                        var betID = DataAccess.Bet.InsertBet(UserID, UserName, CasinoItemGuid, BetAmount, BetRate, trans);
-                        MatchChoiceOption.SaveMatchChoiceOption(betID, optionValue, trans);
+                        var key = DataAccess.Bet.InsertBet(UserID, UserName, CasinoItemGuid, BetAmount, BetRate, trans);
+                        MatchChoiceOption.SaveMatchChoiceOption(key, optionValue, trans);
 
                         trans.Commit();
                     }
@@ -170,7 +167,28 @@ namespace Arsenalcn.CasinoSys.Entity
             }
         }
 
-        public static void CleanNoCasinoItemBet()
+        //public static void CleanNoCasinoItemBet()
+        //{
+        //    using (var conn = SQLConn.GetConnection())
+        //    {
+        //        conn.Open();
+        //        var trans = conn.BeginTransaction();
+        //        try
+        //        {
+        //            DataAccess.Bet.CleanBet(trans);
+        //            DataAccess.BetDetail.CleanBetDetail(trans);
+        //            trans.Commit();
+        //        }
+        //        catch
+        //        {
+        //            trans.Rollback();
+        //        }
+
+        //        //conn.Close();
+        //    }
+        //}
+
+        public static void ReturnBet(int key)
         {
             using (var conn = SQLConn.GetConnection())
             {
@@ -178,28 +196,7 @@ namespace Arsenalcn.CasinoSys.Entity
                 var trans = conn.BeginTransaction();
                 try
                 {
-                    DataAccess.Bet.CleanBet(trans);
-                    DataAccess.BetDetail.CleanBetDetail(trans);
-                    trans.Commit();
-                }
-                catch
-                {
-                    trans.Rollback();
-                }
-
-                //conn.Close();
-            }
-        }
-
-        public static void ReturnBet(int betID)
-        {
-            using (var conn = SQLConn.GetConnection())
-            {
-                conn.Open();
-                var trans = conn.BeginTransaction();
-                try
-                {
-                    var bet = new Bet(betID);
+                    var bet = new Bet(key);
 
                     if (bet.BetAmount.HasValue && bet.BetAmount >= 0f)
                     {
@@ -220,7 +217,7 @@ namespace Arsenalcn.CasinoSys.Entity
                         Users.UpdateUserExtCredits(bet.UserID, 4, -1);
                     }
 
-                    DataAccess.Bet.DeleteBetByID(betID, trans);
+                    DataAccess.Bet.DeleteBetById(key, trans);
                     DataAccess.BetDetail.CleanBetDetail(trans);
                     trans.Commit();
                 }
@@ -228,8 +225,6 @@ namespace Arsenalcn.CasinoSys.Entity
                 {
                     trans.Rollback();
                 }
-
-                //conn.Close();
             }
         }
 
@@ -274,10 +269,10 @@ namespace Arsenalcn.CasinoSys.Entity
             return betList;
         }
 
-        public static DataTable GetUserMatchAllBetTable(int userid, Guid matchGuid)
-        {
-            return DataAccess.Bet.GetUserMatchAllBet(userid, matchGuid);
-        }
+        //public static DataTable GetUserMatchAllBetTable(int userid, Guid matchGuid)
+        //{
+        //    return DataAccess.Bet.GetUserMatchAllBet(userid, matchGuid);
+        //}
 
         public static List<Bet> GetUserCasinoItemAllBet(int userid, Guid casinoItemGuid)
         {
@@ -327,10 +322,10 @@ namespace Arsenalcn.CasinoSys.Entity
             return betList;
         }
 
-        public static DataTable GetMatchAllBetTable(Guid matchGuid)
-        {
-            return DataAccess.Bet.GetMatchAllBet(matchGuid);
-        }
+        //public static DataTable GetMatchAllBetTable(Guid matchGuid)
+        //{
+        //    return DataAccess.Bet.GetMatchAllBet(matchGuid);
+        //}
 
         public static List<Bet> GetAllBetByTimeDiff(int timeDiff)
         {
@@ -348,24 +343,24 @@ namespace Arsenalcn.CasinoSys.Entity
             return betList;
         }
 
-        public static DataTable GetUserBetHistoryView(int userID)
+        public static DataTable GetUserBetHistoryView(int id)
         {
-            return DataAccess.Bet.GetUserBetHistoryView(userID);
+            return DataAccess.Bet.GetUserBetHistoryView(id);
         }
 
-        public static DataTable GetUserBetMatch(int userID)
+        public static DataTable GetUserBetMatch(int id)
         {
-            return DataAccess.Bet.GetUserBetMatch(userID);
+            return DataAccess.Bet.GetUserBetMatch(id);
         }
 
-        public static float GetUserMatchTotalBet(int userID, Guid matchGuid)
+        public static float GetUserMatchTotalBet(int id, Guid matchGuid)
         {
-            return DataAccess.Bet.GetUserMatchTotalBet(userID, matchGuid);
+            return DataAccess.Bet.GetUserMatchTotalBet(id, matchGuid);
         }
 
-        public static float GetUserTotalWinCash(int userID)
+        public static float GetUserTotalWinCash(int id)
         {
-            return DataAccess.Bet.GetUserTotalWinCash(userID);
+            return DataAccess.Bet.GetUserTotalWinCash(id);
         }
 
         public static float GetMatchTopBet(Guid matchGuid)

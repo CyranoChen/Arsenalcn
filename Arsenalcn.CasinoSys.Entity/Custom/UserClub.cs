@@ -3,16 +3,16 @@ using System.Data;
 
 namespace Arsenalcn.CasinoSys.Entity
 {
-    public class UserClub
+    public static class UserClub
     {
         public static DataTable GetAllClubs()
         {
             return DataAccess.UserClub.GetAllClubs();
         }
 
-        public static DataRow GetUserClubHistoryInfo(int userID, DateTime betTime)
+        public static DataRow GetUserClubHistoryInfo(int id, DateTime betTime)
         {
-            return DataAccess.UserClub.GetUserClubHistoryInfo(userID, betTime);
+            return DataAccess.UserClub.GetUserClubHistoryInfo(id, betTime);
         }
     }
 }

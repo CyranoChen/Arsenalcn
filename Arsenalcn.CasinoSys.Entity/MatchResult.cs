@@ -6,9 +6,7 @@ namespace Arsenalcn.CasinoSys.Entity
 {
     public sealed class MatchResult : CasinoItem
     {
-        internal MatchResult()
-        {
-        }
+        internal MatchResult() { }
 
         public short? Home { get; set; }
 
@@ -16,19 +14,22 @@ namespace Arsenalcn.CasinoSys.Entity
 
         protected override void BuildDetail()
         {
-            var dr = DataAccess.MatchResult.GetMatchResult(ItemGuid.Value);
-
-            if (dr != null)
+            if (ItemGuid != null)
             {
-                if (Convert.IsDBNull(dr["Home"]))
-                    Home = null;
-                else
-                    Home = Convert.ToInt16(dr["Home"]);
+                var dr = DataAccess.MatchResult.GetMatchResult(ItemGuid.Value);
 
-                if (Convert.IsDBNull(dr["Away"]))
-                    Away = null;
-                else
-                    Away = Convert.ToInt16(dr["Away"]);
+                if (dr != null)
+                {
+                    if (Convert.IsDBNull(dr["Home"]))
+                        Home = null;
+                    else
+                        Home = Convert.ToInt16(dr["Home"]);
+
+                    if (Convert.IsDBNull(dr["Away"]))
+                        Away = null;
+                    else
+                        Away = Convert.ToInt16(dr["Away"]);
+                }
             }
         }
 
@@ -44,10 +45,11 @@ namespace Arsenalcn.CasinoSys.Entity
 
                 return newGuid;
             }
-            //update
 
             if (Home.HasValue && Away.HasValue && Earning.HasValue)
             {
+                //update
+
                 DataAccess.MatchResult.UpdateMatchResult(ItemGuid.Value, Home.Value, Away.Value, trans);
 
                 base.Save(trans);
@@ -59,8 +61,8 @@ namespace Arsenalcn.CasinoSys.Entity
 
     public class MatchResultBetDetail
     {
-        public static readonly string BetDetailHomeName = "Home";
-        public static readonly string BetDetailAwayName = "Away";
+        private static readonly string BetDetailHomeName = "Home";
+        private static readonly string BetDetailAwayName = "Away";
 
         public MatchResultBetDetail()
         {
@@ -87,10 +89,10 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public short Away { get; set; }
 
-        public void Save(int betID, SqlTransaction trans)
+        public void Save(int key, SqlTransaction trans)
         {
-            DataAccess.BetDetail.InsertBetDetail(betID, BetDetailHomeName, Home.ToString(), trans);
-            DataAccess.BetDetail.InsertBetDetail(betID, BetDetailAwayName, Away.ToString(), trans);
+            DataAccess.BetDetail.InsertBetDetail(key, BetDetailHomeName, Home.ToString(), trans);
+            DataAccess.BetDetail.InsertBetDetail(key, BetDetailAwayName, Away.ToString(), trans);
         }
     }
 }

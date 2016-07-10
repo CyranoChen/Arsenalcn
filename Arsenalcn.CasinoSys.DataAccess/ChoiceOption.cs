@@ -6,7 +6,7 @@ using Microsoft.ApplicationBlocks.Data;
 
 namespace Arsenalcn.CasinoSys.DataAccess
 {
-    public class ChoiceOption
+    public static class ChoiceOption
     {
         public static DataTable GetChoiceOptions(Guid itemGuid)
         {
@@ -40,16 +40,16 @@ namespace Arsenalcn.CasinoSys.DataAccess
                 SqlHelper.ExecuteNonQuery(SQLConn.GetConnection(), CommandType.Text, sql, para);
         }
 
-        public static void CleanChoiceOption(SqlTransaction trans)
-        {
-            var sql =
-                "DELETE FROM AcnCasino_ChoiceOption WHERE (CasinoItemGuid NOT IN (SELECT CasinoItemGuid FROM AcnCasino_CasinoItem))";
+        //public static void CleanChoiceOption(SqlTransaction trans)
+        //{
+        //    var sql =
+        //        "DELETE FROM AcnCasino_ChoiceOption WHERE (CasinoItemGuid NOT IN (SELECT CasinoItemGuid FROM AcnCasino_CasinoItem))";
 
-            if (trans != null)
-                SqlHelper.ExecuteNonQuery(trans, CommandType.Text, sql);
-            else
-                SqlHelper.ExecuteNonQuery(SQLConn.GetConnection(), CommandType.Text, sql);
-        }
+        //    if (trans != null)
+        //        SqlHelper.ExecuteNonQuery(trans, CommandType.Text, sql);
+        //    else
+        //        SqlHelper.ExecuteNonQuery(SQLConn.GetConnection(), CommandType.Text, sql);
+        //}
 
         public static float GetOptionTotalBet(Guid itemGuid, string optionValue)
         {

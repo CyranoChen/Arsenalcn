@@ -6,9 +6,9 @@ using Microsoft.ApplicationBlocks.Data;
 
 namespace Arsenalcn.CasinoSys.DataAccess
 {
-    public class Group
+    public static class Group
     {
-        public static DataRow GetGroupByID(Guid groupGuid)
+        public static DataRow GetGroupById(Guid groupGuid)
         {
             var sql = "SELECT * FROM dbo.Arsenal_Group WHERE GroupGuid = @guid";
 
@@ -38,55 +38,61 @@ namespace Arsenalcn.CasinoSys.DataAccess
             return ds.Tables[0].Rows[0];
         }
 
-        public static void UpdateGroup(Guid groupGuid, string groupName, int groupOrder, Guid leagueGuid, bool isTable)
-        {
-            var sql =
-                "UPDATE dbo.Arsenal_Group SET GroupName = @groupName, GroupOrder = @groupOrder, LeagueGuid = @leagueGuid, IsTable = @isTable WHERE GroupGuid = @groupGuid";
+        //public static void UpdateGroup(Guid groupGuid, string groupName, int groupOrder, Guid leagueGuid, bool isTable, int rankMethod)
+        //{
+        //    var sql =
+        //        "UPDATE dbo.Arsenal_Group SET GroupName = @groupName, GroupOrder = @groupOrder, LeagueGuid = @leagueGuid, IsTable = @isTable, RankMethod = @rankMethod WHERE GroupGuid = @groupGuid";
 
-            SqlParameter[] para =
-            {
-                new SqlParameter("@groupGuid", groupGuid), new SqlParameter("@groupName", groupName),
-                new SqlParameter("@groupOrder", groupOrder), new SqlParameter("@leagueGuid", leagueGuid),
-                new SqlParameter("@isTable", isTable)
-            };
+        //    SqlParameter[] para =
+        //    {
+        //        new SqlParameter("@groupGuid", groupGuid),
+        //        new SqlParameter("@groupName", groupName),
+        //        new SqlParameter("@groupOrder", groupOrder),
+        //        new SqlParameter("@leagueGuid", leagueGuid),
+        //        new SqlParameter("@isTable", isTable),
+        //        new SqlParameter("@rankMethod", rankMethod)
+        //    };
 
-            SqlHelper.ExecuteNonQuery(SQLConn.GetConnection(), CommandType.Text, sql, para);
-        }
+        //    SqlHelper.ExecuteNonQuery(SQLConn.GetConnection(), CommandType.Text, sql, para);
+        //}
 
-        public static void InsertGroup(Guid groupGuid, string groupName, int groupOrder, Guid leagueGuid, bool isTable)
-        {
-            var sql =
-                "INSERT INTO dbo.Arsenal_Group (GroupGuid, GroupName, GroupOrder, LeagueGuid, IsTable) VALUES (@groupGuid, @groupName, @groupOrder, @leagueGuid, @isTable)";
+        //public static void InsertGroup(Guid groupGuid, string groupName, int groupOrder, Guid leagueGuid, bool isTable, int rankMethod)
+        //{
+        //    var sql =
+        //        "INSERT INTO dbo.Arsenal_Group (GroupGuid, GroupName, GroupOrder, LeagueGuid, IsTable, RankMethod) VALUES (@groupGuid, @groupName, @groupOrder, @leagueGuid, @isTable, @rankMethod)";
 
-            SqlParameter[] para =
-            {
-                new SqlParameter("@groupGuid", groupGuid), new SqlParameter("@groupName", groupName),
-                new SqlParameter("@groupOrder", groupOrder), new SqlParameter("@leagueGuid", leagueGuid),
-                new SqlParameter("@isTable", isTable)
-            };
+        //    SqlParameter[] para =
+        //    {
+        //        new SqlParameter("@groupGuid", groupGuid),
+        //        new SqlParameter("@groupName", groupName),
+        //        new SqlParameter("@groupOrder", groupOrder),
+        //        new SqlParameter("@leagueGuid", leagueGuid),
+        //        new SqlParameter("@isTable", isTable),
+        //        new SqlParameter("@rankMethod", rankMethod)
+        //    };
 
-            SqlHelper.ExecuteNonQuery(SQLConn.GetConnection(), CommandType.Text, sql, para);
-        }
+        //    SqlHelper.ExecuteNonQuery(SQLConn.GetConnection(), CommandType.Text, sql, para);
+        //}
 
-        public static void DeleteGroup(Guid groupGuid)
-        {
-            var sql = "DELETE dbo.Arsenal_Group WHERE GroupGuid = @groupGuid";
+        //public static void DeleteGroup(Guid groupGuid)
+        //{
+        //    var sql = "DELETE dbo.Arsenal_Group WHERE GroupGuid = @groupGuid";
 
-            SqlParameter[] para = {new SqlParameter("@groupGuid", groupGuid)};
+        //    SqlParameter[] para = { new SqlParameter("@groupGuid", groupGuid) };
 
-            SqlHelper.ExecuteNonQuery(SQLConn.GetConnection(), CommandType.Text, sql, para);
-        }
+        //    SqlHelper.ExecuteNonQuery(SQLConn.GetConnection(), CommandType.Text, sql, para);
+        //}
 
-        public static DataTable GetGroups()
-        {
-            var sql = @"SELECT * FROM dbo.Arsenal_Group Order By LeagueGuid, GroupOrder";
+        //public static DataTable GetGroups()
+        //{
+        //    var sql = @"SELECT * FROM dbo.Arsenal_Group Order By LeagueGuid, GroupOrder";
 
-            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql);
+        //    var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql);
 
-            if (ds.Tables[0].Rows.Count == 0)
-                return null;
-            return ds.Tables[0];
-        }
+        //    if (ds.Tables[0].Rows.Count == 0)
+        //        return null;
+        //    return ds.Tables[0];
+        //}
 
         public static DataTable GetLeagueGroup(Guid leagueGuid)
         {
@@ -126,18 +132,18 @@ namespace Arsenalcn.CasinoSys.DataAccess
             return obj.Equals(DBNull.Value) ? 0 : Convert.ToInt32(obj);
         }
 
-        public static DataTable GetRelationGroupTeamByGroupGuid(Guid groupGuid)
-        {
-            var sql =
-                "SELECT * FROM dbo.Arsenal_RelationGroupTeam WHERE GroupGuid = @groupGuid ORDER BY TotalPoints DESC, ISNULL(HomeGoalDiff, 0) + ISNULL(AwayGoalDiff, 0) DESC, ISNULL(HomeGoalFor, 0) + ISNULL(AwayGoalFor, 0) DESC";
+        //public static DataTable GetRelationGroupTeamByGroupGuid(Guid groupGuid)
+        //{
+        //    var sql =
+        //        "SELECT * FROM dbo.Arsenal_RelationGroupTeam WHERE GroupGuid = @groupGuid ORDER BY TotalPoints DESC, ISNULL(HomeGoalDiff, 0) + ISNULL(AwayGoalDiff, 0) DESC, ISNULL(HomeGoalFor, 0) + ISNULL(AwayGoalFor, 0) DESC";
 
-            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql,
-                new SqlParameter("@groupGuid", groupGuid));
+        //    var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql,
+        //        new SqlParameter("@groupGuid", groupGuid));
 
-            if (ds.Tables[0].Rows.Count == 0)
-                return null;
-            return ds.Tables[0];
-        }
+        //    if (ds.Tables[0].Rows.Count == 0)
+        //        return null;
+        //    return ds.Tables[0];
+        //}
 
         public static DataTable GetTableGroupTeamByGroupGuid(Guid groupGuid)
         {
@@ -180,19 +186,19 @@ namespace Arsenalcn.CasinoSys.DataAccess
         {
             var sql = " INSERT INTO dbo.Arsenal_RelationGroupTeam (GroupGuid, TeamGuid) VALUES (@groupGuid, @teamGuid)";
 
-            SqlParameter[] para = {new SqlParameter("@groupGuid", groupGuid), new SqlParameter("@teamGuid", teamGuid)};
+            SqlParameter[] para = { new SqlParameter("@groupGuid", groupGuid), new SqlParameter("@teamGuid", teamGuid) };
 
             SqlHelper.ExecuteNonQuery(SQLConn.GetConnection(), CommandType.Text, sql, para);
         }
 
-        public static void DeleteRelationGroupTeam(Guid groupGuid, Guid teamGuid)
-        {
-            var sql = "DELETE FROM dbo.Arsenal_RelationGroupTeam WHERE GroupGuid = @groupGuid AND TeamGuid = @teamGuid";
+        //public static void DeleteRelationGroupTeam(Guid groupGuid, Guid teamGuid)
+        //{
+        //    var sql = "DELETE FROM dbo.Arsenal_RelationGroupTeam WHERE GroupGuid = @groupGuid AND TeamGuid = @teamGuid";
 
-            SqlParameter[] para = {new SqlParameter("@groupGuid", groupGuid), new SqlParameter("@teamGuid", teamGuid)};
+        //    SqlParameter[] para = { new SqlParameter("@groupGuid", groupGuid), new SqlParameter("@teamGuid", teamGuid) };
 
-            SqlHelper.ExecuteNonQuery(SQLConn.GetConnection(), CommandType.Text, sql, para);
-        }
+        //    SqlHelper.ExecuteNonQuery(SQLConn.GetConnection(), CommandType.Text, sql, para);
+        //}
 
         public static void UpdateRelationGroupTeam(Guid groupGuid, Guid teamGuid, short? positionNo, short? totalPlayed,
             short? homeWon, short? homeDraw, short? homeLost, short? homeGoalFor, short? homeGoalAgainst,
@@ -219,13 +225,13 @@ namespace Arsenalcn.CasinoSys.DataAccess
             SqlHelper.ExecuteNonQuery(SQLConn.GetConnection(), CommandType.Text, sql, para);
         }
 
-        public static void RemoveRelationGroupAllTeam(Guid groupGuid)
-        {
-            var sql = "DELETE FROM dbo.Arsenal_RelationGroupTeam WHERE GroupGuid = @groupGuid";
+        //public static void RemoveRelationGroupAllTeam(Guid groupGuid)
+        //{
+        //    var sql = "DELETE FROM dbo.Arsenal_RelationGroupTeam WHERE GroupGuid = @groupGuid";
 
-            SqlParameter[] para = {new SqlParameter("@groupGuid", groupGuid)};
+        //    SqlParameter[] para = { new SqlParameter("@groupGuid", groupGuid) };
 
-            SqlHelper.ExecuteNonQuery(SQLConn.GetConnection(), CommandType.Text, sql, para);
-        }
+        //    SqlHelper.ExecuteNonQuery(SQLConn.GetConnection(), CommandType.Text, sql, para);
+        //}
     }
 }

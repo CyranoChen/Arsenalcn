@@ -26,24 +26,17 @@ namespace Arsenalcn.CasinoSys.Web
 
             if (dt != null)
             {
-                dt.Columns.Add("RankDate", typeof (string));
-                dt.Columns.Add("WinnerProfitRate", typeof (float));
-                dt.Columns.Add("LoserProfitRate", typeof (float));
-
-                var rMonth = string.Empty;
+                dt.Columns.Add("RankDate", typeof(string));
+                dt.Columns.Add("WinnerProfitRate", typeof(float));
+                dt.Columns.Add("LoserProfitRate", typeof(float));
 
                 foreach (DataRow dr in dt.Rows)
                 {
-                    if (dr["RankMonth"].ToString().Length == 1)
-                        rMonth = $"0{dr["RankMonth"]}";
-                    else
-                        rMonth = dr["RankMonth"].ToString();
+                    var month = dr["RankMonth"].ToString().Length == 1 ? $"0{dr["RankMonth"]}" : dr["RankMonth"].ToString();
 
-                    dr["RankDate"] = $"{dr["RankYear"]}/{rMonth}";
-                    dr["WinnerProfitRate"] = Convert.ToSingle(dr["WinnerProfit"])/Convert.ToSingle(dr["WinnerTotalBet"])*
-                                             100;
-                    dr["LoserProfitRate"] = Convert.ToSingle(dr["LoserProfit"])/Convert.ToSingle(dr["LoserTotalBet"])*
-                                            100;
+                    dr["RankDate"] = $"{dr["RankYear"]}/{month}";
+                    dr["WinnerProfitRate"] = Convert.ToSingle(dr["WinnerProfit"]) / Convert.ToSingle(dr["WinnerTotalBet"]) * 100;
+                    dr["LoserProfitRate"] = Convert.ToSingle(dr["LoserProfit"]) / Convert.ToSingle(dr["LoserTotalBet"]) * 100;
                 }
             }
 

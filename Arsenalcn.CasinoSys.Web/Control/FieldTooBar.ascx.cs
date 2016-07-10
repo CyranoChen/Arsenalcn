@@ -15,10 +15,7 @@ namespace Arsenalcn.CasinoSys.Web.Control
             else
                 ltrlToolBarTip.Text = $"<strong>提醒：您可投注即将于<em>{ConfigGlobal.CasinoValidDays}</em>天内开始的比赛</strong>";
 
-            if (ConfigAdmin.IsPluginAdmin(UserId))
-                pnlFuncLink.Visible = true;
-            else
-                pnlFuncLink.Visible = false;
+            pnlFuncLink.Visible = ConfigAdmin.IsPluginAdmin(UserId);
         }
     }
 }

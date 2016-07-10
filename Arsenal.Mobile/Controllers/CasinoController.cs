@@ -395,7 +395,7 @@ namespace Arsenal.Mobile.Controllers
                             }
 
                             // 已投注量+本次投注量不可超过单场比赛限额
-                            if ((alreadyMatchBet ?? 0) + model.BetAmount > singleBetLimit)
+                            if (singleBetLimit > 0 && (alreadyMatchBet ?? 0) + model.BetAmount > singleBetLimit)
                             {
                                 throw new Exception($"下半赛区每个玩家单场投注总量不能超过{singleBetLimit.ToString("N0")}博彩币");
                             }

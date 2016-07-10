@@ -103,7 +103,7 @@ namespace Arsenalcn.CasinoSys.Web
                     }
 
                     var betList = Bet.GetUserMatchAllBet(CurrentUserId, m.MatchGuid);
-                    betList.RemoveAll(delegate(Bet bet) { return !bet.IsWin.HasValue; });
+                    betList.RemoveAll(bet => !bet.IsWin.HasValue);
 
                     float totalBetCount = 0, totalWin = 0;
                     var rpBonus = false;
@@ -125,10 +125,7 @@ namespace Arsenalcn.CasinoSys.Web
                     ltrlBetCount.Text = totalBetCount.ToString("N0");
                     ltrWinLose.Text = totalWin.ToString("N2");
 
-                    if (rpBonus)
-                        ltrlExtraBonus.Text = "RP+1";
-                    else
-                        ltrlExtraBonus.Text = "/";
+                    ltrlExtraBonus.Text = rpBonus ? "RP+1" : "/";
 
                     if (totalWin > 0)
                     {

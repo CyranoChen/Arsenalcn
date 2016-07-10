@@ -75,7 +75,6 @@
     <Compile Include="Custom\UserClub.cs" />
     <Compile Include="Custom\CasinoGambler.cs" />
     <Compile Include="Group.cs" />
-    <Compile Include="GroupTeam.cs" />
     <Compile Include="ArsenalTeam.cs" />
     <Compile Include="ArsenalLeague.cs" />
     <Compile Include="Rank.cs" />

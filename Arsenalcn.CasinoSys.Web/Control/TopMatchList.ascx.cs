@@ -13,7 +13,7 @@ namespace Arsenalcn.CasinoSys.Web.Control
             #region Top Match Earning
 
             var rank = 1;
-            var months = 0;
+            int months;
             var dtTopEarning = CasinoItem.GetTopMatchEarning(out months);
 
             if (dtTopEarning != null)
@@ -36,7 +36,6 @@ namespace Arsenalcn.CasinoSys.Web.Control
             #region Top Match Loss
 
             rank = 1;
-            months = 0;
             var dtTopLoss = CasinoItem.GetTopMatchLoss(out months);
 
             if (dtTopLoss != null)
@@ -63,21 +62,24 @@ namespace Arsenalcn.CasinoSys.Web.Control
             {
                 var drv = e.Item.DataItem as DataRowView;
 
-                var m = new Match((Guid) drv["MatchGuid"]);
-
-                var ltrlMatchInfo = e.Item.FindControl("ltrlMatchInfo") as Literal;
-
-                if (ltrlMatchInfo != null && m != null)
+                if (drv != null)
                 {
-                    var tHome = Team.Cache.Load(m.Home);
-                    var tAway = Team.Cache.Load(m.Away);
+                    var m = new Match((Guid) drv["MatchGuid"]);
 
-                    var strMatchInfo =
-                        "<li class=\"IconTop{0}\"><a href=\"CasinoBetLog.aspx?Match={1}\" title=\"{2} {3}\">{4} <em>vs</em> {5}</a><em title=\"比赛盈余\"  class=\"CasinoSys_TopRankEM\">{6}</em></li>";
+                    var ltrlMatchInfo = e.Item.FindControl("ltrlMatchInfo") as Literal;
 
-                    ltrlMatchInfo.Text = string.Format(strMatchInfo, drv["Rank"], m.MatchGuid, m.LeagueName,
-                        m.PlayTime.ToString("yyyy-MM-dd HH:mm"), tHome.TeamDisplayName, tAway.TeamDisplayName,
-                        Convert.ToSingle(drv["Earning"]).ToString("N2"));
+                    if (ltrlMatchInfo != null && m != null)
+                    {
+                        var tHome = Team.Cache.Load(m.Home);
+                        var tAway = Team.Cache.Load(m.Away);
+
+                        var strMatchInfo =
+                            "<li class=\"IconTop{0}\"><a href=\"CasinoBetLog.aspx?Match={1}\" title=\"{2} {3}\">{4} <em>vs</em> {5}</a><em title=\"比赛盈余\"  class=\"CasinoSys_TopRankEM\">{6}</em></li>";
+
+                        ltrlMatchInfo.Text = string.Format(strMatchInfo, drv["Rank"], m.MatchGuid, m.LeagueName,
+                            m.PlayTime.ToString("yyyy-MM-dd HH:mm"), tHome.TeamDisplayName, tAway.TeamDisplayName,
+                            Convert.ToSingle(drv["Earning"]).ToString("N2"));
+                    }
                 }
             }
         }

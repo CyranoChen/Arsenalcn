@@ -4,38 +4,37 @@ using Discuz.Forum;
 
 namespace Arsenalcn.CasinoSys.Web.Common
 {
-    public class BasePage : PageBase //Page 
+    public class BasePage : PageBase
     {
         protected bool AdminPage = false;
-        //public int userid = 1;
-        //public string username = "cao262";
-        //public string userkey = "kkkk222";
-
 
         /// <summary>
         ///     anonymous user will be redirected to login page if set true
         /// </summary>
-        public bool AnonymousRedirect { get; set; }
+        protected bool AnonymousRedirect { get; set; }
 
-        public Gambler CurrentGambler { get; set; }
+        protected Gambler CurrentGambler { get; set; }
 
         protected override void OnInitComplete(EventArgs e)
         {
             base.OnInitComplete(e);
 
-            if (!ConfigGlobal.PluginActive && Request.Url.LocalPath.ToLower().IndexOf("default.aspx") < 0)
+            if (!ConfigGlobal.PluginActive
+                && Request.Url.LocalPath.ToLower().IndexOf("default.aspx", StringComparison.OrdinalIgnoreCase) < 0)
             {
                 if (!AdminPage)
                     Response.Redirect("Default.aspx");
             }
 
-            if (AnonymousRedirect && userid == -1)
-                Response.Redirect("/login.aspx");
+            // ReSharper disable once Html.PathError
+            if (AnonymousRedirect && userid == -1) { Response.Redirect("/login.aspx"); }
 
             //Set Master Page Info
-            if (Master != null && Master is DefaultMaster)
+            var master = Master as DefaultMaster;
+
+            if (master != null)
             {
-                var masterPage = Master as DefaultMaster;
+                var masterPage = master;
 
                 masterPage.UserId = userid;
                 masterPage.UserName = username;

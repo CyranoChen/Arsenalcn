@@ -18,7 +18,7 @@ namespace Arsenalcn.CasinoSys.Web.Control
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            var list = League.Cache.LeagueList_Active;
+            var list = League.Cache.LeagueListActive;
 
             rptLeague.DataSource = list;
             rptLeague.DataBind();

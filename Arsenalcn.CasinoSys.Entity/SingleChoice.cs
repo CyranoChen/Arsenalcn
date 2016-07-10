@@ -8,15 +8,13 @@ namespace Arsenalcn.CasinoSys.Entity
 {
     public sealed class SingleChoice : CasinoItem
     {
-        internal SingleChoice()
-        {
-        }
+        internal SingleChoice() { }
 
         public bool FloatingRate { get; set; }
 
         public string Result { get; set; }
 
-        public List<ChoiceOption> Options { get; set; } = new List<ChoiceOption>();
+        public List<ChoiceOption> Options { get; } = new List<ChoiceOption>();
 
         public override Guid Save(SqlTransaction trans)
         {
@@ -36,36 +34,37 @@ namespace Arsenalcn.CasinoSys.Entity
 
         protected override void BuildDetail()
         {
-            var dr = DataAccess.SingleChoice.GetSingleChoice(ItemGuid.Value);
-
-            if (dr != null)
+            if (ItemGuid != null)
             {
-                FloatingRate = Convert.ToBoolean(dr["FloatingRate"]);
+                var dr = DataAccess.SingleChoice.GetSingleChoice(ItemGuid.Value);
 
-                if (Convert.IsDBNull(dr["Result"]))
-                    Result = null;
-                else
-                    Result = Convert.ToString(dr["Result"]);
-            }
+                if (dr != null)
+                {
+                    FloatingRate = Convert.ToBoolean(dr["FloatingRate"]);
 
-            //init options
-            var dt = DataAccess.ChoiceOption.GetChoiceOptions(ItemGuid.Value);
+                    Result = Convert.IsDBNull(dr["Result"]) ? null : Convert.ToString(dr["Result"]);
+                }
 
-            foreach (DataRow drOption in dt.Rows)
-            {
-                var option = new ChoiceOption();
-                option.CasinoItemGuid = (Guid) drOption["CasinoItemGuid"];
-                option.OptionValue = Convert.ToString(drOption["OptionValue"]);
-                option.OptionDisplay = Convert.ToString(drOption["OptionDisplay"]);
+                var dt = DataAccess.ChoiceOption.GetChoiceOptions(ItemGuid.Value);
 
-                if (Convert.IsDBNull(drOption["OptionRate"]))
-                    option.OptionRate = null;
-                else
-                    option.OptionRate = Convert.ToSingle(drOption["OptionRate"]);
+                foreach (DataRow drOption in dt.Rows)
+                {
+                    var option = new ChoiceOption
+                    {
+                        CasinoItemGuid = (Guid) drOption["CasinoItemGuid"],
+                        OptionValue = Convert.ToString(drOption["OptionValue"]),
+                        OptionDisplay = Convert.ToString(drOption["OptionDisplay"])
+                    };
 
-                option.OrderID = Convert.ToInt32(drOption["OrderID"]);
+                    if (Convert.IsDBNull(drOption["OptionRate"]))
+                        option.OptionRate = null;
+                    else
+                        option.OptionRate = Convert.ToSingle(drOption["OptionRate"]);
 
-                Options.Add(option);
+                    option.OrderID = Convert.ToInt32(drOption["OrderID"]);
+
+                    Options.Add(option);
+                }
             }
         }
     }
@@ -78,25 +77,25 @@ namespace Arsenalcn.CasinoSys.Entity
                 trans);
         }
 
-        public static void CleanNoCasinoItemChoiceOption()
-        {
-            using (var conn = SQLConn.GetConnection())
-            {
-                conn.Open();
-                var trans = conn.BeginTransaction();
-                try
-                {
-                    DataAccess.ChoiceOption.CleanChoiceOption(trans);
-                    trans.Commit();
-                }
-                catch
-                {
-                    trans.Rollback();
-                }
+        //public static void CleanNoCasinoItemChoiceOption()
+        //{
+        //    using (var conn = SQLConn.GetConnection())
+        //    {
+        //        conn.Open();
+        //        var trans = conn.BeginTransaction();
+        //        try
+        //        {
+        //            DataAccess.ChoiceOption.CleanChoiceOption(trans);
+        //            trans.Commit();
+        //        }
+        //        catch
+        //        {
+        //            trans.Rollback();
+        //        }
 
-                //conn.Close();
-            }
-        }
+        //        //conn.Close();
+        //    }
+        //}
 
         public static float GetOptionTotalBet(Guid itemGuid, string optionValue)
         {
@@ -125,9 +124,9 @@ namespace Arsenalcn.CasinoSys.Entity
         public static readonly string DrawValue = "Draw";
         public static readonly string AwayWinValue = "Away";
 
-        public static void SaveMatchChoiceOption(int betID, string optionValue, SqlTransaction trans)
+        public static void SaveMatchChoiceOption(int id, string optionValue, SqlTransaction trans)
         {
-            DataAccess.BetDetail.InsertBetDetail(betID, optionValue, null, trans);
+            DataAccess.BetDetail.InsertBetDetail(id, optionValue, null, trans);
         }
     }
 }

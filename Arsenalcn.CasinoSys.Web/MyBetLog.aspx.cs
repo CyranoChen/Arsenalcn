@@ -107,7 +107,7 @@ namespace Arsenalcn.CasinoSys.Web
                     var itemGuid = (Guid) drv["CasinoItemGuid"];
 
                     var item = CasinoItem.GetCasinoItem(itemGuid);
-                    var dt = BetDetail.GetBetDetailByBetID((int) drv["ID"]);
+                    var dt = BetDetail.GetBetDetailByBetId((int) drv["ID"]);
 
                     if (dt != null)
                     {
@@ -165,14 +165,7 @@ namespace Arsenalcn.CasinoSys.Web
 
                 if (drv != null && ltrlBetRate != null)
                 {
-                    if (Convert.IsDBNull(drv["BetRate"]))
-                    {
-                        ltrlBetRate.Text = "/";
-                    }
-                    else
-                    {
-                        ltrlBetRate.Text = Convert.ToSingle(drv["BetRate"]).ToString("f2");
-                    }
+                    ltrlBetRate.Text = Convert.IsDBNull(drv["BetRate"]) ? "/" : Convert.ToSingle(drv["BetRate"]).ToString("f2");
                 }
             }
         }

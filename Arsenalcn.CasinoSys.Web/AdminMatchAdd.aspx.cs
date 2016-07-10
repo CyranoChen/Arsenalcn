@@ -13,7 +13,7 @@ namespace Arsenalcn.CasinoSys.Web
 
             if (!IsPostBack)
             {
-                var list = League.Cache.LeagueList_Active;
+                var list = League.Cache.LeagueListActive;
 
                 ddlLeague.DataSource = list;
                 ddlLeague.DataTextField = "LeagueNameInfo";

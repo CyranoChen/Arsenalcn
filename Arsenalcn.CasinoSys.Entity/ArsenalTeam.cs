@@ -6,10 +6,6 @@ namespace Arsenalcn.CasinoSys.Entity
 {
     public class Team
     {
-        public Team()
-        {
-        }
-
         private Team(DataRow dr)
         {
             InitTeam(dr);
@@ -31,8 +27,6 @@ namespace Arsenalcn.CasinoSys.Entity
                     Capacity = Convert.ToInt32(dr["Capacity"]);
 
                 Manager = dr["Manager"].ToString();
-
-                //LeagueGuid = (Guid)dr["LeagueGuid"];
             }
             else
                 throw new Exception("Unable to init Team.");
@@ -85,11 +79,6 @@ namespace Arsenalcn.CasinoSys.Entity
             }
         }
 
-        //        InitCache();
-        //    {
-        //    static Cache()
-        //{
-
         #region Members and Properties
 
         public Guid ID { get; set; }
@@ -111,57 +100,5 @@ namespace Arsenalcn.CasinoSys.Entity
         public int LeagueCountInfo { get; set; }
 
         #endregion
-
-        //public static class Cache
-        //    }
-
-        //    public static void RefreshCache()
-        //    {
-        //        InitCache();
-        //    }
-
-        //    private static void InitCache()
-        //    {
-        //        var svc = RemoteServiceProvider.GetWebService();
-        //        var arrayTeams = svc.GetTeams();
-
-        //        if (TeamList != null)
-        //        { TeamList.Clear(); }
-        //        else
-        //        { TeamList = new List<Arsenal.Team>(); }
-
-        //        if (arrayTeams != null && arrayTeams.Length > 0)
-        //        {
-        //            foreach (Arsenal.Team t in arrayTeams)
-        //            {
-        //                TeamList.Add(t);
-        //            }
-        //        }
-        //    }
-
-        //    public static Arsenal.Team Load(Guid guid)
-        //    {
-        //        return TeamList.Find(delegate(Arsenal.Team t) { return t.ID.Equals(guid); });
-        //    }
-
-        //    public static List<Arsenal.Team> GetTeamsByLeagueGuid(Guid guid)
-        //    {
-        //        var svc = RemoteServiceProvider.GetWebService();
-        //        var arrayTeams = svc.GetTeamsByLeagueGuid(guid);
-        //        var list = new List<Arsenal.Team>();
-
-        //        if (arrayTeams != null && arrayTeams.Length > 0)
-        //        {
-        //            foreach (Arsenal.Team t in arrayTeams)
-        //            {
-        //                list.Add(t);
-        //            }
-        //        }
-
-        //        return list;
-        //    }
-
-        //    public static List<Arsenal.Team> TeamList;
-        //}
     }
 }

@@ -6,9 +6,9 @@ using Microsoft.ApplicationBlocks.Data;
 
 namespace Arsenalcn.CasinoSys.DataAccess
 {
-    public class CasinoItem
+    public static class CasinoItem
     {
-        public static DataRow GetCasinoItemByID(Guid casinoItemGuid)
+        public static DataRow GetCasinoItemById(Guid casinoItemGuid)
         {
             var sql = "SELECT * FROM dbo.AcnCasino_CasinoItem WHERE CasinoItemGuid = @casinoItemGuid";
 
@@ -200,7 +200,7 @@ namespace Arsenalcn.CasinoSys.DataAccess
 
         public static DataTable GetEndMatchView(Guid leagueGuid, Guid groupGuid, bool isTable)
         {
-            var sql = string.Empty;
+            string sql;
 
             if (!isTable)
                 sql = @"SELECT match.* FROM
@@ -303,12 +303,12 @@ namespace Arsenalcn.CasinoSys.DataAccess
                 var monthStart = iDay.AddDays(1 - iDay.Day);
                 var nextStart = iDay.AddMonths(1);
 
-                var sql =
-                    string.Format(@"SELECT TOP 5 dbo.AcnCasino_CasinoItem.MatchGuid, dbo.AcnCasino_Match.PlayTime, 
+                var sql = $@"SELECT TOP 5 dbo.AcnCasino_CasinoItem.MatchGuid, dbo.AcnCasino_Match.PlayTime, 
                                       dbo.AcnCasino_CasinoItem.Earning, dbo.AcnCasino_Match.Round 
                                       FROM dbo.AcnCasino_CasinoItem INNER JOIN dbo.AcnCasino_Match ON dbo.AcnCasino_CasinoItem.MatchGuid = dbo.AcnCasino_Match.MatchGuid
-                                      WHERE (dbo.AcnCasino_CasinoItem.Earning IS NOT NULL) AND (dbo.AcnCasino_CasinoItem.ItemType = 2) AND (dbo.AcnCasino_Match.PlayTime >= '{0}') AND (dbo.AcnCasino_Match.PlayTime < '{1}')
-                                      ORDER BY dbo.AcnCasino_CasinoItem.Earning DESC", monthStart, nextStart);
+                                      WHERE (dbo.AcnCasino_CasinoItem.Earning IS NOT NULL) AND (dbo.AcnCasino_CasinoItem.ItemType = 2) 
+                                      AND (dbo.AcnCasino_Match.PlayTime >= '{monthStart}') AND (dbo.AcnCasino_Match.PlayTime < '{nextStart}')
+                                      ORDER BY dbo.AcnCasino_CasinoItem.Earning DESC";
 
                 var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql);
 
@@ -329,12 +329,12 @@ namespace Arsenalcn.CasinoSys.DataAccess
                 var monthStart = iDay.AddDays(1 - iDay.Day);
                 var nextStart = iDay.AddMonths(1);
 
-                var sql =
-                    string.Format(@"SELECT TOP 5 dbo.AcnCasino_CasinoItem.MatchGuid, dbo.AcnCasino_Match.PlayTime, 
+                var sql = $@"SELECT TOP 5 dbo.AcnCasino_CasinoItem.MatchGuid, dbo.AcnCasino_Match.PlayTime, 
                       dbo.AcnCasino_CasinoItem.Earning, dbo.AcnCasino_Match.Round
                       FROM dbo.AcnCasino_CasinoItem INNER JOIN dbo.AcnCasino_Match ON dbo.AcnCasino_CasinoItem.MatchGuid = dbo.AcnCasino_Match.MatchGuid
-                      WHERE (dbo.AcnCasino_CasinoItem.Earning IS NOT NULL) AND (dbo.AcnCasino_CasinoItem.ItemType = 2) AND (dbo.AcnCasino_Match.PlayTime >= '{0}') AND (dbo.AcnCasino_Match.PlayTime < '{1}')
-                      ORDER BY dbo.AcnCasino_CasinoItem.Earning", monthStart, nextStart);
+                      WHERE (dbo.AcnCasino_CasinoItem.Earning IS NOT NULL) AND (dbo.AcnCasino_CasinoItem.ItemType = 2) 
+                      AND (dbo.AcnCasino_Match.PlayTime >= '{monthStart}') AND (dbo.AcnCasino_Match.PlayTime < '{nextStart}')
+                      ORDER BY dbo.AcnCasino_CasinoItem.Earning";
 
                 var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql);
 
@@ -360,21 +360,21 @@ namespace Arsenalcn.CasinoSys.DataAccess
             if (Convert.IsDBNull(obj) || obj == null)
                 return null;
 
-            return (Guid) obj;
+            return (Guid)obj;
         }
 
-        public static DataTable GetActiveCasinoItem()
-        {
-            var sql = @"SELECT CasinoItemGuid FROM dbo.AcnCasino_CasinoItem INNER JOIN
-                          dbo.AcnCasino_Match ON dbo.AcnCasino_CasinoItem.MatchGuid = dbo.AcnCasino_Match.MatchGuid
-                          WHERE (dbo.AcnCasino_Match.ResultHome IS NOT NULL) AND (dbo.AcnCasino_Match.ResultAway IS NOT NULL) AND 
-                          (AcnCasino_CasinoItem.ItemType = 2) AND (dbo.AcnCasino_CasinoItem.Earning IS NOT NULL)";
+        //public static DataTable GetActiveCasinoItem()
+        //{
+        //    var sql = @"SELECT CasinoItemGuid FROM dbo.AcnCasino_CasinoItem INNER JOIN
+        //                  dbo.AcnCasino_Match ON dbo.AcnCasino_CasinoItem.MatchGuid = dbo.AcnCasino_Match.MatchGuid
+        //                  WHERE (dbo.AcnCasino_Match.ResultHome IS NOT NULL) AND (dbo.AcnCasino_Match.ResultAway IS NOT NULL) AND 
+        //                  (AcnCasino_CasinoItem.ItemType = 2) AND (dbo.AcnCasino_CasinoItem.Earning IS NOT NULL)";
 
-            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql);
+        //    var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql);
 
-            if (ds.Tables[0].Rows.Count == 0)
-                return null;
-            return ds.Tables[0];
-        }
+        //    if (ds.Tables[0].Rows.Count == 0)
+        //        return null;
+        //    return ds.Tables[0];
+        //}
     }
 }

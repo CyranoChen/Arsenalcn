@@ -12,29 +12,33 @@ namespace Arsenalcn.CasinoSys.Entity
         {
         }
 
-        public Banker(Guid bankerID)
+        public Banker(Guid key)
         {
-            var dr = DataAccess.Banker.GetBankerByID(bankerID);
+            var dr = DataAccess.Banker.GetBankerById(key);
 
             if (dr != null)
                 InitBanker(dr);
         }
 
-        public Guid BankerID { get; private set; }
+        #region Members and Properties
 
-        public string BankerName { get; private set; }
+        public Guid BankerGuid { get; set; }
 
-        public int? ClubID { get; private set; }
+        public string BankerName { get; set; }
+
+        public int? ClubID { get; set; }
 
         public float Cash { get; set; }
 
-        public bool IsActive { get; private set; }
+        public bool IsActive { get; set; }
+
+        #endregion
 
         private void InitBanker(DataRow dr)
         {
             if (dr != null)
             {
-                BankerID = (Guid) dr["ID"];
+                BankerGuid = (Guid)dr["ID"];
                 BankerName = Convert.ToString(dr["BankerName"]);
 
                 if (Convert.IsDBNull(dr["ClubID"]))
@@ -51,22 +55,22 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public void Update(SqlTransaction trans)
         {
-            DataAccess.Banker.UpdateBankerCash(BankerID, Cash, trans);
+            DataAccess.Banker.UpdateBankerCash(BankerGuid, Cash, trans);
         }
 
-        public static void ActiveBankerStatistics()
-        {
-            var dt = DataAccess.Banker.GetAllBankers(true);
+        //public static void ActiveBankerStatistics()
+        //{
+        //    var dt = DataAccess.Banker.GetAllBankers(true);
 
-            if (dt != null)
-            {
-                foreach (DataRow dr in dt.Rows)
-                {
-                    var banker = new Banker((Guid) dr["ID"]);
-                    banker.Cash = DataAccess.Bet.GetTotalEarningByBankerGuid((Guid) dr["ID"]);
-                    banker.Update(null);
-                }
-            }
-        }
+        //    if (dt != null)
+        //    {
+        //        foreach (DataRow dr in dt.Rows)
+        //        {
+        //            var banker = new Banker((Guid)dr["ID"]);
+        //            banker.Cash = DataAccess.Bet.GetTotalEarningByBankerGuid((Guid)dr["ID"]);
+        //            banker.Update(null);
+        //        }
+        //    }
+        //}
     }
 }

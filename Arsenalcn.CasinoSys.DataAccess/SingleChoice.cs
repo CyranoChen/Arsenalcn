@@ -6,7 +6,7 @@ using Microsoft.ApplicationBlocks.Data;
 
 namespace Arsenalcn.CasinoSys.DataAccess
 {
-    public class SingleChoice
+    public static class SingleChoice
     {
         public static DataRow GetSingleChoice(Guid casinoItemGuid)
         {

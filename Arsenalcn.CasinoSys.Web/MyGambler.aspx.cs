@@ -43,18 +43,12 @@ namespace Arsenalcn.CasinoSys.Web
             var maxCash = (int) (qsb*ConfigGlobal.ExchangeRate);
             ltrlMaxCash.Text = maxCash.ToString("N0");
 
-            if (maxCash >= 10)
-                rvToCash.MaximumValue = maxCash.ToString();
-            else
-                rvToCash.MaximumValue = "10";
+            rvToCash.MaximumValue = maxCash >= 10 ? maxCash.ToString() : "10";
 
             var maxQsb = (int) (CurrentGambler.Cash*(1 - ConfigGlobal.ExchangeFee)/ConfigGlobal.ExchangeRate);
             ltrlMaxQSB.Text = maxQsb.ToString("N0");
 
-            if (maxQsb >= 1)
-                rvMaxQSB.MaximumValue = maxQsb.ToString();
-            else
-                rvMaxQSB.MaximumValue = "1";
+            rvMaxQSB.MaximumValue = maxQsb >= 1 ? maxQsb.ToString() : "1";
         }
 
         protected void btnToCash_Click(object sender, EventArgs e)
@@ -71,7 +65,7 @@ namespace Arsenalcn.CasinoSys.Web
                     throw new Exception("Insufficient Founds");
 
                 CurrentGambler.Cash += Convert.ToInt32(tbCash.Text.Trim());
-                CurrentGambler.Update(null);
+                CurrentGambler.Update();
 
                 var banker = new Banker(Banker.DefaultBankerID);
                 banker.Cash += qsb*ConfigGlobal.ExchangeFee*ConfigGlobal.ExchangeRate;
@@ -98,7 +92,7 @@ namespace Arsenalcn.CasinoSys.Web
                     throw new Exception("Insufficient Founds");
 
                 CurrentGambler.Cash -= cash;
-                CurrentGambler.Update(null);
+                CurrentGambler.Update();
 
                 var banker = new Banker(Banker.DefaultBankerID);
                 banker.Cash += cash*ConfigGlobal.ExchangeFee;

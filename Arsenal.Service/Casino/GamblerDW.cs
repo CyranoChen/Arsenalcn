@@ -154,7 +154,10 @@ namespace Arsenal.Service.Casino
                 {
                     var singleBetLimit = ConfigGlobal_AcnCasino.SingleBetLimit;
 
-                    return cash < singleBetLimit ? cash : singleBetLimit;
+                    if (singleBetLimit > 0)
+                    {
+                        return cash < singleBetLimit ? cash : singleBetLimit;
+                    }
                 }
             }
 

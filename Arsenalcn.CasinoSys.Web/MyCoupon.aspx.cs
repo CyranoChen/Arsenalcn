@@ -59,10 +59,7 @@ namespace Arsenalcn.CasinoSys.Web
                 gvMatch.DataSource = dtMatch;
                 gvMatch.DataBind();
 
-                if (_itemAvailable)
-                    btnSubmit.Visible = true;
-                else
-                    btnSubmit.Visible = false;
+                btnSubmit.Visible = _itemAvailable;
             }
         }
 
@@ -128,7 +125,10 @@ namespace Arsenalcn.CasinoSys.Web
 
                             if (!string.IsNullOrEmpty(winOption.OptionValue) &&
                                 !string.IsNullOrEmpty(drawOption.OptionValue) &&
-                                !string.IsNullOrEmpty(loseOption.OptionValue))
+                                !string.IsNullOrEmpty(loseOption.OptionValue) &&
+                                winOption.OptionRate.HasValue &&
+                                drawOption.OptionRate.HasValue &&
+                                loseOption.OptionRate.HasValue)
                             {
                                 var ltrlWinRate = e.Row.FindControl("ltrlWinRate") as Literal;
                                 var ltrlDrawRate = e.Row.FindControl("ltrlDrawRate") as Literal;
@@ -158,7 +158,7 @@ namespace Arsenalcn.CasinoSys.Web
 
                             if (bets.Count != 0)
                             {
-                                var betDetail = new MatchResultBetDetail(BetDetail.GetBetDetailByBetID(bets[0].ID));
+                                var betDetail = new MatchResultBetDetail(BetDetail.GetBetDetailByBetId(bets[0].ID));
 
                                 var tbHomeScore = e.Row.FindControl("tbHomeScore") as TextBox;
                                 var tbAwayScore = e.Row.FindControl("tbAwayScore") as TextBox;

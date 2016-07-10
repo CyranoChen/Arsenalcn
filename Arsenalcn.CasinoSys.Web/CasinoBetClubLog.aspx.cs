@@ -8,10 +8,6 @@ namespace Arsenalcn.CasinoSys.Web
 {
     public partial class CasinoBetClubLog : BasePage
     {
-        private string _away = string.Empty;
-
-        private string _home = string.Empty;
-
         public Guid CurrentMatch
         {
             get
@@ -85,13 +81,10 @@ namespace Arsenalcn.CasinoSys.Web
         {
             if (CurrentMatch != Guid.Empty)
             {
-                var m = new Match(CurrentMatch);
+                //var m = new Match(CurrentMatch);
 
-                var homeT = Team.Cache.Load(m.Home);
-                var awayT = Team.Cache.Load(m.Away);
-
-                _home = homeT.TeamDisplayName;
-                _away = awayT.TeamDisplayName;
+                //var homeT = Team.Cache.Load(m.Home);
+                //var awayT = Team.Cache.Load(m.Away);
 
                 var betList = Bet.GetMatchAllBet(CurrentMatch);
 
@@ -101,7 +94,7 @@ namespace Arsenalcn.CasinoSys.Web
                     ltrlMatchResultCount.Text = betList.FindAll(bet => !bet.BetAmount.HasValue).Count.ToString();
 
                     float totalBetCount = 0;
-                    betList.ForEach(delegate(Bet bet) { totalBetCount += bet.BetAmount.GetValueOrDefault(0f); });
+                    betList.ForEach(delegate (Bet bet) { totalBetCount += bet.BetAmount.GetValueOrDefault(0f); });
                     ltrlTotalBetCount.Text = totalBetCount.ToString("N0");
 
                     var itemGuid = CasinoItem.GetCasinoItemGuidByMatch(CurrentMatch, CasinoType.MatchResult);
@@ -160,7 +153,7 @@ namespace Arsenalcn.CasinoSys.Web
                     }
 
                     var ltrlResult = e.Row.FindControl("ltrlResult") as Literal;
-                    var dt = BetDetail.GetBetDetailByBetID(bet.ID);
+                    var dt = BetDetail.GetBetDetailByBetId(bet.ID);
 
                     if (dt != null && ltrlResult != null)
                     {

@@ -12,7 +12,7 @@ namespace Arsenalcn.CasinoSys.Web.Control
             #region Top Gambler Profit
 
             var rank = 1;
-            var months = 0;
+            int months;
             var dtTopProfit = Rank.GetTopGamblerProfit(out months);
 
             if (dtTopProfit != null)
@@ -35,7 +35,6 @@ namespace Arsenalcn.CasinoSys.Web.Control
             #region Top Gambler RP
 
             rank = 1;
-            months = 0;
             var dtTopRp = Rank.GetTopGamblerRP(out months);
 
             if (dtTopRp != null)
@@ -58,7 +57,6 @@ namespace Arsenalcn.CasinoSys.Web.Control
             #region Top Gambler Bet
 
             rank = 1;
-            months = 0;
             var dtTopBet = Rank.GetTopGamblerTotalBet(out months);
 
             if (dtTopBet != null)

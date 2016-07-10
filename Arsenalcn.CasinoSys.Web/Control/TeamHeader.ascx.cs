@@ -16,7 +16,6 @@ namespace Arsenalcn.CasinoSys.Web.Control
             if (t != null)
             {
                 var dt = CasinoItem.GetEndViewByTeam(t.ID);
-                var matchCount = 0;
                 var wonCount = 0;
                 var drawCount = 0;
                 var lostCount = 0;
@@ -45,7 +44,7 @@ namespace Arsenalcn.CasinoSys.Web.Control
                                 drawCount++;
                         }
                     }
-                    matchCount = wonCount + lostCount + drawCount;
+                    var matchCount = wonCount + lostCount + drawCount;
 
                     ltrlMatchCount.Text = "<em>" + matchCount + "</em>";
                     ltrlWonCount.Text = "<em>" + wonCount + "</em>";

@@ -6,7 +6,7 @@ using Microsoft.ApplicationBlocks.Data;
 
 namespace Arsenalcn.CasinoSys.DataAccess
 {
-    public class MatchResult
+    public static class MatchResult
     {
         public static DataRow GetMatchResult(Guid casinoItemGuid)
         {

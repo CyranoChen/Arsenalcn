@@ -5,27 +5,28 @@ using Microsoft.ApplicationBlocks.Data;
 
 namespace Arsenalcn.CasinoSys.DataAccess
 {
-    public class BetDetail
+    public static class BetDetail
     {
-        public static DataTable GetBetDetailByBetID(int betID)
+        public static DataTable GetBetDetailByBetId(int id)
         {
-            var sql = "SELECT * FROM AcnCasino_BetDetail WHERE BetID = @betID";
+            var sql = "SELECT * FROM AcnCasino_BetDetail WHERE BetID = @id";
 
             var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql,
-                new SqlParameter("@betID", betID));
+                new SqlParameter("@id", id));
 
             if (ds.Tables[0].Rows.Count == 0)
                 return null;
             return ds.Tables[0];
         }
 
-        public static void InsertBetDetail(int betID, string detailName, string detailValue, SqlTransaction trans)
+        public static void InsertBetDetail(int id, string detailName, string detailValue, SqlTransaction trans)
         {
-            var sql = "INSERT INTO AcnCasino_BetDetail VALUES (@betID, @detailName, @detailValue)";
+            var sql = "INSERT INTO AcnCasino_BetDetail VALUES (@id, @detailName, @detailValue)";
 
             SqlParameter[] para =
             {
-                new SqlParameter("@betID", betID), new SqlParameter("@detailName", detailName),
+                new SqlParameter("@id", id),
+                new SqlParameter("@detailName", detailName),
                 new SqlParameter("@detailValue", detailValue)
             };
 

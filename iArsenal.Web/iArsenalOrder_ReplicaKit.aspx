@@ -7,14 +7,14 @@
 <asp:Content ID="cphHead" ContentPlaceHolderID="cphHead" runat="server">
     <script type="text/javascript">
         $(function () {
-            var $rblPayment = $("#tdPaymentInfo .RadioButtonList");
-            $rblPayment.click(function () {
-                var payment = $(this).children("input:radio:checked").val();
-                if (payment != "") {
-                    $(".PaymentInfo").hide();
-                    $("." + payment).show();
-                }
-            });
+            //var $rblPayment = $("#tdPaymentInfo .RadioButtonList");
+            //$rblPayment.click(function () {
+            //    var payment = $(this).children("input:radio:checked").val();
+            //    if (payment != "") {
+            //        $(".PaymentInfo").hide();
+            //        $("." + payment).show();
+            //    }
+            //});
 
             var $ddlReplicaKit = $("#tdReplicaKit select");
             var $ddlPlayerDetail = $("#tdPrinting select");
@@ -29,10 +29,10 @@
                 var $pnlProductImage = $("#pnlProductImage");
                 var $img = $("#pnlProductImage img");
 
-                if (pGuid != "") {
-                    $.getJSON("ServerProductCheck.ashx", { ProductGuid: pGuid }, function (data, status, xhr) {
-                        if (status == "success" && data != null) {
-                            if (data.result != "error" && JSON.stringify(data) != "{}") {
+                if (pGuid !== "") {
+                    $.getJSON("ServerProductCheck.ashx", { ProductGuid: pGuid }, function (data, status) {
+                        if (status === "success" && data != null) {
+                            if (data.result !== "error" && JSON.stringify(data) !== "{}") {
                                 $img.attr("src", data.ImageUrl);
                                 $img.attr("alt", data.DisplayName);
                                 $pnlProductImage.show();
@@ -63,7 +63,7 @@
             });
 
             $ddlPlayerDetail.change(function () {
-                if ($(this).val() == "custom")
+                if ($(this).val() === "custom")
                     $trCustomPrinting.show();
                 else
                     $trCustomPrinting.hide();
@@ -77,7 +77,7 @@
             });
 
             $rbPremierPatch.eq(1).click(function () {
-                if ($rbChampionPatch.last().prop("checked") == true) {
+                if ($rbChampionPatch.last().prop("checked") === true) {
                     $rbChampionPatch.eq(1).prop("checked", true);
                 }
             });
@@ -87,7 +87,7 @@
             });
 
             $rbChampionPatch.eq(1).click(function () {
-                if ($rbPremierPatch.last().prop("checked") == true) {
+                if ($rbPremierPatch.last().prop("checked") === true) {
                     $rbPremierPatch.eq(1).prop("checked", true);
                 }
             });
@@ -137,29 +137,13 @@
                                 Display="Dynamic" ErrorMessage="*" CssClass="ValiSpan">
                             </asp:RequiredFieldValidator>
                         </td>
-                        <td class="FieldHeader">付款方式：
+                        <td class="FieldHeader">微信：
                         </td>
-                        <td class="FieldColumn" id="tdPaymentInfo">
-                            <asp:RadioButtonList ID="rblOrderPayment" runat="server" RepeatDirection="Horizontal"
-                                RepeatLayout="Flow" CssClass="RadioButtonList">
-                                <asp:ListItem Text="支付宝" Value="Alipay" Selected="True"></asp:ListItem>
-                                <asp:ListItem Text="银行转帐" Value="Bank"></asp:ListItem>
-                            </asp:RadioButtonList>
-                        </td>
-                    </tr>
-                    <tr class="Row PaymentInfo Alipay" id="trAlipay" runat="server">
-                        <td class="FieldHeader">支付宝帐号：
-                        </td>
-                        <td class="FieldColspan" colspan="3">
-                            <asp:TextBox ID="tbAlipay" runat="server" CssClass="TextBox" Width="300px" ToolTip="请输入支付宝帐号" MaxLength="40"></asp:TextBox>
-                        </td>
-                    </tr>
-                    <tr class="Row PaymentInfo Bank" id="trBank" runat="server" style="display: none">
-                        <td class="FieldHeader">银行账户：
-                        </td>
-                        <td class="FieldColspan" colspan="3">
-                            <asp:TextBox ID="tbBankName" runat="server" CssClass="TextBox" Width="100px" ToolTip="请输入银行名称" Text="-银行名称-" MaxLength="10"></asp:TextBox>
-                            <asp:TextBox ID="tbBankAccount" runat="server" CssClass="TextBox" Width="250px" ToolTip="请输入银行帐号" Text="-银行帐号-" MaxLength="30"></asp:TextBox>
+                        <td class="FieldColumn">
+                            <asp:TextBox ID="tbMemberWeChat" runat="server" CssClass="TextBox" Width="150px" MaxLength="20"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="rfvMemberWeChat" runat="server" ControlToValidate="tbMemberWeChat"
+                                Display="Dynamic" ErrorMessage="*" CssClass="ValiSpan">
+                            </asp:RequiredFieldValidator>
                         </td>
                     </tr>
                     <tr class="AlternatingRow">
@@ -180,8 +164,8 @@
                         <td class="FieldColspan" colspan="3">
                             <asp:RadioButtonList ID="rblOrderPostage" runat="server" RepeatDirection="Horizontal"
                                 RepeatLayout="Flow" CssClass="RadioButtonList">
-                                <asp:ListItem Text="包邮（江浙沪 - 顺丰速运）" Value="0"></asp:ListItem>
-                                <asp:ListItem Text="包邮（全国其他地区 - 顺丰速运）" Value="0" Selected="True"></asp:ListItem>
+                                <asp:ListItem Text="10元（江浙沪 - 顺丰速运）" Value="10"></asp:ListItem>
+                                <asp:ListItem Text="18元（全国其他地区 - 顺丰速运）" Value="18" Selected="True"></asp:ListItem>
                             </asp:RadioButtonList>
                         </td>
                     </tr>

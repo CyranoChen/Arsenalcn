@@ -61,7 +61,7 @@
                             <td class="FieldHeader">微信/QQ：
                             </td>
                             <td class="FieldColumn">
-                                <asp:Label ID="lblMemberQQ" runat="server"></asp:Label>
+                                <asp:Label ID="lblMemberWeChat" runat="server"></asp:Label>
                             </td>
                         </tr>
                     </asp:PlaceHolder>

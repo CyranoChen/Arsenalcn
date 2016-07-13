@@ -10,17 +10,17 @@ namespace iArsenal.Web
 {
     public partial class iArsenalOrder_ArsenalDirect : MemberPageBase
     {
-        private readonly IRepository repo = new Repository();
+        private readonly IRepository _repo = new Repository();
 
         private int OrderID
         {
             get
             {
-                int _orderID;
+                int orderID;
                 if (!string.IsNullOrEmpty(Request.QueryString["OrderID"]) &&
-                    int.TryParse(Request.QueryString["OrderID"], out _orderID))
+                    int.TryParse(Request.QueryString["OrderID"], out orderID))
                 {
-                    return _orderID;
+                    return orderID;
                 }
                 return int.MinValue;
             }
@@ -54,14 +54,14 @@ namespace iArsenal.Web
                     {
                         lblMemberName.Text = $"<b>{o.MemberName}</b> (<em>NO.{o.MemberID}</em>)";
 
-                        var m = repo.Single<Member>(o.MemberID);
+                        var m = _repo.Single<Member>(o.MemberID);
 
                         if (m == null || !m.IsActive)
                         {
                             throw new Exception("无此会员信息");
                         }
                         lblMemberACNInfo.Text = $"<b>{m.AcnName}</b> (<em>ID.{m.AcnID}</em>)";
-                        tbEmail.Text = m.Email;
+                        tbMemberWeChat.Text = m.WeChat;
                     }
                     else
                     {
@@ -72,7 +72,7 @@ namespace iArsenal.Web
                     tbOrderAddress.Text = o.Address;
                     tbOrderDescription.Text = o.Description;
 
-                    var query = repo.Query<OrderItem>(x => x.OrderID == o.ID).FindAll(x => x.IsActive).OrderBy(x => x.ID);
+                    var query = _repo.Query<OrderItem>(x => x.OrderID == o.ID).FindAll(x => x.IsActive).OrderBy(x => x.ID);
 
                     if (query.Any())
                     {
@@ -87,10 +87,10 @@ namespace iArsenal.Web
                 else
                 {
                     //Fill Member draft information into textbox
-                    var m = repo.Single<Member>(MID);
+                    var m = _repo.Single<Member>(MID);
 
                     tbOrderMobile.Text = m.Mobile;
-                    tbEmail.Text = m.Email;
+                    tbMemberWeChat.Text = m.WeChat;
                     tbOrderAddress.Text = m.Address;
                 }
             }
@@ -116,11 +116,11 @@ namespace iArsenal.Web
                     }
 
                     // Convert ProductListInfo to List<OrderItem>
-                    var _strWishOrderItemListInfo = $"[ {tbWishOrderItemListInfo.Text.Trim()} ]";
+                    var json = $"[ {tbWishOrderItemListInfo.Text.Trim()} ]";
 
                     var jsonSerializer = new JavaScriptSerializer();
 
-                    var wishList = jsonSerializer.Deserialize<List<OrderItem>>(_strWishOrderItemListInfo);
+                    var wishList = jsonSerializer.Deserialize<List<OrderItem>>(json);
 
                     // Validate the OrderItemBase Code & Quantity in oiList
                     if (wishList.Count > 0)
@@ -139,26 +139,26 @@ namespace iArsenal.Web
                         throw new Exception("请填写订购纪念品信息");
                     }
 
-                    var m = repo.Single<Member>(MID);
+                    var m = _repo.Single<Member>(MID);
 
-                    if (!string.IsNullOrEmpty(tbEmail.Text.Trim()))
+                    if (!string.IsNullOrEmpty(tbMemberWeChat.Text.Trim()))
                     {
-                        m.Email = tbEmail.Text.Trim();
+                        m.Email = tbMemberWeChat.Text.Trim();
 
-                        repo.Update(m);
+                        _repo.Update(m);
                     }
                     else
                     {
-                        throw new Exception("请输入会员邮箱信息");
+                        throw new Exception("请输入会员微信号");
                     }
 
                     //New Order
                     var o = new Order();
-                    var _newID = int.MinValue;
+                    int newID;
 
                     if (OrderID > 0)
                     {
-                        o = repo.Single<Order>(OrderID);
+                        o = _repo.Single<Order>(OrderID);
                     }
 
                     if (!string.IsNullOrEmpty(tbOrderMobile.Text.Trim()))
@@ -177,10 +177,10 @@ namespace iArsenal.Web
 
                     if (OrderID > 0)
                     {
-                        repo.Update(o, trans);
+                        _repo.Update(o, trans);
 
                         // used by setting OrderItem foreign key
-                        _newID = OrderID;
+                        newID = OrderID;
                     }
                     else
                     {
@@ -199,17 +199,17 @@ namespace iArsenal.Web
                         o.Remark = string.Empty;
 
                         //Get the Order ID after Insert new one
-                        object _key = null;
-                        repo.Insert(o, out _key, trans);
-                        _newID = Convert.ToInt32(_key);
+                        object key;
+                        _repo.Insert(o, out key, trans);
+                        newID = Convert.ToInt32(key);
                     }
 
-                    if (wishList != null && wishList.Count > 0)
+                    if (wishList.Count > 0)
                     {
                         //Remove Order Item of this Order
                         if (OrderID > 0 && o.ID.Equals(OrderID))
                         {
-                            var count = repo.Query<OrderItem>(x => x.OrderID == OrderID).Delete(trans);
+                            _repo.Query<OrderItem>(x => x.OrderID == OrderID).Delete(trans);
                         }
 
                         //New Order Item for each WishOrderItem
@@ -222,9 +222,9 @@ namespace iArsenal.Web
 
                                 if (p != null && p.IsActive && p.ProductType.Equals(ProductType.Other))
                                 {
-                                    oi.Size = (oi.Size != null) ? oi.Size : string.Empty;
-                                    oi.Remark = (oi.Remark != null) ? oi.Remark : string.Empty;
-                                    oi.OrderID = _newID;
+                                    oi.Size = oi.Size ?? string.Empty;
+                                    oi.Remark = oi.Remark ?? string.Empty;
+                                    oi.OrderID = newID;
 
                                     oi.Place(m, p, trans);
                                 }
@@ -239,17 +239,17 @@ namespace iArsenal.Web
                                 oi.MemberID = m.ID;
                                 oi.MemberName = m.Name;
                                 oi.CreateTime = DateTime.Now;
-                                oi.OrderID = _newID;
+                                oi.OrderID = newID;
                                 oi.IsActive = true;
                                 //oi.Code = oi.Code;
                                 oi.ProductGuid = Guid.Empty;
-                                oi.ProductName = (oi.ProductName != null) ? oi.ProductName : string.Empty;
-                                oi.Size = (oi.Size != null) ? oi.Size : string.Empty;
+                                oi.ProductName = oi.ProductName ?? string.Empty;
+                                oi.Size = oi.Size ?? string.Empty;
                                 //oi.Quantity = oi.Quantity;
                                 oi.Sale = null;
                                 oi.Remark = new JavaScriptSerializer().Serialize(oi);
 
-                                repo.Insert(oi, trans);
+                                _repo.Insert(oi, trans);
                             }
                         }
                     }
@@ -263,7 +263,7 @@ namespace iArsenal.Web
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
                         string.Format(
                             "alert('订单({0})保存成功');window.location.href = 'iArsenalOrderView_ArsenalDirect.aspx?OrderID={0}'",
-                            _newID), true);
+                            newID), true);
                 }
                 catch (Exception ex)
                 {

@@ -103,22 +103,22 @@ namespace iArsenal.Web {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvEmail;
         
         /// <summary>
-        /// tbQQ control.
+        /// tbWeChat control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbQQ;
+        protected global::System.Web.UI.WebControls.TextBox tbWeChat;
         
         /// <summary>
-        /// rfvQQ control.
+        /// rfvWeChat control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvQQ;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvWeChat;
         
         /// <summary>
         /// tbAddress control.

@@ -67,58 +67,22 @@ namespace iArsenal.Web {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvOrderMobile;
         
         /// <summary>
-        /// rblOrderPayment control.
+        /// tbMemberWeChat control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButtonList rblOrderPayment;
+        protected global::System.Web.UI.WebControls.TextBox tbMemberWeChat;
         
         /// <summary>
-        /// trAlipay control.
+        /// rfvMemberWeChat control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlTableRow trAlipay;
-        
-        /// <summary>
-        /// tbAlipay control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbAlipay;
-        
-        /// <summary>
-        /// trBank control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlTableRow trBank;
-        
-        /// <summary>
-        /// tbBankName control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbBankName;
-        
-        /// <summary>
-        /// tbBankAccount control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbBankAccount;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvMemberWeChat;
         
         /// <summary>
         /// tbOrderAddress control.

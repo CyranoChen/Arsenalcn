@@ -44,13 +44,6 @@
                             <asp:Label ID="lblOrderMobile" runat="server"></asp:Label>
                         </td>
                     </tr>
-                    <tr class="AlternatingRow">
-                        <td class="FieldHeader">付款方式：
-                        </td>
-                        <td class="FieldColspan" colspan="3">
-                            <asp:Label ID="lblOrderPayment" runat="server"></asp:Label>
-                        </td>
-                    </tr>
                     <tr class="Row">
                         <td class="FieldHeader">收货地址：
                         </td>

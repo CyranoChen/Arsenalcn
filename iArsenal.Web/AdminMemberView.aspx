@@ -158,12 +158,12 @@
                         </td>
                     </tr>
                     <tr class="Row">
-                        <td class="FieldHeader">MSN:
+                        <td class="FieldHeader">微信:
                         </td>
                         <td class="FieldColumn">
-                            <asp:TextBox ID="tbMSN" runat="server" CssClass="TextBox" Width="200px"></asp:TextBox>
+                            <asp:TextBox ID="tbWeChat" runat="server" CssClass="TextBox" Width="200px"></asp:TextBox>
                         </td>
-                        <td class="FieldHeader">微信/QQ:
+                        <td class="FieldHeader">QQ:
                         </td>
                         <td class="FieldColumn">
                             <asp:TextBox ID="tbQQ" runat="server" CssClass="TextBox" Width="200px"></asp:TextBox>

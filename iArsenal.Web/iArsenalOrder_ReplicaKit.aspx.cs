@@ -10,17 +10,17 @@ namespace iArsenal.Web
 {
     public partial class iArsenalOrder_ReplicaKit : MemberPageBase
     {
-        private readonly IRepository repo = new Repository();
+        private readonly IRepository _repo = new Repository();
 
         private int OrderID
         {
             get
             {
-                int _orderID;
+                int orderID;
                 if (!string.IsNullOrEmpty(Request.QueryString["OrderID"]) &&
-                    int.TryParse(Request.QueryString["OrderID"], out _orderID))
+                    int.TryParse(Request.QueryString["OrderID"], out orderID))
                 {
-                    return _orderID;
+                    return orderID;
                 }
                 return int.MinValue;
             }
@@ -200,13 +200,15 @@ namespace iArsenal.Web
                     {
                         lblMemberName.Text = $"<b>{o.MemberName}</b> (<em>NO.{o.MemberID}</em>)";
 
-                        var m = repo.Single<Member>(o.MemberID);
+                        var m = _repo.Single<Member>(o.MemberID);
 
                         if (m == null || !m.IsActive)
                         {
                             throw new Exception("无此会员信息");
                         }
+
                         lblMemberACNInfo.Text = $"<b>{m.AcnName}</b> (<em>ID.{m.AcnID}</em>)";
+                        tbMemberWeChat.Text = m.WeChat;
                     }
                     else
                     {
@@ -218,32 +220,32 @@ namespace iArsenal.Web
                     tbOrderDescription.Text = o.Description;
 
                     // Set Order Payment Info
-                    if (!string.IsNullOrEmpty(o.Payment))
-                    {
-                        var payment = o.Payment.Substring(1, o.Payment.Length - 2).Split('|');
-                        rblOrderPayment.SelectedValue = payment[0];
+                    //if (!string.IsNullOrEmpty(o.Payment))
+                    //{
+                    //    var payment = o.Payment.Substring(1, o.Payment.Length - 2).Split('|');
+                    //    rblOrderPayment.SelectedValue = payment[0];
 
-                        if (payment[0].Equals("Bank", StringComparison.OrdinalIgnoreCase))
-                        {
-                            tbBankName.Text = payment[1];
-                            tbBankAccount.Text = payment[2];
+                    //    if (payment[0].Equals("Bank", StringComparison.OrdinalIgnoreCase))
+                    //    {
+                    //        tbBankName.Text = payment[1];
+                    //        tbBankAccount.Text = payment[2];
 
-                            trBank.Style.Add("display", "");
-                            trAlipay.Style.Add("display", "none");
-                        }
-                        else
-                        {
-                            tbAlipay.Text = payment[1];
+                    //        trBank.Style.Add("display", "");
+                    //        trAlipay.Style.Add("display", "none");
+                    //    }
+                    //    else
+                    //    {
+                    //        tbAlipay.Text = payment[1];
 
-                            trBank.Style.Add("display", "none");
-                            trAlipay.Style.Add("display", "");
-                        }
-                    }
-                    else
-                    {
-                        trBank.Style.Add("display", "none");
-                        trAlipay.Style.Add("display", "none");
-                    }
+                    //        trBank.Style.Add("display", "none");
+                    //        trAlipay.Style.Add("display", "");
+                    //    }
+                    //}
+                    //else
+                    //{
+                    //    trBank.Style.Add("display", "none");
+                    //    trAlipay.Style.Add("display", "none");
+                    //}
 
                     var oiNumber = o.OIPlayerNumber;
                     var oiName = o.OIPlayerName;
@@ -320,10 +322,7 @@ namespace iArsenal.Web
                                      || ap.FirstName.Equals(oiName.Size, StringComparison.OrdinalIgnoreCase))
                                     && ap.SquadNumber.Equals(Convert.ToInt16(oiNumber.Size)));
 
-                                if (player != null)
-                                    ddlPlayerDetail.SelectedValue = player.ID.ToString();
-                                else
-                                    ddlPlayerDetail.SelectedValue = string.Empty;
+                                ddlPlayerDetail.SelectedValue = player?.ID.ToString() ?? string.Empty;
                             }
                             catch
                             {
@@ -366,10 +365,11 @@ namespace iArsenal.Web
                 else
                 {
                     //Fill Member draft information into textbox
-                    var m = repo.Single<Member>(MID);
+                    var m = _repo.Single<Member>(MID);
 
                     tbOrderMobile.Text = m.Mobile;
-                    tbAlipay.Text = m.TaobaoName;
+                    tbMemberWeChat.Text = m.WeChat;
+                    //tbAlipay.Text = m.TaobaoName;
                     tbOrderAddress.Text = m.Address;
 
                     var list = Product.Cache.Load(CurrProductType).FindAll(x => x.IsActive).OrderBy(x => x.Code).ToList();
@@ -409,7 +409,18 @@ namespace iArsenal.Web
                         throw new Exception("请选择需要订购的球衣");
                     }
 
-                    var m = repo.Single<Member>(MID);
+                    var m = _repo.Single<Member>(MID);
+
+                    if (!string.IsNullOrEmpty(tbMemberWeChat.Text.Trim()))
+                    {
+                        m.Email = tbMemberWeChat.Text.Trim();
+
+                        _repo.Update(m);
+                    }
+                    else
+                    {
+                        throw new Exception("请输入会员微信号");
+                    }
 
                     //New Order
                     var o = new Order();
@@ -417,21 +428,23 @@ namespace iArsenal.Web
 
                     if (OrderID > 0)
                     {
-                        o = repo.Single<Order>(OrderID);
+                        o = _repo.Single<Order>(OrderID);
                     }
 
                     o.Mobile = tbOrderMobile.Text.Trim();
                     o.Address = tbOrderAddress.Text.Trim();
 
-                    if (rblOrderPayment.SelectedValue.Equals("Bank", StringComparison.OrdinalIgnoreCase))
-                    {
-                        o.Payment = "{" + rblOrderPayment.SelectedValue + "|" + tbBankName.Text.Trim() + "|" +
-                                    tbBankAccount.Text.Trim() + "}";
-                    }
-                    else
-                    {
-                        o.Payment = "{" + rblOrderPayment.SelectedValue + "|" + tbAlipay.Text.Trim() + "}";
-                    }
+                    //if (rblOrderPayment.SelectedValue.Equals("Bank", StringComparison.OrdinalIgnoreCase))
+                    //{
+                    //    o.Payment = "{" + rblOrderPayment.SelectedValue + "|" + tbBankName.Text.Trim() + "|" +
+                    //                tbBankAccount.Text.Trim() + "}";
+                    //}
+                    //else
+                    //{
+                    //    o.Payment = "{" + rblOrderPayment.SelectedValue + "|" + tbAlipay.Text.Trim() + "}";
+                    //}
+
+                    o.Payment = string.Empty;
 
                     o.Postage = Convert.ToSingle(rblOrderPostage.SelectedValue);
                     o.UpdateTime = DateTime.Now;
@@ -440,7 +453,7 @@ namespace iArsenal.Web
 
                     if (OrderID > 0)
                     {
-                        repo.Update(o, trans);
+                        _repo.Update(o, trans);
 
                         // used by setting OrderItem foreign key
                         newId = OrderID;
@@ -461,14 +474,14 @@ namespace iArsenal.Web
 
                         //Get the Order ID after Insert new one
                         object key;
-                        repo.Insert(o, out key, trans);
+                        _repo.Insert(o, out key, trans);
                         newId = Convert.ToInt32(key);
                     }
 
                     //Remove Order Item of this Order
                     if (OrderID > 0 && o.ID.Equals(OrderID))
                     {
-                        repo.Query<OrderItem>(x => x.OrderID == OrderID).Delete(trans);
+                        _repo.Query<OrderItem>(x => x.OrderID == OrderID).Delete(trans);
                     }
 
                     //New Order Item for ReplicaKit
@@ -638,13 +651,15 @@ namespace iArsenal.Web
                         if (pPremierPatch == null)
                             throw new Exception("无英超袖标信息，请联系管理员");
 
-                        var oiPremierPatch = new OrdrItmPremiershipPatch();
+                        var oiPremierPatch = new OrdrItmPremiershipPatch
+                        {
+                            OrderID = newId,
+                            Size = string.Empty,
+                            Quantity = Convert.ToInt32(rblPremierPatch.SelectedValue),
+                            Sale = null,
+                            Remark = string.Empty
+                        };
 
-                        oiPremierPatch.OrderID = newId;
-                        oiPremierPatch.Size = string.Empty;
-                        oiPremierPatch.Quantity = Convert.ToInt32(rblPremierPatch.SelectedValue);
-                        oiPremierPatch.Sale = null;
-                        oiPremierPatch.Remark = string.Empty;
 
                         oiPremierPatch.Place(m, trans);
                     }
@@ -657,13 +672,14 @@ namespace iArsenal.Web
                         if (pChampionPatch == null)
                             throw new Exception("无欧冠袖标信息，请联系管理员");
 
-                        var oiChampionShipPatch = new OrdrItmChampionshipPatch();
-
-                        oiChampionShipPatch.OrderID = newId;
-                        oiChampionShipPatch.Size = string.Empty;
-                        oiChampionShipPatch.Quantity = Convert.ToInt32(rblChampionPatch.SelectedValue);
-                        oiChampionShipPatch.Sale = null;
-                        oiChampionShipPatch.Remark = string.Empty;
+                        var oiChampionShipPatch = new OrdrItmChampionshipPatch
+                        {
+                            OrderID = newId,
+                            Size = string.Empty,
+                            Quantity = Convert.ToInt32(rblChampionPatch.SelectedValue),
+                            Sale = null,
+                            Remark = string.Empty
+                        };
 
                         oiChampionShipPatch.Place(m, trans);
                     }
@@ -689,24 +705,32 @@ namespace iArsenal.Web
 
         protected void ddlReplicaKit_DataBound(object sender, EventArgs e)
         {
-            foreach (ListItem li in (sender as DropDownList).Items)
+            var dropDownList = sender as DropDownList;
+            if (dropDownList != null)
             {
-                var p = Product.Cache.Load(new Guid(li.Value));
+                foreach (ListItem li in dropDownList.Items)
+                {
+                    var p = Product.Cache.Load(new Guid(li.Value));
 
-                li.Text = $"({p.Code}) {p.DisplayName} - ￥{p.PriceCNY.ToString("f2")}";
+                    li.Text = $"({p.Code}) {p.DisplayName} - ￥{p.PriceCNY.ToString("f2")}";
+                }
             }
         }
 
         protected void ddlPlayerDetail_DataBound(object sender, EventArgs e)
         {
-            foreach (ListItem li in (sender as DropDownList).Items)
+            var dropDownList = sender as DropDownList;
+            if (dropDownList != null)
             {
-                var p = Arsenal_Player.Cache.Load(new Guid(li.Value));
-
-                if (p != null)
+                foreach (ListItem li in dropDownList.Items)
                 {
-                    li.Text = string.Format("{1} ({0})", p.SquadNumber, GetArsenalPlayerPrintingName(p).ToUpper());
-                    //li.Value = string.Format("{0}|{1}", p.SquadNumber.ToString(), p.LastName);
+                    var p = Arsenal_Player.Cache.Load(new Guid(li.Value));
+
+                    if (p != null)
+                    {
+                        li.Text = string.Format("{1} ({0})", p.SquadNumber, GetArsenalPlayerPrintingName(p).ToUpper());
+                        //li.Value = string.Format("{0}|{1}", p.SquadNumber.ToString(), p.LastName);
+                    }
                 }
             }
         }

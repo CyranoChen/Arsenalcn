@@ -8,17 +8,17 @@ namespace iArsenal.Web
 {
     public partial class AdminMemberView : AdminPageBase
     {
-        private readonly IRepository repo = new Repository();
+        private readonly IRepository _repo = new Repository();
 
         private int MemberID
         {
             get
             {
-                int _memberID;
+                int memberID;
                 if (!string.IsNullOrEmpty(Request.QueryString["MemberID"]) &&
-                    int.TryParse(Request.QueryString["MemberID"], out _memberID))
+                    int.TryParse(Request.QueryString["MemberID"], out memberID))
                 {
-                    return _memberID;
+                    return memberID;
                 }
                 return int.MinValue;
             }
@@ -40,15 +40,15 @@ namespace iArsenal.Web
         {
             if (MemberID > 0)
             {
-                var m = repo.Single<Member>(MemberID);
+                var m = _repo.Single<Member>(MemberID);
 
                 lblMemberInfo.Text = $"会员姓名<em>({MemberID})</em>:";
 
                 tbName.Text = m.Name;
                 cbIsActive.Checked = m.IsActive;
                 ddlOfficialSync.SelectedValue = m.OfficialSync;
-                ddlEvalution.SelectedValue = ((int) m.Evalution).ToString();
-                ddlMemberType.SelectedValue = ((int) m.MemberType).ToString();
+                ddlEvalution.SelectedValue = ((int)m.Evalution).ToString();
+                ddlMemberType.SelectedValue = ((int)m.MemberType).ToString();
                 tbMemberCardNo.Text = m.MemberCardNo;
                 tbAcnID.Text = m.AcnID.ToString();
                 tbAcnName.Text = m.AcnName;
@@ -69,7 +69,7 @@ namespace iArsenal.Web
                 rblGender.SelectedValue = m.Gender.ToString().ToLower();
                 tbPassportName.Text = m.PassportName;
                 tbPassportNo.Text = m.PassportNo;
-                tbMSN.Text = m.MSN;
+                tbWeChat.Text = m.WeChat;
                 tbQQ.Text = m.QQ;
 
                 #region Set Member Nation & Region
@@ -129,7 +129,7 @@ namespace iArsenal.Web
 
         private void BindItemData()
         {
-            var list = repo.Query<MemberPeriod>(x => x.MemberID == MemberID);
+            var list = _repo.Query<MemberPeriod>(x => x.MemberID == MemberID);
 
             gvMemberPeriod.DataSource = list;
             gvMemberPeriod.DataBind();
@@ -139,8 +139,11 @@ namespace iArsenal.Web
         {
             if (gvMemberPeriod.SelectedIndex != -1)
             {
-                Response.Redirect(
-                    $"AdminMemberPeriodView.aspx?MemberPeriodID={gvMemberPeriod.DataKeys[gvMemberPeriod.SelectedIndex].Value}");
+                var key = gvMemberPeriod.DataKeys[gvMemberPeriod.SelectedIndex];
+                if (key != null)
+                {
+                    Response.Redirect($"AdminMemberPeriodView.aspx?MemberPeriodID={key.Value}");
+                }
             }
         }
 
@@ -152,14 +155,14 @@ namespace iArsenal.Web
 
                 if (MemberID > 0)
                 {
-                    m = repo.Single<Member>(MemberID);
+                    m = _repo.Single<Member>(MemberID);
                 }
 
                 m.Name = tbName.Text.Trim();
                 m.IsActive = cbIsActive.Checked;
                 m.OfficialSync = ddlOfficialSync.SelectedValue;
-                m.Evalution = (MemberEvalution) Enum.Parse(typeof (MemberEvalution), ddlEvalution.SelectedValue);
-                m.MemberType = (MemberType) Enum.Parse(typeof (MemberType), ddlMemberType.SelectedValue);
+                m.Evalution = (MemberEvalution)Enum.Parse(typeof(MemberEvalution), ddlEvalution.SelectedValue);
+                m.MemberType = (MemberType)Enum.Parse(typeof(MemberType), ddlMemberType.SelectedValue);
                 m.MemberCardNo = tbMemberCardNo.Text.Trim();
                 m.AcnID = Convert.ToInt32(tbAcnID.Text.Trim());
                 m.AcnName = tbAcnName.Text.Trim();
@@ -178,27 +181,27 @@ namespace iArsenal.Web
                 else
                     m.LastLoginTime = m.JoinDate;
 
-                DateTime _birthday;
-                if (!string.IsNullOrEmpty(tbBirthday.Text) && DateTime.TryParse(tbBirthday.Text.Trim(), out _birthday))
-                    m.Birthday = _birthday;
+                DateTime birthday;
+                if (!string.IsNullOrEmpty(tbBirthday.Text) && DateTime.TryParse(tbBirthday.Text.Trim(), out birthday))
+                    m.Birthday = birthday;
                 else
                     m.Birthday = null;
 
                 m.Gender = Convert.ToBoolean(rblGender.SelectedValue);
                 m.PassportName = tbPassportName.Text.Trim();
                 m.PassportNo = tbPassportNo.Text.Trim();
-                m.MSN = tbMSN.Text.Trim();
+                m.WeChat = tbWeChat.Text.Trim();
                 m.QQ = tbQQ.Text.Trim();
 
                 #region Get Member Nation & Region
 
-                var _nation = ddlNation.SelectedValue;
+                var nation = ddlNation.SelectedValue;
 
-                if (!string.IsNullOrEmpty(_nation))
+                if (!string.IsNullOrEmpty(nation))
                 {
-                    if (_nation.Equals("中国"))
+                    if (nation.Equals("中国"))
                     {
-                        m.Nation = _nation;
+                        m.Nation = nation;
                         if (!string.IsNullOrEmpty(tbRegion1.Text.Trim()))
                         {
                             if (!string.IsNullOrEmpty(tbRegion2.Text.Trim()))
@@ -222,7 +225,7 @@ namespace iArsenal.Web
                     }
                     else
                     {
-                        m.Nation = _nation;
+                        m.Nation = nation;
                         m.Region = string.Empty;
                     }
                 }
@@ -246,45 +249,45 @@ namespace iArsenal.Web
 
                 #region Filter Member By AcnID
 
-                var tmpMID = int.MinValue;
+                var tmpMid = int.MinValue;
 
-                var tmpMem = repo.Query<Member>(x => x.AcnID == m.AcnID).FirstOrDefault();
+                var tmpMem = _repo.Query<Member>(x => x.AcnID == m.AcnID).FirstOrDefault();
 
                 if (tmpMem != null)
                 {
-                    tmpMID = tmpMem.ID > 0 ? tmpMem.ID : int.MinValue;
+                    tmpMid = tmpMem.ID > 0 ? tmpMem.ID : int.MinValue;
                 }
 
                 #endregion
 
-                if (MemberID > 0 && (MemberID.Equals(tmpMID) || tmpMID <= 0))
+                if (MemberID > 0 && (MemberID.Equals(tmpMid) || tmpMid <= 0))
                 {
-                    repo.Update(m);
+                    _repo.Update(m);
                     Member.Cache.RefreshCache();
 
-                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
                         "alert('更新成功');window.location.href=window.location.href", true);
                 }
                 else
                 {
-                    if (tmpMID > 0)
+                    if (tmpMid > 0)
                     {
                         var msg =
-                            $"if (confirm('该会员的AcnID已经注册,是否跳转?')) {{ window.location.href = 'AdminMemberView.aspx?MemberID={tmpMID}'; }}";
-                        ClientScript.RegisterClientScriptBlock(typeof (string), "failed", msg, true);
+                            $"if (confirm('该会员的AcnID已经注册,是否跳转?')) {{ window.location.href = 'AdminMemberView.aspx?MemberID={tmpMid}'; }}";
+                        ClientScript.RegisterClientScriptBlock(typeof(string), "failed", msg, true);
                         //ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("JumpToMemberViewer('{0}')", tmpMID.ToString()), true);
-                        throw new Exception($"AcnID in use for Member(No.{tmpMID})");
+                        throw new Exception($"AcnID in use for Member(No.{tmpMid})");
                     }
-                    repo.Insert(m);
+                    _repo.Insert(m);
                     Member.Cache.RefreshCache();
 
-                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
                         "alert('添加成功');window.location.href = 'AdminMember.aspx'", true);
                 }
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof (string), "failed", $"alert('{ex.Message}')", true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message}')", true);
             }
         }
 
@@ -306,9 +309,9 @@ namespace iArsenal.Web
             {
                 if (MemberID > 0)
                 {
-                    repo.Delete<Member>(MemberID);
+                    _repo.Delete<Member>(MemberID);
 
-                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
                         "alert('删除成功');window.location.href='AdminMember.aspx'", true);
                 }
                 else
@@ -318,7 +321,7 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof (string), "failed", $"alert('{ex.Message}')", true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message}')", true);
             }
         }
     }

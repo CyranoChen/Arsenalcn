@@ -211,13 +211,13 @@ namespace iArsenal.Web {
         protected global::System.Web.UI.WebControls.TextBox tbPassportName;
         
         /// <summary>
-        /// tbMSN control.
+        /// tbWeChat control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbMSN;
+        protected global::System.Web.UI.WebControls.TextBox tbWeChat;
         
         /// <summary>
         /// tbQQ control.

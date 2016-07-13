@@ -151,8 +151,8 @@ namespace iArsenal.Service
         [DbColumn("Zipcode")]
         public string Zipcode { get; set; }
 
-        [DbColumn("MSN")]
-        public string MSN { get; set; }
+        [DbColumn("WeChat")]
+        public string WeChat { get; set; }
 
         [DbColumn("QQ")]
         public string QQ { get; set; }

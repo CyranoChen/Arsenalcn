@@ -7,7 +7,7 @@ namespace iArsenal.Web
 {
     public partial class iArsenalMemberRegister : AcnPageBase
     {
-        private readonly IRepository repo = new Repository();
+        private readonly IRepository _repo = new Repository();
 
         private int MemberID
         {
@@ -44,14 +44,14 @@ namespace iArsenal.Web
 
             if (MemberID > 0)
             {
-                var m = repo.Single<Member>(MemberID);
+                var m = _repo.Single<Member>(MemberID);
 
                 tbName.Text = m.Name;
                 rblGender.SelectedValue = m.Gender.ToString().ToLower();
                 tbIDCardNo.Text = m.IDCardNo;
                 tbMobile.Text = m.Mobile;
                 tbEmail.Text = m.Email;
-                tbQQ.Text = m.QQ;
+                tbWeChat.Text = m.WeChat;
                 tbAddress.Text = m.Address;
                 tbDescription.Text = m.Description;
             }
@@ -65,7 +65,7 @@ namespace iArsenal.Web
 
                 if (MemberID > 0)
                 {
-                    m = repo.Single<Member>(MemberID);
+                    m = _repo.Single<Member>(MemberID);
                 }
                 else
                 {
@@ -83,7 +83,7 @@ namespace iArsenal.Web
                     m.Birthday = null;
                     m.PassportName = string.Empty;
                     m.PassportNo = string.Empty;
-                    m.MSN = string.Empty;
+                    m.QQ = string.Empty;
                     m.Nation = string.Empty;
                     m.Region = string.Empty;
                     m.Career = string.Empty;
@@ -99,7 +99,7 @@ namespace iArsenal.Web
 
                 m.IDCardNo = tbIDCardNo.Text.Trim();
                 m.Gender = Convert.ToBoolean(rblGender.SelectedValue);
-                m.QQ = tbQQ.Text.Trim();
+                m.WeChat = tbWeChat.Text.Trim();
 
                 if (!string.IsNullOrEmpty(tbMobile.Text.Trim()))
                     m.Mobile = tbMobile.Text.Trim();
@@ -116,7 +116,7 @@ namespace iArsenal.Web
 
                 if (MemberID > 0)
                 {
-                    repo.Update(m);
+                    _repo.Update(m);
 
                     Member.Cache.RefreshCache();
 
@@ -125,7 +125,7 @@ namespace iArsenal.Web
                 }
                 else
                 {
-                    repo.Insert(m);
+                    _repo.Insert(m);
 
                     Member.Cache.RefreshCache();
 

@@ -82,7 +82,7 @@ namespace iArsenal.Web
                     #endregion
 
                     lblOrderMobile.Text = $"<em>{o.Mobile}</em>";
-                    lblOrderPayment.Text = o.PaymentInfo;
+                    //lblOrderPayment.Text = o.PaymentInfo;
                     lblOrderAddress.Text = o.Address;
                     lblOrderDescription.Text = o.Description;
                     lblOrderID.Text = $"<em>{o.ID}</em>";

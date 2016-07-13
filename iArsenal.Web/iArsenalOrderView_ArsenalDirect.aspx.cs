@@ -71,13 +71,13 @@ namespace iArsenal.Web
                     if (m != null)
                     {
                         lblMemberEmail.Text = m.Email;
-                        lblMemberQQ.Text = m.QQ;
+                        lblMemberWeChat.Text = m.WeChat;
                         phMemberInfo.Visible = true;
                     }
                     else
                     {
                         lblMemberEmail.Text = string.Empty;
-                        lblMemberQQ.Text = string.Empty;
+                        lblMemberWeChat.Text = string.Empty;
                         phMemberInfo.Visible = false;
                     }
 

@@ -88,11 +88,11 @@
                                 Display="Dynamic" ErrorMessage="*" CssClass="ValiSpan">
                             </asp:RequiredFieldValidator>
                         </td>
-                        <td class="FieldHeader">邮箱：
+                        <td class="FieldHeader">微信：
                         </td>
                         <td class="FieldColumn">
-                            <asp:TextBox ID="tbEmail" runat="server" CssClass="TextBox" Width="150px" MaxLength="40"></asp:TextBox>
-                            <asp:RequiredFieldValidator ID="rfvEmail" runat="server" ControlToValidate="tbEmail"
+                            <asp:TextBox ID="tbMemberWeChat" runat="server" CssClass="TextBox" Width="150px" MaxLength="20"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="rfvMemberWeChat" runat="server" ControlToValidate="tbMemberWeChat"
                                 Display="Dynamic" ErrorMessage="*" CssClass="ValiSpan">
                             </asp:RequiredFieldValidator>
                         </td>

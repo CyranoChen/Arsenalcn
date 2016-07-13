@@ -199,10 +199,7 @@ namespace iArsenal.Web
                             else
                             {
                                 ddlNation.SelectedValue = "其他";
-                                if (m.Nation.Equals("其他"))
-                                    tbNation.Text = string.Empty;
-                                else
-                                    tbNation.Text = m.Nation;
+                                tbNation.Text = m.Nation.Equals("其他") ? string.Empty : m.Nation;
                             }
                         }
                         else
@@ -216,7 +213,7 @@ namespace iArsenal.Web
                         tbPassportNo.Text = m.PassportNo;
                         tbPassportName.Text = m.PassportName;
                         tbMobile.Text = m.Mobile;
-                        tbQQ.Text = m.QQ;
+                        tbWeChat.Text = m.WeChat;
                         tbEmail.Text = m.Email;
 
                         tbOrderDescription.Text = o.Description;
@@ -287,10 +284,7 @@ namespace iArsenal.Web
                         else
                         {
                             ddlNation.SelectedValue = "其他";
-                            if (m.Nation.Equals("其他"))
-                                tbNation.Text = string.Empty;
-                            else
-                                tbNation.Text = m.Nation;
+                            tbNation.Text = m.Nation.Equals("其他") ? string.Empty : m.Nation;
                         }
                     }
                     else
@@ -304,7 +298,7 @@ namespace iArsenal.Web
                     tbPassportNo.Text = m.PassportNo;
                     tbPassportName.Text = m.PassportName;
                     tbMobile.Text = m.Mobile;
-                    tbQQ.Text = m.QQ;
+                    tbWeChat.Text = m.WeChat;
                     tbEmail.Text = m.Email;
 
                     var pMembership = Product.Cache.Load(CurrProductType).Find(p => p.IsActive);
@@ -383,14 +377,7 @@ namespace iArsenal.Web
                             m.Nation = nation;
                             if (!string.IsNullOrEmpty(tbRegion1.Text.Trim()))
                             {
-                                if (!string.IsNullOrEmpty(tbRegion2.Text.Trim()))
-                                {
-                                    m.Region = $"{tbRegion1.Text.Trim()}|{tbRegion2.Text.Trim()}";
-                                }
-                                else
-                                {
-                                    m.Region = tbRegion1.Text.Trim();
-                                }
+                                m.Region = !string.IsNullOrEmpty(tbRegion2.Text.Trim()) ? $"{tbRegion1.Text.Trim()}|{tbRegion2.Text.Trim()}" : tbRegion1.Text.Trim();
                             }
                             else
                             {
@@ -436,8 +423,8 @@ namespace iArsenal.Web
                     else
                         throw new Exception("请填写会员手机");
 
-                    if (!string.IsNullOrEmpty(tbQQ.Text.Trim()))
-                        m.QQ = tbQQ.Text.Trim();
+                    if (!string.IsNullOrEmpty(tbWeChat.Text.Trim()))
+                        m.QQ = tbWeChat.Text.Trim();
                     else
                         throw new Exception("请填写会员微信/QQ");
 

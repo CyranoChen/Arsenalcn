@@ -16,9 +16,9 @@
             var $btnSubmit = $(".FooterBtnBar .SubmitBtn");
             //$btnSubmit.click(function () { return PackageWishOrderItemList($('tbody.ArsenalDirect_WishList')); });
 
-            $.getJSON("ServerOrderItemCheck.ashx", { OrderItem: "0" }, function (data, status, xhr) {
-                if (status == "success" && data != null) {
-                    if (data.result == "error") {
+            $.getJSON("ServerOrderItemCheck.ashx", { OrderItem: "0" }, function (data, status) {
+                if (status === "success" && data != null) {
+                    if (data.result === "error") {
                         data = "";
                     }
 
@@ -30,9 +30,9 @@
                 }
             });
 
-            $.getJSON("ServerProductCheck.ashx", { IsActive: "true", ProductType: "0" }, function (data, status, xhr) {
-                if (status == "success" && data != null) {
-                    if (data.result == "error") {
+            $.getJSON("ServerProductCheck.ashx", { IsActive: "true", ProductType: "0" }, function (data, status) {
+                if (status === "success" && data != null) {
+                    if (data.result === "error") {
                         data = "";
                     }
 

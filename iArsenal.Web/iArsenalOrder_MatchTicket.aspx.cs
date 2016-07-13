@@ -7,17 +7,17 @@ namespace iArsenal.Web
 {
     public partial class iArsenalOrder_MatchTicket : MemberPageBase
     {
-        private readonly IRepository repo = new Repository();
+        private readonly IRepository _repo = new Repository();
 
         private int OrderID
         {
             get
             {
-                int _orderID;
+                int orderID;
                 if (!string.IsNullOrEmpty(Request.QueryString["OrderID"]) &&
-                    int.TryParse(Request.QueryString["OrderID"], out _orderID))
+                    int.TryParse(Request.QueryString["OrderID"], out orderID))
                 {
-                    return _orderID;
+                    return orderID;
                 }
                 return int.MinValue;
             }
@@ -29,7 +29,7 @@ namespace iArsenal.Web
             {
                 if (OrderID > 0)
                 {
-                    var o = (OrdrTicket) Order.Select(OrderID);
+                    var o = (OrdrTicket)Order.Select(OrderID);
 
                     if (o.OIMatchTicket != null)
                     {
@@ -108,14 +108,10 @@ namespace iArsenal.Web
                     $"<em>【{mt.LeagueName}】{mt.TeamName}({Arsenal_Team.Cache.Load(mt.TeamGuid).TeamEnglishName})</em>";
                 lblMatchTicketPlayTime.Text = $"<em>【伦敦】{mt.PlayTimeLocal.ToString("yyyy-MM-dd HH:mm")}</em>";
 
-                var _strRank = mt.ProductInfo.Trim();
-                if (lblMatchTicketRank != null && !string.IsNullOrEmpty(_strRank))
+                var strRank = mt.ProductInfo.Trim();
+                if (lblMatchTicketRank != null)
                 {
-                    lblMatchTicketRank.Text = $"<em>{_strRank.Substring(_strRank.Length - 7, 7)} - {p.PriceInfo}</em>";
-                }
-                else
-                {
-                    lblMatchTicketRank.Text = string.Empty;
+                    lblMatchTicketRank.Text = !string.IsNullOrEmpty(strRank) ? $"<em>{strRank.Substring(strRank.Length - 7, 7)} - {p.PriceInfo}</em>" : string.Empty;
                 }
 
                 if (mt.AllowMemberClass.HasValue && mt.AllowMemberClass.Value == 2)
@@ -133,7 +129,7 @@ namespace iArsenal.Web
 
                 if (OrderID > 0)
                 {
-                    var o = (OrdrTicket) Order.Select(OrderID);
+                    var o = (OrdrTicket)Order.Select(OrderID);
 
                     if (o == null || !o.IsActive)
                     {
@@ -144,7 +140,7 @@ namespace iArsenal.Web
                     {
                         lblMemberName.Text = $"<b>{o.MemberName}</b> (<em>NO.{o.MemberID}</em>)";
 
-                        var m = repo.Single<Member>(o.MemberID);
+                        var m = _repo.Single<Member>(o.MemberID);
 
                         if (m == null || !m.IsActive)
                         {
@@ -175,10 +171,7 @@ namespace iArsenal.Web
                             else
                             {
                                 ddlNation.SelectedValue = "其他";
-                                if (m.Nation.Equals("其他"))
-                                    tbNation.Text = string.Empty;
-                                else
-                                    tbNation.Text = m.Nation;
+                                tbNation.Text = m.Nation.Equals("其他") ? string.Empty : m.Nation;
                             }
                         }
                         else
@@ -192,7 +185,7 @@ namespace iArsenal.Web
                         tbPassportNo.Text = m.PassportNo;
                         tbPassportName.Text = m.PassportName;
                         tbMobile.Text = m.Mobile;
-                        tbQQ.Text = m.QQ;
+                        tbWeChat.Text = m.WeChat;
                         tbEmail.Text = m.Email;
 
                         tbOrderDescription.Text = o.Description;
@@ -217,7 +210,7 @@ namespace iArsenal.Web
                 else
                 {
                     //Fill Member draft information into textbox
-                    var m = repo.Single<Member>(MID);
+                    var m = _repo.Single<Member>(MID);
 
                     #region Set Member Nation & Region
 
@@ -242,10 +235,7 @@ namespace iArsenal.Web
                         else
                         {
                             ddlNation.SelectedValue = "其他";
-                            if (m.Nation.Equals("其他"))
-                                tbNation.Text = string.Empty;
-                            else
-                                tbNation.Text = m.Nation;
+                            tbNation.Text = m.Nation.Equals("其他") ? string.Empty : m.Nation;
                         }
                     }
                     else
@@ -259,7 +249,7 @@ namespace iArsenal.Web
                     tbPassportNo.Text = m.PassportNo;
                     tbPassportName.Text = m.PassportName;
                     tbMobile.Text = m.Mobile;
-                    tbQQ.Text = m.QQ;
+                    tbWeChat.Text = m.WeChat;
                     tbEmail.Text = m.Email;
 
                     tbTravelDate.Text = mt.PlayTime.AddDays(-2).ToString("yyyy-MM-dd");
@@ -267,7 +257,7 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof (string), "failed",
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed",
                     $"alert('{ex.Message}');window.location.href = 'iArsenalOrder_MatchList.aspx'", true);
             }
         }
@@ -294,29 +284,22 @@ namespace iArsenal.Web
                         throw new Exception("无相关比赛信息，请联系管理员");
                     }
 
-                    var m = repo.Single<Member>(MID);
+                    var m = _repo.Single<Member>(MID);
 
                     // Update Member Information
 
                     #region Get Member Nation & Region
 
-                    var _nation = ddlNation.SelectedValue;
+                    var nation = ddlNation.SelectedValue;
 
-                    if (!string.IsNullOrEmpty(_nation))
+                    if (!string.IsNullOrEmpty(nation))
                     {
-                        if (_nation.Equals("中国"))
+                        if (nation.Equals("中国"))
                         {
-                            m.Nation = _nation;
+                            m.Nation = nation;
                             if (!string.IsNullOrEmpty(tbRegion1.Text.Trim()))
                             {
-                                if (!string.IsNullOrEmpty(tbRegion2.Text.Trim()))
-                                {
-                                    m.Region = $"{tbRegion1.Text.Trim()}|{tbRegion2.Text.Trim()}";
-                                }
-                                else
-                                {
-                                    m.Region = tbRegion1.Text.Trim();
-                                }
+                                m.Region = !string.IsNullOrEmpty(tbRegion2.Text.Trim()) ? $"{tbRegion1.Text.Trim()}|{tbRegion2.Text.Trim()}" : tbRegion1.Text.Trim();
                             }
                             else
                             {
@@ -330,7 +313,7 @@ namespace iArsenal.Web
                         }
                         else
                         {
-                            m.Nation = _nation;
+                            m.Nation = nation;
                             m.Region = string.Empty;
                         }
                     }
@@ -362,10 +345,10 @@ namespace iArsenal.Web
                     else
                         throw new Exception("请填写会员手机");
 
-                    if (!string.IsNullOrEmpty(tbQQ.Text.Trim()))
-                        m.QQ = tbQQ.Text.Trim();
+                    if (!string.IsNullOrEmpty(tbWeChat.Text.Trim()))
+                        m.WeChat = tbWeChat.Text.Trim();
                     else
-                        throw new Exception("请填写会员微信/QQ");
+                        throw new Exception("请填写会员微信号");
 
                     if (!string.IsNullOrEmpty(tbEmail.Text.Trim()))
                         m.Email = tbEmail.Text.Trim();
@@ -374,15 +357,15 @@ namespace iArsenal.Web
 
                     //m.MemberType = MemberType.Match;
 
-                    repo.Update(m);
+                    _repo.Update(m);
 
                     // New Order
                     var o = new Order();
-                    var _newID = int.MinValue;
+                    int newID;
 
                     if (OrderID > 0)
                     {
-                        o = repo.Single<Order>(OrderID);
+                        o = _repo.Single<Order>(OrderID);
                     }
 
                     o.Mobile = m.Mobile;
@@ -392,10 +375,10 @@ namespace iArsenal.Web
 
                     if (OrderID > 0)
                     {
-                        repo.Update(o, trans);
+                        _repo.Update(o, trans);
 
                         // used by setting OrderItem foreign key
-                        _newID = OrderID;
+                        newID = OrderID;
                     }
                     else
                     {
@@ -415,9 +398,9 @@ namespace iArsenal.Web
                         o.Remark = string.Empty;
 
                         //Get the Order ID after Insert new one
-                        object _key = null;
-                        repo.Insert(o, out _key, trans);
-                        _newID = Convert.ToInt32(_key);
+                        object key;
+                        _repo.Insert(o, out key, trans);
+                        newID = Convert.ToInt32(key);
                     }
 
                     //New Order Items
@@ -431,15 +414,15 @@ namespace iArsenal.Web
                     //Remove Order Item of this Order
                     if (OrderID > 0 && o.ID.Equals(OrderID))
                     {
-                        var count = repo.Query<OrderItem>(x => x.OrderID == OrderID).Delete(trans);
+                        _repo.Query<OrderItem>(x => x.OrderID == OrderID).Delete(trans);
                     }
 
                     // Genernate Travel Date
-                    DateTime _date;
+                    DateTime date;
                     if (!string.IsNullOrEmpty(tbTravelDate.Text.Trim()) &&
-                        DateTime.TryParse(tbTravelDate.Text.Trim(), out _date))
+                        DateTime.TryParse(tbTravelDate.Text.Trim(), out date))
                     {
-                        oi.TravelDate = _date;
+                        oi.TravelDate = date;
                     }
                     else
                     {
@@ -449,7 +432,7 @@ namespace iArsenal.Web
                     // Every Member can only purchase ONE ticket of each match
 
                     oi.MatchGuid = mt.ID;
-                    oi.OrderID = _newID;
+                    oi.OrderID = newID;
                     oi.Quantity = 1;
                     oi.Sale = null;
 
@@ -457,15 +440,15 @@ namespace iArsenal.Web
 
                     trans.Commit();
 
-                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
                         string.Format("alert('订单({0})保存成功');window.location.href = 'ServerOrderView.ashx?OrderID={0}'",
-                            _newID), true);
+                            newID), true);
                 }
                 catch (Exception ex)
                 {
                     trans.Rollback();
 
-                    ClientScript.RegisterClientScriptBlock(typeof (string), "failed", $"alert('{ex.Message}')", true);
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message}')", true);
                 }
 
                 //conn.Close();

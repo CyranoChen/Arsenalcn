@@ -70,10 +70,10 @@
                         </td>
                     </tr>
                     <tr class="Row">
-                        <td class="FieldHeader">微信/QQ：
+                        <td class="FieldHeader">微信：
                         </td>
                         <td class="FieldColumn">
-                            <asp:Label ID="lblMemberQQ" runat="server"></asp:Label>
+                            <asp:Label ID="lblMemberWeChat" runat="server"></asp:Label>
                         </td>
                         <td class="FieldHeader">邮箱：
                         </td>

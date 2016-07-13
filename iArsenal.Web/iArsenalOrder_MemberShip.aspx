@@ -106,11 +106,11 @@
                                 Display="Dynamic" ErrorMessage="*" CssClass="ValiSpan">
                             </asp:RequiredFieldValidator>
                         </td>
-                        <td class="FieldHeader">微信/QQ：
+                        <td class="FieldHeader">微信：
                         </td>
                         <td class="FieldColumn">
-                            <asp:TextBox ID="tbQQ" runat="server" CssClass="TextBox" Width="150px" MaxLength="20"></asp:TextBox>
-                            <asp:RequiredFieldValidator ID="rfvQQ" runat="server" ControlToValidate="tbQQ"
+                            <asp:TextBox ID="tbWeChat" runat="server" CssClass="TextBox" Width="150px" MaxLength="20"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="rfvWeChat" runat="server" ControlToValidate="tbWeChat"
                                 Display="Dynamic" ErrorMessage="*" CssClass="ValiSpan">
                             </asp:RequiredFieldValidator>
                         </td>

@@ -101,7 +101,7 @@ namespace iArsenal.Web
                     lblMemberIDCardNo.Text = m.IDCardNo;
                     lblMemberPassportNo.Text = m.PassportNo;
                     lblMemberPassportName.Text = m.PassportName;
-                    lblMemberQQ.Text = $"<em>{m.QQ}</em>";
+                    lblMemberWeChat.Text = $"<em>{m.WeChat}</em>";
                     lblMemberEmail.Text = $"<em>{m.Email}</em>";
 
                     lblOrderID.Text = $"<em>{o.ID}</em>";

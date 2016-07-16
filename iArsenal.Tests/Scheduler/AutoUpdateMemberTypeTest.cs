@@ -33,7 +33,8 @@ namespace iArsenal.Tests.Scheduler
                             {
                                 type = MemberType.Match;
                             }
-                            else if (list.Exists(x => x.OrderType == OrderBaseType.ReplicaKit || x.OrderType == OrderBaseType.Wish))
+                            else if (list.Exists(x => x.OrderType == OrderBaseType.ReplicaKit ||
+                                x.OrderType == OrderBaseType.Printing || x.OrderType == OrderBaseType.Wish))
                             {
                                 type = MemberType.Buyer;
                             }

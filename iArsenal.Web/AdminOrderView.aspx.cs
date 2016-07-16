@@ -49,7 +49,7 @@ namespace iArsenal.Web
                 tbMemberID.Text = o.MemberID.ToString();
                 tbMemberName.Text = o.MemberName;
                 cbIsActive.Checked = o.IsActive;
-                ddlStatus.SelectedValue = ((int) o.Status).ToString();
+                ddlStatus.SelectedValue = ((int)o.Status).ToString();
                 tbRate.Text = o.Rate.ToString();
                 tbCreateTime.Text = o.CreateTime.ToString("yyyy-MM-dd HH:mm:ss");
                 tbUpdateTime.Text = o.UpdateTime.ToString("yyyy-MM-dd HH:mm:ss");
@@ -132,8 +132,9 @@ namespace iArsenal.Web
         {
             if (gvOrderItem.SelectedIndex != -1)
             {
-                Response.Redirect(
-                    $"AdminOrderItemView.aspx?OrderItemID={gvOrderItem.DataKeys[gvOrderItem.SelectedIndex].Value}");
+                var key = gvOrderItem.DataKeys[gvOrderItem.SelectedIndex];
+                if (key != null)
+                { Response.Redirect($"AdminOrderItemView.aspx?OrderItemID={key.Value}"); }
             }
         }
 
@@ -155,7 +156,7 @@ namespace iArsenal.Web
 
                 o.MemberName = tbMemberName.Text.Trim();
                 o.IsActive = cbIsActive.Checked;
-                o.Status = (OrderStatusType) Enum.Parse(typeof (OrderStatusType), ddlStatus.SelectedValue);
+                o.Status = (OrderStatusType)Enum.Parse(typeof(OrderStatusType), ddlStatus.SelectedValue);
                 o.Rate = Convert.ToInt16(tbRate.Text.Trim());
                 o.CreateTime = DateTime.Parse(tbCreateTime.Text.Trim());
                 o.UpdateTime = DateTime.Parse(tbUpdateTime.Text.Trim());
@@ -185,20 +186,20 @@ namespace iArsenal.Web
                 {
                     repo.Update(o);
 
-                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
                         "alert('更新成功');window.location.href = window.location.href", true);
                 }
                 else
                 {
                     repo.Insert(o);
 
-                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
                         "alert('添加成功');window.location.href = 'AdminOrder.aspx'", true);
                 }
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof (string), "failed", $"alert('{ex.Message}')", true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message}')", true);
             }
         }
 
@@ -212,7 +213,7 @@ namespace iArsenal.Web
 
                     o.CalcOrderPrice();
 
-                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
                         $"alert('重新计算总价为{o.Price.ToString("f2")}元');window.location.href=window.location.href", true);
                 }
                 else
@@ -222,7 +223,7 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof (string), "failed", $"alert('{ex.Message}')", true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message}')", true);
             }
         }
 
@@ -248,7 +249,7 @@ namespace iArsenal.Web
 
                     repo.Delete<Order>(OrderID);
 
-                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
                         $"alert('删除成功(包括{count}个许愿)');window.location.href='AdminOrder.aspx'", true);
                 }
                 else
@@ -258,7 +259,7 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof (string), "failed", $"alert('{ex.Message}')", true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message}')", true);
             }
         }
     }

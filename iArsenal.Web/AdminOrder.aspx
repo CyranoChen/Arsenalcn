@@ -38,6 +38,7 @@
                 <asp:DropDownList ID="ddlOrderType" runat="server">
                     <asp:ListItem Value="" Text="--类型--" Selected="True"></asp:ListItem>
                     <asp:ListItem Value="ReplicaKit" Text="球衣"></asp:ListItem>
+                    <asp:ListItem Value="Printing" Text="印字"></asp:ListItem>
                     <asp:ListItem Value="Wish" Text="团购"></asp:ListItem>
                     <asp:ListItem Value="Ticket" Text="球票"></asp:ListItem>
                     <asp:ListItem Value="Travel" Text="观赛"></asp:ListItem>

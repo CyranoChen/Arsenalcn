@@ -191,6 +191,7 @@
     <Content Include="iArsenalOrderView_TicketBeijing.aspx" />
     <Content Include="iArsenalOrder.aspx" />
     <Content Include="iArsenalOrderView_ReplicaKit.aspx" />
+    <Content Include="iArsenalOrder_Printing.aspx" />
     <Content Include="Scripts\iarsenal.min.js">
       <DependentUpon>iarsenal.js</DependentUpon>
     </Content>
@@ -416,6 +417,13 @@
     </Compile>
     <Compile Include="iArsenalOrder_Membership.aspx.designer.cs">
       <DependentUpon>iArsenalOrder_Membership.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="iArsenalOrder_Printing.aspx.cs">
+      <DependentUpon>iArsenalOrder_Printing.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="iArsenalOrder_Printing.aspx.designer.cs">
+      <DependentUpon>iArsenalOrder_Printing.aspx</DependentUpon>
     </Compile>
     <Compile Include="PageBase\MemberPageBase.cs">
       <SubType>ASPXCodeBehind</SubType>

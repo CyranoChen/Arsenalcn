@@ -56,18 +56,18 @@ namespace iArsenal.Service
 
             #region Order Status Workflow Info
 
-            var _strWorkflow = "{{ \"StatusType\": \"{0}\", \"StatusInfo\": \"{1}\" }}";
+            var strWorkflow = "{{ \"StatusType\": \"{0}\", \"StatusInfo\": \"{1}\" }}";
 
-            string[] _workflowInfo =
+            string[] workflowInfo =
             {
-                string.Format(_strWorkflow, ((int) OrderStatusType.Draft), "未提交"),
-                string.Format(_strWorkflow, ((int) OrderStatusType.Submitted), "审核中"),
-                string.Format(_strWorkflow, ((int) OrderStatusType.Confirmed), "已付款"),
-                string.Format(_strWorkflow, ((int) OrderStatusType.Ordered), "已下单"),
-                string.Format(_strWorkflow, ((int) OrderStatusType.Delivered), "已出票")
+                string.Format(strWorkflow, ((int) OrderStatusType.Draft), "未提交"),
+                string.Format(strWorkflow, ((int) OrderStatusType.Submitted), "后台审核"),
+                string.Format(strWorkflow, ((int) OrderStatusType.Confirmed), "已付款"),
+                string.Format(strWorkflow, ((int) OrderStatusType.Ordered), "预定成功"),
+                string.Format(strWorkflow, ((int) OrderStatusType.Delivered), "已出票")
             };
 
-            StatusWorkflowInfo = _workflowInfo;
+            StatusWorkflowInfo = workflowInfo;
 
             #endregion
         }

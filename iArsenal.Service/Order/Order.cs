@@ -35,10 +35,7 @@ namespace iArsenal.Service
                         retValue = $"【支付宝】{strPayment[1]}";
                     else if (strPayment[0].Equals(OrderPaymentType.Bank.ToString(), StringComparison.OrdinalIgnoreCase))
                     {
-                        if (strPayment.Length >= 3)
-                            retValue = string.Format("【{0}】{1}", strPayment[1], strPayment[2]);
-                        else
-                            retValue = strPayment[1];
+                        retValue = strPayment.Length >= 3 ? $"【{strPayment[1]}】{strPayment[2]}" : strPayment[1];
                     }
                     else
                         retValue = string.Empty;
@@ -60,7 +57,7 @@ namespace iArsenal.Service
                 var sale = (double?)s.GetValue("Sale");
                 var price = (double)s.GetValue("Price");
 
-                return sale.HasValue ? sale.Value.ToString("f2") : price.ToString("f2");
+                return sale?.ToString("f2") ?? price.ToString("f2");
 
                 #endregion
             }));
@@ -115,10 +112,7 @@ namespace iArsenal.Service
 
             if (query.Any())
             {
-                foreach (var oi in query)
-                {
-                    price += oi.TotalPrice;
-                }
+                price += query.Sum(oi => oi.TotalPrice);
             }
 
             Price = price + Postage;
@@ -132,35 +126,37 @@ namespace iArsenal.Service
 
             var o = repo.Single<Order>(key);
 
-            if (o != null)
+            if (o == null) return null;
+
+            switch (o.OrderType)
             {
-                switch (o.OrderType)
-                {
-                    case OrderBaseType.ReplicaKit:
-                        var mapperReplicaKit = new MapperConfiguration(cfg =>
-                            cfg.CreateMap<Order, OrdrReplicaKit>().AfterMap((s, d) => d.Init())).CreateMapper();
-                        return mapperReplicaKit.Map<OrdrReplicaKit>(o);
-                    case OrderBaseType.Ticket:
-                        var mapperTicket = new MapperConfiguration(cfg =>
-                            cfg.CreateMap<Order, OrdrTicket>().AfterMap((s, d) => d.Init())).CreateMapper();
-                        return mapperTicket.Map<OrdrTicket>(o);
-                    case OrderBaseType.Travel:
-                        var mapperTravel = new MapperConfiguration(cfg =>
-                            cfg.CreateMap<Order, OrdrTravel>().AfterMap((s, d) => d.Init())).CreateMapper();
-                        return mapperTravel.Map<OrdrTravel>(o);
-                    case OrderBaseType.Wish:
-                        var mapperWish = new MapperConfiguration(cfg =>
-                            cfg.CreateMap<Order, OrdrWish>().AfterMap((s, d) => d.Init())).CreateMapper();
-                        return mapperWish.Map<OrdrWish>(o);
-                    case OrderBaseType.Membership:
-                        var mapperMembership = new MapperConfiguration(cfg =>
-                            cfg.CreateMap<Order, OrdrMembership>().AfterMap((s, d) => d.Init())).CreateMapper();
-                        return mapperMembership.Map<OrdrMembership>(o);
-                    default:
-                        return o;
-                }
+                case OrderBaseType.ReplicaKit:
+                    var mapperReplicaKit = new MapperConfiguration(cfg =>
+                        cfg.CreateMap<Order, OrdrReplicaKit>().AfterMap((s, d) => d.Init())).CreateMapper();
+                    return mapperReplicaKit.Map<OrdrReplicaKit>(o);
+                case OrderBaseType.Printing:
+                    var mapperPrinting = new MapperConfiguration(cfg =>
+                        cfg.CreateMap<Order, OrdrPrinting>().AfterMap((s, d) => d.Init())).CreateMapper();
+                    return mapperPrinting.Map<OrdrPrinting>(o);
+                case OrderBaseType.Ticket:
+                    var mapperTicket = new MapperConfiguration(cfg =>
+                        cfg.CreateMap<Order, OrdrTicket>().AfterMap((s, d) => d.Init())).CreateMapper();
+                    return mapperTicket.Map<OrdrTicket>(o);
+                case OrderBaseType.Travel:
+                    var mapperTravel = new MapperConfiguration(cfg =>
+                        cfg.CreateMap<Order, OrdrTravel>().AfterMap((s, d) => d.Init())).CreateMapper();
+                    return mapperTravel.Map<OrdrTravel>(o);
+                case OrderBaseType.Wish:
+                    var mapperWish = new MapperConfiguration(cfg =>
+                        cfg.CreateMap<Order, OrdrWish>().AfterMap((s, d) => d.Init())).CreateMapper();
+                    return mapperWish.Map<OrdrWish>(o);
+                case OrderBaseType.Membership:
+                    var mapperMembership = new MapperConfiguration(cfg =>
+                        cfg.CreateMap<Order, OrdrMembership>().AfterMap((s, d) => d.Init())).CreateMapper();
+                    return mapperMembership.Map<OrdrMembership>(o);
+                default:
+                    return o;
             }
-            return null;
         }
 
         public void RefreshOrderType()
@@ -186,6 +182,20 @@ namespace iArsenal.Service
             {
                 return OrderBaseType.ReplicaKit;
             }
+
+            if (list.Any(x =>
+            {
+                var type = Product.Cache.Load(x.ProductGuid).ProductType;
+                return type.Equals(ProductType.PlayerName);
+            }) && list.Any(x =>
+            {
+                var type = Product.Cache.Load(x.ProductGuid).ProductType;
+                return type.Equals(ProductType.PlayerNumber);
+            }))
+            {
+                return OrderBaseType.Printing;
+            }
+
             if (list.Any(delegate (OrderItem x)
             {
                 var type = Product.Cache.Load(x.ProductGuid).ProductType;
@@ -194,21 +204,20 @@ namespace iArsenal.Service
             {
                 return OrderBaseType.Ticket;
             }
+
             if (list.Any(x => Product.Cache.Load(x.ProductGuid).ProductType.Equals(ProductType.TravelPlan)))
             {
                 return OrderBaseType.Travel;
             }
-            if (list.Any(delegate (OrderItem x)
-            {
-                if (!x.ProductGuid.Equals(Guid.Empty))
-                {
-                    return Product.Cache.Load(x.ProductGuid).ProductType.Equals(ProductType.Other);
-                }
-                return true;
-            }))
+
+            if (list.Any(
+                x =>
+                    x.ProductGuid.Equals(Guid.Empty) ||
+                    Product.Cache.Load(x.ProductGuid).ProductType.Equals(ProductType.Other)))
             {
                 return OrderBaseType.Wish;
             }
+
             if (list.Any(delegate (OrderItem x)
             {
                 var type = Product.Cache.Load(x.ProductGuid).ProductType;
@@ -217,6 +226,7 @@ namespace iArsenal.Service
             {
                 return OrderBaseType.Membership;
             }
+
             return OrderBaseType.None;
         }
 
@@ -311,6 +321,7 @@ namespace iArsenal.Service
         Ticket = 2,
         Travel = 3,
         Wish = 4,
-        Membership = 5
+        Membership = 5,
+        Printing = 6
     }
 }

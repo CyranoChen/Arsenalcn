@@ -59,6 +59,7 @@
     <Compile Include="Entity\MatchTicket.cs" />
     <Compile Include="Order\OrderItemMembership.cs" />
     <Compile Include="Order\OrderMembership.cs" />
+    <Compile Include="Order\OrderPrinting.cs" />
     <Compile Include="Order\OrderWish.cs" />
     <Compile Include="Order\OrderTravel.cs" />
     <Compile Include="Order\OrderTicket.cs" />

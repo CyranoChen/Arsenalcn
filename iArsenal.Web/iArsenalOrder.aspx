@@ -1,6 +1,6 @@
 ﻿<%@ Page Language="C#" MasterPageFile="iArsenalMaster.Master" AutoEventWireup="true"
-CodeBehind="iArsenalOrder.aspx.cs" Inherits="iArsenal.Web.iArsenalOrder" Title="订单查询"
-Theme="iArsenal" %>
+    CodeBehind="iArsenalOrder.aspx.cs" Inherits="iArsenal.Web.iArsenalOrder" Title="订单查询"
+    Theme="iArsenal" %>
 
 <%@ Register Src="Control/PortalSitePath.ascx" TagName="PortalSitePath" TagPrefix="uc1" %>
 <%@ Register Src="Control/CustomPagerInfo.ascx" TagName="CustomPagerInfo" TagPrefix="uc3" %>
@@ -8,8 +8,8 @@ Theme="iArsenal" %>
     <script type="text/javascript">
         $(function () {
             var $tbInfo = $(".DivFloatLeft > .TextBox");
-            $tbInfo.each(function() {
-                $(this).focus(function() {
+            $tbInfo.each(function () {
+                $(this).focus(function () {
                     $(this).val("");
                 });
             });
@@ -18,7 +18,7 @@ Theme="iArsenal" %>
 </asp:Content>
 <asp:Content ID="cphMain" ContentPlaceHolderID="cphMain" runat="server">
     <div id="ACN_Main">
-        <uc1:PortalSitePath ID="ucPortalSitePath" runat="server"/>
+        <uc1:PortalSitePath ID="ucPortalSitePath" runat="server" />
         <div id="mainPanel">
             <div class="FunctionBar">
                 <div class="DivFloatLeft">
@@ -27,6 +27,7 @@ Theme="iArsenal" %>
                     <asp:DropDownList ID="ddlOrderType" runat="server">
                         <asp:ListItem Value="" Text="--类型--" Selected="True"></asp:ListItem>
                         <asp:ListItem Value="ReplicaKit" Text="球衣"></asp:ListItem>
+                        <asp:ListItem Value="Printing" Text="印字"></asp:ListItem>
                         <asp:ListItem Value="Wish" Text="团购"></asp:ListItem>
                         <asp:ListItem Value="Ticket" Text="球票"></asp:ListItem>
                         <asp:ListItem Value="Travel" Text="观赛"></asp:ListItem>
@@ -38,16 +39,16 @@ Theme="iArsenal" %>
                 <div class="DivFloatRight">
                 </div>
                 <div class="Clear">
-                    <uc3:CustomPagerInfo ID="ctrlCustomPagerInfo" runat="server"/>
+                    <uc3:CustomPagerInfo ID="ctrlCustomPagerInfo" runat="server" />
                 </div>
             </div>
             <asp:GridView ID="gvOrder" runat="server" DataKeyNames="ID" OnPageIndexChanging="gvOrder_PageIndexChanging"
-                          PageSize="10" OnSelectedIndexChanged="gvOrder_SelectedIndexChanged" OnRowDataBound="gvOrder_RowDataBound">
+                PageSize="10" OnSelectedIndexChanged="gvOrder_SelectedIndexChanged" OnRowDataBound="gvOrder_RowDataBound">
                 <Columns>
-                    <asp:BoundField HeaderText="编号" DataField="ID"/>
-                    <asp:BoundField HeaderText="创建时间" DataField="CreateTime" DataFormatString="{0:yyyy-MM-dd HH:mm}"/>
+                    <asp:BoundField HeaderText="编号" DataField="ID" />
+                    <asp:BoundField HeaderText="创建时间" DataField="CreateTime" DataFormatString="{0:yyyy-MM-dd HH:mm}" />
                     <asp:BoundField HeaderText="定金" DataField="Deposit" NullDisplayText="/" DataFormatString="{0:f2}"
-                                    ItemStyle-HorizontalAlign="Right" Visible="false"/>
+                        ItemStyle-HorizontalAlign="Right" Visible="false" />
                     <asp:TemplateField HeaderText="类型">
                         <ItemTemplate>
                             <asp:Label ID="lblOrderType" runat="server"></asp:Label>
@@ -64,7 +65,7 @@ Theme="iArsenal" %>
                         </ItemTemplate>
                     </asp:TemplateField>
                     <asp:CommandField ShowSelectButton="true" HeaderText="操作" EditText="修改" SelectText="详细"
-                                      UpdateText="保存" CancelText="取消" DeleteText="删除" ControlStyle-CssClass="LinkBtn"/>
+                        UpdateText="保存" CancelText="取消" DeleteText="删除" ControlStyle-CssClass="LinkBtn" />
                 </Columns>
             </asp:GridView>
         </div>

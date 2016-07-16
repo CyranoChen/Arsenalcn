@@ -345,7 +345,7 @@ namespace iArsenal.Web
                                 var oReplicaKit = (OrdrReplicaKit)Order.Select(o.ID);
 
                                 // Whether Home or Away or Cup ReplicaKit
-                                OrderItem oiReplicaKit = null;
+                                OrderItem oiReplicaKit;
 
                                 if (oReplicaKit.OIReplicaKitHome != null && oReplicaKit.OIReplicaKitHome.IsActive)
                                 {
@@ -367,7 +367,7 @@ namespace iArsenal.Web
                                 var oiNumber = oReplicaKit.OIPlayerNumber;
                                 var oiName = oReplicaKit.OIPlayerName;
                                 var oiFont = oReplicaKit.OIArsenalFont;
-                                ;
+
                                 var oiPremierPatch = oReplicaKit.OIPremiershipPatch;
                                 var oiChampionPatch = oReplicaKit.OIChampionshipPatch;
 
@@ -569,13 +569,13 @@ namespace iArsenal.Web
 
                                 if (oWish.WishList_Existent != null && oWish.WishList_Existent.Count > 0)
                                 {
-                                    var _listCount = 0;
+                                    var listCount = 0;
 
                                     foreach (var oi in oWish.WishList_Existent)
                                     {
                                         dr = dt.NewRow();
 
-                                        if (_listCount.Equals(0))
+                                        if (listCount.Equals(0))
                                         {
                                             dr["User"] = $"{m.AcnName}({m.AcnID})";
                                             dr["Member"] = $"{o.MemberName}({o.MemberID})";
@@ -625,7 +625,7 @@ namespace iArsenal.Web
 
                                         dt.Rows.Add(dr);
 
-                                        _listCount++;
+                                        listCount++;
                                     }
                                 }
                                 else
@@ -681,7 +681,7 @@ namespace iArsenal.Web
                 var lblOrderType = e.Row.FindControl("lblOrderType") as Label;
                 var lblOrderStatus = e.Row.FindControl("lblOrderStatus") as Label;
 
-                if (cbOrderID != null)
+                if (o != null && cbOrderID != null && hlOrderID != null)
                 {
                     cbOrderID.Text = o.ID.ToString();
 
@@ -689,7 +689,7 @@ namespace iArsenal.Web
                     hlOrderID.NavigateUrl = $"ServerOrderView.ashx?OrderID={o.ID}";
                 }
 
-                if (hlName != null)
+                if (o != null && hlName != null)
                 {
                     var m = Member.Cache.Load(o.MemberID);
 
@@ -711,25 +711,14 @@ namespace iArsenal.Web
                     hlName.NavigateUrl = $"AdminOrder.aspx?MemberID={o.MemberID}";
                 }
 
-                if (lblOrderType != null && !o.OrderType.Equals(OrderBaseType.None))
+                if (o != null && lblOrderType != null && !o.OrderType.Equals(OrderBaseType.None))
                 {
                     lblOrderType.Text = $"<em>{ddlOrderType.Items.FindByValue(o.OrderType.ToString()).Text}</em>";
                 }
-                else
+
+                if (o != null && lblOrderStatus != null)
                 {
-                    lblOrderType.Visible = false;
-                }
-
-                if (lblOrderStatus != null)
-                {
-                    var _strStatus = string.Empty;
-
-                    if (o.Status.Equals(OrderStatusType.Confirmed))
-                        _strStatus = $"<em>{o.StatusInfo}</em>";
-                    else
-                        _strStatus = o.StatusInfo;
-
-                    lblOrderStatus.Text = _strStatus;
+                    lblOrderStatus.Text = o.Status.Equals(OrderStatusType.Confirmed) ? $"<em>{o.StatusInfo}</em>" : o.StatusInfo;
                 }
             }
         }

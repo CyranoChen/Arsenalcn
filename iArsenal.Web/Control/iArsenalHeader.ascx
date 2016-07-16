@@ -34,6 +34,9 @@
             <a href="iArsenalOrder_ReplicaKit.aspx?Type=Home">阿森纳1617主场球衣预定</a>
         </li>
         <li>
+            <a href="iArsenalOrder_Printing.aspx">阿森纳个性化印字印号</a>
+        </li>
+        <li>
             <a href="iArsenalOrder_MatchList.aspx">阿森纳主场球票预定</a>
         </li>
         <li>

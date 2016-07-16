@@ -35,7 +35,7 @@ namespace iArsenal.Service
 
             ProductGuid = p.ID;
             Code = p.Code;
-            ProductName = string.Format("{0} ({1})", p.DisplayName, p.Name);
+            ProductName = $"{p.DisplayName} ({p.Name})";
             //oi.Size = size;
             UnitPrice = p.PriceCNY;
 

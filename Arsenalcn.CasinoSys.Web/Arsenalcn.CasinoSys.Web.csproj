@@ -519,12 +519,15 @@
     <Content Include="UploadFiles\Team\Nation\Vietnam.gif" />
     <Content Include="UploadFiles\Team\Nation\Wales.gif" />
     <Content Include="UploadFiles\Team\Other\BocaJuniors.gif" />
+    <Content Include="UploadFiles\Team\Other\guadalajara.gif" />
     <Content Include="UploadFiles\Team\Other\HangzhouGreentown.gif" />
     <Content Include="UploadFiles\Team\Other\Kitchee.gif" />
+    <Content Include="UploadFiles\Team\Other\mls.gif" />
     <Content Include="UploadFiles\Team\Other\NagoyaGrampus.gif" />
     <Content Include="UploadFiles\Team\Other\NewYorkRedBulls.gif" />
     <Content Include="UploadFiles\Team\Other\ShanghaiShenhua.gif" />
     <Content Include="UploadFiles\Team\Other\UrawaReds.gif" />
+    <Content Include="UploadFiles\Team\Other\viking.gif" />
     <Content Include="UploadFiles\Team\Spain\Almeria.gif" />
     <Content Include="UploadFiles\Team\Spain\AtleticoMadrid.gif" />
     <Content Include="UploadFiles\Team\Spain\Barcelona.gif" />

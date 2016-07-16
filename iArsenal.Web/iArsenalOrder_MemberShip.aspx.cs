@@ -424,7 +424,7 @@ namespace iArsenal.Web
                         throw new Exception("请填写会员手机");
 
                     if (!string.IsNullOrEmpty(tbWeChat.Text.Trim()))
-                        m.QQ = tbWeChat.Text.Trim();
+                        m.WeChat = tbWeChat.Text.Trim();
                     else
                         throw new Exception("请填写会员微信/QQ");
 

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Data;
-using System.Linq;
 using System.Web.UI.WebControls;
 using Arsenalcn.Core;
 using Arsenalcn.Core.Utility;
@@ -11,7 +10,7 @@ namespace iArsenal.Web
 {
     public partial class AdminOrder : AdminPageBase
     {
-        private readonly IRepository repo = new Repository();
+        private readonly IRepository _repo = new Repository();
 
         private int _memberID = int.MinValue;
 
@@ -21,12 +20,12 @@ namespace iArsenal.Web
         {
             get
             {
-                int _res;
+                int id;
                 if (_orderID == 0)
                     return _orderID;
                 if (!string.IsNullOrEmpty(Request.QueryString["OrderID"]) &&
-                    int.TryParse(Request.QueryString["OrderID"], out _res))
-                    return _res;
+                    int.TryParse(Request.QueryString["OrderID"], out id))
+                    return id;
                 return int.MinValue;
             }
             set { _orderID = value; }
@@ -36,12 +35,12 @@ namespace iArsenal.Web
         {
             get
             {
-                int _res;
+                int id;
                 if (_memberID == 0)
                     return _memberID;
                 if (!string.IsNullOrEmpty(Request.QueryString["MemberID"]) &&
-                    int.TryParse(Request.QueryString["MemberID"], out _res))
-                    return _res;
+                    int.TryParse(Request.QueryString["MemberID"], out id))
+                    return id;
                 return int.MinValue;
             }
             set { _memberID = value; }
@@ -62,7 +61,7 @@ namespace iArsenal.Web
         {
             if (MemberID > 0)
             {
-                var m = repo.Single<Member>(MemberID);
+                var m = _repo.Single<Member>(MemberID);
 
                 if (m != null)
                 {
@@ -72,16 +71,16 @@ namespace iArsenal.Web
                 }
             }
 
-            var list = repo.All<Order>().FindAll(x =>
+            var list = _repo.All<Order>().FindAll(x =>
             {
                 var returnValue = true;
-                var tmpString = string.Empty;
+                string tmpString;
 
                 if (ViewState["OrderID"] != null)
                 {
                     tmpString = ViewState["OrderID"].ToString();
                     if (!string.IsNullOrEmpty(tmpString) && !tmpString.Equals("--订单编号--"))
-                        returnValue = returnValue && x.ID.Equals(Convert.ToInt32(tmpString));
+                        returnValue = x.ID.Equals(Convert.ToInt32(tmpString));
                 }
 
                 if (ViewState["MemberName"] != null)
@@ -192,8 +191,9 @@ namespace iArsenal.Web
         {
             if (gvOrder.SelectedIndex != -1)
             {
-                Response.Redirect(
-                    $"AdminOrderView.aspx?OrderID={gvOrder.DataKeys[gvOrder.SelectedIndex].Value}");
+                var key = gvOrder.DataKeys[gvOrder.SelectedIndex];
+                if (key != null)
+                { Response.Redirect($"AdminOrderView.aspx?OrderID={key.Value}"); }
             }
         }
 
@@ -241,10 +241,10 @@ namespace iArsenal.Web
             {
                 #region Get the Order List
 
-                var list = repo.All<Order>().FindAll(x =>
+                var list = _repo.All<Order>().FindAll(x =>
                 {
                     var returnValue = x.IsActive; // Export the active order
-                    var tmpString = string.Empty;
+                    string tmpString;
 
                     if (ViewState["OrderID"] != null)
                     {
@@ -372,7 +372,7 @@ namespace iArsenal.Web
                                 var oiChampionPatch = oReplicaKit.OIChampionshipPatch;
 
                                 // get Member Info By Order
-                                m = repo.Single<Member>(o.MemberID);
+                                m = _repo.Single<Member>(o.MemberID);
 
                                 // get Product Info By OrderItem
                                 p = Product.Cache.Load(oiReplicaKit.ProductGuid);
@@ -563,7 +563,7 @@ namespace iArsenal.Web
                                 var oWish = (OrdrWish)Order.Select(o.ID);
 
                                 // get Member Info By Order
-                                m = repo.Single<Member>(o.MemberID);
+                                m = _repo.Single<Member>(o.MemberID);
 
                                 //var query = repo.Query<OrderItem>(x => x.OrderID == o.ID).FindAll(x => x.IsActive).OrderBy(x => x.ID);
 

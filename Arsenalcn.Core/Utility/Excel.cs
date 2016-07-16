@@ -11,39 +11,29 @@ namespace Arsenalcn.Core.Utility
         public static void ExportToExcel(GridView gv, string fileName)
         {
             HttpContext.Current.Response.Buffer = true;
-            HttpContext.Current.Response.ClearContent();
-            HttpContext.Current.Response.ClearHeaders();
+            HttpContext.Current.Response.Clear();
 
-            HttpContext.Current.Response.Charset = "utf-8";
-            HttpContext.Current.Response.ContentEncoding = Encoding.GetEncoding("utf-8");
+            // 设置编码和附件格式   
+            HttpContext.Current.Response.ContentType = "application/vnd.ms-excel";
+            HttpContext.Current.Response.ContentEncoding = Encoding.GetEncoding("gb2312");
+            HttpContext.Current.Response.Charset = "gb2312";
 
             HttpContext.Current.Response.AppendHeader("Content-Disposition", "attachment;filename=" + fileName);
 
-            //HttpContext.Current.Response.AppendHeader("Content-Type", "text/html; charset=gb2312");
-            HttpContext.Current.Response.ContentType = "application/ms-excel";
-            //HttpContext.Current.Response.ContentType = "application/vnd.ms-excel";
-
-            var tw = new StringWriter();
-            var hw = new HtmlTextWriter(tw);
+            // 导出excel文件   
+            var sw = new StringWriter();
+            var hw = new HtmlTextWriter(sw);
 
             SetStyle(gv);
             gv.RenderControl(hw);
 
-            HttpContext.Current.Response.Write(tw.ToString());
-            HttpContext.Current.Response.Flush();
-            HttpContext.Current.Response.Close();
+            HttpContext.Current.Response.Write("<meta http-equiv=\"content-type\" content=\"application/ms-excel; charset=gb2312\"/>" + sw);
+            //HttpContext.Current.Response.Flush();
+            //HttpContext.Current.Response.Close();
             HttpContext.Current.Response.End();
-
-            //gv.Dispose();
-            //tw.Dispose();
-            //hw.Dispose();
-
-            //gv = null;
-            //tw = null;
-            //hw = null;
         }
 
-        public static void SetStyle(GridView gv)
+        private static void SetStyle(GridView gv)
         {
             gv.Font.Name = "Tahoma";
             //gv.BorderStyle = BorderStyle.Solid;

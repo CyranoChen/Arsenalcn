@@ -143,7 +143,7 @@ namespace iArsenal.Web
 
                     if (!string.IsNullOrEmpty(tbMemberWeChat.Text.Trim()))
                     {
-                        m.Email = tbMemberWeChat.Text.Trim();
+                        m.WeChat = tbMemberWeChat.Text.Trim();
 
                         _repo.Update(m);
                     }

@@ -15,9 +15,7 @@ namespace iArsenal.Service
 
             if (list.Count > 0)
             {
-                OrderItem oiBase;
-
-                oiBase = list.Find(x => Product.Cache.Load(x.ProductGuid).ProductType.Equals(ProductType.ReplicaKitHome));
+                var oiBase = list.Find(x => Product.Cache.Load(x.ProductGuid).ProductType.Equals(ProductType.ReplicaKitHome));
                 if (oiBase != null)
                 {
                     var mapperReplicakitHome = new MapperConfiguration(cfg =>

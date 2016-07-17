@@ -3,7 +3,6 @@
     Title="阿森纳个性化印字印号服务" Theme="iArsenal" %>
 
 <%@ Register Src="Control/PortalSitePath.ascx" TagName="PortalSitePath" TagPrefix="uc1" %>
-<%@ Register Src="Control/PortalBulkOrderInfo.ascx" TagName="PortalBulkOrderInfo" TagPrefix="uc2" %>
 <asp:Content ID="cphHead" ContentPlaceHolderID="cphHead" runat="server">
     <script type="text/javascript">
         $(function () {
@@ -20,9 +19,9 @@
     </script>
 </asp:Content>
 <asp:Content ID="cphMain" ContentPlaceHolderID="cphMain" runat="server">
-    <div id="banner" style="height: 270px">
-        <a href="http://arsenaldirect.arsenal.com/" target="_blank">
-            <img src="uploadfiles/banner/banner20160528.png" alt="阿森纳个性化印字印号服务" />
+    <div id="banner" style="height: 170px">
+        <a href="http://bbs.arsenalcn.com/showtopic-108435.aspx" target="_blank">
+            <img src="uploadfiles/banner/banner20160717.png" alt="阿森纳个性化印字印号服务" />
         </a>
     </div>
     <div id="ACN_Main">
@@ -96,7 +95,6 @@
                                 <asp:ListItem Text="<em>联赛字体 - 128.00元</em>" Value="PremierFont"></asp:ListItem>
                                 <asp:ListItem Text="<em>阿森纳字体 - 158.00元</em>" Value="ArsenalFont" Selected="True"></asp:ListItem>
                             </asp:RadioButtonList>
-                            <a href="http://arsenaldirect.arsenal.com/icat/kitbuilder/" target="_blank">【效果体验】</a>
                         </td>
                     </tr>
                     <tr class="AlternatingRow">
@@ -120,7 +118,7 @@
                         </td>
                     </tr>
                     <tr class="Row">
-                        <td class="FieldHeader">备注：
+                        <td class="FieldHeader">快递单号与备注：
                         </td>
                         <td class="FieldColspan" colspan="3">
                             <asp:TextBox ID="tbOrderDescription" runat="server" CssClass="TextBox" Width="300px"
@@ -138,40 +136,39 @@
         <div id="rightPanel">
             <div class="InfoPanel">
                 <h3 class="Col" onclick="$(this).toggleClass('Col'); $(this).toggleClass('Exp'); $(this).next('div').toggle('normal');">
-                    <a>ACN团购说明</a>
+                    <a>印字印号说明</a>
                 </h3>
                 <div class="Block">
                     <p>
-                        (1). Arsenal官方专卖店上的各款主客场球衣均可预订，团代购价格(CNY) = 纪念品正价(GBP) × 约定汇率 + 国内快递费（从中国上海发到国内各地的运费，只发<em>【顺丰速运】</em>）。
+                        (1). 阿森纳中国官方球迷会（ACN）的从俱乐部官方商店预订赛季球衣的团购服务，已经运行了多个赛季。在预订球衣的同时，会员还可选择自行心仪的<em>联赛</em>和<em>杯赛</em>两个字体。（杯赛字体又称阿森纳字体）
                     </p>
                     <p>
-                        (2). Arsenal官方专卖店网址： <a href="http://arsenaldirect.arsenal.com/" target="_blank">
+                        (2). Arsenal官方专卖店，印字印号效果体验： <a href="http://arsenaldirect.arsenal.com/icat/kitbuilder/" target="_blank">
                             <em>http://arsenaldirect.arsenal.com</em>
                         </a>
                     </p>
                     <p>
-                        (3). 此功能入口只负责阿森纳各款正品球衣的订购。若需订购其他纪念品，请点击菜单中的<a href="iArsenalOrder_ArsenalDirect.aspx" target="_blank">
-                            <em>【纪念品团购服务】</em>
-                        </a>。
+                        (3). 您可以下拉框中选择现役球员印字印号；如需自定义印字印号，请在下拉框选<em>自定义</em>，并出现的文本框中填写号码与印字即可。
                     </p>
                     <p>
-                        (4). 订购操作中如有问题，请咨询官方球迷会服务微信号：<em>iArsenalCN</em>。加入时验证方式为您注册本服务中心的真实姓名和手机号码，并注明<em>【团购】</em>字样。
+                        (4). 订购操作中如有问题，请咨询官方球迷会客服微信号：<em>iArsenalCN</em>。加入时验证方式为您注册本服务中心的真实姓名和手机号码，并注明<em>【印字印号】</em>字样。
                     </p>
                 </div>
             </div>
-            <uc2:PortalBulkOrderInfo ID="ucPortalBulkOrderInfo" runat="server" />
             <div class="InfoPanel">
                 <h3 class="Col" onclick="$(this).toggleClass('Col'); $(this).toggleClass('Exp'); $(this).next('div').toggle('normal');">
-                    <a>球衣印字印号说明</a>
+                    <a>个性化印制</a>
                 </h3>
                 <div class="Block">
                     <p>
-                        (1). 您可以下拉框中选择现役球员印字印号；如需自定义印字印号，请在下拉框选<em>自定义</em>，并出现的文本框中填写号码与印字即可。
+                        (1). 阿森纳字体（杯赛字体）印字印号服务，可在会员提供的本赛季各种球衣款式上印制，包括主场和即将推出的<em>客场、杯赛球衣</em>。
                     </p>
-                    <p style="display: none">
-                        (2). 特殊字体“阿森纳字体”为胶印，具体效果可<a href="http://arsenaldirect.arsenal.com/icat/kitbuilder/" target="_blank">【点击体验】</a>，阿森纳字体不接受自定义印字印号。选择了阿森纳字体后，印字印号会自动按阿森纳字体的费用结算。
+                    <p>
+                        (2). 阿森纳字体（杯赛字体）个性化服务，可根据会员要求，自行拼接印字名称、印号数字等，数字最多为2位(00-99)；名字最多为11个英文字母。（根据球衣大小，如婴儿版、儿童版，印字印号的字母数量可能会有所不同）
                     </p>
-                    <p>(2). 因球衣定制的特殊性（选印名字、号码、袖标等个性化选择），应提交订单后尽快付款；若拒付全额款项的，我们将视为无效的订单，敬请配合和谅解。</p>
+                    <p>
+                        (3). 字体印制服务，可印制联赛字体、杯赛字体于各种球衣、T恤或其他非阿森纳的衣服上。（视具体印制条件评估）
+                    </p>
                 </div>
             </div>
         </div>

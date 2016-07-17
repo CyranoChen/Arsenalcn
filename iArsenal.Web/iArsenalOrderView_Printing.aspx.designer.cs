@@ -10,7 +10,7 @@
 namespace iArsenal.Web {
     
     
-    public partial class iArsenalOrder_Printing {
+    public partial class iArsenalOrderView_Printing {
         
         /// <summary>
         /// ucPortalSitePath control.
@@ -22,6 +22,15 @@ namespace iArsenal.Web {
         protected global::iArsenal.Web.Control.PortalSitePath ucPortalSitePath;
         
         /// <summary>
+        /// ucPortalWorkflowInfo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::iArsenal.Web.Control.PortalWorkflowInfo ucPortalWorkflowInfo;
+        
+        /// <summary>
         /// lblMemberName control.
         /// </summary>
         /// <remarks>
@@ -31,121 +40,103 @@ namespace iArsenal.Web {
         protected global::System.Web.UI.WebControls.Label lblMemberName;
         
         /// <summary>
-        /// lblMemberACNInfo control.
+        /// lblOrderMobile control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblMemberACNInfo;
+        protected global::System.Web.UI.WebControls.Label lblOrderMobile;
         
         /// <summary>
-        /// tbOrderMobile control.
+        /// lblOrderAddress control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbOrderMobile;
+        protected global::System.Web.UI.WebControls.Label lblOrderAddress;
         
         /// <summary>
-        /// rfvOrderMobile control.
+        /// lblOrderID control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvOrderMobile;
+        protected global::System.Web.UI.WebControls.Label lblOrderID;
         
         /// <summary>
-        /// tbMemberWeChat control.
+        /// lblOrderCreateTime control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbMemberWeChat;
+        protected global::System.Web.UI.WebControls.Label lblOrderCreateTime;
         
         /// <summary>
-        /// rfvMemberWeChat control.
+        /// lblOrderItem_FontSelected control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvMemberWeChat;
+        protected global::System.Web.UI.WebControls.Label lblOrderItem_FontSelected;
         
         /// <summary>
-        /// tbOrderAddress control.
+        /// lblOrderItem_PlayerDetail control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbOrderAddress;
+        protected global::System.Web.UI.WebControls.Label lblOrderItem_PlayerDetail;
         
         /// <summary>
-        /// rfvOrderAddress control.
+        /// lblOrderDescription control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvOrderAddress;
+        protected global::System.Web.UI.WebControls.Label lblOrderDescription;
         
         /// <summary>
-        /// rblFontSelected control.
+        /// phOrderRemark control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButtonList rblFontSelected;
+        protected global::System.Web.UI.WebControls.PlaceHolder phOrderRemark;
         
         /// <summary>
-        /// ddlPlayerDetail control.
+        /// lblOrderRemark control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlPlayerDetail;
+        protected global::System.Web.UI.WebControls.Label lblOrderRemark;
         
         /// <summary>
-        /// trCustomPrinting control.
+        /// lblOrderPrice control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlTableRow trCustomPrinting;
+        protected global::System.Web.UI.WebControls.Label lblOrderPrice;
         
         /// <summary>
-        /// tbPlayerNumber control.
+        /// tbOrderPrice control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbPlayerNumber;
-        
-        /// <summary>
-        /// tbPlayerName control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbPlayerName;
-        
-        /// <summary>
-        /// tbOrderDescription control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbOrderDescription;
+        protected global::System.Web.UI.WebControls.TextBox tbOrderPrice;
         
         /// <summary>
         /// btnSubmit control.
@@ -155,5 +146,41 @@ namespace iArsenal.Web {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnSubmit;
+        
+        /// <summary>
+        /// btnModify control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnModify;
+        
+        /// <summary>
+        /// btnCancel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnCancel;
+        
+        /// <summary>
+        /// ucPortalPaymentInfo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::iArsenal.Web.Control.PortalPaymentInfo ucPortalPaymentInfo;
+        
+        /// <summary>
+        /// ucPortalProductQrCode control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::iArsenal.Web.Control.PortalProductQrCode ucPortalProductQrCode;
     }
 }

@@ -5,9 +5,6 @@ Title="订单信息查看" Theme="iArsenal" %>
 <%@ Register Src="Control/PortalSitePath.ascx" TagName="PortalSitePath" TagPrefix="uc1" %>
 <%@ Register Src="Control/PortalWorkflowInfo.ascx" TagName="PortalWorkflowInfo" TagPrefix="uc2" %>
 <asp:Content ID="cphHead" ContentPlaceHolderID="cphHead" runat="server">
-    <style type="text/css">
-        .OrderPrice { display: none; }
-    </style>
 </asp:Content>
 <asp:Content ID="cphMain" ContentPlaceHolderID="cphMain" runat="server">
     <div id="ACN_Main">
@@ -156,9 +153,9 @@ Title="订单信息查看" Theme="iArsenal" %>
                 </asp:PlaceHolder>
                 <asp:PlaceHolder ID="phOrderPrice" runat="server" Visible="false">
                     <tr class="CommandRow">
-                        <td colspan="4" style="line-height: 1.8; text-align: right;">
-                            <asp:Label ID="lblOrderPrice" runat="server" CssClass="OrderTotalPrice" Text="? 元 (CNY)"></asp:Label>
-                            <asp:TextBox ID="tbOrderPrice" runat="server" CssClass="OrderPrice"></asp:TextBox>
+                        <td class="OrderPriceInfo" colspan="4">
+                            <asp:Label ID="lblOrderPrice" runat="server" Text="? 元 (CNY)"></asp:Label>
+                            <asp:TextBox ID="tbOrderPrice" runat="server"></asp:TextBox>
                         </td>
                     </tr>
                 </asp:PlaceHolder>

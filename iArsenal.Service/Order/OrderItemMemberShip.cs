@@ -7,42 +7,35 @@ namespace iArsenal.Service
     {
         public void Init()
         {
-            var _para = Remark.Split('|');
+            var para = Remark.Split('|');
 
-            MemberCardNo = !string.IsNullOrEmpty(_para[0]) ? _para[0] : string.Empty;
+            MemberCardNo = !string.IsNullOrEmpty(para[0]) ? para[0] : string.Empty;
 
-            if (_para.Length > 1)
+            if (para.Length > 1)
             {
-                AlterMethod = !string.IsNullOrEmpty(_para[1]) ? _para[1] : string.Empty;
+                AlterMethod = !string.IsNullOrEmpty(para[1]) ? para[1] : string.Empty;
             }
             else
             {
                 AlterMethod = string.Empty;
             }
 
-            DateTime _date;
-            if (!string.IsNullOrEmpty(Size) && DateTime.TryParse(Size, out _date))
+            DateTime date;
+            if (!string.IsNullOrEmpty(Size) && DateTime.TryParse(Size, out date))
             {
-                EndDate = _date;
+                EndDate = date;
             }
             else
             {
                 throw new Exception("Can't get EndDate of OrdrItmMemShip.Size");
             }
 
-            Season = string.Format("{0}/{1}", EndDate.AddYears(-1).Year, EndDate.ToString("yy"));
+            Season = $"{EndDate.AddYears(-1).Year}/{EndDate.ToString("yy")}";
         }
 
         public override void Place(Member m, Product p, SqlTransaction trans = null)
         {
-            if (!string.IsNullOrEmpty(AlterMethod))
-            {
-                Remark = string.Format("{0}|{1}", MemberCardNo, AlterMethod);
-            }
-            else
-            {
-                Remark = MemberCardNo;
-            }
+            Remark = !string.IsNullOrEmpty(AlterMethod) ? $"{MemberCardNo}|{AlterMethod}" : MemberCardNo;
 
             Size = EndDate.ToString("yyyy-MM-dd");
 

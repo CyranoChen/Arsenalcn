@@ -8,11 +8,6 @@
 <%@ Register Src="Control/PortalBulkOrderInfo.ascx" TagName="PortalBulkOrderInfo" TagPrefix="uc4" %>
 <%@ Register Src="Control/PortalProductQrCode.ascx" TagName="PortalProductQrCode" TagPrefix="uc5" %>
 <asp:Content ID="cphHead" ContentPlaceHolderID="cphHead" runat="server">
-    <style type="text/css">
-        input.OrderPrice {
-            display: none;
-        }
-    </style>
 </asp:Content>
 <asp:Content ID="cphMain" ContentPlaceHolderID="cphMain" runat="server">
     <div id="ACN_Main">
@@ -114,9 +109,9 @@
                         </tr>
                     </asp:PlaceHolder>
                     <tr class="CommandRow">
-                        <td colspan="4" style="line-height: 1.8; text-align: right;">
-                            <asp:Label ID="lblOrderPrice" runat="server" CssClass="OrderTotalPrice" Text="? 元 (CNY)"></asp:Label>
-                            <asp:TextBox ID="tbOrderPrice" runat="server" CssClass="OrderPrice"></asp:TextBox>
+                        <td class="OrderPriceInfo" colspan="4">
+                            <asp:Label ID="lblOrderPrice" runat="server" Text="? 元 (CNY)"></asp:Label>
+                            <asp:TextBox ID="tbOrderPrice" runat="server"></asp:TextBox>
                         </td>
                     </tr>
                 </tbody>

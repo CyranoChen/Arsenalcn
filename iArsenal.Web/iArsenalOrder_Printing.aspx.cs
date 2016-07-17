@@ -94,7 +94,7 @@ namespace iArsenal.Web
 
                 if (OrderID > 0)
                 {
-                    var o = (OrdrReplicaKit)Order.Select(OrderID);
+                    var o = (OrdrPrinting)Order.Select(OrderID);
 
                     if (o == null || !o.IsActive)
                     {
@@ -323,13 +323,12 @@ namespace iArsenal.Web
                         oiName.OrderID = newId;
                         oiName.Quantity = 1;
 
-                        if (ddlPlayerDetail.SelectedValue.Equals("custom"))
+                        if (ddlPlayerDetail.SelectedValue.Equals("custom", StringComparison.OrdinalIgnoreCase))
                         {
                             // Custom Printing
 
-                            if (string.IsNullOrEmpty(tbPlayerNumber.Text.Trim()) ||
-                                string.IsNullOrEmpty(tbPlayerName.Text.Trim()))
-                                throw new Exception("请填写自定义印字印号");
+                            if (string.IsNullOrEmpty(tbPlayerNumber.Text.Trim()) || string.IsNullOrEmpty(tbPlayerName.Text.Trim()))
+                            { throw new Exception("请填写自定义印字印号"); }
 
                             // New Order Item for Arsenal Font
                             if (rblFontSelected.SelectedValue.Equals("ArsenalFont", StringComparison.OrdinalIgnoreCase))
@@ -343,25 +342,25 @@ namespace iArsenal.Web
                                 oiFont.Sale = _priceArsenalFont;
                                 oiFont.Place(m, trans);
 
-                                oiNumber.Size = tbPlayerNumber.Text.Trim();
+                                oiNumber.PrintingNumber = tbPlayerNumber.Text.Trim();
                                 oiNumber.Sale = 0f;
                                 oiNumber.Remark = "custom";
                                 oiNumber.Place(m, trans);
 
-                                oiName.Size = tbPlayerName.Text.Trim();
+                                oiName.PrintingName = tbPlayerName.Text.Trim().ToUpper();
                                 oiName.Sale = 0f;
                                 oiName.Remark = "custom";
                                 oiName.Place(m, trans);
                             }
                             else
                             {
-                                oiNumber.Size = tbPlayerNumber.Text.Trim();
+                                oiNumber.PrintingNumber = tbPlayerNumber.Text.Trim();
                                 // 设置个性化印字印号价格
                                 oiNumber.Sale = _pricePremierLeague / 2;
                                 oiNumber.Remark = "custom";
                                 oiNumber.Place(m, trans);
 
-                                oiName.Size = tbPlayerName.Text.Trim();
+                                oiName.PrintingName = tbPlayerName.Text.Trim().ToUpper();
                                 // 设置个性化印字印号价格
                                 oiName.Sale = _pricePremierLeague / 2;
                                 oiName.Remark = "custom";
@@ -376,7 +375,7 @@ namespace iArsenal.Web
                             if (player == null)
                                 throw new Exception("无球员信息，请联系管理员");
 
-                            var printingName = GetArsenalPlayerPrintingName(player);
+                            var printingName = GetArsenalPlayerPrintingName(player).ToUpper();
 
                             // New Order Item for Arsenal Font
                             if (rblFontSelected.SelectedValue.Equals("ArsenalFont", StringComparison.OrdinalIgnoreCase))
@@ -390,28 +389,28 @@ namespace iArsenal.Web
                                 oiFont.Sale = _priceArsenalFont;
                                 oiFont.Place(m, trans);
 
-                                oiNumber.Size = player.SquadNumber.ToString();
+                                oiNumber.PrintingNumber = player.SquadNumber.ToString();
                                 oiNumber.Sale = 0f;
-                                oiNumber.Remark = player.ID.ToString();
+                                oiNumber.ArsenalPlayerGuid = player.ID;
                                 oiNumber.Place(m, trans);
 
-                                oiName.Size = printingName;
+                                oiName.PrintingName = printingName;
                                 oiName.Sale = 0f;
-                                oiName.Remark = player.ID.ToString();
+                                oiName.ArsenalPlayerGuid = player.ID;
                                 oiName.Place(m, trans);
                             }
                             else
                             {
-                                oiNumber.Size = player.SquadNumber.ToString();
+                                oiNumber.PrintingNumber = player.SquadNumber.ToString();
                                 // 设置个性化印字印号价格
                                 oiNumber.Sale = _pricePremierLeague / 2;
-                                oiNumber.Remark = player.ID.ToString();
+                                oiNumber.ArsenalPlayerGuid = player.ID;
                                 oiNumber.Place(m, trans);
 
-                                oiName.Size = printingName;
+                                oiName.PrintingName = printingName;
                                 // 设置个性化印字印号价格
                                 oiName.Sale = _pricePremierLeague / 2;
-                                oiName.Remark = player.ID.ToString();
+                                oiName.ArsenalPlayerGuid = player.ID;
                                 oiName.Place(m, trans);
                             }
                         }

@@ -16,10 +16,10 @@ namespace iArsenal.Service
                 throw new Exception("Can't get the Partner of OrderItem_MatchTicket.Remark.");
             }
 
-            var _date = DateTime.MinValue;
-            if (!string.IsNullOrEmpty(Size) && DateTime.TryParse(Size, out _date))
+            DateTime date;
+            if (!string.IsNullOrEmpty(Size) && DateTime.TryParse(Size, out date))
             {
-                TravelDate = _date;
+                TravelDate = date;
             }
             else
             {

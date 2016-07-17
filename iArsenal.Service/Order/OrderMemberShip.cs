@@ -16,9 +16,7 @@ namespace iArsenal.Service
 
             if (list.Any())
             {
-                OrderItem oiBase = null;
-
-                oiBase = list.Find(x => Product.Cache.Load(x.ProductGuid).ProductType.Equals(ProductType.MembershipCore));
+                var oiBase = list.Find(x => Product.Cache.Load(x.ProductGuid).ProductType.Equals(ProductType.MembershipCore));
                 if (oiBase != null)
                 {
                     var mapperMemShipCore = new MapperConfiguration(cfg =>
@@ -51,16 +49,16 @@ namespace iArsenal.Service
 
             #region Order Status Workflow Info
 
-            var _strWorkflow = "{{ \"StatusType\": \"{0}\", \"StatusInfo\": \"{1}\" }}";
+            var strWorkflow = "{{ \"StatusType\": \"{0}\", \"StatusInfo\": \"{1}\" }}";
 
-            string[] _workflowInfo =
+            string[] workflowInfo =
             {
-                string.Format(_strWorkflow, ((int) OrderStatusType.Draft), "未提交"),
-                string.Format(_strWorkflow, ((int) OrderStatusType.Submitted), "审核中"),
-                string.Format(_strWorkflow, ((int) OrderStatusType.Confirmed), "已确认")
+                string.Format(strWorkflow, ((int) OrderStatusType.Draft), "未提交"),
+                string.Format(strWorkflow, ((int) OrderStatusType.Submitted), "审核中"),
+                string.Format(strWorkflow, ((int) OrderStatusType.Confirmed), "已确认")
             };
 
-            StatusWorkflowInfo = _workflowInfo;
+            StatusWorkflowInfo = workflowInfo;
 
             #endregion
         }

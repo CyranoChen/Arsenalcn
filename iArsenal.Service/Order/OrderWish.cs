@@ -16,8 +16,7 @@ namespace iArsenal.Service
             if (list.Any())
             {
                 WishList_Existent = list.FindAll(x => !x.ProductGuid.Equals(Guid.Empty) &&
-                                                      Product.Cache.Load(x.ProductGuid)
-                                                          .ProductType.Equals(ProductType.Other));
+                    Product.Cache.Load(x.ProductGuid).ProductType.Equals(ProductType.Other));
 
                 WishList_Nonexistent = list.FindAll(x => x.ProductGuid.Equals(Guid.Empty));
 

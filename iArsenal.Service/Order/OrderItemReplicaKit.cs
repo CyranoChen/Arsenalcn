@@ -112,6 +112,7 @@ namespace iArsenal.Service
                 }
                 return Guid.Empty;
             }
+            set { Remark = value.ToString(); }
         }
 
         #endregion
@@ -156,6 +157,7 @@ namespace iArsenal.Service
                 }
                 return Guid.Empty;
             }
+            set { Remark = value.ToString(); }
         }
 
         #endregion

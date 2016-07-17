@@ -60,6 +60,7 @@ namespace iArsenal.Web
                         {
                             throw new Exception("无此会员信息");
                         }
+
                         lblMemberACNInfo.Text = $"<b>{m.AcnName}</b> (<em>ID.{m.AcnID}</em>)";
                         tbMemberWeChat.Text = m.WeChat;
                     }

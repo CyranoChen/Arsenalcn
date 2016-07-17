@@ -16,9 +16,7 @@ namespace iArsenal.Service
 
             if (list.Any())
             {
-                OrderItem oiBase = null;
-
-                oiBase = list.Find(x => Product.Cache.Load(x.ProductGuid).ProductType.Equals(ProductType.MatchTicket));
+                var oiBase = list.Find(x => Product.Cache.Load(x.ProductGuid).ProductType.Equals(ProductType.MatchTicket));
                 if (oiBase != null)
                 {
                     var mapperMatchTicket = new MapperConfiguration(cfg =>

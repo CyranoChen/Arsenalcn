@@ -24,49 +24,35 @@ namespace iArsenal.Service
         {
             base.Init();
 
-            var _date = DateTime.MinValue;
-            var _arrDate = Size.Split('|');
+            DateTime date;
+            var arrDate = Size.Split('|');
 
-            if (!string.IsNullOrEmpty(_arrDate[0]) && DateTime.TryParse(_arrDate[0], out _date))
+            if (!string.IsNullOrEmpty(arrDate[0]) && DateTime.TryParse(arrDate[0], out date))
             {
-                TravelFromDate = _date;
+                TravelFromDate = date;
             }
             else
             {
                 throw new Exception("Can't get the TravelFromDate of OrderItem_TravelPlan.Size");
             }
 
-            if (!string.IsNullOrEmpty(_arrDate[1]) && DateTime.TryParse(_arrDate[1], out _date))
+            if (!string.IsNullOrEmpty(arrDate[1]) && DateTime.TryParse(arrDate[1], out date))
             {
-                TravelToDate = _date;
+                TravelToDate = date;
             }
             else
             {
                 throw new Exception("Can't get the TravelToDate of OrderItem_TravelPlan.Size");
             }
 
-            if (!string.IsNullOrEmpty(Remark))
-            {
-                TravelOption = Remark.ToUpper().Split('|');
-            }
-            else
-            {
-                TravelOption = null;
-            }
+            TravelOption = !string.IsNullOrEmpty(Remark) ? Remark.ToUpper().Split('|') : null;
         }
 
         public void Place(Member m, SqlTransaction trans = null)
         {
-            Size = string.Format("{0}|{1}", TravelFromDate.ToString("yyyy-MM-dd"), TravelToDate.ToString("yyyy-MM-dd"));
+            Size = $"{TravelFromDate.ToString("yyyy-MM-dd")}|{TravelToDate.ToString("yyyy-MM-dd")}";
 
-            if (TravelOption != null)
-            {
-                Remark = string.Join("|", TravelOption);
-            }
-            else
-            {
-                Remark = string.Empty;
-            }
+            Remark = TravelOption != null ? string.Join("|", TravelOption) : string.Empty;
 
             var product = Product.Cache.Load("iETPL");
 
@@ -90,10 +76,10 @@ namespace iArsenal.Service
         {
             base.Init();
 
-            bool _value;
-            if (!string.IsNullOrEmpty(Size) && bool.TryParse(Size, out _value))
+            bool value;
+            if (!string.IsNullOrEmpty(Size) && bool.TryParse(Size, out value))
             {
-                IsTicketOnly = _value;
+                IsTicketOnly = value;
             }
             else
             {

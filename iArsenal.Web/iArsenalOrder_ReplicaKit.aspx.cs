@@ -81,21 +81,21 @@ namespace iArsenal.Web
 
                 if (pt.Equals(ProductType.ReplicaKitAway))
                 {
-                    Page.Title = "阿森纳2015/16赛季客场PUMA球衣许愿单";
+                    Page.Title = "阿森纳2016/17赛季客场PUMA球衣许愿单";
                     hlReplicaKitPage.NavigateUrl = "http://arsenaldirect.arsenal.com/puma-kit/puma-away-kit/icat/pumaaway";
-                    ltrlBannerImage.Text = $"<img src=\"uploadfiles/banner/banner20150714.png\" alt=\"{Page.Title}\" />";
+                    ltrlBannerImage.Text = $"<img src=\"uploadfiles/banner/banner20160731-a.png\" alt=\"{Page.Title}\" />";
                 }
                 else if (pt.Equals(ProductType.ReplicaKitCup))
                 {
-                    Page.Title = "阿森纳2015/16赛季杯赛PUMA球衣许愿单";
-                    hlReplicaKitPage.NavigateUrl = "http://arsenaldirect.arsenal.com/puma-kit/puma-cup-kit/icat/pumacup";
-                    ltrlBannerImage.Text = $"<img src=\"uploadfiles/banner/banner20150813.png\" alt=\"{Page.Title}\" />";
+                    Page.Title = "阿森纳2016/17赛季杯赛PUMA球衣许愿单";
+                    hlReplicaKitPage.NavigateUrl = "http://arsenaldirect.arsenal.com/puma-kit/puma-third-kit/icat/pumathird";
+                    ltrlBannerImage.Text = $"<img src=\"uploadfiles/banner/banner20160731-c.png\" alt=\"{Page.Title}\" />";
                 }
                 else
                 {
                     Page.Title = "阿森纳2016/17赛季主场PUMA球衣许愿单";
                     hlReplicaKitPage.NavigateUrl = "http://arsenaldirect.arsenal.com/puma-kit/puma-home-kit/icat/pumahome";
-                    ltrlBannerImage.Text = $"<img src=\"uploadfiles/banner/banner20160524.png\" alt=\"{Page.Title}\" />";
+                    ltrlBannerImage.Text = $"<img src=\"uploadfiles/banner/banner20160731-h.png\" alt=\"{Page.Title}\" />";
                 }
 
                 return pt;

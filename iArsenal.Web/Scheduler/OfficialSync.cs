@@ -33,10 +33,10 @@ namespace iArsenal.Scheduler
                 _log.Info("Scheduler Start: (OfficialSync)", logInfo);
 
                 var rand = new Random(Guid.NewGuid().GetHashCode());
-                var result = rand.Next(0, 500);
+                var result = rand.Next(0, 900);
                 var season = "1617";
 
-                if (result < 100)
+                if (result < 80)
                 {
                     var member = GetUnSyncMemberByRandom();
 

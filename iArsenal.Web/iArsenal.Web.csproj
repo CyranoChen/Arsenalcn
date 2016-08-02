@@ -242,6 +242,10 @@
     <Content Include="UploadFiles\Banner\banner20160524.png" />
     <Content Include="UploadFiles\Banner\banner20160528.png" />
     <Content Include="UploadFiles\Banner\banner20160717.png" />
+    <Content Include="UploadFiles\Banner\banner20160731-a.png" />
+    <Content Include="UploadFiles\Banner\banner20160731-c.png" />
+    <Content Include="UploadFiles\Banner\banner20160731-h.png" />
+    <Content Include="UploadFiles\Banner\banner20160731.png" />
     <Content Include="UploadFiles\logo_ArsenalChina.png" />
     <Content Include="App_Themes\iArsenal\images\menu_ahover.gif" />
     <Content Include="App_Themes\iArsenal\portal.css" />

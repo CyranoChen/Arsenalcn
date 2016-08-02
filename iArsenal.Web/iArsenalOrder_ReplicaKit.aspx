@@ -95,7 +95,7 @@
     </script>
 </asp:Content>
 <asp:Content ID="cphMain" ContentPlaceHolderID="cphMain" runat="server">
-    <div id="banner" style="height: 400px">
+    <div id="banner" style="height: 270px">
         <a href="http://bbs.arsenalcn.com/showtopic-108362.aspx" target="_blank">
             <asp:Literal ID="ltrlBannerImage" runat="server"></asp:Literal>
         </a>

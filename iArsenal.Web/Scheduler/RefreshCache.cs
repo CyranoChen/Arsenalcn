@@ -38,6 +38,7 @@ namespace iArsenal.Scheduler
                 MatchTicket.Cache.RefreshCache();
                 Member.Cache.RefreshCache();
                 Product.Cache.RefreshCache();
+                Showcase.Cache.RefreshCache();
 
                 // Clean Log
                 Log.Clean();

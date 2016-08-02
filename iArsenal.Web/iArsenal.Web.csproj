@@ -70,6 +70,7 @@
     <Content Include="AdminMemberView.aspx" />
     <Content Include="AdminConfig.aspx" />
     <Content Include="AdminMember.aspx" />
+    <Content Include="AdminShowcase.aspx" />
     <Content Include="AdminSchedule.aspx" />
     <Content Include="App_Themes\Arsenalcn\acn.css" />
     <Content Include="App_Themes\Arsenalcn\base.css" />
@@ -336,6 +337,13 @@
     </Compile>
     <Compile Include="AdminMemberPeriodView.aspx.designer.cs">
       <DependentUpon>AdminMemberPeriodView.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminShowcase.aspx.cs">
+      <DependentUpon>AdminShowcase.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminShowcase.aspx.designer.cs">
+      <DependentUpon>AdminShowcase.aspx</DependentUpon>
     </Compile>
     <Compile Include="AdminSchedule.aspx.cs">
       <DependentUpon>AdminSchedule.aspx</DependentUpon>

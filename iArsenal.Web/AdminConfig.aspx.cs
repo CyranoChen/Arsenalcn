@@ -88,6 +88,7 @@ namespace iArsenal.Web
                 MatchTicket.Cache.RefreshCache();
                 Member.Cache.RefreshCache();
                 Product.Cache.RefreshCache();
+                Showcase.Cache.RefreshCache();
 
                 ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
                     "alert('更新全部缓存成功');window.location.href=window.location.href", true);

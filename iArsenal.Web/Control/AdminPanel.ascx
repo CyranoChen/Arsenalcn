@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="AdminPanel.ascx.cs"
-Inherits="iArsenal.Web.Control.AdminPanel" %>
+    Inherits="iArsenal.Web.Control.AdminPanel" %>
 <div id="LeftPanel">
     <div class="InfoPanel">
         <h3 class="Col" onclick="$(this).toggleClass('Col'); $(this).toggleClass('Exp'); $(this).next('div').toggle('normal');">
@@ -33,6 +33,9 @@ Inherits="iArsenal.Web.Control.AdminPanel" %>
                 </li>
                 <li>
                     <a href="AdminProduct.aspx">商品管理</a>
+                </li>
+                <li>
+                    <a href="AdminShowcase.aspx">橱窗管理</a>
                 </li>
                 <li>
                     <a href="AdminMatchTicket.aspx">球票管理</a>

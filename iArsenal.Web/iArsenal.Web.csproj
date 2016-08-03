@@ -187,6 +187,7 @@
     <Content Include="iArsenalMemberPeriod.aspx" />
     <Content Include="iArsenalOrderView_MatchTicket.aspx" />
     <Content Include="iArsenalOrder_LondonTravel.aspx" />
+    <Content Include="iArsenalOrder_Showcase.aspx" />
     <Content Include="iArsenalOrder_Membership.aspx" />
     <Content Include="iArsenalOrder_MatchTicket.aspx" />
     <Content Include="iArsenalOrder_MatchList.aspx" />
@@ -431,6 +432,13 @@
     </Compile>
     <Compile Include="iArsenalOrder_LondonTravel.aspx.designer.cs">
       <DependentUpon>iArsenalOrder_LondonTravel.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="iArsenalOrder_Showcase.aspx.cs">
+      <DependentUpon>iArsenalOrder_Showcase.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="iArsenalOrder_Showcase.aspx.designer.cs">
+      <DependentUpon>iArsenalOrder_Showcase.aspx</DependentUpon>
     </Compile>
     <Compile Include="iArsenalOrder_Membership.aspx.cs">
       <DependentUpon>iArsenalOrder_Membership.aspx</DependentUpon>

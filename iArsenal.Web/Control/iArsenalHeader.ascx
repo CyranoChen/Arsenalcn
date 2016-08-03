@@ -46,7 +46,7 @@
             <a href="iArsenalOrder_MatchList.aspx">主场球票</a>
         </li>
         <li>
-            <a href="iArsenalOrder_ArsenalDirect.aspx">官方纪念品</a>
+            <a href="iArsenalOrder_Showcase.aspx">官方纪念品</a>
         </li>
         <li class="nor">
             <a href="iArsenalOrder.aspx">订单查询</a>

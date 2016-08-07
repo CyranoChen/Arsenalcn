@@ -22,13 +22,22 @@ namespace iArsenal.Web {
         protected global::iArsenal.Web.Control.PortalSitePath ucPortalSitePath;
         
         /// <summary>
-        /// tbTeamName control.
+        /// tbProductName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbTeamName;
+        protected global::System.Web.UI.WebControls.TextBox tbProductName;
+        
+        /// <summary>
+        /// ddlIsSale control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlIsSale;
         
         /// <summary>
         /// btnFilter control.
@@ -38,6 +47,15 @@ namespace iArsenal.Web {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton btnFilter;
+        
+        /// <summary>
+        /// btnCart control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton btnCart;
         
         /// <summary>
         /// rptShowcase control.

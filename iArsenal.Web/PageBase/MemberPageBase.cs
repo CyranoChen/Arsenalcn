@@ -9,28 +9,31 @@ namespace iArsenal.Web
 {
     public class MemberPageBase : AcnPageBase
     {
-        private readonly IRepository repo = new Repository();
+        private readonly IRepository _repo = new Repository();
 
-        public int MID
+        protected int MID
         {
             get
             {
-                if (Request.Cookies["mid"] != null && !string.IsNullOrEmpty(Request.Cookies["mid"].Value))
+                if (!string.IsNullOrEmpty(Request.Cookies["mid"]?.Value))
                 {
                     //already login
                     return int.Parse(Request.Cookies["mid"].Value);
                 }
+
                 return -1;
             }
         }
 
-        public string MemberName
+        protected string MemberName
         {
             get
             {
-                if (Request.Cookies["member_name"] != null &&
-                    !string.IsNullOrEmpty(Request.Cookies["member_name"].Value))
+                if (!string.IsNullOrEmpty(Request.Cookies["member_name"]?.Value))
+                {
                     return HttpUtility.UrlDecode(Request.Cookies["member_name"].Value);
+                }
+
                 return string.Empty;
             }
         }
@@ -47,7 +50,7 @@ namespace iArsenal.Web
                 // TODO: change to cache mode, LOGOUT
                 if (MID <= 0)
                 {
-                    var m = repo.Query<Member>(x => x.AcnID == UID).FirstOrDefault();
+                    var m = _repo.Query<Member>(x => x.AcnID == UID).FirstOrDefault();
 
                     if (m != null && m.ID > 0)
                     {
@@ -57,7 +60,7 @@ namespace iArsenal.Web
                         m.IP = IPLocation.GetIP();
                         m.LastLoginTime = DateTime.Now;
 
-                        repo.Update(m);
+                        _repo.Update(m);
                     }
                     else
                     {

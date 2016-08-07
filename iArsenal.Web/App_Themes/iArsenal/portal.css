@@ -1,5 +1,5 @@
 ﻿/* CSS Version Default */
-/* Version: 1.4.1 (ACN Portal 1.4.1) || Date: 2016-08-03 || Author: Cyrano */
+/* Version: 1.4.2 (ACN Portal 1.4.2) || Date: 2016-08-04 || Author: Cyrano */
 /* Cascading Style Sheets Level 2 Revision 1 */
 
 /*** Template for Portal ***/
@@ -53,6 +53,10 @@ em {
 span.Sale {
     background: url(images/icon-sale.gif) no-repeat left top;
     padding-left: 20px;
+}
+
+i {
+    margin: 0 5px;
 }
 
 /** Portal #Header **/

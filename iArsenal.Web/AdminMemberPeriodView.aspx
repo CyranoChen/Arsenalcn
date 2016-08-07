@@ -6,7 +6,7 @@ Title="后台管理 添加/更新会籍" Theme="Arsenalcn" %>
 <%@ Register Src="Control/AdminFieldToolBar.ascx" TagName="AdminFieldToolBar" TagPrefix="uc2" %>
 <asp:Content ID="cphHead" ContentPlaceHolderID="cphhead" runat="server">
     <link href="Content/themes/base/all.css" type="text/css" rel="stylesheet"/>
-    <script type="text/javascript" src="Scripts/jquery-ui-1.11.4.min.js"></script>
+    <script type="text/javascript" src="Scripts/jquery-ui-1.12.0.min.js"></script>
     <script type="text/javascript">
         $(function() {
             $.datepicker.setDefaults({ dateFormat: 'yy-mm-dd', changeMonth: true, changeYear: true });

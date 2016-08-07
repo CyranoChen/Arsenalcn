@@ -9,6 +9,9 @@ namespace iArsenal.Web
         protected void Page_Load(object sender, EventArgs e)
         {
             //ctrlCustomPagerInfo.PageChanged += ctrlCustomPagerInfo_PageChanged;
+            tbProductName.Attributes["placeholder"] = "--商品名称或编号--";
+            btnFilter.Text = "<i class=\"fa fa-search\" aria-hidden=\"true\"></i>搜索商品";
+            btnCart.Text = "<i class=\"fa fa-shopping-cart\" aria-hidden=\"true\"></i>查看购物车：<em class=\"quanlity\">0件商品</em> - <em class=\"price\">0.00</em>";
 
             if (!IsPostBack)
             {
@@ -22,8 +25,31 @@ namespace iArsenal.Web
             {
                 var showcases = Showcase.Cache.ShowcaseList.FindAll(x => x.IsActive);
 
-                var list = Product.Cache.ProductList.FindAll(x => x.IsActive && x.ProductType == ProductType.Other &&
-                    showcases.Exists(s => s.ProductGuid == x.ID));
+                var list = Product.Cache.ProductList.FindAll(x => x.IsActive && x.ProductType == ProductType.Other)
+                    .FindAll(x =>
+                {
+                    var returnValue = true;
+                    string tmpString;
+
+                    if (ViewState["ProductName"] != null)
+                    {
+                        tmpString = ViewState["ProductName"].ToString().ToLower();
+                        if (!string.IsNullOrEmpty(tmpString))
+                            returnValue = x.Code.ToLower().Contains(tmpString) ||
+                                          x.Name.ToLower().Contains(tmpString) ||
+                                          x.DisplayName.ToLower().Contains(tmpString);
+                    }
+
+                    if (ViewState["IsSale"] != null)
+                    {
+                        tmpString = ViewState["IsSale"].ToString();
+                        if (!string.IsNullOrEmpty(tmpString))
+                            returnValue = returnValue && x.Sale.HasValue.Equals(Convert.ToBoolean(tmpString));
+                    }
+
+                    return returnValue;
+                })
+                .FindAll(x => showcases.Exists(s => s.ProductGuid == x.ID));
 
                 rptShowcase.DataSource = list;
                 rptShowcase.DataBind();
@@ -75,21 +101,35 @@ namespace iArsenal.Web
                     ltrlProductInfo.Text = $"<h3><em>【{p.Code}】</em>{p.DisplayName}</h3>";
 
                     ltrlProductPrice.Text = p.Sale.HasValue ?
-                        $"<p><em>{p.SaleInfo}</em><span style=\"text-decoration: line-through\">({p.PriceInfo})</span></p>"
-                        : $"<p>{p.PriceInfo}<p>";
+                        $"<p class=\"item-price\" title=\"{p.Sale.Value}\"><em>{p.SaleInfo}</em><span style=\"text-decoration: line-through\">({p.PriceInfo})</span></p>"
+                        : $"<p class=\"item-price\" title=\"{p.Price}\">{p.PriceInfo}</p>";
                 }
             }
         }
 
-        protected void btnFilter_Click(object sender, EventArgs e)
+        protected void ddlIsSale_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(tbTeamName.Text.Trim()))
-                ViewState["TeamName"] = tbTeamName.Text.Trim();
+            if (!string.IsNullOrEmpty(ddlIsSale.SelectedValue))
+                ViewState["IsSale"] = ddlIsSale.SelectedValue;
             else
-                ViewState["TeamName"] = string.Empty;
-
+                ViewState["IsSale"] = string.Empty;
 
             BindData();
+        }
+
+        protected void btnFilter_Click(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(tbProductName.Text.Trim()))
+                ViewState["ProductName"] = tbProductName.Text.Trim();
+            else
+                ViewState["ProductName"] = string.Empty;
+
+            BindData();
+        }
+
+        protected void btnCart_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

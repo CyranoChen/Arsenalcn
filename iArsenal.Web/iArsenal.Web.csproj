@@ -131,6 +131,8 @@
     <Content Include="App_Themes\iArsenal\images\workflow-node-active.png" />
     <Content Include="App_Themes\iArsenal\images\workflow-node-inactive.png" />
     <Content Include="App_Themes\iArsenal\images\workflow-node-start.png" />
+    <Content Include="Content\font-awesome.css" />
+    <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\themes\base\accordion.css" />
     <Content Include="Content\themes\base\all.css" />
     <Content Include="Content\themes\base\autocomplete.css" />
@@ -150,9 +152,17 @@
     <Content Include="Content\themes\base\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
     <Content Include="Content\themes\base\images\ui-icons_222222_256x240.png" />
     <Content Include="Content\themes\base\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_444444_256x240.png" />
     <Content Include="Content\themes\base\images\ui-icons_454545_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_555555_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_777620_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_777777_256x240.png" />
     <Content Include="Content\themes\base\images\ui-icons_888888_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_cc0000_256x240.png" />
     <Content Include="Content\themes\base\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\themes\base\jquery-ui.css" />
+    <Content Include="Content\themes\base\jquery-ui.min.css" />
     <Content Include="Content\themes\base\menu.css" />
     <Content Include="Content\themes\base\progressbar.css" />
     <Content Include="Content\themes\base\resizable.css" />
@@ -177,6 +187,7 @@
     <Content Include="AdminMemberPeriod.aspx" />
     <Content Include="AdminMemberPeriodView.aspx" />
     <Content Include="Control\PortalWorkflowInfo.ascx" />
+    <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="Global.asax" />
     <Content Include="iArsenalOrderView_ArsenalDirect.aspx" />
     <Content Include="iArsenalOrderView_AsiaTrophy2015.aspx" />
@@ -199,11 +210,16 @@
       <DependentUpon>iarsenal.js</DependentUpon>
     </Content>
     <Content Include="packages.config" />
+    <Content Include="fonts\FontAwesome.otf" />
+    <Content Include="fonts\fontawesome-webfont.woff2" />
+    <Content Include="fonts\fontawesome-webfont.woff" />
+    <Content Include="fonts\fontawesome-webfont.ttf" />
+    <Content Include="fonts\fontawesome-webfont.eot" />
     <None Include="Scripts\jquery-2.2.4.intellisense.js" />
     <Content Include="Scripts\jquery-2.2.4.js" />
     <Content Include="Scripts\jquery-2.2.4.min.js" />
-    <Content Include="Scripts\jquery-ui-1.11.4.js" />
-    <Content Include="Scripts\jquery-ui-1.11.4.min.js" />
+    <Content Include="Scripts\jquery-ui-1.12.0.js" />
+    <Content Include="Scripts\jquery-ui-1.12.0.min.js" />
     <Content Include="Scripts\jquery.slides.min.js" />
     <Content Include="Scripts\json2.js" />
     <Content Include="UploadFiles\Banner\banner20160523.png" />
@@ -248,6 +264,7 @@
     <Content Include="UploadFiles\Banner\banner20160731-c.png" />
     <Content Include="UploadFiles\Banner\banner20160731-h.png" />
     <Content Include="UploadFiles\Banner\banner20160731.png" />
+    <Content Include="UploadFiles\Banner\banner20160805.png" />
     <Content Include="UploadFiles\logo_ArsenalChina.png" />
     <Content Include="App_Themes\iArsenal\images\menu_ahover.gif" />
     <Content Include="App_Themes\iArsenal\portal.css" />
@@ -267,6 +284,7 @@
     <Content Include="Default.aspx" />
     <Content Include="Scripts\iarsenal.js" />
     <Content Include="ServerMembershipCheck.ashx" />
+    <Content Include="UploadFiles\Banner\iArsenal_Banner_ArsenalDirect.psd" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdminLog.aspx.cs">

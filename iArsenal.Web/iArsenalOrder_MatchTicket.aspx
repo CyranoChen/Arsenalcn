@@ -6,7 +6,7 @@
 <%@ Register Src="Control/PortalMatchInfo.ascx" TagName="PortalMatchInfo" TagPrefix="uc2" %>
 <asp:Content ID="cphHead" ContentPlaceHolderID="cphHead" runat="server">
     <link href="Content/themes/base/all.css" type="text/css" rel="stylesheet" />
-    <script type="text/javascript" src="Scripts/jquery-ui-1.11.4.min.js"></script>
+    <script type="text/javascript" src="Scripts/jquery-ui-1.12.0.min.js"></script>
     <style type="text/css">
         input.Region1, input.Region2 {
             display: none;

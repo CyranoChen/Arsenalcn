@@ -62,8 +62,6 @@ namespace iArsenal.Web
                 }
             }
 
-            //responseText = "{  \"result\": \"success\",  \"ProductGuid\": \"cyrano\" }";
-
             context.Response.Clear();
             context.Response.ContentType = "text/plain";
             context.Response.Write(responseText);

@@ -215,6 +215,7 @@
     <Content Include="fonts\fontawesome-webfont.woff" />
     <Content Include="fonts\fontawesome-webfont.ttf" />
     <Content Include="fonts\fontawesome-webfont.eot" />
+    <Content Include="Base\HandlerBase.ashx" />
     <None Include="Scripts\jquery-2.2.4.intellisense.js" />
     <Content Include="Scripts\jquery-2.2.4.js" />
     <Content Include="Scripts\jquery-2.2.4.min.js" />
@@ -285,6 +286,7 @@
     <Content Include="Scripts\iarsenal.js" />
     <Content Include="ServerMembershipCheck.ashx" />
     <Content Include="UploadFiles\Banner\iArsenal_Banner_ArsenalDirect.psd" />
+    <Content Include="ServerGetSession.ashx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdminLog.aspx.cs">
@@ -472,7 +474,10 @@
     <Compile Include="iArsenalOrder_Printing.aspx.designer.cs">
       <DependentUpon>iArsenalOrder_Printing.aspx</DependentUpon>
     </Compile>
-    <Compile Include="PageBase\MemberPageBase.cs">
+    <Compile Include="Base\HandlerBase.ashx.cs">
+      <DependentUpon>HandlerBase.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Base\MemberPageBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Control\iArsenalFooter.ascx.cs">
@@ -601,10 +606,10 @@
     <Compile Include="ServerACNCallback.ashx.cs">
       <DependentUpon>ServerACNCallback.ashx</DependentUpon>
     </Compile>
-    <Compile Include="PageBase\AdminPageBase.cs">
+    <Compile Include="Base\AdminPageBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="PageBase\AcnPageBase.cs">
+    <Compile Include="Base\AcnPageBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Control\AdminFieldToolBar.ascx.cs">
@@ -683,6 +688,9 @@
     </Compile>
     <Compile Include="ServerBulkOrder.ashx.cs">
       <DependentUpon>ServerBulkOrder.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="ServerGetSession.ashx.cs">
+      <DependentUpon>ServerGetSession.ashx</DependentUpon>
     </Compile>
     <Compile Include="ServerMemberCheck.ashx.cs">
       <DependentUpon>ServerMemberCheck.ashx</DependentUpon>

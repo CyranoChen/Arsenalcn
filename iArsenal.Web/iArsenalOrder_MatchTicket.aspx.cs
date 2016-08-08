@@ -70,8 +70,8 @@ namespace iArsenal.Web
         {
             try
             {
-                lblMemberName.Text = $"<b>{MemberName}</b> (<em>NO.{MID}</em>)";
-                lblMemberACNInfo.Text = $"<b>{Username}</b> (<em>ID.{UID}</em>)";
+                lblMemberName.Text = $"<b>{MemberName}</b> (<em>NO.{Mid}</em>)";
+                lblMemberACNInfo.Text = $"<b>{Username}</b> (<em>ID.{Uid}</em>)";
 
                 if (MatchGuid.Equals(Guid.Empty))
                 {
@@ -136,7 +136,7 @@ namespace iArsenal.Web
                         throw new Exception("此订单无效");
                     }
 
-                    if (ConfigGlobal.IsPluginAdmin(UID) || o.MemberID.Equals(MID))
+                    if (ConfigGlobal.IsPluginAdmin(Uid) || o.MemberID.Equals(Mid))
                     {
                         lblMemberName.Text = $"<b>{o.MemberName}</b> (<em>NO.{o.MemberID}</em>)";
 
@@ -210,7 +210,7 @@ namespace iArsenal.Web
                 else
                 {
                     //Fill Member draft information into textbox
-                    var m = _repo.Single<Member>(MID);
+                    var m = _repo.Single<Member>(Mid);
 
                     #region Set Member Nation & Region
 
@@ -284,7 +284,7 @@ namespace iArsenal.Web
                         throw new Exception("无相关比赛信息，请联系管理员");
                     }
 
-                    var m = _repo.Single<Member>(MID);
+                    var m = _repo.Single<Member>(Mid);
 
                     // Update Member Information
 

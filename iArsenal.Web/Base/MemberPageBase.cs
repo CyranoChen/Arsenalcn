@@ -11,7 +11,7 @@ namespace iArsenal.Web
     {
         private readonly IRepository _repo = new Repository();
 
-        protected int MID
+        protected int Mid
         {
             get
             {
@@ -45,12 +45,12 @@ namespace iArsenal.Web
 
             base.OnInitComplete(e);
 
-            if (UID > 0)
+            if (Uid > 0)
             {
                 // TODO: change to cache mode, LOGOUT
-                if (MID <= 0)
+                if (Mid <= 0)
                 {
-                    var m = _repo.Query<Member>(x => x.AcnID == UID).FirstOrDefault();
+                    var m = _repo.Query<Member>(x => x.AcnID == Uid).FirstOrDefault();
 
                     if (m != null && m.ID > 0)
                     {
@@ -76,7 +76,7 @@ namespace iArsenal.Web
             {
                 var masterPage = Master as iArsenalMaster;
 
-                masterPage.MemberID = MID;
+                masterPage.MemberID = Mid;
                 masterPage.MemberName = MemberName;
             }
         }

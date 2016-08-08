@@ -7,12 +7,12 @@ namespace iArsenal.Web
     {
         protected override void OnInitComplete(EventArgs e)
         {
-            _adminPage = true;
+            AdminPage = true;
             AnonymousRedirect = true;
 
             base.OnInitComplete(e);
 
-            if (!ConfigGlobal.IsPluginAdmin(UID))
+            if (!ConfigGlobal.IsPluginAdmin(Uid))
             {
                 Response.Redirect("Default.aspx");
             }

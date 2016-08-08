@@ -36,8 +36,8 @@ namespace iArsenal.Web
         {
             try
             {
-                lblMemberName.Text = $"<b>{MemberName}</b> (<em>NO.{MID}</em>)";
-                lblMemberACNInfo.Text = $"<b>{Username}</b> (<em>ID.{UID}</em>)";
+                lblMemberName.Text = $"<b>{MemberName}</b> (<em>NO.{Mid}</em>)";
+                lblMemberACNInfo.Text = $"<b>{Username}</b> (<em>ID.{Uid}</em>)";
 
                 var pETPL = Product.Cache.Load("iETPL");
                 var pETPA = Product.Cache.Load("iETPA");
@@ -56,7 +56,7 @@ namespace iArsenal.Web
                         throw new Exception("此订单无效");
                     }
 
-                    if (ConfigGlobal.IsPluginAdmin(UID) || o.MemberID.Equals(MID))
+                    if (ConfigGlobal.IsPluginAdmin(Uid) || o.MemberID.Equals(Mid))
                     {
                         lblMemberName.Text = $"<b>{o.MemberName}</b> (<em>NO.{o.MemberID}</em>)";
 
@@ -179,7 +179,7 @@ namespace iArsenal.Web
                 else
                 {
                     //Fill Member draft information into textbox
-                    var m = repo.Single<Member>(MID);
+                    var m = repo.Single<Member>(Mid);
 
                     #region Set Member Nation & Region
 
@@ -241,7 +241,7 @@ namespace iArsenal.Web
 
                 try
                 {
-                    var m = repo.Single<Member>(MID);
+                    var m = repo.Single<Member>(Mid);
 
                     // Update Member Information
 

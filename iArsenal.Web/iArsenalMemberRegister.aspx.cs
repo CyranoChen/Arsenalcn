@@ -13,7 +13,7 @@ namespace iArsenal.Web
         {
             get
             {
-                var m = Member.Cache.LoadByAcnID(UID);
+                var m = Member.Cache.LoadByAcnID(Uid);
 
                 if (m != null && m.ID > 0)
                 {
@@ -74,7 +74,7 @@ namespace iArsenal.Web
                     m.Evalution = MemberEvalution.None;
                     m.MemberType = MemberType.None;
                     m.MemberCardNo = string.Empty;
-                    m.AcnID = UID;
+                    m.AcnID = Uid;
                     m.AcnName = Username;
                     m.IP = IPLocation.GetIP();
                     m.TaobaoName = string.Empty;

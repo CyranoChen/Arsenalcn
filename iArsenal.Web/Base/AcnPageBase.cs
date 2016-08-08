@@ -7,38 +7,40 @@ namespace iArsenal.Web
 {
     public class AcnPageBase : Page
     {
-        protected bool _adminPage = false;
+        protected bool AdminPage = false;
 
-        public int UID
+        protected int Uid
         {
             get
             {
-                if (Request.Cookies["uid"] != null && !string.IsNullOrEmpty(Request.Cookies["uid"].Value))
+                if (!string.IsNullOrEmpty(Request.Cookies["uid"]?.Value))
                 {
                     //already login
                     return int.Parse(Request.Cookies["uid"].Value);
                 }
+
                 return -1;
             }
         }
 
-        public string Username
+        protected string Username
         {
             get
             {
-                if (Request.Cookies["user_name"] != null && !string.IsNullOrEmpty(Request.Cookies["user_name"].Value))
-                    return HttpUtility.UrlDecode(Request.Cookies["user_name"].Value);
+                if (!string.IsNullOrEmpty(Request.Cookies["user_name"]?.Value))
+                { return HttpUtility.UrlDecode(Request.Cookies["user_name"].Value); }
+
                 return string.Empty;
             }
         }
 
-        public string SessionKey
+        protected string SessionKey
         {
             get
             {
-                if (Request.Cookies["session_key"] != null &&
-                    !string.IsNullOrEmpty(Request.Cookies["session_key"].Value))
-                    return Request.Cookies["session_key"].Value;
+                if (!string.IsNullOrEmpty(Request.Cookies["session_key"]?.Value))
+                { return Request.Cookies["session_key"].Value; }
+
                 return string.Empty;
             }
         }
@@ -51,12 +53,12 @@ namespace iArsenal.Web
 
             if (!ConfigGlobal.PluginActive && Request.Url.LocalPath.ToLower().IndexOf("default.aspx") < 0)
             {
-                if (!_adminPage)
+                if (!AdminPage)
                     Response.Redirect("Default.aspx");
             }
 
             //not Login
-            if (AnonymousRedirect && UID == -1)
+            if (AnonymousRedirect && Uid == -1)
             {
                 //Response.SetCookie(new HttpCookie("session_key", "1234567890"));
                 //Response.SetCookie(new HttpCookie("uid", "443"));
@@ -79,7 +81,7 @@ namespace iArsenal.Web
             {
                 var masterPage = Master as DefaultMaster;
 
-                masterPage.UserID = UID;
+                masterPage.UserID = Uid;
                 masterPage.UserName = Username;
                 masterPage.UserKey = SessionKey;
             }
@@ -88,7 +90,7 @@ namespace iArsenal.Web
             {
                 var masterPage = Master as iArsenalMaster;
 
-                masterPage.UserID = UID;
+                masterPage.UserID = Uid;
                 masterPage.UserName = Username;
                 masterPage.UserKey = SessionKey;
             }

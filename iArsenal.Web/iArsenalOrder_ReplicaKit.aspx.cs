@@ -140,8 +140,8 @@ namespace iArsenal.Web
         {
             try
             {
-                lblMemberName.Text = $"<b>{MemberName}</b> (<em>NO.{MID}</em>)";
-                lblMemberACNInfo.Text = $"<b>{Username}</b> (<em>ID.{UID}</em>)";
+                lblMemberName.Text = $"<b>{MemberName}</b> (<em>NO.{Mid}</em>)";
+                lblMemberACNInfo.Text = $"<b>{Username}</b> (<em>ID.{Uid}</em>)";
 
                 var pNumber = Product.Cache.Load(ProductType.PlayerNumber).Find(p => p.IsActive);
                 var pName = Product.Cache.Load(ProductType.PlayerName).Find(p => p.IsActive);
@@ -196,7 +196,7 @@ namespace iArsenal.Web
                         throw new Exception("此订单未购买球衣商品");
                     }
 
-                    if (ConfigGlobal.IsPluginAdmin(UID) || o.MemberID.Equals(MID))
+                    if (ConfigGlobal.IsPluginAdmin(Uid) || o.MemberID.Equals(Mid))
                     {
                         lblMemberName.Text = $"<b>{o.MemberName}</b> (<em>NO.{o.MemberID}</em>)";
 
@@ -365,7 +365,7 @@ namespace iArsenal.Web
                 else
                 {
                     //Fill Member draft information into textbox
-                    var m = _repo.Single<Member>(MID);
+                    var m = _repo.Single<Member>(Mid);
 
                     tbOrderMobile.Text = m.Mobile;
                     tbMemberWeChat.Text = m.WeChat;
@@ -409,7 +409,7 @@ namespace iArsenal.Web
                         throw new Exception("请选择需要订购的球衣");
                     }
 
-                    var m = _repo.Single<Member>(MID);
+                    var m = _repo.Single<Member>(Mid);
 
                     if (!string.IsNullOrEmpty(tbMemberWeChat.Text.Trim()))
                     {

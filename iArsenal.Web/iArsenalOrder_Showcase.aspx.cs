@@ -11,7 +11,7 @@ namespace iArsenal.Web
             //ctrlCustomPagerInfo.PageChanged += ctrlCustomPagerInfo_PageChanged;
             tbProductName.Attributes["placeholder"] = "--商品名称或编号--";
             btnFilter.Text = "<i class=\"fa fa-search\" aria-hidden=\"true\"></i>搜索商品";
-            btnCart.Text = "<i class=\"fa fa-shopping-cart\" aria-hidden=\"true\"></i>查看购物车：<em class=\"quanlity\">0件商品</em> - <em class=\"price\">0.00</em>";
+            btnCart.Text = "<i class=\"fa fa-shopping-cart\" aria-hidden=\"true\"></i>结算购物车<em class=\"quanlity\"></em><em class=\"price\"></em>";
 
             if (!IsPostBack)
             {

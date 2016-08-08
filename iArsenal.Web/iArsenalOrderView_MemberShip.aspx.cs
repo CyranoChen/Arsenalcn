@@ -37,13 +37,13 @@ namespace iArsenal.Web
         {
             try
             {
-                lblMemberName.Text = $"<b>{MemberName}</b> (<em>NO.{MID}</em>)";
+                lblMemberName.Text = $"<b>{MemberName}</b> (<em>NO.{Mid}</em>)";
 
                 if (OrderID > 0)
                 {
                     var o = (OrdrMembership)Order.Select(OrderID);
 
-                    if (ConfigGlobal.IsPluginAdmin(UID) && o != null)
+                    if (ConfigGlobal.IsPluginAdmin(Uid) && o != null)
                     {
                         lblMemberName.Text = $"<b>{o.MemberName}</b> (<em>NO.{o.MemberID}</em>)";
 
@@ -55,7 +55,7 @@ namespace iArsenal.Web
                     }
                     else
                     {
-                        if (o == null || !o.MemberID.Equals(MID) || !o.IsActive)
+                        if (o == null || !o.MemberID.Equals(Mid) || !o.IsActive)
                             throw new Exception("此订单无效或非当前用户订单");
                     }
 
@@ -224,7 +224,7 @@ namespace iArsenal.Web
                 {
                     var o = _repo.Single<Order>(OrderID);
 
-                    if (o == null || !o.MemberID.Equals(MID) || !o.IsActive)
+                    if (o == null || !o.MemberID.Equals(Mid) || !o.IsActive)
                         throw new Exception("此订单无效或非当前用户订单");
 
                     o.Status = OrderStatusType.Submitted;
@@ -256,7 +256,7 @@ namespace iArsenal.Web
                 {
                     var o = _repo.Single<Order>(OrderID);
 
-                    if (o == null || !o.MemberID.Equals(MID) || !o.IsActive)
+                    if (o == null || !o.MemberID.Equals(Mid) || !o.IsActive)
                         throw new Exception("此订单无效或非当前用户订单");
 
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
@@ -281,7 +281,7 @@ namespace iArsenal.Web
                 {
                     var o = _repo.Single<Order>(OrderID);
 
-                    if (o == null || !o.MemberID.Equals(MID) || !o.IsActive)
+                    if (o == null || !o.MemberID.Equals(Mid) || !o.IsActive)
                         throw new Exception("此订单无效或非当前用户订单");
 
                     o.IsActive = false;
@@ -317,7 +317,7 @@ namespace iArsenal.Web
                     {
                         var o = (OrdrMembership)Order.Select(OrderID);
 
-                        if (ConfigGlobal.IsPluginAdmin(UID) && o != null && o.Status.Equals(OrderStatusType.Confirmed))
+                        if (ConfigGlobal.IsPluginAdmin(Uid) && o != null && o.Status.Equals(OrderStatusType.Confirmed))
                         {
                             // Whether Core or Premier Membership
                             OrdrItmMembership oiMembership;

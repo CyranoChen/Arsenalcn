@@ -20,7 +20,7 @@
             <a href="default.aspx?method=logout">退出</a>
         </asp:Panel>
         <asp:Panel ID="pnlAnonymousUser" CssClass="UserInfo" runat="server">
-            <asp:HyperLink ID="hlLogin" runat="server">登录</asp:HyperLink>
+            <asp:HyperLink ID="hlLogin" runat="server" CssClass="BtnLogin">登录</asp:HyperLink>
             - <a href="http://bbs.arsenalcn.com/register.aspx">注册</a> - <a href="#">帮助中心</a>
         </asp:Panel>
     </div>

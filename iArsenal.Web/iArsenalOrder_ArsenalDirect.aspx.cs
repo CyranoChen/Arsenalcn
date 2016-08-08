@@ -38,8 +38,8 @@ namespace iArsenal.Web
         {
             try
             {
-                lblMemberName.Text = $"<b>{MemberName}</b> (<em>NO.{MID}</em>)";
-                lblMemberACNInfo.Text = $"<b>{Username}</b> (<em>ID.{UID}</em>)";
+                lblMemberName.Text = $"<b>{MemberName}</b> (<em>NO.{Mid}</em>)";
+                lblMemberACNInfo.Text = $"<b>{Username}</b> (<em>ID.{Uid}</em>)";
 
                 if (OrderID > 0)
                 {
@@ -50,7 +50,7 @@ namespace iArsenal.Web
                         throw new Exception("此订单无效");
                     }
 
-                    if (ConfigGlobal.IsPluginAdmin(UID) || o.MemberID.Equals(MID))
+                    if (ConfigGlobal.IsPluginAdmin(Uid) || o.MemberID.Equals(Mid))
                     {
                         lblMemberName.Text = $"<b>{o.MemberName}</b> (<em>NO.{o.MemberID}</em>)";
 
@@ -88,7 +88,7 @@ namespace iArsenal.Web
                 else
                 {
                     //Fill Member draft information into textbox
-                    var m = _repo.Single<Member>(MID);
+                    var m = _repo.Single<Member>(Mid);
 
                     tbOrderMobile.Text = m.Mobile;
                     tbMemberWeChat.Text = m.WeChat;
@@ -140,7 +140,7 @@ namespace iArsenal.Web
                         throw new Exception("请填写订购纪念品信息");
                     }
 
-                    var m = _repo.Single<Member>(MID);
+                    var m = _repo.Single<Member>(Mid);
 
                     if (!string.IsNullOrEmpty(tbMemberWeChat.Text.Trim()))
                     {

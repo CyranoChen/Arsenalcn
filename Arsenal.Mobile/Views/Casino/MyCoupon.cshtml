@@ -14,7 +14,7 @@
 
                     if ($coupons.length > 0) {
                         $.each($coupons, function (i, entry) {
-                            var id = $(entry).prop("id");
+                            var id = $(entry).attr("id");
                             var home = $(entry).find("input:first").val();
                             var away = $(entry).find("input:last").val();
 

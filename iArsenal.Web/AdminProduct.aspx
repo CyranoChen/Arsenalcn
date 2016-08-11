@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" MasterPageFile="DefaultMaster.master" AutoEventWireup="true"
-CodeBehind="AdminProduct.aspx.cs" Inherits="iArsenal.Web.AdminProduct" Title="后台管理 商品管理" Theme="Arsenalcn" %>
+    CodeBehind="AdminProduct.aspx.cs" Inherits="iArsenal.Web.AdminProduct" Title="后台管理 商品管理" Theme="Arsenalcn" %>
 
 <%@ Register Src="Control/AdminPanel.ascx" TagName="AdminPanel" TagPrefix="uc1" %>
 <%@ Register Src="Control/AdminFieldToolBar.ascx" TagName="AdminFieldToolBar" TagPrefix="uc2" %>
@@ -8,8 +8,8 @@ CodeBehind="AdminProduct.aspx.cs" Inherits="iArsenal.Web.AdminProduct" Title="�
     <script type="text/javascript">
         $(function () {
             var $tbInfo = $(".DivFloatLeft > .TextBox");
-            $tbInfo.each(function() {
-                $(this).focus(function() {
+            $tbInfo.each(function () {
+                $(this).focus(function () {
                     $(this).val("");
                 });
             });
@@ -17,9 +17,9 @@ CodeBehind="AdminProduct.aspx.cs" Inherits="iArsenal.Web.AdminProduct" Title="�
     </script>
 </asp:Content>
 <asp:Content ID="cphMain" ContentPlaceHolderID="cphMain" runat="server">
-    <uc1:AdminPanel ID="pnlAdmin" runat="server"/>
+    <uc1:AdminPanel ID="pnlAdmin" runat="server" />
     <div id="MainPanel">
-        <uc2:AdminFieldToolBar ID="ctrlAdminFieldToolBar" runat="server"/>
+        <uc2:AdminFieldToolBar ID="ctrlAdminFieldToolBar" runat="server" />
         <div class="FunctionBar">
             <div class="DivFloatLeft">
                 <asp:TextBox ID="tbCode" runat="server" Text="--编码--" CssClass="TextBox" Width="100px"></asp:TextBox>
@@ -53,28 +53,36 @@ CodeBehind="AdminProduct.aspx.cs" Inherits="iArsenal.Web.AdminProduct" Title="�
             <div class="DivFloatRight">
                 <a href="AdminProductView.aspx" class="LinkBtn">添加新商品</a>
                 <asp:LinkButton ID="btnRefreshCache" runat="server" Text="更新缓存" CssClass="LinkBtn"
-                                OnClick="btnRefreshCache_Click"/>
+                    OnClick="btnRefreshCache_Click" />
             </div>
             <div class="Clear">
-                <uc3:CustomPagerInfo ID="ctrlCustomPagerInfo" runat="server"/>
+                <uc3:CustomPagerInfo ID="ctrlCustomPagerInfo" runat="server" />
             </div>
         </div>
         <asp:GridView ID="gvProduct" runat="server" DataKeyNames="ID" OnPageIndexChanging="gvProduct_PageIndexChanging"
-                      PageSize="10" OnSelectedIndexChanged="gvProduct_SelectedIndexChanged">
+            PageSize="10" OnSelectedIndexChanged="gvProduct_SelectedIndexChanged" OnRowDataBound="gvProduct_RowDataBound"
+            OnRowCommand="gvProduct_RowCommand">
             <Columns>
-                <asp:BoundField DataField="ID" Visible="false"/>
+                <asp:BoundField DataField="ID" Visible="false" />
                 <asp:BoundField DataField="Code" HeaderText="编码" DataFormatString="<em>{0}</em>"
-                                HtmlEncode="false"/>
-                <asp:BoundField DataField="Name" HeaderText="名称"/>
-                <asp:BoundField DataField="DisplayName" HeaderText="译名"/>
+                    HtmlEncode="false" />
+                <asp:BoundField DataField="Name" HeaderText="名称" />
+                <asp:BoundField DataField="DisplayName" HeaderText="译名" />
                 <asp:BoundField DataField="PriceInfo" HeaderText="价格" DataFormatString="<em>{0}</em>"
-                                HtmlEncode="false"/>
+                    HtmlEncode="false" />
                 <asp:BoundField DataField="SaleInfo" HeaderText="促销" DataFormatString="<em>{0}</em>"
-                                HtmlEncode="false" NullDisplayText="/"/>
-                <asp:BoundField DataField="ProductTypeInfo" HeaderText="类型"/>
-                <asp:BoundField DataField="IsActive" HeaderText="状态"/>
-                <asp:CommandField ShowSelectButton="true" HeaderText="操作" EditText="修改" SelectText="详细"
-                                  UpdateText="保存" CancelText="取消" DeleteText="删除" ControlStyle-CssClass="LinkBtn"/>
+                    HtmlEncode="false" NullDisplayText="/" />
+                <asp:BoundField DataField="ProductTypeInfo" HeaderText="类型" />
+                <asp:BoundField DataField="IsActive" HeaderText="状态" />
+                <asp:CommandField ShowSelectButton="true" HeaderText="操作" SelectText="详细" EditText="修改"
+                    UpdateText="保存" CancelText="取消" DeleteText="删除" ControlStyle-CssClass="LinkBtn" />
+                <asp:TemplateField HeaderText="橱窗">
+                    <ItemTemplate>
+                        <asp:LinkButton ID="btnShowcase" runat="server" Text="橱窗" CssClass="LinkBtn"
+                            CommandName="Showcase" OnClientClick="return confirm('确认操作?')">
+                        </asp:LinkButton>
+                    </ItemTemplate>
+                </asp:TemplateField>
             </Columns>
         </asp:GridView>
     </div>

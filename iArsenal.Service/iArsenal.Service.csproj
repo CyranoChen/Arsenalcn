@@ -57,6 +57,7 @@
     <Compile Include="Config.cs" />
     <Compile Include="Entity\MemberPeriod.cs" />
     <Compile Include="Entity\MatchTicket.cs" />
+    <Compile Include="Entity\Showcase.cs" />
     <Compile Include="Order\OrderItemMembership.cs" />
     <Compile Include="Order\OrderMembership.cs" />
     <Compile Include="Order\OrderPrinting.cs" />

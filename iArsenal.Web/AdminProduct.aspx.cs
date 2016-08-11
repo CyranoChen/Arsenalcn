@@ -8,7 +8,7 @@ namespace iArsenal.Web
 {
     public partial class AdminProduct : AdminPageBase
     {
-        private readonly IRepository repo = new Repository();
+        private readonly IRepository _repo = new Repository();
 
         private Guid? _productGuid;
 
@@ -47,16 +47,16 @@ namespace iArsenal.Web
 
         private void BindData()
         {
-            var list = repo.All<Product>().FindAll(x =>
+            var list = _repo.All<Product>().FindAll(x =>
             {
                 var returnValue = true;
-                var tmpString = string.Empty;
+                string tmpString;
 
                 if (ViewState["Code"] != null)
                 {
                     tmpString = ViewState["Code"].ToString();
                     if (!string.IsNullOrEmpty(tmpString) && tmpString != "--编码--")
-                        returnValue = returnValue && x.Code.ToLower().Contains(tmpString.ToLower());
+                        returnValue = x.Code.ToLower().Contains(tmpString.ToLower());
                 }
 
                 if (ViewState["Name"] != null)
@@ -77,7 +77,7 @@ namespace iArsenal.Web
                 {
                     tmpString = ViewState["ProductType"].ToString();
                     if (!string.IsNullOrEmpty(tmpString))
-                        returnValue = returnValue && ((int) x.ProductType).Equals(Convert.ToInt32(tmpString));
+                        returnValue = returnValue && ((int)x.ProductType).Equals(Convert.ToInt32(tmpString));
                 }
 
                 if (ViewState["IsActive"] != null)
@@ -97,8 +97,8 @@ namespace iArsenal.Web
                 var i = list.FindIndex(x => x.ID.Equals(ProductGuid));
                 if (i >= 0)
                 {
-                    gvProduct.PageIndex = i/gvProduct.PageSize;
-                    gvProduct.SelectedIndex = i%gvProduct.PageSize;
+                    gvProduct.PageIndex = i / gvProduct.PageSize;
+                    gvProduct.SelectedIndex = i % gvProduct.PageSize;
                 }
                 else
                 {
@@ -159,8 +159,56 @@ namespace iArsenal.Web
         {
             if (gvProduct.SelectedIndex != -1)
             {
-                Response.Redirect(
-                    $"AdminProductView.aspx?ProductGuid={gvProduct.DataKeys[gvProduct.SelectedIndex].Value}");
+                var key = gvProduct.DataKeys[gvProduct.SelectedIndex];
+                if (key != null)
+                { Response.Redirect($"AdminProductView.aspx?ProductGuid={key.Value}"); }
+            }
+        }
+
+        protected void gvProduct_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                var p = e.Row.DataItem as Product;
+
+                var btnShowcase = e.Row.FindControl("btnShowcase") as LinkButton;
+
+                if (p != null && btnShowcase != null)
+                {
+                    btnShowcase.Visible = p.ProductType == ProductType.Other && p.IsActive;
+
+                    if (_repo.Any<Showcase>(x => x.ProductGuid == p.ID))
+                    {
+                        btnShowcase.Text = "已橱窗";
+                        btnShowcase.Enabled = false;
+                        btnShowcase.OnClientClick = "return false";
+                    }
+
+                    btnShowcase.CommandArgument = p.ID.ToString();
+                }
+            }
+        }
+
+        protected void gvProduct_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            try
+            {
+                if (e.CommandName == "Showcase")
+                {
+                    var key = new Guid(e.CommandArgument.ToString());
+
+                    var s = _repo.Single<Product>(key);
+
+                    s?.Showcase();
+
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "success", "alert('加入橱窗成功');", true);
+
+                    BindData();
+                }
+            }
+            catch (Exception ex)
+            {
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message}');", true);
             }
         }
 
@@ -168,8 +216,7 @@ namespace iArsenal.Web
         {
             Product.Cache.RefreshCache();
 
-            ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
-                "alert('更新缓存成功');window.location.href=window.location.href", true);
+            ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('更新缓存成功');window.location.href=window.location.href", true);
         }
 
         protected void btnFilter_Click(object sender, EventArgs e)

@@ -20,7 +20,7 @@
             <a href="default.aspx?method=logout">退出</a>
         </asp:Panel>
         <asp:Panel ID="pnlAnonymousUser" CssClass="UserInfo" runat="server">
-            <asp:HyperLink ID="hlLogin" runat="server">登录</asp:HyperLink>
+            <asp:HyperLink ID="hlLogin" runat="server" CssClass="BtnLogin">登录</asp:HyperLink>
             - <a href="http://bbs.arsenalcn.com/register.aspx">注册</a> - <a href="#">帮助中心</a>
         </asp:Panel>
     </div>
@@ -40,13 +40,13 @@
             <a href="iArsenalOrder_ReplicaKit.aspx?Type=Cup">1617杯赛球衣</a>
         </li>
         <li>
-            <a href="iArsenalOrder_Printing.aspx">个性化印字印号服务</a>
+            <a href="iArsenalOrder_Printing.aspx">个性化印字印号</a>
         </li>
         <li>
-            <a href="iArsenalOrder_MatchList.aspx">主场球票预定</a>
+            <a href="iArsenalOrder_MatchList.aspx">主场球票</a>
         </li>
         <li>
-            <a href="iArsenalOrder_ArsenalDirect.aspx">官方纪念品团购</a>
+            <a href="iArsenalOrder_Showcase.aspx">官方纪念品</a>
         </li>
         <li class="nor">
             <a href="iArsenalOrder.aspx">订单查询</a>

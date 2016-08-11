@@ -217,6 +217,27 @@ namespace iArsenal.Service
             }));
         }
 
+        public void Showcase()
+        {
+            IRepository repo = new Repository();
+
+            if (!repo.Any<Showcase>(x => x.ProductGuid == ID))
+            {
+                var s = new Showcase
+                {
+                    ProductGuid = ID,
+                    ProductCode = Code,
+                    OrderNum = 999,
+                    Category = ShowcaseCategroyType.None,
+                    CreateTime = DateTime.Now,
+                    IsActive = true,
+                    Remark = string.Empty
+                };
+
+                repo.Insert(s);
+            }
+        }
+
         public static class Cache
         {
             public static List<Product> ProductList;

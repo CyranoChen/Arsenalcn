@@ -70,6 +70,9 @@ namespace iArsenal.Web
                 tbDescription.Text = p.Description;
                 tbRemark.Text = p.Remark;
 
+                // Only visible of ProductType.Other
+                btnShowcase.Visible = p.ProductType == ProductType.Other;
+
                 // Bind ProductOrder data of this Product
                 BindItemData();
             }
@@ -77,6 +80,7 @@ namespace iArsenal.Web
             {
                 tbProductGuid.Text = Guid.NewGuid().ToString();
                 gvProductOrder.Visible = false;
+                btnShowcase.Visible = false;
             }
         }
 
@@ -145,13 +149,7 @@ namespace iArsenal.Web
 
                 if (o != null && lblOrderStatus != null)
                 {
-                    string status;
-                    if (o.Status.Equals(OrderStatusType.Confirmed))
-                        status = $"<em>{o.StatusInfo}</em>";
-                    else
-                        status = o.StatusInfo;
-
-                    lblOrderStatus.Text = status;
+                    lblOrderStatus.Text = o.Status.Equals(OrderStatusType.Confirmed) ? $"<em>{o.StatusInfo}</em>" : o.StatusInfo;
                 }
             }
         }
@@ -219,6 +217,30 @@ namespace iArsenal.Web
 
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
                         "alert('添加成功');window.location.href = 'AdminProduct.aspx'", true);
+                }
+            }
+            catch (Exception ex)
+            {
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message}')", true);
+            }
+        }
+
+        protected void btnShowcase_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (ProductGuid != Guid.Empty)
+                {
+                    var p = _repo.Single<Product>(ProductGuid);
+
+                    p.Showcase();
+
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", $"alert('加入橱窗成功');window.location.href=window.location.href", true);
+
+                }
+                else
+                {
+                    throw new Exception("当前商品不存在");
                 }
             }
             catch (Exception ex)

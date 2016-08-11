@@ -105,7 +105,7 @@ namespace iArsenal.Web
         {
             get
             {
-                var mp = MemberPeriod.GetCurrentMemberPeriodByMemberID(MID);
+                var mp = MemberPeriod.GetCurrentMemberPeriodByMemberID(Mid);
 
                 if (mp == null) return false;
 
@@ -120,7 +120,7 @@ namespace iArsenal.Web
         {
             get
             {
-                var mp = MemberPeriod.GetCurrentMemberPeriodByMemberID(MID, -1);
+                var mp = MemberPeriod.GetCurrentMemberPeriodByMemberID(Mid, -1);
 
                 if (mp == null) return false;
 
@@ -152,8 +152,8 @@ namespace iArsenal.Web
         {
             try
             {
-                lblMemberName.Text = $"<b>{MemberName}</b> (<em>NO.{MID}</em>)";
-                lblMemberACNInfo.Text = $"<b>{Username}</b> (<em>ID.{UID}</em>)";
+                lblMemberName.Text = $"<b>{MemberName}</b> (<em>NO.{Mid}</em>)";
+                lblMemberACNInfo.Text = $"<b>{Username}</b> (<em>ID.{Uid}</em>)";
 
                 if (OrderID > 0)
                 {
@@ -164,7 +164,7 @@ namespace iArsenal.Web
                         throw new Exception("此订单无效");
                     }
 
-                    if (ConfigGlobal.IsPluginAdmin(UID) || o.MemberID.Equals(MID))
+                    if (ConfigGlobal.IsPluginAdmin(Uid) || o.MemberID.Equals(Mid))
                     {
                         lblMemberName.Text = $"<b>{o.MemberName}</b> (<em>NO.{o.MemberID}</em>)";
 
@@ -259,7 +259,7 @@ namespace iArsenal.Web
                 else
                 {
                     //Fill Member draft information into textbox
-                    var m = _repo.Single<Member>(MID);
+                    var m = _repo.Single<Member>(Mid);
 
                     #region Set Member Nation & Region
 
@@ -362,7 +362,7 @@ namespace iArsenal.Web
 
                 try
                 {
-                    var m = _repo.Single<Member>(MID);
+                    var m = _repo.Single<Member>(Mid);
 
                     // Update Member Information
 

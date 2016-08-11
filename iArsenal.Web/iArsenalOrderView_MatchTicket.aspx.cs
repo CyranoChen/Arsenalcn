@@ -35,20 +35,20 @@ namespace iArsenal.Web
         {
             try
             {
-                lblMemberName.Text = $"<b>{MemberName}</b> (<em>NO.{MID}</em>)";
+                lblMemberName.Text = $"<b>{MemberName}</b> (<em>NO.{Mid}</em>)";
 
                 if (OrderID > 0)
                 {
                     var o = (OrdrTicket)Order.Select(OrderID);
 
                     // For Vincent Song to View the MatchTickets Confirmation Page
-                    if (ConfigGlobal.IsPluginAdmin(UID) || (UID.Equals(33067) && (int)o.Status >= 3))
+                    if (ConfigGlobal.IsPluginAdmin(Uid) || (Uid.Equals(33067) && (int)o.Status >= 3))
                     {
                         lblMemberName.Text = $"<b>{o.MemberName}</b> (<em>NO.{o.MemberID}</em>)";
                     }
                     else
                     {
-                        if (o == null || !o.MemberID.Equals(MID) || !o.IsActive)
+                        if (o == null || !o.MemberID.Equals(Mid) || !o.IsActive)
                             throw new Exception("此订单无效或非当前用户订单");
                     }
 
@@ -137,7 +137,7 @@ namespace iArsenal.Web
                             throw new Exception("无相关比赛信息，请联系管理员");
                         }
 
-                        var mp = MemberPeriod.GetCurrentMemberPeriodByMemberID(MID);
+                        var mp = MemberPeriod.GetCurrentMemberPeriodByMemberID(Mid);
 
                         isMemberCouldPurchase = mt.CheckMemberCanPurchase(mp);
 
@@ -245,7 +245,7 @@ namespace iArsenal.Web
                 {
                     var o = _repo.Single<Order>(OrderID);
 
-                    if (o == null || !o.MemberID.Equals(MID) || !o.IsActive)
+                    if (o == null || !o.MemberID.Equals(Mid) || !o.IsActive)
                         throw new Exception("此订单无效或非当前用户订单");
 
                     o.Status = OrderStatusType.Submitted;
@@ -277,7 +277,7 @@ namespace iArsenal.Web
                 {
                     var o = _repo.Single<Order>(OrderID);
 
-                    if (o == null || !o.MemberID.Equals(MID) || !o.IsActive)
+                    if (o == null || !o.MemberID.Equals(Mid) || !o.IsActive)
                         throw new Exception("此订单无效或非当前用户订单");
 
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
@@ -302,7 +302,7 @@ namespace iArsenal.Web
                 {
                     var o = _repo.Single<Order>(OrderID);
 
-                    if (o == null || !o.MemberID.Equals(MID) || !o.IsActive)
+                    if (o == null || !o.MemberID.Equals(Mid) || !o.IsActive)
                         throw new Exception("此订单无效或非当前用户订单");
 
                     o.IsActive = false;

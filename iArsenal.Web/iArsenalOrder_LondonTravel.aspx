@@ -5,7 +5,7 @@ Title="阿森纳新赛季伦敦行观战团预订" Theme="iArsenal" %>
 <%@ Register Src="Control/PortalSitePath.ascx" TagName="PortalSitePath" TagPrefix="uc1" %>
 <asp:Content ID="cphHead" ContentPlaceHolderID="cphHead" runat="server">
     <link href="Content/themes/base/all.css" type="text/css" rel="stylesheet"/>
-    <script type="text/javascript" src="Scripts/jquery-ui-1.11.4.min.js"></script>
+    <script type="text/javascript" src="Scripts/jquery-ui-1.12.0.min.js"></script>
     <style type="text/css">
         input.Region1, input.Region2 { display: none; }
     </style>

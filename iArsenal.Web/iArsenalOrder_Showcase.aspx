@@ -40,18 +40,7 @@
 
                         //设置结算购物车功能
                         $("a.Cart").click(function () {
-                            if (localStorage ? localStorage[cart] != null : $("#tbLocalStorage").val() !== "") {
-                                if (confirm('查看并结算购物车?')) {
-                                    if (localStorage && localStorage[cart] != null) {
-                                        $("#tbLocalStorage").val(localStorage[cart]);
-                                    }
-
-
-
-                                    return true;
-                                }
-                            }
-                            return false;
+                            PlaceCart(cart);
                         });
                     } else {
                         // 设置匿名用户状态
@@ -117,6 +106,29 @@
                 $cartPrice.html("");
             }
         }
+
+        // 结算购物车
+        function PlaceCart(cart) {
+            if (localStorage ? localStorage[cart] != null : $("#tbLocalStorage").val() !== "") {
+                if (confirm("查看并结算购物车?\r【您可在后续购物页面中添加或修改纪念品】")) {
+                    var json = JSON.parse(localStorage ? localStorage[cart] : $("#tbLocalStorage").val());
+                    var items = JSON.stringify(json.items);
+
+                    // 向服务端post购物车数据
+                    $.post("ServerPlaceOrder.ashx?OrderType=4", { "items": items }, function (data) {
+                        if (data.result !== "error" && JSON.stringify(data) !== "{}" && data.OrderID > 0) {
+                            // 清除本地缓存
+                            if (localStorage) {
+                                localStorage.removeItem(cart);
+                            }
+                            window.location.href = "iArsenalOrder_ArsenalDirect.aspx?OrderID=" + data.OrderID;
+                        } else {
+                            alert(data.error_msg);
+                        }
+                    });
+                }
+            }
+        }
     </script>
 </asp:Content>
 <asp:Content ID="cphMain" ContentPlaceHolderID="cphMain" runat="server">
@@ -139,7 +151,10 @@
                 <a href="iArsenalOrder_ArsenalDirect.aspx" class="LinkBtn"><i class="fa fa-hand-pointer-o" aria-hidden="true"></i>直接下单</a>
             </div>
             <div class="DivFloatRight">
-                <asp:LinkButton ID="btnCart" runat="server" Text="结算购物车" CssClass="LinkBtn Cart" OnClick="btnCart_Click"></asp:LinkButton>
+                <a class="LinkBtn Cart">
+                    <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                    结算购物车<em class="quanlity"></em><em class="price"></em>
+                </a>
                 <a class="LinkBtn ResetCart"><i class="fa fa-refresh" aria-hidden="true"></i>清空购物车</a>
             </div>
             <div class="Clear">

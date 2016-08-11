@@ -287,6 +287,7 @@
     <Content Include="ServerMembershipCheck.ashx" />
     <Content Include="UploadFiles\Banner\iArsenal_Banner_ArsenalDirect.psd" />
     <Content Include="ServerGetSession.ashx" />
+    <Content Include="ServerPlaceOrder.ashx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdminLog.aspx.cs">
@@ -703,6 +704,9 @@
     </Compile>
     <Compile Include="ServerOrderView.ashx.cs">
       <DependentUpon>ServerOrderView.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="ServerPlaceOrder.ashx.cs">
+      <DependentUpon>ServerPlaceOrder.ashx</DependentUpon>
     </Compile>
     <Compile Include="ServerProductCheck.ashx.cs">
       <DependentUpon>ServerProductCheck.ashx</DependentUpon>

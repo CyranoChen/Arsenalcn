@@ -4,7 +4,7 @@ namespace iArsenal.Web
 {
     public class HandlerBase: IHttpHandler
     {
-        private readonly HttpContext _context = HttpContext.Current;
+        protected readonly HttpContext Context = HttpContext.Current;
 
         public virtual void ProcessRequest(HttpContext context)
         {
@@ -16,10 +16,10 @@ namespace iArsenal.Web
         {
             get
             {
-                if (!string.IsNullOrEmpty(_context.Request.Cookies["uid"]?.Value))
+                if (!string.IsNullOrEmpty(Context.Request.Cookies["uid"]?.Value))
                 {
                     //already login
-                    return int.Parse(_context.Request.Cookies["uid"].Value);
+                    return int.Parse(Context.Request.Cookies["uid"].Value);
                 }
                 return -1;
             }
@@ -29,8 +29,8 @@ namespace iArsenal.Web
         {
             get
             {
-                if (!string.IsNullOrEmpty(_context.Request.Cookies["user_name"]?.Value))
-                { return HttpUtility.UrlDecode(_context.Request.Cookies["user_name"].Value); }
+                if (!string.IsNullOrEmpty(Context.Request.Cookies["user_name"]?.Value))
+                { return HttpUtility.UrlDecode(Context.Request.Cookies["user_name"].Value); }
 
                 return string.Empty;
             }
@@ -40,8 +40,35 @@ namespace iArsenal.Web
         {
             get
             {
-                if (!string.IsNullOrEmpty(_context.Request.Cookies["session_key"]?.Value))
-                { return _context.Request.Cookies["session_key"].Value; }
+                if (!string.IsNullOrEmpty(Context.Request.Cookies["session_key"]?.Value))
+                { return Context.Request.Cookies["session_key"].Value; }
+
+                return string.Empty;
+            }
+        }
+
+        protected int Mid
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(Context.Request.Cookies["mid"]?.Value))
+                {
+                    //already login
+                    return int.Parse(Context.Request.Cookies["mid"].Value);
+                }
+
+                return -1;
+            }
+        }
+
+        protected string MemberName
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(Context.Request.Cookies["member_name"]?.Value))
+                {
+                    return HttpUtility.UrlDecode(Context.Request.Cookies["member_name"].Value);
+                }
 
                 return string.Empty;
             }

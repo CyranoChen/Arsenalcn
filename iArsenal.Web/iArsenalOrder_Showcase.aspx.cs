@@ -11,7 +11,6 @@ namespace iArsenal.Web
             //ctrlCustomPagerInfo.PageChanged += ctrlCustomPagerInfo_PageChanged;
             tbProductName.Attributes["placeholder"] = "--商品名称或编号--";
             btnFilter.Text = "<i class=\"fa fa-search\" aria-hidden=\"true\"></i>搜索商品";
-            btnCart.Text = "<i class=\"fa fa-shopping-cart\" aria-hidden=\"true\"></i>结算购物车<em class=\"quanlity\"></em><em class=\"price\"></em>";
 
             if (!IsPostBack)
             {
@@ -24,6 +23,12 @@ namespace iArsenal.Web
             try
             {
                 var showcases = Showcase.Cache.ShowcaseList.FindAll(x => x.IsActive);
+
+                // 如果橱窗商品，则直接跳转下单页面
+                if (showcases.Count == 0)
+                {
+                    Response.Redirect("~/iArsenalOrder_ArsenalDirect.aspx");
+                }
 
                 var list = Product.Cache.ProductList.FindAll(x => x.IsActive && x.ProductType == ProductType.Other)
                     .FindAll(x =>
@@ -125,11 +130,6 @@ namespace iArsenal.Web
                 ViewState["ProductName"] = string.Empty;
 
             BindData();
-        }
-
-        protected void btnCart_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }

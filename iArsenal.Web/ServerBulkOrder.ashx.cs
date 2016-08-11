@@ -8,7 +8,7 @@ namespace iArsenal.Web
 {
     public class ServerBulkOrder : IHttpHandler
     {
-        private readonly IRepository repo = new Repository();
+        private readonly IRepository _repo = new Repository();
 
         public void ProcessRequest(HttpContext context)
         {
@@ -32,14 +32,14 @@ namespace iArsenal.Web
                             {
                                 try
                                 {
-                                    var o = repo.Single<Order>(_id);
+                                    var o = _repo.Single<Order>(_id);
 
                                     if (o != null && o.Status.Equals(OrderStatusType.Confirmed))
                                     {
                                         o.Status = OrderStatusType.Ordered;
                                         o.UpdateTime = DateTime.Now;
 
-                                        repo.Update(o);
+                                        _repo.Update(o);
 
                                         countSucceed++;
                                     }

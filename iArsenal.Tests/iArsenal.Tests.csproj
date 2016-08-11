@@ -58,6 +58,7 @@
     <Compile Include="Scheduler\AutoUpdateMemberTypeTest.cs" />
     <Compile Include="Scheduler\OfficialSyncTest.cs" />
     <Compile Include="Scheduler\AutoUpdateOrderTypeTest.cs" />
+    <Compile Include="UnitTest1.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Arsenalcn.Core\Arsenalcn.Core.csproj">

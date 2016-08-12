@@ -43,10 +43,10 @@
             <a href="iArsenalOrder_Printing.aspx">个性化印字印号</a>
         </li>
         <li>
-            <a href="iArsenalOrder_MatchList.aspx">主场球票</a>
+            <a href="iArsenalOrder_MatchList.aspx">主场球票预订</a>
         </li>
         <li>
-            <a href="iArsenalOrder_Showcase.aspx">官方纪念品</a>
+            <a href="iArsenalOrder_Showcase.aspx">官方纪念品团购</a>
         </li>
         <li class="nor">
             <a href="iArsenalOrder.aspx">订单查询</a>

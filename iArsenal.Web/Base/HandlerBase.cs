@@ -2,7 +2,7 @@
 
 namespace iArsenal.Web
 {
-    public class HandlerBase: IHttpHandler
+    public class HandlerBase : IHttpHandler
     {
         protected readonly HttpContext Context = HttpContext.Current;
 

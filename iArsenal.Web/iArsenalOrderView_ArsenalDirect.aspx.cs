@@ -180,6 +180,12 @@ namespace iArsenal.Web
 
             priceInfo = string.Join(" + ", lstPriceInfo.ToArray());
 
+            if (o.Postage > 0)
+            {
+                price += o.Postage;
+                priceInfo += $" + 快递费：{o.Postage.ToString("f2")}";
+            }
+
             tbOrderPrice.Text = price.ToString(CultureInfo.CurrentCulture);
 
             if (!o.Sale.HasValue)

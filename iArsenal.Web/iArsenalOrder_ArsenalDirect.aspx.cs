@@ -71,6 +71,9 @@ namespace iArsenal.Web
 
                     tbOrderMobile.Text = o.Mobile;
                     tbOrderAddress.Text = o.Address;
+
+                    rblOrderPostage.SelectedValue = o.Postage > 0 ? o.Postage.ToString("f0") : "23";
+
                     tbOrderDescription.Text = o.Description;
 
                     var query = _repo.Query<OrderItem>(x => x.OrderID == o.ID).FindAll(x => x.IsActive).OrderBy(x => x.ID);
@@ -173,6 +176,7 @@ namespace iArsenal.Web
                         throw new Exception("请填写收货地址");
 
                     o.UpdateTime = DateTime.Now;
+                    o.Postage = Convert.ToSingle(rblOrderPostage.SelectedValue);
                     o.Description = tbOrderDescription.Text.Trim();
                     o.OrderType = OrderBaseType.Wish;
 
@@ -242,11 +246,11 @@ namespace iArsenal.Web
                                 oi.CreateTime = DateTime.Now;
                                 oi.OrderID = newID;
                                 oi.IsActive = true;
-                                //oi.Code = oi.Code;
+                                //oi.Code = oi.Code; // Exist
                                 oi.ProductGuid = Guid.Empty;
                                 oi.ProductName = oi.ProductName ?? string.Empty;
                                 oi.Size = oi.Size ?? string.Empty;
-                                //oi.Quantity = oi.Quantity;
+                                //oi.Quantity = oi.Quantity; // Exist
                                 oi.Sale = null;
                                 oi.Remark = new JavaScriptSerializer().Serialize(oi);
 
@@ -273,8 +277,6 @@ namespace iArsenal.Web
                     ClientScript.RegisterClientScriptBlock(typeof(string), "failed",
                         $"alert('{ex.Message}');window.location.href = window.location.href", true);
                 }
-
-                //conn.Close();
             }
         }
     }

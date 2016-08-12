@@ -143,9 +143,8 @@
             <div class="DivFloatLeft">
                 <asp:TextBox ID="tbProductName" runat="server" Text="" CssClass="TextBox" Width="200px"></asp:TextBox>
                 <asp:DropDownList ID="ddlIsSale" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlIsSale_SelectedIndexChanged">
-                    <asp:ListItem Value="" Text="--本季促销--" Selected="True"></asp:ListItem>
-                    <asp:ListItem Value="true" Text="促销"></asp:ListItem>
-                    <asp:ListItem Value="false" Text="普通"></asp:ListItem>
+                    <asp:ListItem Value="" Text="--全部商品--" Selected="True"></asp:ListItem>
+                    <asp:ListItem Value="true" Text="本季促销"></asp:ListItem>
                 </asp:DropDownList>
                 <asp:LinkButton ID="btnFilter" runat="server" Text="搜索商品" CssClass="LinkBtn" OnClick="btnFilter_Click"></asp:LinkButton>
                 <a href="iArsenalOrder_ArsenalDirect.aspx" class="LinkBtn"><i class="fa fa-hand-pointer-o" aria-hidden="true"></i>直接下单</a>

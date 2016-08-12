@@ -109,11 +109,21 @@
                             </asp:RequiredFieldValidator>
                         </td>
                     </tr>
+                    <tr class="Row">
+                        <td class="FieldHeader">快递方式：
+                        </td>
+                        <td class="FieldColspan" colspan="3">
+                            <asp:RadioButtonList ID="rblOrderPostage" runat="server" RepeatDirection="Horizontal"
+                                RepeatLayout="Flow" CssClass="RadioButtonList">
+                                <asp:ListItem Text="12元（江浙沪 - 顺丰速运）" Value="12"></asp:ListItem>
+                                <asp:ListItem Text="23元（全国其他地区 - 顺丰速运）" Value="23" Selected="True"></asp:ListItem>
+                            </asp:RadioButtonList>
+                        </td>
+                    </tr>
                 </tbody>
                 <tbody class="ArsenalDirect_WishList">
                     <tr class="CommandRow">
                         <td colspan="3">-- 商品信息栏 --
-
                         <asp:TextBox ID="tbWishOrderItemListInfo" runat="server" CssClass="WishOrderItemListInfo"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="rfvWishOrderItemListInfo" runat="server" ControlToValidate="tbWishOrderItemListInfo"
                                 Display="Dynamic" ErrorMessage="*请填写订购纪念品信息（商品编码和数量必填）" CssClass="ValiSpan">

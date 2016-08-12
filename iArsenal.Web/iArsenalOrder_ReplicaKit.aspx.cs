@@ -217,35 +217,10 @@ namespace iArsenal.Web
 
                     tbOrderMobile.Text = o.Mobile;
                     tbOrderAddress.Text = o.Address;
+
+                    rblOrderPostage.SelectedValue = o.Postage > 0 ? o.Postage.ToString("f0") : "18";
+
                     tbOrderDescription.Text = o.Description;
-
-                    // Set Order Payment Info
-                    //if (!string.IsNullOrEmpty(o.Payment))
-                    //{
-                    //    var payment = o.Payment.Substring(1, o.Payment.Length - 2).Split('|');
-                    //    rblOrderPayment.SelectedValue = payment[0];
-
-                    //    if (payment[0].Equals("Bank", StringComparison.OrdinalIgnoreCase))
-                    //    {
-                    //        tbBankName.Text = payment[1];
-                    //        tbBankAccount.Text = payment[2];
-
-                    //        trBank.Style.Add("display", "");
-                    //        trAlipay.Style.Add("display", "none");
-                    //    }
-                    //    else
-                    //    {
-                    //        tbAlipay.Text = payment[1];
-
-                    //        trBank.Style.Add("display", "none");
-                    //        trAlipay.Style.Add("display", "");
-                    //    }
-                    //}
-                    //else
-                    //{
-                    //    trBank.Style.Add("display", "none");
-                    //    trAlipay.Style.Add("display", "none");
-                    //}
 
                     var oiNumber = o.OIPlayerNumber;
                     var oiName = o.OIPlayerName;
@@ -353,14 +328,6 @@ namespace iArsenal.Web
                         rblChampionPatch.SelectedValue = "0";
                     }
 
-                    if (o.Postage > 0)
-                    {
-                        rblOrderPostage.SelectedValue = o.Postage.ToString("f0");
-                    }
-                    else
-                    {
-                        rblOrderPostage.SelectedValue = "0";
-                    }
                 }
                 else
                 {

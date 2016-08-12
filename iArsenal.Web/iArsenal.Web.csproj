@@ -215,7 +215,6 @@
     <Content Include="fonts\fontawesome-webfont.woff" />
     <Content Include="fonts\fontawesome-webfont.ttf" />
     <Content Include="fonts\fontawesome-webfont.eot" />
-    <Content Include="Base\HandlerBase.ashx" />
     <None Include="Scripts\jquery-2.2.4.intellisense.js" />
     <Content Include="Scripts\jquery-2.2.4.js" />
     <Content Include="Scripts\jquery-2.2.4.min.js" />
@@ -285,7 +284,6 @@
     <Content Include="Default.aspx" />
     <Content Include="Scripts\iarsenal.js" />
     <Content Include="ServerMembershipCheck.ashx" />
-    <Content Include="UploadFiles\Banner\iArsenal_Banner_ArsenalDirect.psd" />
     <Content Include="ServerGetSession.ashx" />
     <Content Include="ServerPlaceOrder.ashx" />
   </ItemGroup>
@@ -374,6 +372,7 @@
     <Compile Include="AdminSchedule.aspx.designer.cs">
       <DependentUpon>AdminSchedule.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Base\HandlerBase.cs" />
     <Compile Include="Control\PortalBulkOrderInfo.ascx.cs">
       <DependentUpon>PortalBulkOrderInfo.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -474,9 +473,6 @@
     </Compile>
     <Compile Include="iArsenalOrder_Printing.aspx.designer.cs">
       <DependentUpon>iArsenalOrder_Printing.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Base\HandlerBase.ashx.cs">
-      <DependentUpon>HandlerBase.ashx</DependentUpon>
     </Compile>
     <Compile Include="Base\MemberPageBase.cs">
       <SubType>ASPXCodeBehind</SubType>

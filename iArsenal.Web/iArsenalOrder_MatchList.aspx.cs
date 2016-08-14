@@ -8,29 +8,29 @@ namespace iArsenal.Web
 {
     public partial class iArsenalOrder_MatchList : AcnPageBase
     {
-        private Guid? _leagueGuid;
+        //private Guid? _leagueGuid;
 
-        private Guid? LeagueGuid
-        {
-            get
-            {
-                if (_leagueGuid.HasValue && _leagueGuid == Guid.Empty)
-                    return _leagueGuid;
-                if (!string.IsNullOrEmpty(Request.QueryString["LeagueGuid"]))
-                {
-                    try
-                    {
-                        return new Guid(Request.QueryString["LeagueGuid"]);
-                    }
-                    catch
-                    {
-                        return Guid.Empty;
-                    }
-                }
-                return null;
-            }
-            set { _leagueGuid = value; }
-        }
+        //private Guid? LeagueGuid
+        //{
+        //    get
+        //    {
+        //        if (_leagueGuid.HasValue && _leagueGuid == Guid.Empty)
+        //            return _leagueGuid;
+        //        if (!string.IsNullOrEmpty(Request.QueryString["LeagueGuid"]))
+        //        {
+        //            try
+        //            {
+        //                return new Guid(Request.QueryString["LeagueGuid"]);
+        //            }
+        //            catch
+        //            {
+        //                return Guid.Empty;
+        //            }
+        //        }
+        //        return null;
+        //    }
+        //    set { _leagueGuid = value; }
+        //}
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -60,10 +60,10 @@ namespace iArsenal.Web
         {
             try
             {
-                var list = MatchTicket.Cache.MatchTicketList.FindAll(delegate(MatchTicket mt)
+                var list = MatchTicket.Cache.MatchTicketList.FindAll(delegate (MatchTicket mt)
                 {
                     var returnValue = true;
-                    var tmpString = string.Empty;
+                    string tmpString;
 
                     if (ViewState["ProductCode"] != null)
                     {
@@ -115,7 +115,7 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof (string), "failed", $"alert('{ex.Message}')", true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message}')", true);
             }
         }
 
@@ -141,79 +141,78 @@ namespace iArsenal.Web
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
                 var mt = e.Row.DataItem as MatchTicket;
-                var at = Arsenal_Team.Cache.Load(mt.TeamGuid);
+                if (mt != null)
+                {
+                    var at = Arsenal_Team.Cache.Load(mt.TeamGuid);
 
-                var _strRank = mt.ProductInfo.Trim();
+                    var rank = mt.ProductInfo.Trim();
 
-                var ltrlTeamInfo = e.Row.FindControl("ltrlTeamInfo") as Literal;
-                var lblMatchTicketRank = e.Row.FindControl("lblMatchTicketRank") as Label;
-                var lblMatchDeadlineOrResult = e.Row.FindControl("lblMatchDeadlineOrResult") as Label;
-                var hlAllowMemberClass = e.Row.FindControl("hlAllowMemberClass") as HyperLink;
-                var hlTicketApply = e.Row.FindControl("hlTicketApply") as HyperLink;
+                    var ltrlTeamInfo = e.Row.FindControl("ltrlTeamInfo") as Literal;
+                    var lblMatchTicketRank = e.Row.FindControl("lblMatchTicketRank") as Label;
+                    var lblMatchDeadlineOrResult = e.Row.FindControl("lblMatchDeadlineOrResult") as Label;
+                    var hlAllowMemberClass = e.Row.FindControl("hlAllowMemberClass") as HyperLink;
+                    var hlTicketApply = e.Row.FindControl("hlTicketApply") as HyperLink;
 
-                if (ltrlTeamInfo != null)
-                {
-                    ltrlTeamInfo.Text =
-                        $"<span class=\"MatchTicket_TeamInfo\"><img src=\"{ConfigGlobal.AcnCasinoURL + at.TeamLogo}\" alt=\"{at.TeamEnglishName}\" /></span>";
-                }
-                else
-                {
-                    ltrlTeamInfo.Text = string.Empty;
-                }
-
-                if (lblMatchTicketRank != null && !string.IsNullOrEmpty(_strRank))
-                {
-                    lblMatchTicketRank.Text = _strRank.Substring(_strRank.Length - 7, 7);
-                }
-                else
-                {
-                    lblMatchTicketRank.Text = string.Empty;
-                }
-
-                if (lblMatchDeadlineOrResult != null && !string.IsNullOrEmpty(mt.ResultInfo))
-                {
-                    lblMatchDeadlineOrResult.Text = $"<em>{mt.ResultInfo}</em>";
-                }
-                else
-                {
-                    lblMatchDeadlineOrResult.Text = $"<em>{mt.Deadline.ToString("yyyy-MM-dd")}</em>";
-                }
-
-                if (hlAllowMemberClass != null && mt.AllowMemberClass.HasValue)
-                {
-                    if (mt.AllowMemberClass.Value == 1)
+                    if (ltrlTeamInfo != null)
                     {
-                        hlAllowMemberClass.Text = "Core";
-                        hlAllowMemberClass.ToolTip = "普通(Core)会员以上可预订";
-                        hlAllowMemberClass.NavigateUrl = "iArsenalMemberPeriod.aspx";
-                        hlAllowMemberClass.Visible = true;
+                        ltrlTeamInfo.Text =
+                            $"<span class=\"MatchTicket_TeamInfo\"><img src=\"{ConfigGlobal.AcnCasinoURL + at.TeamLogo}\" alt=\"{at.TeamEnglishName}\" /></span>";
                     }
-                    else if (mt.AllowMemberClass.Value == 2)
-                    {
-                        hlAllowMemberClass.Text = "<em>Premier</em>";
-                        hlAllowMemberClass.ToolTip = "只限高级(Premier)会员可预订";
-                        hlAllowMemberClass.NavigateUrl = "iArsenalMemberPeriod.aspx";
-                        hlAllowMemberClass.Visible = true;
-                    }
-                    else
-                    {
-                        hlAllowMemberClass.Visible = false;
-                    }
-                }
-                else
-                {
-                    hlAllowMemberClass.Visible = false;
-                }
 
-                if (hlTicketApply != null && mt.Deadline > DateTime.Now)
-                {
-                    hlTicketApply.NavigateUrl = $"iArsenalOrder_MatchTicket.aspx?MatchGuid={mt.ID}";
-                    hlTicketApply.Target = "_self";
-                    hlTicketApply.Visible = true;
-                }
-                else
-                {
-                    hlTicketApply.Visible = false;
+                    if (lblMatchTicketRank != null && !string.IsNullOrEmpty(rank))
+                    {
+                        lblMatchTicketRank.Text = rank.Substring(rank.Length - 7, 7);
+                    }
+
+                    if (lblMatchDeadlineOrResult != null)
+                    {
+                        lblMatchDeadlineOrResult.Text = !string.IsNullOrEmpty(mt.ResultInfo) ?
+                            $"<em>{mt.ResultInfo}</em>" : $"<em>{mt.Deadline.ToString("yyyy-MM-dd")}</em>";
+                    }
+
+                    if (hlAllowMemberClass != null && mt.AllowMemberClass.HasValue)
+                    {
+                        if (mt.AllowMemberClass.Value == 1)
+                        {
+                            hlAllowMemberClass.Text = "Core";
+                            hlAllowMemberClass.ToolTip = "普通(Core)会员以上可预订";
+                            hlAllowMemberClass.NavigateUrl = "iArsenalMemberPeriod.aspx";
+                            hlAllowMemberClass.Visible = true;
+                        }
+                        else if (mt.AllowMemberClass.Value == 2)
+                        {
+                            hlAllowMemberClass.Text = "<em>Premier</em>";
+                            hlAllowMemberClass.ToolTip = "只限高级(Premier)会员可预订";
+                            hlAllowMemberClass.NavigateUrl = "iArsenalMemberPeriod.aspx";
+                            hlAllowMemberClass.Visible = true;
+                        }
+                        else
+                        {
+                            hlAllowMemberClass.Visible = false;
+                        }
+                    }
+
+                    if (hlTicketApply != null)
+                    {
+                        if (mt.Deadline > DateTime.Now)
+                        {
+                            hlTicketApply.NavigateUrl = $"iArsenalOrder_MatchTicket.aspx?MatchGuid={mt.ID}";
+                            hlTicketApply.Target = "_self";
+                            hlTicketApply.Text = "预订球票";
+                            hlTicketApply.Visible = true;
+                        }
+                        else if (mt.Deadline <= DateTime.Now && mt.WaitingDeadline > DateTime.Now)
+                        {
+                            hlTicketApply.NavigateUrl = $"iArsenalOrder_MatchTicket.aspx?MatchGuid={mt.ID}";
+                            hlTicketApply.Target = "_self";
+                            hlTicketApply.Text = "等票队列";
+                            hlTicketApply.Visible = true;
+                        }
+                        else
+                        {
+                            hlTicketApply.Visible = false;
+                        }
+                    }
                 }
             }
         }

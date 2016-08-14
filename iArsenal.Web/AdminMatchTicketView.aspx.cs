@@ -8,7 +8,7 @@ namespace iArsenal.Web
 {
     public partial class AdminMatchTicketView : AdminPageBase
     {
-        private readonly IRepository repo = new Repository();
+        private readonly IRepository _repo = new Repository();
 
         private Guid MatchGuid
         {
@@ -56,8 +56,7 @@ namespace iArsenal.Web
         {
             if (MatchGuid != Guid.Empty)
             {
-                var mt = new MatchTicket();
-                mt.ID = MatchGuid;
+                var mt = new MatchTicket { ID = MatchGuid };
                 mt.Single();
 
                 // Get Match Info
@@ -69,17 +68,11 @@ namespace iArsenal.Web
                 else
                     lblLeagueName.Text = "无";
 
-                if (mt.TeamGuid != null && !string.IsNullOrEmpty(mt.TeamName))
-                    lblTeamName.Text = $"<em>{mt.TeamName}</em>";
-                else
-                    lblTeamName.Text = "无";
+                lblTeamName.Text = !string.IsNullOrEmpty(mt.TeamName) ? $"<em>{mt.TeamName}</em>" : "无";
 
                 lblIsHome.Text = mt.IsHome ? "主场" : "客场";
 
-                if (mt.Round.HasValue)
-                    lblRound.Text = mt.Round.Value.ToString();
-                else
-                    lblRound.Text = "/";
+                lblRound.Text = mt.Round?.ToString() ?? "/";
 
                 lblPlayTime.Text = $"<em>{mt.PlayTimeLocal.ToString("yyyy-MM-dd HH:mm")}</em>";
                 lblResultInfo.Text = $"<em>{mt.ResultInfo}</em>";
@@ -88,15 +81,9 @@ namespace iArsenal.Web
 
                 ddlProductCode.SelectedValue = mt.ProductCode;
                 tbDeadline.Text = mt.Deadline.ToString("yyyy-MM-dd");
+                tbWaitingDeadline.Text = mt.WaitingDeadline.ToString("yyyy-MM-dd");
 
-                if (mt.AllowMemberClass.HasValue)
-                {
-                    ddlAllowMemberClass.SelectedValue = mt.AllowMemberClass.Value.ToString();
-                }
-                else
-                {
-                    ddlAllowMemberClass.SelectedValue = string.Empty;
-                }
+                ddlAllowMemberClass.SelectedValue = mt.AllowMemberClass?.ToString() ?? string.Empty;
 
                 cbIsActive.Checked = mt.IsActive;
                 tbRemark.Text = mt.Remark;
@@ -109,15 +96,15 @@ namespace iArsenal.Web
             }
             else
             {
-                ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
                     "alert('选定的比赛不存在');window.location.href = 'AdminMatchTicket.aspx'", true);
             }
         }
 
         private void BindItemData()
         {
-            var list = repo.Query<OrderItem>(x => x.Remark == MatchGuid.ToString());
-            var query = repo.All<Order>().FindAll(o => list.Exists(x => x.OrderID.Equals(o.ID)));
+            var list = _repo.Query<OrderItem>(x => x.Remark == MatchGuid.ToString());
+            var query = _repo.All<Order>().FindAll(o => list.Exists(x => x.OrderID.Equals(o.ID)));
 
             gvMatchOrder.DataSource = query.ToList();
             gvMatchOrder.DataBind();
@@ -135,8 +122,11 @@ namespace iArsenal.Web
         {
             if (gvMatchOrder.SelectedIndex != -1)
             {
-                Response.Redirect(
-                    $"AdminOrderView.aspx?OrderID={gvMatchOrder.DataKeys[gvMatchOrder.SelectedIndex].Value}");
+                var key = gvMatchOrder.DataKeys[gvMatchOrder.SelectedIndex];
+                if (key != null)
+                {
+                    Response.Redirect($"AdminOrderView.aspx?OrderID={key.Value}");
+                }
             }
         }
 
@@ -149,7 +139,7 @@ namespace iArsenal.Web
                 var hlName = e.Row.FindControl("hlName") as HyperLink;
                 var lblOrderStatus = e.Row.FindControl("lblOrderStatus") as Label;
 
-                if (hlName != null)
+                if (o != null && hlName != null)
                 {
                     var m = Member.Cache.Load(o.MemberID);
 
@@ -171,16 +161,9 @@ namespace iArsenal.Web
                     hlName.NavigateUrl = $"AdminOrder.aspx?MemberID={o.MemberID}";
                 }
 
-                if (lblOrderStatus != null)
+                if (o != null && lblOrderStatus != null)
                 {
-                    var _strStatus = string.Empty;
-
-                    if (o.Status.Equals(OrderStatusType.Confirmed))
-                        _strStatus = $"<em>{o.StatusInfo}</em>";
-                    else
-                        _strStatus = o.StatusInfo;
-
-                    lblOrderStatus.Text = _strStatus;
+                    lblOrderStatus.Text = o.Status.Equals(OrderStatusType.Confirmed) ? $"<em>{o.StatusInfo}</em>" : o.StatusInfo;
                 }
             }
         }
@@ -189,16 +172,28 @@ namespace iArsenal.Web
         {
             try
             {
-                var mt = new MatchTicket();
-                mt.ID = MatchGuid;
+                var mt = new MatchTicket { ID = MatchGuid };
                 mt.Single();
 
-                DateTime _deadline;
-                if (!string.IsNullOrEmpty(tbDeadline.Text.Trim()) &&
-                    DateTime.TryParse(tbDeadline.Text.Trim(), out _deadline))
-                    mt.Deadline = _deadline;
+                DateTime deadline;
+                if (!string.IsNullOrEmpty(tbDeadline.Text.Trim()) && DateTime.TryParse(tbDeadline.Text.Trim(), out deadline))
+                {
+                    mt.Deadline = deadline;
+                }
                 else
+                {
                     mt.Deadline = mt.PlayTime.AddMonths(-2).AddDays(-7);
+                }
+
+                if (!string.IsNullOrEmpty(tbWaitingDeadline.Text.Trim()) &&
+                    DateTime.TryParse(tbWaitingDeadline.Text.Trim(), out deadline))
+                {
+                    mt.WaitingDeadline = deadline;
+                }
+                else
+                {
+                    mt.WaitingDeadline = mt.PlayTime.AddMonths(-1).AddDays(+7);
+                }
 
                 if (!string.IsNullOrEmpty(ddlAllowMemberClass.SelectedValue))
                 {
@@ -221,7 +216,7 @@ namespace iArsenal.Web
 
                     MatchTicket.Cache.RefreshCache();
 
-                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
                         "alert('更新成功');window.location.href=window.location.href", true);
                 }
                 else
@@ -230,13 +225,13 @@ namespace iArsenal.Web
 
                     MatchTicket.Cache.RefreshCache();
 
-                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
                         "alert('添加成功');window.location.href = 'AdminMatchTicket.aspx'", true);
                 }
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof (string), "failed", $"alert('{ex.Message}')", true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message}')", true);
             }
         }
 
@@ -258,12 +253,10 @@ namespace iArsenal.Web
             {
                 if (MatchGuid != Guid.Empty)
                 {
-                    var mt = new MatchTicket();
-                    mt.ID = MatchGuid;
+                    var mt = new MatchTicket { ID = MatchGuid };
                     mt.Delete();
 
-                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
-                        "alert('删除成功');window.location.href='AdminMatchTicket.aspx'", true);
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", "alert('删除成功');window.location.href='AdminMatchTicket.aspx'", true);
                 }
                 else
                 {
@@ -272,7 +265,7 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof (string), "failed", $"alert('{ex.Message}')", true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message}')", true);
             }
         }
     }

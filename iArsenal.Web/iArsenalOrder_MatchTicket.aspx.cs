@@ -86,9 +86,9 @@ namespace iArsenal.Web
                     throw new Exception("无相关比赛信息，请联系管理员");
                 }
 
-                if (OrderID <= 0 && mt.Deadline < DateTime.Now)
+                if (OrderID <= 0 && mt.Deadline < DateTime.Now && mt.WaitingDeadline < DateTime.Now)
                 {
-                    throw new Exception("此球票预定已过截至时间，请联系管理员");
+                    throw new Exception("此球票预定已过截止时间或补票时间，无法预订，请联系管理员");
                 }
 
                 //if (!mt.IsMemberCouldPurchase(this.CurrentMemberPeriod))

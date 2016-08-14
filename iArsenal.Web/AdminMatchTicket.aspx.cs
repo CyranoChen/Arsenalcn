@@ -9,7 +9,7 @@ namespace iArsenal.Web
 {
     public partial class AdminMatchTicket : AdminPageBase
     {
-        private readonly IRepository repo = new Repository();
+        private readonly IRepository _repo = new Repository();
 
         private Guid? _matchGuid;
 
@@ -46,8 +46,8 @@ namespace iArsenal.Web
 
                 var mtList = MatchTicket.Cache.MatchTicketList;
 
-                var list = mtList.GroupBy(mt => new {mt.LeagueGuid, mt.LeagueName})
-                    .Select(l => new {l.Key.LeagueGuid, l.Key.LeagueName})
+                var list = mtList.GroupBy(mt => new { mt.LeagueGuid, mt.LeagueName })
+                    .Select(l => new { l.Key.LeagueGuid, l.Key.LeagueName })
                     .OrderByDescending(l => l.LeagueName).ToList();
 
                 ddlLeague.DataSource = list;
@@ -86,7 +86,7 @@ namespace iArsenal.Web
             var list = MatchTicket.All().FindAll(x =>
             {
                 var returnValue = true;
-                var tmpString = string.Empty;
+                string tmpString;
 
                 if (ViewState["LeagueGuid"] != null)
                 {
@@ -113,7 +113,7 @@ namespace iArsenal.Web
                 {
                     tmpString = ViewState["AllowMemberClass"].ToString();
                     if (!string.IsNullOrEmpty(tmpString) && x.AllowMemberClass.HasValue)
-                        returnValue = returnValue && x.AllowMemberClass.Equals(Convert.ToInt16(tmpString));
+                        returnValue = returnValue && x.AllowMemberClass.Equals(Convert.ToInt32(tmpString));
                 }
 
                 if (ViewState["TeamName"] != null)
@@ -133,8 +133,8 @@ namespace iArsenal.Web
                 var i = list.FindIndex(mt => mt.ID.Equals(MatchGuid));
                 if (i >= 0)
                 {
-                    gvMatchTicket.PageIndex = i/gvMatchTicket.PageSize;
-                    gvMatchTicket.SelectedIndex = i%gvMatchTicket.PageSize;
+                    gvMatchTicket.PageIndex = i / gvMatchTicket.PageSize;
+                    gvMatchTicket.SelectedIndex = i % gvMatchTicket.PageSize;
                 }
                 else
                 {
@@ -195,8 +195,10 @@ namespace iArsenal.Web
         {
             if (gvMatchTicket.SelectedIndex != -1)
             {
-                Response.Redirect(
-                    $"AdminMatchTicketView.aspx?MatchGuid={gvMatchTicket.DataKeys[gvMatchTicket.SelectedIndex].Value}");
+                var key = gvMatchTicket.DataKeys[gvMatchTicket.SelectedIndex];
+
+                if (key != null)
+                { Response.Redirect($"AdminMatchTicketView.aspx?MatchGuid={key.Value}"); }
             }
         }
 
@@ -208,7 +210,7 @@ namespace iArsenal.Web
 
             MatchTicket.MatchTicketCountStatistics();
 
-            ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+            ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
                 "alert('更新缓存成功');window.location.href=window.location.href", true);
         }
 
@@ -287,13 +289,9 @@ namespace iArsenal.Web
 
                 var lblHomeAway = e.Row.FindControl("lblHomeAway") as Label;
 
-                if (lblHomeAway != null)
+                if (lblHomeAway != null && mt != null)
                 {
                     lblHomeAway.Text = mt.IsHome ? "主场" : "客场";
-                }
-                else
-                {
-                    lblHomeAway.Visible = false;
                 }
             }
         }

@@ -32,7 +32,7 @@ namespace iArsenal.Service
             ResultAway = m.ResultAway;
             PlayTime = m.PlayTime;
 
-            PlayTimeLocal = ConvertToDST(PlayTime);
+            PlayTimeLocal = ConvertToDst(PlayTime);
 
             LeagueGuid = m.LeagueGuid;
             LeagueName = m.LeagueName;
@@ -63,6 +63,7 @@ namespace iArsenal.Service
                     : string.Empty;
 
                 Deadline = (DateTime)dr["Deadline"];
+                WaitingDeadline = (DateTime)dr["WaitingDeadline"];
 
                 if (!Convert.IsDBNull(dr["AllowMemberClass"]))
                     AllowMemberClass = Convert.ToInt16(dr["AllowMemberClass"]);
@@ -91,8 +92,7 @@ namespace iArsenal.Service
 
         public void Single()
         {
-            var sql = string.Format("SELECT * FROM {0} WHERE MatchGuid = @key",
-                Repository.GetTableAttr<MatchTicket>().Name);
+            var sql = $"SELECT * FROM {Repository.GetTableAttr<MatchTicket>().Name} WHERE MatchGuid = @key";
 
             SqlParameter[] para =
             {
@@ -113,8 +113,7 @@ namespace iArsenal.Service
 
         public bool Any()
         {
-            var sql = string.Format("SELECT * FROM {0} WHERE MatchGuid = @key",
-                Repository.GetTableAttr<MatchTicket>().Name);
+            var sql = $"SELECT * FROM {Repository.GetTableAttr<MatchTicket>().Name} WHERE MatchGuid = @key";
 
             SqlParameter[] para = { new SqlParameter("@key", ID) };
 
@@ -132,7 +131,7 @@ namespace iArsenal.Service
             {
                 // Get DataSet of iArsenal_MatchTicket 
                 var attr = Repository.GetTableAttr<MatchTicket>();
-                var sql = string.Format("SELECT * FROM {0} ORDER BY {1}", attr.Name, attr.Sort);
+                var sql = $"SELECT * FROM {attr.Name} ORDER BY {attr.Sort}";
                 var ds = DataAccess.ExecuteDataset(sql);
 
                 if (ds.Tables[0].Rows.Count > 0)
@@ -145,8 +144,7 @@ namespace iArsenal.Service
 
                 foreach (var m in mlist)
                 {
-                    var mt = new MatchTicket();
-                    mt.ID = m.ID;
+                    var mt = new MatchTicket { ID = m.ID };
 
                     if (ds.Tables[0].Rows.Count > 0)
                     {
@@ -169,8 +167,8 @@ namespace iArsenal.Service
         public void Create(SqlTransaction trans = null)
         {
             var sql =
-                @"INSERT INTO {0} (MatchGuid, ProductCode, Deadline, AllowMemberClass, TicketCount, IsActive, Remark) 
-                               VALUES (@key, @productCode, @deadline, @allowMemberClass, @ticketCount, @isActive, @remark)";
+                @"INSERT INTO {0} (MatchGuid, ProductCode, Deadline, WaitingDeadline, AllowMemberClass, TicketCount, IsActive, Remark) 
+                               VALUES (@key, @productCode, @deadline, @waitingDeadline, @allowMemberClass, @ticketCount, @isActive, @remark)";
 
             sql = string.Format(sql, Repository.GetTableAttr<MatchTicket>().Name);
 
@@ -179,6 +177,7 @@ namespace iArsenal.Service
                 new SqlParameter("@key", ID),
                 new SqlParameter("@productCode", ProductCode),
                 new SqlParameter("@deadline", Deadline),
+                new SqlParameter("@waitingDeadline", WaitingDeadline), 
                 new SqlParameter("@allowMemberClass",
                     !AllowMemberClass.HasValue ? DBNull.Value : (object) AllowMemberClass.Value),
                 new SqlParameter("@TicketCount", !TicketCount.HasValue ? DBNull.Value : (object) TicketCount.Value),
@@ -192,8 +191,8 @@ namespace iArsenal.Service
         public void Update(SqlTransaction trans = null)
         {
             var sql =
-                @"UPDATE {0} SET ProductCode = @productCode, Deadline = @deadline, AllowMemberClass = @allowMemberClass,
-                                  TicketCount = @ticketCount, IsActive = @isActive, Remark = @remark WHERE MatchGuid = @key";
+                @"UPDATE {0} SET ProductCode = @productCode, Deadline = @deadline, WaitingDeadline = @waitingDeadline, 
+                    AllowMemberClass = @allowMemberClass, TicketCount = @ticketCount, IsActive = @isActive, Remark = @remark WHERE MatchGuid = @key";
 
             sql = string.Format(sql, Repository.GetTableAttr<MatchTicket>().Name);
 
@@ -202,6 +201,7 @@ namespace iArsenal.Service
                 new SqlParameter("@key", ID),
                 new SqlParameter("@productCode", ProductCode),
                 new SqlParameter("@deadline", Deadline),
+                new SqlParameter("@waitingDeadline", WaitingDeadline), 
                 new SqlParameter("@allowMemberClass",
                     !AllowMemberClass.HasValue ? DBNull.Value : (object) AllowMemberClass.Value),
                 new SqlParameter("@TicketCount", !TicketCount.HasValue ? DBNull.Value : (object) TicketCount.Value),
@@ -214,8 +214,7 @@ namespace iArsenal.Service
 
         public void Delete(SqlTransaction trans = null)
         {
-            var sql = string.Format("DELETE FROM {0} WHERE MatchGuid = @key",
-                Repository.GetTableAttr<MatchTicket>().Name);
+            var sql = $"DELETE FROM {Repository.GetTableAttr<MatchTicket>().Name} WHERE MatchGuid = @key";
 
             SqlParameter[] para = { new SqlParameter("@key", ID) };
 
@@ -224,9 +223,9 @@ namespace iArsenal.Service
 
         public static void MatchTicketCountStatistics()
         {
-            var list = Cache.MatchTicketList.FindAll(mt => mt.IsActive);
+            var matches = Cache.MatchTicketList.FindAll(mt => mt.IsActive);
 
-            if (list.Any())
+            if (matches.Any())
             {
                 IRepository repo = new Repository();
 
@@ -235,16 +234,16 @@ namespace iArsenal.Service
                 var oiQuery = repo.Query<OrderItem>(oi => oi.Remark != string.Empty)
                     .FindAll(x => x.IsActive);
 
-                foreach (var mt in list)
+                foreach (var mt in matches)
                 {
-                    var _list = oiQuery.FindAll(oi => oi.Remark.Equals(mt.ID.ToString()));
-                    var _count = oQuery.FindAll(o => _list.Any(oi => oi.OrderID.Equals(o.ID))).Count;
+                    var list = oiQuery.FindAll(oi => oi.Remark.Equals(mt.ID.ToString()));
+                    var count = oQuery.FindAll(o => list.Any(oi => oi.OrderID.Equals(o.ID))).Count;
 
-                    if (_count > 0 && !mt.TicketCount.Equals(_count))
+                    if (count > 0 && !mt.TicketCount.Equals(count))
                     {
-                        mt.TicketCount = _count;
+                        mt.TicketCount = count;
                     }
-                    else if (_count == 0 && mt.TicketCount.HasValue)
+                    else if (count == 0 && mt.TicketCount.HasValue)
                     {
                         mt.TicketCount = null;
                     }
@@ -260,20 +259,17 @@ namespace iArsenal.Service
             }
         }
 
-        private static DateTime ConvertToDST(DateTime date)
+        private static DateTime ConvertToDst(DateTime date)
         {
-            var begDST = new DateTime(date.Year, 3, 31);
-            var endDST = new DateTime(date.Year, 11, 1);
+            var begDst = new DateTime(date.Year, 3, 31);
+            var endDst = new DateTime(date.Year, 11, 1);
 
-            if (begDST.DayOfWeek != DayOfWeek.Sunday)
-                begDST = begDST.AddDays(-((int)begDST.DayOfWeek));
+            if (begDst.DayOfWeek != DayOfWeek.Sunday)
+                begDst = begDst.AddDays(-((int)begDst.DayOfWeek));
 
-            if (endDST.DayOfWeek == DayOfWeek.Sunday)
-                endDST = endDST.AddDays(-7);
-            else
-                endDST = endDST.AddDays(-((int)endDST.DayOfWeek));
+            endDst = endDst.DayOfWeek == DayOfWeek.Sunday ? endDst.AddDays(-7) : endDst.AddDays(-(int)endDst.DayOfWeek);
 
-            if (date.AddHours(-7) > begDST && date.AddHours(-7) < endDST)
+            if (date.AddHours(-7) > begDst && date.AddHours(-7) < endDst)
             {
                 return date.AddHours(-7);
             }
@@ -361,6 +357,9 @@ namespace iArsenal.Service
 
         [DbColumn("Deadline")]
         public DateTime Deadline { get; set; }
+
+        [DbColumn("WaitingDeadline")]
+        public DateTime WaitingDeadline { get; set; }
 
         [DbColumn("AllowMemberClass")]
         public int? AllowMemberClass { get; set; }

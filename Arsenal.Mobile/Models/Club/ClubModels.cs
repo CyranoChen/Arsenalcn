@@ -1,4 +1,5 @@
-﻿using Arsenalcn.Core;
+﻿using Arsenal.Service;
+using Arsenalcn.Core;
 
 namespace Arsenal.Mobile.Models.Club
 {
@@ -25,7 +26,6 @@ namespace Arsenal.Mobile.Models.Club
 
         public bool IsContestBonus { get; set; }
 
-        // TODO ClubSys Bonus
-        public const int BonusAmount = 3000;
+        public static double BonusAmount => ConfigGlobal_AcnClub.SignInFund;
     }
 }

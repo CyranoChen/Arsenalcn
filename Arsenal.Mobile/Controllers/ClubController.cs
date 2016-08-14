@@ -79,7 +79,7 @@ namespace Arsenal.Mobile.Controllers
                             // do SignIn Bonus
                             var logSignIn = new LogSignIn();
 
-                            var bonus = logSignIn.DoBonus(user.ID, "euro2016", trans);
+                            var bonus = logSignIn.DoBonus(user.ID, ConfigGlobal_AcnClub.SignInKeyword, trans);
 
                             // QSB
                             if (bonus > 0)
@@ -113,7 +113,7 @@ namespace Arsenal.Mobile.Controllers
 
             // 确定是否有活动补助金
             model.IsContestBonus =
-                !_repo.Any<LogSignIn>(x => x.UserGuid == user.ID && x.Description == "euro2016 - bonus");
+                !_repo.Any<LogSignIn>(x => x.UserGuid == user.ID && x.Description == ConfigGlobal_AcnClub.SignInKeywordBonus);
 
             return View(model);
         }
@@ -138,7 +138,7 @@ namespace Arsenal.Mobile.Controllers
                     if (user != null && ConfigGlobal_AcnClub.SignInActive)
                     {
                         if (user.AcnID.HasValue && user.AcnID == AcnID &&
-                            !_repo.Any<LogSignIn>(x => x.UserGuid == user.ID && x.Description == "euro2016 - bonus"))
+                            !_repo.Any<LogSignIn>(x => x.UserGuid == user.ID && x.Description == ConfigGlobal_AcnClub.SignInKeywordBonus))
                         {
                             var gambler = _repo.Query<Gambler>(x => x.UserID == AcnID).FirstOrDefault();
 
@@ -147,7 +147,7 @@ namespace Arsenal.Mobile.Controllers
                                 throw new Exception("无对应博彩玩家");
                             }
 
-                            var bonus = Convert.ToDouble(SignInDailyDto.BonusAmount);
+                            var bonus = SignInDailyDto.BonusAmount;
 
                             // do Contest Bonus
                             var logSignIn = new LogSignIn
@@ -157,7 +157,7 @@ namespace Arsenal.Mobile.Controllers
                                 SignInTime = DateTime.Now,
                                 Bonus = bonus,
                                 SignInDays = -1,
-                                Description = "euro2016 - bonus"
+                                Description = ConfigGlobal_AcnClub.SignInKeywordBonus
                             };
 
                             _repo.Insert(logSignIn, trans);

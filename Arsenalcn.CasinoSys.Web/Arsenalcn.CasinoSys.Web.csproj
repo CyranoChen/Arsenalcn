@@ -341,6 +341,7 @@
     <Content Include="UploadFiles\Team\England\Blackpool.gif" />
     <Content Include="UploadFiles\Team\England\Bolton.gif" />
     <Content Include="UploadFiles\Team\England\BorehamWood.gif" />
+    <Content Include="UploadFiles\Team\England\Bournemouth.gif" />
     <Content Include="UploadFiles\Team\England\Bradford.gif" />
     <Content Include="UploadFiles\Team\England\Brighton.gif" />
     <Content Include="UploadFiles\Team\England\Burnley.gif" />
@@ -359,6 +360,7 @@
     <Content Include="UploadFiles\Team\England\Leicester.gif" />
     <Content Include="UploadFiles\Team\England\LeytonOrient.gif" />
     <Content Include="UploadFiles\Team\England\Liverpool.gif" />
+    <Content Include="UploadFiles\Team\England\ManCity-new.gif" />
     <Content Include="UploadFiles\Team\England\ManCity.gif" />
     <Content Include="UploadFiles\Team\England\ManUtd.gif" />
     <Content Include="UploadFiles\Team\England\Middlesbrough.gif" />
@@ -371,6 +373,7 @@
     <Content Include="UploadFiles\Team\England\QPR.gif" />
     <Content Include="UploadFiles\Team\England\Reading.gif" />
     <Content Include="UploadFiles\Team\England\Sheffield.gif" />
+    <Content Include="UploadFiles\Team\England\SheffieldWednesday.gif" />
     <Content Include="UploadFiles\Team\England\Shrewsbury.gif" />
     <Content Include="UploadFiles\Team\England\Southampton.gif" />
     <Content Include="UploadFiles\Team\England\StokeCity.gif" />

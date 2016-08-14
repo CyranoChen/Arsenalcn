@@ -17,7 +17,7 @@ namespace Arsenal.Service.Club
             map.ForMember(d => d.Bonus, opt => opt.MapFrom(s => s.GetValue("Bonus")));
         }
 
-        public double DoBonus(Guid userGuid, string description, SqlTransaction trans = null)
+        public double DoBonus(Guid userGuid, string keyword, SqlTransaction trans = null)
         {
             IRepository repo = new Repository();
 
@@ -43,7 +43,7 @@ namespace Arsenal.Service.Club
             SignInTime = DateTime.Now;
 
             Bonus = ConfigGlobal_AcnClub.SignInBonus * rate;
-            Description = description;
+            Description = keyword;
 
             repo.Insert(this, trans);
 

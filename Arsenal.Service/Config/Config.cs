@@ -425,6 +425,22 @@ namespace Arsenal.Service
             }
         }
 
+        public static float SignInFund
+        {
+            get
+            {
+                try
+                {
+                    return Convert.ToSingle(ConfigDictionary["SignInFund"]);
+                }
+                catch
+                {
+                    // QSB
+                    return 3000f;
+                }
+            }
+        }
+
         public static int SignInMaxRate
         {
             get
@@ -439,6 +455,10 @@ namespace Arsenal.Service
                 }
             }
         }
+
+        public static string SignInKeyword => ConfigDictionary["SignInKeyword"];
+        public static string SignInKeywordBonus => ConfigDictionary["SignInKeywordBonus"];
+
 
         #endregion
     }

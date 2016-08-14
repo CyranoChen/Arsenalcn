@@ -179,7 +179,7 @@ namespace iArsenal.Web
 
                     if (_repo.Any<Showcase>(x => x.ProductGuid == p.ID))
                     {
-                        btnShowcase.Text = "已橱窗";
+                        btnShowcase.Text = "已发布";
                         btnShowcase.Enabled = false;
                         btnShowcase.OnClientClick = "return false";
                     }

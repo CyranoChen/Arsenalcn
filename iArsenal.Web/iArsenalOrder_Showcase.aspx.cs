@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Web.UI.WebControls;
 using iArsenal.Service;
 
@@ -30,33 +31,38 @@ namespace iArsenal.Web
                     Response.Redirect("~/iArsenalOrder_ArsenalDirect.aspx");
                 }
 
-                var list = Product.Cache.ProductList.FindAll(x => x.IsActive && x.ProductType == ProductType.Other)
+                var products = Product.Cache.ProductList.FindAll(x => x.IsActive && x.ProductType == ProductType.Other)
                     .FindAll(x =>
-                {
-                    var returnValue = true;
-                    string tmpString;
-
-                    if (ViewState["ProductName"] != null)
                     {
-                        tmpString = ViewState["ProductName"].ToString().ToLower();
-                        if (!string.IsNullOrEmpty(tmpString))
-                            returnValue = x.Code.ToLower().Contains(tmpString) ||
-                                          x.Name.ToLower().Contains(tmpString) ||
-                                          x.DisplayName.ToLower().Contains(tmpString);
-                    }
+                        var returnValue = true;
+                        string tmpString;
 
-                    if (ViewState["IsSale"] != null)
-                    {
-                        tmpString = ViewState["IsSale"].ToString();
-                        if (!string.IsNullOrEmpty(tmpString))
-                            returnValue = returnValue && x.Sale.HasValue.Equals(Convert.ToBoolean(tmpString));
-                    }
+                        if (ViewState["ProductName"] != null)
+                        {
+                            tmpString = ViewState["ProductName"].ToString().ToLower();
+                            if (!string.IsNullOrEmpty(tmpString))
+                                returnValue = x.Code.ToLower().Contains(tmpString) ||
+                                              x.Name.ToLower().Contains(tmpString) ||
+                                              x.DisplayName.ToLower().Contains(tmpString);
+                        }
 
-                    return returnValue;
-                })
-                .FindAll(x => showcases.Exists(s => s.ProductGuid == x.ID));
+                        if (ViewState["IsSale"] != null)
+                        {
+                            tmpString = ViewState["IsSale"].ToString();
+                            if (!string.IsNullOrEmpty(tmpString))
+                                returnValue = returnValue && x.Sale.HasValue.Equals(Convert.ToBoolean(tmpString));
+                        }
 
-                rptShowcase.DataSource = list;
+                        return returnValue;
+                    });
+
+                var query = from p in products
+                            join s in showcases on p.ID equals s.ProductGuid
+                            where p.Code == s.ProductCode
+                            orderby s.OrderNum
+                            select p;
+
+                rptShowcase.DataSource = query;
                 rptShowcase.DataBind();
 
                 //#region set Control Custom Pager

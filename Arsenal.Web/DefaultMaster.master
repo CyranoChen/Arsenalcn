@@ -6,28 +6,28 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>阿森纳中文网 Arsenal.cn</title>
-    <link rel="icon" href="http://www.arsenalcn.com/favicon.ico" type="image/x-icon"/>
-    <link rel="shortcut icon" href="http://www.arsenalcn.com/favicon.ico" type="image/x-icon"/>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <meta name="keywords" content="Arsenal,Arsenalcn,ACN,Arsenal,阿森纳中国官方球迷会,阿森纳论坛,阿森纳,阿森纳球迷"/>
-    <meta name="description" content="阿森纳中国球迷会,官方,官方球迷会,阿森纳中国,中国分会"/>
-    <script type="text/javascript" src="scripts/jquery-3.0.0.min.js"></script>
-    <script src="https://code.jquery.com/jquery-migrate-3.0.0.js"></script>
+    <link rel="icon" href="http://www.arsenalcn.com/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="http://www.arsenalcn.com/favicon.ico" type="image/x-icon" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="keywords" content="Arsenal,Arsenalcn,ACN,Arsenal,阿森纳中国官方球迷会,阿森纳论坛,阿森纳,阿森纳球迷" />
+    <meta name="description" content="阿森纳中国球迷会,官方,官方球迷会,阿森纳中国,中国分会" />
+    <script type="text/javascript" src="scripts/jquery-3.1.0.min.js"></script>
+    <%--    <script src="https://code.jquery.com/jquery-migrate-3.0.0.js"></script>--%>
     <script type="text/javascript" src="scripts/arsenal.js"></script>
     <asp:ContentPlaceHolder ID="cphHead" runat="server">
     </asp:ContentPlaceHolder>
 </head>
 <body>
-<form id="form1" runat="server" defaultbutton="btnDefault">
-    <div id="ACN_Wrap">
-        <uc1:DNTHeader ID="ctrlHeader" runat="server"/>
-        <asp:ContentPlaceHolder ID="cphMain" runat="server">
-        </asp:ContentPlaceHolder>
-        <div class="Clear">
-            <asp:Button ID="btnDefault" runat="server" OnClientClick="return false" CssClass="BtnDefault"/>
+    <form id="form1" runat="server" defaultbutton="btnDefault">
+        <div id="ACN_Wrap">
+            <uc1:DNTHeader ID="ctrlHeader" runat="server" />
+            <asp:ContentPlaceHolder ID="cphMain" runat="server">
+            </asp:ContentPlaceHolder>
+            <div class="Clear">
+                <asp:Button ID="btnDefault" runat="server" OnClientClick="return false" CssClass="BtnDefault" />
+            </div>
         </div>
-    </div>
-    <uc2:DNTFooter ID="ctrlFooter" runat="server"/>
-</form>
+        <uc2:DNTFooter ID="ctrlFooter" runat="server" />
+    </form>
 </body>
 </html>

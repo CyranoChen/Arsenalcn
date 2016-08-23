@@ -70,6 +70,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AdminGroup.aspx" />
+    <Content Include="AdminGroupView.aspx" />
     <Content Include="AdminMembership.aspx" />
     <Content Include="AdminLogSignIn.aspx" />
     <Content Include="AdminLogView.aspx" />
@@ -161,6 +162,13 @@
     </Compile>
     <Compile Include="AdminGroup.aspx.designer.cs">
       <DependentUpon>AdminGroup.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminGroupView.aspx.cs">
+      <DependentUpon>AdminGroupView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminGroupView.aspx.designer.cs">
+      <DependentUpon>AdminGroupView.aspx</DependentUpon>
     </Compile>
     <Compile Include="AdminMembership.aspx.cs">
       <DependentUpon>AdminMembership.aspx</DependentUpon>

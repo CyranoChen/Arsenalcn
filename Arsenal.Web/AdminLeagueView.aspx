@@ -9,7 +9,7 @@ CodeBehind="AdminLeagueView.aspx.cs" Inherits="Arsenal.Web.AdminLeagueView" Titl
     <uc1:AdminPanel ID="pnlAdmin" runat="server"/>
     <div id="MainPanel">
         <uc2:AdminFieldToolBar ID="ctrlAdminFieldToolBar" runat="server"/>
-        <div class="CasinoSys_MainInfo">
+        <div class="Arsenal_MainInfo">
             <table class="DataView">
                 <thead>
                 <tr class="Header">

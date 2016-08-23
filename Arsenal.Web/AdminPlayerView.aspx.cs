@@ -43,26 +43,13 @@ namespace Arsenal.Web
             {
                 var p = _repo.Single<Player>(PlayerGuid);
 
-                lblPlayerBasicInfo.InnerHtml = string.Format("<em>{0}</em> 基本信息", p.DisplayName);
-                lblPlayerDetailInfo.InnerHtml = string.Format("<em>{0}</em> 详细信息", p.DisplayName);
+                lblPlayerBasicInfo.InnerHtml = $"<em>{p.DisplayName}</em> 基本信息";
+                lblPlayerDetailInfo.InnerHtml = $"<em>{p.DisplayName}</em> 详细信息";
 
                 tbPlayerGuid.Text = PlayerGuid.ToString();
-
-                if (!string.IsNullOrEmpty(p.FirstName))
-                    tbFirstName.Text = p.FirstName;
-                else
-                    tbFirstName.Text = string.Empty;
-
-                if (!string.IsNullOrEmpty(p.LastName))
-                    tbLastName.Text = p.LastName;
-                else
-                    tbLastName.Text = string.Empty;
-
-                if (!string.IsNullOrEmpty(p.PrintingName))
-                    tbPrintingName.Text = p.PrintingName;
-                else
-                    tbPrintingName.Text = string.Empty;
-
+                tbFirstName.Text = !string.IsNullOrEmpty(p.FirstName) ? p.FirstName : string.Empty;
+                tbLastName.Text = !string.IsNullOrEmpty(p.LastName) ? p.LastName : string.Empty;
+                tbPrintingName.Text = !string.IsNullOrEmpty(p.PrintingName) ? p.PrintingName : string.Empty;
                 ddlPosition.SelectedValue = !p.Position.Equals(PlayerPositionType.None)
                     ? p.Position.ToString()
                     : string.Empty;
@@ -117,15 +104,8 @@ namespace Arsenal.Web
                     p = _repo.Single<Player>(PlayerGuid);
                 }
 
-                if (!string.IsNullOrEmpty(tbFirstName.Text.Trim()))
-                    p.FirstName = tbFirstName.Text.Trim();
-                else
-                    p.FirstName = null;
-
-                if (!string.IsNullOrEmpty(tbLastName.Text.Trim()))
-                    p.LastName = tbLastName.Text.Trim();
-                else
-                    p.LastName = null;
+                p.FirstName = !string.IsNullOrEmpty(tbFirstName.Text.Trim()) ? tbFirstName.Text.Trim() : null;
+                p.LastName = !string.IsNullOrEmpty(tbLastName.Text.Trim()) ? tbLastName.Text.Trim() : null;
 
                 var pName = $"{tbFirstName.Text.Trim()} {tbLastName.Text.Trim()}".Trim();
                 if (!string.IsNullOrEmpty(pName))
@@ -133,14 +113,11 @@ namespace Arsenal.Web
                 else
                     throw new Exception("请输入球员姓名");
 
-                if (!string.IsNullOrEmpty(tbPrintingName.Text.Trim()))
-                    p.PrintingName = tbPrintingName.Text.Trim();
-                else
-                    p.PrintingName = null;
+                p.PrintingName = !string.IsNullOrEmpty(tbPrintingName.Text.Trim()) ? tbPrintingName.Text.Trim() : null;
 
                 if (!string.IsNullOrEmpty(ddlPosition.SelectedValue))
                 {
-                    p.Position = (PlayerPositionType) Enum.Parse(typeof (PlayerPositionType), ddlPosition.SelectedValue);
+                    p.Position = (PlayerPositionType)Enum.Parse(typeof(PlayerPositionType), ddlPosition.SelectedValue);
                 }
                 else
                 {
@@ -189,20 +166,19 @@ namespace Arsenal.Web
                 if (PlayerGuid != Guid.Empty)
                 {
                     _repo.Update(p);
-                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
                         "alert('更新成功');window.location.href = window.location.href", true);
                 }
                 else
                 {
                     _repo.Insert(p);
-                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
                         "alert('添加成功');window.location.href = 'AdminPlayer.aspx'", true);
                 }
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof (string), "failed",
-                    string.Format("alert('{0}')", ex.Message), true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message}')", true);
             }
         }
 
@@ -226,7 +202,7 @@ namespace Arsenal.Web
                 {
                     _repo.Delete<Player>(PlayerGuid);
 
-                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
                         "alert('删除成功');window.location.href='AdminPlayer.aspx'", true);
                 }
                 else
@@ -236,7 +212,7 @@ namespace Arsenal.Web
             }
             catch
             {
-                ClientScript.RegisterClientScriptBlock(typeof (string), "failed", "alert('删除失败')", true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", "alert('删除失败')", true);
             }
         }
     }

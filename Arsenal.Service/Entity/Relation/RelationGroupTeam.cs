@@ -160,7 +160,40 @@ namespace Arsenal.Service
 
         public void Insert(SqlTransaction trans = null)
         {
-            //TODO
+            var sql = $@"INSERT INTO {Repository.GetTableAttr<RelationGroupTeam>().Name} 
+                                (PositionNo, TotalPlayed, TotalPoints, HomeWon, HomeDraw, HomeLost, HomePoints, 
+                                HomeGoalFor, HomeGoalAgainst, HomeGoalDiff, AwayWon, AwayDraw, AwayLost, AwayPoints, 
+                                AwayGoalFor, AwayGoalAgainst, AwayGoalDiff, GroupGuid, TeamGuid) VALUES 
+                                (@positionNo, @totalPlayed, @totalPoints, @homeWon, @homeDraw, @homeLost, @homePoints, 
+                                @homeGoalFor, @homeGoalAgainst, @homeGoalDiff, @awayWon, @awayDraw, @awayLost,  @awayPoints,
+                                 @awayGoalFor, @awayGoalAgainst, @awayGoalDiff, @groupGuid, @teamGuid)";
+
+            SqlParameter[] para =
+            {
+                new SqlParameter("@positionNo", !PositionNo.HasValue ? DBNull.Value : (object) PositionNo.Value),
+                new SqlParameter("@totalPlayed", !TotalPlayed.HasValue ? DBNull.Value : (object) TotalPlayed.Value),
+                new SqlParameter("@totalPoints", !TotalPoints.HasValue ? DBNull.Value : (object) TotalPoints.Value),
+                // Home
+                new SqlParameter("@homeWon", !HomeWon.HasValue ? DBNull.Value : (object) HomeWon.Value),
+                new SqlParameter("@homeDraw", !HomeDraw.HasValue ? DBNull.Value : (object) HomeDraw.Value),
+                new SqlParameter("@homeLost", !HomeLost.HasValue ? DBNull.Value : (object) HomeLost.Value),
+                new SqlParameter("@homePoints", !HomePoints.HasValue ? DBNull.Value : (object) HomePoints.Value),
+                new SqlParameter("@homeGoalFor", !HomeGoalFor.HasValue ? DBNull.Value : (object) HomeGoalFor.Value),
+                new SqlParameter("@homeGoalAgainst", !HomeGoalAgainst.HasValue ? DBNull.Value : (object) HomeGoalAgainst.Value),
+                new SqlParameter("@homeGoalDiff", !HomeGoalDiff.HasValue ? DBNull.Value : (object) HomeGoalDiff.Value),
+                // Away
+                new SqlParameter("@awayWon", !AwayWon.HasValue ? DBNull.Value : (object) AwayWon.Value),
+                new SqlParameter("@awayDraw", !AwayDraw.HasValue ? DBNull.Value : (object) AwayDraw.Value),
+                new SqlParameter("@awayLost", !AwayLost.HasValue ? DBNull.Value : (object) AwayLost.Value),
+                new SqlParameter("@awayPoints", !AwayPoints.HasValue ? DBNull.Value : (object) AwayPoints.Value),
+                new SqlParameter("@awayGoalFor", !AwayGoalFor.HasValue ? DBNull.Value : (object) AwayGoalFor.Value),
+                new SqlParameter("@awayGoalAgainst", !AwayGoalAgainst.HasValue ? DBNull.Value : (object) AwayGoalAgainst.Value),
+                new SqlParameter("@awayGoalDiff", !AwayGoalDiff.HasValue ? DBNull.Value : (object) AwayGoalDiff.Value),
+                new SqlParameter("@groupGuid", GroupGuid),
+                new SqlParameter("@teamGuid", TeamGuid)
+            };
+
+            DataAccess.ExecuteNonQuery(sql, para, trans);
         }
 
         public void Update(SqlTransaction trans = null)

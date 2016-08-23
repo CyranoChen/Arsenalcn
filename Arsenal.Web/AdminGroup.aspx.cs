@@ -12,19 +12,19 @@ namespace Arsenal.Web
     {
         private readonly IRepository _repo = new Repository();
 
-        private Guid? _groupGuid;
+        private Guid? _leagueGuid;
 
-        private Guid? GroupGuid
+        private Guid? LeagueGuid
         {
             get
             {
-                if (_groupGuid.HasValue && _groupGuid == Guid.Empty)
-                    return _groupGuid;
-                if (!string.IsNullOrEmpty(Request.QueryString["GroupGuid"]))
+                if (_leagueGuid.HasValue && _leagueGuid == Guid.Empty)
+                    return _leagueGuid;
+                if (!string.IsNullOrEmpty(Request.QueryString["LeagueGuid"]))
                 {
                     try
                     {
-                        return new Guid(Request.QueryString["GroupGuid"]);
+                        return new Guid(Request.QueryString["LeagueGuid"]);
                     }
                     catch
                     {
@@ -33,8 +33,32 @@ namespace Arsenal.Web
                 }
                 return null;
             }
-            set { _groupGuid = value; }
+            set { _leagueGuid = value; }
         }
+
+        //private Guid? _groupGuid;
+
+        //private Guid? GroupGuid
+        //{
+        //    get
+        //    {
+        //        if (_groupGuid.HasValue && _groupGuid == Guid.Empty)
+        //            return _groupGuid;
+        //        if (!string.IsNullOrEmpty(Request.QueryString["GroupGuid"]))
+        //        {
+        //            try
+        //            {
+        //                return new Guid(Request.QueryString["GroupGuid"]);
+        //            }
+        //            catch
+        //            {
+        //                return Guid.Empty;
+        //            }
+        //        }
+        //        return null;
+        //    }
+        //    set { _groupGuid = value; }
+        //}
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -51,7 +75,15 @@ namespace Arsenal.Web
                 ddlLeague.DataValueField = "ID";
                 ddlLeague.DataBind();
 
-                ddlLeague.SelectedValue = ConfigGlobal_AcnCasino.DefaultLeagueID.ToString();
+                if (LeagueGuid.HasValue && LeagueGuid != Guid.Empty)
+                {
+                    ddlLeague.SelectedValue = LeagueGuid.ToString();
+                }
+                else
+                {
+                    ddlLeague.SelectedValue = ConfigGlobal_AcnCasino.DefaultLeagueID.ToString();
+                }
+
                 ViewState["LeagueGuid"] = ddlLeague.SelectedValue;
 
                 #endregion
@@ -86,25 +118,25 @@ namespace Arsenal.Web
 
             #region set GridView Selected PageIndex
 
-            if (GroupGuid.HasValue && !GroupGuid.Value.Equals(Guid.Empty))
-            {
-                var i = list.FindIndex(x => x.ID.Equals(GroupGuid));
+            //if (GroupGuid.HasValue && !GroupGuid.Value.Equals(Guid.Empty))
+            //{
+            //    var i = list.FindIndex(x => x.ID.Equals(GroupGuid));
 
-                if (i >= 0)
-                {
-                    gvGroup.PageIndex = i / gvGroup.PageSize;
-                    gvGroup.SelectedIndex = i % gvGroup.PageSize;
-                }
-                else
-                {
-                    gvGroup.PageIndex = 0;
-                    gvGroup.SelectedIndex = -1;
-                }
-            }
-            else
-            {
-                gvGroup.SelectedIndex = -1;
-            }
+            //    if (i >= 0)
+            //    {
+            //        gvGroup.PageIndex = i / gvGroup.PageSize;
+            //        gvGroup.SelectedIndex = i % gvGroup.PageSize;
+            //    }
+            //    else
+            //    {
+            //        gvGroup.PageIndex = 0;
+            //        gvGroup.SelectedIndex = -1;
+            //    }
+            //}
+            //else
+            //{
+            //    gvGroup.SelectedIndex = -1;
+            //}
 
             #endregion
 
@@ -161,7 +193,7 @@ namespace Arsenal.Web
             else
                 ViewState["LeagueGuid"] = string.Empty;
 
-            GroupGuid = null;
+            LeagueGuid = null;
             gvGroup.PageIndex = 0;
 
             BindData();
@@ -184,7 +216,7 @@ namespace Arsenal.Web
             else
                 ViewState["GroupName"] = string.Empty;
 
-            GroupGuid = null;
+            LeagueGuid = null;
             gvGroup.PageIndex = 0;
 
             BindData();
@@ -236,7 +268,7 @@ namespace Arsenal.Web
                         throw new Exception("无对应分组");
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message}')", true);
                 }

@@ -103,7 +103,7 @@ namespace Arsenal.Scheduler
                         foreach (var u in users)
                         {
                             var uResp = list.Find(x => x.openid == u.WeChatOpenID);
-                            var uWeChat = usersWeChat.Find(x => x.ID == u.ID);
+                            var uWeChat = repo.Single<UserWeChat>(u.ID);
 
                             if (uResp != null)
                             {

@@ -9,7 +9,7 @@ CodeBehind="AdminLogView.aspx.cs" Inherits="Arsenal.Web.AdminLogView" Title="后
     <uc1:AdminPanel ID="pnlAdmin" runat="server"/>
     <div id="MainPanel">
         <uc2:AdminFieldToolBar ID="ctrlAdminFieldToolBar" runat="server"/>
-        <div class="CasinoSys_MainInfo">
+        <div class="Arsenal_MainInfo">
             <table class="DataView">
                 <thead>
                 <tr class="Header">

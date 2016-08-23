@@ -182,20 +182,19 @@ namespace Arsenal.Web
                 if (MatchGuid != Guid.Empty)
                 {
                     _repo.Update(m);
-                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
                         "alert('更新成功');window.location.href = window.location.href", true);
                 }
                 else
                 {
                     _repo.Insert(m);
-                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
                         "alert('添加成功');window.location.href = 'AdminMatch.aspx'", true);
                 }
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof (string), "failed",
-                    string.Format("alert('{0}')", ex.Message), true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message}')", true);
             }
         }
 
@@ -219,7 +218,7 @@ namespace Arsenal.Web
                 {
                     _repo.Delete<Match>(MatchGuid);
 
-                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
                         "alert('删除成功');window.location.href='AdminMatch.aspx'", true);
                 }
                 else
@@ -229,7 +228,7 @@ namespace Arsenal.Web
             }
             catch
             {
-                ClientScript.RegisterClientScriptBlock(typeof (string), "failed", "alert('删除失败')", true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", "alert('删除失败')", true);
             }
         }
 
@@ -241,13 +240,7 @@ namespace Arsenal.Web
 
             if (rltList != null && rltList.Count > 0)
             {
-                foreach (var rlt in rltList)
-                {
-                    var t = Team.Cache.Load(rlt.TeamGuid);
-
-                    if (t != null)
-                        list.Add(t);
-                }
+                list.AddRange(rltList.Select(rlt => Team.Cache.Load(rlt.TeamGuid)).Where(t => t != null));
 
                 ddlTeam.DataSource = list.OrderBy(x => x.TeamEnglishName);
                 ddlTeam.DataTextField = "TeamDisplayName";
@@ -265,7 +258,7 @@ namespace Arsenal.Web
         protected void ddlLeague_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (!string.IsNullOrEmpty(ddlLeague.SelectedValue))
-                BindTeamData(new Guid(ddlLeague.SelectedValue));
+            { BindTeamData(new Guid(ddlLeague.SelectedValue)); }
         }
     }
 }

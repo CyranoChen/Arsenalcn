@@ -134,7 +134,7 @@
 <asp:Content ID="cphMain" ContentPlaceHolderID="cphMain" runat="server">
     <div id="banner" style="height: 250px">
         <a href="http://arsenaldirect.arsenal.com" target="_blank">
-            <img src="uploadfiles/banner/banner20160805.png" alt="阿森纳官方纪念品本季热推" />
+            <img src="uploadfiles/banner/banner20161001.png" alt="温格执教二十周年专题" />
         </a>
     </div>
     <div id="ACN_Main">

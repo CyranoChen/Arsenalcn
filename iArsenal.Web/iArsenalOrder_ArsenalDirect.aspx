@@ -6,7 +6,7 @@
 <%@ Register Src="Control/PortalBulkOrderInfo.ascx" TagName="PortalBulkOrderInfo" TagPrefix="uc2" %>
 <asp:Content ID="cphHead" ContentPlaceHolderID="cphHead" runat="server">
     <link href="Content/themes/base/all.css" type="text/css" rel="stylesheet" />
-    <script type="text/javascript" src="Scripts/jquery-ui-1.12.0.min.js"></script>
+    <script type="text/javascript" src="Scripts/jquery-ui-1.12.1.min.js"></script>
     <script type="text/javascript" src="Scripts/json2.js"></script>
     <script type="text/javascript">
         var cacheProductCodeList = {};
@@ -46,9 +46,9 @@
     </script>
 </asp:Content>
 <asp:Content ID="cphMain" ContentPlaceHolderID="cphMain" runat="server">
-    <div id="banner" style="height: 270px">
+    <div id="banner" style="height: 250px">
         <a href="http://arsenaldirect.arsenal.com/" target="_blank">
-            <img src="uploadfiles/banner/banner20160528.png" alt="阿森纳官方纪念品团购服务" />
+            <img src="uploadfiles/banner/banner20160805.png" alt="阿森纳官方纪念品团购服务" />
         </a>
     </div>
     <div id="ACN_Main">

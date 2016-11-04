@@ -122,6 +122,10 @@ namespace iArsenal.Web
                         btnModify.Visible = false;
                         btnConfirm.Visible = true;
                         btnCancel.Visible = true;
+
+                        ucPortalProductQrCode.QrCodeUrl = "~/UploadFiles/qrcode-alipay-vicky.png";
+                        ucPortalProductQrCode.QrCodeProvider = "支付宝";
+                        ucPortalProductQrCode.IsLocalUrl = true;
                     }
                     else
                     {

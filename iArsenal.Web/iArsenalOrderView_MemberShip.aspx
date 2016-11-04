@@ -180,8 +180,11 @@
                             <em>升级会员费</em>
                         </a>即可。
                     </p>
+                    <div class="Thumbnail">
+                        <img src="uploadfiles/qrcode-wechat-iarsenalcn.gif" alt="iArsenalCN" />
+                    </div>
                     <p>
-                        (5). 申请操作中如有问题，请咨询官方球迷会服务微信号：<em>iArsenalCN</em>。加入时验证方式为您注册本服务中心的真实姓名和手机号码，并注明<em>【球票】</em>字样。
+                        (5). 【微信】申请操作中如有问题，请咨询官方球迷会服务微信号：<em>iArsenalCN</em>。加入时验证方式为您注册本服务中心的真实姓名和手机号码，并注明<em>【球票】</em>字样。
                     </p>
                 </div>
             </div>

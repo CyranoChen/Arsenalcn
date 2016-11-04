@@ -175,17 +175,13 @@
                         (1). 由于一般订票时间与比赛时间的间隔时间较长，我们建议会员采用淘宝交易方式。您可通过扫描上方的<em>二维码</em>，
                         或访问<a href="http://arsenalcn.taobao.com" target="_blank"><em>球迷会淘宝商城</em></a>，拍下相应级别的球票，待出票后再确认收货。
                     </p>
-
                     <p>(2). 您亦可通过上方付款信息栏中的支付宝或银行转账。此方式钱款将直接到账。</p>
-
-                    <p>(3). 订票者可在预订截止时间之前，申请退票，我们会全额退还球票款项（不包括收费会员年费）；截止时间之后，原则上不可退票，如有特殊需求，请与负责人联系。</p>
-
+                    <p>(3). 订票者可在预订截止时间之前，申请退票，我们会全额退还球票款项（暂不包括收费会员年费）；截止时间之后，原则上不可退票，如有特殊需求，请与负责人联系。</p>
+                    <div class="Thumbnail">
+                        <img src="uploadfiles/qrcode-wechat-iarsenalcn.gif" alt="iArsenalCN" />
+                    </div>
                     <p>
-                        (4). 票务负责人联系方式：<br />
-                        微信号：<em>iArsenalcn</em>【推荐】。加入时请告知<em>真实姓名</em>，并注明<em>【球票】</em>字样。<br />
-                        Email：<a href="mailto:webmaster@arsenalcn.com">
-                            <em>webmaster@arsenalcn.com</em>
-                        </a>
+                        (4). 【微信】申请操作中如有问题，请咨询官方球迷会服务微信号：<em>iArsenalCN</em>。加入时验证方式为您注册本服务中心的真实姓名和手机号码，并注明<em>【球票】</em>字样。
                     </p>
                 </div>
             </div>

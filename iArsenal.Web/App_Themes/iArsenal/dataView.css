@@ -11,112 +11,125 @@
     width: 95%;
 }
 
-.DataView td {
-    border-bottom: 1px dashed #ccc;
-    font-size: 10.5pt;
-    padding: 10px;
-}
+    .DataView td {
+        border-bottom: 1px dashed #ccc;
+        font-size: 10.5pt;
+        padding: 10px;
+    }
 
-.DataView td.Wrap {
-    line-height: 1.5;
-    white-space: normal;
-}
+        .DataView td.Wrap {
+            line-height: 1.5;
+            white-space: normal;
+        }
 
-.DataView td a { font-size: 10.5pt; }
+        .DataView td a {
+            font-size: 10.5pt;
+        }
 
-.DataView .Header th {
-    background: #f0f0f0;
-    border: 1px solid #9c824a;
-    color: #9c824a;
-    font-size: 10.5pt;
-    font-weight: bold;
-    padding: 8px;
-    white-space: nowrap;
-}
+    .DataView .Header th {
+        background: #f0f0f0;
+        border: 1px solid #9c824a;
+        color: #9c824a;
+        font-size: 10.5pt;
+        font-weight: bold;
+        padding: 8px;
+        white-space: nowrap;
+    }
 
-.DataView .Header th a {
-    color: #9c824a;
-    font-size: 10.5pt;
-    font-weight: bold;
-    white-space: nowrap;
-}
+        .DataView .Header th a {
+            color: #9c824a;
+            font-size: 10.5pt;
+            font-weight: bold;
+            white-space: nowrap;
+        }
 
-.DataView .Header th a:hover { text-decoration: none; }
+            .DataView .Header th a:hover {
+                text-decoration: none;
+            }
 
-.DataView .Pager td, .Footer td {
-    font-weight: bold;
-    text-align: right;
-}
+    .DataView .Pager td, .Footer td {
+        font-weight: bold;
+        text-align: right;
+    }
 
-.DataView .Pager td table { float: right; }
+        .DataView .Pager td table {
+            float: right;
+        }
 
-.DataView .Pager td table td {
-    border: none;
-    padding: 0;
-}
+            .DataView .Pager td table td {
+                border: none;
+                padding: 0;
+            }
 
-.DataView .Pager td table tr td span {
-    background: #eee;
-    color: #333;
-    font-weight: bold;
-    padding: 5px;
-}
+            .DataView .Pager td table tr td span {
+                background: #eee;
+                color: #333;
+                font-weight: bold;
+                padding: 5px;
+            }
 
-.DataView .Pager td table tr td a {
-    padding: 3px;
-    text-decoration: underline;
-}
+            .DataView .Pager td table tr td a {
+                padding: 3px;
+                text-decoration: underline;
+            }
 
-.DataView .Row td { color: #444; }
+    .DataView .Row td {
+        color: #444;
+    }
 
-.DataView .AlternatingRow td { color: #444; }
+    .DataView .AlternatingRow td {
+        color: #444;
+    }
 
-.DataView .SelectedRow, .DataView .Row:hover td, .DataView .AlternatingRow:hover td { color: #000; }
+    .DataView .SelectedRow, .DataView .Row:hover td, .DataView .AlternatingRow:hover td {
+        color: #000;
+    }
 
-.DataView .EditRow { }
+    .DataView .EditRow {
+    }
 
-.DataView .EditRow td, .DataView .SelectedRow td {
-    color: #333333;
-    font-weight: bold;
-}
+        .DataView .EditRow td, .DataView .SelectedRow td {
+            color: #333333;
+            font-weight: bold;
+        }
 
-.DataView td.FieldHeader {
-    color: #666666;
-    font-weight: bold;
-    padding: 5px;
-    padding-right: 10px;
-    text-align: right;
-    white-space: nowrap;
-}
+    .DataView td.FieldHeader {
+        color: #666666;
+        font-weight: bold;
+        padding: 5px;
+        padding-right: 10px;
+        text-align: right;
+        white-space: nowrap;
+    }
 
-.DataView td.FieldColumn {
-    text-align: left;
-    white-space: nowrap;
-}
+    .DataView td.FieldColumn {
+        text-align: left;
+        white-space: nowrap;
+    }
 
-.DataView td.FieldColspan {
-    font-size: 14px; /* support font size exception on mobile browser */
-    text-align: left;
-    white-space: normal;
-}
+    .DataView td.FieldColspan {
+        font-size: 14px; /* support font size exception on mobile browser */
+        text-align: left;
+        white-space: normal;
+    }
 
-.DataView .CommandRow td {
-    border-bottom: 1px solid #ccc;
-    color: #999;
-    font-weight: bold;
-    text-align: left;
-}
+    .DataView .CommandRow td {
+        border-bottom: 1px solid #ccc;
+        color: #999;
+        font-weight: bold;
+        text-align: left;
+    }
 
-.DataView a.StrongLink {
-    font-size: 14px;
-    font-weight: bold;
-    text-decoration: underline;
-}
+    .DataView a.StrongLink {
+        font-size: 14px;
+        font-weight: bold;
+        text-decoration: underline;
+    }
 
-.DataView a.StrongLink:hover {
-    font-size: 14px;
-    font-weight: bold;
-}
+        .DataView a.StrongLink:hover {
+            font-size: 14px;
+            font-weight: bold;
+        }
 
 .FormView {
     max-width: 665px;
@@ -124,14 +137,16 @@
     width: 665px;
 }
 
-.FormView .Header th { text-align: left; }
+    .FormView .Header th {
+        text-align: left;
+    }
 
-.FormView .Header th a {
-    color: #9c824a;
-    font-size: 14px;
-    font-weight: bold;
-    white-space: normal;
-}
+        .FormView .Header th a {
+            color: #9c824a;
+            font-size: 14px;
+            font-weight: bold;
+            white-space: normal;
+        }
 
 /* DataPager */
 
@@ -142,25 +157,27 @@
     padding: 2px;
 }
 
-#DataPagerInfo .GotoTxt {
-    border: 1px solid #999;
-    font-size: 10px;
-    height: 12px;
-    padding: 1px;
-    text-align: center;
-    width: 25px;
-}
+    #DataPagerInfo .GotoTxt {
+        border: 1px solid #999;
+        font-size: 10px;
+        height: 12px;
+        padding: 1px;
+        text-align: center;
+        width: 25px;
+    }
 
-#DataPagerInfo .GotoBtn {
-    background: #f2f2f2;
-    border: 1px solid #999;
-    font-size: 10px;
-    height: 12px;
-    padding: 1px 3px;
-    width: 20px;
-}
+    #DataPagerInfo .GotoBtn {
+        background: #f2f2f2;
+        border: 1px solid #999;
+        font-size: 10px;
+        height: 12px;
+        padding: 1px 3px;
+        width: 20px;
+    }
 
-#DataPlaceHolder { clear: both; }
+#DataPlaceHolder {
+    clear: both;
+}
 
 .DataItem {
     clear: both;
@@ -178,19 +195,21 @@
     text-align: right;
 }
 
-.DataPager a {
-    padding: 4px;
-    text-decoration: underline;
-}
+    .DataPager a {
+        padding: 4px;
+        text-decoration: underline;
+    }
 
-.DataPager span.Current {
-    background: #eee;
-    color: #333;
-    font-weight: bold;
-    padding: 4px;
-}
+    .DataPager span.Current {
+        background: #eee;
+        color: #333;
+        font-weight: bold;
+        padding: 4px;
+    }
 
-.DataPager span.Prev, .DataPager span.Next, .DataPager span.Start, .DataPager span.End { background: none; }
+    .DataPager span.Prev, .DataPager span.Next, .DataPager span.Start, .DataPager span.End {
+        background: none;
+    }
 
 /* FunctionBar */
 
@@ -200,39 +219,44 @@
     padding: 1px 10px;
 }
 
-.FunctionBar .DivFloatRight {
-    color: #444;
-    float: right;
-    font-weight: bold;
-}
+    .FunctionBar .DivFloatRight {
+        color: #444;
+        float: right;
+        font-weight: bold;
+    }
 
-.FunctionBar .DivFloatLeft {
-    color: #444;
-    float: left;
-    font-weight: bold;
-}
+    .FunctionBar .DivFloatLeft {
+        color: #444;
+        float: left;
+        font-weight: bold;
+    }
 
 
 /* TreeView */
 
-.TreeView { margin: 5px; }
-
-.TreeView td {
-    color: #333333;
-    font-size: 12px;
+.TreeView {
+    margin: 5px;
 }
 
-.TreeView .ParentNode { }
+    .TreeView td {
+        color: #333333;
+        font-size: 12px;
+    }
 
-.TreeView .HoverNode { text-decoration: underline; }
+    .TreeView .ParentNode {
+    }
 
-.TreeView .SelectedNode {
-    background: #f0edb9;
-    color: #333333;
-    font-weight: bold;
-    padding: 0 2px;
-    text-decoration: underline;
-}
+    .TreeView .HoverNode {
+        text-decoration: underline;
+    }
+
+    .TreeView .SelectedNode {
+        background: #f0edb9;
+        color: #333333;
+        font-weight: bold;
+        padding: 0 2px;
+        text-decoration: underline;
+    }
 
 /* InfoPanel */
 
@@ -242,50 +266,72 @@
     margin: 10px;
 }
 
-.InfoPanel h3 {
-    background: #9c824a;
-    border-bottom: 1px solid #9c824a;
-    height: 30px;
-}
+    .InfoPanel h3 {
+        background: #9c824a;
+        border-bottom: 1px solid #9c824a;
+        height: 30px;
+    }
 
-.InfoPanel h3 a {
-    color: #fff;
-    cursor: pointer;
-    display: block;
-    font-size: 12px;
-    font-weight: bold;
-    padding: 7px 25px;
-}
+        .InfoPanel h3 a {
+            color: #fff;
+            cursor: pointer;
+            display: block;
+            font-size: 12px;
+            font-weight: bold;
+            padding: 7px 25px;
+        }
 
-.InfoPanel h3.Exp a { background: url(images/topItem_exp.gif) no-repeat 5px 3px; }
+        .InfoPanel h3.Exp a {
+            background: url(images/topItem_exp.gif) no-repeat 5px 3px;
+        }
 
-.InfoPanel h3.Col a { background: url(images/topItem_col.gif) no-repeat 5px 3px; }
+        .InfoPanel h3.Col a {
+            background: url(images/topItem_col.gif) no-repeat 5px 3px;
+        }
 
-.InfoPanel .Block {
-    background: #fff;
-    padding: 1px;
-}
+    .InfoPanel .Block {
+        background: #fff;
+        padding: 1px;
+    }
 
-.InfoPanel .Block p {
-    color: #333;
-    line-height: 1.6;
-    margin: 5px;
-}
+        .InfoPanel .Block .Thumbnail {
+            float: right;
+            width: 64px;
+            height: 64px;
+            margin: 4px;
+            margin-right: 10px;
+        }
 
-.InfoPanel .Block ul li {
-    background: url(images/LiIcon.gif) no-repeat 12px 10px;
-    color: #666;
-    line-height: 1.5;
-    padding: 4px 20px;
-}
+            .InfoPanel .Block .Thumbnail img {
+                width: 64px;
+                height: 64px;
+                border: none;
+            }
 
-.InfoPanel .Block ul li.LiCurrent, .InfoPanel .Block ul li:hover { background: #f2f2f2 url(images/LiIcon.gif) no-repeat 12px 10px; }
+        .InfoPanel .Block p {
+            color: #333;
+            line-height: 1.6;
+            margin: 5px;
+        }
 
-.InfoPanel .Block ul li.LiTitle:hover { background: #f2f2f2 url(images/LiTitle.gif) no-repeat 5px 6px; }
+        .InfoPanel .Block ul li {
+            background: url(images/LiIcon.gif) no-repeat 12px 10px;
+            color: #666;
+            line-height: 1.5;
+            padding: 4px 20px;
+        }
 
-.InfoPanel .Block ul li em {
-    color: #aa0000;
-    font-size: 11px;
-    font-weight: bold;
-    padding: 0 5px 0 1px;
-}
+            .InfoPanel .Block ul li.LiCurrent, .InfoPanel .Block ul li:hover {
+                background: #f2f2f2 url(images/LiIcon.gif) no-repeat 12px 10px;
+            }
+
+            .InfoPanel .Block ul li.LiTitle:hover {
+                background: #f2f2f2 url(images/LiTitle.gif) no-repeat 5px 6px;
+            }
+
+            .InfoPanel .Block ul li em {
+                color: #aa0000;
+                font-size: 11px;
+                font-weight: bold;
+                padding: 0 5px 0 1px;
+            }

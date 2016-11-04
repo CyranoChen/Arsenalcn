@@ -1,0 +1,186 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Class Name="iArsenal.Service.Order">
+    <Position X="11.25" Y="8.25" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>QKAABIAEAQAgCQAAMoAAAAAAYBEAAACCCAAAQAAhEQI=</HashCode>
+      <FileName>Order\Order.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="iArsenal.Service.OrderItem">
+    <Position X="16" Y="8.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>IAAAAJAAAAAAgAIAEAAgAAAAIAEAQAAAAEAAgAAJEQA=</HashCode>
+      <FileName>Order\OrderItem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="iArsenal.Service.OrdrItmMembership">
+    <Position X="15.25" Y="1" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAQAAAAAAAAAAAAAgAAAAAAAAAEACAAAAAEA=</HashCode>
+      <FileName>Order\OrderItemMembership.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="iArsenal.Service.OrdrItmMemShipCore">
+    <Position X="13.5" Y="5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEACAAAAAAA=</HashCode>
+      <FileName>Order\OrderItemMembership.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="iArsenal.Service.OrdrItmMemShipPremier">
+    <Position X="16.75" Y="5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEACAAAAAAA=</HashCode>
+      <FileName>Order\OrderItemMembership.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="iArsenal.Service.OrdrItmReplicaKit">
+    <Position X="19" Y="1.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Order\OrderItemReplicaKit.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="iArsenal.Service.OrdrItmReplicaKitHome">
+    <Position X="22.25" Y="1.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEACAAAAAAA=</HashCode>
+      <FileName>Order\OrderItemReplicaKit.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="iArsenal.Service.OrdrItmReplicaKitAway">
+    <Position X="22.5" Y="3.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEACAAAAAAA=</HashCode>
+      <FileName>Order\OrderItemReplicaKit.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="iArsenal.Service.OrdrItmReplicaKitCup">
+    <Position X="22.5" Y="6.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEACAAAAAAA=</HashCode>
+      <FileName>Order\OrderItemReplicaKit.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="iArsenal.Service.OrdrItmPlayerNumber">
+    <Position X="22.25" Y="11.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAEACAAAAQAA=</HashCode>
+      <FileName>Order\OrderItemReplicaKit.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="iArsenal.Service.OrdrItmPlayerName">
+    <Position X="22.25" Y="15" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAEACAAAAQAA=</HashCode>
+      <FileName>Order\OrderItemReplicaKit.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="iArsenal.Service.OrdrItmArsenalFont">
+    <Position X="19.5" Y="8.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEACAAAAAAA=</HashCode>
+      <FileName>Order\OrderItemReplicaKit.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="iArsenal.Service.OrdrItmPremiershipPatch">
+    <Position X="19" Y="12" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEACAAAAAAA=</HashCode>
+      <FileName>Order\OrderItemReplicaKit.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="iArsenal.Service.OrdrItmChampionshipPatch">
+    <Position X="18.75" Y="15.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEACAAAAAAA=</HashCode>
+      <FileName>Order\OrderItemReplicaKit.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="iArsenal.Service.OrdrItmMatchTicket">
+    <Position X="11.5" Y="1.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAIAAIAAAAAAAAAAAAAAAAEACAAAAAAA=</HashCode>
+      <FileName>Order\OrderItemTicket.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="iArsenal.Service.OrdrItm2012TicketBeijing">
+    <Position X="8" Y="1.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAEACAAAAAAA=</HashCode>
+      <FileName>Order\OrderItemTicket.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="iArsenal.Service.OrdrItmTravelPlan">
+    <Position X="3.5" Y="2" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAA=</HashCode>
+      <FileName>Order\OrderItemTravel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="iArsenal.Service.OrdrItmTravelPlanLondon">
+    <Position X="1.25" Y="4" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAAAAAAAAAAAAAIAAAAAAABAAEACAAAAAAA=</HashCode>
+      <FileName>Order\OrderItemTravel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="iArsenal.Service.OrdrItmTravelPlan2015AsiaTrophy">
+    <Position X="5" Y="4.25" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAgABAAEACAAAAAAA=</HashCode>
+      <FileName>Order\OrderItemTravel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="iArsenal.Service.OrdrItmTravelPartner">
+    <Position X="22.5" Y="8.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEACAAAAAAg=</HashCode>
+      <FileName>Order\OrderItemTravel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="iArsenal.Service.OrdrMembership">
+    <Position X="14" Y="20.75" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAACAAAACAA=</HashCode>
+      <FileName>Order\OrderMembership.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="iArsenal.Service.OrdrPrinting">
+    <Position X="8.25" Y="17" Width="4" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAACAAAAAAAAAABAAAAAAAAAAAAACAAAACAg=</HashCode>
+      <FileName>Order\OrderPrinting.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="iArsenal.Service.OrdrReplicaKit">
+    <Position X="8.75" Y="20.75" Width="4" />
+    <TypeIdentifier>
+      <HashCode>AAAAAggAAADAAAAAAAAAABAAAAAAAAAAAAACAAAACCg=</HashCode>
+      <FileName>Order\OrderReplicaKit.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="iArsenal.Service.OrdrTicket">
+    <Position X="4" Y="17" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAACAAACAAA=</HashCode>
+      <FileName>Order\OrderTicket.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="iArsenal.Service.OrdrTravel">
+    <Position X="14" Y="17" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAggAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAA=</HashCode>
+      <FileName>Order\OrderTravel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="iArsenal.Service.OrdrWish">
+    <Position X="4" Y="20.75" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAgAAAAAAAAAAAAAQAAAAAACAAAAAAA=</HashCode>
+      <FileName>Order\OrderWish.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="10" />
+</ClassDiagram>

@@ -19,11 +19,11 @@ namespace iArsenal.Web.Control
         {
             if (!string.IsNullOrEmpty(QrCodeProvider))
             {
-                btnQrCodeProvider.Text = $"【{QrCodeProvider}】快捷支付通道";
+                ltrlQrCodeProvider.Text = $"<a>【{QrCodeProvider}】快捷支付通道</a>";
             }
             else
             {
-                btnQrCodeProvider.Text = "快捷支付通道";
+                ltrlQrCodeProvider.Text = "<a>快捷支付通道</a>";
             }
 
             if (!string.IsNullOrEmpty(QrCodeUrl))

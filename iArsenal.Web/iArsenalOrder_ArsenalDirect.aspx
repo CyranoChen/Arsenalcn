@@ -175,22 +175,25 @@
                     <a>ACN团代购说明</a>
                 </h3>
                 <div class="Block">
-                    <p>(1). Arsenal官方专卖店上的所有纪念品均可预订，团代购价格(CNY) = 纪念品正价(GBP) × 约定汇率。</p>
+                    <p>(1).【价格】Arsenal官方专卖店上的所有纪念品均可预订，团代购价格(CNY) = 纪念品正价(GBP) × 约定汇率。</p>
                     <p>
-                        (2). 约定汇率含全部国际运费和海关关税分摊；国内快递费自理（从中国上海发到国内各地的运费，只发<em>【顺丰速运】</em>）
+                        (2).【运费】约定汇率含全部国际运费和海关关税分摊；国内快递费自理（从中国上海发到国内各地的运费，只发<em>【顺丰速运】</em>）
                     </p>
                     <p>
-                        (2). Arsenal官方专卖店网址： <a href="http://arsenaldirect.arsenal.com/" target="_blank">
+                        (3).【货源】Arsenal官方专卖店网址： <a href="http://arsenaldirect.arsenal.com/" target="_blank">
                             <em>http://arsenaldirect.arsenal.com</em>
                         </a>
                     </p>
+                    <div class="Thumbnail">
+                        <img src="uploadfiles/qrcode-wechat-iarsenalcn.gif" alt="iArsenalCN"/>
+                    </div>
                     <p>
-                        (3). 此功能入口负责除主客场球衣外，所有阿森纳纪念品的订购。若需订购各款球衣，请点击菜单中的<a href="iArsenalOrder_ReplicaKit.aspx" target="_blank">
-                            <em>【主客场球衣预订服务】</em>
-                        </a>。
+                        (4). 【微信】订购操作中如有问题，请咨询官方球迷会服务微信号：<em>iArsenalCN</em>。加入时验证方式为您注册本服务中心的真实姓名和手机号码，并注明<em>【团购】</em>字样。
                     </p>
                     <p>
-                        (4). 订购操作中如有问题，请咨询官方球迷会服务微信号：<em>iArsenalCN</em>。加入时验证方式为您注册本服务中心的真实姓名和手机号码，并注明<em>【团购】</em>字样。
+                        (5). 此功能入口负责除主客场球衣外，所有阿森纳纪念品的订购。若需订购各款球衣，请点击菜单中的<a href="iArsenalOrder_ReplicaKit.aspx" target="_blank">
+                            <em>【主客场球衣预订服务】</em>
+                        </a>。
                     </p>
                 </div>
             </div>

@@ -260,6 +260,7 @@
     <Content Include="UploadFiles\Banner\banner20160731.png" />
     <Content Include="UploadFiles\Banner\banner20160805.png" />
     <Content Include="UploadFiles\Banner\banner20161001.png" />
+    <Content Include="UploadFiles\Banner\banner20161104.png" />
     <Content Include="UploadFiles\logo_ArsenalChina.png" />
     <Content Include="App_Themes\iArsenal\images\menu_ahover.gif" />
     <Content Include="App_Themes\iArsenal\portal.css" />
@@ -709,6 +710,7 @@
   <ItemGroup>
     <Content Include="UploadFiles\qrcode-arsenalcn.gif" />
     <Content Include="UploadFiles\qrcode-alipay-vicky.png" />
+    <Content Include="UploadFiles\qrcode-wechat-iarsenalcn.gif" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

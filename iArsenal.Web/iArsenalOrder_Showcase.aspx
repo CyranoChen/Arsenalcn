@@ -132,9 +132,9 @@
     </script>
 </asp:Content>
 <asp:Content ID="cphMain" ContentPlaceHolderID="cphMain" runat="server">
-    <div id="banner" style="height: 400px">
+    <div id="banner" style="height: 390px">
         <a href="https://arsenaldirect.arsenal.com/Christmas" target="_blank">
-            <img src="uploadfiles/banner/banner20161114.png" alt="阿森纳圣诞季热销商品" />
+            <img src="uploadfiles/banner/banner20161104.png" alt="阿森纳圣诞季热销商品" />
         </a>
     </div>
     <div id="ACN_Main">

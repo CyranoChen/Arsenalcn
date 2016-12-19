@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Linq;
 using Arsenalcn.Core;
 
 namespace iArsenal.Service
@@ -10,8 +8,8 @@ namespace iArsenal.Service
     {
         public bool IsCurrentSeason(int year = 0)
         {
-            var _date = DateTime.Now.AddYears(year);
-            return StartDate <= _date && EndDate >= _date;
+            var date = DateTime.Now.AddYears(year);
+            return EndDate.AddYears(-1) <= date && EndDate >= date;
         }
 
         public static MemberPeriod GetCurrentMemberPeriodByMemberID(int id, int year = 0)
@@ -20,8 +18,9 @@ namespace iArsenal.Service
 
             IRepository repo = new Repository();
 
-            return repo.Query<MemberPeriod>(x =>
-                x.MemberID == id && x.StartDate <= date && x.EndDate >= date).Find(x => x.IsActive);
+            // StartDate change to the EndDate.Addyears(-1) for the correct date range
+            return repo.Query<MemberPeriod>(x => x.MemberID == id)
+                .Find(x => x.IsActive && x.EndDate.AddYears(-1) <= date && x.EndDate >= date);
         }
 
         #region Members and Properties

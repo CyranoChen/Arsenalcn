@@ -9,11 +9,13 @@ namespace Arsenal.Service.Casino
         public static void Clean(SqlTransaction trans = null)
         {
             //DELETE FROM AcnCasino_BetDetail WHERE (BetID NOT IN (SELECT ID FROM AcnCasino_Bet))
-            var sql = string.Format(@"DELETE FROM {0} WHERE (BetID NOT IN (SELECT ID FROM {1}))",
-                Repository.GetTableAttr<BetDetail>().Name,
-                Repository.GetTableAttr<Bet>().Name);
+            var sql =
+                $@"DELETE FROM {Repository.GetTableAttr<BetDetail>().Name} 
+                WHERE (BetID NOT IN (SELECT ID FROM {Repository.GetTableAttr<Bet>().Name}))";
 
-            DataAccess.ExecuteNonQuery(sql, null, trans);
+            var dapper = new DapperHelper();
+
+            dapper.Execute(sql, trans);
         }
 
         #region Members and Properties

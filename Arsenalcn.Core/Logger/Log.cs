@@ -3,8 +3,8 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Reflection;
 using System.Threading;
+using Dapper;
 using DataReaderMapper;
-using Microsoft.ApplicationBlocks.Data;
 
 namespace Arsenalcn.Core.Logger
 {
@@ -18,6 +18,8 @@ namespace Arsenalcn.Core.Logger
             map.ForMember(d => d.Level, opt => opt.MapFrom(s =>
                 (LogLevel)Enum.Parse(typeof(LogLevel), s.GetValue("LogLevel").ToString())));
         }
+
+        private static readonly IDbConnection _conn = DapperHelper.GetOpenConnection();
 
         protected static void Logging(string logger, DateTime createTime, LogLevel level, string message,
             string stackTrace, UserClientInfo userClient = null)
@@ -45,7 +47,7 @@ namespace Arsenalcn.Core.Logger
             };
 
             // no logging method
-            SqlHelper.ExecuteNonQuery(DataAccess.ConnectString, CommandType.Text, sql, para);
+            _conn.Execute(sql, para);
         }
 
         protected static void Logging(string logger, DateTime createTime, LogLevel level, string message,
@@ -76,7 +78,7 @@ namespace Arsenalcn.Core.Logger
             };
 
             // no logging method
-            SqlHelper.ExecuteNonQuery(DataAccess.ConnectString, CommandType.Text, sql, para);
+            _conn.Execute(sql, para);
         }
 
         public static void Clean()

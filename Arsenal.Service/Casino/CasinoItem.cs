@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
-using System.Diagnostics.Contracts;
 using Arsenalcn.Core;
 using DataReaderMapper;
 
@@ -14,28 +13,22 @@ namespace Arsenal.Service.Casino
         {
             var map = Mapper.CreateMap<IDataReader, CasinoItem>();
 
-            map.ForMember(d => d.ID, opt => opt.MapFrom(s => (Guid) s.GetValue("CasinoItemGuid")));
+            map.ForMember(d => d.ID, opt => opt.MapFrom(s => (Guid)s.GetValue("CasinoItemGuid")));
         }
 
         public void Statistics()
         {
-            Contract.Requires(ID != null && !ID.Equals(Guid.Empty));
+            var sql =
+                $@"SELECT ISNULL(SUM(Bet), 0) - ISNULL(SUM(Earning), 0) AS TotalEarning 
+                   FROM {Repository.GetTableAttr<Bet>().Name} WHERE CasinoItemGuid = @key";
 
-            var sql = string.Format(@"SELECT ISNULL(SUM(Bet), 0) - ISNULL(SUM(Earning), 0) AS TotalEarning 
-                   FROM {0} WHERE CasinoItemGuid = @key",
-                Repository.GetTableAttr<Bet>().Name);
+            var dapper = new DapperHelper();
 
-            SqlParameter[] para = {new SqlParameter("@key", ID)};
+            Earning = dapper.ExecuteScalar<double>(sql, new { key = ID });
 
-            var ds = DataAccess.ExecuteDataset(sql, para);
+            IRepository repo = new Repository();
 
-            if (ds.Tables[0].Rows.Count > 0)
-            {
-                Earning = (double) ds.Tables[0].Rows[0]["TotalEarning"];
-
-                IRepository repo = new Repository();
-                repo.Update(this);
-            }
+            repo.Update(this);
         }
 
         public static void Clean(SqlTransaction trans = null)
@@ -47,7 +40,9 @@ namespace Arsenal.Service.Casino
                 Repository.GetTableAttr<CasinoItem>().Name,
                 Repository.GetTableAttr<Match>().Name);
 
-            DataAccess.ExecuteNonQuery(sql, null, trans);
+            var dapper = new DapperHelper();
+
+            dapper.Execute(sql, trans);
         }
 
         #region Members and Properties

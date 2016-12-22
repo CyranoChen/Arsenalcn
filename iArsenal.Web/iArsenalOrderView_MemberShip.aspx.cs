@@ -306,7 +306,7 @@ namespace iArsenal.Web
 
         protected void btnGenMemberPeriod_Click(object sender, EventArgs e)
         {
-            using (var conn = new SqlConnection(DataAccess.ConnectString))
+            using (var conn = new SqlConnection(DapperHelper.ConnectionString))
             {
                 conn.Open();
                 var trans = conn.BeginTransaction();

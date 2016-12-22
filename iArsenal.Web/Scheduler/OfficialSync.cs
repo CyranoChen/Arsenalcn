@@ -91,18 +91,11 @@ namespace iArsenal.Scheduler
             string sql =
                 $"SELECT TOP 1 * FROM {attr.Name} WHERE OfficialSync = '0000' AND Evalution = 0 AND MemberType <> 2 AND IsActive = 1 ORDER BY NEWID()";
 
-            var ds = DataAccess.ExecuteDataset(sql);
+            var dapper = new DapperHelper();
 
-            var dt = ds.Tables[0];
+            var reader = dapper.ExecuteReader(sql);
 
-            if (dt.Rows.Count > 0)
-            {
-                using (var reader = dt.CreateDataReader())
-                {
-                    return reader.DataReaderMapTo<Member>().FirstOrDefault();
-                }
-            }
-            return null;
+            return reader?.DataReaderMapTo<Member>().FirstOrDefault();
         }
 
         private bool SyncOfficialMemberInfo(Member m)

@@ -16,7 +16,7 @@ namespace iArsenal.Web
         {
             var responseText = string.Empty;
 
-            using (var conn = new SqlConnection(DataAccess.ConnectString))
+            using (var conn = new SqlConnection(DapperHelper.ConnectionString))
             {
                 conn.Open();
                 var trans = conn.BeginTransaction();

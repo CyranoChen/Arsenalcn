@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Data.SqlClient;
-using System.Diagnostics.Contracts;
 using Arsenalcn.Core;
 
 namespace Arsenal.Service.Casino
@@ -10,25 +8,19 @@ namespace Arsenal.Service.Casino
     {
         public void Statistic()
         {
-            Contract.Requires(ID != null && !ID.Equals(Guid.Empty));
+            var sql =
+                $@"SELECT ISNULL(SUM(b.Bet), 0) - ISNULL(SUM(b.Earning), 0) AS BankerCash
+                           FROM {Repository.GetTableAttr<CasinoItem>().Name} c 
+                           INNER JOIN {Repository.GetTableAttr<Bet>().Name} b ON c.CasinoItemGuid = b.CasinoItemGuid
+                           WHERE (c.BankerID = @key)";
 
-            var sql = string.Format(@"SELECT ISNULL(SUM(b.Bet), 0) - ISNULL(SUM(b.Earning), 0) AS BankerCash
-                           FROM {0} c INNER JOIN {1} b ON c.CasinoItemGuid = b.CasinoItemGuid
-                           WHERE (c.BankerID = @key)",
-                Repository.GetTableAttr<CasinoItem>().Name,
-                Repository.GetTableAttr<Bet>().Name);
+            var dapper = new DapperHelper();
 
-            SqlParameter[] para = {new SqlParameter("@key", ID)};
+            Cash = dapper.ExecuteScalar<double>(sql, new { key = ID });
 
-            var ds = DataAccess.ExecuteDataset(sql, para);
+            IRepository repo = new Repository();
 
-            if (ds.Tables[0].Rows.Count > 0)
-            {
-                Cash = (double) ds.Tables[0].Rows[0]["BankerCash"];
-
-                IRepository repo = new Repository();
-                repo.Update(this);
-            }
+            repo.Update(this);
         }
 
         #region Members and Properties

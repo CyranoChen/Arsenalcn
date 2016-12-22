@@ -10,7 +10,7 @@ namespace iArsenal.Web
     {
         public void ProcessRequest(HttpContext context)
         {
-            using (var conn = new SqlConnection(DataAccess.ConnectString))
+            using (var conn = new SqlConnection(DapperHelper.ConnectionString))
             {
                 conn.Open();
                 var trans = conn.BeginTransaction();

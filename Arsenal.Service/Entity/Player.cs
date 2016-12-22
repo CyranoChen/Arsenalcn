@@ -15,8 +15,8 @@ namespace Arsenal.Service
         {
             var map = Mapper.CreateMap<IDataReader, Player>();
 
-            map.ForMember(d => d.ID, opt => opt.MapFrom(s => (Guid) s.GetValue("PlayerGuid")));
-            map.ForMember(d => d.Position, opt => opt.MapFrom(s => (int) s.GetValue("PlayerPosition")));
+            map.ForMember(d => d.ID, opt => opt.MapFrom(s => (Guid)s.GetValue("PlayerGuid")));
+            map.ForMember(d => d.Position, opt => opt.MapFrom(s => (int)s.GetValue("PlayerPosition")));
         }
 
         public static class Cache
@@ -59,21 +59,13 @@ namespace Arsenal.Service
             // HC: Acn Club API
             public static DataRow GetInfo(Guid guid)
             {
-                IRepository repo = new Repository();
-
                 var attr = Repository.GetTableAttr<Player>();
 
-                var sql = string.Format("SELECT * FROM {0} WHERE {1} = @key", attr.Name, attr.Key);
+                var sql = $"SELECT * FROM {attr.Name} WHERE {attr.Key} = @key";
 
-                SqlParameter[] para = {new SqlParameter("@key", guid)};
+                var dapper = new DapperHelper();
 
-                var ds = DataAccess.ExecuteDataset(sql, para);
-
-                if (ds.Tables[0].Rows.Count == 0)
-                {
-                    return null;
-                }
-                return ds.Tables[0].Rows[0];
+                return dapper.ExecuteDataTable(sql, new { key = guid })?.Rows[0];
             }
         }
 

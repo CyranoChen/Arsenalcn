@@ -14,24 +14,44 @@ namespace Arsenalcn.Core
     public static class DataAccess
     {
         public static readonly string ConnectString;
-
         private static bool _debugMode;
-
         private static ILog _log = new DaoLog();
 
         static DataAccess()
         {
-            ConnectString = ConfigurationManager.ConnectionStrings["Arsenalcn.ConnectionString"].ConnectionString;
+            ConnectString = ConfigurationManager.ConnectionStrings["Arsenalcn.ConnectString"].ConnectionString;
             _debugMode = ConfigurationManager.AppSettings["DebugMode"] != null &&
                 Convert.ToBoolean(ConfigurationManager.AppSettings["DebugMode"]);
+        }
+
+        public static SqlConnection GetOpenConnection(bool mars = false)
+        {
+            var cs = ConnectString;
+            if (mars)
+            {
+                var scsb = new SqlConnectionStringBuilder(cs)
+                {
+                    MultipleActiveResultSets = true
+                };
+
+                cs = scsb.ConnectionString;
+            }
+            var connection = new SqlConnection(cs);
+            connection.Open();
+            return connection;
+        }
+
+        public static SqlConnection GetClosedConnection()
+        {
+            var conn = new SqlConnection(ConnectString);
+            if (conn.State != ConnectionState.Closed) throw new InvalidOperationException("should be closed!");
+            return conn;
         }
 
         public static DataSet ExecuteDataset(string sql, SqlParameter[] para = null)
         {
             try
             {
-                Contract.Requires(!string.IsNullOrEmpty(sql));
-
                 var ds = SqlHelper.ExecuteDataset(ConnectString, CommandType.Text, sql, para);
 
                 if (_debugMode)

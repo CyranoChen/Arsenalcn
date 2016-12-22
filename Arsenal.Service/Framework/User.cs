@@ -21,7 +21,7 @@ namespace Arsenal.Service
         {
             if (AcnID != null)
             {
-                using (var conn = new SqlConnection(DataAccess.ConnectString))
+                using (var conn = new SqlConnection(DapperHelper.ConnectionString))
                 {
                     conn.Open();
                     var trans = conn.BeginTransaction();

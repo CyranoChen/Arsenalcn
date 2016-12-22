@@ -13,10 +13,10 @@ namespace Arsenalcn.Core
         private Stack<string> _mConditionParts;
 
         public string Condition { get; private set; }
-
         private object[] Arguments { get; set; }
 
         public List<SqlParameter> SqlArguments { get; set; }
+        public IDictionary<string, object> DapperArguments { get; set; }
 
         public void Build(Expression expression)
         {
@@ -31,14 +31,18 @@ namespace Arsenalcn.Core
             Arguments = _mArguments.ToArray();
             Condition = _mConditionParts.Count > 0 ? _mConditionParts.Pop() : null;
 
-            // Convert Arguments from List<object> to List<SqlParameter>
             if (_mArguments.Count > 0)
             {
                 SqlArguments = new List<SqlParameter>();
+                DapperArguments = new System.Dynamic.ExpandoObject();
 
                 for (var i = 0; i < _mArguments.Count; i++)
                 {
+                    // Convert Arguments from List<object> to List<SqlParameter>
                     SqlArguments.Add(new SqlParameter("@para" + i, _mArguments[i]));
+
+                    // Convert Arguments from List<object> to Dynamic params
+                    DapperArguments.Add("@para" + i, _mArguments[i]);
                 }
             }
         }

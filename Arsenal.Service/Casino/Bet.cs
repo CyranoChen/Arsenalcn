@@ -21,7 +21,7 @@ namespace Arsenal.Service.Casino
         // Place Bet of SingleChoice
         public void Place(Guid matchGuid, string selectedOption)
         {
-            using (var conn = new SqlConnection(DataAccess.ConnectString))
+            using (var conn = new SqlConnection(DapperHelper.ConnectionString))
             {
                 conn.Open();
                 var trans = conn.BeginTransaction();
@@ -137,7 +137,7 @@ namespace Arsenal.Service.Casino
         // Place Bet of MatchResult
         public void Place(Guid matchGuid, short resultHome, short resultAway)
         {
-            using (var conn = new SqlConnection(DataAccess.ConnectString))
+            using (var conn = new SqlConnection(DapperHelper.ConnectionString))
             {
                 conn.Open();
                 var trans = conn.BeginTransaction();
@@ -228,7 +228,7 @@ namespace Arsenal.Service.Casino
 
         public void ReturnBet()
         {
-            using (var conn = new SqlConnection(DataAccess.ConnectString))
+            using (var conn = new SqlConnection(DapperHelper.ConnectionString))
             {
                 conn.Open();
                 var trans = conn.BeginTransaction();
@@ -289,7 +289,9 @@ namespace Arsenal.Service.Casino
             var sql =
                 $@"DELETE FROM {Repository.GetTableAttr<Bet>().Name} WHERE (CasinoItemGuid NOT IN (SELECT CasinoItemGuid FROM {Repository.GetTableAttr<CasinoItem>().Name}))";
 
-            DataAccess.ExecuteNonQuery(sql, null, trans);
+            var dapper = new DapperHelper();
+
+            dapper.Execute(sql, trans);
         }
 
         #region Members and Properties

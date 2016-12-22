@@ -94,32 +94,22 @@ namespace iArsenal.Service
         {
             var sql = $"SELECT * FROM {Repository.GetTableAttr<MatchTicket>().Name} WHERE MatchGuid = @key";
 
-            SqlParameter[] para =
-            {
-                new SqlParameter("@key", ID)
-            };
+            var dapper = new DapperHelper();
 
-            var ds = DataAccess.ExecuteDataset(sql, para);
+            var dt = dapper.ExecuteDataTable(sql, new { key = ID });
 
-            if (ds.Tables[0].Rows.Count > 0)
-            {
-                Init(ds.Tables[0].Rows[0]);
-            }
-            else
-            {
-                Init();
-            }
+            Init(dt?.Rows[0]);
         }
 
         public bool Any()
         {
-            var sql = $"SELECT * FROM {Repository.GetTableAttr<MatchTicket>().Name} WHERE MatchGuid = @key";
+            var sql = $"SELECT COUNT(*) FROM {Repository.GetTableAttr<MatchTicket>().Name} WHERE MatchGuid = @key";
 
-            SqlParameter[] para = { new SqlParameter("@key", ID) };
+            //SqlParameter[] para = { new SqlParameter("@key", ID) };
 
-            var ds = DataAccess.ExecuteDataset(sql, para);
+            var dapper = new DapperHelper();
 
-            return ds.Tables[0].Rows.Count > 0;
+            return dapper.ExecuteScalar<int>(sql, new { key = ID }) > 0;
         }
 
         // Get MatchTickets by Arsenal Matchs
@@ -132,11 +122,13 @@ namespace iArsenal.Service
                 // Get DataSet of iArsenal_MatchTicket 
                 var attr = Repository.GetTableAttr<MatchTicket>();
                 var sql = $"SELECT * FROM {attr.Name} ORDER BY {attr.Sort}";
-                var ds = DataAccess.ExecuteDataset(sql);
 
-                if (ds.Tables[0].Rows.Count > 0)
+                var dapper = new DapperHelper();
+
+                var dt = dapper.ExecuteDataTable(sql);
+
+                if (dt != null)
                 {
-                    var dt = ds.Tables[0];
                     dt.PrimaryKey = new[] { dt.Columns["MatchGuid"] };
                 }
 
@@ -146,9 +138,9 @@ namespace iArsenal.Service
                 {
                     var mt = new MatchTicket { ID = m.ID };
 
-                    if (ds.Tables[0].Rows.Count > 0)
+                    if (dt != null)
                     {
-                        var dr = ds.Tables[0].Rows.Find(m.ID);
+                        var dr = dt.Rows.Find(m.ID);
                         mt.Init(dr);
                     }
                     else
@@ -177,7 +169,7 @@ namespace iArsenal.Service
                 new SqlParameter("@key", ID),
                 new SqlParameter("@productCode", ProductCode),
                 new SqlParameter("@deadline", Deadline),
-                new SqlParameter("@waitingDeadline", WaitingDeadline), 
+                new SqlParameter("@waitingDeadline", WaitingDeadline),
                 new SqlParameter("@allowMemberClass",
                     !AllowMemberClass.HasValue ? DBNull.Value : (object) AllowMemberClass.Value),
                 new SqlParameter("@TicketCount", !TicketCount.HasValue ? DBNull.Value : (object) TicketCount.Value),
@@ -185,7 +177,9 @@ namespace iArsenal.Service
                 new SqlParameter("@remark", Remark)
             };
 
-            DataAccess.ExecuteNonQuery(sql, para, trans);
+            var dapper = new DapperHelper();
+
+            dapper.Execute(sql, DapperHelper.BuildDapperParameters(para), trans);
         }
 
         public void Update(SqlTransaction trans = null)
@@ -201,7 +195,7 @@ namespace iArsenal.Service
                 new SqlParameter("@key", ID),
                 new SqlParameter("@productCode", ProductCode),
                 new SqlParameter("@deadline", Deadline),
-                new SqlParameter("@waitingDeadline", WaitingDeadline), 
+                new SqlParameter("@waitingDeadline", WaitingDeadline),
                 new SqlParameter("@allowMemberClass",
                     !AllowMemberClass.HasValue ? DBNull.Value : (object) AllowMemberClass.Value),
                 new SqlParameter("@TicketCount", !TicketCount.HasValue ? DBNull.Value : (object) TicketCount.Value),
@@ -209,16 +203,18 @@ namespace iArsenal.Service
                 new SqlParameter("@remark", Remark)
             };
 
-            DataAccess.ExecuteNonQuery(sql, para, trans);
+            var dapper = new DapperHelper();
+
+            dapper.Execute(sql, DapperHelper.BuildDapperParameters(para), trans);
         }
 
         public void Delete(SqlTransaction trans = null)
         {
             var sql = $"DELETE FROM {Repository.GetTableAttr<MatchTicket>().Name} WHERE MatchGuid = @key";
 
-            SqlParameter[] para = { new SqlParameter("@key", ID) };
+            var dapper = new DapperHelper();
 
-            DataAccess.ExecuteNonQuery(sql, para, trans);
+            dapper.Execute(sql, new { key = ID }, trans);
         }
 
         public static void MatchTicketCountStatistics()

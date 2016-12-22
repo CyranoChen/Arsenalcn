@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
 using System.Linq;
 using Arsenalcn.Core;
 using DataReaderMapper;
@@ -64,35 +63,26 @@ namespace Arsenal.Service.Casino
                                     ON BetInfo.UserID = RPInfo.UserID AND BetInfo.UserName = RPInfo.UserName
                                     ORDER BY BetInfo.TotalBet DESC";
 
-            SqlParameter[] para = { new SqlParameter("@key", key), new SqlParameter("@leagueGuid", leagueGuid) };
+            //SqlParameter[] para = { new SqlParameter("@key", key), new SqlParameter("@leagueGuid", leagueGuid) };
 
-            var ds = DataAccess.ExecuteDataset(sql, para);
+            var dapper = new DapperHelper();
 
-            var dt = ds.Tables[0];
+            var reader = dapper.ExecuteReader(sql, new { key, leagueGuid });
 
-            if (dt.Rows.Count > 0)
+            Mapper.Initialize(cfg =>
             {
-                using (var reader = dt.CreateDataReader())
-                {
-                    Mapper.Initialize(cfg =>
-                    {
-                        MapperRegistry.Mappers.Insert(0,
-                            new DataReaderMapper.DataReaderMapper { YieldReturnEnabled = false });
+                MapperRegistry.Mappers.Insert(0,
+                    new DataReaderMapper.DataReaderMapper { YieldReturnEnabled = false });
 
-                        CreateMap();
-                    });
+                CreateMap();
+            });
 
-                    return Mapper.Map<IDataReader, IEnumerable<GamblerDW>>(reader).FirstOrDefault();
-                }
-            }
+            return Mapper.Map<IDataReader, IEnumerable<GamblerDW>>(reader).FirstOrDefault();
 
-            return null;
         }
 
         public static List<GamblerDW> All(Guid leagueGuid)
         {
-            var list = new List<GamblerDW>();
-
             var sql = @"SELECT BetInfo.*, RPInfo.RPBet, RPInfo.RPBonus FROM
                                         (SELECT UserID, UserName, 
                                                     COUNT(CASE IsWin WHEN 1 THEN 1 ELSE NULL END) AS Win, 
@@ -113,29 +103,21 @@ namespace Arsenal.Service.Casino
                                     ON BetInfo.UserID = RPInfo.UserID AND BetInfo.UserName = RPInfo.UserName
                                     ORDER BY BetInfo.TotalBet DESC";
 
-            SqlParameter[] para = { new SqlParameter("@leagueGuid", leagueGuid) };
+            //SqlParameter[] para = { new SqlParameter("@leagueGuid", leagueGuid) };
 
-            var ds = DataAccess.ExecuteDataset(sql, para);
+            var dapper = new DapperHelper();
 
-            var dt = ds.Tables[0];
+            var reader = dapper.ExecuteReader(sql, new { leagueGuid });
 
-            if (dt.Rows.Count > 0)
+            Mapper.Initialize(cfg =>
             {
-                using (var reader = dt.CreateDataReader())
-                {
-                    Mapper.Initialize(cfg =>
-                    {
-                        MapperRegistry.Mappers.Insert(0,
-                            new DataReaderMapper.DataReaderMapper { YieldReturnEnabled = false });
+                MapperRegistry.Mappers.Insert(0,
+                    new DataReaderMapper.DataReaderMapper { YieldReturnEnabled = false });
 
-                        CreateMap();
-                    });
+                CreateMap();
+            });
 
-                    list = Mapper.Map<IDataReader, IEnumerable<GamblerDW>>(reader).ToList();
-                }
-            }
-
-            return list;
+            return Mapper.Map<IDataReader, IEnumerable<GamblerDW>>(reader).ToList();
         }
 
         public static double GetGamblerBetLimit(int userId, Guid leagueGuid)
@@ -291,29 +273,21 @@ namespace Arsenal.Service.Casino
                 return null;
             }
 
-            SqlParameter[] para = { new SqlParameter("@monthStart", monthStart), new SqlParameter("@monthEnd", monthEnd) };
+            //SqlParameter[] para = { new SqlParameter("@monthStart", monthStart), new SqlParameter("@monthEnd", monthEnd) };
 
-            var ds = DataAccess.ExecuteDataset(sql, para);
+            var dapper = new DapperHelper();
 
-            var dt = ds.Tables[0];
+            var reader = dapper.ExecuteReader(sql, new { monthStart, monthEnd });
 
-            if (dt.Rows.Count > 0)
+            Mapper.Initialize(cfg =>
             {
-                using (var reader = dt.CreateDataReader())
-                {
-                    Mapper.Initialize(cfg =>
-                    {
-                        MapperRegistry.Mappers.Insert(0,
-                            new DataReaderMapper.DataReaderMapper { YieldReturnEnabled = false });
+                MapperRegistry.Mappers.Insert(0,
+                    new DataReaderMapper.DataReaderMapper { YieldReturnEnabled = false });
 
-                        CreateMap();
-                    });
+                CreateMap();
+            });
 
-                    return Mapper.Map<IDataReader, IEnumerable<GamblerDW>>(reader).FirstOrDefault();
-                }
-            }
-
-            return null;
+            return Mapper.Map<IDataReader, IEnumerable<GamblerDW>>(reader).FirstOrDefault();
         }
 
         #region Members and Properties

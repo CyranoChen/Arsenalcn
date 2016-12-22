@@ -14,14 +14,20 @@ namespace Arsenal.Service
         {
             var map = Mapper.CreateMap<IDataReader, League>();
 
-            map.ForMember(d => d.ID, opt => opt.MapFrom(s => (Guid) s.GetValue("LeagueGuid")));
+            map.ForMember(d => d.ID, opt => opt.MapFrom(s => (Guid)s.GetValue("LeagueGuid")));
 
             map.ForMember(d => d.LeagueNameInfo, opt => opt.MapFrom(s =>
-                string.Format("{0}{1}", s.GetValue("LeagueName").ToString(), s.GetValue("LeagueSeason").ToString())));
+                $"{s.GetValue("LeagueName").ToString()}{s.GetValue("LeagueSeason").ToString()}"));
 
             map.ForMember(d => d.TeamCountInfo, opt => opt.MapFrom(s =>
                 RelationLeagueTeam.Cache.RelationLeagueTeamList.Count(x =>
-                    x.LeagueGuid.Equals((Guid) s.GetValue("LeagueGuid")))));
+                    x.LeagueGuid.Equals((Guid)s.GetValue("LeagueGuid")))));
+        }
+
+        public override void Inital()
+        {
+            LeagueNameInfo = $"{LeagueName}{LeagueSeason}";
+            TeamCountInfo = RelationLeagueTeam.Cache.RelationLeagueTeamList.Count(x => x.LeagueGuid.Equals(this.ID));
         }
 
         public static class Cache

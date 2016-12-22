@@ -15,7 +15,7 @@ namespace Arsenalcn.Core
             // Get the property which matches IEnumerable<T>
             var property = GetType().GetProperties()
                 .FirstOrDefault(
-                    x => (Nullable.GetUnderlyingType(x.PropertyType) ?? x.PropertyType) == typeof (IEnumerable<T>));
+                    x => (Nullable.GetUnderlyingType(x.PropertyType) ?? x.PropertyType) == typeof(IEnumerable<T>));
 
             //var propertyName = string.Format("List{0}", typeof(T).Name);
             //var property = this.GetType().GetProperty(propertyName, typeof(IEnumerable<T>));
@@ -32,6 +32,8 @@ namespace Arsenalcn.Core
                 }
             }
         }
+
+        public virtual void Inital(){}
 
         protected virtual string GenerateKey()
         {
@@ -80,6 +82,8 @@ namespace Arsenalcn.Core
         ///     This is the identifier that should be exposed via the web, etc.
         /// </remarks>
         string Key { get; }
+
+        void Inital();
 
         void Many<T>(Expression<Func<T, bool>> whereBy) where T : class, IViewer, new();
     }

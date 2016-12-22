@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using Dapper;
 using DataReaderMapper;
 
 namespace Arsenalcn.Core.Scheduler
@@ -52,6 +53,8 @@ namespace Arsenalcn.Core.Scheduler
                 return $"Run By {s.GetValue("Minutes").ToString()} mins";
             }));
         }
+
+        private static readonly IDbConnection _conn = DapperHelper.GetOpenConnection();
 
         //private Schedule(DataRow dr)
         //{
@@ -102,55 +105,28 @@ namespace Arsenalcn.Core.Scheduler
         {
             var sql = $"SELECT * FROM {Repository.GetTableAttr<Schedule>().Name} WHERE ScheduleKey = @key";
 
-            SqlParameter[] para = {new SqlParameter("@key", key)};
-
-            var ds = DataAccess.ExecuteDataset(sql, para);
-
-            var dt = ds.Tables[0];
-
-            if (dt.Rows.Count == 0)
-            {
-                return null;
-            }
-
-            using (var reader = dt.CreateDataReader())
-            {
-                return Mapper.Map<IDataReader, IEnumerable<Schedule>>(reader).FirstOrDefault();
-            }
+            return _conn.QueryFirstOrDefault<Schedule>(sql, new { key });
         }
 
         public bool Any()
         {
             var sql = $"SELECT * FROM {Repository.GetTableAttr<Schedule>().Name} WHERE ScheduleKey = @key";
 
-            SqlParameter[] para = {new SqlParameter("@key", ScheduleKey)};
+            var result = _conn.Query<int>(sql, new { key = ScheduleKey }).ToList();
 
-            var ds = DataAccess.ExecuteDataset(sql, para);
-
-            return ds.Tables[0].Rows.Count > 0;
+            return Convert.ToInt32(result[0]) > 0;
         }
 
         public static List<Schedule> All()
         {
             var attr = Repository.GetTableAttr<Schedule>();
 
-            var list = new List<Schedule>();
-
             var sql = $"SELECT * FROM {attr.Name} ORDER BY {attr.Sort}";
 
-            var ds = DataAccess.ExecuteDataset(sql);
+            var list = _conn.Query<Schedule>(sql.ToString()).ToList();
 
-            var dt = ds.Tables[0];
-
-            if (dt.Rows.Count > 0)
-            {
-                using (var reader = dt.CreateDataReader())
-                {
-                    CreateMap();
-
-                    list = Mapper.Map<IDataReader, List<Schedule>>(reader);
-                }
-            }
+            //if (list.Count > 0) { list.Each(x => x.Inital()); }
+            // TODO CREATEMAP
 
             return list;
         }
@@ -177,7 +153,7 @@ namespace Arsenalcn.Core.Scheduler
                 new SqlParameter("@key", ScheduleKey)
             };
 
-            DataAccess.ExecuteNonQuery(sql, para, trans);
+            _conn.Execute(sql, para, trans);
         }
 
         /// <summary>

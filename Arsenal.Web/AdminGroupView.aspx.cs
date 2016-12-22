@@ -92,7 +92,7 @@ namespace Arsenal.Web
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
-            using (var conn = new SqlConnection(DataAccess.ConnectString))
+            using (var conn = new SqlConnection(DapperHelper.ConnectionString))
             {
                 conn.Open();
                 var trans = conn.BeginTransaction();

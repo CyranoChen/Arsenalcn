@@ -20,142 +20,90 @@ namespace Arsenal.Service
         public static RelationGroupTeam Single(Guid groupGuid, Guid teamGuid)
         {
             var sql =
-                $"SELECT * FROM {Repository.GetTableAttr<RelationGroupTeam>().Name} WHERE GroupGuid = @groupGuid AND TeamGuid = @teamGuid";
+                $@"SELECT * FROM {Repository.GetTableAttr<RelationGroupTeam>().Name} 
+                    WHERE GroupGuid = @groupGuid AND TeamGuid = @teamGuid";
 
-            SqlParameter[] para =
+            var dapper = new DapperHelper();
+
+            var reader = dapper.ExecuteReader(sql, new { groupGuid, teamGuid });
+
+            Mapper.Initialize(cfg =>
             {
-                new SqlParameter("@groupGuid", groupGuid),
-                new SqlParameter("@teamGuid", teamGuid)
-            };
+                MapperRegistry.Mappers.Insert(0,
+                    new DataReaderMapper.DataReaderMapper { YieldReturnEnabled = false });
 
-            var ds = DataAccess.ExecuteDataset(sql, para);
+                CreateMap();
+            });
 
-            var dt = ds.Tables[0];
-
-            if (dt.Rows.Count > 0)
-            {
-                using (var reader = dt.CreateDataReader())
-                {
-                    Mapper.Initialize(cfg =>
-                    {
-                        MapperRegistry.Mappers.Insert(0,
-                            new DataReaderMapper.DataReaderMapper { YieldReturnEnabled = false });
-
-                        CreateMap();
-                    });
-
-                    return Mapper.Map<IDataReader, IEnumerable<RelationGroupTeam>>(reader).FirstOrDefault();
-                }
-            }
-
-            return null;
+            return Mapper.Map<IDataReader, IEnumerable<RelationGroupTeam>>(reader).FirstOrDefault();
         }
 
         public bool Any()
         {
             var sql =
-                $"SELECT * FROM {Repository.GetTableAttr<RelationGroupTeam>().Name} WHERE GroupGuid = @groupGuid AND TeamGuid = @teamGuid";
+                $@"SELECT COUNT(*) FROM {Repository.GetTableAttr<RelationGroupTeam>().Name} 
+                     WHERE GroupGuid = @groupGuid AND TeamGuid = @teamGuid";
 
-            SqlParameter[] para =
-            {
-                new SqlParameter("@groupGuid", GroupGuid),
-                new SqlParameter("@teamGuid", TeamGuid)
-            };
+            var dapper = new DapperHelper();
 
-            var ds = DataAccess.ExecuteDataset(sql, para);
-
-            return ds.Tables[0].Rows.Count > 0;
+            return dapper.ExecuteScalar<int>(sql, new { groupGuid = GroupGuid, teamGuid = TeamGuid }) > 0;
         }
 
         public static List<RelationGroupTeam> All()
         {
-            var list = new List<RelationGroupTeam>();
-
             var sql = $"SELECT * FROM {Repository.GetTableAttr<RelationGroupTeam>().Name}";
 
-            var ds = DataAccess.ExecuteDataset(sql);
+            var dapper = new DapperHelper();
 
-            var dt = ds.Tables[0];
+            var reader = dapper.ExecuteReader(sql);
 
-            if (dt.Rows.Count > 0)
+            Mapper.Initialize(cfg =>
             {
-                using (var reader = dt.CreateDataReader())
-                {
-                    Mapper.Initialize(cfg =>
-                    {
-                        MapperRegistry.Mappers.Insert(0,
-                            new DataReaderMapper.DataReaderMapper { YieldReturnEnabled = false });
+                MapperRegistry.Mappers.Insert(0,
+                    new DataReaderMapper.DataReaderMapper { YieldReturnEnabled = false });
 
-                        CreateMap();
-                    });
+                CreateMap();
+            });
 
-                    list = Mapper.Map<IDataReader, IEnumerable<RelationGroupTeam>>(reader).ToList();
-                }
-            }
-
-            return list;
+            return Mapper.Map<IDataReader, IEnumerable<RelationGroupTeam>>(reader).ToList();
         }
 
         public static List<RelationGroupTeam> QueryByGroupGuid(Guid groupGuid)
         {
-            var list = new List<RelationGroupTeam>();
-
             var sql = $"SELECT * FROM {Repository.GetTableAttr<RelationGroupTeam>().Name} WHERE GroupGuid = @groupGuid";
 
-            SqlParameter[] para = { new SqlParameter("@groupGuid", groupGuid) };
+            var dapper = new DapperHelper();
 
-            var ds = DataAccess.ExecuteDataset(sql, para);
+            var reader = dapper.ExecuteReader(sql, new { groupGuid });
 
-            var dt = ds.Tables[0];
-
-            if (dt.Rows.Count > 0)
+            Mapper.Initialize(cfg =>
             {
-                using (var reader = dt.CreateDataReader())
-                {
-                    Mapper.Initialize(cfg =>
-                    {
-                        MapperRegistry.Mappers.Insert(0,
-                            new DataReaderMapper.DataReaderMapper { YieldReturnEnabled = false });
+                MapperRegistry.Mappers.Insert(0,
+                    new DataReaderMapper.DataReaderMapper { YieldReturnEnabled = false });
 
-                        CreateMap();
-                    });
+                CreateMap();
+            });
 
-                    list = Mapper.Map<IDataReader, IEnumerable<RelationGroupTeam>>(reader).ToList();
-                }
-            }
-
-            return list;
+            return Mapper.Map<IDataReader, IEnumerable<RelationGroupTeam>>(reader).ToList();
         }
 
         public static List<RelationGroupTeam> QueryByTeamGuid(Guid teamGuid)
         {
-            var list = new List<RelationGroupTeam>();
-
             var sql = $"SELECT * FROM {Repository.GetTableAttr<RelationGroupTeam>().Name} WHERE TeamGuid = @teamGuid";
 
-            SqlParameter[] para = { new SqlParameter("@teamGuid", teamGuid) };
+            var dapper = new DapperHelper();
 
-            var ds = DataAccess.ExecuteDataset(sql, para);
+            var reader = dapper.ExecuteReader(sql, new { teamGuid });
 
-            var dt = ds.Tables[0];
-
-            if (dt.Rows.Count > 0)
+            Mapper.Initialize(cfg =>
             {
-                using (var reader = dt.CreateDataReader())
-                {
-                    Mapper.Initialize(cfg =>
-                    {
-                        MapperRegistry.Mappers.Insert(0,
-                            new DataReaderMapper.DataReaderMapper { YieldReturnEnabled = false });
+                MapperRegistry.Mappers.Insert(0,
+                    new DataReaderMapper.DataReaderMapper { YieldReturnEnabled = false });
 
-                        CreateMap();
-                    });
+                CreateMap();
+            });
 
-                    list = Mapper.Map<IDataReader, IEnumerable<RelationGroupTeam>>(reader).ToList();
-                }
-            }
-
-            return list;
+            return Mapper.Map<IDataReader, IEnumerable<RelationGroupTeam>>(reader).ToList();
         }
 
         public void Insert(SqlTransaction trans = null)
@@ -193,7 +141,9 @@ namespace Arsenal.Service
                 new SqlParameter("@teamGuid", TeamGuid)
             };
 
-            DataAccess.ExecuteNonQuery(sql, para, trans);
+            var dapper = new DapperHelper();
+
+            dapper.Execute(sql, DapperHelper.BuildDapperParameters(para), trans);
         }
 
         public void Update(SqlTransaction trans = null)
@@ -232,7 +182,9 @@ namespace Arsenal.Service
                 new SqlParameter("@teamGuid", TeamGuid)
             };
 
-            DataAccess.ExecuteNonQuery(sql, para, trans);
+            var dapper = new DapperHelper();
+
+            dapper.Execute(sql, DapperHelper.BuildDapperParameters(para), trans);
         }
 
         public void Delete(SqlTransaction trans = null)
@@ -242,7 +194,9 @@ namespace Arsenal.Service
 
             SqlParameter[] para = { new SqlParameter("@groupGuid", GroupGuid), new SqlParameter("@teamGuid", TeamGuid) };
 
-            DataAccess.ExecuteNonQuery(sql, para, trans);
+            var dapper = new DapperHelper();
+
+            dapper.Execute(sql, DapperHelper.BuildDapperParameters(para), trans);
         }
 
         public void Statistic(List<Casino.Match> list)
@@ -334,7 +288,9 @@ namespace Arsenal.Service
                      (TeamGuid NOT IN (SELECT TeamGuid FROM {Repository.GetTableAttr<Team>().Name})) 
                      OR (GroupGuid NOT IN (SELECT GroupGuid FROM {Repository.GetTableAttr<Group>().Name}))";
 
-            DataAccess.ExecuteNonQuery(sql, null, trans);
+            var dapper = new DapperHelper();
+
+            dapper.Execute(sql, trans);
         }
 
         public static class Cache

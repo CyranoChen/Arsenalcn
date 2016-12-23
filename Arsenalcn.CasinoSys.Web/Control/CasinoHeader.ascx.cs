@@ -49,14 +49,14 @@ namespace Arsenalcn.CasinoSys.Web.Control
                         var options = ((SingleChoice) item).Options;
 
                         var winOption =
-                            options.Find(option => option.OptionValue == MatchChoiceOption.HomeWinValue);
+                            options.Find(option => option.OptionName == MatchChoiceOption.HomeWinValue);
                         var drawOption =
-                            options.Find(option => option.OptionValue == MatchChoiceOption.DrawValue);
+                            options.Find(option => option.OptionName == MatchChoiceOption.DrawValue);
                         var loseOption =
-                            options.Find(option => option.OptionValue == MatchChoiceOption.AwayWinValue);
+                            options.Find(option => option.OptionName == MatchChoiceOption.AwayWinValue);
 
-                        if (string.IsNullOrEmpty(winOption.OptionValue) || string.IsNullOrEmpty(drawOption.OptionValue) ||
-                            string.IsNullOrEmpty(loseOption.OptionValue))
+                        if (string.IsNullOrEmpty(winOption.OptionName) || string.IsNullOrEmpty(drawOption.OptionName) ||
+                            string.IsNullOrEmpty(loseOption.OptionName))
                             throw new Exception("该比赛没有赔率");
                         var txtString = "<em title=\"共有{0}注，总计:{1}博彩币\">{2}</em>";
 
@@ -67,17 +67,17 @@ namespace Arsenalcn.CasinoSys.Web.Control
                             var rateLose = Math.Round(loseOption.OptionRate.Value, 2).ToString("f2");
 
                             var totalBetWin =
-                                ChoiceOption.GetOptionTotalBet(guid.Value, winOption.OptionValue).ToString("N0");
+                                ChoiceOption.GetOptionTotalBet(guid.Value, winOption.OptionName).ToString("N0");
                             var totalBetDraw =
-                                ChoiceOption.GetOptionTotalBet(guid.Value, drawOption.OptionValue).ToString("N0");
+                                ChoiceOption.GetOptionTotalBet(guid.Value, drawOption.OptionName).ToString("N0");
                             var totalBetLose =
-                                ChoiceOption.GetOptionTotalBet(guid.Value, loseOption.OptionValue).ToString("N0");
+                                ChoiceOption.GetOptionTotalBet(guid.Value, loseOption.OptionName).ToString("N0");
 
-                            var betCountWin = ChoiceOption.GetOptionTotalCount(guid.Value, winOption.OptionValue).ToString();
+                            var betCountWin = ChoiceOption.GetOptionTotalCount(guid.Value, winOption.OptionName).ToString();
                             var betCountDraw =
-                                ChoiceOption.GetOptionTotalCount(guid.Value, drawOption.OptionValue).ToString();
+                                ChoiceOption.GetOptionTotalCount(guid.Value, drawOption.OptionName).ToString();
                             var betCountLose =
-                                ChoiceOption.GetOptionTotalCount(guid.Value, loseOption.OptionValue).ToString();
+                                ChoiceOption.GetOptionTotalCount(guid.Value, loseOption.OptionName).ToString();
 
                             ltrlWin.Text = string.Format(txtString, betCountWin, totalBetWin, rateWin);
                             ltrlDraw.Text = string.Format(txtString, betCountDraw, totalBetDraw, rateDraw);

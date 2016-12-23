@@ -11,7 +11,7 @@ namespace Arsenalcn.Core
         ///// <summary>
         ///// DataReader映射
         ///// </summary>
-        public static IEnumerable<T> DataReaderMapTo<T>(this IDataReader reader) where T : class, IViewer, new()
+        public static IEnumerable<T> DataReaderMapTo<T>(this IDataReader reader) where T : class, IDao, new()
         {
             //Mapper.Reset();
 

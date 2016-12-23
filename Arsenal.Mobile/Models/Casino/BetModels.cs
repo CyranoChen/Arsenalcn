@@ -80,11 +80,11 @@ namespace Arsenal.Mobile.Models.Casino
             return config;
         }
 
-        public static BetDto Single(object key)
+        public static BetDto Single(int key)
         {
             IRepository repo = new Repository();
 
-            var instance = repo.Single<BetView>(key);
+            var instance = repo.Single<BetView>(x => x.ID == key);
 
             instance.Many<BetDetail>(x => x.BetID == instance.ID);
 

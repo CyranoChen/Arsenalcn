@@ -8,9 +8,9 @@ using System.Web;
 
 namespace Arsenalcn.Core
 {
-    public abstract class Viewer : IViewer
+    public abstract class Dao : IDao
     {
-        public virtual void Many<T>(Expression<Func<T, bool>> whereBy) where T : class, IViewer, new()
+        public virtual void Many<T>(Expression<Func<T, bool>> whereBy) where T : class, IDao, new()
         {
             // Get the property which matches IEnumerable<T>
             var property = GetType().GetProperties()
@@ -73,7 +73,7 @@ namespace Arsenalcn.Core
         #endregion
     }
 
-    public interface IViewer
+    public interface IDao
     {
         /// <summary>
         ///     The entity's unique (and URL-safe) public identifier
@@ -85,6 +85,6 @@ namespace Arsenalcn.Core
 
         void Inital();
 
-        void Many<T>(Expression<Func<T, bool>> whereBy) where T : class, IViewer, new();
+        void Many<T>(Expression<Func<T, bool>> whereBy) where T : class, IDao, new();
     }
 }

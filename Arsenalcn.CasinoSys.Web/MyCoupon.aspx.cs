@@ -119,13 +119,13 @@ namespace Arsenalcn.CasinoSys.Web
                         {
                             var options = ((SingleChoice)item).Options;
 
-                            var winOption = options.Find(option => option.OptionValue == MatchChoiceOption.HomeWinValue);
-                            var drawOption = options.Find(option => option.OptionValue == MatchChoiceOption.DrawValue);
-                            var loseOption = options.Find(option => option.OptionValue == MatchChoiceOption.AwayWinValue);
+                            var winOption = options.Find(option => option.OptionName == MatchChoiceOption.HomeWinValue);
+                            var drawOption = options.Find(option => option.OptionName == MatchChoiceOption.DrawValue);
+                            var loseOption = options.Find(option => option.OptionName == MatchChoiceOption.AwayWinValue);
 
-                            if (!string.IsNullOrEmpty(winOption.OptionValue) &&
-                                !string.IsNullOrEmpty(drawOption.OptionValue) &&
-                                !string.IsNullOrEmpty(loseOption.OptionValue) &&
+                            if (!string.IsNullOrEmpty(winOption.OptionName) &&
+                                !string.IsNullOrEmpty(drawOption.OptionName) &&
+                                !string.IsNullOrEmpty(loseOption.OptionName) &&
                                 winOption.OptionRate.HasValue &&
                                 drawOption.OptionRate.HasValue &&
                                 loseOption.OptionRate.HasValue)

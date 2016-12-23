@@ -126,23 +126,23 @@ namespace Arsenalcn.CasinoSys.Entity
                     itemSingleChoice.Options.Add(new ChoiceOption
                     {
                         OptionDisplay = "主队胜",
-                        OptionValue = MatchChoiceOption.HomeWinValue,
+                        OptionName = MatchChoiceOption.HomeWinValue,
                         OptionRate = winRate,
-                        OrderID = 1
+                        OptionOrder = 1
                     });
                     itemSingleChoice.Options.Add(new ChoiceOption
                     {
                         OptionDisplay = "双方平",
-                        OptionValue = MatchChoiceOption.DrawValue,
+                        OptionName = MatchChoiceOption.DrawValue,
                         OptionRate = drawRate,
-                        OrderID = 2
+                        OptionOrder = 2
                     });
                     itemSingleChoice.Options.Add(new ChoiceOption
                     {
                         OptionDisplay = "客队胜",
-                        OptionValue = MatchChoiceOption.AwayWinValue,
+                        OptionName = MatchChoiceOption.AwayWinValue,
                         OptionRate = loseRate,
-                        OrderID = 3
+                        OptionOrder = 3
                     });
 
                     itemSingleChoice.Save(trans);
@@ -199,14 +199,14 @@ namespace Arsenalcn.CasinoSys.Entity
 
                         foreach (DataRow dr in dtMatchBet.Rows)
                         {
-                            if (!Convert.IsDBNull(dr["Bet"]))
+                            if (!Convert.IsDBNull(dr["BetAmount"]))
                             {
                                 var gambler = new Gambler(Convert.ToInt32(dr["UserID"]), trans);
-                                gambler.Cash += Convert.ToSingle(dr["Bet"]);
-                                gambler.TotalBet -= Convert.ToSingle(dr["Bet"]);
+                                gambler.Cash += Convert.ToSingle(dr["BetAmount"]);
+                                gambler.TotalBet -= Convert.ToSingle(dr["BetAmount"]);
                                 gambler.Update(trans);
 
-                                totalBet += Convert.ToSingle(dr["Bet"]);
+                                totalBet += Convert.ToSingle(dr["BetAmount"]);
                             }
                         }
 

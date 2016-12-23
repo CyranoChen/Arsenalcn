@@ -55,10 +55,10 @@ namespace Arsenalcn.CasinoSys.Entity
                 UserName = Convert.ToString(dr["UserName"]);
                 CasinoItemGuid = (Guid) dr["CasinoItemGuid"];
 
-                if (Convert.IsDBNull(dr["Bet"]))
+                if (Convert.IsDBNull(dr["BetAmount"]))
                     BetAmount = null;
                 else
-                    BetAmount = Convert.ToSingle(dr["Bet"]);
+                    BetAmount = Convert.ToSingle(dr["BetAmount"]);
 
 
                 BetTime = (DateTime) dr["BetTime"];

@@ -52,7 +52,7 @@ namespace Arsenalcn.CasinoSys.Entity
                     var option = new ChoiceOption
                     {
                         CasinoItemGuid = (Guid) drOption["CasinoItemGuid"],
-                        OptionValue = Convert.ToString(drOption["OptionValue"]),
+                        OptionName = Convert.ToString(drOption["OptionName"]),
                         OptionDisplay = Convert.ToString(drOption["OptionDisplay"])
                     };
 
@@ -61,7 +61,7 @@ namespace Arsenalcn.CasinoSys.Entity
                     else
                         option.OptionRate = Convert.ToSingle(drOption["OptionRate"]);
 
-                    option.OrderID = Convert.ToInt32(drOption["OrderID"]);
+                    option.OptionOrder = Convert.ToInt32(drOption["OptionOrder"]);
 
                     Options.Add(option);
                 }
@@ -73,7 +73,7 @@ namespace Arsenalcn.CasinoSys.Entity
     {
         public void Insert(Guid itemGuid, SqlTransaction trans)
         {
-            DataAccess.ChoiceOption.InsertChoiceOption(itemGuid, OptionDisplay, OptionValue, OptionRate.Value, OrderID,
+            DataAccess.ChoiceOption.InsertChoiceOption(itemGuid, OptionDisplay, OptionName, OptionRate.Value, OptionOrder,
                 trans);
         }
 
@@ -109,13 +109,13 @@ namespace Arsenalcn.CasinoSys.Entity
 
         public Guid CasinoItemGuid { get; set; }
 
-        public string OptionValue { get; set; }
+        public string OptionName { get; set; }
 
         public string OptionDisplay { get; set; }
 
         public float? OptionRate { get; set; }
 
-        public int OrderID { get; set; }
+        public int OptionOrder { get; set; }
     }
 
     public static class MatchChoiceOption

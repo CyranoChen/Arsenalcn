@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using Arsenalcn.Core;
-using DataReaderMapper;
 using CasinoMatch = Arsenal.Service.Casino.Match;
 
 namespace Arsenal.Service
@@ -11,13 +9,6 @@ namespace Arsenal.Service
     [DbSchema("Arsenal_Group", Key = "GroupGuid", Sort = "GroupOrder")]
     public class Group : Entity<Guid>
     {
-        public static void CreateMap()
-        {
-            var map = Mapper.CreateMap<IDataReader, Group>();
-
-            map.ForMember(d => d.ID, opt => opt.MapFrom(s => (Guid)s.GetValue("GroupGuid")));
-        }
-
         public void BindMatches()
         {
             IRepository repo = new Repository();

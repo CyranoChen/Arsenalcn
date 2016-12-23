@@ -20,18 +20,18 @@ namespace Arsenalcn.CasinoSys.DataAccess
             return ds.Tables[0];
         }
 
-        public static void InsertChoiceOption(Guid itemGuid, string display, string optionValue, float optionRate,
-            int orderID, SqlTransaction trans)
+        public static void InsertChoiceOption(Guid itemGuid, string display, string name, float rate,
+            int order, SqlTransaction trans)
         {
-            var sql = "INSERT INTO AcnCasino_ChoiceOption VALUES (@guid, @orderID, @display, @value, @rate)";
+            var sql = "INSERT INTO AcnCasino_ChoiceOption VALUES (@guid, @order, @display, @value, @rate)";
 
             //Decimal.ToSingle(Math.Round(new decimal(optionRate), 2));
 
             SqlParameter[] para =
             {
-                new SqlParameter("@guid", itemGuid), new SqlParameter("@orderID", orderID),
-                new SqlParameter("@display", display), new SqlParameter("@value", optionValue),
-                new SqlParameter("@rate", optionRate)
+                new SqlParameter("@guid", itemGuid), new SqlParameter("@order", order),
+                new SqlParameter("@display", display), new SqlParameter("@name", name),
+                new SqlParameter("@rate", rate)
             };
 
             if (trans != null)
@@ -51,28 +51,28 @@ namespace Arsenalcn.CasinoSys.DataAccess
         //        SqlHelper.ExecuteNonQuery(SQLConn.GetConnection(), CommandType.Text, sql);
         //}
 
-        public static float GetOptionTotalBet(Guid itemGuid, string optionValue)
+        public static float GetOptionTotalBet(Guid itemGuid, string name)
         {
             var sql = @"SELECT ISNULL(SUM(BET), 0) FROM dbo.AcnCasino_Bet bet
                         INNER JOIN dbo.AcnCasino_BetDetail detail
                         ON bet.[ID] = detail.[BetID]
-                        WHERE bet.CasinoItemGuid = @guid AND detail.DetailName = @optionValue";
+                        WHERE bet.CasinoItemGuid = @guid AND detail.DetailName = @name";
 
             var obj = SqlHelper.ExecuteScalar(SQLConn.GetConnection(), CommandType.Text, sql,
-                new SqlParameter("@guid", itemGuid), new SqlParameter("@optionValue", optionValue));
+                new SqlParameter("@guid", itemGuid), new SqlParameter("@name", name));
 
             return obj.Equals(DBNull.Value) ? 0f : Convert.ToSingle(obj);
         }
 
-        public static int GetOptionTotalCount(Guid itemGuid, string optionValue)
+        public static int GetOptionTotalCount(Guid itemGuid, string name)
         {
             var sql = @"SELECT COUNT(*) FROM dbo.AcnCasino_Bet bet
                         INNER JOIN dbo.AcnCasino_BetDetail detail
                         ON bet.[ID] = detail.[BetID]
-                        WHERE bet.CasinoItemGuid = @guid AND detail.DetailName = @optionValue";
+                        WHERE bet.CasinoItemGuid = @guid AND detail.DetailName = @name";
 
             var obj = SqlHelper.ExecuteScalar(SQLConn.GetConnection(), CommandType.Text, sql,
-                new SqlParameter("@guid", itemGuid), new SqlParameter("@optionValue", optionValue));
+                new SqlParameter("@guid", itemGuid), new SqlParameter("@name", name));
 
             return obj.Equals(DBNull.Value) ? 0 : Convert.ToInt32(obj);
         }

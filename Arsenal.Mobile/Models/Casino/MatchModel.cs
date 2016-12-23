@@ -42,11 +42,11 @@ namespace Arsenal.Mobile.Models.Casino
             return config;
         }
 
-        public static MatchDto Single(object key)
+        public static MatchDto Single(Guid key)
         {
             IRepository repo = new Repository();
 
-            var instance = repo.Single<MatchView>(key);
+            var instance = repo.Single<MatchView>(x => x.ID == key);
             instance.Many<ChoiceOption>(x => x.CasinoItemGuid == instance.CasinoItem.ID);
 
             var mapper = ConfigMapper().CreateMapper();

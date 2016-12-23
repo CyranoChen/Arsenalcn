@@ -6,7 +6,7 @@ using DataReaderMapper;
 namespace Arsenal.Service.Casino
 {
     [DbSchema("AcnCasino_BonusView", Key = "MatchGuid", Sort = "PlayTime DESC")]
-    public class BonusView : Viewer
+    public class BonusView : Dao
     {
         public static void CreateMap()
         {

@@ -1,36 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using Arsenalcn.Core;
-using DataReaderMapper;
 
 namespace Arsenal.Service
 {
     [DbSchema("Arsenal_Match", Key = "MatchGuid", Sort = "PlayTime DESC")]
     public class Match : Entity<Guid>
     {
-        public static void CreateMap()
+        public override void Inital()
         {
-            var map = Mapper.CreateMap<IDataReader, Match>();
-
-            map.ForMember(d => d.ID, opt => opt.MapFrom(s => (Guid) s.GetValue("MatchGuid")));
-
-            map.ForMember(d => d.ResultInfo, opt => opt.ResolveUsing(s =>
+            if (ResultHome.HasValue && ResultAway.HasValue)
             {
-                var resultHome = (short?) s.GetValue("ResultHome");
-                var resultAway = (short?) s.GetValue("ResultAway");
-                var IsHome = (bool) s.GetValue("IsHome");
-
-                if (resultHome.HasValue && resultAway.HasValue)
-                {
-                    var _strResult = "{0} : {1}";
-
-                    if (IsHome)
-                        return string.Format(_strResult, resultHome.Value.ToString(), resultAway.Value.ToString());
-                    return string.Format(_strResult, resultAway.Value.ToString(), resultHome.Value.ToString());
-                }
-                return string.Empty;
-            }));
+                ResultInfo = IsHome ? $"{ResultHome.Value} : {ResultAway.Value}" : $"{ResultAway.Value} : {ResultHome.Value}";
+            }
+            else
+            {
+                ResultInfo = null;
+            }
         }
 
         public static class Cache

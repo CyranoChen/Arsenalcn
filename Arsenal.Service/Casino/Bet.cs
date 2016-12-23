@@ -1,23 +1,14 @@
 ﻿using System;
-using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using Arsenalcn.Core;
-using DataReaderMapper;
 
 namespace Arsenal.Service.Casino
 {
     [DbSchema("AcnCasino_Bet", Sort = "BetTime DESC")]
     public class Bet : Entity<int>
     {
-        public static void CreateMap()
-        {
-            var map = Mapper.CreateMap<IDataReader, Bet>();
-
-            map.ForMember(d => d.BetAmount, opt => opt.MapFrom(s => s.GetValue("Bet")));
-        }
-
         // Place Bet of SingleChoice
         public void Place(Guid matchGuid, string selectedOption)
         {
@@ -305,7 +296,7 @@ namespace Arsenal.Service.Casino
         [DbColumn("CasinoItemGuid")]
         public Guid CasinoItemGuid { get; set; }
 
-        [DbColumn("Bet")]
+        [DbColumn("BetAmount")]
         public double? BetAmount { get; set; }
 
         [DbColumn("BetTime")]

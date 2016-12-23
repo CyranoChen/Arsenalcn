@@ -12,7 +12,7 @@ using DataReaderMapper.Mappers;
 namespace Arsenalcn.Core
 {
     [DbSchema("Arsenalcn_Config", Key = "", Sort = "ConfigSystem, ConfigKey")]
-    public class Config
+    public class Config : Dao
     {
         private static void CreateMap()
         {

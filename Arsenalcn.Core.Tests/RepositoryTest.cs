@@ -52,12 +52,12 @@ namespace Arsenalcn.Core.Tests
             var key1 = 10000; // require guid, input int
 
             repo.Single<League>(key1);
-            repo.Single<MatchView>(key1);
+            //repo.Single<MatchView>(key1);
 
             var key2 = new Guid(); // require int, input guid
 
             repo.Single<Bet>(key2);
-            repo.Single<BetView>(key2);
+            //repo.Single<BetView>(key2);
         }
 
         [TestMethod]
@@ -68,7 +68,7 @@ namespace Arsenalcn.Core.Tests
             // the match has not group
             var key1 = new Guid("12236a72-f35b-4a0f-90e6-67b11c3364bc");
 
-            var instance1 = repo.Single<MatchView>(key1);
+            var instance1 = repo.Single<MatchView>(x => x.ID == key1);
 
             Assert.IsNotNull(instance1);
             Assert.IsInstanceOfType(instance1, typeof(MatchView));
@@ -82,7 +82,7 @@ namespace Arsenalcn.Core.Tests
             // the match has group
             var key2 = new Guid("73c314c3-4e50-428d-b698-475fb854e4ea");
 
-            var instance2 = repo.Single<MatchView>(key2);
+            var instance2 = repo.Single<MatchView>(x => x.ID == key2);
 
             Assert.IsNotNull(instance2.Group); // has relation group
         }
@@ -94,7 +94,7 @@ namespace Arsenalcn.Core.Tests
 
             var key1 = new Guid("12236a72-f35b-4a0f-90e6-67b11c3364bc");
 
-            var instance1 = repo.Single<MatchView>(key1);
+            var instance1 = repo.Single<MatchView>(x => x.ID == key1);
 
             instance1.Many<ChoiceOption>(x => x.CasinoItemGuid == instance1.CasinoItem.ID);
 
@@ -103,7 +103,7 @@ namespace Arsenalcn.Core.Tests
             Assert.IsNotNull(instance1.ChoiceOptions);
             Assert.IsTrue(instance1.ChoiceOptions.Any());
 
-            var instance2 = repo.Single<MatchView>(key1);
+            var instance2 = repo.Single<MatchView>(x => x.ID == key1);
 
             instance2.Many<ChoiceOption>(x => x.CasinoItemGuid == instance1.ID);
 
@@ -121,7 +121,7 @@ namespace Arsenalcn.Core.Tests
 
             var key = new Guid("12236a72-f35b-4a0f-90e6-67b11c3364bc");
 
-            var instance = repo.Single<MatchView>(key);
+            var instance = repo.Single<MatchView>(x => x.ID == key);
 
             instance.Many<League>(x => x.ID == instance.CasinoItem.ID);
         }

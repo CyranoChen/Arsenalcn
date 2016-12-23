@@ -20,16 +20,16 @@ namespace Arsenalcn.CasinoSys.DataAccess
             return ds.Tables[0].Rows[0];
         }
 
-        public static int InsertBet(int userid, string username, Guid casinoItemGuid, float? bet, float? betRate,
+        public static int InsertBet(int userid, string username, Guid casinoItemGuid, float? betAmount, float? betRate,
             SqlTransaction trans)
         {
             var sql =
-                "INSERT INTO AcnCasino_Bet VALUES (@userid, @username, @casinoItemGuid, @bet, GETDATE(), @betRate, NULL, NULL, NULL); SELECT SCOPE_IDENTITY();";
+                "INSERT INTO AcnCasino_Bet VALUES (@userid, @username, @casinoItemGuid, @betAmount, GETDATE(), @betRate, NULL, NULL, NULL); SELECT SCOPE_IDENTITY();";
 
             SqlParameter[] para =
             {
                 new SqlParameter("@userid", userid), new SqlParameter("@username", username),
-                new SqlParameter("@casinoItemGuid", casinoItemGuid), new SqlParameter("@bet", bet),
+                new SqlParameter("@casinoItemGuid", casinoItemGuid), new SqlParameter("@betAmount", betAmount),
                 new SqlParameter("@betRate", betRate)
             };
 
@@ -102,7 +102,7 @@ namespace Arsenalcn.CasinoSys.DataAccess
 
         public static float GetUserMatchTotalBet(int userid, Guid matchGuid)
         {
-            var sql = @"SELECT ISNULL(SUM(bet), 0) FROM dbo.AcnCasino_Bet
+            var sql = @"SELECT ISNULL(SUM(betAmount), 0) FROM dbo.AcnCasino_Bet
                         WHERE UserID = @userid AND CasinoItemGuid IN (SELECT CasinoItemGuid FROM dbo.AcnCasino_CasinoItem WHERE MatchGuid = @guid)";
 
             var obj = SqlHelper.ExecuteScalar(SQLConn.GetConnection(), CommandType.Text, sql,
@@ -236,7 +236,7 @@ namespace Arsenalcn.CasinoSys.DataAccess
 
         public static float GetMatchTopBet(Guid matchGuid)
         {
-            var sql = @"SELECT MAX(Bet) AS topBet FROM dbo.AcnCasino_Bet WHERE CasinoItemGuid IN 
+            var sql = @"SELECT MAX(BetAmount) AS topBet FROM dbo.AcnCasino_Bet WHERE CasinoItemGuid IN 
                         (SELECT CasinoItemGuid FROM dbo.AcnCasino_CasinoItem WHERE MatchGuid = @guid)";
 
             var obj = SqlHelper.ExecuteScalar(SQLConn.GetConnection(), CommandType.Text, sql,

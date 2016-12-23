@@ -53,14 +53,14 @@
       </s:complexType>
       <s:complexType name="EntityOfGuid" abstract="true">
         <s:complexContent mixed="false">
-          <s:extension base="tns:Viewer">
+          <s:extension base="tns:Dao">
             <s:sequence>
               <s:element minOccurs="1" maxOccurs="1" name="ID" type="s1:guid" />
             </s:sequence>
           </s:extension>
         </s:complexContent>
       </s:complexType>
-      <s:complexType name="Viewer" abstract="true">
+      <s:complexType name="Dao" abstract="true">
         <s:sequence>
           <s:element minOccurs="0" maxOccurs="1" name="Key" type="s:string" />
         </s:sequence>

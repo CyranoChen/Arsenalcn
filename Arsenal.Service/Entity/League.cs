@@ -1,29 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using Arsenalcn.Core;
-using DataReaderMapper;
 
 namespace Arsenal.Service
 {
     [DbSchema("Arsenal_League", Key = "LeagueGuid", Sort = "LeagueOrder, LeagueOrgName")]
     public class League : Entity<Guid>
     {
-        public static void CreateMap()
-        {
-            var map = Mapper.CreateMap<IDataReader, League>();
-
-            map.ForMember(d => d.ID, opt => opt.MapFrom(s => (Guid)s.GetValue("LeagueGuid")));
-
-            map.ForMember(d => d.LeagueNameInfo, opt => opt.MapFrom(s =>
-                $"{s.GetValue("LeagueName").ToString()}{s.GetValue("LeagueSeason").ToString()}"));
-
-            map.ForMember(d => d.TeamCountInfo, opt => opt.MapFrom(s =>
-                RelationLeagueTeam.Cache.RelationLeagueTeamList.Count(x =>
-                    x.LeagueGuid.Equals((Guid)s.GetValue("LeagueGuid")))));
-        }
-
         public override void Inital()
         {
             LeagueNameInfo = $"{LeagueName}{LeagueSeason}";
@@ -60,6 +44,8 @@ namespace Arsenal.Service
         }
 
         #region Members and Properties
+        [DbColumn("LeagueGuid")]
+        private Guid LeagueGuid { get; set; }
 
         [DbColumn("LeagueName")]
         public string LeagueName { get; set; }

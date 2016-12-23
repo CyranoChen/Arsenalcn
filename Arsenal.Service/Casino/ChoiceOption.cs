@@ -2,24 +2,12 @@
 using System.Data;
 using System.Data.SqlClient;
 using Arsenalcn.Core;
-using DataReaderMapper;
 
 namespace Arsenal.Service.Casino
 {
     [DbSchema("AcnCasino_ChoiceOption", Sort = "CasinoItemGuid, OrderID")]
     public class ChoiceOption : Entity<int>
     {
-        public static void CreateMap()
-        {
-            var map = Mapper.CreateMap<IDataReader, ChoiceOption>();
-
-            map.ForMember(d => d.OptionName,
-                opt => opt.MapFrom(s => s.GetValue("OptionValue")));
-
-            map.ForMember(d => d.OptionOrder,
-                opt => opt.MapFrom(s => s.GetValue("OrderID")));
-        }
-
         public static void Clean(SqlTransaction trans = null)
         {
             //DELETE FROM AcnCasino_ChoiceOption WHERE (CasinoItemGuid NOT IN(SELECT CasinoItemGuid FROM AcnCasino_CasinoItem))
@@ -37,7 +25,7 @@ namespace Arsenal.Service.Casino
         [DbColumn("CasinoItemGuid")]
         public Guid CasinoItemGuid { get; set; }
 
-        [DbColumn("OptionValue")]
+        [DbColumn("OptionName")]
         public string OptionName { get; set; }
 
         [DbColumn("OptionDisplay")]
@@ -46,7 +34,7 @@ namespace Arsenal.Service.Casino
         [DbColumn("OptionRate")]
         public float OptionRate { get; set; }
 
-        [DbColumn("OrderID")]
+        [DbColumn("OptionOrder")]
         public int OptionOrder { get; set; }
 
         #endregion

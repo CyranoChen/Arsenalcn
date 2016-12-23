@@ -1,21 +1,12 @@
 ﻿using System;
-using System.Data;
 using System.Data.SqlClient;
 using Arsenalcn.Core;
-using DataReaderMapper;
 
 namespace Arsenal.Service.Casino
 {
     [DbSchema("AcnCasino_CasinoItem", Key = "CasinoItemGuid", Sort = "CloseTime DESC, CreateTime DESC")]
     public class CasinoItem : Entity<Guid>
     {
-        public static void CreateMap()
-        {
-            var map = Mapper.CreateMap<IDataReader, CasinoItem>();
-
-            map.ForMember(d => d.ID, opt => opt.MapFrom(s => (Guid)s.GetValue("CasinoItemGuid")));
-        }
-
         public void Statistics()
         {
             var sql =

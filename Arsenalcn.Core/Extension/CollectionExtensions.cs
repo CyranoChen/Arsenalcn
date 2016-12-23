@@ -9,8 +9,8 @@ namespace Arsenalcn.Core
     {
         // Many by Linq
         public static IEnumerable<TOne> Many<TOne, TMany>(this IEnumerable<TOne> source, Func<TOne, TMany, bool> func)
-            where TOne : class, IViewer, new()
-            where TMany : class, IViewer, new()
+            where TOne : class, IDao, new()
+            where TMany : class, IDao, new()
         {
             Contract.Requires(func != null);
 
@@ -66,8 +66,8 @@ namespace Arsenalcn.Core
         // Many by T-SQL
         public static IEnumerable<TOne> Many<TOne, TMany, TOneKey>(this IEnumerable<TOne> source,
             Func<TOne, TOneKey> keySelector)
-            where TMany : class, IViewer, new()
-            where TOne : class, IViewer, new()
+            where TMany : class, IDao, new()
+            where TOne : class, IDao, new()
             where TOneKey : struct
         {
             Contract.Requires(keySelector != null);

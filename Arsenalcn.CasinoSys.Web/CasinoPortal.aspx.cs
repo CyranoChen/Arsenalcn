@@ -93,13 +93,13 @@ namespace Arsenalcn.CasinoSys.Web
                         {
                             var options = ((SingleChoice)item).Options;
 
-                            var winOption = options.Find(option => option.OptionValue == MatchChoiceOption.HomeWinValue);
-                            var drawOption = options.Find(option => option.OptionValue == MatchChoiceOption.DrawValue);
-                            var loseOption = options.Find(option => option.OptionValue == MatchChoiceOption.AwayWinValue);
+                            var winOption = options.Find(option => option.OptionName == MatchChoiceOption.HomeWinValue);
+                            var drawOption = options.Find(option => option.OptionName == MatchChoiceOption.DrawValue);
+                            var loseOption = options.Find(option => option.OptionName == MatchChoiceOption.AwayWinValue);
 
-                            if (!string.IsNullOrEmpty(winOption.OptionValue) &&
-                                !string.IsNullOrEmpty(drawOption.OptionValue) &&
-                                !string.IsNullOrEmpty(loseOption.OptionValue))
+                            if (!string.IsNullOrEmpty(winOption.OptionName) &&
+                                !string.IsNullOrEmpty(drawOption.OptionName) &&
+                                !string.IsNullOrEmpty(loseOption.OptionName))
                             {
                                 var ltrlWinRate = e.Row.FindControl("ltrlWinRate") as Literal;
                                 var ltrlDrawRate = e.Row.FindControl("ltrlDrawRate") as Literal;
@@ -122,11 +122,11 @@ namespace Arsenalcn.CasinoSys.Web
                                     if (lbWinInfo != null && lbDrawInfo != null && lbLoseInfo != null)
                                     {
                                         lbWinInfo.Text =
-                                            $"{ChoiceOption.GetOptionTotalCount(guid.Value, winOption.OptionValue)} | {ChoiceOption.GetOptionTotalBet(guid.Value, winOption.OptionValue).ToString("N0")}";
+                                            $"{ChoiceOption.GetOptionTotalCount(guid.Value, winOption.OptionName)} | {ChoiceOption.GetOptionTotalBet(guid.Value, winOption.OptionName).ToString("N0")}";
                                         lbDrawInfo.Text =
-                                            $"{ChoiceOption.GetOptionTotalCount(guid.Value, drawOption.OptionValue)} | {ChoiceOption.GetOptionTotalBet(guid.Value, drawOption.OptionValue).ToString("N0")}";
+                                            $"{ChoiceOption.GetOptionTotalCount(guid.Value, drawOption.OptionName)} | {ChoiceOption.GetOptionTotalBet(guid.Value, drawOption.OptionName).ToString("N0")}";
                                         lbLoseInfo.Text =
-                                            $"{ChoiceOption.GetOptionTotalCount(guid.Value, loseOption.OptionValue)} | {ChoiceOption.GetOptionTotalBet(guid.Value, loseOption.OptionValue).ToString("N0")}";
+                                            $"{ChoiceOption.GetOptionTotalCount(guid.Value, loseOption.OptionName)} | {ChoiceOption.GetOptionTotalBet(guid.Value, loseOption.OptionName).ToString("N0")}";
                                     }
 
                                     var btnBet = e.Row.FindControl("btnBet") as HyperLink;

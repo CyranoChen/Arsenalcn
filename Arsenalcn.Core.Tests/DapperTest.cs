@@ -11,7 +11,7 @@ namespace Arsenalcn.Core.Tests
         public void Test_Single()
         {
             IRepository repo = new Repository();
-            
+
             var key1 = new Guid("FD32F77D-47A7-4D5F-B7CE-068E3E1A0833");
 
             var instance1 = repo.Single<League>(key1);
@@ -36,6 +36,27 @@ namespace Arsenalcn.Core.Tests
 
             Assert.IsTrue(repo.Count<League>(x => x.IsActive == true) > 0);
             Assert.IsTrue(repo.Count<League>(x => x.LeagueName == "AA") == 0);
+        }
+
+        [TestMethod]
+        public void Test_All()
+        {
+            IRepository repo = new Repository();
+
+            var list = repo.All<League>();
+
+            Assert.IsTrue(list.Count > 0);
+        }
+
+        [TestMethod]
+        public void Test_Query()
+        {
+            IRepository repo = new Repository();
+
+            var list = repo.Query<League>(x => x.LeagueName == "");
+
+            Assert.IsNotNull(list);
+            Assert.IsTrue(list.Count == 0);
         }
     }
 }

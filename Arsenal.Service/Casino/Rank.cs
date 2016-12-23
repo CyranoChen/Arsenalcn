@@ -1,17 +1,10 @@
-﻿using System.Data;
-using Arsenalcn.Core;
-using DataReaderMapper;
+﻿using Arsenalcn.Core;
 
 namespace Arsenal.Service.Casino
 {
     [DbSchema("AcnCasino_Rank", Sort = "RankYear DESC, RankMonth DESC")]
     public class Rank : Entity<int>
     {
-        public static void CreateMap()
-        {
-            Mapper.CreateMap<IDataReader, Rank>();
-        }
-
         public void Init(GamblerDW winner, GamblerDW loser, GamblerDW rper)
         {
             if (winner != null)

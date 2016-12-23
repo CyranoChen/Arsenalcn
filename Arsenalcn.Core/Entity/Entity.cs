@@ -3,14 +3,14 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Arsenalcn.Core
 {
-    public abstract class Entity<TKey> : Viewer, IEntity where TKey : struct
+    public abstract class Entity<TKey> : Dao, IEntity where TKey : struct
     {
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != typeof (Entity<TKey>)) return false;
-            return Equals((Entity<TKey>) obj);
+            if (obj.GetType() != typeof(Entity<TKey>)) return false;
+            return Equals((Entity<TKey>)obj);
         }
 
         public bool Equals(Entity<TKey> other)
@@ -30,7 +30,7 @@ namespace Arsenalcn.Core
             unchecked
             {
                 if (default(TKey).Equals(ID))
-                    return Key.GetHashCode()*397;
+                    return Key.GetHashCode() * 397;
 
                 return ID.GetHashCode();
             }
@@ -53,7 +53,7 @@ namespace Arsenalcn.Core
         {
             get
             {
-                if (typeof (TKey) == typeof (Guid))
+                if (typeof(TKey) == typeof(Guid))
                 {
                     if (_id == null || (_id != null && _id.Equals(Guid.Empty)))
                     {
@@ -61,7 +61,7 @@ namespace Arsenalcn.Core
                     }
                 }
 
-                return (TKey?) _id ?? default(TKey);
+                return (TKey?)_id ?? default(TKey);
             }
             set { _id = value; }
         }
@@ -80,5 +80,7 @@ namespace Arsenalcn.Core
         ///     This is the identifier that should be exposed via the web, etc.
         /// </remarks>
         string Key { get; }
+
+        void Inital();
     }
 }

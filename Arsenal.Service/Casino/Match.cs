@@ -1,20 +1,11 @@
 ﻿using System;
-using System.Data;
 using Arsenalcn.Core;
-using DataReaderMapper;
 
 namespace Arsenal.Service.Casino
 {
     [DbSchema("AcnCasino_Match", Key = "MatchGuid", Sort = "PlayTime DESC, LeagueName")]
     public class Match : Entity<Guid>
     {
-        public static void CreateMap()
-        {
-            var map = Mapper.CreateMap<IDataReader, Match>();
-
-            map.ForMember(d => d.ID, opt => opt.MapFrom(s => (Guid) s.GetValue("MatchGuid")));
-        }
-
         #region Members and Properties
 
         [DbColumn("Home")]

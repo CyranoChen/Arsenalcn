@@ -7,7 +7,7 @@ using DataReaderMapper;
 namespace Arsenal.Service.Casino
 {
     [DbSchema("AcnCasino_BetView", Sort = "BetTime DESC")]
-    public class BetView : Viewer
+    public class BetView : Dao
     {
         public static void CreateMap()
         {

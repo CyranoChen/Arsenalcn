@@ -106,13 +106,13 @@ namespace Arsenalcn.CasinoSys.Web
                         {
                             var options = ((SingleChoice)item).Options;
 
-                            var winOption = options.Find(option => option.OptionValue == MatchChoiceOption.HomeWinValue);
-                            var drawOption = options.Find(option => option.OptionValue == MatchChoiceOption.DrawValue);
-                            var loseOption = options.Find(option => option.OptionValue == MatchChoiceOption.AwayWinValue);
+                            var winOption = options.Find(option => option.OptionName == MatchChoiceOption.HomeWinValue);
+                            var drawOption = options.Find(option => option.OptionName == MatchChoiceOption.DrawValue);
+                            var loseOption = options.Find(option => option.OptionName == MatchChoiceOption.AwayWinValue);
 
-                            if (string.IsNullOrEmpty(winOption.OptionValue) ||
-                                string.IsNullOrEmpty(drawOption.OptionValue) ||
-                                string.IsNullOrEmpty(loseOption.OptionValue))
+                            if (string.IsNullOrEmpty(winOption.OptionName) ||
+                                string.IsNullOrEmpty(drawOption.OptionName) ||
+                                string.IsNullOrEmpty(loseOption.OptionName))
                                 throw new Exception();
 
                             var liWin = rblSingleChoice.Items[0];
@@ -253,7 +253,7 @@ namespace Arsenalcn.CasinoSys.Web
 
                     //get selected option
                     var item = (SingleChoice)CasinoItem.GetCasinoItem(guid.Value);
-                    var seletedOption = item.Options.Find(option => option.OptionValue == rblSingleChoice.SelectedValue);
+                    var seletedOption = item.Options.Find(option => option.OptionName == rblSingleChoice.SelectedValue);
 
                     var bet = new Bet
                     {
@@ -264,7 +264,7 @@ namespace Arsenalcn.CasinoSys.Web
                         UserName = username
                     };
 
-                    bet.Insert(seletedOption.OptionValue);
+                    bet.Insert(seletedOption.OptionName);
 
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
                         "alert('投注成功'); window.location.href = window.location.href;", true);

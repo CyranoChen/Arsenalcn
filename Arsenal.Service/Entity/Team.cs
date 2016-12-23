@@ -10,15 +10,9 @@ namespace Arsenal.Service
     [DbSchema("Arsenal_Team", Key = "TeamGuid", Sort = "TeamEnglishName")]
     public class Team : Entity<Guid>
     {
-        public static void CreateMap()
+        public override void Inital()
         {
-            var map = Mapper.CreateMap<IDataReader, Team>();
-
-            map.ForMember(d => d.ID, opt => opt.MapFrom(s => (Guid) s.GetValue("TeamGuid")));
-
-            map.ForMember(d => d.LeagueCountInfo, opt => opt.MapFrom(s =>
-                RelationLeagueTeam.Cache.RelationLeagueTeamList.Count(x =>
-                    x.TeamGuid.Equals((Guid) s.GetValue("TeamGuid")))));
+            LeagueCountInfo = RelationLeagueTeam.Cache.RelationLeagueTeamList.Count(x => x.TeamGuid.Equals(this.ID));
         }
 
         public static class Cache
@@ -50,7 +44,7 @@ namespace Arsenal.Service
             public static List<Team> GetTeamsByLeagueGuid(Guid guid)
             {
                 return TeamList.FindAll(x =>
-                    new RelationLeagueTeam {TeamGuid = x.ID, LeagueGuid = guid}.Any());
+                    new RelationLeagueTeam { TeamGuid = x.ID, LeagueGuid = guid }.Any());
             }
         }
 

@@ -1,22 +1,13 @@
 ﻿using System;
-using System.Data;
 using System.Data.SqlTypes;
 using Arsenalcn.Core;
-using DataReaderMapper;
 
 namespace Arsenal.Service
 {
     [DbSchema("Arsenalcn_Membership", Key = "UserGuid", Sort = "CreateDate DESC")]
     public class Membership : Entity<Guid>
     {
-        public static void CreateMap()
-        {
-            var map = Mapper.CreateMap<IDataReader, Membership>();
-
-            map.ForMember(d => d.ID, opt => opt.MapFrom(s => (Guid) s.GetValue("UserGuid")));
-        }
-
-        public void Init()
+        public void Default()
         {
             var defaultMinDate = Convert.ToDateTime(SqlDateTime.MinValue.ToString());
 

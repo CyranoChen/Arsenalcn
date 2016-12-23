@@ -150,7 +150,7 @@ namespace Arsenal.Web
                 var user = new User();
 
                 //初始化Membership实例的所有字段
-                mem.Init();
+                mem.Default();
 
                 if (!UserGuid.Equals(Guid.Empty))
                 {

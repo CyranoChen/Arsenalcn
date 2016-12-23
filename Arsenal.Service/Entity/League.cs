@@ -44,8 +44,6 @@ namespace Arsenal.Service
         }
 
         #region Members and Properties
-        [DbColumn("LeagueGuid")]
-        private Guid LeagueGuid { get; set; }
 
         [DbColumn("LeagueName")]
         public string LeagueName { get; set; }

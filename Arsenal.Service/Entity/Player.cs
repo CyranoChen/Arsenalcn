@@ -9,14 +9,6 @@ namespace Arsenal.Service
     [DbSchema("Arsenal_Player", Key = "PlayerGuid", Sort = "IsLegend, IsLoan, SquadNumber, LastName")]
     public class Player : Entity<Guid>
     {
-        //public static void CreateMap()
-        //{
-        //    var map = Mapper.CreateMap<IDataReader, Player>();
-
-        //    map.ForMember(d => d.ID, opt => opt.MapFrom(s => (Guid)s.GetValue("PlayerGuid")));
-        //    map.ForMember(d => d.Position, opt => opt.MapFrom(s => (int)s.GetValue("PlayerPosition")));
-        //}
-
         public static class Cache
         {
             public static List<Player> PlayerList;

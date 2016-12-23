@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Web.UI.WebControls;
 using Arsenal.Service;
 using Arsenalcn.Core;
@@ -8,6 +7,8 @@ namespace Arsenal.Web
 {
     public partial class AdminConfig : AdminPageBase
     {
+        private readonly IRepository _repo = new Repository();
+
         protected void Page_Load(object sender, EventArgs e)
         {
             ctrlAdminFieldToolBar.AdminUserName = Username;
@@ -20,7 +21,7 @@ namespace Arsenal.Web
 
         private void BindData()
         {
-            gvSysConfig.DataSource = Config.All(ConfigSystem.Arsenal).ToList();
+            gvSysConfig.DataSource = _repo.Query<Config>(x => x.ConfigSystem.ToString() == ConfigSystem.Arsenal.ToString());
             gvSysConfig.DataBind();
         }
 
@@ -52,7 +53,7 @@ namespace Arsenal.Web
                 }
                 catch (Exception ex)
                 {
-                    ClientScript.RegisterClientScriptBlock(typeof (string), "failed", $"alert('{ex.Message}');", true);
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message}');", true);
                 }
             }
 
@@ -90,12 +91,12 @@ namespace Arsenal.Web
                 Team.Cache.RefreshCache();
                 Video.Cache.RefreshCache();
 
-                ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
                     "alert('更新全部缓存成功');window.location.href=window.location.href", true);
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof (string), "failed", $"alert('{ex.Message}');", true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message}');", true);
             }
         }
     }

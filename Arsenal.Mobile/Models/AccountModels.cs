@@ -198,7 +198,7 @@ namespace Arsenal.Mobile.Models
             var jlist = JArray.Parse(responseResult);
             var json = jlist[0];
 
-            Init();
+            Default();
 
             UserName = json["user_name"].ToString();
             Password = json["password"].ToString();
@@ -282,7 +282,7 @@ namespace Arsenal.Mobile.Models
                     IRepository repo = new Repository();
                     providerUserKey = null;
 
-                    Init();
+                    Default();
 
                     #region Check username
 

@@ -9,7 +9,7 @@ using DataReaderMapper.Mappers;
 
 namespace Arsenal.Service
 {
-    [DbSchema("Arsenal_RelationGroupTeam", Key = "", Sort = "GroupGuid, PositionNo")]
+    [DbSchema("Arsenal_RelationGroupTeam", Sort = "GroupGuid, PositionNo")]
     public class RelationGroupTeam
     {
         private static void CreateMap()

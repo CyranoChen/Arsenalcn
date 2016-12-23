@@ -17,7 +17,7 @@ namespace Arsenalcn.Core
 
             foreach (var instance in list)
             {
-                repo.Insert(instance, trans);
+                repo.Insert((IDao)instance, trans);
             }
 
             return list.Count;

@@ -29,7 +29,7 @@ namespace Arsenalcn.Core
         {
             var attr = GetTableAttr<T>();
 
-            string sql = $"SELECT {attr.Key} AS ID, * FROM {attr.Name} WHERE {attr.Key} = @key";
+            string sql = $"SELECT {BuildSelectSqlColumn(attr)} FROM {attr.Name} WHERE {attr.Key} = @key";
 
             var instance = Connection.QueryFirstOrDefault<T>(sql, new { key });
 
@@ -43,7 +43,7 @@ namespace Arsenalcn.Core
             var attr = GetTableAttr<T>();
 
             var sql = new StringBuilder();
-            sql.Append($"SELECT * FROM {attr.Name}");
+            sql.Append($"SELECT {BuildSelectSqlColumn(attr)} FROM {attr.Name}");
 
             var condition = new ConditionBuilder();
             condition.Build(whereBy.Body);
@@ -65,12 +65,12 @@ namespace Arsenalcn.Core
             return instance;
         }
 
-        public int Count<T>(Expression<Func<T, bool>> whereBy) where T : class, IDao, new()
+        public int Count<T>(Expression<Func<T, bool>> whereBy) where T : class, IDao
         {
             var attr = GetTableAttr<T>();
 
             var sql = new StringBuilder();
-            sql.Append($"SELECT COUNT({attr.Key}) FROM {attr.Name}");
+            sql.Append($"SELECT COUNT(*) FROM {attr.Name}");
 
             var condition = new ConditionBuilder();
             condition.Build(whereBy.Body);
@@ -87,12 +87,12 @@ namespace Arsenalcn.Core
         {
             var attr = GetTableAttr<T>();
 
-            string sql = $"SELECT COUNT({attr.Key}) FROM {attr.Name} WHERE {attr.Key} = @key";
+            string sql = $"SELECT COUNT(*) FROM {attr.Name} WHERE {attr.Key} = @key";
 
             return Connection.ExecuteScalar<int>(sql, new { key }) > 0;
         }
 
-        public bool Any<T>(Expression<Func<T, bool>> whereBy) where T : class, IDao, new()
+        public bool Any<T>(Expression<Func<T, bool>> whereBy) where T : class, IDao
         {
             return Count(whereBy) > 0;
         }
@@ -102,7 +102,7 @@ namespace Arsenalcn.Core
             var attr = GetTableAttr<T>();
 
             var sql = new StringBuilder();
-            sql.Append($"SELECT {attr.Key} AS ID, * FROM {attr.Name}");
+            sql.Append($"SELECT {BuildSelectSqlColumn(attr)} FROM {attr.Name}");
 
             if (!string.IsNullOrEmpty(attr.Sort))
             {
@@ -136,7 +136,7 @@ namespace Arsenalcn.Core
             var innerSql = $"SELECT ROW_NUMBER() OVER(ORDER BY {strOrderBy}) AS RowNo, * FROM {attr.Name}";
 
             string sql =
-                $"SELECT {attr.Key} AS ID, * FROM ({innerSql}) AS t WHERE t.RowNo BETWEEN {pager.CurrentPage * pager.PagingSize + 1} AND {(pager.CurrentPage + 1) * pager.PagingSize};";
+                $"SELECT {BuildSelectSqlColumn(attr)} FROM ({innerSql}) AS t WHERE t.RowNo BETWEEN {pager.CurrentPage * pager.PagingSize + 1} AND {(pager.CurrentPage + 1) * pager.PagingSize};";
 
             //sql += string.Format("SELECT COUNT({1}) AS TotalCount FROM {0}", attr.Name, attr.Key);
 
@@ -152,7 +152,7 @@ namespace Arsenalcn.Core
             var attr = GetTableAttr<T>();
 
             var sql = new StringBuilder();
-            sql.Append($"SELECT {attr.Key} AS ID, * FROM {attr.Name}");
+            sql.Append($"SELECT {BuildSelectSqlColumn(attr)} FROM {attr.Name}");
 
             var condition = new ConditionBuilder();
             condition.Build(whereBy.Body);
@@ -200,7 +200,7 @@ namespace Arsenalcn.Core
             var innerSql = $"SELECT ROW_NUMBER() OVER(ORDER BY {strOrderBy}) AS RowNo, * FROM {attr.Name} WHERE {condition.Condition}";
 
             string sql =
-                $"SELECT {attr.Key} AS ID, * FROM ({innerSql}) AS t WHERE t.RowNo BETWEEN {pager.CurrentPage * pager.PagingSize + 1} AND {(pager.CurrentPage + 1) * pager.PagingSize}";
+                $"SELECT {BuildSelectSqlColumn(attr)} FROM ({innerSql}) AS t WHERE t.RowNo BETWEEN {pager.CurrentPage * pager.PagingSize + 1} AND {(pager.CurrentPage + 1) * pager.PagingSize}";
 
             var list = Connection.Query<T>(sql, condition.DapperArguments).ToList();
 
@@ -209,11 +209,11 @@ namespace Arsenalcn.Core
             return list;
         }
 
-        public void Insert<T>(T instance, SqlTransaction trans = null) where T : class, IEntity
+        public void Insert<T>(T instance, SqlTransaction trans = null) where T : class, IDao
         {
             var listCol = new List<string>();
             var listColPara = new List<string>();
-            var listPara = new List<SqlParameter>();
+            var sqlPara = new DynamicParameters(new { });
 
             foreach (var pi in instance.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
             {
@@ -226,42 +226,40 @@ namespace Arsenalcn.Core
                     listCol.Add(attrCol.Name);
                     listColPara.Add("@" + attrCol.Name);
 
-                    var para = new SqlParameter("@" + attrCol.Name, value ?? DBNull.Value);
-                    listPara.Add(para);
+                    sqlPara.Add(attrCol.Name, value ?? DBNull.Value);
                 }
             }
 
             var attr = GetTableAttr<T>();
 
-            if (listCol.Count > 0 && listColPara.Count > 0 && listPara.Count > 0)
+            if (listCol.Count > 0 && listColPara.Count > 0 && sqlPara.ParameterNames.Any())
             {
-                // skip the property of the self-increase main-key
-                var primary = instance.GetType().GetProperty("ID");
-
-                if (primary.PropertyType != typeof(int))
+                if (instance is IEntity)
                 {
-                    listCol.Add(attr.Key);
-                    listColPara.Add("@key");
-                    listPara.Add(new SqlParameter("@key", primary.GetValue(instance, null)));
+                    // skip the property of the self-increase main-key
+                    var primary = instance.GetType().GetProperty("ID");
+
+                    if (primary.PropertyType != typeof(int))
+                    {
+                        listCol.Add(attr.Key);
+                        listColPara.Add("@key");
+                        sqlPara.Add("key", primary.GetValue(instance, null));
+                    }
                 }
 
-                string sql =
-                    $"INSERT INTO {attr.Name} ({string.Join(", ", listCol.ToArray())}) VALUES ({string.Join(", ", listColPara.ToArray())})";
+                string sql = $@"INSERT INTO {attr.Name} ({string.Join(", ", listCol.ToArray())}) 
+                                     VALUES ({string.Join(", ", listColPara.ToArray())})";
 
-                Connection.Execute(sql, DapperHelper.BuildDapperParameters(listPara.ToArray()), trans);
+                Connection.Execute(sql, sqlPara, trans);
             }
-            else
-            {
-                throw new Exception("Unable to find any valid DB columns");
-            }
-
         }
 
         public void Insert<T>(T instance, out object key, SqlTransaction trans = null) where T : class, IEntity
         {
             var listCol = new List<string>();
             var listColPara = new List<string>();
-            var listPara = new List<SqlParameter>();
+            var sqlPara = new DynamicParameters(new { });
+            key = null;
 
             foreach (var pi in instance.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
             {
@@ -274,14 +272,13 @@ namespace Arsenalcn.Core
                     listCol.Add(attrCol.Name);
                     listColPara.Add("@" + attrCol.Name);
 
-                    var para = new SqlParameter("@" + attrCol.Name, value ?? DBNull.Value);
-                    listPara.Add(para);
+                    sqlPara.Add(attrCol.Name, value ?? DBNull.Value);
                 }
             }
 
             var attr = GetTableAttr<T>();
 
-            if (listCol.Count > 0 && listColPara.Count > 0 && listPara.Count > 0)
+            if (listCol.Count > 0 && listColPara.Count > 0 && sqlPara.ParameterNames.Any())
             {
                 // skip the property of the self-increase main-key
                 var primary = instance.GetType().GetProperty("ID");
@@ -294,32 +291,26 @@ namespace Arsenalcn.Core
                     listColPara.Add("@key");
 
                     key = primary.GetValue(instance, null);
-                    listPara.Add(new SqlParameter("@key", key));
+                    sqlPara.Add("key", key);
 
-                    sql =
-                        $"INSERT INTO {attr.Name} ({string.Join(", ", listCol.ToArray())}) VALUES ({string.Join(", ", listColPara.ToArray())})";
+                    sql = $"INSERT INTO {attr.Name} ({string.Join(", ", listCol.ToArray())}) VALUES ({string.Join(", ", listColPara.ToArray())})";
 
-                    Connection.Execute(sql, DapperHelper.BuildDapperParameters(listPara.ToArray()), trans);
+                    Connection.Execute(sql, sqlPara, trans);
                 }
                 else
                 {
                     sql =
                         $"INSERT INTO {attr.Name} ({string.Join(", ", listCol.ToArray())}) VALUES ({string.Join(", ", listColPara.ToArray())}); SELECT SCOPE_IDENTITY();";
 
-                    key = Connection.ExecuteScalar(sql, DapperHelper.BuildDapperParameters(listPara.ToArray()), trans);
+                    key = Connection.ExecuteScalar(sql, sqlPara, trans);
                 }
-            }
-            else
-            {
-                key = null;
             }
         }
 
         public void Update<T>(T instance, SqlTransaction trans = null) where T : class, IEntity
         {
-
             var listCol = new List<string>();
-            var listPara = new List<SqlParameter>();
+            var sqlPara = new DynamicParameters(new { });
 
             foreach (var pi in instance.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
             {
@@ -329,29 +320,64 @@ namespace Arsenalcn.Core
                 {
                     var value = pi.GetValue(instance, null);
 
-                    listCol.Add(string.Format("{0} = @{0}", attrCol.Name));
-
-                    var para = new SqlParameter("@" + attrCol.Name, value ?? DBNull.Value);
-                    listPara.Add(para);
+                    listCol.Add($"{attrCol.Name} = @{attrCol.Name}");
+                    sqlPara.Add(attrCol.Name, value ?? DBNull.Value);
                 }
             }
 
             var attr = GetTableAttr<T>();
 
-            if (listCol.Count > 0 && listPara.Count > 0)
+            if (listCol.Count > 0 && sqlPara.ParameterNames.Any())
             {
-                string sql =
-                    $"UPDATE {attr.Name} SET {string.Join(", ", listCol.ToArray())} WHERE {attr.Key} = @key";
+                string sql = $"UPDATE {attr.Name} SET {string.Join(", ", listCol.ToArray())} WHERE {attr.Key} = @key";
 
-                var primary = instance.GetType().GetProperty("ID");
+                sqlPara.Add("key", instance.GetType().GetProperty("ID").GetValue(instance, null));
 
-                listPara.Add(new SqlParameter("@key", primary.GetValue(instance, null)));
-
-                Connection.Execute(sql, DapperHelper.BuildDapperParameters(listPara.ToArray()), trans);
+                Connection.Execute(sql, sqlPara, trans);
             }
-            else
+        }
+
+        public void Update<T>(T instance, Expression<Func<T, bool>> whereBy, SqlTransaction trans = null) where T : class, IDao
+        {
+            var listCol = new List<string>();
+
+            var sqlPara = new DynamicParameters(new { });
+
+            foreach (var pi in instance.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
             {
-                throw new Exception("Unable to find any valid DB columns");
+                var attrCol = GetColumnAttr(pi);
+
+                if (attrCol != null)
+                {
+                    var value = pi.GetValue(instance, null);
+
+                    listCol.Add($"{attrCol.Name} = @{attrCol.Name}");
+                    sqlPara.Add(attrCol.Name, value ?? DBNull.Value);
+                }
+            }
+
+            var attr = GetTableAttr<T>();
+
+            if (listCol.Count > 0 && sqlPara.ParameterNames.Any())
+            {
+                var sql = new StringBuilder();
+
+                sql.Append($"UPDATE {attr.Name} SET {string.Join(", ", listCol.ToArray())}");
+
+                var condition = new ConditionBuilder();
+                condition.Build(whereBy.Body);
+
+                if (!string.IsNullOrEmpty(condition.Condition))
+                {
+                    sql.Append(" WHERE " + condition.Condition);
+                }
+
+                foreach (var p in condition.DapperArguments)
+                {
+                    sqlPara.Add(p.Key, p.Value);
+                }
+
+                Connection.Execute(sql.ToString(), sqlPara, trans);
             }
         }
 
@@ -362,6 +388,18 @@ namespace Arsenalcn.Core
             if (Any<T>(key))
             {
                 Update(instance, trans);
+            }
+            else
+            {
+                Insert((IDao)instance, trans);
+            }
+        }
+
+        public void Save<T>(T instance, Expression<Func<T, bool>> whereBy, SqlTransaction trans = null) where T : class, IDao
+        {
+            if (Any(whereBy))
+            {
+                Update(instance, whereBy, trans);
             }
             else
             {
@@ -383,6 +421,24 @@ namespace Arsenalcn.Core
             var key = instance.GetType().GetProperty("ID").GetValue(instance, null);
 
             Delete<T>(key, trans);
+        }
+
+        public void Delete<T>(Expression<Func<T, bool>> whereBy, SqlTransaction trans = null) where T : class, IDao
+        {
+            var attr = GetTableAttr<T>();
+
+            var sql = new StringBuilder();
+            sql.Append($"DELETE {attr.Name}");
+
+            var condition = new ConditionBuilder();
+            condition.Build(whereBy.Body);
+
+            if (!string.IsNullOrEmpty(condition.Condition))
+            {
+                sql.Append(" WHERE " + condition.Condition);
+            }
+
+            Connection.Execute(sql.ToString(), condition.DapperArguments);
         }
 
         public static DbSchema GetTableAttr<T>() where T : class
@@ -421,6 +477,11 @@ namespace Arsenalcn.Core
             }
 
             return GetColumnAttr<T>(name);
+        }
+
+        private string BuildSelectSqlColumn(DbSchema attr)
+        {
+            return attr.Key != "ID" ? $" {attr.Key} AS ID, * " : " * ";
         }
     }
 }

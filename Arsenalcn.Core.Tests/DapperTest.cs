@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Cryptography.X509Certificates;
 using Arsenal.Service;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -43,9 +44,13 @@ namespace Arsenalcn.Core.Tests
         {
             IRepository repo = new Repository();
 
-            var list = repo.All<League>();
+            var list1 = repo.All<League>();
 
-            Assert.IsTrue(list.Count > 0);
+            Assert.IsTrue(list1.Count > 0);
+
+            var list2 = repo.All<Config>();
+
+            Assert.IsTrue(list2.Count > 0);
         }
 
         [TestMethod]
@@ -53,10 +58,15 @@ namespace Arsenalcn.Core.Tests
         {
             IRepository repo = new Repository();
 
-            var list = repo.Query<League>(x => x.LeagueName == "");
+            var list1 = repo.Query<League>(x => x.LeagueName == "");
 
-            Assert.IsNotNull(list);
-            Assert.IsTrue(list.Count == 0);
+            Assert.IsNotNull(list1);
+            Assert.IsTrue(list1.Count == 0);
+
+            var list2 = repo.Query<Config>(x => x.ConfigSystem.ToString() == ConfigSystem.Arsenal.ToString());
+
+            Assert.IsNotNull(list2);
+            Assert.IsTrue(list2.Count > 0);
         }
     }
 }

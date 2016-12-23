@@ -10,12 +10,12 @@ namespace Arsenal.Service.Club
     [DbSchema("AcnClub_LogSignIn", Sort = "SignInTime DESC")]
     public class LogSignIn : Entity<int>
     {
-        public static void CreateMap()
-        {
-            var map = Mapper.CreateMap<IDataReader, LogSignIn>();
+        //public static void CreateMap()
+        //{
+        //    var map = Mapper.CreateMap<IDataReader, LogSignIn>();
 
-            map.ForMember(d => d.Bonus, opt => opt.MapFrom(s => s.GetValue("Bonus")));
-        }
+        //    map.ForMember(d => d.Bonus, opt => opt.MapFrom(s => s.GetValue("Bonus")));
+        //}
 
         public double DoBonus(Guid userGuid, string keyword, SqlTransaction trans = null)
         {

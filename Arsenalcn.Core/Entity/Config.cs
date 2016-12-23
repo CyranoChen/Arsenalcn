@@ -1,106 +1,89 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.SqlClient;
-using System.Diagnostics.Contracts;
-using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
-using Dapper;
-using DataReaderMapper;
-using DataReaderMapper.Mappers;
 
 namespace Arsenalcn.Core
 {
-    [DbSchema("Arsenalcn_Config", Key = "", Sort = "ConfigSystem, ConfigKey")]
+    [DbSchema("Arsenalcn_Config", Sort = "ConfigSystem, ConfigKey")]
     public class Config : Dao
     {
-        private static void CreateMap()
-        {
-            var map = Mapper.CreateMap<IDataReader, Config>();
+        //private static void CreateMap()
+        //{
+        //    var map = Mapper.CreateMap<IDataReader, Config>();
 
-            map.ForMember(d => d.ConfigSystem, opt => opt.MapFrom(s =>
-                (ConfigSystem)Enum.Parse(typeof(ConfigSystem), s.GetValue("ConfigSystem").ToString())));
-        }
+        //    map.ForMember(d => d.ConfigSystem, opt => opt.MapFrom(s =>
+        //        (ConfigSystem)Enum.Parse(typeof(ConfigSystem), s.GetValue("ConfigSystem").ToString())));
+        //}
 
-        private static readonly IDbConnection _conn = DapperHelper.GetOpenConnection();
+        //private static readonly IDbConnection _conn = DapperHelper.GetOpenConnection();
 
-        public bool Any()
-        {
-            var sql =
-                $"SELECT COUNT(*) FROM {Repository.GetTableAttr<Config>().Name} WHERE ConfigSystem = @configSystem AND ConfigKey = @configKey";
+        //public bool Any()
+        //{
+        //    var sql =
+        //        $"SELECT COUNT(*) FROM {Repository.GetTableAttr<Config>().Name} WHERE ConfigSystem = @configSystem AND ConfigKey = @configKey";
 
-            SqlParameter[] para =
-            {
-                new SqlParameter("@configSystem", ConfigSystem.ToString()),
-                new SqlParameter("@configKey", ConfigKey)
-            };
+        //    SqlParameter[] para =
+        //    {
+        //        new SqlParameter("@configSystem", ConfigSystem.ToString()),
+        //        new SqlParameter("@configKey", ConfigKey)
+        //    };
 
-            var result = _conn.Query<int>(sql, DapperHelper.BuildDapperParameters(para)).ToList();
+        //    var result = _conn.Query<int>(sql, DapperHelper.BuildDapperParameters(para)).ToList();
 
-            return Convert.ToInt32(result[0]) > 0;
-        }
+        //    return Convert.ToInt32(result[0]) > 0;
+        //}
 
-        private static List<Config> All()
-        {
-            var attr = Repository.GetTableAttr<Config>();
+        //private static List<Config> All()
+        //{
+        //    var attr = Repository.GetTableAttr<Config>();
 
-            var sql = $"SELECT * FROM {attr.Name} ORDER BY {attr.Sort}";
+        //    var sql = $"SELECT * FROM {attr.Name} ORDER BY {attr.Sort}";
 
-            var res = _conn.ExecuteReader(sql);
+        //    var res = _conn.ExecuteReader(sql);
 
-            Mapper.Initialize(cfg =>
-            {
-                MapperRegistry.Mappers.Insert(0,
-                    new DataReaderMapper.DataReaderMapper { YieldReturnEnabled = false });
+        //    Mapper.Initialize(cfg =>
+        //    {
+        //        MapperRegistry.Mappers.Insert(0,
+        //            new DataReaderMapper.DataReaderMapper { YieldReturnEnabled = false });
 
-                CreateMap();
-            });
+        //        CreateMap();
+        //    });
 
-            return Mapper.Map<IDataReader, List<Config>>(res);
-        }
+        //    return Mapper.Map<IDataReader, List<Config>>(res);
+        //}
 
-        public static IEnumerable<Config> All(ConfigSystem cs)
-        {
-            return All().Where(x => x.ConfigSystem.Equals(cs));
-        }
+        //public static IEnumerable<Config> All(ConfigSystem cs)
+        //{
+        //    return All().Where(x => x.ConfigSystem.Equals(cs));
+        //}
 
-        public void Update(SqlTransaction trans = null)
-        {
-            Contract.Requires(Any());
+        //public void Update(SqlTransaction trans = null)
+        //{
+        //    Contract.Requires(Any());
 
-            var sql =
-                $"UPDATE {Repository.GetTableAttr<Config>().Name} SET ConfigValue = @configValue WHERE ConfigSystem = @configSystem AND ConfigKey = @configKey";
+        //    var sql =
+        //        $"UPDATE {Repository.GetTableAttr<Config>().Name} SET ConfigValue = @configValue WHERE ConfigSystem = @configSystem AND ConfigKey = @configKey";
 
-            SqlParameter[] para =
-            {
-                new SqlParameter("@configSystem", ConfigSystem.ToString()),
-                new SqlParameter("@configKey", ConfigKey),
-                new SqlParameter("@configValue", ConfigValue)
-            };
+        //    SqlParameter[] para =
+        //    {
+        //        new SqlParameter("@configSystem", ConfigSystem.ToString()),
+        //        new SqlParameter("@configKey", ConfigKey),
+        //        new SqlParameter("@configValue", ConfigValue)
+        //    };
 
-            _conn.Execute(sql, para, trans);
-        }
+        //    _conn.Execute(sql, para, trans);
+        //}
 
         public void Save(SqlTransaction trans = null)
         {
-            if (Any())
-            {
-                Update();
-            }
-            else
-            {
-                var sql =
-                    $"INSERT INTO {Repository.GetTableAttr<Config>().Name} (ConfigValue, ConfigSystem, ConfigKey) VALUES (@configValue, @configSystem, @configKey)";
+            IRepository repo = new Repository();
 
-                SqlParameter[] para =
-                {
-                    new SqlParameter("@configSystem", ConfigSystem.ToString()),
-                    new SqlParameter("@configKey", ConfigKey),
-                    new SqlParameter("@configValue", ConfigValue)
-                };
+            Expression<Func<Config, bool>> where =
+                x => x.ConfigSystem.ToString() == ConfigSystem.ToString() && x.ConfigKey == ConfigKey;
 
-                _conn.Execute(sql, para, trans);
-            }
+            repo.Save(this, where, trans);
         }
 
         public static void UpdateAssemblyInfo(Assembly assembly, ConfigSystem configSystem)
@@ -119,13 +102,14 @@ namespace Arsenalcn.Core
                 //[assembly: AssemblyFileVersion("1.8.2")]
 
                 var c = new Config();
-                c.ConfigSystem = configSystem;
 
-                //AssemblyTitle
+                c.ConfigSystem = configSystem;
                 c.ConfigKey = "AssemblyTitle";
                 c.ConfigValue =
-                    ((AssemblyTitleAttribute)Attribute.GetCustomAttribute(assembly, typeof(AssemblyTitleAttribute)))?
-                        .Title;
+                    ((AssemblyTitleAttribute)
+                        Attribute.GetCustomAttribute(assembly, typeof(AssemblyTitleAttribute)))?.Title;
+
+                //AssemblyTitle
 
                 c.Save();
 
@@ -220,7 +204,9 @@ namespace Arsenalcn.Core
 
             private static void InitCache()
             {
-                ConfigList = All();
+                IRepository repo = new Repository();
+
+                ConfigList = repo.All<Config>();
             }
 
             public static Config Load(ConfigSystem cs, string key)

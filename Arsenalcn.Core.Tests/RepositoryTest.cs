@@ -564,17 +564,6 @@ namespace Arsenalcn.Core.Tests
 
         [Ignore]
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void Test_Delete_ArgumentNullException()
-        {
-            IRepository repo = new Repository();
-
-            repo.Delete<League>(null);
-            repo.Delete<League>(null);
-        }
-
-        [Ignore]
-        [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
         public void Test_Delete_ArgumentException()
         {

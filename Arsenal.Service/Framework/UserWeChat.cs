@@ -8,13 +8,6 @@ namespace Arsenal.Service
     [DbSchema("Arsenalcn_UserWeChat", Key = "UserGuid", Sort = "LastAuthorizeDate DESC")]
     public class UserWeChat : Entity<Guid>
     {
-        public static void CreateMap()
-        {
-            var map = Mapper.CreateMap<IDataReader, UserWeChat>();
-
-            map.ForMember(d => d.ID, opt => opt.MapFrom(s => (Guid)s.GetValue("UserGuid")));
-        }
-
         #region Members and Properties
 
         [DbColumn("UserName")]

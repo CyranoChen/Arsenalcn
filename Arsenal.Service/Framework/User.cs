@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Data;
 using System.Data.SqlClient;
 using Arsenalcn.Core;
-using DataReaderMapper;
 using Newtonsoft.Json.Linq;
 
 namespace Arsenal.Service
@@ -10,13 +8,6 @@ namespace Arsenal.Service
     [DbSchema("Arsenalcn_User", Key = "UserGuid", Sort = "LastActivityDate DESC")]
     public class User : Entity<Guid>
     {
-        public static void CreateMap()
-        {
-            var map = Mapper.CreateMap<IDataReader, User>();
-
-            map.ForMember(d => d.ID, opt => opt.MapFrom(s => (Guid)s.GetValue("UserGuid")));
-        }
-
         public void SyncUserByMember()
         {
             if (AcnID != null)

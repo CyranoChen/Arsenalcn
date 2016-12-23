@@ -9,6 +9,11 @@ namespace Arsenal.Service
     [DbSchema("Arsenal_Video", Key = "VideoGuid", Sort = "GoalYear DESC, GoalRank DESC, TeamworkRank DESC")]
     public class Video : Entity<Guid>
     {
+        public override void Inital()
+        {
+            VideoFilePath = $"{ConfigGlobal_Arsenal.ArsenalVideoUrl}{ID}.{VideoType}";
+        }
+
         public static void CreateMap()
         {
             var map = Mapper.CreateMap<IDataReader, Video>();
@@ -45,7 +50,7 @@ namespace Arsenal.Service
                 VideoList = repo.All<Video>();
 
                 VideoList_Legend = VideoList.FindAll(x =>
-                    x.GoalPlayerGuid.HasValue ? Player.Cache.Load(x.GoalPlayerGuid.Value).IsLegend : false);
+                    x.GoalPlayerGuid.HasValue && Player.Cache.Load(x.GoalPlayerGuid.Value).IsLegend);
 
                 ColList_GoalYear = repo.All<Video>().FindAll(x =>
                     !string.IsNullOrEmpty(x.GoalYear)).DistinctOrderBy(x => x.GoalYear);

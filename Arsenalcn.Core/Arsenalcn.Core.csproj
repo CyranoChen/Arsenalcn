@@ -65,7 +65,7 @@
     <Compile Include="Entity\Entity.cs" />
     <Compile Include="Dapper\IRepository.cs" />
     <Compile Include="Entity\Pager.cs" />
-    <Compile Include="Entity\SearchModel.cs" />
+    <Compile Include="Entity\Searchable.cs" />
     <Compile Include="Entity\Dao.cs" />
     <Compile Include="Extension\AutoMapperHelper.cs" />
     <Compile Include="Extension\CollectionExtensions.cs" />

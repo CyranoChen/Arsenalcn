@@ -7,8 +7,8 @@
             GetPageSize();
         }
 
-        public string SearchKeyword { get; set; }
-        public string SortByField { get; set; }
+        public object QueryableFields { get; set; }
+        public object SortFields { get; set; }
 
         public short PagingSize { get; set; }
         public int CurrentPage { get; set; }

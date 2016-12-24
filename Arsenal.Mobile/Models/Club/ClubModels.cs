@@ -8,7 +8,7 @@ namespace Arsenal.Mobile.Models.Club
 
     }
 
-    public class MyLogSignInDto : SearchModel<LogSignInDto>
+    public class MyLogSignInDto : Searchable<LogSignInDto>
     {
     }
 

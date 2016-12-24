@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Arsenalcn.Core
 {
-    public abstract class SearchModel<T>
+    public abstract class Searchable<T> where T : class, new()
     {
         public Criteria Criteria { get; set; }
 
@@ -12,18 +12,19 @@ namespace Arsenalcn.Core
 
         public virtual void Search(IEnumerable<T> data)
         {
-            Contract.Requires(Criteria != null);
-
             Criteria.GetPageSize();
-            Criteria.SetTotalCount(data.Count());
+
+            var list = data as IList<T> ?? data.ToList();
+
+            Criteria.SetTotalCount(list.Count);
 
             if (Criteria.TotalCount > Criteria.PagingSize && Criteria.MaxPage >= 0)
             {
-                Data = data.Page(Criteria.CurrentPage, Criteria.PagingSize);
+                Data = list.Page(Criteria.CurrentPage, Criteria.PagingSize);
             }
             else
             {
-                Data = data;
+                Data = list;
             }
         }
     }

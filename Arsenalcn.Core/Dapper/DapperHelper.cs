@@ -22,7 +22,7 @@ namespace Arsenalcn.Core
 
         static DapperHelper()
         {
-            ConnectionString = ConfigurationManager.ConnectionStrings["Arsenalcn.ConnectString"].ConnectionString;
+            ConnectionString = ConfigurationManager.ConnectionStrings["Arsenalcn.ConnectionString"].ConnectionString;
 
             _commandTimeout = 90;
 
@@ -60,7 +60,7 @@ namespace Arsenalcn.Core
 
             foreach (var p in para)
             {
-                args.Add(p.ParameterName, p.Value);
+                args.Add(p.ParameterName, p.Value != DBNull.Value ? p.Value : null);
             }
 
             return args;

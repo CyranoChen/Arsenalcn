@@ -23,7 +23,6 @@ namespace Arsenalcn.Core
             return list.Count;
         }
 
-
         public static int Update<T>(this IEnumerable<T> source, SqlTransaction trans = null) where T : class, IEntity
         {
             Contract.Requires(source != null);

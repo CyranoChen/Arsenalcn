@@ -4,13 +4,11 @@ using System.Linq;
 namespace Arsenalcn.Core
 {
     [DbSchema("Arsenalcn_Dictionary", Sort = "ID")]
-    public class Dictionary : Entity<int>
+    public class DictionaryCategory : Entity<int>
     {
-        //public Dictionary(DataRow dr) : base(dr) { }
-
         public static class Cache
         {
-            public static List<Dictionary> DictionaryList;
+            public static List<DictionaryCategory> DictionaryList;
 
             static Cache()
             {
@@ -26,10 +24,10 @@ namespace Arsenalcn.Core
             {
                 IRepository repo = new Repository();
 
-                DictionaryList = repo.All<Dictionary>().ToList();
+                DictionaryList = repo.All<DictionaryCategory>().ToList();
             }
 
-            public static Dictionary Load(int id)
+            public static DictionaryCategory Load(int id)
             {
                 return DictionaryList.Find(x => x.ID.Equals(id));
             }

@@ -38,15 +38,15 @@ namespace Arsenal.Mobile.Models.Casino
         public IEnumerable<CouponDto> Coupons { get; set; }
     }
 
-    public class MyBetDto : SearchModel<BetDto>
+    public class MyBetDto : Searchable<BetDto>
     {
     }
 
-    public class MyBonusDto : SearchModel<BonusDto>
+    public class MyBonusDto : Searchable<BonusDto>
     {
     }
 
-    public class ResultDto : SearchModel<MatchDto>
+    public class ResultDto : Searchable<MatchDto>
     {
     }
 

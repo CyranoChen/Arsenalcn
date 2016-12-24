@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq.Expressions;
 using System.Reflection;
 
 namespace Arsenalcn.Core
@@ -80,10 +79,7 @@ namespace Arsenalcn.Core
         {
             IRepository repo = new Repository();
 
-            Expression<Func<Config, bool>> where =
-                x => x.ConfigSystem.ToString() == ConfigSystem.ToString() && x.ConfigKey == ConfigKey;
-
-            repo.Save(this, where, trans);
+            repo.Save(this, x => x.ConfigSystem.ToString() == ConfigSystem.ToString() && x.ConfigKey == ConfigKey, trans);
         }
 
         public static void UpdateAssemblyInfo(Assembly assembly, ConfigSystem configSystem)

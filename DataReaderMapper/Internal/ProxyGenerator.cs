@@ -34,7 +34,7 @@ namespace AutoMapper.Internal
 
         private static readonly ModuleBuilder proxyModule = CreateProxyModule();
 
-        private static readonly Dictionary<Type, Type> proxyTypes = new Dictionary<Type, Type>();
+        private static readonly Dictionary<Type, Type> proxyTypes = new DictionaryCategory<Type, Type>();
 
         private static ModuleBuilder CreateProxyModule()
         {
@@ -121,7 +121,7 @@ namespace AutoMapper.Internal
                     propertiesToImplement.Add(property);
                 }
             }
-            Dictionary<string, PropertyEmitter> fieldBuilders = new Dictionary<string, PropertyEmitter>();
+            Dictionary<string, PropertyEmitter> fieldBuilders = new DictionaryCategory<string, PropertyEmitter>();
             foreach (PropertyInfo property in propertiesToImplement)
             {
                 PropertyEmitter propertyEmitter;

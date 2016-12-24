@@ -209,7 +209,7 @@ namespace Arsenalcn.Core
             return list;
         }
 
-        public void Insert<T>(T instance, SqlTransaction trans = null) where T : class, IDao
+        public int Insert<T>(T instance, SqlTransaction trans = null) where T : class, IDao
         {
             var listCol = new List<string>();
             var listColPara = new List<string>();
@@ -226,7 +226,7 @@ namespace Arsenalcn.Core
                     listCol.Add(attrCol.Name);
                     listColPara.Add("@" + attrCol.Name);
 
-                    sqlPara.Add(attrCol.Name, value ?? DBNull.Value);
+                    sqlPara.Add(attrCol.Name, pi.PropertyType == typeof(string) ? string.Empty : value);
                 }
             }
 
@@ -250,11 +250,13 @@ namespace Arsenalcn.Core
                 string sql = $@"INSERT INTO {attr.Name} ({string.Join(", ", listCol.ToArray())}) 
                                      VALUES ({string.Join(", ", listColPara.ToArray())})";
 
-                Connection.Execute(sql, sqlPara, trans);
+                return Connection.Execute(sql, sqlPara, trans);
             }
+
+            return -1;
         }
 
-        public void Insert<T>(T instance, out object key, SqlTransaction trans = null) where T : class, IEntity
+        public int Insert<T>(T instance, out object key, SqlTransaction trans = null) where T : class, IEntity
         {
             var listCol = new List<string>();
             var listColPara = new List<string>();
@@ -272,7 +274,7 @@ namespace Arsenalcn.Core
                     listCol.Add(attrCol.Name);
                     listColPara.Add("@" + attrCol.Name);
 
-                    sqlPara.Add(attrCol.Name, value ?? DBNull.Value);
+                    sqlPara.Add(attrCol.Name, pi.PropertyType == typeof(string) ? string.Empty : value);
                 }
             }
 
@@ -285,7 +287,15 @@ namespace Arsenalcn.Core
 
                 string sql;
 
-                if (primary.PropertyType != typeof(int))
+                if (primary.PropertyType == typeof(int))
+                {
+                    sql = $"INSERT INTO {attr.Name} ({string.Join(", ", listCol.ToArray())}) VALUES ({string.Join(", ", listColPara.ToArray())}); SELECT SCOPE_IDENTITY();";
+
+                    key = Connection.ExecuteScalar(sql, sqlPara, trans);
+
+                    return 1;
+                }
+                else
                 {
                     listCol.Add(attr.Key);
                     listColPara.Add("@key");
@@ -295,19 +305,14 @@ namespace Arsenalcn.Core
 
                     sql = $"INSERT INTO {attr.Name} ({string.Join(", ", listCol.ToArray())}) VALUES ({string.Join(", ", listColPara.ToArray())})";
 
-                    Connection.Execute(sql, sqlPara, trans);
-                }
-                else
-                {
-                    sql =
-                        $"INSERT INTO {attr.Name} ({string.Join(", ", listCol.ToArray())}) VALUES ({string.Join(", ", listColPara.ToArray())}); SELECT SCOPE_IDENTITY();";
-
-                    key = Connection.ExecuteScalar(sql, sqlPara, trans);
+                    return Connection.Execute(sql, sqlPara, trans);
                 }
             }
+
+            return -1;
         }
 
-        public void Update<T>(T instance, SqlTransaction trans = null) where T : class, IEntity
+        public int Update<T>(T instance, SqlTransaction trans = null) where T : class, IEntity
         {
             var listCol = new List<string>();
             var sqlPara = new DynamicParameters(new { });
@@ -321,7 +326,7 @@ namespace Arsenalcn.Core
                     var value = pi.GetValue(instance, null);
 
                     listCol.Add($"{attrCol.Name} = @{attrCol.Name}");
-                    sqlPara.Add(attrCol.Name, value ?? DBNull.Value);
+                    sqlPara.Add(attrCol.Name, pi.PropertyType == typeof(string) ? string.Empty : value);
                 }
             }
 
@@ -333,11 +338,13 @@ namespace Arsenalcn.Core
 
                 sqlPara.Add("key", instance.GetType().GetProperty("ID").GetValue(instance, null));
 
-                Connection.Execute(sql, sqlPara, trans);
+                return Connection.Execute(sql, sqlPara, trans);
             }
+
+            return -1;
         }
 
-        public void Update<T>(T instance, Expression<Func<T, bool>> whereBy, SqlTransaction trans = null) where T : class, IDao
+        public int Update<T>(T instance, Expression<Func<T, bool>> whereBy, SqlTransaction trans = null) where T : class, IDao
         {
             var listCol = new List<string>();
 
@@ -352,7 +359,7 @@ namespace Arsenalcn.Core
                     var value = pi.GetValue(instance, null);
 
                     listCol.Add($"{attrCol.Name} = @{attrCol.Name}");
-                    sqlPara.Add(attrCol.Name, value ?? DBNull.Value);
+                    sqlPara.Add(attrCol.Name, pi.PropertyType == typeof(string) ? string.Empty : value);
                 }
             }
 
@@ -377,53 +384,55 @@ namespace Arsenalcn.Core
                     sqlPara.Add(p.Key, p.Value);
                 }
 
-                Connection.Execute(sql.ToString(), sqlPara, trans);
+                return Connection.Execute(sql.ToString(), sqlPara, trans);
             }
+
+            return -1;
         }
 
-        public void Save<T>(T instance, SqlTransaction trans = null) where T : class, IEntity
+        public int Save<T>(T instance, SqlTransaction trans = null) where T : class, IEntity
         {
             var key = instance.GetType().GetProperty("ID").GetValue(instance, null);
 
             if (Any<T>(key))
             {
-                Update(instance, trans);
+                return Update(instance, trans);
             }
             else
             {
-                Insert((IDao)instance, trans);
+                return Insert((IDao)instance, trans);
             }
         }
 
-        public void Save<T>(T instance, Expression<Func<T, bool>> whereBy, SqlTransaction trans = null) where T : class, IDao
+        public int Save<T>(T instance, Expression<Func<T, bool>> whereBy, SqlTransaction trans = null) where T : class, IDao
         {
             if (Any(whereBy))
             {
-                Update(instance, whereBy, trans);
+                return Update(instance, whereBy, trans);
             }
             else
             {
-                Insert(instance, trans);
+                return Insert(instance, trans);
             }
         }
 
-        public void Delete<T>(object key, SqlTransaction trans = null) where T : class, IEntity
+        public int Delete<T>(object key, SqlTransaction trans = null) where T : class, IEntity
         {
             var attr = GetTableAttr<T>();
 
             string sql = $"DELETE {attr.Name} WHERE {attr.Key} = @key";
 
-            Connection.Execute(sql, new { key }, trans);
+            return Connection.Execute(sql, new { key }, trans);
         }
 
-        public void Delete<T>(T instance, SqlTransaction trans = null) where T : class, IEntity
+        public int Delete<T>(T instance, SqlTransaction trans = null) where T : class, IEntity
         {
             var key = instance.GetType().GetProperty("ID").GetValue(instance, null);
 
-            Delete<T>(key, trans);
+            return Delete<T>(key, trans);
         }
 
-        public void Delete<T>(Expression<Func<T, bool>> whereBy, SqlTransaction trans = null) where T : class, IDao
+        public int Delete<T>(Expression<Func<T, bool>> whereBy, SqlTransaction trans = null) where T : class, IDao
         {
             var attr = GetTableAttr<T>();
 
@@ -438,7 +447,7 @@ namespace Arsenalcn.Core
                 sql.Append(" WHERE " + condition.Condition);
             }
 
-            Connection.Execute(sql.ToString(), condition.DapperArguments);
+            return Connection.Execute(sql.ToString(), condition.DapperArguments);
         }
 
         public static DbSchema GetTableAttr<T>() where T : class

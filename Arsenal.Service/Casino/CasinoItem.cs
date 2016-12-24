@@ -10,7 +10,7 @@ namespace Arsenal.Service.Casino
         public void Statistics()
         {
             var sql =
-                $@"SELECT ISNULL(SUM(Bet), 0) - ISNULL(SUM(Earning), 0) AS TotalEarning 
+                $@"SELECT ISNULL(SUM(BetAmount), 0) - ISNULL(SUM(Earning), 0) AS TotalEarning 
                    FROM {Repository.GetTableAttr<Bet>().Name} WHERE CasinoItemGuid = @key";
 
             var dapper = new DapperHelper();

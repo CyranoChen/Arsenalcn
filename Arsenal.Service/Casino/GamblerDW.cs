@@ -258,13 +258,13 @@ namespace Arsenal.Service.Casino
             {
                 var strOrder = rankType.Equals(RankType.Winner) ? "DESC" : string.Empty;
 
-                sql = $@"SELECT TOP 1 UserID, UserName, SUM(ISNULL(Earning, 0)) AS Earning, SUM(ISNULL(Bet, 0)) AS TotalBet, SUM(ISNULL(Earning, 0) - ISNULL(Bet, 0)) AS Profit 
-                                  FROM {Repository.GetTableAttr<Bet>().Name} WHERE (Earning IS NOT NULL) AND (Bet IS NOT NULL) AND (BetTime >= @monthStart) AND (BetTime < @monthEnd)
+                sql = $@"SELECT TOP 1 UserID, UserName, SUM(ISNULL(Earning, 0)) AS Earning, SUM(ISNULL(BetAmount, 0)) AS TotalBet, SUM(ISNULL(Earning, 0) - ISNULL(BetAmount, 0)) AS Profit 
+                                  FROM {Repository.GetTableAttr<Bet>().Name} WHERE (Earning IS NOT NULL) AND (BetAmount IS NOT NULL) AND (BetTime >= @monthStart) AND (BetTime < @monthEnd)
                                   GROUP BY UserID, UserName ORDER BY Profit {strOrder}, TotalBet DESC";
             }
             else if (rankType == RankType.RP)
             {
-                sql = $@"SELECT TOP 1 UserID, UserName, COUNT(EarningDesc) AS RPBonus, SUM(ISNULL(Earning, 0)) AS Earning, SUM(ISNULL(Bet, 0)) AS TotalBet 
+                sql = $@"SELECT TOP 1 UserID, UserName, COUNT(EarningDesc) AS RPBonus, SUM(ISNULL(Earning, 0)) AS Earning, SUM(ISNULL(BetAmount, 0)) AS TotalBet 
                                   FROM {Repository.GetTableAttr<Bet>().Name} WHERE (Earning = 0) AND (EarningDesc = 'RP+1') AND (IsWin = 1) AND (BetTime >= @monthStart) AND (BetTime < @monthEnd)
                                   GROUP BY UserID, UserName ORDER BY RPBonus DESC";
             }

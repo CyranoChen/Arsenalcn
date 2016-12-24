@@ -21,17 +21,17 @@ namespace Arsenalcn.Core
         List<T> Query<T>(Expression<Func<T, bool>> whereBy) where T : class, IDao, new();
         List<T> Query<T>(IPager pager, Expression<Func<T, bool>> whereBy, string orderBy = null) where T : class, IDao, new();
 
-        void Insert<T>(T instance, SqlTransaction trans = null) where T : class, IDao;
-        void Insert<T>(T instance, out object key, SqlTransaction trans = null) where T : class, IEntity;
+        int Insert<T>(T instance, SqlTransaction trans = null) where T : class, IDao;
+        int Insert<T>(T instance, out object key, SqlTransaction trans = null) where T : class, IEntity;
 
-        void Update<T>(T instance, SqlTransaction trans = null) where T : class, IEntity;
-        void Update<T>(T instance, Expression<Func<T, bool>> whereBy, SqlTransaction trans = null) where T : class, IDao;
+        int Update<T>(T instance, SqlTransaction trans = null) where T : class, IEntity;
+        int Update<T>(T instance, Expression<Func<T, bool>> whereBy, SqlTransaction trans = null) where T : class, IDao;
 
-        void Save<T>(T instance, SqlTransaction trans = null) where T : class, IEntity;
-        void Save<T>(T instance, Expression<Func<T, bool>> whereBy, SqlTransaction trans = null) where T : class, IDao;
+        int Save<T>(T instance, SqlTransaction trans = null) where T : class, IEntity;
+        int Save<T>(T instance, Expression<Func<T, bool>> whereBy, SqlTransaction trans = null) where T : class, IDao;
 
-        void Delete<T>(object key, SqlTransaction trans = null) where T : class, IEntity;
-        void Delete<T>(T instance, SqlTransaction trans = null) where T : class, IEntity;
-        void Delete<T>(Expression<Func<T, bool>> whereBy, SqlTransaction trans = null) where T : class, IDao;
+        int Delete<T>(object key, SqlTransaction trans = null) where T : class, IEntity;
+        int Delete<T>(T instance, SqlTransaction trans = null) where T : class, IEntity;
+        int Delete<T>(Expression<Func<T, bool>> whereBy, SqlTransaction trans = null) where T : class, IDao;
     }
 }

@@ -9,7 +9,7 @@ namespace Arsenal.Service.Casino
         public void Statistic()
         {
             var sql =
-                $@"SELECT ISNULL(SUM(b.Bet), 0) - ISNULL(SUM(b.Earning), 0) AS BankerCash
+                $@"SELECT ISNULL(SUM(b.BetAmount), 0) - ISNULL(SUM(b.Earning), 0) AS BankerCash
                            FROM {Repository.GetTableAttr<CasinoItem>().Name} c 
                            INNER JOIN {Repository.GetTableAttr<Bet>().Name} b ON c.CasinoItemGuid = b.CasinoItemGuid
                            WHERE (c.BankerID = @key)";

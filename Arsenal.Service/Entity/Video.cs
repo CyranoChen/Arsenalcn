@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using Arsenalcn.Core;
-using DataReaderMapper;
 
 namespace Arsenal.Service
 {
@@ -14,17 +12,17 @@ namespace Arsenal.Service
             VideoFilePath = $"{ConfigGlobal_Arsenal.ArsenalVideoUrl}{ID}.{VideoType}";
         }
 
-        public static void CreateMap()
-        {
-            var map = Mapper.CreateMap<IDataReader, Video>();
+        //public static void CreateMap()
+        //{
+        //    var map = Mapper.CreateMap<IDataReader, Video>();
 
-            map.ForMember(d => d.ID, opt => opt.MapFrom(s => (Guid) s.GetValue("VideoGuid")));
-            //map.ForMember(d => d.VideoType, opt => opt.MapFrom(s =>
-            //    (VideoFileType)Enum.Parse(typeof(VideoFileType), s.GetValue("VideoType").ToString())));
+        //    map.ForMember(d => d.ID, opt => opt.MapFrom(s => (Guid) s.GetValue("VideoGuid")));
+        //    //map.ForMember(d => d.VideoType, opt => opt.MapFrom(s =>
+        //    //    (VideoFileType)Enum.Parse(typeof(VideoFileType), s.GetValue("VideoType").ToString())));
 
-            map.ForMember(d => d.VideoFilePath, opt => opt.MapFrom(s =>
-                $"{ConfigGlobal_Arsenal.ArsenalVideoUrl}{s.GetValue("VideoGuid").ToString()}.{((VideoFileType) Enum.Parse(typeof (VideoFileType), s.GetValue("VideoType").ToString())).ToString()}"));
-        }
+        //    map.ForMember(d => d.VideoFilePath, opt => opt.MapFrom(s =>
+        //        $"{ConfigGlobal_Arsenal.ArsenalVideoUrl}{s.GetValue("VideoGuid").ToString()}.{((VideoFileType) Enum.Parse(typeof (VideoFileType), s.GetValue("VideoType").ToString())).ToString()}"));
+        //}
 
         public static class Cache
         {

@@ -177,19 +177,13 @@ namespace Arsenal.Web
 
         private void BindTeamData(Guid guid)
         {
-            var rltList = RelationLeagueTeam.QueryByLeagueGuid(guid);
+            var rltList = _repo.Query<RelationLeagueTeam>(x => x.LeagueGuid == guid);
 
             var list = new List<Team>();
 
             if (rltList != null && rltList.Count > 0)
             {
-                foreach (var rlt in rltList)
-                {
-                    var t = Team.Cache.Load(rlt.TeamGuid);
-
-                    if (t != null)
-                        list.Add(t);
-                }
+                list.AddRange(rltList.Select(rlt => Team.Cache.Load(rlt.TeamGuid)).Where(t => t != null));
 
                 ddlTeam.DataSource = list.OrderBy(x => x.TeamEnglishName);
                 ddlTeam.DataTextField = "TeamDisplayName";

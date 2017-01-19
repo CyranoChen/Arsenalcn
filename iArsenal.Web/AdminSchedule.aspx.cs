@@ -2,6 +2,7 @@
 using System.Reflection;
 using System.Threading;
 using System.Web.UI.WebControls;
+using Arsenalcn.Core;
 using Arsenalcn.Core.Logger;
 using Arsenalcn.Core.Scheduler;
 
@@ -9,6 +10,8 @@ namespace iArsenal.Web
 {
     public partial class AdminSchedule : AdminPageBase
     {
+        private readonly IRepository _repo = new Repository();
+
         protected void Page_Load(object sender, EventArgs e)
         {
             ctrlAdminFieldToolBar.AdminUserName = Username;
@@ -21,7 +24,7 @@ namespace iArsenal.Web
 
         private void BindData()
         {
-            gvSchedule.DataSource = Schedule.All();
+            gvSchedule.DataSource = _repo.All<Schedule>();
             gvSchedule.DataBind();
         }
 
@@ -38,17 +41,21 @@ namespace iArsenal.Web
             {
                 if (gvSchedule.SelectedIndex != -1)
                 {
-                    var key = gvSchedule.DataKeys[gvSchedule.SelectedIndex].Value.ToString();
+                    var dataKey = gvSchedule.DataKeys[gvSchedule.SelectedIndex];
+                    if (dataKey != null)
+                    {
+                        var key = dataKey.Value.ToString();
 
-                    var s = Schedule.Single(key);
+                        var s = _repo.Single<Schedule>(x => x.ScheduleKey == key);
 
-                    var instance = s.IScheduleInstance;
-                    ManagedThreadPool.QueueUserWorkItem(instance.Execute);
+                        var instance = s.IScheduleInstance;
+                        ManagedThreadPool.QueueUserWorkItem(instance.Execute);
 
-                    s.LastCompletedTime = DateTime.Now;
-                    s.Update();
+                        s.LastCompletedTime = DateTime.Now;
+                        _repo.Update(s, x => x.ScheduleKey == s.ScheduleKey);
 
-                    log.Info($"ISchedule Manually: {s.ScheduleType}", logInfo);
+                        log.Info($"ISchedule Manually: {s.ScheduleType}", logInfo);
+                    }
 
                     //this.ClientScript.RegisterClientScriptBlock(typeof(string), "success", string.Format("任务：{0}执行成功');", s.ScheduleType), true);
                 }
@@ -58,10 +65,6 @@ namespace iArsenal.Web
                 log.Error(ex, logInfo);
 
                 //this.ClientScript.RegisterClientScriptBlock(typeof(string), "failed", string.Format("alert('{0}');", ex.Message.ToString()), true);
-            }
-            finally
-            {
-                //BindData();
             }
         }
 
@@ -85,20 +88,23 @@ namespace iArsenal.Web
             {
                 try
                 {
-                    var s = Schedule.Single(gvSchedule.DataKeys[gvSchedule.EditIndex].Value.ToString());
+                    var dataKey = gvSchedule.DataKeys[gvSchedule.EditIndex];
+                    if (dataKey != null)
+                    {
+                        var s = _repo.Single<Schedule>(x => x.ScheduleKey == dataKey.Value.ToString());
 
-                    s.ScheduleType = tbScheduleType.Text.Trim();
-                    s.DailyTime = Convert.ToInt32(tbDailyTime.Text.Trim());
-                    s.Minutes = Convert.ToInt32(tbMinutes.Text.Trim());
-                    s.IsSystem = Convert.ToBoolean(tbIsSystem.Text.Trim());
-                    s.IsActive = Convert.ToBoolean(tbIsActive.Text.Trim());
+                        s.ScheduleType = tbScheduleType.Text.Trim();
+                        s.DailyTime = Convert.ToInt32(tbDailyTime.Text.Trim());
+                        s.Minutes = Convert.ToInt32(tbMinutes.Text.Trim());
+                        s.IsSystem = Convert.ToBoolean(tbIsSystem.Text.Trim());
+                        s.IsActive = Convert.ToBoolean(tbIsActive.Text.Trim());
 
-                    s.Update();
+                        _repo.Update(s, x => x.ScheduleKey == s.ScheduleKey);
+                    }
                 }
                 catch (Exception ex)
                 {
-                    ClientScript.RegisterClientScriptBlock(typeof (string), "failed",
-                        $"alert('{ex.Message}');", true);
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message}');", true);
                 }
             }
 

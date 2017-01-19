@@ -27,10 +27,12 @@ namespace Arsenalcn.Core.Scheduler
 
             try
             {
+                IRepository repo = new Repository();
+
                 // The application must run schedule task by it's own assembly name
                 var list = !string.IsNullOrEmpty(assembly)
-                    ? Schedule.All().FindAll(x => x.IsActive && x.ScheduleType.Contains(assembly))
-                    : Schedule.All().FindAll(x => x.IsActive);
+                    ? repo.All<Schedule>().FindAll(x => x.IsActive && x.ScheduleType.Contains(assembly))
+                    : repo.All<Schedule>().FindAll(x => x.IsActive);
 
                 if (list.Count > 0)
                 {
@@ -46,7 +48,7 @@ namespace Arsenalcn.Core.Scheduler
                             ManagedThreadPool.QueueUserWorkItem(instance.Execute);
 
                             s.LastCompletedTime = DateTime.Now;
-                            s.Update();
+                            repo.Update(s, x => x.ScheduleKey == s.ScheduleKey);
 
                             log.Debug($"ISchedule: {s.ScheduleType}", logInfo);
                         }
@@ -186,7 +188,7 @@ namespace Arsenalcn.Core.Scheduler
                     {
                         try
                         {
-                            callback = (WaitingCallback) _waitingCallbacks.Dequeue();
+                            callback = (WaitingCallback)_waitingCallbacks.Dequeue();
                         }
                         catch
                         {
@@ -360,7 +362,7 @@ namespace Arsenalcn.Core.Scheduler
                     // Try to dispose of all remaining state
                     foreach (var obj in _waitingCallbacks)
                     {
-                        var callback = (WaitingCallback) obj;
+                        var callback = (WaitingCallback)obj;
                         var state = callback.State as IDisposable;
                         state?.Dispose();
                     }

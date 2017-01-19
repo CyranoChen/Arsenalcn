@@ -16,7 +16,7 @@ namespace Arsenalcn.Core
         private readonly ILog _log = new DaoLog();
 
         private IDbConnection _connection;
-        private IDbConnection Connection => _connection ?? (_connection = DapperHelper.GetOpenConnection());
+        private IDbConnection Connection => _connection ?? (_connection = DapperHelper.Connection);
 
         public Repository() { }
 

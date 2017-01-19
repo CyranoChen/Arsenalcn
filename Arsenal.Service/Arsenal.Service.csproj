@@ -93,10 +93,6 @@
       <Project>{c46f6af6-ebe1-4bac-bc17-0989fa6c9b8e}</Project>
       <Name>Arsenalcn.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DataReaderMapper\DataReaderMapper.csproj">
-      <Project>{94652166-9598-402c-8fde-6b2e077498a2}</Project>
-      <Name>DataReaderMapper</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

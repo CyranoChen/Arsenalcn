@@ -1,36 +1,33 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using Arsenalcn.Core.Logger;
 using Dapper;
 
 namespace Arsenalcn.Core
 {
     public class DapperHelper : IDisposable
     {
-        public static readonly string ConnectionString;
+        private static string _connectionString;
+        public static string ConnectionString => _connectionString ?? (_connectionString =
+            ConfigurationManager.ConnectionStrings["Arsenalcn.ConnectionString"].ConnectionString);
 
-        private IDbConnection _connection, _marsConnection;
+        public static readonly IDbConnection Connection = GetOpenConnection();
+        public static readonly IDbConnection MarsConnection = GetOpenConnection(true);
 
-        private IDbConnection Connection => _connection ?? (_connection = GetOpenConnection());
-        private IDbConnection MarsConnection => _marsConnection ?? (_marsConnection = GetOpenConnection(true));
-
-        private static bool _debugMode;
-        private static int _commandTimeout;
-        private static ILog _log = new DaoLog();
-
-        static DapperHelper()
-        {
-            ConnectionString = ConfigurationManager.ConnectionStrings["Arsenalcn.ConnectionString"].ConnectionString;
-
-            _commandTimeout = 90;
-
-            _debugMode = ConfigurationManager.AppSettings["DebugMode"] != null &&
+        private bool DebugMode => ConfigurationManager.AppSettings["DebugMode"] != null &&
                 Convert.ToBoolean(ConfigurationManager.AppSettings["DebugMode"]);
+        private int CommandTimeout => 90;
+
+        public DapperHelper() { }
+
+        public DapperHelper(string conn)
+        {
+            _connectionString = conn;
         }
 
-        public static SqlConnection GetOpenConnection(bool mars = false)
+        private static SqlConnection GetOpenConnection(bool mars = false)
         {
             var cs = ConnectionString;
             if (mars)
@@ -47,7 +44,7 @@ namespace Arsenalcn.Core
             return connection;
         }
 
-        public static SqlConnection GetClosedConnection()
+        private static SqlConnection GetClosedConnection()
         {
             var conn = new SqlConnection(ConnectionString);
             if (conn.State != ConnectionState.Closed) throw new InvalidOperationException("should be closed!");
@@ -66,19 +63,19 @@ namespace Arsenalcn.Core
             return args;
         }
 
-        public int Execute(string sql, object para = null, IDbTransaction tran = null, CommandType? commandType = null)
+        public int Execute(string sql, object para = null, IDbTransaction trans = null, CommandType? commandType = null)
         {
-            return Connection.Execute(sql, para, tran, _commandTimeout, commandType);
+            return Connection.Execute(sql, para, trans, CommandTimeout, commandType);
         }
 
-        public IDataReader ExecuteReader(string sql, object para = null, IDbTransaction tran = null, CommandType? commandType = null)
+        public IDataReader ExecuteReader(string sql, object para = null, IDbTransaction trans = null, CommandType? commandType = null)
         {
-            return Connection.ExecuteReader(sql, para, tran, _commandTimeout, commandType);
+            return Connection.ExecuteReader(sql, para, trans, CommandTimeout, commandType);
         }
 
-        public DataTable ExecuteDataTable(string sql, object para = null, IDbTransaction tran = null, CommandType? commandType = null)
+        public DataTable ExecuteDataTable(string sql, object para = null, IDbTransaction trans = null, CommandType? commandType = null)
         {
-            using (var reader = Connection.ExecuteReader(sql, para, tran, _commandTimeout, commandType))
+            using (var reader = Connection.ExecuteReader(sql, para, trans, CommandTimeout, commandType))
             {
                 var dt = new DataTable();
 
@@ -104,9 +101,15 @@ namespace Arsenalcn.Core
             }
         }
 
-        public T ExecuteScalar<T>(string sql, object para = null, IDbTransaction tran = null, CommandType? commandType = null)
+        public T ExecuteScalar<T>(string sql, object para = null, IDbTransaction trans = null, CommandType? commandType = null)
         {
-            return Connection.ExecuteScalar<T>(sql, para, tran, _commandTimeout, commandType);
+            return Connection.ExecuteScalar<T>(sql, para, trans, CommandTimeout, commandType);
+        }
+
+        public IEnumerable<T> Query<T>(string sql, object para = null, IDbTransaction trans = null,
+            CommandType? commandType = null)
+        {
+            return Connection.Query<T>(sql, para, trans, true, CommandTimeout, commandType);
         }
 
         public void Dispose()

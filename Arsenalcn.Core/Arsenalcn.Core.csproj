@@ -69,7 +69,6 @@
     <Compile Include="Entity\Dao.cs" />
     <Compile Include="Extension\AutoMapperHelper.cs" />
     <Compile Include="Extension\CollectionExtensions.cs" />
-    <Compile Include="Extension\DataReaderMapperHelper.cs" />
     <Compile Include="Extension\RepositoryExtensions.cs" />
     <Compile Include="Logger\AppLog.cs" />
     <Compile Include="Logger\DaoLog.cs" />
@@ -87,12 +86,6 @@
     <Compile Include="Utility\Encrypt.cs" />
     <Compile Include="Utility\OS.cs" />
     <Compile Include="Entity\RestClient.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\DataReaderMapper\DataReaderMapper.csproj">
-      <Project>{94652166-9598-402c-8fde-6b2e077498a2}</Project>
-      <Name>DataReaderMapper</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -179,11 +179,13 @@ namespace Arsenal.Web
 
                     if (rlt.Any())
                     {
-                        if (RelationLeagueTeam.QueryByTeamGuid(teamGuid).Count <= 1)
+                        if (_repo.Query<RelationLeagueTeam>(x => x.TeamGuid == teamGuid).Count <= 1)
                         {
                             throw new Exception("该球队仅属于此分类，不能移除");
                         }
-                        rlt.Delete();
+
+                        _repo.Delete<RelationLeagueTeam>(
+                            x => x.LeagueGuid == rlt.LeagueGuid && x.TeamGuid == rlt.TeamGuid);
                     }
                     else
                     {

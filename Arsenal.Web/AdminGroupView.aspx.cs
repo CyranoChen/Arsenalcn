@@ -125,7 +125,7 @@ namespace Arsenal.Web
 
                     if (GroupGuid != Guid.Empty)
                     {
-                        var rgts = RelationGroupTeam.QueryByGroupGuid(GroupGuid);
+                        var rgts = _repo.Query<RelationGroupTeam>(x => x.GroupGuid == GroupGuid);
 
                         if (rgts.Count > 0)
                         {
@@ -147,7 +147,7 @@ namespace Arsenal.Web
                                 TeamGuid = tGuid
                             };
 
-                            gt.Insert(trans);
+                            _repo.Insert(gt, trans);
                         }
                     }
 
@@ -212,7 +212,7 @@ namespace Arsenal.Web
 
         private void BindGroupTeam(Guid leagueGuid)
         {
-            var rlts = RelationLeagueTeam.QueryByLeagueGuid(leagueGuid);
+            var rlts = _repo.Query<RelationLeagueTeam>(x => x.LeagueGuid == leagueGuid);
 
             var query = from rlt in rlts
                         join t in Team.Cache.TeamList on rlt.TeamGuid equals t.ID
@@ -230,7 +230,7 @@ namespace Arsenal.Web
 
             if (GroupGuid != Guid.Empty)
             {
-                var rgts = RelationGroupTeam.QueryByGroupGuid(GroupGuid);
+                var rgts = _repo.Query<RelationGroupTeam>(x => x.GroupGuid == GroupGuid);
 
                 foreach (ListItem item in lbLeagueTeam.Items)
                 {

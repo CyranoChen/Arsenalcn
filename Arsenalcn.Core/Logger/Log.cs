@@ -4,24 +4,13 @@ using System.Data.SqlClient;
 using System.Reflection;
 using System.Threading;
 using Dapper;
-using DataReaderMapper;
 
 namespace Arsenalcn.Core.Logger
 {
     [DbSchema("Arsenalcn_Log", Sort = "ID DESC")]
     public class Log : Entity<int>
     {
-        public static void CreateMap()
-        {
-            var map = Mapper.CreateMap<IDataReader, Log>();
-
-            map.ForMember(d => d.Level, opt => opt.MapFrom(s =>
-                (LogLevel)Enum.Parse(typeof(LogLevel), s.GetValue("LogLevel").ToString())));
-        }
-
-        private static readonly IDbConnection _conn = DapperHelper.GetOpenConnection();
-
-        protected static void Logging(string logger, DateTime createTime, LogLevel level, string message,
+        protected void Logging(string logger, DateTime createTime, LogLevel level, string message,
             string stackTrace, UserClientInfo userClient = null)
         {
             var sql =
@@ -47,10 +36,10 @@ namespace Arsenalcn.Core.Logger
             };
 
             // no logging method
-            _conn.Execute(sql, para);
+            DapperHelper.Connection.Execute(sql, para);
         }
 
-        protected static void Logging(string logger, DateTime createTime, LogLevel level, string message,
+        protected void Logging(string logger, DateTime createTime, LogLevel level, string message,
             string stackTrace, Thread thread, MethodBase method, UserClientInfo userClient = null)
         {
             var sql =
@@ -78,7 +67,7 @@ namespace Arsenalcn.Core.Logger
             };
 
             // no logging method
-            _conn.Execute(sql, para);
+            DapperHelper.Connection.Execute(sql, para);
         }
 
         public static void Clean()

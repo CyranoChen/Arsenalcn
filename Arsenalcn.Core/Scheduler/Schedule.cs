@@ -1,22 +1,17 @@
 using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
-using System.Diagnostics.Contracts;
-using System.Linq;
-using Dapper;
-using DataReaderMapper;
 
 namespace Arsenalcn.Core.Scheduler
 {
     [DbSchema("Arsenalcn_Schedule", Key = "ScheduleKey", Sort = "IsSystem, ScheduleKey")]
-    public class Schedule
+    public class Schedule : Dao
     {
         private ISchedule _ischedule;
 
         /// <summary>
         ///     The current implementation of IScheduler
         /// </summary>
+        // ReSharper disable once InconsistentNaming
         public ISchedule IScheduleInstance
         {
             get
@@ -26,135 +21,105 @@ namespace Arsenalcn.Core.Scheduler
             }
         }
 
-        private static void CreateMap()
-        {
-            var map = Mapper.CreateMap<IDataReader, Schedule>();
-
-            map.ForMember(d => d.ScheduleKey, opt => opt.MapFrom(s => s.GetValue("ScheduleKey").ToString()));
-
-            map.ForMember(d => d.Minutes, opt => opt.ResolveUsing(s =>
-            {
-                var mins = (int) s.GetValue("Minutes");
-                if (mins > 0 & mins < ScheduleManager.TimerMinutesInterval)
-                {
-                    return ScheduleManager.TimerMinutesInterval;
-                }
-                return mins;
-            }));
-
-            map.ForMember(d => d.ExecuteTimeInfo, opt => opt.ResolveUsing(s =>
-            {
-                var dailyTime = (int) s.GetValue("DailyTime");
-
-                if (dailyTime >= 0)
-                {
-                    return $"Run at {dailyTime/60}:{dailyTime%60}";
-                }
-                return $"Run By {s.GetValue("Minutes").ToString()} mins";
-            }));
-        }
-
-        private static readonly IDbConnection _conn = DapperHelper.GetOpenConnection();
-
-        //private Schedule(DataRow dr)
+        //private static void CreateMap()
         //{
-        //    Contract.Requires(dr != null);
+        //    var map = Mapper.CreateMap<IDataReader, Schedule>();
 
-        //    Init(dr);
-        //}
+        //    map.ForMember(d => d.ScheduleKey, opt => opt.MapFrom(s => s.GetValue("ScheduleKey").ToString()));
 
-        //private void Init(DataRow dr)
-        //{
-        //    if (dr != null)
+        //    map.ForMember(d => d.Minutes, opt => opt.ResolveUsing(s =>
         //    {
-        //        ScheduleKey = dr["ScheduleKey"].ToString();
-        //        ScheduleType = dr["ScheduleType"].ToString();
-        //        DailyTime = Convert.ToInt32(dr["DailyTime"]);
-
-        //        Minutes = Convert.ToInt32(dr["Minutes"]);
-
-        //        if (Minutes > 0 & Minutes < ScheduleManager.TimerMinutesInterval)
+        //        var mins = (int) s.GetValue("Minutes");
+        //        if (mins > 0 & mins < ScheduleManager.TimerMinutesInterval)
         //        {
-        //            Minutes = ScheduleManager.TimerMinutesInterval;
+        //            return ScheduleManager.TimerMinutesInterval;
         //        }
+        //        return mins;
+        //    }));
 
-        //        LastCompletedTime = Convert.ToDateTime(dr["LastCompletedTime"]);
-        //        IsSystem = Convert.ToBoolean(dr["IsSystem"]);
-        //        IsActive = Convert.ToBoolean(dr["IsActive"]);
-        //        Remark = dr["Remark"].ToString();
+        //    map.ForMember(d => d.ExecuteTimeInfo, opt => opt.ResolveUsing(s =>
+        //    {
+        //        var dailyTime = (int) s.GetValue("DailyTime");
 
-        //        #region Generate ExecuteTimeInfo
-
-        //        if (DailyTime >= 0)
+        //        if (dailyTime >= 0)
         //        {
-        //            ExecuteTimeInfo = string.Format("Run at {0}:{1}",
-        //                (DailyTime / 60).ToString(), (DailyTime % 60).ToString());
+        //            return $"Run at {dailyTime/60}:{dailyTime%60}";
         //        }
-        //        else
-        //        {
-        //            ExecuteTimeInfo = string.Format("Run By {0} mins", Minutes.ToString());
-        //        }
-
-        //        #endregion
-        //    }
-        //    else
-        //    { throw new Exception("Unable to init Schedule"); }
+        //        return $"Run By {s.GetValue("Minutes").ToString()} mins";
+        //    }));
         //}
 
-        public static Schedule Single(object key)
+        public override void Inital()
         {
-            var sql = $"SELECT * FROM {Repository.GetTableAttr<Schedule>().Name} WHERE ScheduleKey = @key";
-
-            return _conn.QueryFirstOrDefault<Schedule>(sql, new { key });
-        }
-
-        public bool Any()
-        {
-            var sql = $"SELECT * FROM {Repository.GetTableAttr<Schedule>().Name} WHERE ScheduleKey = @key";
-
-            var result = _conn.Query<int>(sql, new { key = ScheduleKey }).ToList();
-
-            return Convert.ToInt32(result[0]) > 0;
-        }
-
-        public static List<Schedule> All()
-        {
-            var attr = Repository.GetTableAttr<Schedule>();
-
-            var sql = $"SELECT * FROM {attr.Name} ORDER BY {attr.Sort}";
-
-            var list = _conn.Query<Schedule>(sql.ToString()).ToList();
-
-            //if (list.Count > 0) { list.Each(x => x.Inital()); }
-            // TODO CREATEMAP
-
-            return list;
-        }
-
-        public void Update(SqlTransaction trans = null)
-        {
-            Contract.Requires(Any());
-
-            var sql =
-                $@"UPDATE {Repository.GetTableAttr<Schedule>().Name
-                    } SET ScheduleType = @scheduleType, DailyTime = @dailyTime, Minutes = @minutes, 
-                             LastCompletedTime = @lastCompletedTime, IsSystem = @isSystem, IsActive = @isActive, Remark = @remark 
-                             WHERE ScheduleKey = @key";
-
-            SqlParameter[] para =
+            if (Minutes > 0 & Minutes < ScheduleManager.TimerMinutesInterval)
             {
-                new SqlParameter("@scheduleType", ScheduleType),
-                new SqlParameter("@dailyTime", DailyTime),
-                new SqlParameter("@minutes", Minutes),
-                new SqlParameter("@lastCompletedTime", LastCompletedTime),
-                new SqlParameter("@isSystem", IsSystem),
-                new SqlParameter("@isActive", IsActive),
-                new SqlParameter("@remark", Remark),
-                new SqlParameter("@key", ScheduleKey)
-            };
+                Minutes = ScheduleManager.TimerMinutesInterval;
+            }
 
-            _conn.Execute(sql, para, trans);
+            if (DailyTime >= 0)
+            {
+                ExecuteTimeInfo = $"Run at {DailyTime / 60}:{DailyTime % 60}";
+            }
+            else
+            {
+                ExecuteTimeInfo = $"Run By {Minutes} mins";
+            }
         }
+
+        //public Schedule Single(object key)
+        //{
+        //    var sql = $"SELECT * FROM {Repository.GetTableAttr<Schedule>().Name} WHERE ScheduleKey = @key";
+
+        //    return _conn.QueryFirstOrDefault<Schedule>(sql, new { key });
+        //}
+
+        //public bool Any()
+        //{
+        //    var sql = $"SELECT * FROM {Repository.GetTableAttr<Schedule>().Name} WHERE ScheduleKey = @key";
+
+        //    var result = _conn.Query<int>(sql, new { key = ScheduleKey }).ToList();
+
+        //    return Convert.ToInt32(result[0]) > 0;
+        //}
+
+        //public List<Schedule> All()
+        //{
+        //    var attr = Repository.GetTableAttr<Schedule>();
+
+        //    var sql = $"SELECT * FROM {attr.Name} ORDER BY {attr.Sort}";
+
+        //    var list = _conn.Query<Schedule>(sql).ToList();
+
+        //    //if (list.Count > 0) { list.Each(x => x.Inital()); }
+        //    // TODO CREATEMAP
+
+        //    return list;
+        //}
+
+        //public void Update(SqlTransaction trans = null)
+        //{
+        //    Contract.Requires(Any());
+
+        //    var sql =
+        //        $@"UPDATE {Repository.GetTableAttr<Schedule>().Name
+        //            } SET ScheduleType = @scheduleType, DailyTime = @dailyTime, Minutes = @minutes, 
+        //                     LastCompletedTime = @lastCompletedTime, IsSystem = @isSystem, IsActive = @isActive, Remark = @remark 
+        //                     WHERE ScheduleKey = @key";
+
+        //    SqlParameter[] para =
+        //    {
+        //        new SqlParameter("@scheduleType", ScheduleType),
+        //        new SqlParameter("@dailyTime", DailyTime),
+        //        new SqlParameter("@minutes", Minutes),
+        //        new SqlParameter("@lastCompletedTime", LastCompletedTime),
+        //        new SqlParameter("@isSystem", IsSystem),
+        //        new SqlParameter("@isActive", IsActive),
+        //        new SqlParameter("@remark", Remark),
+        //        new SqlParameter("@key", ScheduleKey)
+        //    };
+
+        //    _conn.Execute(sql, para, trans);
+        //}
 
         /// <summary>
         ///     Private method for loading an instance of ISchedule
@@ -166,6 +131,7 @@ namespace Arsenalcn.Core.Scheduler
                 if (ScheduleType == null)
                 {
                     //SchedulerLogs.WriteFailedLog("计划任务没有定义其 type 属性");
+                    throw new Exception("计划任务没有定义其 type 属性");
                 }
 
                 var type = Type.GetType(ScheduleType);
@@ -173,6 +139,7 @@ namespace Arsenalcn.Core.Scheduler
                 if (type == null)
                 {
                     //SchedulerLogs.WriteFailedLog(string.Format("计划任务 {0} 无法被正确识别", this.ScheduleType));
+                    throw new Exception($"计划任务 {ScheduleType} 没有定义其 type 属性");
                 }
                 else
                 {
@@ -181,6 +148,7 @@ namespace Arsenalcn.Core.Scheduler
                     if (_ischedule == null)
                     {
                         //SchedulerLogs.WriteFailedLog(string.Format("计划任务 {0} 未能正确加载", this.ScheduleType));
+                        throw new Exception($"计划任务 {ScheduleType} 没有定义其 type 属性");
                     }
                 }
             }

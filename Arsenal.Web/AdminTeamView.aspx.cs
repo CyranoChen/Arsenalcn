@@ -109,7 +109,7 @@ namespace Arsenal.Web
 
                     if (!rlt.Any())
                     {
-                        rlt.Insert();
+                        _repo.Insert(rlt);
                     }
                 }
 
@@ -150,15 +150,15 @@ namespace Arsenal.Web
             {
                 if (TeamGuid != Guid.Empty)
                 {
-                    var list = RelationLeagueTeam.QueryByTeamGuid(TeamGuid);
+                    var list = _repo.Query<RelationLeagueTeam>(x => x.TeamGuid == TeamGuid);
 
                     if (list != null && list.Count > 0)
                     {
-                        var num = list.Delete();
+                        list.ForEach(x => x.Delete());
 
                         _repo.Delete<Team>(TeamGuid);
 
-                        ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", $"alert('删除成功(包括{num}个分类关联)');window.location.href='AdminTeam.aspx'", true);
+                        ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", $"alert('删除成功(包括{list.Count}个分类关联)');window.location.href='AdminTeam.aspx'", true);
                     }
                 }
                 else

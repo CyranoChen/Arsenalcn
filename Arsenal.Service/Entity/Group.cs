@@ -14,20 +14,17 @@ namespace Arsenal.Service
             IRepository repo = new Repository();
 
             var list = repo.Query<CasinoMatch>(x => x.LeagueGuid == LeagueGuid);
-            var teams = RelationGroupTeam.QueryByGroupGuid(ID);
+            var teams = repo.Query<RelationGroupTeam>(x => x.GroupGuid == ID);
 
             list = list.FindAll(x => teams.Exists(t => t.TeamGuid == x.Home) && teams.Exists(t => t.TeamGuid == x.Away));
 
             if (list.Count > 0)
             {
-                foreach (var m in list)
+                foreach (var m in list.Where(m => !m.GroupGuid.HasValue || m.GroupGuid != ID))
                 {
-                    if (!m.GroupGuid.HasValue || m.GroupGuid != ID)
-                    {
-                        m.GroupGuid = ID;
-                        
-                        repo.Update(m);
-                    }
+                    m.GroupGuid = ID;
+
+                    repo.Update(m);
                 }
             }
         }
@@ -37,7 +34,7 @@ namespace Arsenal.Service
             IRepository repo = new Repository();
 
             // 取得当前分组的所有球队排名关系
-            var listRgt = RelationGroupTeam.QueryByGroupGuid(ID);
+            var listRgt = repo.Query<RelationGroupTeam>(x => x.GroupGuid == ID);
 
             // 取得当前分组的所有博彩比赛
             List<CasinoMatch> listMatch;

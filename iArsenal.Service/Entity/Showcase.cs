@@ -1,20 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using Arsenalcn.Core;
-using DataReaderMapper;
 
 namespace iArsenal.Service
 {
     [DbSchema("iArsenal_Showcase", Sort = "OrderNum, CreateTime DESC")]
     public class Showcase : Entity<int>
     {
-        public static void CreateMap()
-        {
-            var map = Mapper.CreateMap<IDataReader, Showcase>();
-        }
-
         public static class Cache
         {
             public static List<Showcase> ShowcaseList;

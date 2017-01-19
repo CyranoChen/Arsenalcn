@@ -168,7 +168,7 @@ namespace Arsenal.Web
 
                 if (g != null && ltrlGroupTeamInfo != null && ltrlGroupMatchInfo != null)
                 {
-                    ltrlGroupTeamInfo.Text = $"<em>{RelationGroupTeam.QueryByGroupGuid(g.ID).Count}</em>";
+                    ltrlGroupTeamInfo.Text = $"<em>{_repo.Query<RelationGroupTeam>(x => x.GroupGuid == g.ID).Count}</em>";
 
                     List<CasinoMatch> matches;
 

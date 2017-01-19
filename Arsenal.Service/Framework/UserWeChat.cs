@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Data;
 using Arsenalcn.Core;
-using DataReaderMapper;
 
 namespace Arsenal.Service
 {

@@ -1,30 +1,19 @@
 ﻿using System;
-using System.Data;
 using System.Data.SqlClient;
 using Arsenalcn.Core;
-using DataReaderMapper;
 
 namespace iArsenal.Service
 {
     [DbSchema("iArsenal_OrderItem", Sort = "ID DESC")]
     public class OrderItem : Entity<int>
     {
-        public static void CreateMap()
+        public override void Inital()
         {
-            var map = Mapper.CreateMap<IDataReader, OrderItem>();
+            #region Generate OrderItem TotalPrice
 
-            map.ForMember(d => d.TotalPrice, opt => opt.ResolveUsing(s =>
-            {
-                #region Generate OrderItem TotalPrice
+            TotalPrice = Sale ?? UnitPrice * Quantity;
 
-                var sale = (double?) s.GetValue("Sale");
-
-                if (sale.HasValue)
-                    return sale.Value;
-                return (double) s.GetValue("UnitPrice")*(int) s.GetValue("Quantity");
-
-                #endregion
-            }));
+            #endregion
         }
 
         public virtual void Place(Member m, Product p, SqlTransaction trans = null)

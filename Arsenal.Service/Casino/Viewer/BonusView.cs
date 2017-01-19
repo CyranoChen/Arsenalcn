@@ -1,60 +1,58 @@
 ﻿using System;
-using System.Data;
 using Arsenalcn.Core;
-using DataReaderMapper;
 
 namespace Arsenal.Service.Casino
 {
     [DbSchema("AcnCasino_BonusView", Key = "MatchGuid", Sort = "PlayTime DESC")]
     public class BonusView : Dao
     {
-        public static void CreateMap()
-        {
-            var map = Mapper.CreateMap<IDataReader, BonusView>();
+        //public static void CreateMap()
+        //{
+        //    var map = Mapper.CreateMap<IDataReader, BonusView>();
 
-            map.ForMember(d => d.UserID, opt => opt.MapFrom(s => s.GetValue("UserID")));
+        //    map.ForMember(d => d.UserID, opt => opt.MapFrom(s => s.GetValue("UserID")));
 
-            #region CouponView.League
+        //    #region CouponView.League
 
-            var lMap = Mapper.CreateMap<IDataReader, League>();
-            lMap.ForMember(d => d.ID, opt => opt.MapFrom(s => s.GetValue("LeagueGuid")));
+        //    var lMap = Mapper.CreateMap<IDataReader, League>();
+        //    lMap.ForMember(d => d.ID, opt => opt.MapFrom(s => s.GetValue("LeagueGuid")));
 
-            map.ForMember(d => d.League, opt => opt.MapFrom(s => Mapper.Map<League>(s)));
+        //    map.ForMember(d => d.League, opt => opt.MapFrom(s => Mapper.Map<League>(s)));
 
-            #endregion
+        //    #endregion
 
-            #region CouponView.Team
+        //    #region CouponView.Team
 
-            var tMap = Mapper.CreateMap<IDataReader, Team>();
+        //    var tMap = Mapper.CreateMap<IDataReader, Team>();
 
-            map.ForMember(d => d.Home, opt => opt.ResolveUsing(s =>
-            {
-                var home = new Team
-                {
-                    ID = (Guid)s.GetValue("h_TeamGuid"),
-                    TeamEnglishName = s.GetValue("h_TeamEnglishName").ToString(),
-                    TeamDisplayName = s.GetValue("h_TeamDisplayName").ToString(),
-                    TeamLogo = s.GetValue("h_TeamLogo").ToString()
-                };
+        //    map.ForMember(d => d.Home, opt => opt.ResolveUsing(s =>
+        //    {
+        //        var home = new Team
+        //        {
+        //            ID = (Guid)s.GetValue("h_TeamGuid"),
+        //            TeamEnglishName = s.GetValue("h_TeamEnglishName").ToString(),
+        //            TeamDisplayName = s.GetValue("h_TeamDisplayName").ToString(),
+        //            TeamLogo = s.GetValue("h_TeamLogo").ToString()
+        //        };
 
-                return home;
-            }));
+        //        return home;
+        //    }));
 
-            map.ForMember(d => d.Away, opt => opt.ResolveUsing(s =>
-            {
-                var away = new Team
-                {
-                    ID = (Guid)s.GetValue("a_TeamGuid"),
-                    TeamEnglishName = s.GetValue("a_TeamEnglishName").ToString(),
-                    TeamDisplayName = s.GetValue("a_TeamDisplayName").ToString(),
-                    TeamLogo = s.GetValue("a_TeamLogo").ToString()
-                };
+        //    map.ForMember(d => d.Away, opt => opt.ResolveUsing(s =>
+        //    {
+        //        var away = new Team
+        //        {
+        //            ID = (Guid)s.GetValue("a_TeamGuid"),
+        //            TeamEnglishName = s.GetValue("a_TeamEnglishName").ToString(),
+        //            TeamDisplayName = s.GetValue("a_TeamDisplayName").ToString(),
+        //            TeamLogo = s.GetValue("a_TeamLogo").ToString()
+        //        };
 
-                return away;
-            }));
+        //        return away;
+        //    }));
 
-            #endregion
-        }
+        //    #endregion
+        //}
 
         #region Members and Properties
 

@@ -1,87 +1,59 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using Arsenalcn.Core;
-using DataReaderMapper;
 
 namespace iArsenal.Service
 {
     [DbSchema("iArsenal_Member", Sort = "ID DESC")]
     public class Member : Entity<int>
     {
-        public static void CreateMap()
+        public override void Inital()
         {
-            var map = Mapper.CreateMap<IDataReader, Member>();
-
-            map.ForMember(d => d.MemberTypeInfo, opt => opt.ResolveUsing(s =>
+            switch (MemberType)
             {
-                #region Generate Member MemberTypeInfo
+                case MemberType.Buyer:
+                    MemberTypeInfo = "团购";
+                    break;
+                case MemberType.Match:
+                    MemberTypeInfo = "观赛";
+                    break;
+                case MemberType.Activity:
+                    MemberTypeInfo = "活动";
+                    break;
+                case MemberType.Secretary:
+                    MemberTypeInfo = "干事";
+                    break;
+                default:
+                    MemberTypeInfo = string.Empty;
+                    break;
+            }
 
-                string retValue;
-
-                switch ((MemberType)((int)s.GetValue("MemberType")))
+            if (Nation.Equals("中国"))
+            {
+                var regions = Region.Split('|');
+                int itemId;
+                if (regions.Length > 1)
                 {
-                    case MemberType.Buyer:
-                        retValue = "团购";
-                        break;
-                    case MemberType.Match:
-                        retValue = "观赛";
-                        break;
-                    case MemberType.Activity:
-                        retValue = "活动";
-                        break;
-                    case MemberType.Secretary:
-                        retValue = "干事";
-                        break;
-                    default:
-                        retValue = string.Empty;
-                        break;
+                    foreach (var r in regions)
+                    {
+                        if (int.TryParse(r, out itemId))
+                        { RegionInfo += DictionaryItem.Cache.Load(itemId).Name; }
+                    }
                 }
-
-                return retValue;
-
-                #endregion
-            }));
-
-            map.ForMember(d => d.RegionInfo, opt => opt.ResolveUsing(s =>
-            {
-                #region Generate Member RegionInfo
-
-                var nation = s.GetValue("Nation").ToString();
-                var region = s.GetValue("Region").ToString();
-                var retValue = string.Empty;
-
-                if (nation.Equals("中国"))
+                else if (regions.Length == 1 && int.TryParse(regions[0], out itemId))
                 {
-                    var regions = region.Split('|');
-                    int itemId;
-                    if (regions.Length > 1)
-                    {
-                        foreach (var r in regions)
-                        {
-                            if (int.TryParse(r, out itemId))
-                                retValue += DictionaryItem.Cache.Load(itemId).Name;
-                        }
-                    }
-                    else if (regions.Length == 1 && int.TryParse(regions[0], out itemId))
-                    {
-                        retValue = DictionaryItem.Cache.Load(itemId).Name;
-                    }
-                    else
-                    {
-                        retValue = regions[0];
-                    }
+                    RegionInfo = DictionaryItem.Cache.Load(itemId).Name;
                 }
                 else
                 {
-                    retValue = nation;
+                    RegionInfo = regions[0];
                 }
-
-                return retValue;
-
-                #endregion
-            }));
+            }
+            else
+            {
+                RegionInfo = Nation;
+            }
         }
 
         public static class Cache

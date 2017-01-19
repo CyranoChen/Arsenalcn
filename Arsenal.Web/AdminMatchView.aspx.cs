@@ -234,7 +234,7 @@ namespace Arsenal.Web
 
         private void BindTeamData(Guid guid)
         {
-            var rltList = RelationLeagueTeam.QueryByLeagueGuid(guid);
+            var rltList = _repo.Query<RelationLeagueTeam>(x => x.LeagueGuid == guid);
 
             var list = new List<Team>();
 

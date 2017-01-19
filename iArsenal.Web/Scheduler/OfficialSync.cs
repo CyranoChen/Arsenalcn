@@ -93,9 +93,11 @@ namespace iArsenal.Scheduler
 
             var dapper = new DapperHelper();
 
-            var reader = dapper.ExecuteReader(sql);
+            var member = dapper.Query<Member>(sql).FirstOrDefault();
 
-            return reader?.DataReaderMapTo<Member>().FirstOrDefault();
+            member?.Inital();
+
+            return member;
         }
 
         private bool SyncOfficialMemberInfo(Member m)

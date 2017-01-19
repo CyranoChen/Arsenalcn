@@ -2,6 +2,7 @@
 using System.Reflection;
 using System.Threading;
 using System.Web.UI.WebControls;
+using Arsenalcn.Core;
 using Arsenalcn.Core.Logger;
 using Arsenalcn.Core.Scheduler;
 
@@ -9,6 +10,8 @@ namespace Arsenal.Web
 {
     public partial class AdminSchedule : AdminPageBase
     {
+        private readonly IRepository _repo = new Repository();
+
         protected void Page_Load(object sender, EventArgs e)
         {
             ctrlAdminFieldToolBar.AdminUserName = Username;
@@ -21,7 +24,7 @@ namespace Arsenal.Web
 
         private void BindData()
         {
-            gvSchedule.DataSource = Schedule.All();
+            gvSchedule.DataSource = _repo.All<Schedule>();
             gvSchedule.DataBind();
         }
 
@@ -43,13 +46,13 @@ namespace Arsenal.Web
                     {
                         var key = dataKey.Value.ToString();
 
-                        var s = Schedule.Single(key);
+                        var s = _repo.Single<Schedule>(x => x.ScheduleKey == key);
 
                         var instance = s.IScheduleInstance;
                         ManagedThreadPool.QueueUserWorkItem(instance.Execute);
 
                         s.LastCompletedTime = DateTime.Now;
-                        s.Update();
+                        _repo.Update(s, x => x.ScheduleKey == s.ScheduleKey);
 
                         log.Info($"ISchedule Manually: {s.ScheduleType}", logInfo);
                     }
@@ -88,7 +91,7 @@ namespace Arsenal.Web
                     var dataKey = gvSchedule.DataKeys[gvSchedule.EditIndex];
                     if (dataKey != null)
                     {
-                        var s = Schedule.Single(dataKey.Value.ToString());
+                        var s = _repo.Single<Schedule>(x => x.ScheduleKey == dataKey.Value.ToString());
 
                         s.ScheduleType = tbScheduleType.Text.Trim();
                         s.DailyTime = Convert.ToInt32(tbDailyTime.Text.Trim());
@@ -96,7 +99,7 @@ namespace Arsenal.Web
                         s.IsSystem = Convert.ToBoolean(tbIsSystem.Text.Trim());
                         s.IsActive = Convert.ToBoolean(tbIsActive.Text.Trim());
 
-                        s.Update();
+                        _repo.Update(s, x => x.ScheduleKey == s.ScheduleKey);
                     }
                 }
                 catch (Exception ex)

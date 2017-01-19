@@ -1,105 +1,167 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using Arsenalcn.Core;
 using AutoMapper;
-using Mapper = DataReaderMapper.Mapper;
 
 namespace iArsenal.Service
 {
     [DbSchema("iArsenal_Order", Sort = "ID DESC")]
     public class Order : Entity<int>
     {
-        public static void CreateMap()
+        //public static void CreateMap()
+        //{
+        //    var map = Mapper.CreateMap<IDataReader, Order>();
+
+        //    map.ForMember(d => d.UrlOrderView, opt => opt.UseValue(string.Empty));
+
+        //    //map.ForMember(d => d.OrderType, opt => opt.MapFrom(s =>
+        //    //    (OrderBaseType)Enum.Parse(typeof(OrderBaseType), s.GetValue("OrderType").ToString())));
+
+        //    map.ForMember(d => d.PaymentInfo, opt => opt.ResolveUsing(s =>
+        //    {
+        //        #region Generate Order Payment Info
+
+        //        string retValue;
+        //        var payment = s.GetValue("Payment").ToString();
+
+        //        if (!string.IsNullOrEmpty(payment))
+        //        {
+        //            var strPayment = payment.Substring(1, payment.Length - 2).Split('|');
+        //            if (strPayment[0].Equals(OrderPaymentType.Alipay.ToString(), StringComparison.OrdinalIgnoreCase))
+        //                retValue = $"【支付宝】{strPayment[1]}";
+        //            else if (strPayment[0].Equals(OrderPaymentType.Bank.ToString(), StringComparison.OrdinalIgnoreCase))
+        //            {
+        //                retValue = strPayment.Length >= 3 ? $"【{strPayment[1]}】{strPayment[2]}" : strPayment[1];
+        //            }
+        //            else
+        //                retValue = string.Empty;
+        //        }
+        //        else
+        //        {
+        //            retValue = string.Empty;
+        //        }
+
+        //        return retValue;
+
+        //        #endregion
+        //    }));
+
+        //    map.ForMember(d => d.PriceInfo, opt => opt.ResolveUsing(s =>
+        //    {
+        //        #region Generate Order Price Info
+
+        //        var sale = (double?)s.GetValue("Sale");
+        //        var price = (double)s.GetValue("Price");
+
+        //        return sale?.ToString("f2") ?? price.ToString("f2");
+
+        //        #endregion
+        //    }));
+
+        //    map.ForMember(d => d.StatusInfo, opt => opt.ResolveUsing(s =>
+        //    {
+        //        #region Generate Order Status Info
+
+        //        string retValue;
+
+        //        switch ((OrderStatusType)((int)s.GetValue("Status")))
+        //        {
+        //            case OrderStatusType.Draft:
+        //                retValue = "未提交";
+        //                break;
+        //            case OrderStatusType.Submitted:
+        //                retValue = "审核中";
+        //                break;
+        //            case OrderStatusType.Confirmed:
+        //                retValue = "已确认";
+        //                break;
+        //            case OrderStatusType.Ordered:
+        //                retValue = "已下单";
+        //                break;
+        //            case OrderStatusType.Delivered:
+        //                retValue = "已发货";
+        //                break;
+        //            case OrderStatusType.Error:
+        //                retValue = "未知";
+        //                break;
+        //            case OrderStatusType.Approved:
+        //                retValue = "已审核";
+        //                break;
+        //            default:
+        //                retValue = string.Empty;
+        //                break;
+        //        }
+
+        //        return retValue;
+
+        //        #endregion
+        //    }));
+        //}
+
+        public override void Inital()
         {
-            var map = Mapper.CreateMap<IDataReader, Order>();
+            UrlOrderView = string.Empty;
 
-            map.ForMember(d => d.UrlOrderView, opt => opt.UseValue(string.Empty));
+            #region Generate Order Payment Info
 
-            //map.ForMember(d => d.OrderType, opt => opt.MapFrom(s =>
-            //    (OrderBaseType)Enum.Parse(typeof(OrderBaseType), s.GetValue("OrderType").ToString())));
-
-            map.ForMember(d => d.PaymentInfo, opt => opt.ResolveUsing(s =>
+            if (!string.IsNullOrEmpty(Payment))
             {
-                #region Generate Order Payment Info
-
-                string retValue;
-                var payment = s.GetValue("Payment").ToString();
-
-                if (!string.IsNullOrEmpty(payment))
+                var strPayment = Payment.Substring(1, Payment.Length - 2).Split('|');
+                if (strPayment[0].Equals(OrderPaymentType.Alipay.ToString(), StringComparison.OrdinalIgnoreCase))
+                    PaymentInfo = $"【支付宝】{strPayment[1]}";
+                else if (strPayment[0].Equals(OrderPaymentType.Bank.ToString(), StringComparison.OrdinalIgnoreCase))
                 {
-                    var strPayment = payment.Substring(1, payment.Length - 2).Split('|');
-                    if (strPayment[0].Equals(OrderPaymentType.Alipay.ToString(), StringComparison.OrdinalIgnoreCase))
-                        retValue = $"【支付宝】{strPayment[1]}";
-                    else if (strPayment[0].Equals(OrderPaymentType.Bank.ToString(), StringComparison.OrdinalIgnoreCase))
-                    {
-                        retValue = strPayment.Length >= 3 ? $"【{strPayment[1]}】{strPayment[2]}" : strPayment[1];
-                    }
-                    else
-                        retValue = string.Empty;
+                    PaymentInfo = strPayment.Length >= 3 ? $"【{strPayment[1]}】{strPayment[2]}" : strPayment[1];
                 }
                 else
-                {
-                    retValue = string.Empty;
-                }
-
-                return retValue;
-
-                #endregion
-            }));
-
-            map.ForMember(d => d.PriceInfo, opt => opt.ResolveUsing(s =>
+                    PaymentInfo = string.Empty;
+            }
+            else
             {
-                #region Generate Order Price Info
+                PaymentInfo = string.Empty;
+            }
 
-                var sale = (double?)s.GetValue("Sale");
-                var price = (double)s.GetValue("Price");
+            #endregion
 
-                return sale?.ToString("f2") ?? price.ToString("f2");
+            #region Generate Order Price Info
 
-                #endregion
-            }));
+            PriceInfo = Sale?.ToString("f2") ?? Price.ToString("f2");
 
-            map.ForMember(d => d.StatusInfo, opt => opt.ResolveUsing(s =>
+            #endregion
+
+            #region Generate Order Status Info
+
+            switch (Status)
             {
-                #region Generate Order Status Info
+                case OrderStatusType.Draft:
+                    StatusInfo = "未提交";
+                    break;
+                case OrderStatusType.Submitted:
+                    StatusInfo = "审核中";
+                    break;
+                case OrderStatusType.Confirmed:
+                    StatusInfo = "已确认";
+                    break;
+                case OrderStatusType.Ordered:
+                    StatusInfo = "已下单";
+                    break;
+                case OrderStatusType.Delivered:
+                    StatusInfo = "已发货";
+                    break;
+                case OrderStatusType.Error:
+                    StatusInfo = "未知";
+                    break;
+                case OrderStatusType.Approved:
+                    StatusInfo = "已审核";
+                    break;
+                default:
+                    StatusInfo = string.Empty;
+                    break;
+            }
 
-                string retValue;
-
-                switch ((OrderStatusType)((int)s.GetValue("Status")))
-                {
-                    case OrderStatusType.Draft:
-                        retValue = "未提交";
-                        break;
-                    case OrderStatusType.Submitted:
-                        retValue = "审核中";
-                        break;
-                    case OrderStatusType.Confirmed:
-                        retValue = "已确认";
-                        break;
-                    case OrderStatusType.Ordered:
-                        retValue = "已下单";
-                        break;
-                    case OrderStatusType.Delivered:
-                        retValue = "已发货";
-                        break;
-                    case OrderStatusType.Error:
-                        retValue = "未知";
-                        break;
-                    case OrderStatusType.Approved:
-                        retValue = "已审核";
-                        break;
-                    default:
-                        retValue = string.Empty;
-                        break;
-                }
-
-                return retValue;
-
-                #endregion
-            }));
+            #endregion
         }
 
         public void CalcOrderPrice(SqlTransaction trans = null)

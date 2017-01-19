@@ -1,254 +1,75 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using Arsenalcn.Core;
-using DataReaderMapper;
-using DataReaderMapper.Mappers;
 
 namespace Arsenal.Service
 {
     [DbSchema("Arsenal_RelationGroupTeam", Sort = "GroupGuid, PositionNo")]
-    public class RelationGroupTeam
+    public class RelationGroupTeam : Dao
     {
-        private static void CreateMap()
-        {
-            Mapper.CreateMap<IDataReader, RelationGroupTeam>();
-        }
-
-        public static RelationGroupTeam Single(Guid groupGuid, Guid teamGuid)
-        {
-            var sql =
-                $@"SELECT * FROM {Repository.GetTableAttr<RelationGroupTeam>().Name} 
-                    WHERE GroupGuid = @groupGuid AND TeamGuid = @teamGuid";
-
-            var dapper = new DapperHelper();
-
-            var reader = dapper.ExecuteReader(sql, new { groupGuid, teamGuid });
-
-            Mapper.Initialize(cfg =>
-            {
-                MapperRegistry.Mappers.Insert(0,
-                    new DataReaderMapper.DataReaderMapper { YieldReturnEnabled = false });
-
-                CreateMap();
-            });
-
-            return Mapper.Map<IDataReader, IEnumerable<RelationGroupTeam>>(reader).FirstOrDefault();
-        }
-
-        public bool Any()
-        {
-            var sql =
-                $@"SELECT COUNT(*) FROM {Repository.GetTableAttr<RelationGroupTeam>().Name} 
-                     WHERE GroupGuid = @groupGuid AND TeamGuid = @teamGuid";
-
-            var dapper = new DapperHelper();
-
-            return dapper.ExecuteScalar<int>(sql, new { groupGuid = GroupGuid, teamGuid = TeamGuid }) > 0;
-        }
-
-        public static List<RelationGroupTeam> All()
-        {
-            var sql = $"SELECT * FROM {Repository.GetTableAttr<RelationGroupTeam>().Name}";
-
-            var dapper = new DapperHelper();
-
-            var reader = dapper.ExecuteReader(sql);
-
-            Mapper.Initialize(cfg =>
-            {
-                MapperRegistry.Mappers.Insert(0,
-                    new DataReaderMapper.DataReaderMapper { YieldReturnEnabled = false });
-
-                CreateMap();
-            });
-
-            return Mapper.Map<IDataReader, IEnumerable<RelationGroupTeam>>(reader).ToList();
-        }
-
-        public static List<RelationGroupTeam> QueryByGroupGuid(Guid groupGuid)
-        {
-            var sql = $"SELECT * FROM {Repository.GetTableAttr<RelationGroupTeam>().Name} WHERE GroupGuid = @groupGuid";
-
-            var dapper = new DapperHelper();
-
-            var reader = dapper.ExecuteReader(sql, new { groupGuid });
-
-            Mapper.Initialize(cfg =>
-            {
-                MapperRegistry.Mappers.Insert(0,
-                    new DataReaderMapper.DataReaderMapper { YieldReturnEnabled = false });
-
-                CreateMap();
-            });
-
-            return Mapper.Map<IDataReader, IEnumerable<RelationGroupTeam>>(reader).ToList();
-        }
-
-        public static List<RelationGroupTeam> QueryByTeamGuid(Guid teamGuid)
-        {
-            var sql = $"SELECT * FROM {Repository.GetTableAttr<RelationGroupTeam>().Name} WHERE TeamGuid = @teamGuid";
-
-            var dapper = new DapperHelper();
-
-            var reader = dapper.ExecuteReader(sql, new { teamGuid });
-
-            Mapper.Initialize(cfg =>
-            {
-                MapperRegistry.Mappers.Insert(0,
-                    new DataReaderMapper.DataReaderMapper { YieldReturnEnabled = false });
-
-                CreateMap();
-            });
-
-            return Mapper.Map<IDataReader, IEnumerable<RelationGroupTeam>>(reader).ToList();
-        }
-
-        public void Insert(SqlTransaction trans = null)
-        {
-            var sql = $@"INSERT INTO {Repository.GetTableAttr<RelationGroupTeam>().Name} 
-                                (PositionNo, TotalPlayed, TotalPoints, HomeWon, HomeDraw, HomeLost, HomePoints, 
-                                HomeGoalFor, HomeGoalAgainst, HomeGoalDiff, AwayWon, AwayDraw, AwayLost, AwayPoints, 
-                                AwayGoalFor, AwayGoalAgainst, AwayGoalDiff, GroupGuid, TeamGuid) VALUES 
-                                (@positionNo, @totalPlayed, @totalPoints, @homeWon, @homeDraw, @homeLost, @homePoints, 
-                                @homeGoalFor, @homeGoalAgainst, @homeGoalDiff, @awayWon, @awayDraw, @awayLost,  @awayPoints,
-                                 @awayGoalFor, @awayGoalAgainst, @awayGoalDiff, @groupGuid, @teamGuid)";
-
-            SqlParameter[] para =
-            {
-                new SqlParameter("@positionNo", !PositionNo.HasValue ? DBNull.Value : (object) PositionNo.Value),
-                new SqlParameter("@totalPlayed", !TotalPlayed.HasValue ? DBNull.Value : (object) TotalPlayed.Value),
-                new SqlParameter("@totalPoints", !TotalPoints.HasValue ? DBNull.Value : (object) TotalPoints.Value),
-                // Home
-                new SqlParameter("@homeWon", !HomeWon.HasValue ? DBNull.Value : (object) HomeWon.Value),
-                new SqlParameter("@homeDraw", !HomeDraw.HasValue ? DBNull.Value : (object) HomeDraw.Value),
-                new SqlParameter("@homeLost", !HomeLost.HasValue ? DBNull.Value : (object) HomeLost.Value),
-                new SqlParameter("@homePoints", !HomePoints.HasValue ? DBNull.Value : (object) HomePoints.Value),
-                new SqlParameter("@homeGoalFor", !HomeGoalFor.HasValue ? DBNull.Value : (object) HomeGoalFor.Value),
-                new SqlParameter("@homeGoalAgainst", !HomeGoalAgainst.HasValue ? DBNull.Value : (object) HomeGoalAgainst.Value),
-                new SqlParameter("@homeGoalDiff", !HomeGoalDiff.HasValue ? DBNull.Value : (object) HomeGoalDiff.Value),
-                // Away
-                new SqlParameter("@awayWon", !AwayWon.HasValue ? DBNull.Value : (object) AwayWon.Value),
-                new SqlParameter("@awayDraw", !AwayDraw.HasValue ? DBNull.Value : (object) AwayDraw.Value),
-                new SqlParameter("@awayLost", !AwayLost.HasValue ? DBNull.Value : (object) AwayLost.Value),
-                new SqlParameter("@awayPoints", !AwayPoints.HasValue ? DBNull.Value : (object) AwayPoints.Value),
-                new SqlParameter("@awayGoalFor", !AwayGoalFor.HasValue ? DBNull.Value : (object) AwayGoalFor.Value),
-                new SqlParameter("@awayGoalAgainst", !AwayGoalAgainst.HasValue ? DBNull.Value : (object) AwayGoalAgainst.Value),
-                new SqlParameter("@awayGoalDiff", !AwayGoalDiff.HasValue ? DBNull.Value : (object) AwayGoalDiff.Value),
-                new SqlParameter("@groupGuid", GroupGuid),
-                new SqlParameter("@teamGuid", TeamGuid)
-            };
-
-            var dapper = new DapperHelper();
-
-            dapper.Execute(sql, DapperHelper.BuildDapperParameters(para), trans);
-        }
-
         public void Update(SqlTransaction trans = null)
         {
-            var sql = $@"UPDATE {Repository.GetTableAttr<RelationGroupTeam>().Name} 
-                                SET PositionNo = @positionNo, TotalPlayed = @totalPlayed, TotalPoints = @totalPoints,
-                                HomeWon = @homeWon, HomeDraw = @homeDraw, HomeLost = @homeLost, HomePoints = @homePoints,
-                                HomeGoalFor = @homeGoalFor, HomeGoalAgainst = @homeGoalAgainst, HomeGoalDiff = @homeGoalDiff,
-                                AwayWon = @awayWon, AwayDraw = @awayDraw, AwayLost = @awayLost, AwayPoints = @awayPoints,
-                                AwayGoalFor = @awayGoalFor, AwayGoalAgainst = @awayGoalAgainst, AwayGoalDiff = @awayGoalDiff 
-                                WHERE GroupGuid = @groupGuid AND TeamGuid = @teamGuid";
+            IRepository repo = new Repository();
 
-            SqlParameter[] para =
-            {
-                new SqlParameter("@positionNo", !PositionNo.HasValue ? DBNull.Value : (object) PositionNo.Value),
-                new SqlParameter("@totalPlayed", !TotalPlayed.HasValue ? DBNull.Value : (object) TotalPlayed.Value),
-                new SqlParameter("@totalPoints", !TotalPoints.HasValue ? DBNull.Value : (object) TotalPoints.Value),
-                // Home
-                new SqlParameter("@homeWon", !HomeWon.HasValue ? DBNull.Value : (object) HomeWon.Value),
-                new SqlParameter("@homeDraw", !HomeDraw.HasValue ? DBNull.Value : (object) HomeDraw.Value),
-                new SqlParameter("@homeLost", !HomeLost.HasValue ? DBNull.Value : (object) HomeLost.Value),
-                new SqlParameter("@homePoints", !HomePoints.HasValue ? DBNull.Value : (object) HomePoints.Value),
-                new SqlParameter("@homeGoalFor", !HomeGoalFor.HasValue ? DBNull.Value : (object) HomeGoalFor.Value),
-                new SqlParameter("@homeGoalAgainst", !HomeGoalAgainst.HasValue ? DBNull.Value : (object) HomeGoalAgainst.Value),
-                new SqlParameter("@homeGoalDiff", !HomeGoalDiff.HasValue ? DBNull.Value : (object) HomeGoalDiff.Value),
-                // Away
-                new SqlParameter("@awayWon", !AwayWon.HasValue ? DBNull.Value : (object) AwayWon.Value),
-                new SqlParameter("@awayDraw", !AwayDraw.HasValue ? DBNull.Value : (object) AwayDraw.Value),
-                new SqlParameter("@awayLost", !AwayLost.HasValue ? DBNull.Value : (object) AwayLost.Value),
-                new SqlParameter("@awayPoints", !AwayPoints.HasValue ? DBNull.Value : (object) AwayPoints.Value),
-                new SqlParameter("@awayGoalFor", !AwayGoalFor.HasValue ? DBNull.Value : (object) AwayGoalFor.Value),
-                new SqlParameter("@awayGoalAgainst", !AwayGoalAgainst.HasValue ? DBNull.Value : (object) AwayGoalAgainst.Value),
-                new SqlParameter("@awayGoalDiff", !AwayGoalDiff.HasValue ? DBNull.Value : (object) AwayGoalDiff.Value),
-                // WHERE
-                new SqlParameter("@groupGuid", GroupGuid),
-                new SqlParameter("@teamGuid", TeamGuid)
-            };
-
-            var dapper = new DapperHelper();
-
-            dapper.Execute(sql, DapperHelper.BuildDapperParameters(para), trans);
+            repo.Update(this, x => x.GroupGuid == GroupGuid && x.TeamGuid == TeamGuid, trans);
         }
 
         public void Delete(SqlTransaction trans = null)
         {
-            var sql =
-                $"DELETE FROM {Repository.GetTableAttr<RelationGroupTeam>().Name} WHERE GroupGuid = @groupGuid AND TeamGuid = @teamGuid";
+            IRepository repo = new Repository();
 
-            SqlParameter[] para = { new SqlParameter("@groupGuid", GroupGuid), new SqlParameter("@teamGuid", TeamGuid) };
-
-            var dapper = new DapperHelper();
-
-            dapper.Execute(sql, DapperHelper.BuildDapperParameters(para), trans);
+            repo.Delete<RelationGroupTeam>(x => x.GroupGuid == GroupGuid && x.TeamGuid == TeamGuid, trans);
         }
 
-        public void Statistic(List<Casino.Match> list)
+        public void Statistic(IEnumerable<Casino.Match> matches)
         {
-            Inital();
+            Default();
 
-            foreach (var m in list)
+            foreach (var m in matches.Where(m => m != null))
             {
-                if (m != null)
+                // 主队统计
+                if (m.Home == TeamGuid)
                 {
-                    // 主队统计
-                    if (m.Home == TeamGuid)
+                    TotalPlayed++;
+
+                    if (m.ResultHome > m.ResultAway)
                     {
-                        TotalPlayed++;
-
-                        if (m.ResultHome > m.ResultAway)
-                        {
-                            HomeWon++;
-                            HomePoints += 3;
-                        }
-                        else if (m.ResultHome == m.ResultAway)
-                        {
-                            HomeDraw++;
-                            HomePoints += 1;
-                        }
-                        else
-                            HomeLost++;
-
-                        HomeGoalFor += m.ResultHome;
-                        HomeGoalAgainst += m.ResultAway;
+                        HomeWon++;
+                        HomePoints += 3;
                     }
-                    // 客队统计
-                    else if (m.Away == TeamGuid)
+                    else if (m.ResultHome == m.ResultAway)
                     {
-                        TotalPlayed++;
-
-                        if (m.ResultAway > m.ResultHome)
-                        {
-                            AwayWon++;
-                            AwayPoints += 3;
-                        }
-                        else if (m.ResultAway == m.ResultHome)
-                        {
-                            AwayDraw++;
-                            AwayPoints += 1;
-                        }
-                        else
-                            AwayLost++;
-
-                        AwayGoalFor += m.ResultAway;
-                        AwayGoalAgainst += m.ResultHome;
+                        HomeDraw++;
+                        HomePoints += 1;
                     }
+                    else
+                        HomeLost++;
+
+                    HomeGoalFor += m.ResultHome;
+                    HomeGoalAgainst += m.ResultAway;
+                }
+                // 客队统计
+                else if (m.Away == TeamGuid)
+                {
+                    TotalPlayed++;
+
+                    if (m.ResultAway > m.ResultHome)
+                    {
+                        AwayWon++;
+                        AwayPoints += 3;
+                    }
+                    else if (m.ResultAway == m.ResultHome)
+                    {
+                        AwayDraw++;
+                        AwayPoints += 1;
+                    }
+                    else
+                        AwayLost++;
+
+                    AwayGoalFor += m.ResultAway;
+                    AwayGoalAgainst += m.ResultHome;
                 }
             }
 
@@ -258,7 +79,7 @@ namespace Arsenal.Service
             TotalPoints = Convert.ToInt16(HomePoints + AwayPoints);
         }
 
-        private void Inital()
+        private void Default()
         {
             PositionNo = 0;
             TotalPlayed = 0;
@@ -309,7 +130,9 @@ namespace Arsenal.Service
 
             private static void InitCache()
             {
-                RelationGroupTeamList = All();
+                IRepository repo = new Repository();
+
+                RelationGroupTeamList = repo.All<RelationGroupTeam>();
             }
         }
 

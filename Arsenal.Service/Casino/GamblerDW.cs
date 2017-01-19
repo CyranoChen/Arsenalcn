@@ -1,44 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using Arsenalcn.Core;
-using DataReaderMapper;
-using DataReaderMapper.Mappers;
 
 namespace Arsenal.Service.Casino
 {
     // ReSharper disable once InconsistentNaming
     public class GamblerDW
     {
-        private static void CreateMap()
+        public void Inital()
         {
-            var map = Mapper.CreateMap<IDataReader, GamblerDW>();
-
-            map.ForMember(d => d.Profit, opt =>
-            {
-                opt.Condition(s => s.GetValue("Earning") != null && s.GetValue("TotalBet") != null);
-                opt.MapFrom(s => (double)s.GetValue("Earning") - (double)s.GetValue("TotalBet"));
-            });
-
-            map.ForMember(d => d.ProfitRate, opt =>
-            {
-                opt.Condition(s => s.GetValue("Earning") != null && s.GetValue("TotalBet") != null);
-                opt.ResolveUsing(s =>
-                {
-                    var earning = (double)s.GetValue("Earning");
-                    var totalBet = (double)s.GetValue("TotalBet");
-
-                    if (totalBet > 0)
-                    {
-                        return (earning - totalBet) / totalBet * 100;
-                    }
-                    else
-                    {
-                        return (double)0;
-                    }
-                });
-            });
+            Profit = Earning - TotalBet;
+            ProfitRate = TotalBet > 0 ? (Earning - TotalBet) / TotalBet * 100 : 0;
         }
 
         public static GamblerDW Single(int key, Guid leagueGuid)
@@ -67,18 +40,11 @@ namespace Arsenal.Service.Casino
 
             var dapper = new DapperHelper();
 
-            var reader = dapper.ExecuteReader(sql, new { key, leagueGuid });
+            var instance = dapper.Query<GamblerDW>(sql, new { key, leagueGuid }).FirstOrDefault();
 
-            Mapper.Initialize(cfg =>
-            {
-                MapperRegistry.Mappers.Insert(0,
-                    new DataReaderMapper.DataReaderMapper { YieldReturnEnabled = false });
+            instance?.Inital();
 
-                CreateMap();
-            });
-
-            return Mapper.Map<IDataReader, IEnumerable<GamblerDW>>(reader).FirstOrDefault();
-
+            return instance;
         }
 
         public static List<GamblerDW> All(Guid leagueGuid)
@@ -107,17 +73,11 @@ namespace Arsenal.Service.Casino
 
             var dapper = new DapperHelper();
 
-            var reader = dapper.ExecuteReader(sql, new { leagueGuid });
+            var list = dapper.Query<GamblerDW>(sql, new { leagueGuid }).ToList();
 
-            Mapper.Initialize(cfg =>
-            {
-                MapperRegistry.Mappers.Insert(0,
-                    new DataReaderMapper.DataReaderMapper { YieldReturnEnabled = false });
+            list.ForEach(x => x.Inital());
 
-                CreateMap();
-            });
-
-            return Mapper.Map<IDataReader, IEnumerable<GamblerDW>>(reader).ToList();
+            return list;
         }
 
         public static double GetGamblerBetLimit(int userId, Guid leagueGuid)
@@ -277,17 +237,11 @@ namespace Arsenal.Service.Casino
 
             var dapper = new DapperHelper();
 
-            var reader = dapper.ExecuteReader(sql, new { monthStart, monthEnd });
+            var instance = dapper.Query<GamblerDW>(sql, new { monthStart, monthEnd }).FirstOrDefault();
 
-            Mapper.Initialize(cfg =>
-            {
-                MapperRegistry.Mappers.Insert(0,
-                    new DataReaderMapper.DataReaderMapper { YieldReturnEnabled = false });
+            instance?.Inital();
 
-                CreateMap();
-            });
-
-            return Mapper.Map<IDataReader, IEnumerable<GamblerDW>>(reader).FirstOrDefault();
+            return instance;
         }
 
         #region Members and Properties

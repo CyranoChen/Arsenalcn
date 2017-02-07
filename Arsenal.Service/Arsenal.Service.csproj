@@ -53,6 +53,10 @@
     <Compile Include="Casino\CasinoItem.cs" />
     <Compile Include="Casino\ChoiceOption.cs" />
     <Compile Include="Casino\Rank.cs" />
+    <Compile Include="Casino\Viewer\BonusViewFactory.cs" />
+    <Compile Include="Casino\Viewer\CouponViewFactory.cs" />
+    <Compile Include="Casino\Viewer\BetViewFactory.cs" />
+    <Compile Include="Casino\Viewer\MatchViewFactory.cs" />
     <Compile Include="Entity\Group.cs" />
     <Compile Include="Casino\Viewer\BetView.cs" />
     <Compile Include="Casino\Gambler.cs" />

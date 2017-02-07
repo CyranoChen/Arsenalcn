@@ -44,9 +44,9 @@ namespace Arsenal.Mobile.Models.Casino
 
         public static MatchDto Single(Guid key)
         {
-            IRepository repo = new Repository();
+            var factory = new MatchViewFactory();
 
-            var instance = repo.Single<MatchView>(x => x.ID == key);
+            var instance = factory.Single(key);
             instance.Many<ChoiceOption>(x => x.CasinoItemGuid == instance.CasinoItem.ID);
 
             var mapper = ConfigMapper().CreateMapper();

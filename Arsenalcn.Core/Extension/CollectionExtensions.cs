@@ -9,7 +9,7 @@ namespace Arsenalcn.Core
     {
         // Many by Linq
         public static IEnumerable<TOne> Many<TOne, TMany>(this IEnumerable<TOne> source, Func<TOne, TMany, bool> func)
-            where TOne : class, IDao, new()
+            where TOne : class, IMany, new()
             where TMany : class, IDao, new()
         {
             Contract.Requires(func != null);
@@ -67,7 +67,7 @@ namespace Arsenalcn.Core
         public static IEnumerable<TOne> Many<TOne, TMany, TOneKey>(this IEnumerable<TOne> source,
             Func<TOne, TOneKey> keySelector)
             where TMany : class, IDao, new()
-            where TOne : class, IDao, new()
+            where TOne : class, IMany, new()
             where TOneKey : struct
         {
             Contract.Requires(keySelector != null);
@@ -168,4 +168,6 @@ namespace Arsenalcn.Core
             return instances.DistinctBy(keySelector).OrderBy(keySelector).Select(keySelector);
         }
     }
+
+    public interface IMany { }
 }

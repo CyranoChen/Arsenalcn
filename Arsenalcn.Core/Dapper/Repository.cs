@@ -6,15 +6,12 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
-using Arsenalcn.Core.Logger;
 using Dapper;
 
 namespace Arsenalcn.Core
 {
     public class Repository : IRepository
     {
-        private readonly ILog _log = new DaoLog();
-
         private IDbConnection _connection;
         private IDbConnection Connection => _connection ?? (_connection = DapperHelper.Connection);
 

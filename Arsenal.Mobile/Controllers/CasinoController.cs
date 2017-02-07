@@ -44,11 +44,13 @@ namespace Arsenal.Mobile.Controllers
             var model = new IndexDto();
             var days = ConfigGlobal_AcnCasino.CasinoValidDays;
 
-            var query = _repo.Query<MatchView>(
-                x => x.PlayTime > DateTime.Now && x.PlayTime < DateTime.Now.AddDays(days))
-                .FindAll(x => !x.ResultHome.HasValue && !x.ResultAway.HasValue)
-                .OrderBy(x => x.PlayTime)
-                .Many<MatchView, ChoiceOption, Guid>(t => t.CasinoItem.ID);
+            IViewerFactory<MatchView> factory = new MatchViewFactory();
+
+            var query = factory.All()
+               .FindAll(x => x.PlayTime > DateTime.Now && x.PlayTime < DateTime.Now.AddDays(days))
+               .FindAll(x => !x.ResultHome.HasValue && !x.ResultAway.HasValue)
+               .OrderBy(x => x.PlayTime)
+               .Many<MatchView, ChoiceOption, Guid>(t => t.CasinoItem.ID);
 
             var mapper = MatchDto.ConfigMapper().CreateMapper();
 
@@ -72,10 +74,13 @@ namespace Arsenal.Mobile.Controllers
 
             var days = ConfigGlobal_AcnCasino.CasinoValidDays;
 
-            var query = _repo.Query<MatchView>(
-                x => x.PlayTime > DateTime.Now && x.PlayTime < DateTime.Now.AddDays(days))
-                .FindAll(x => !x.ResultHome.HasValue && !x.ResultAway.HasValue)
-                .OrderBy(x => x.PlayTime)
+            var criteria = new Criteria
+            {
+                WhereClause = $@"(PlayTime BETWEEN '{DateTime.Now}' AND '{DateTime.Now.AddDays(days)}') AND 
+                                            (ResultHome IS NULL) AND (ResultAway IS NULL) "
+            };
+
+            var query = new MatchViewFactory().Query(criteria).OrderBy(x => x.PlayTime)
                 .Many<MatchView, ChoiceOption, Guid>(t => t.CasinoItem.ID);
 
             var mapper = MatchDto.ConfigMapper().CreateMapper();
@@ -90,7 +95,7 @@ namespace Arsenal.Mobile.Controllers
             if (list.Count > 0)
             {
                 // 查找当前用户的比分投注项
-                var coupons = _repo.Query<CouponView>(x => x.UserID == AcnID);
+                var coupons = new CouponViewFactory().Query(new Criteria(new { UserID = AcnID }));
 
                 if (coupons.Count > 0)
                 {
@@ -215,8 +220,10 @@ namespace Arsenal.Mobile.Controllers
         {
             var model = new MyBetDto();
 
-            var query = _repo.Query<BetView>(criteria, x => x.UserID == AcnID)
-                .Many<BetView, BetDetail, int>(t => t.ID);
+            criteria.Parameters = new { UserID = AcnID };
+            criteria.GetWhereClause();
+
+            var query = new BetViewFactory().Query(criteria).Many<BetView, BetDetail, int>(t => t.ID);
 
             var mapper = BetDto.ConfigMapper().CreateMapper();
 
@@ -236,7 +243,10 @@ namespace Arsenal.Mobile.Controllers
         {
             var model = new MyBonusDto();
 
-            var query = _repo.Query<BonusView>(criteria, x => x.UserID == AcnID);
+            criteria.Parameters = new { UserID = AcnID };
+            criteria.GetWhereClause();
+
+            var query = new BonusViewFactory().Query(criteria);
 
             var mapper = BonusDto.ConfigMapper().CreateMapper();
 
@@ -257,7 +267,9 @@ namespace Arsenal.Mobile.Controllers
         {
             var model = new ResultDto();
 
-            var query = _repo.Query<MatchView>(criteria, x => x.ResultHome.HasValue && x.ResultAway.HasValue);
+            criteria.WhereClause = "(ResultHome IS NOT NULL) AND (ResultAway IS NOT NULL) ";
+
+            var query = new MatchViewFactory().Query(criteria);
 
             var mapper = MatchDto.ConfigMapper().CreateMapper();
 
@@ -277,7 +289,7 @@ namespace Arsenal.Mobile.Controllers
         {
             var model = new DetailDto { Match = MatchDto.Single(id) };
 
-            var query = _repo.Query<BetView>(x => x.CasinoItem.MatchGuid == id)
+            var query = new BetViewFactory().Query(new Criteria(new { MatchGuid = id }))
                 .Many<BetView, BetDetail, int>(t => t.ID);
 
             var mapper = BetDto.ConfigMapper().CreateMapper();
@@ -303,8 +315,7 @@ namespace Arsenal.Mobile.Controllers
             model.Match = MatchDto.Single(id);
 
             // model.MyBets
-            var betsQuery = _repo.Query<BetView>(x =>
-                x.UserID == AcnID && x.CasinoItem.MatchGuid == id)
+            var betsQuery = new BetViewFactory().Query(new Criteria(new { UserID = AcnID, MatchGuid = id }))
                 .Many<BetView, BetDetail, int>(t => t.ID);
 
             var mapper = BetDto.ConfigMapper().CreateMapper();
@@ -316,7 +327,8 @@ namespace Arsenal.Mobile.Controllers
             // model.HistoryMatches
             var match = _repo.Single<Match>(id);
 
-            var matchesQuery = _repo.Query<MatchView>(x => x.ResultHome.HasValue && x.ResultAway.HasValue)
+            var matchesQuery = new MatchViewFactory().All()
+                .FindAll(x => x.ResultHome.HasValue && x.ResultAway.HasValue)
                 .FindAll(x => x.Home.ID.Equals(match.Home) && x.Away.ID.Equals(match.Away) ||
                               x.Home.ID.Equals(match.Away) && x.Away.ID.Equals(match.Home));
 
@@ -343,14 +355,7 @@ namespace Arsenal.Mobile.Controllers
             // 判断玩家是否有单注限制
             var leagueGuid = _repo.Single<Match>(id)?.LeagueGuid;
 
-            if (leagueGuid.HasValue)
-            {
-                model.BetLimit = GamblerDW.GetGamblerBetLimit(AcnID, leagueGuid.Value);
-            }
-            else
-            {
-                model.BetLimit = model.MyCash;
-            }
+            model.BetLimit = leagueGuid.HasValue ? GamblerDW.GetGamblerBetLimit(AcnID, leagueGuid.Value) : model.MyCash;
 
             model.Match = MatchDto.Single(id);
             model.MatchGuid = id;
@@ -433,14 +438,7 @@ namespace Arsenal.Mobile.Controllers
 
             model.MyCash = gambler?.Cash ?? 0f;
 
-            if (leagueGuid.HasValue)
-            {
-                model.BetLimit = GamblerDW.GetGamblerBetLimit(AcnID, leagueGuid.Value);
-            }
-            else
-            {
-                model.BetLimit = model.MyCash;
-            }
+            model.BetLimit = leagueGuid.HasValue ? GamblerDW.GetGamblerBetLimit(AcnID, leagueGuid.Value) : model.MyCash;
 
             model.Match = MatchDto.Single(model.MatchGuid);
 

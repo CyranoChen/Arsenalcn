@@ -14,9 +14,9 @@ namespace Arsenal.Mobile.Tests
         [TestMethod]
         public void MyCouponJsonSerializeAndDeserialize_Test()
         {
-            IRepository repo = new Repository();
+            var factory = new CouponViewFactory();
 
-            var coupons = repo.Query<CouponView>(x => x.UserID == 443);
+            var coupons = factory.Query(new Criteria(new { UserID = 443 }));
 
             if (coupons != null && coupons.Count > 0)
             {

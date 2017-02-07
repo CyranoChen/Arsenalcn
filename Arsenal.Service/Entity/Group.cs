@@ -110,6 +110,22 @@ namespace Arsenal.Service
 
         #region Members and Properties
 
+        public override Guid ID
+        {
+            get
+            {
+                if (GroupGuid.Equals(Guid.Empty))
+                {
+                    GroupGuid = Guid.NewGuid();
+                }
+
+                return GroupGuid;
+            }
+            set { GroupGuid = value; }
+        }
+
+        private Guid GroupGuid { get; set; }
+
         [DbColumn("GroupName")]
         public string GroupName { get; set; }
 

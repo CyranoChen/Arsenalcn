@@ -5,7 +5,7 @@ using Arsenalcn.Core;
 
 namespace Arsenal.Service.Casino
 {
-    [DbSchema("AcnCasino_ChoiceOption", Sort = "CasinoItemGuid, OrderID")]
+    [DbSchema("AcnCasino_ChoiceOption", Sort = "CasinoItemGuid, OptionOrder")]
     public class ChoiceOption : Entity<int>
     {
         public static void Clean(SqlTransaction trans = null)

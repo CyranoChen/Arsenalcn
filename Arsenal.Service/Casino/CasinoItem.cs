@@ -38,6 +38,22 @@ namespace Arsenal.Service.Casino
 
         #region Members and Properties
 
+        public override Guid ID
+        {
+            get
+            {
+                if (CasinoItemGuid.Equals(Guid.Empty))
+                {
+                    CasinoItemGuid = Guid.NewGuid();
+                }
+
+                return CasinoItemGuid;
+            }
+            set { CasinoItemGuid = value; }
+        }
+
+        private Guid CasinoItemGuid { get; set; }
+
         [DbColumn("ItemType")]
         public CasinoType ItemType { get; set; }
 
@@ -82,4 +98,11 @@ namespace Arsenal.Service.Casino
         SingleChoice = 2,
         MatchResult = 1
     }
+
+    //public class CasinoItemLite : CasinoItem
+    //{
+    //    public override Guid ID => CasinoItemGuid;
+
+    //    private Guid CasinoItemGuid { get; set; }
+    //}
 }

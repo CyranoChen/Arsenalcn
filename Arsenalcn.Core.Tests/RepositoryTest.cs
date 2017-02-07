@@ -39,7 +39,10 @@ namespace Arsenalcn.Core.Tests
             IRepository repo = new Repository();
 
             repo.Single<League>(null);
-            repo.Single<MatchView>(null);
+
+            IViewerFactory<MatchView> factory = new MatchViewFactory();
+
+            factory.Single(null);
         }
 
         [Ignore]
@@ -63,12 +66,12 @@ namespace Arsenalcn.Core.Tests
         [TestMethod]
         public void Test_Single_Viewer()
         {
-            IRepository repo = new Repository();
+            var factory = new MatchViewFactory();
 
             // the match has not group
             var key1 = new Guid("12236a72-f35b-4a0f-90e6-67b11c3364bc");
 
-            var instance1 = repo.Single<MatchView>(x => x.ID == key1);
+            var instance1 = factory.Single(key1);
 
             Assert.IsNotNull(instance1);
             Assert.IsInstanceOfType(instance1, typeof(MatchView));
@@ -82,7 +85,7 @@ namespace Arsenalcn.Core.Tests
             // the match has group
             var key2 = new Guid("73c314c3-4e50-428d-b698-475fb854e4ea");
 
-            var instance2 = repo.Single<MatchView>(x => x.ID == key2);
+            var instance2 = factory.Single(key2);
 
             Assert.IsNotNull(instance2.Group); // has relation group
         }
@@ -90,11 +93,11 @@ namespace Arsenalcn.Core.Tests
         [TestMethod]
         public void Test_Single_Viewer_Many()
         {
-            IRepository repo = new Repository();
+            var factory = new MatchViewFactory();
 
             var key1 = new Guid("12236a72-f35b-4a0f-90e6-67b11c3364bc");
 
-            var instance1 = repo.Single<MatchView>(x => x.ID == key1);
+            var instance1 = factory.Single(key1);
 
             instance1.Many<ChoiceOption>(x => x.CasinoItemGuid == instance1.CasinoItem.ID);
 
@@ -103,7 +106,7 @@ namespace Arsenalcn.Core.Tests
             Assert.IsNotNull(instance1.ChoiceOptions);
             Assert.IsTrue(instance1.ChoiceOptions.Any());
 
-            var instance2 = repo.Single<MatchView>(x => x.ID == key1);
+            var instance2 = factory.Single(key1);
 
             instance2.Many<ChoiceOption>(x => x.CasinoItemGuid == instance1.ID);
 
@@ -117,11 +120,11 @@ namespace Arsenalcn.Core.Tests
         [ExpectedException(typeof(FormatException))]
         public void Test_Single_Viewer_Many_FormatException()
         {
-            IRepository repo = new Repository();
+            var factory = new MatchViewFactory();
 
             var key = new Guid("12236a72-f35b-4a0f-90e6-67b11c3364bc");
 
-            var instance = repo.Single<MatchView>(x => x.ID == key);
+            var instance = factory.Single(key);
 
             instance.Many<League>(x => x.ID == instance.CasinoItem.ID);
         }
@@ -141,9 +144,9 @@ namespace Arsenalcn.Core.Tests
         [TestMethod]
         public void Test_All_Viewer()
         {
-            IRepository repo = new Repository();
+            IViewerFactory<MatchView> factory = new MatchViewFactory();
 
-            var query = repo.All<MatchView>();
+            var query = factory.All();
 
             Assert.IsNotNull(query);
             Assert.IsInstanceOfType(query, typeof(List<MatchView>));
@@ -163,9 +166,9 @@ namespace Arsenalcn.Core.Tests
         [TestMethod]
         public void Test_All_Viewer_Many_Linq()
         {
-            IRepository repo = new Repository();
+            IViewerFactory<MatchView> factory = new MatchViewFactory();
 
-            var query1 = repo.All<MatchView>().Take(5).ToList();
+            var query1 = factory.All().Take(5).ToList();
 
             query1.Many<MatchView, ChoiceOption>((tOne, tMany) => tOne.CasinoItem.ID.Equals(tMany.CasinoItemGuid));
 
@@ -180,7 +183,7 @@ namespace Arsenalcn.Core.Tests
             Assert.IsNotNull(instance1.ChoiceOptions);
             Assert.IsTrue(instance1.ChoiceOptions.Any());
 
-            var query2 = repo.All<MatchView>().Take(5).ToList();
+            var query2 = factory.All().Take(5).ToList();
 
             query2.Many<MatchView, ChoiceOption>((tOne, tMany) => tOne.ID.Equals(tMany.CasinoItemGuid));
 
@@ -198,9 +201,9 @@ namespace Arsenalcn.Core.Tests
         [TestMethod]
         public void Test_All_Viewer_Many_Sql()
         {
-            IRepository repo = new Repository();
+            IViewerFactory<MatchView> factory = new MatchViewFactory();
 
-            var query1 = repo.All<MatchView>().Take(5).ToList();
+            var query1 = factory.All().Take(5).ToList();
 
             query1.Many<MatchView, ChoiceOption, Guid>(t => t.CasinoItem.ID);
 
@@ -215,7 +218,7 @@ namespace Arsenalcn.Core.Tests
             Assert.IsNotNull(instance1.ChoiceOptions);
             Assert.IsTrue(instance1.ChoiceOptions.Any());
 
-            var query2 = repo.All<MatchView>().Take(5).ToList();
+            var query2 = factory.All().Take(5).ToList();
 
             query1.Many<MatchView, ChoiceOption, Guid>(t => t.ID);
 
@@ -234,9 +237,9 @@ namespace Arsenalcn.Core.Tests
         [TestMethod]
         public void Test_All_Viewer_Many_Sql_Large()
         {
-            IRepository repo = new Repository();
+            var factory = new BetViewFactory();
 
-            var query1 = repo.All<BetView>(new Pager { PagingSize = 1000 }).ToList();
+            var query1 = factory.All(new Pager { PagingSize = 1000 }).ToList();
 
             query1.Many<BetView, BetDetail, int>(t => t.ID);
 
@@ -250,9 +253,9 @@ namespace Arsenalcn.Core.Tests
         [ExpectedException(typeof(FormatException))]
         public void Test_All_Viewer_Many_FormatException()
         {
-            IRepository repo = new Repository();
+            IViewerFactory<MatchView> factory = new MatchViewFactory();
 
-            var query = repo.All<MatchView>().Take(2).ToList();
+            var query = factory.All().Take(2).ToList();
 
             query.Many<MatchView, League>((tOne, tMany) => tOne.CasinoItem.ID.Equals(tMany.ID));
             query.Many<MatchView, League, Guid>(t => t.ID);
@@ -263,9 +266,9 @@ namespace Arsenalcn.Core.Tests
         [ExpectedException(typeof(ArgumentException))]
         public void Test_All_Viewer_Many_ArgumentException()
         {
-            IRepository repo = new Repository();
+            IViewerFactory<MatchView> factory = new MatchViewFactory();
 
-            var query = repo.All<MatchView>().Take(2).ToList();
+            var query = factory.All().Take(2).ToList();
 
             query.Many<MatchView, ChoiceOption, DateTime>(t => t.PlayTime);
         }
@@ -324,20 +327,20 @@ namespace Arsenalcn.Core.Tests
         [TestMethod]
         public void Test_All_Pager_Viewer()
         {
-            IRepository repo = new Repository();
+            var factory = new BetViewFactory();
 
-            IPager criteria = new Criteria { PagingSize = 20 };
+            IPager pager = new Pager { PagingSize = 20 };
 
-            Assert.IsFalse(criteria.TotalCount > 0);
+            Assert.IsFalse(pager.TotalCount > 0);
 
-            var query = repo.All<BetView>(criteria, "BetTime DESC");
+            var query = factory.All(pager, "BetTime DESC");
 
             Assert.IsNotNull(query);
             Assert.IsInstanceOfType(query, typeof(List<BetView>));
             Assert.IsTrue(query.Any());
 
-            Assert.IsTrue(criteria.TotalCount > 0);
-            Assert.AreEqual(criteria.PagingSize.ToString(), query.Count.ToString());
+            Assert.IsTrue(pager.TotalCount > 0);
+            Assert.AreEqual(pager.PagingSize.ToString(), query.Count.ToString());
         }
 
         [TestMethod]
@@ -418,10 +421,14 @@ namespace Arsenalcn.Core.Tests
         [TestMethod]
         public void Test_Query_Viewer()
         {
-            IRepository repo = new Repository();
+            IViewerFactory<MatchView> factory = new MatchViewFactory();
 
-            var query = repo.Query<MatchView>(x => x.ResultHome.HasValue && x.ResultAway.HasValue &&
-            x.ResultHome >= 0 && x.ResultAway >= 0 && x.PlayTime < DateTime.Now);
+            var criteria = new Criteria
+            {
+                WhereClause = $"(PlayTime < '{DateTime.Now}') AND (ResultHome > 0) AND (ResultAway > 0) "
+            };
+
+            var query = factory.Query(criteria);
 
             Assert.IsNotNull(query);
             Assert.IsInstanceOfType(query, typeof(List<MatchView>));
@@ -441,13 +448,18 @@ namespace Arsenalcn.Core.Tests
         [TestMethod]
         public void Test_Query_Pager_Viewer()
         {
-            IRepository repo = new Repository();
+            var factory = new BetViewFactory();
 
-            IPager criteria = new Criteria { PagingSize = 20 };
+            var criteria = new Criteria
+            {
+                PagingSize = 20,
+                WhereClause = "(IsWin IS NOT NULL) AND (IsWin = 1)",
+                OrderClause = "BetTime DESC"
+            };
 
             Assert.IsFalse(criteria.TotalCount > 0);
 
-            var query = repo.Query<BetView>(criteria, x => x.IsWin.HasValue && x.IsWin == true, "BetTime DESC");
+            var query = factory.Query(criteria);
 
             Assert.IsNotNull(query);
             Assert.IsInstanceOfType(query, typeof(List<BetView>));
@@ -460,9 +472,9 @@ namespace Arsenalcn.Core.Tests
         [TestMethod]
         public void Test_Query_Viewer_Many()
         {
-            IRepository repo = new Repository();
+            var factory = new BetViewFactory();
 
-            var query = repo.Query<BetView>(x => x.UserID == 443)
+            var query = factory.Query(new Criteria(new { UserID = 443 }))
                 .Many<BetView, BetDetail, int>(t => t.ID);
 
             Assert.IsNotNull(query);

@@ -106,10 +106,46 @@ namespace Arsenalcn.Core
             return Connection.ExecuteScalar<T>(sql, para, trans, CommandTimeout, commandType);
         }
 
+        public IEnumerable<dynamic> Query(string sql, object para = null, IDbTransaction trans = null,
+            CommandType? commandType = null)
+        {
+            return Connection.Query(sql, para, trans, true, CommandTimeout, commandType);
+        }
+
         public IEnumerable<T> Query<T>(string sql, object para = null, IDbTransaction trans = null,
             CommandType? commandType = null)
         {
             return Connection.Query<T>(sql, para, trans, true, CommandTimeout, commandType);
+        }
+
+        public IEnumerable<T> Query<T1, T2, T>(string sql, Func<T1, T2, T> map,
+            object para = null, string splitOn = "Id", CommandType? commandType = null)
+        {
+            return Connection.Query(sql, map, para, null, true, splitOn, CommandTimeout, commandType);
+        }
+
+        public IEnumerable<T> Query<T1, T2, T3, T>(string sql, Func<T1, T2, T3, T> map,
+            object para = null, string splitOn = "Id", CommandType? commandType = null)
+        {
+            return Connection.Query(sql, map, para, null, true, splitOn, CommandTimeout, commandType);
+        }
+
+        public IEnumerable<T> Query<T1, T2, T3, T4, T>(string sql, Func<T1, T2, T3, T4, T> map,
+            object para = null, string splitOn = "Id", CommandType? commandType = null)
+        {
+            return Connection.Query(sql, map, para, null, true, splitOn, CommandTimeout, commandType);
+        }
+
+        public IEnumerable<T> Query<T1, T2, T3, T4, T5, T>(string sql, Func<T1, T2, T3, T4, T5, T> map,
+            object para = null, string splitOn = "Id", CommandType? commandType = null)
+        {
+            return Connection.Query(sql, map, para, null, true, splitOn, CommandTimeout, commandType);
+        }
+
+        public IEnumerable<T> Query<T1, T2, T3, T4, T5, T6, T>(string sql, Func<T1, T2, T3, T4, T5, T6, T> map,
+            object para = null, string splitOn = "Id", CommandType? commandType = null)
+        {
+            return Connection.Query(sql, map, para, null, true, splitOn, CommandTimeout, commandType);
         }
 
         public void Dispose()

@@ -45,6 +45,22 @@ namespace Arsenal.Service
 
         #region Members and Properties
 
+        public override Guid ID
+        {
+            get
+            {
+                if (LeagueGuid.Equals(Guid.Empty))
+                {
+                    LeagueGuid = Guid.NewGuid();
+                }
+
+                return LeagueGuid;
+            }
+            set { LeagueGuid = value; }
+        }
+
+        private Guid LeagueGuid { get; set; }
+
         [DbColumn("LeagueName")]
         public string LeagueName { get; set; }
 

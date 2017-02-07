@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Linq;
 using Arsenal.Service;
+using Arsenal.Service.Casino;
+using Dapper;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Arsenalcn.Core.Tests
@@ -66,6 +69,45 @@ namespace Arsenalcn.Core.Tests
 
             Assert.IsNotNull(list2);
             Assert.IsTrue(list2.Count > 0);
+        }
+
+        [TestMethod]
+        public void Test_Viewer()
+        {
+            var sql = @"SELECT m.MatchGuid AS ID, m.ResultHome, m.ResultAway, m.PlayTime, m.LeagueName, m.Round, 
+                  c.CasinoItemGuid, c.ItemType, c.MatchGuid, c.CloseTime, c.Earning, 
+                  h.TeamGuid AS HomeTeamGuid, h.TeamEnglishName AS HomeEnglishName, h.TeamDisplayName AS HomeDisplayName, h.TeamLogo AS HomeLogo, 
+                  a.TeamGuid AS AwayTeamGuid, a.TeamEnglishName AS AwayEnglishName, a.TeamDisplayName AS AwayDisplayName, a.TeamLogo AS AwayLogo, 
+                  g.GroupGuid, g.GroupName, g.IsTable, 
+                  l.LeagueGuid, l.LeagueOrgName, l.LeagueSeason, l.LeagueLogo
+                  FROM     dbo.AcnCasino_Match AS m LEFT OUTER JOIN
+                      dbo.AcnCasino_CasinoItem AS c ON m.MatchGuid = c.MatchGuid LEFT OUTER JOIN
+                      dbo.Arsenal_League AS l ON m.LeagueGuid = l.LeagueGuid LEFT OUTER JOIN
+                      dbo.Arsenal_Team AS h ON m.Home = h.TeamGuid LEFT OUTER JOIN
+                      dbo.Arsenal_Team AS a ON m.Away = a.TeamGuid LEFT OUTER JOIN
+                      dbo.Arsenal_Group AS g ON m.GroupGuid = g.GroupGuid
+                  WHERE  (c.ItemType = 2)";
+
+            var list = DapperHelper.Connection.Query<MatchView, CasinoItem, HomeTeam, AwayTeam, Group, League, MatchView>(sql,
+                            (x, c, h, a, g, l) =>
+                            {
+                                x.CasinoItem = c;
+                                x.Home = h;
+                                x.Away = a;
+                                x.Group = g;
+                                x.League = l;
+
+                                return x;
+                            }, splitOn: "ID, CasinoItemGuid, HomeTeamGuid, AwayTeamGuid, GroupGuid, LeagueGuid").ToList<IViewer>();
+
+
+            Assert.IsTrue(list.Count > 0);
+
+            IViewerFactory<MatchView> factory = new MatchViewFactory();
+
+            var result = factory.All();
+
+            Assert.IsInstanceOfType(result[0], typeof(MatchView));
         }
     }
 }

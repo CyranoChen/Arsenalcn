@@ -54,19 +54,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Dapper\DapperHelper.cs" />
-    <Compile Include="Entity\Assembly.cs" />
-    <Compile Include="Entity\Attribute.cs" />
-    <Compile Include="Entity\Condition.cs" />
-    <Compile Include="Entity\Config.cs" />
-    <Compile Include="Entity\Criteria.cs" />
-    <Compile Include="Entity\Dictionary.cs">
+    <Compile Include="Utility\Assembly.cs" />
+    <Compile Include="Model\Attribute.cs" />
+    <Compile Include="Model\Condition.cs" />
+    <Compile Include="Utility\Config.cs" />
+    <Compile Include="Model\Criteria.cs" />
+    <Compile Include="Utility\Dictionary.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Entity\Entity.cs" />
+    <Compile Include="Model\Entity.cs" />
     <Compile Include="Dapper\IRepository.cs" />
-    <Compile Include="Entity\Pager.cs" />
-    <Compile Include="Entity\Searchable.cs" />
-    <Compile Include="Entity\Dao.cs" />
+    <Compile Include="Model\Pager.cs" />
+    <Compile Include="Model\Searchable.cs" />
+    <Compile Include="Model\Dao.cs" />
+    <Compile Include="Model\Viewer.cs" />
     <Compile Include="Extension\AutoMapperHelper.cs" />
     <Compile Include="Extension\CollectionExtensions.cs" />
     <Compile Include="Extension\RepositoryExtensions.cs" />
@@ -85,7 +86,7 @@
     <Compile Include="Utility\IP.cs" />
     <Compile Include="Utility\Encrypt.cs" />
     <Compile Include="Utility\OS.cs" />
-    <Compile Include="Entity\RestClient.cs" />
+    <Compile Include="Utility\RestClient.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

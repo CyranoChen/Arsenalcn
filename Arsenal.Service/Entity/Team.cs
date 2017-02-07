@@ -82,4 +82,30 @@ namespace Arsenal.Service
 
         #endregion
     }
+
+    public class HomeTeam : Team
+    {
+        public override Guid ID => HomeTeamGuid;
+
+        private Guid HomeTeamGuid { get; set; }
+
+        public string HomeEnglishName { get; set; }
+
+        public string HomeDisplayName { get; set; }
+
+        public string HomeLogo { get; set; }
+    }
+
+    public class AwayTeam : Team
+    {
+        public override Guid ID => AwayTeamGuid;
+
+        private Guid AwayTeamGuid { get; set; }
+
+        public string AwayEnglishName { get; set; }
+
+        public string AwayDisplayName { get; set; }
+
+        public string AwayLogo { get; set; }
+    }
 }

@@ -3,8 +3,8 @@ using Arsenalcn.Core;
 
 namespace Arsenal.Service.Casino
 {
-    [DbSchema("AcnCasino_CouponView", Sort = "PlayTime, BetTime DESC")]
-    public class CouponView : Dao
+    [DbSchema("AcnCasino_CouponView", Sort = "PlayTime")]
+    public class CouponView : Viewer
     {
         //public static void CreateMap()
         //{
@@ -95,14 +95,14 @@ namespace Arsenal.Service.Casino
 
         // Complex Object
 
-        [DbColumn("b", Key = "ID")]
-        public Bet Bet { get; set; }
+        //[DbColumn("b", Key = "ID")]
+        //public Bet Bet { get; set; }
 
         [DbColumn("h", Key = "TeamGuid")]
-        public Team Home { get; set; }
+        public HomeTeam Home { get; set; }
 
         [DbColumn("a", Key = "TeamGuid")]
-        public Team Away { get; set; }
+        public AwayTeam Away { get; set; }
 
         [DbColumn("l", Key = "LeagueGuid")]
         public League League { get; set; }

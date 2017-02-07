@@ -5,7 +5,7 @@ using Arsenalcn.Core;
 namespace Arsenal.Service.Casino
 {
     [DbSchema("AcnCasino_BetView", Sort = "BetTime DESC")]
-    public class BetView : Dao
+    public class BetView : Viewer
     {
         //public static void CreateMap()
         //{
@@ -111,10 +111,10 @@ namespace Arsenal.Service.Casino
         public Match Match { get; set; }
 
         [DbColumn("h", Key = "TeamGuid")]
-        public Team Home { get; set; }
+        public HomeTeam Home { get; set; }
 
         [DbColumn("a", Key = "TeamGuid")]
-        public Team Away { get; set; }
+        public AwayTeam Away { get; set; }
 
         [DbColumn("l", Key = "LeagueGuid")]
         public League League { get; set; }

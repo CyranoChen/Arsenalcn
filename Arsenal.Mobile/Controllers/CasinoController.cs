@@ -221,7 +221,6 @@ namespace Arsenal.Mobile.Controllers
             var model = new MyBetDto();
 
             criteria.Parameters = new { UserID = AcnID };
-            criteria.GetWhereClause();
 
             var query = new BetViewFactory().Query(criteria).Many<BetView, BetDetail, int>(t => t.ID);
 
@@ -244,7 +243,6 @@ namespace Arsenal.Mobile.Controllers
             var model = new MyBonusDto();
 
             criteria.Parameters = new { UserID = AcnID };
-            criteria.GetWhereClause();
 
             var query = new BonusViewFactory().Query(criteria);
 

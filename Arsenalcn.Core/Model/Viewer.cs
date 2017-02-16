@@ -84,16 +84,4 @@ namespace Arsenalcn.Core
 
         void Many<T>(Expression<Func<T, bool>> whereBy) where T : class, IDao, new();
     }
-
-    // Abstract Factory
-    public interface IViewerFactory<T> where T : class, IViewer, new()
-    {
-        T Single(Criteria criteria);
-
-        List<T> All();
-
-        List<T> All(IPager page, string orderBy = null);
-
-        List<T> Query(Criteria criteria);
-    }
 }

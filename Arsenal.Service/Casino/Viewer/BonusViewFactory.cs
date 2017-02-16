@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Arsenalcn.Core;
 
 namespace Arsenal.Service.Casino
 {
-    public class BonusViewFactory : IViewerFactory<BonusView>
+    public class BonusViewFactory : ViewerFactory, IViewerFactory<BonusView>
     {
-        private string _viewerSql;
-        private string _splitOn;
-        private DbSchema _dbSchema;
-
         public BonusViewFactory()
         {
-            _viewerSql = @"SELECT ISNULL(mr.MatchGuid, sc.MatchGuid) AS MatchGuid, ISNULL(mr.UserID, sc.UserID) AS UserID, ISNULL(mr.UserName, sc.UserName) AS UserName, 
+            ViewerSql = @"SELECT ISNULL(mr.MatchGuid, sc.MatchGuid) AS MatchGuid, ISNULL(mr.UserID, sc.UserID) AS UserID, ISNULL(mr.UserName, sc.UserName) AS UserName, 
                                   sc.Win, sc.Lose, sc.Earning, sc.TotalBet, mr.RPBonus, m.PlayTime, m.LeagueName, m.Round, 
                                   h.TeamGuid AS HomeTeamGuid, h.TeamEnglishName AS HomeEnglishName, h.TeamDisplayName AS HomeDisplayName, h.TeamLogo AS HomeLogo, 
                                   a.TeamGuid AS AwayTeamGuid, a.TeamEnglishName AS AwayEnglishName, a.TeamDisplayName AS AwayDisplayName, a.TeamLogo AS AwayLogo, 
@@ -35,23 +30,16 @@ namespace Arsenal.Service.Casino
                                   Arsenal_Team AS h ON m.Home = h.TeamGuid LEFT OUTER JOIN
                                   Arsenal_Team AS a ON m.Away = a.TeamGuid";
 
-            _splitOn = "MatchGuid, HomeTeamGuid, AwayTeamGuid, LeagueGuid";
+            SplitOn = "MatchGuid, HomeTeamGuid, AwayTeamGuid, LeagueGuid";
 
-            _dbSchema = Repository.GetTableAttr<BonusView>();
+            DbSchema = Repository.GetTableAttr<BonusView>();
         }
 
         public BonusView Single(Criteria criteria)
         {
-            var sql = $"SELECT * FROM ({_viewerSql}) AS {_dbSchema.Name} ";
-
             var dapper = new DapperHelper();
 
-            if (!string.IsNullOrEmpty(criteria?.WhereClause))
-            {
-                sql += " " + criteria.WhereClause;
-            }
-
-            return dapper.Query<BonusView, HomeTeam, AwayTeam, League, BonusView>(sql,
+            return dapper.Query<BonusView, HomeTeam, AwayTeam, League, BonusView>(BuildSingleSql(criteria),
                 (x, h, a, l) =>
                 {
                     x.Home = h;
@@ -59,16 +47,14 @@ namespace Arsenal.Service.Casino
                     x.League = l;
 
                     return x;
-                }, criteria?.Parameters, _splitOn).FirstOrDefault();
+                }, criteria?.Parameters, SplitOn).FirstOrDefault();
         }
 
         public List<BonusView> All()
         {
-            var sql = $"SELECT * FROM ({_viewerSql}) AS {_dbSchema.Name} ORDER BY {_dbSchema.Sort}";
-
             var dapper = new DapperHelper();
 
-            return dapper.Query<BonusView, HomeTeam, AwayTeam, League, BonusView>(sql,
+            return dapper.Query<BonusView, HomeTeam, AwayTeam, League, BonusView>(BuildAllSql(),
                 (x, h, a, l) =>
                 {
                     x.Home = h;
@@ -76,28 +62,29 @@ namespace Arsenal.Service.Casino
                     x.League = l;
 
                     return x;
-                }, null, _splitOn).ToList();
+                }, null, SplitOn).ToList();
         }
 
-        public List<BonusView> All(IPager page, string orderBy = null)
+        public List<BonusView> All(IPager pager, string orderBy = null)
         {
-            throw new NotImplementedException();
+            var dapper = new DapperHelper();
+
+            return dapper.Query<BonusView, HomeTeam, AwayTeam, League, BonusView>(BuildAllSql(pager, orderBy),
+                (x, h, a, l) =>
+                {
+                    x.Home = h;
+                    x.Away = a;
+                    x.League = l;
+
+                    return x;
+                }, null, SplitOn).ToList();
         }
 
         public List<BonusView> Query(Criteria criteria)
         {
-            var sql = $"SELECT * FROM ({_viewerSql}) AS {_dbSchema.Name} ";
-
             var dapper = new DapperHelper();
 
-            if (!string.IsNullOrEmpty(criteria?.WhereClause))
-            {
-                sql += " WHERE " + criteria.WhereClause;
-                sql += " ORDER BY " + (!string.IsNullOrEmpty(criteria.OrderClause)
-                    ? criteria.OrderClause : _dbSchema.Sort);
-            }
-
-            return dapper.Query<BonusView, HomeTeam, AwayTeam, League, BonusView>(sql,
+            return dapper.Query<BonusView, HomeTeam, AwayTeam, League, BonusView>(BuildQuerySql(criteria),
                 (x, h, a, l) =>
                 {
                     x.Home = h;
@@ -105,7 +92,7 @@ namespace Arsenal.Service.Casino
                     x.League = l;
 
                     return x;
-                }, criteria?.Parameters, _splitOn).ToList();
+                }, criteria?.Parameters, SplitOn).ToList();
         }
     }
 }

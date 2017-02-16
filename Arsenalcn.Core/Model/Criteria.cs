@@ -13,8 +13,6 @@ namespace Arsenalcn.Core
         {
             Parameters = para;
 
-            GetWhereClause();
-
             PagingSize = pagesize;
         }
 
@@ -36,11 +34,15 @@ namespace Arsenalcn.Core
             }
         }
 
-        public void GetWhereClause()
+        public string GetWhereClause()
         {
-            var propties = Parameters.GetType().GetProperties();
+            var propties = Parameters?.GetType().GetProperties();
 
-            if (propties.Any())
+            if (Parameters == null && string.IsNullOrEmpty(WhereClause)) { return null; }
+
+            var strPara = string.Empty;
+
+            if (propties != null && propties.Any())
             {
                 var arrWhere = new string[propties.Length];
 
@@ -51,8 +53,10 @@ namespace Arsenalcn.Core
                     arrWhere[i] = $" {p.Name} = @{p.Name}";
                 }
 
-                WhereClause = string.Join(" AND ", arrWhere);
+                strPara = string.Join(" AND ", arrWhere);
             }
+
+            return WhereClause ?? string.Empty + strPara;
         }
 
         public void SetTotalCount(int value)

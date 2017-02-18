@@ -38,7 +38,7 @@ namespace Arsenalcn.Core
         {
             var propties = Parameters?.GetType().GetProperties();
 
-            if (Parameters == null && string.IsNullOrEmpty(WhereClause)) { return null; }
+            if (Parameters == null && string.IsNullOrEmpty(WhereClause)) { return string.Empty; }
 
             var strPara = string.Empty;
 
@@ -56,7 +56,22 @@ namespace Arsenalcn.Core
                 strPara = string.Join(" AND ", arrWhere);
             }
 
-            return WhereClause ?? string.Empty + strPara;
+            if (!string.IsNullOrEmpty(WhereClause) && !string.IsNullOrEmpty(strPara))
+            {
+                return $" ({WhereClause}) AND ({strPara}) ";
+            }
+
+            if (!string.IsNullOrEmpty(WhereClause) && string.IsNullOrEmpty(strPara))
+            {
+                return $" ({WhereClause}) ";
+            }
+
+            if (string.IsNullOrEmpty(WhereClause) && !string.IsNullOrEmpty(strPara))
+            {
+                return $" ({strPara}) ";
+            }
+
+            return string.Empty;
         }
 
         public void SetTotalCount(int value)

@@ -20,6 +20,7 @@ namespace Arsenalcn.Core
 
         List<T> Query<T>(Expression<Func<T, bool>> whereBy) where T : class, IDao, new();
         List<T> Query<T>(IPager pager, Expression<Func<T, bool>> whereBy, string orderBy = null) where T : class, IDao, new();
+        List<T> Query<T>(Criteria criteria) where T : class, IDao, new();
 
         int Insert<T>(T instance, SqlTransaction trans = null) where T : class, IDao;
         int Insert<T>(T instance, out object key, SqlTransaction trans = null) where T : class, IEntity;

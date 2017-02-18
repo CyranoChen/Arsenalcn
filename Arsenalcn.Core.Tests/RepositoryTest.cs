@@ -387,7 +387,6 @@ namespace Arsenalcn.Core.Tests
             Assert.AreEqual(pager1.TotalCount.ToString(), queryVal.Count.ToString());
             Assert.AreEqual(pager1.PagingSize.ToString(), query1.Count.ToString());
 
-
             // large pagingSize
             IPager pager2 = new Pager(0) { PagingSize = 1000 };
 
@@ -416,6 +415,62 @@ namespace Arsenalcn.Core.Tests
             Assert.AreEqual(pager2.TotalCount.ToString(), queryVal.Count.ToString());
             Assert.AreEqual(pager3.CurrentPage.ToString(), pager3.MaxPage.ToString());
             Assert.AreEqual(query3.Count.ToString(), (queryVal.Count % pager3.PagingSize).ToString());
+        }
+
+        [TestMethod]
+        public void Test_Query_Criteria()
+        {
+            IRepository repo = new Repository();
+
+            // normal condition
+            var criteria1 = new Criteria();
+
+            Assert.IsFalse(criteria1.TotalCount > 0);
+
+            var query1 = repo.Query<League>(criteria1);
+            var queryVal1 = repo.All<League>();
+
+            Assert.IsNotNull(query1);
+            Assert.IsInstanceOfType(query1, typeof(List<League>));
+            Assert.IsTrue(query1.Any());
+
+            Assert.IsTrue(criteria1.TotalCount > 0);
+            Assert.AreEqual(criteria1.TotalCount.ToString(), queryVal1.Count.ToString());
+            Assert.AreEqual(criteria1.PagingSize.ToString(), query1.Count.ToString());
+
+            // large pagingSize
+            var criteria2 = new Criteria(new { IsActive = true }, pagesize: 1000);
+
+            var query2 = repo.Query<League>(criteria2);
+            var queryVal2 = repo.Query<League>(x => x.IsActive == true);
+
+            Assert.IsNotNull(query2);
+            Assert.IsInstanceOfType(query2, typeof(List<League>));
+            Assert.IsTrue(query2.Any());
+
+            Assert.IsTrue(criteria2.TotalCount > 0);
+            Assert.AreEqual(criteria2.TotalCount.ToString(), queryVal2.Count.ToString());
+            Assert.AreEqual(query2.Count.ToString(), queryVal2.Count.ToString());
+
+            // Customlize Criteria
+            var criteria3 = new Criteria
+            {
+                WhereClause = "LeagueTime > '2014-01-01' AND LeagueOrder > 50",
+                OrderClause = "LeagueName",
+                Parameters = new { IsActive = true },
+                PagingSize = 5
+            };
+
+            var query3 = repo.Query<League>(criteria3);
+            var queryVal3 = repo.Query<League>(x => x.IsActive == true)
+                .FindAll(x => x.LeagueTime > Convert.ToDateTime("2014-01-01") && x.LeagueOrder > 50);
+
+            Assert.IsNotNull(query3);
+            Assert.IsInstanceOfType(query3, typeof(List<League>));
+            Assert.IsTrue(query3.Any());
+
+            Assert.IsTrue(criteria3.TotalCount > 0);
+            Assert.AreEqual(criteria3.TotalCount.ToString(), queryVal3.Count.ToString());
         }
 
         [TestMethod]

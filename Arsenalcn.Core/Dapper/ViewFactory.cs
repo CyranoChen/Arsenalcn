@@ -61,7 +61,7 @@
                 // Get TotalCount First
                 var countSql = $"SELECT COUNT(*) AS TotalCount FROM ({ViewerSql}) AS {DbSchema.Name} {strWhere}";
 
-                criteria.SetTotalCount(new DapperHelper().ExecuteScalar<int>(countSql));
+                criteria.SetTotalCount(new DapperHelper().ExecuteScalar<int>(countSql, criteria.Parameters));
 
                 // Get Query Result
                 var innerSql =

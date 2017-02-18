@@ -206,6 +206,47 @@ namespace Arsenalcn.Core
             return list;
         }
 
+        public List<T> Query<T>(Criteria criteria) where T : class, IDao, new()
+        {
+            var attr = GetTableAttr<T>();
+
+            var strOrderBy = " ORDER BY " + (!string.IsNullOrEmpty(criteria?.OrderClause) ? criteria.OrderClause : attr.Sort);
+
+            var strWhere = criteria?.GetWhereClause();
+
+            if (!string.IsNullOrEmpty(strWhere))
+            {
+                strWhere = " WHERE " + strWhere;
+            }
+
+            string sql;
+
+            if (criteria?.PagingSize > 0)
+            {
+                // Get TotalCount First
+                var countSql = $"SELECT COUNT(*) AS TotalCount FROM {attr.Name} {strWhere}";
+
+                criteria.SetTotalCount(new DapperHelper().ExecuteScalar<int>(countSql, criteria.Parameters));
+
+                // Get Query Result
+                var innerSql =
+                    $"SELECT ROW_NUMBER() OVER({strOrderBy}) AS RowNo, * FROM {attr.Name} {strWhere}";
+
+                sql =
+                    $"SELECT {BuildSelectSqlColumn(attr)} FROM ({innerSql}) AS t WHERE t.RowNo BETWEEN {criteria.CurrentPage * criteria.PagingSize + 1} AND {(criteria.CurrentPage + 1) * criteria.PagingSize}";
+            }
+            else
+            {
+                sql = $"SELECT {BuildSelectSqlColumn(attr)} FROM {attr.Name} {strWhere} {strOrderBy}";
+            }
+
+            var list = Connection.Query<T>(sql, criteria?.Parameters).ToList();
+
+            if (list.Count > 0) { list.ForEach(x => x.Inital()); }
+
+            return list;
+        }
+
         public int Insert<T>(T instance, SqlTransaction trans = null) where T : class, IDao
         {
             var listCol = new List<string>();

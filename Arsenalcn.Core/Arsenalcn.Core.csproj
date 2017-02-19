@@ -54,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Dapper\DapperHelper.cs" />
+    <Compile Include="Dapper\IDapperHelper.cs" />
     <Compile Include="Dapper\IViewFactory.cs" />
     <Compile Include="Dapper\ViewFactory.cs" />
     <Compile Include="Utility\Assembly.cs" />

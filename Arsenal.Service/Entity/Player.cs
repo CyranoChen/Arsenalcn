@@ -53,7 +53,7 @@ namespace Arsenal.Service
 
                 var sql = $"SELECT * FROM {attr.Name} WHERE {attr.Key} = @key";
 
-                var dapper = new DapperHelper();
+                IDapperHelper dapper = new DapperHelper();
 
                 return dapper.ExecuteDataTable(sql, new { key = guid })?.Rows[0];
             }

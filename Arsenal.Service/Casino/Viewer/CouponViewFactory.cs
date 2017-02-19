@@ -8,6 +8,8 @@ namespace Arsenal.Service.Casino
     {
         public CouponViewFactory()
         {
+            Dapper = new DapperHelper();
+
             ViewerSql = @"SELECT b.ID, b.UserID, b.UserName, m.MatchGuid, bdh.DetailValue AS BetResultHome, bda.DetailValue AS BetResultAway, m.PlayTime, m.Round, 
                                   h.TeamGuid AS HomeTeamGuid, h.TeamEnglishName AS HomeEnglishName, h.TeamDisplayName AS HomeDisplayName, h.TeamLogo AS HomeLogo, 
                                   a.TeamGuid AS AwayTeamGuid, a.TeamEnglishName AS AwayEnglishName, a.TeamDisplayName AS AwayDisplayName, a.TeamLogo AS AwayLogo, 
@@ -29,9 +31,7 @@ namespace Arsenal.Service.Casino
 
         public CouponView Single(Criteria criteria)
         {
-            var dapper = new DapperHelper();
-
-            return dapper.Query<CouponView, HomeTeam, AwayTeam, League, CouponView>(BuildSingleSql(criteria),
+            return Dapper.Query<CouponView, HomeTeam, AwayTeam, League, CouponView>(BuildSingleSql(criteria),
                 (x, h, a, l) =>
                 {
                     x.Home = h;
@@ -44,9 +44,7 @@ namespace Arsenal.Service.Casino
 
         public List<CouponView> All()
         {
-            var dapper = new DapperHelper();
-
-            return dapper.Query<CouponView, HomeTeam, AwayTeam, League, CouponView>(BuildAllSql(),
+            return Dapper.Query<CouponView, HomeTeam, AwayTeam, League, CouponView>(BuildAllSql(),
                 (x, h, a, l) =>
                 {
                     x.Home = h;
@@ -59,9 +57,7 @@ namespace Arsenal.Service.Casino
 
         public List<CouponView> All(IPager pager, string orderBy = null)
         {
-            var dapper = new DapperHelper();
-
-            return dapper.Query<CouponView, HomeTeam, AwayTeam, League, CouponView>(BuildAllSql(pager, orderBy),
+            return Dapper.Query<CouponView, HomeTeam, AwayTeam, League, CouponView>(BuildAllSql(pager, orderBy),
                 (x, h, a, l) =>
                 {
                     x.Home = h;
@@ -74,9 +70,7 @@ namespace Arsenal.Service.Casino
 
         public List<CouponView> Query(Criteria criteria)
         {
-            var dapper = new DapperHelper();
-
-            return dapper.Query<CouponView, HomeTeam, AwayTeam, League, CouponView>(BuildQuerySql(criteria),
+            return Dapper.Query<CouponView, HomeTeam, AwayTeam, League, CouponView>(BuildQuerySql(criteria),
                 (x, h, a, l) =>
                 {
                     x.Home = h;

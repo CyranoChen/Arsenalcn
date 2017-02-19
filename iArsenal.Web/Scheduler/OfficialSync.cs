@@ -91,7 +91,7 @@ namespace iArsenal.Scheduler
             string sql =
                 $"SELECT TOP 1 * FROM {attr.Name} WHERE OfficialSync = '0000' AND Evalution = 0 AND MemberType <> 2 AND IsActive = 1 ORDER BY NEWID()";
 
-            var dapper = new DapperHelper();
+            IDapperHelper dapper = new DapperHelper();
 
             var member = dapper.Query<Member>(sql).FirstOrDefault();
 

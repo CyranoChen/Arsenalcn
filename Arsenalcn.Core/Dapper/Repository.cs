@@ -11,8 +11,8 @@ namespace Arsenalcn.Core
 {
     public class Repository : IRepository
     {
-        private DapperHelper _dapper;
-        private DapperHelper Dapper => _dapper ?? new DapperHelper();
+        private IDapperHelper _dapper;
+        private IDapperHelper Dapper => _dapper ?? new DapperHelper();
 
         public Repository() { }
 

@@ -280,7 +280,7 @@ namespace Arsenal.Service.Casino
             var sql =
                 $@"DELETE FROM {Repository.GetTableAttr<Bet>().Name} WHERE (CasinoItemGuid NOT IN (SELECT CasinoItemGuid FROM {Repository.GetTableAttr<CasinoItem>().Name}))";
 
-            var dapper = new DapperHelper();
+            IDapperHelper dapper = new DapperHelper();
 
             dapper.Execute(sql, trans);
         }

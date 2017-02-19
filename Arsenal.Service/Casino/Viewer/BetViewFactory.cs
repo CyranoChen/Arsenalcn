@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Arsenalcn.Core;
 
@@ -9,6 +8,8 @@ namespace Arsenal.Service.Casino
     {
         public BetViewFactory()
         {
+            Dapper = new DapperHelper();
+
             ViewerSql = @"SELECT b.ID, b.UserID, b.UserName, b.BetAmount, b.BetTime, b.BetRate, b.IsWin, b.Earning, b.EarningDesc, 
                                       c.CasinoItemGuid, c.ItemType, c.CloseTime, c.Earning AS c_Earning, 
                                       m.MatchGuid, m.ResultHome, m.ResultAway, m.PlayTime, m.LeagueName, m.Round, m.GroupGuid, 
@@ -29,9 +30,7 @@ namespace Arsenal.Service.Casino
 
         public BetView Single(object key)
         {
-            var dapper = new DapperHelper();
-
-            return dapper.Query<BetView, CasinoItem, Match, HomeTeam, AwayTeam, League, BetView>(BuildSingleSql(),
+            return Dapper.Query<BetView, CasinoItem, Match, HomeTeam, AwayTeam, League, BetView>(BuildSingleSql(),
                         (x, c, m, h, a, l) =>
                         {
                             x.CasinoItem = c;
@@ -46,9 +45,7 @@ namespace Arsenal.Service.Casino
 
         public BetView Single(Criteria criteria)
         {
-            var dapper = new DapperHelper();
-
-            return dapper.Query<BetView, CasinoItem, Match, HomeTeam, AwayTeam, League, BetView>(BuildSingleSql(criteria),
+            return Dapper.Query<BetView, CasinoItem, Match, HomeTeam, AwayTeam, League, BetView>(BuildSingleSql(criteria),
                 (x, c, m, h, a, l) =>
                 {
                     x.CasinoItem = c;
@@ -63,9 +60,7 @@ namespace Arsenal.Service.Casino
 
         public List<BetView> All()
         {
-            var dapper = new DapperHelper();
-
-            return dapper.Query<BetView, CasinoItem, Match, HomeTeam, AwayTeam, League, BetView>(BuildAllSql(),
+            return Dapper.Query<BetView, CasinoItem, Match, HomeTeam, AwayTeam, League, BetView>(BuildAllSql(),
                 (x, c, m, h, a, l) =>
                 {
                     x.CasinoItem = c;
@@ -80,9 +75,7 @@ namespace Arsenal.Service.Casino
 
         public List<BetView> All(IPager pager, string orderBy = null)
         {
-            var dapper = new DapperHelper();
-
-            return dapper.Query<BetView, CasinoItem, Match, HomeTeam, AwayTeam, League, BetView>(BuildAllSql(pager, orderBy),
+            return Dapper.Query<BetView, CasinoItem, Match, HomeTeam, AwayTeam, League, BetView>(BuildAllSql(pager, orderBy),
                 (x, c, m, h, a, l) =>
                 {
                     x.CasinoItem = c;
@@ -97,9 +90,7 @@ namespace Arsenal.Service.Casino
 
         public List<BetView> Query(Criteria criteria)
         {
-            var dapper = new DapperHelper();
-
-            return dapper.Query<BetView, CasinoItem, Match, HomeTeam, AwayTeam, League, BetView>(BuildQuerySql(criteria),
+            return Dapper.Query<BetView, CasinoItem, Match, HomeTeam, AwayTeam, League, BetView>(BuildQuerySql(criteria),
                 (x, c, m, h, a, l) =>
                 {
                     x.CasinoItem = c;

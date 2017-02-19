@@ -94,7 +94,7 @@ namespace iArsenal.Service
         {
             var sql = $"SELECT * FROM {Repository.GetTableAttr<MatchTicket>().Name} WHERE MatchGuid = @key";
 
-            var dapper = new DapperHelper();
+            IDapperHelper dapper = new DapperHelper();
 
             var dt = dapper.ExecuteDataTable(sql, new { key = ID });
 
@@ -107,7 +107,7 @@ namespace iArsenal.Service
 
             //SqlParameter[] para = { new SqlParameter("@key", ID) };
 
-            var dapper = new DapperHelper();
+            IDapperHelper dapper = new DapperHelper();
 
             return dapper.ExecuteScalar<int>(sql, new { key = ID }) > 0;
         }
@@ -123,7 +123,7 @@ namespace iArsenal.Service
                 var attr = Repository.GetTableAttr<MatchTicket>();
                 var sql = $"SELECT * FROM {attr.Name} ORDER BY {attr.Sort}";
 
-                var dapper = new DapperHelper();
+                IDapperHelper dapper = new DapperHelper();
 
                 var dt = dapper.ExecuteDataTable(sql);
 
@@ -177,7 +177,7 @@ namespace iArsenal.Service
                 new SqlParameter("@remark", Remark)
             };
 
-            var dapper = new DapperHelper();
+            IDapperHelper dapper = new DapperHelper();
 
             dapper.Execute(sql, DapperHelper.BuildDapperParameters(para), trans);
         }
@@ -203,7 +203,7 @@ namespace iArsenal.Service
                 new SqlParameter("@remark", Remark)
             };
 
-            var dapper = new DapperHelper();
+            IDapperHelper dapper = new DapperHelper();
 
             dapper.Execute(sql, DapperHelper.BuildDapperParameters(para), trans);
         }
@@ -212,7 +212,7 @@ namespace iArsenal.Service
         {
             var sql = $"DELETE FROM {Repository.GetTableAttr<MatchTicket>().Name} WHERE MatchGuid = @key";
 
-            var dapper = new DapperHelper();
+            IDapperHelper dapper = new DapperHelper();
 
             dapper.Execute(sql, new { key = ID }, trans);
         }

@@ -109,7 +109,7 @@ namespace Arsenal.Service
                      (TeamGuid NOT IN (SELECT TeamGuid FROM {Repository.GetTableAttr<Team>().Name})) 
                      OR (GroupGuid NOT IN (SELECT GroupGuid FROM {Repository.GetTableAttr<Group>().Name}))";
 
-            var dapper = new DapperHelper();
+            IDapperHelper dapper = new DapperHelper();
 
             dapper.Execute(sql, trans);
         }

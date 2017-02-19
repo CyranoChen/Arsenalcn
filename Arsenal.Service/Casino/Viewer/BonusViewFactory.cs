@@ -8,6 +8,8 @@ namespace Arsenal.Service.Casino
     {
         public BonusViewFactory()
         {
+            Dapper = new DapperHelper();
+
             ViewerSql = @"SELECT ISNULL(mr.MatchGuid, sc.MatchGuid) AS MatchGuid, ISNULL(mr.UserID, sc.UserID) AS UserID, ISNULL(mr.UserName, sc.UserName) AS UserName, 
                                   sc.Win, sc.Lose, sc.Earning, sc.TotalBet, mr.RPBonus, m.PlayTime, m.LeagueName, m.Round, 
                                   h.TeamGuid AS HomeTeamGuid, h.TeamEnglishName AS HomeEnglishName, h.TeamDisplayName AS HomeDisplayName, h.TeamLogo AS HomeLogo, 
@@ -37,9 +39,7 @@ namespace Arsenal.Service.Casino
 
         public BonusView Single(Criteria criteria)
         {
-            var dapper = new DapperHelper();
-
-            return dapper.Query<BonusView, HomeTeam, AwayTeam, League, BonusView>(BuildSingleSql(criteria),
+            return Dapper.Query<BonusView, HomeTeam, AwayTeam, League, BonusView>(BuildSingleSql(criteria),
                 (x, h, a, l) =>
                 {
                     x.Home = h;
@@ -52,9 +52,7 @@ namespace Arsenal.Service.Casino
 
         public List<BonusView> All()
         {
-            var dapper = new DapperHelper();
-
-            return dapper.Query<BonusView, HomeTeam, AwayTeam, League, BonusView>(BuildAllSql(),
+            return Dapper.Query<BonusView, HomeTeam, AwayTeam, League, BonusView>(BuildAllSql(),
                 (x, h, a, l) =>
                 {
                     x.Home = h;
@@ -67,9 +65,7 @@ namespace Arsenal.Service.Casino
 
         public List<BonusView> All(IPager pager, string orderBy = null)
         {
-            var dapper = new DapperHelper();
-
-            return dapper.Query<BonusView, HomeTeam, AwayTeam, League, BonusView>(BuildAllSql(pager, orderBy),
+            return Dapper.Query<BonusView, HomeTeam, AwayTeam, League, BonusView>(BuildAllSql(pager, orderBy),
                 (x, h, a, l) =>
                 {
                     x.Home = h;
@@ -82,9 +78,7 @@ namespace Arsenal.Service.Casino
 
         public List<BonusView> Query(Criteria criteria)
         {
-            var dapper = new DapperHelper();
-
-            return dapper.Query<BonusView, HomeTeam, AwayTeam, League, BonusView>(BuildQuerySql(criteria),
+            return Dapper.Query<BonusView, HomeTeam, AwayTeam, League, BonusView>(BuildQuerySql(criteria),
                 (x, h, a, l) =>
                 {
                     x.Home = h;

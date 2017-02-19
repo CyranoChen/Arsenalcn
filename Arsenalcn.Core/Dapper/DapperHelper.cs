@@ -7,7 +7,7 @@ using Dapper;
 
 namespace Arsenalcn.Core
 {
-    public class DapperHelper : IDisposable
+    public class DapperHelper : IDapperHelper, IDisposable
     {
         private static string _connectionString;
         public static string ConnectionString => _connectionString ?? (_connectionString =

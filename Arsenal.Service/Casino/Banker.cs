@@ -14,7 +14,7 @@ namespace Arsenal.Service.Casino
                            INNER JOIN {Repository.GetTableAttr<Bet>().Name} b ON c.CasinoItemGuid = b.CasinoItemGuid
                            WHERE (c.BankerID = @key)";
 
-            var dapper = new DapperHelper();
+            IDapperHelper dapper = new DapperHelper();
 
             Cash = dapper.ExecuteScalar<double>(sql, new { key = ID });
 

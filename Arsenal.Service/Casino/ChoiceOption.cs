@@ -15,7 +15,7 @@ namespace Arsenal.Service.Casino
                 $@"DELETE FROM {Repository.GetTableAttr<ChoiceOption>().Name} 
                      WHERE (CasinoItemGuid NOT IN (SELECT CasinoItemGuid FROM {Repository.GetTableAttr<CasinoItem>().Name}))";
 
-            var dapper = new DapperHelper();
+            IDapperHelper dapper = new DapperHelper();
 
             dapper.Execute(sql, trans);
         }

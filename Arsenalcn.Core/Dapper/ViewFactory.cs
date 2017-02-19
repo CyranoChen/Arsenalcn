@@ -2,6 +2,7 @@
 {
     public abstract class ViewerFactory
     {
+        protected IDapperHelper Dapper { get; set; }
         protected string ViewerSql { get; set; }
         protected string SplitOn { get; set; }
         protected DbSchema DbSchema { get; set; }

@@ -35,4 +35,4 @@ using System.Runtime.InteropServices;
 // 方法是按如下所示使用“*”:
 
 [assembly: AssemblyVersion("2.4.*")]
-[assembly: AssemblyFileVersion("2.4.0")]
+[assembly: AssemblyFileVersion("2.4.1")]

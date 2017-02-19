@@ -65,17 +65,17 @@ namespace Arsenalcn.Core
 
         public int Execute(string sql, object para = null, IDbTransaction trans = null, CommandType? commandType = null)
         {
-            return Connection.Execute(sql, para, trans, CommandTimeout, commandType);
+            return MarsConnection.Execute(sql, para, trans, CommandTimeout, commandType);
         }
 
         public IDataReader ExecuteReader(string sql, object para = null, IDbTransaction trans = null, CommandType? commandType = null)
         {
-            return Connection.ExecuteReader(sql, para, trans, CommandTimeout, commandType);
+            return MarsConnection.ExecuteReader(sql, para, trans, CommandTimeout, commandType);
         }
 
         public DataTable ExecuteDataTable(string sql, object para = null, IDbTransaction trans = null, CommandType? commandType = null)
         {
-            using (var reader = Connection.ExecuteReader(sql, para, trans, CommandTimeout, commandType))
+            using (var reader = MarsConnection.ExecuteReader(sql, para, trans, CommandTimeout, commandType))
             {
                 var dt = new DataTable();
 
@@ -101,56 +101,67 @@ namespace Arsenalcn.Core
             }
         }
 
+        public object ExecuteScalar(string sql, object para = null, IDbTransaction trans = null, CommandType? commandType = null)
+        {
+            return MarsConnection.ExecuteScalar(sql, para, trans, CommandTimeout, commandType);
+        }
+
         public T ExecuteScalar<T>(string sql, object para = null, IDbTransaction trans = null, CommandType? commandType = null)
         {
-            return Connection.ExecuteScalar<T>(sql, para, trans, CommandTimeout, commandType);
+            return MarsConnection.ExecuteScalar<T>(sql, para, trans, CommandTimeout, commandType);
+        }
+
+        public T QueryFirstOrDefault<T>(string sql, object para = null, IDbTransaction trans = null, CommandType? commandType = null)
+        {
+            return MarsConnection.QueryFirstOrDefault<T>(sql, para, trans, CommandTimeout, commandType);
         }
 
         public IEnumerable<dynamic> Query(string sql, object para = null, IDbTransaction trans = null,
             CommandType? commandType = null)
         {
-            return Connection.Query(sql, para, trans, true, CommandTimeout, commandType);
+            return MarsConnection.Query(sql, para, trans, true, CommandTimeout, commandType);
         }
 
         public IEnumerable<T> Query<T>(string sql, object para = null, IDbTransaction trans = null,
             CommandType? commandType = null)
         {
-            return Connection.Query<T>(sql, para, trans, true, CommandTimeout, commandType);
+            return MarsConnection.Query<T>(sql, para, trans, true, CommandTimeout, commandType);
         }
 
         public IEnumerable<T> Query<T1, T2, T>(string sql, Func<T1, T2, T> map,
             object para = null, string splitOn = "Id", CommandType? commandType = null)
         {
-            return Connection.Query(sql, map, para, null, true, splitOn, CommandTimeout, commandType);
+            return MarsConnection.Query(sql, map, para, null, true, splitOn, CommandTimeout, commandType);
         }
 
         public IEnumerable<T> Query<T1, T2, T3, T>(string sql, Func<T1, T2, T3, T> map,
             object para = null, string splitOn = "Id", CommandType? commandType = null)
         {
-            return Connection.Query(sql, map, para, null, true, splitOn, CommandTimeout, commandType);
+            return MarsConnection.Query(sql, map, para, null, true, splitOn, CommandTimeout, commandType);
         }
 
         public IEnumerable<T> Query<T1, T2, T3, T4, T>(string sql, Func<T1, T2, T3, T4, T> map,
             object para = null, string splitOn = "Id", CommandType? commandType = null)
         {
-            return Connection.Query(sql, map, para, null, true, splitOn, CommandTimeout, commandType);
+            return MarsConnection.Query(sql, map, para, null, true, splitOn, CommandTimeout, commandType);
         }
 
         public IEnumerable<T> Query<T1, T2, T3, T4, T5, T>(string sql, Func<T1, T2, T3, T4, T5, T> map,
             object para = null, string splitOn = "Id", CommandType? commandType = null)
         {
-            return Connection.Query(sql, map, para, null, true, splitOn, CommandTimeout, commandType);
+            return MarsConnection.Query(sql, map, para, null, true, splitOn, CommandTimeout, commandType);
         }
 
         public IEnumerable<T> Query<T1, T2, T3, T4, T5, T6, T>(string sql, Func<T1, T2, T3, T4, T5, T6, T> map,
             object para = null, string splitOn = "Id", CommandType? commandType = null)
         {
-            return Connection.Query(sql, map, para, null, true, splitOn, CommandTimeout, commandType);
+            return MarsConnection.Query(sql, map, para, null, true, splitOn, CommandTimeout, commandType);
         }
 
         public void Dispose()
         {
             Connection?.Dispose();
+            MarsConnection?.Dispose();
         }
     }
 }

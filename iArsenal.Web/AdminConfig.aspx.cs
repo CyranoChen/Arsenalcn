@@ -21,7 +21,7 @@ namespace iArsenal.Web
 
         private void BindData()
         {
-            gvSysConfig.DataSource = _repo.Query<Config>(x => x.ConfigSystem.ToString() == ConfigSystem.iArsenal.ToString());
+            gvSysConfig.DataSource = _repo.All<Config>().FindAll(x => x.ConfigSystemInfo == ConfigSystem.iArsenal);
             gvSysConfig.DataBind();
         }
 
@@ -40,12 +40,9 @@ namespace iArsenal.Web
 
                 if (tbConfigValue != null)
                 {
-                    var c = new Config
-                    {
-                        ConfigSystem = ConfigSystem.iArsenal,
-                        ConfigKey = gvSysConfig.DataKeys[gvSysConfig.EditIndex]?.Value.ToString(),
-                        ConfigValue = tbConfigValue.Text.Trim()
-                    };
+                    var c = new Config(ConfigSystem.iArsenal,
+                        gvSysConfig.DataKeys[gvSysConfig.EditIndex]?.Value.ToString(),
+                        tbConfigValue.Text.Trim());
 
                     c.Save();
 

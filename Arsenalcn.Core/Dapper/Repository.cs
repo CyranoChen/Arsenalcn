@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
@@ -12,14 +11,14 @@ namespace Arsenalcn.Core
 {
     public class Repository : IRepository
     {
-        private IDbConnection _connection;
-        private IDbConnection Connection => _connection ?? (_connection = DapperHelper.Connection);
+        private DapperHelper _dapper;
+        private DapperHelper Dapper => _dapper ?? new DapperHelper();
 
         public Repository() { }
 
-        public Repository(IDbConnection connection)
+        public Repository(string connection)
         {
-            _connection = connection;
+            _dapper = new DapperHelper(connection);
         }
 
         public T Single<T>(object key) where T : class, IEntity, new()
@@ -28,7 +27,7 @@ namespace Arsenalcn.Core
 
             string sql = $"SELECT {BuildSelectSqlColumn(attr)} FROM {attr.Name} WHERE {attr.Key} = @key";
 
-            var instance = Connection.QueryFirstOrDefault<T>(sql, new { key });
+            var instance = Dapper.QueryFirstOrDefault<T>(sql, new { key });
 
             instance?.Inital();
 
@@ -55,7 +54,7 @@ namespace Arsenalcn.Core
                 sql.Append(" ORDER BY " + attr.Sort);
             }
 
-            var instance = Connection.QueryFirstOrDefault<T>(sql.ToString(), condition.DapperArguments);
+            var instance = Dapper.QueryFirstOrDefault<T>(sql.ToString(), condition.DapperArguments);
 
             instance?.Inital();
 
@@ -77,7 +76,7 @@ namespace Arsenalcn.Core
                 sql.Append(" WHERE " + condition.Condition);
             }
 
-            return Connection.ExecuteScalar<int>(sql.ToString(), condition.DapperArguments);
+            return Dapper.ExecuteScalar<int>(sql.ToString(), condition.DapperArguments);
         }
 
         public bool Any<T>(object key) where T : class, IEntity
@@ -86,7 +85,7 @@ namespace Arsenalcn.Core
 
             string sql = $"SELECT COUNT(*) FROM {attr.Name} WHERE {attr.Key} = @key";
 
-            return Connection.ExecuteScalar<int>(sql, new { key }) > 0;
+            return Dapper.ExecuteScalar<int>(sql, new { key }) > 0;
         }
 
         public bool Any<T>(Expression<Func<T, bool>> whereBy) where T : class, IDao
@@ -106,7 +105,7 @@ namespace Arsenalcn.Core
                 sql.Append(" ORDER BY " + attr.Sort);
             }
 
-            var list = Connection.Query<T>(sql.ToString()).ToList();
+            var list = Dapper.Query<T>(sql.ToString()).ToList();
 
             if (list.Count > 0) { list.ForEach(x => x.Inital()); }
 
@@ -127,7 +126,7 @@ namespace Arsenalcn.Core
             // Get TotalCount First
             var countSql = $"SELECT COUNT({attr.Key}) AS TotalCount FROM {attr.Name}";
 
-            pager.SetTotalCount(Connection.ExecuteScalar<int>(countSql));
+            pager.SetTotalCount(Dapper.ExecuteScalar<int>(countSql));
 
             // Get Query Result
             var innerSql = $"SELECT ROW_NUMBER() OVER(ORDER BY {strOrderBy}) AS RowNo, * FROM {attr.Name}";
@@ -137,7 +136,7 @@ namespace Arsenalcn.Core
 
             //sql += string.Format("SELECT COUNT({1}) AS TotalCount FROM {0}", attr.Name, attr.Key);
 
-            var list = Connection.Query<T>(sql).ToList();
+            var list = Dapper.Query<T>(sql).ToList();
 
             if (list.Count > 0) { list.ForEach(x => x.Inital()); }
 
@@ -164,7 +163,7 @@ namespace Arsenalcn.Core
                 sql.Append(" ORDER BY " + attr.Sort);
             }
 
-            var list = Connection.Query<T>(sql.ToString(), condition.DapperArguments).ToList();
+            var list = Dapper.Query<T>(sql.ToString(), condition.DapperArguments).ToList();
 
             if (list.Count > 0) { list.ForEach(x => x.Inital()); }
 
@@ -191,7 +190,7 @@ namespace Arsenalcn.Core
             // Get TotalCount First
             var countSql = $"SELECT COUNT({attr.Key}) AS TotalCount FROM {attr.Name} WHERE {condition.Condition}";
 
-            pager.SetTotalCount(Connection.ExecuteScalar<int>(countSql, condition.DapperArguments));
+            pager.SetTotalCount(Dapper.ExecuteScalar<int>(countSql, condition.DapperArguments));
 
             // Build Sql and Execute
             var innerSql = $"SELECT ROW_NUMBER() OVER(ORDER BY {strOrderBy}) AS RowNo, * FROM {attr.Name} WHERE {condition.Condition}";
@@ -199,7 +198,7 @@ namespace Arsenalcn.Core
             string sql =
                 $"SELECT {BuildSelectSqlColumn(attr)} FROM ({innerSql}) AS t WHERE t.RowNo BETWEEN {pager.CurrentPage * pager.PagingSize + 1} AND {(pager.CurrentPage + 1) * pager.PagingSize}";
 
-            var list = Connection.Query<T>(sql, condition.DapperArguments).ToList();
+            var list = Dapper.Query<T>(sql, condition.DapperArguments).ToList();
 
             if (list.Count > 0) { list.ForEach(x => x.Inital()); }
 
@@ -240,7 +239,7 @@ namespace Arsenalcn.Core
                 sql = $"SELECT {BuildSelectSqlColumn(attr)} FROM {attr.Name} {strWhere} {strOrderBy}";
             }
 
-            var list = Connection.Query<T>(sql, criteria?.Parameters).ToList();
+            var list = Dapper.Query<T>(sql, criteria?.Parameters).ToList();
 
             if (list.Count > 0) { list.ForEach(x => x.Inital()); }
 
@@ -264,7 +263,7 @@ namespace Arsenalcn.Core
                     listCol.Add(attrCol.Name);
                     listColPara.Add("@" + attrCol.Name);
 
-                    sqlPara.Add(attrCol.Name, pi.PropertyType == typeof(string) ? string.Empty : value);
+                    sqlPara.Add(attrCol.Name, value == null && pi.PropertyType == typeof(string) ? string.Empty : value);
                 }
             }
 
@@ -288,7 +287,7 @@ namespace Arsenalcn.Core
                 string sql = $@"INSERT INTO {attr.Name} ({string.Join(", ", listCol.ToArray())}) 
                                      VALUES ({string.Join(", ", listColPara.ToArray())})";
 
-                return Connection.Execute(sql, sqlPara, trans);
+                return Dapper.Execute(sql, sqlPara, trans);
             }
 
             return -1;
@@ -312,7 +311,7 @@ namespace Arsenalcn.Core
                     listCol.Add(attrCol.Name);
                     listColPara.Add("@" + attrCol.Name);
 
-                    sqlPara.Add(attrCol.Name, pi.PropertyType == typeof(string) ? string.Empty : value);
+                    sqlPara.Add(attrCol.Name, value == null && pi.PropertyType == typeof(string) ? string.Empty : value);
                 }
             }
 
@@ -329,7 +328,7 @@ namespace Arsenalcn.Core
                 {
                     sql = $"INSERT INTO {attr.Name} ({string.Join(", ", listCol.ToArray())}) VALUES ({string.Join(", ", listColPara.ToArray())}); SELECT SCOPE_IDENTITY();";
 
-                    key = Connection.ExecuteScalar(sql, sqlPara, trans);
+                    key = Dapper.ExecuteScalar(sql, sqlPara, trans);
 
                     return 1;
                 }
@@ -343,7 +342,7 @@ namespace Arsenalcn.Core
 
                     sql = $"INSERT INTO {attr.Name} ({string.Join(", ", listCol.ToArray())}) VALUES ({string.Join(", ", listColPara.ToArray())})";
 
-                    return Connection.Execute(sql, sqlPara, trans);
+                    return Dapper.Execute(sql, sqlPara, trans);
                 }
             }
 
@@ -364,7 +363,7 @@ namespace Arsenalcn.Core
                     var value = pi.GetValue(instance, null);
 
                     listCol.Add($"{attrCol.Name} = @{attrCol.Name}");
-                    sqlPara.Add(attrCol.Name, pi.PropertyType == typeof(string) ? string.Empty : value);
+                    sqlPara.Add(attrCol.Name, value == null && pi.PropertyType == typeof(string) ? string.Empty : value);
                 }
             }
 
@@ -376,7 +375,7 @@ namespace Arsenalcn.Core
 
                 sqlPara.Add("key", instance.GetType().GetProperty("ID").GetValue(instance, null));
 
-                return Connection.Execute(sql, sqlPara, trans);
+                return Dapper.Execute(sql, sqlPara, trans);
             }
 
             return -1;
@@ -397,7 +396,7 @@ namespace Arsenalcn.Core
                     var value = pi.GetValue(instance, null);
 
                     listCol.Add($"{attrCol.Name} = @{attrCol.Name}");
-                    sqlPara.Add(attrCol.Name, pi.PropertyType == typeof(string) ? string.Empty : value);
+                    sqlPara.Add(attrCol.Name, value == null && pi.PropertyType == typeof(string) ? string.Empty : value);
                 }
             }
 
@@ -422,7 +421,7 @@ namespace Arsenalcn.Core
                     sqlPara.Add(p.Key, p.Value);
                 }
 
-                return Connection.Execute(sql.ToString(), sqlPara, trans);
+                return Dapper.Execute(sql.ToString(), sqlPara, trans);
             }
 
             return -1;
@@ -460,7 +459,7 @@ namespace Arsenalcn.Core
 
             string sql = $"DELETE {attr.Name} WHERE {attr.Key} = @key";
 
-            return Connection.Execute(sql, new { key }, trans);
+            return Dapper.Execute(sql, new { key }, trans);
         }
 
         public int Delete<T>(T instance, SqlTransaction trans = null) where T : class, IEntity
@@ -485,7 +484,7 @@ namespace Arsenalcn.Core
                 sql.Append(" WHERE " + condition.Condition);
             }
 
-            return Connection.Execute(sql.ToString(), condition.DapperArguments);
+            return Dapper.Execute(sql.ToString(), condition.DapperArguments);
         }
 
         public static DbSchema GetTableAttr<T>() where T : class

@@ -65,7 +65,7 @@ namespace Arsenalcn.Core.Tests
             Assert.IsNotNull(list1);
             Assert.IsTrue(list1.Count == 0);
 
-            var list2 = repo.Query<Config>(x => x.ConfigSystem.ToString() == ConfigSystem.Arsenal.ToString());
+            var list2 = repo.Query<Config>(x => x.ConfigSystem == ConfigSystem.Arsenal.ToString());
 
             Assert.IsNotNull(list2);
             Assert.IsTrue(list2.Count > 0);

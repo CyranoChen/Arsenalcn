@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data;
 using System.Data.SqlClient;
 using System.Reflection;
 using System.Threading;
@@ -36,7 +35,7 @@ namespace Arsenalcn.Core.Logger
             };
 
             // no logging method
-            DapperHelper.Connection.Execute(sql, para);
+            DapperHelper.MarsConnection.Execute(sql, DapperHelper.BuildDapperParameters(para));
         }
 
         protected void Logging(string logger, DateTime createTime, LogLevel level, string message,
@@ -67,7 +66,7 @@ namespace Arsenalcn.Core.Logger
             };
 
             // no logging method
-            DapperHelper.Connection.Execute(sql, para);
+            DapperHelper.MarsConnection.Execute(sql, DapperHelper.BuildDapperParameters(para));
         }
 
         public static void Clean()

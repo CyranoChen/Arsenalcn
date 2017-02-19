@@ -42,6 +42,7 @@ namespace iArsenal.Tests.Scheduler
             Assert.AreEqual(cycle, tList.Count + fList.Count);
         }
 
+        [Ignore]
         [TestMethod]
         public void SyncOfficialMemberInfo_Test()
         {

@@ -26,16 +26,16 @@ namespace iArsenal.Service
 
             Assembly = new AssemblyInfo
             {
-                Title = ConfigDictionary["AssemblyTitle"],
-                Description = ConfigDictionary["AssemblyDescription"],
-                Configuration = ConfigDictionary["AssemblyConfiguration"],
-                Company = ConfigDictionary["AssemblyCompany"],
-                Product = ConfigDictionary["AssemblyProduct"],
-                Copyright = ConfigDictionary["AssemblyCopyright"],
-                Trademark = ConfigDictionary["AssemblyTrademark"],
-                Culture = ConfigDictionary["AssemblyCulture"],
-                Version = ConfigDictionary["AssemblyVersion"],
-                FileVersion = ConfigDictionary["AssemblyFileVersion"]
+                Title = ConfigDictionary["AssemblyTitle"] ?? string.Empty,
+                Description = ConfigDictionary["AssemblyDescription"] ?? string.Empty,
+                Configuration = ConfigDictionary["AssemblyConfiguration"] ?? string.Empty,
+                Company = ConfigDictionary["AssemblyCompany"] ?? string.Empty,
+                Product = ConfigDictionary["AssemblyProduct"] ?? string.Empty,
+                Copyright = ConfigDictionary["AssemblyCopyright"] ?? string.Empty,
+                Trademark = ConfigDictionary["AssemblyTrademark"] ?? string.Empty,
+                Culture = ConfigDictionary["AssemblyCulture"] ?? string.Empty,
+                Version = ConfigDictionary["AssemblyVersion"] ?? string.Empty,
+                FileVersion = ConfigDictionary["AssemblyFileVersion"] ?? string.Empty
             };
         }
 

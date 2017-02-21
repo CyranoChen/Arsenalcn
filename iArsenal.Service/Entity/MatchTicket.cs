@@ -179,7 +179,7 @@ namespace iArsenal.Service
 
             IDapperHelper dapper = new DapperHelper();
 
-            dapper.Execute(sql, DapperHelper.BuildDapperParameters(para), trans);
+            dapper.Execute(sql, para.ToDapperParameters(), trans);
         }
 
         public void Update(SqlTransaction trans = null)
@@ -205,7 +205,7 @@ namespace iArsenal.Service
 
             IDapperHelper dapper = new DapperHelper();
 
-            dapper.Execute(sql, DapperHelper.BuildDapperParameters(para), trans);
+            dapper.Execute(sql, para.ToDapperParameters(), trans);
         }
 
         public void Delete(SqlTransaction trans = null)

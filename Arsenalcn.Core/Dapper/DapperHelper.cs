@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Reflection;
+using System.Threading;
+using System.Web.Configuration;
+using Arsenalcn.Core.Logger;
 using Dapper;
 
 namespace Arsenalcn.Core
@@ -16,8 +20,18 @@ namespace Arsenalcn.Core
         public static readonly IDbConnection Connection = GetOpenConnection();
         public static readonly IDbConnection MarsConnection = GetOpenConnection(true);
 
-        private bool DebugMode => ConfigurationManager.AppSettings["DebugMode"] != null &&
-                Convert.ToBoolean(ConfigurationManager.AppSettings["DebugMode"]);
+        private ILog _log = new DaoLog();
+
+        private bool DebugMode
+        {
+            get
+            {
+                var compilation = (CompilationSection)ConfigurationManager.GetSection(@"system.web/compilation");
+
+                return compilation != null && compilation.Debug;
+            }
+        }
+
         private int CommandTimeout => 90;
 
         public DapperHelper() { }
@@ -51,30 +65,45 @@ namespace Arsenalcn.Core
             return conn;
         }
 
-        public static object BuildDapperParameters(SqlParameter[] para)
-        {
-            var args = new DynamicParameters(new { });
-
-            foreach (var p in para)
-            {
-                args.Add(p.ParameterName, p.Value != DBNull.Value ? p.Value : null);
-            }
-
-            return args;
-        }
-
         public int Execute(string sql, object para = null, IDbTransaction trans = null, CommandType? commandType = null)
         {
+            if (DebugMode)
+            {
+                _log.Debug(sql.ToSqlDebugInfo(para), new LogInfo
+                {
+                    MethodInstance = MethodBase.GetCurrentMethod(),
+                    ThreadInstance = Thread.CurrentThread
+                });
+            }
+
             return MarsConnection.Execute(sql, para, trans, CommandTimeout, commandType);
         }
 
         public IDataReader ExecuteReader(string sql, object para = null, IDbTransaction trans = null, CommandType? commandType = null)
         {
+            if (DebugMode)
+            {
+                _log.Debug(sql.ToSqlDebugInfo(para), new LogInfo
+                {
+                    MethodInstance = MethodBase.GetCurrentMethod(),
+                    ThreadInstance = Thread.CurrentThread
+                });
+            }
+
             return MarsConnection.ExecuteReader(sql, para, trans, CommandTimeout, commandType);
         }
 
         public DataTable ExecuteDataTable(string sql, object para = null, IDbTransaction trans = null, CommandType? commandType = null)
         {
+            if (DebugMode)
+            {
+                _log.Debug(sql.ToSqlDebugInfo(para), new LogInfo
+                {
+                    MethodInstance = MethodBase.GetCurrentMethod(),
+                    ThreadInstance = Thread.CurrentThread
+                });
+            }
+
             using (var reader = MarsConnection.ExecuteReader(sql, para, trans, CommandTimeout, commandType))
             {
                 var dt = new DataTable();
@@ -103,58 +132,148 @@ namespace Arsenalcn.Core
 
         public object ExecuteScalar(string sql, object para = null, IDbTransaction trans = null, CommandType? commandType = null)
         {
+            if (DebugMode)
+            {
+                _log.Debug(sql.ToSqlDebugInfo(para), new LogInfo
+                {
+                    MethodInstance = MethodBase.GetCurrentMethod(),
+                    ThreadInstance = Thread.CurrentThread
+                });
+            }
+
             return MarsConnection.ExecuteScalar(sql, para, trans, CommandTimeout, commandType);
         }
 
         public T ExecuteScalar<T>(string sql, object para = null, IDbTransaction trans = null, CommandType? commandType = null)
         {
+            if (DebugMode)
+            {
+                _log.Debug(sql.ToSqlDebugInfo(para), new LogInfo
+                {
+                    MethodInstance = MethodBase.GetCurrentMethod(),
+                    ThreadInstance = Thread.CurrentThread
+                });
+            }
+
             return MarsConnection.ExecuteScalar<T>(sql, para, trans, CommandTimeout, commandType);
         }
 
         public T QueryFirstOrDefault<T>(string sql, object para = null, IDbTransaction trans = null, CommandType? commandType = null)
         {
+            if (DebugMode)
+            {
+                _log.Debug(sql.ToSqlDebugInfo(para), new LogInfo
+                {
+                    MethodInstance = MethodBase.GetCurrentMethod(),
+                    ThreadInstance = Thread.CurrentThread
+                });
+            }
+
             return MarsConnection.QueryFirstOrDefault<T>(sql, para, trans, CommandTimeout, commandType);
         }
 
         public IEnumerable<dynamic> Query(string sql, object para = null, IDbTransaction trans = null,
             CommandType? commandType = null)
         {
+            if (DebugMode)
+            {
+                _log.Debug(sql.ToSqlDebugInfo(para), new LogInfo
+                {
+                    MethodInstance = MethodBase.GetCurrentMethod(),
+                    ThreadInstance = Thread.CurrentThread
+                });
+            }
+
             return MarsConnection.Query(sql, para, trans, true, CommandTimeout, commandType);
         }
 
         public IEnumerable<T> Query<T>(string sql, object para = null, IDbTransaction trans = null,
             CommandType? commandType = null)
         {
+            if (DebugMode)
+            {
+                _log.Debug(sql.ToSqlDebugInfo(para), new LogInfo
+                {
+                    MethodInstance = MethodBase.GetCurrentMethod(),
+                    ThreadInstance = Thread.CurrentThread
+                });
+            }
+
             return MarsConnection.Query<T>(sql, para, trans, true, CommandTimeout, commandType);
         }
 
         public IEnumerable<T> Query<T1, T2, T>(string sql, Func<T1, T2, T> map,
             object para = null, string splitOn = "Id", CommandType? commandType = null)
         {
+            if (DebugMode)
+            {
+                _log.Debug(sql.ToSqlDebugInfo(para), new LogInfo
+                {
+                    MethodInstance = MethodBase.GetCurrentMethod(),
+                    ThreadInstance = Thread.CurrentThread
+                });
+            }
+
             return MarsConnection.Query(sql, map, para, null, true, splitOn, CommandTimeout, commandType);
         }
 
         public IEnumerable<T> Query<T1, T2, T3, T>(string sql, Func<T1, T2, T3, T> map,
             object para = null, string splitOn = "Id", CommandType? commandType = null)
         {
+            if (DebugMode)
+            {
+                _log.Debug(sql.ToSqlDebugInfo(para), new LogInfo
+                {
+                    MethodInstance = MethodBase.GetCurrentMethod(),
+                    ThreadInstance = Thread.CurrentThread
+                });
+            }
+
             return MarsConnection.Query(sql, map, para, null, true, splitOn, CommandTimeout, commandType);
         }
 
         public IEnumerable<T> Query<T1, T2, T3, T4, T>(string sql, Func<T1, T2, T3, T4, T> map,
             object para = null, string splitOn = "Id", CommandType? commandType = null)
         {
+            if (DebugMode)
+            {
+                _log.Debug(sql.ToSqlDebugInfo(para), new LogInfo
+                {
+                    MethodInstance = MethodBase.GetCurrentMethod(),
+                    ThreadInstance = Thread.CurrentThread
+                });
+            }
+
             return MarsConnection.Query(sql, map, para, null, true, splitOn, CommandTimeout, commandType);
         }
 
         public IEnumerable<T> Query<T1, T2, T3, T4, T5, T>(string sql, Func<T1, T2, T3, T4, T5, T> map,
             object para = null, string splitOn = "Id", CommandType? commandType = null)
         {
+            if (DebugMode)
+            {
+                _log.Debug(sql.ToSqlDebugInfo(para), new LogInfo
+                {
+                    MethodInstance = MethodBase.GetCurrentMethod(),
+                    ThreadInstance = Thread.CurrentThread
+                });
+            }
+
             return MarsConnection.Query(sql, map, para, null, true, splitOn, CommandTimeout, commandType);
         }
 
         public IEnumerable<T> Query<T1, T2, T3, T4, T5, T6, T>(string sql, Func<T1, T2, T3, T4, T5, T6, T> map,
             object para = null, string splitOn = "Id", CommandType? commandType = null)
         {
+            if (DebugMode)
+            {
+                _log.Debug(sql.ToSqlDebugInfo(para), new LogInfo
+                {
+                    MethodInstance = MethodBase.GetCurrentMethod(),
+                    ThreadInstance = Thread.CurrentThread
+                });
+            }
+
             return MarsConnection.Query(sql, map, para, null, true, splitOn, CommandTimeout, commandType);
         }
 

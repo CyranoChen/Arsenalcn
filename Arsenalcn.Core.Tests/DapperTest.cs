@@ -88,7 +88,7 @@ namespace Arsenalcn.Core.Tests
                       dbo.Arsenal_Group AS g ON m.GroupGuid = g.GroupGuid
                   WHERE  (c.ItemType = 2)";
 
-            var list = DapperHelper.Connection.Query<MatchView, CasinoItem, HomeTeam, AwayTeam, Group, League, MatchView>(sql,
+            var list = DapperHelper.MarsConnection.Query<MatchView, CasinoItem, HomeTeam, AwayTeam, Group, League, MatchView>(sql,
                             (x, c, h, a, g, l) =>
                             {
                                 x.CasinoItem = c;
@@ -99,7 +99,6 @@ namespace Arsenalcn.Core.Tests
 
                                 return x;
                             }, splitOn: "ID, CasinoItemGuid, HomeTeamGuid, AwayTeamGuid, GroupGuid, LeagueGuid").ToList<IViewer>();
-
 
             Assert.IsTrue(list.Count > 0);
 

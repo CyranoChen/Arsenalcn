@@ -35,7 +35,7 @@ namespace Arsenalcn.Core.Logger
             };
 
             // no logging method
-            DapperHelper.MarsConnection.Execute(sql, DapperHelper.BuildDapperParameters(para));
+            DapperHelper.MarsConnection.Execute(sql, para.ToDapperParameters());
         }
 
         protected void Logging(string logger, DateTime createTime, LogLevel level, string message,
@@ -66,7 +66,7 @@ namespace Arsenalcn.Core.Logger
             };
 
             // no logging method
-            DapperHelper.MarsConnection.Execute(sql, DapperHelper.BuildDapperParameters(para));
+            DapperHelper.MarsConnection.Execute(sql, para.ToDapperParameters());
         }
 
         public static void Clean()

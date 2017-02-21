@@ -36,6 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Web" />
   </ItemGroup>
@@ -58,7 +59,7 @@
     <Compile Include="Scheduler\AutoUpdateMemberTypeTest.cs" />
     <Compile Include="Scheduler\OfficialSyncTest.cs" />
     <Compile Include="Scheduler\AutoUpdateOrderTypeTest.cs" />
-    <Compile Include="UnitTest1.cs" />
+    <Compile Include="CommonTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Arsenalcn.Core\Arsenalcn.Core.csproj">

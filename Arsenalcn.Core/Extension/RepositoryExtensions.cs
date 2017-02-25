@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Web.Script.Serialization;
 using Dapper;
 
 namespace Arsenalcn.Core
@@ -11,11 +10,21 @@ namespace Arsenalcn.Core
     {
         public static string ToSqlDebugInfo(this string sql, object para = null)
         {
-            var jsonSerializer = new JavaScriptSerializer();
-
             if (para != null)
             {
-                return jsonSerializer.Serialize(new { sql, para });
+                var dp = para as DynamicParameters;
+
+                if (dp != null)
+                {
+                    return new
+                    {
+                        sql,
+                        para = (object) dp.ParameterNames.ToDictionary(x => x, x => dp.Get<dynamic>(x))
+                    }
+                    .ToJson();
+                }
+
+                return new { sql, para }.ToJson();
             }
             else
             {

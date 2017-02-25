@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Linq;
 
 namespace Arsenalcn.Core
@@ -12,8 +11,6 @@ namespace Arsenalcn.Core
             where TOne : class, IMany, new()
             where TMany : class, IDao, new()
         {
-            Contract.Requires(func != null);
-
             // Get the property which matches IEnumerable<TMany>
             var property = typeof(TOne).GetProperties()
                 .FirstOrDefault(
@@ -70,8 +67,6 @@ namespace Arsenalcn.Core
             where TOne : class, IMany, new()
             where TOneKey : struct
         {
-            Contract.Requires(keySelector != null);
-
             // Get the property which matches IEnumerable<TMany>
             var property = typeof(TOne).GetProperties()
                 .FirstOrDefault(
@@ -140,9 +135,6 @@ namespace Arsenalcn.Core
         // Load All Records
         public static IEnumerable<T> Page<T>(this IEnumerable<T> source, int pageIndex, int pageSize)
         {
-            Contract.Requires(pageIndex >= 0);
-            Contract.Requires(pageSize >= 0);
-
             var skip = pageIndex * pageSize;
 
             if (skip > 0)
@@ -155,8 +147,6 @@ namespace Arsenalcn.Core
 
         public static IEnumerable<T> DistinctBy<T, TKey>(this IEnumerable<T> source, Func<T, TKey> keySelector)
         {
-            Contract.Requires(source != null);
-
             var seenKeys = new HashSet<TKey>();
 
             return source.Where(instance => seenKeys.Add(keySelector(instance)));

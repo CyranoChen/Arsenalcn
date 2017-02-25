@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Linq;
 using Arsenal.Service;
 using Arsenal.Service.Casino;
@@ -107,6 +108,24 @@ namespace Arsenalcn.Core.Tests
             var result = factory.All();
 
             Assert.IsInstanceOfType(result[0], typeof(MatchView));
+        }
+
+        [TestMethod]
+        public void Test_DapperPara()
+        {
+            var para1 = new { UserID = 100, UserName = "Cyrano", ID = 0 };
+
+            var para2 = new DynamicParameters();
+
+            para2.Add("UserID", 100);
+            para2.Add("UserName", "Cyrano");
+            para2.Add("ID", 0, DbType.Int32, ParameterDirection.Output);
+
+            var json1 = para1.ToJson();
+            var json2 = para2.ParameterNames
+                .ToDictionary(p => p, p => para2.Get<dynamic>(p)).ToJson();
+
+            Assert.AreEqual(json1, json2);
         }
     }
 }

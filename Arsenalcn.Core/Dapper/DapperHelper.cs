@@ -53,6 +53,7 @@ namespace Arsenalcn.Core
 
                 cs = scsb.ConnectionString;
             }
+
             var connection = new SqlConnection(cs);
             connection.Open();
             return connection;

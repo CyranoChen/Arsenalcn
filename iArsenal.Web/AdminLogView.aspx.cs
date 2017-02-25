@@ -6,7 +6,7 @@ namespace iArsenal.Web
 {
     public partial class AdminLogView : AdminPageBase
     {
-        private readonly IRepository repo = new Repository();
+        private readonly IRepository _repo = new Repository();
 
         private int LogID
         {
@@ -36,9 +36,9 @@ namespace iArsenal.Web
         {
             if (LogID > 0)
             {
-                var l = repo.Single<Log>(LogID);
+                var l = _repo.Single<Log>(LogID);
 
-                ltrlLogID.Text = $"详细日志查 <em>({LogID})</em>";
+                ltrlLogID.Text = $"详细日志 <em>({LogID})</em>";
                 tbLogger.Text = l.Logger;
                 tbCreateTime.Text = l.CreateTime.ToString("yyyy-MM-dd HH:mm:ss");
                 tbLevel.Text = l.Level.ToString();

@@ -38,7 +38,7 @@ namespace Arsenal.Web
             {
                 var l = _repo.Single<Log>(LogID);
 
-                ltrlLogID.Text = string.Format("详细日志查 <em>({0})</em>", LogID);
+                ltrlLogID.Text = $"详细日志 <em>({LogID})</em>";
                 tbLogger.Text = l.Logger;
                 tbCreateTime.Text = l.CreateTime.ToString("yyyy-MM-dd HH:mm:ss");
                 tbLevel.Text = l.Level.ToString();

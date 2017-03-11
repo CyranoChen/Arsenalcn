@@ -10,9 +10,7 @@ namespace iArsenal.Service
     [DbSchema("iArsenal_MatchTicket", Key = "MatchGuid", Sort = "Deadline DESC")]
     public class MatchTicket
     {
-        public MatchTicket()
-        {
-        }
+        public MatchTicket() { }
 
         private MatchTicket(DataRow dr)
         {
@@ -156,7 +154,7 @@ namespace iArsenal.Service
             return null;
         }
 
-        public void Create(SqlTransaction trans = null)
+        public void Create(IDbTransaction trans = null)
         {
             var sql =
                 @"INSERT INTO {0} (MatchGuid, ProductCode, Deadline, WaitingDeadline, AllowMemberClass, TicketCount, IsActive, Remark) 
@@ -182,7 +180,7 @@ namespace iArsenal.Service
             dapper.Execute(sql, para.ToDapperParameters(), trans);
         }
 
-        public void Update(SqlTransaction trans = null)
+        public void Update(IDbTransaction trans = null)
         {
             var sql =
                 @"UPDATE {0} SET ProductCode = @productCode, Deadline = @deadline, WaitingDeadline = @waitingDeadline, 
@@ -208,7 +206,7 @@ namespace iArsenal.Service
             dapper.Execute(sql, para.ToDapperParameters(), trans);
         }
 
-        public void Delete(SqlTransaction trans = null)
+        public void Delete(IDbTransaction trans = null)
         {
             var sql = $"DELETE FROM {Repository.GetTableAttr<MatchTicket>().Name} WHERE MatchGuid = @key";
 

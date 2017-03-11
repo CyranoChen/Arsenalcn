@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Data.SqlClient;
+using System.Data;
 using System.Web.Script.Serialization;
 
 namespace iArsenal.Service
@@ -48,7 +48,7 @@ namespace iArsenal.Service
             TravelOption = !string.IsNullOrEmpty(Remark) ? Remark.ToUpper().Split('|') : null;
         }
 
-        public void Place(Member m, SqlTransaction trans = null)
+        public void Place(Member m, IDbTransaction trans = null)
         {
             Size = $"{TravelFromDate.ToString("yyyy-MM-dd")}|{TravelToDate.ToString("yyyy-MM-dd")}";
 
@@ -104,7 +104,7 @@ namespace iArsenal.Service
             }
         }
 
-        public void Place(Member m, SqlTransaction trans = null)
+        public void Place(Member m, IDbTransaction trans = null)
         {
             Size = IsTicketOnly.ToString();
 
@@ -168,7 +168,7 @@ namespace iArsenal.Service
                 throw new Exception("The OrderItem is not the type of TravelPartner.");
         }
 
-        public override void Place(Member m, Product p, SqlTransaction trans = null)
+        public override void Place(Member m, Product p, IDbTransaction trans = null)
         {
             if (Partner != null)
             {

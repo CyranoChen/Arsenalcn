@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Data;
-using System.Data.SqlClient;
 using Arsenalcn.Core;
 
 namespace Arsenal.Service.Casino
@@ -8,7 +7,7 @@ namespace Arsenal.Service.Casino
     [DbSchema("AcnCasino_ChoiceOption", Sort = "CasinoItemGuid, OptionOrder")]
     public class ChoiceOption : Entity<int>
     {
-        public static void Clean(SqlTransaction trans = null)
+        public static void Clean(IDbTransaction trans = null)
         {
             //DELETE FROM AcnCasino_ChoiceOption WHERE (CasinoItemGuid NOT IN(SELECT CasinoItemGuid FROM AcnCasino_CasinoItem))
             var sql =

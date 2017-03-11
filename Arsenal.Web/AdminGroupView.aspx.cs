@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Web.UI.WebControls;
 using Arsenal.Service;
@@ -92,11 +91,8 @@ namespace Arsenal.Web
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
-            using (var conn = new SqlConnection(DapperHelper.ConnectionString))
+            using (var trans = DapperHelper.MarsConnection.BeginTransaction())
             {
-                conn.Open();
-                var trans = conn.BeginTransaction();
-
                 try
                 {
                     if (string.IsNullOrEmpty(ddlGroupLeague.SelectedValue) ||

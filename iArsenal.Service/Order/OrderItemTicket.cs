@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Data.SqlClient;
 
 namespace iArsenal.Service
@@ -35,7 +36,7 @@ namespace iArsenal.Service
                 throw new Exception("The OrderItem is not the type of MatchTicket.");
         }
 
-        public override void Place(Member m, Product p, SqlTransaction trans = null)
+        public override void Place(Member m, Product p, IDbTransaction trans = null)
         {
             Remark = MatchGuid.ToString();
             Size = TravelDate.ToString("yyyy-MM-dd");
@@ -76,7 +77,7 @@ namespace iArsenal.Service
                 throw new Exception("The OrderItem is not the type of TicketBeijing.");
         }
 
-        public void Place(Member m, SqlTransaction trans = null)
+        public void Place(Member m, IDbTransaction trans = null)
         {
             Size = SeatLevel;
 

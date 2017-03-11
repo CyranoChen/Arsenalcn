@@ -1,4 +1,4 @@
-﻿using System.Data.SqlClient;
+﻿using System.Data;
 using Arsenalcn.Core;
 
 namespace Arsenal.Service.Casino
@@ -6,7 +6,7 @@ namespace Arsenal.Service.Casino
     [DbSchema("AcnCasino_BetDetail", Sort = "ID DESC")]
     public class BetDetail : Entity<int>
     {
-        public static void Clean(SqlTransaction trans = null)
+        public static void Clean(IDbTransaction trans = null)
         {
             //DELETE FROM AcnCasino_BetDetail WHERE (BetID NOT IN (SELECT ID FROM AcnCasino_Bet))
             var sql =

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
+using System.Data;
 using System.Linq;
 using Arsenalcn.Core;
 
@@ -9,14 +9,14 @@ namespace Arsenal.Service
     [DbSchema("Arsenal_RelationGroupTeam", Sort = "GroupGuid, PositionNo")]
     public class RelationGroupTeam : Dao
     {
-        public void Update(SqlTransaction trans = null)
+        public void Update(IDbTransaction trans = null)
         {
             IRepository repo = new Repository();
 
             repo.Update(this, x => x.GroupGuid == GroupGuid && x.TeamGuid == TeamGuid, trans);
         }
 
-        public void Delete(SqlTransaction trans = null)
+        public void Delete(IDbTransaction trans = null)
         {
             IRepository repo = new Repository();
 
@@ -102,7 +102,7 @@ namespace Arsenal.Service
             AwayPoints = 0;
         }
 
-        public static void Clean(SqlTransaction trans = null)
+        public static void Clean(IDbTransaction trans = null)
         {
             var sql =
                 $@"DELETE FROM {Repository.GetTableAttr<RelationGroupTeam>().Name} WHERE 

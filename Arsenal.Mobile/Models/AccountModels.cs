@@ -209,11 +209,8 @@ namespace Arsenal.Mobile.Models
 
             #endregion
 
-            using (var conn = new SqlConnection(DapperHelper.ConnectionString))
+            using (var trans = DapperHelper.MarsConnection.BeginTransaction())
             {
-                conn.Open();
-                var trans = conn.BeginTransaction();
-
                 try
                 {
                     IRepository repo = new Repository();
@@ -272,11 +269,8 @@ namespace Arsenal.Mobile.Models
         public void CreateUser(string username, string email, string password, out object providerUserKey,
             out MembershipCreateStatus status)
         {
-            using (var conn = new SqlConnection(DapperHelper.ConnectionString))
+            using (var trans = DapperHelper.MarsConnection.BeginTransaction())
             {
-                conn.Open();
-                var trans = conn.BeginTransaction();
-
                 try
                 {
                     IRepository repo = new Repository();
@@ -424,11 +418,8 @@ namespace Arsenal.Mobile.Models
                 throw new Exception("用户旧密码验证不正确");
             }
 
-            using (var conn = new SqlConnection(DapperHelper.ConnectionString))
+            using (var trans = DapperHelper.MarsConnection.BeginTransaction())
             {
-                conn.Open();
-                var trans = conn.BeginTransaction();
-
                 try
                 {
                     IRepository repo = new Repository();
@@ -583,11 +574,8 @@ namespace Arsenal.Mobile.Models
         public static UserWeChat Authorize(Guid userGuid, string accessToken, double expiresIn, string refreshToken,
             string openId, ScopeType scope, bool anonymous = false)
         {
-            using (var conn = new SqlConnection(DapperHelper.ConnectionString))
+            using (var trans = DapperHelper.MarsConnection.BeginTransaction())
             {
-                conn.Open();
-                var trans = conn.BeginTransaction();
-
                 try
                 {
                     IRepository repo = new Repository();

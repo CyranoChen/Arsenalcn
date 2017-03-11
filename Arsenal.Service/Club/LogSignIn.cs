@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Data.SqlClient;
+using System.Data;
 using System.Linq;
 using Arsenalcn.Core;
 
@@ -15,7 +15,7 @@ namespace Arsenal.Service.Club
         //    map.ForMember(d => d.Bonus, opt => opt.MapFrom(s => s.GetValue("Bonus")));
         //}
 
-        public double DoBonus(Guid userGuid, string keyword, SqlTransaction trans = null)
+        public double DoBonus(Guid userGuid, string keyword, IDbTransaction trans = null)
         {
             IRepository repo = new Repository();
 

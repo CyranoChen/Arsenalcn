@@ -355,11 +355,8 @@ namespace iArsenal.Web
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
-            using (var conn = new SqlConnection(DapperHelper.ConnectionString))
+            using (var trans = DapperHelper.MarsConnection.BeginTransaction())
             {
-                conn.Open();
-                var trans = conn.BeginTransaction();
-
                 try
                 {
                     var m = _repo.Single<Member>(Mid);

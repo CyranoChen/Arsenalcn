@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
+using System.Data;
 using System.Linq;
 using Arsenalcn.Core;
 using AutoMapper;
@@ -164,7 +164,7 @@ namespace iArsenal.Service
             #endregion
         }
 
-        public void CalcOrderPrice(SqlTransaction trans = null)
+        public void CalcOrderPrice(IDbTransaction trans = null)
         {
             var price = default(double);
 

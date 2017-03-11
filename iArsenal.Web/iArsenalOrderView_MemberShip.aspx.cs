@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data.SqlClient;
 using System.Globalization;
 using System.Linq;
 using Arsenalcn.Core;
@@ -306,11 +305,8 @@ namespace iArsenal.Web
 
         protected void btnGenMemberPeriod_Click(object sender, EventArgs e)
         {
-            using (var conn = new SqlConnection(DapperHelper.ConnectionString))
+            using (var trans = DapperHelper.MarsConnection.BeginTransaction())
             {
-                conn.Open();
-                var trans = conn.BeginTransaction();
-
                 try
                 {
                     if (OrderID > 0)

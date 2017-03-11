@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Data.SqlClient;
+using System.Data;
 using Arsenalcn.Core;
 
 namespace Arsenal.Service.Casino
@@ -22,7 +22,7 @@ namespace Arsenal.Service.Casino
             repo.Update(this);
         }
 
-        public static void Clean(SqlTransaction trans = null)
+        public static void Clean(IDbTransaction trans = null)
         {
             //DELETE FROM AcnCasino_CasinoItem WHERE (MatchGuid NOT IN(SELECT MatchGuid FROM AcnCasino_Match))
             var sql = string.Format(@"DELETE FROM {0} WHERE (MatchGuid NOT IN (SELECT MatchGuid FROM {1}));

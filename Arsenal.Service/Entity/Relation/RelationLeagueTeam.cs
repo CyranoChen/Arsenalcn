@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
 using Arsenalcn.Core;
 
 namespace Arsenal.Service
@@ -16,14 +15,14 @@ namespace Arsenal.Service
             return repo.Any<RelationLeagueTeam>(x => x.TeamGuid == TeamGuid && x.LeagueGuid == LeagueGuid);
         }
 
-        public void Delete(SqlTransaction trans = null)
+        public void Delete(IDbTransaction trans = null)
         {
             IRepository repo = new Repository();
 
             repo.Delete<RelationLeagueTeam>(x => x.LeagueGuid == LeagueGuid && x.TeamGuid == TeamGuid, trans);
         }
 
-        public static void Clean(SqlTransaction trans = null)
+        public static void Clean(IDbTransaction trans = null)
         {
             var sql =
                 $@"DELETE FROM {Repository.GetTableAttr<RelationLeagueTeam>().Name} WHERE 

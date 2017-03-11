@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Data.SqlClient;
 
 namespace iArsenal.Service
@@ -33,7 +34,7 @@ namespace iArsenal.Service
             Season = $"{EndDate.AddYears(-1).Year}/{EndDate.ToString("yy")}";
         }
 
-        public override void Place(Member m, Product p, SqlTransaction trans = null)
+        public override void Place(Member m, Product p, IDbTransaction trans = null)
         {
             Remark = !string.IsNullOrEmpty(AlterMethod) ? $"{MemberCardNo}|{AlterMethod}" : MemberCardNo;
 
@@ -70,7 +71,7 @@ namespace iArsenal.Service
                 throw new Exception("The OrderItem is not the type of MembershipCore.");
         }
 
-        public void Place(Member m, SqlTransaction trans = null)
+        public void Place(Member m, IDbTransaction trans = null)
         {
             var product = Product.Cache.ProductList.Find(p =>
                 p.ProductType.Equals(ProductType.MembershipCore));
@@ -94,7 +95,7 @@ namespace iArsenal.Service
                 throw new Exception("The OrderItem is not the type of MembershipPremier.");
         }
 
-        public void Place(Member m, SqlTransaction trans = null)
+        public void Place(Member m, IDbTransaction trans = null)
         {
             var product = Product.Cache.ProductList.Find(p =>
                 p.ProductType.Equals(ProductType.MembershipPremier));

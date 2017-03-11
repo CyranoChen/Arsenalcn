@@ -53,12 +53,8 @@ namespace Arsenal.Mobile.Controllers
             var model = new SignInDailyDto();
             var user = UserDto.GetSession();
 
-            using (var conn = new SqlConnection(DapperHelper.ConnectionString))
+            using (var trans = DapperHelper.MarsConnection.BeginTransaction())
             {
-
-                conn.Open();
-                var trans = conn.BeginTransaction();
-
                 try
                 {
 
@@ -127,11 +123,8 @@ namespace Arsenal.Mobile.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ContestBonus()
         {
-            using (var conn = new SqlConnection(DapperHelper.ConnectionString))
+            using (var trans = DapperHelper.MarsConnection.BeginTransaction())
             {
-                conn.Open();
-                var trans = conn.BeginTransaction();
-
                 try
                 {
                     var user = UserDto.GetSession();

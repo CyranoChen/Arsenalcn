@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Data.SqlClient;
-using System.Diagnostics.Contracts;
+using System.Data;
 using System.Linq;
 using Arsenalcn.Core;
 
@@ -12,18 +11,10 @@ namespace Arsenal.Service.Casino
         // Place Bet of SingleChoice
         public void Place(Guid matchGuid, string selectedOption)
         {
-            using (var conn = new SqlConnection(DapperHelper.ConnectionString))
+            using (var trans = DapperHelper.MarsConnection.BeginTransaction())
             {
-                conn.Open();
-                var trans = conn.BeginTransaction();
-
                 try
                 {
-                    Contract.Requires(UserID > 0);
-                    Contract.Requires(matchGuid != null);
-                    Contract.Requires(!string.IsNullOrEmpty(selectedOption));
-                    Contract.Requires(BetAmount.HasValue & BetAmount.Value > 0);
-
                     IRepository repo = new Repository();
 
                     #region Get CasinoItem & Check
@@ -128,17 +119,10 @@ namespace Arsenal.Service.Casino
         // Place Bet of MatchResult
         public void Place(Guid matchGuid, short resultHome, short resultAway)
         {
-            using (var conn = new SqlConnection(DapperHelper.ConnectionString))
+            using (var trans = DapperHelper.MarsConnection.BeginTransaction())
             {
-                conn.Open();
-                var trans = conn.BeginTransaction();
-
                 try
                 {
-                    Contract.Requires(UserID > 0);
-                    Contract.Requires(matchGuid != null);
-                    Contract.Requires(resultHome >= 0 & resultAway >= 0);
-
                     IRepository repo = new Repository();
 
                     #region Get CasinoItem & Check
@@ -219,11 +203,8 @@ namespace Arsenal.Service.Casino
 
         public void ReturnBet()
         {
-            using (var conn = new SqlConnection(DapperHelper.ConnectionString))
+            using (var trans = DapperHelper.MarsConnection.BeginTransaction())
             {
-                conn.Open();
-                var trans = conn.BeginTransaction();
-
                 try
                 {
                     IRepository repo = new Repository();
@@ -274,7 +255,7 @@ namespace Arsenal.Service.Casino
             }
         }
 
-        public static void Clean(SqlTransaction trans = null)
+        public static void Clean(IDbTransaction trans = null)
         {
             //DELETE FROM dbo.AcnCasino_Bet WHERE (CasinoItemGuid NOT IN(SELECT CasinoItemGuid FROM dbo.AcnCasino_CasinoItem))
             var sql =

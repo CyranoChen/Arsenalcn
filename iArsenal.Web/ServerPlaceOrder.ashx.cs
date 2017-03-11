@@ -16,11 +16,8 @@ namespace iArsenal.Web
         {
             var responseText = string.Empty;
 
-            using (var conn = new SqlConnection(DapperHelper.ConnectionString))
+            using (var trans = DapperHelper.MarsConnection.BeginTransaction())
             {
-                conn.Open();
-                var trans = conn.BeginTransaction();
-
                 var jsonSerializer = new JavaScriptSerializer();
 
                 try

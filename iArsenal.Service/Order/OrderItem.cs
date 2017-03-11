@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Data.SqlClient;
+using System.Data;
 using Arsenalcn.Core;
 
 namespace iArsenal.Service
@@ -16,7 +16,7 @@ namespace iArsenal.Service
             #endregion
         }
 
-        public virtual void Place(Member m, Product p, SqlTransaction trans = null)
+        public virtual void Place(Member m, Product p, IDbTransaction trans = null)
         {
             MemberID = m.ID;
             MemberName = m.Name;

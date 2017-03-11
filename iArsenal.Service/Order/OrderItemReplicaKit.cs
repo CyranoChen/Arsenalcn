@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Data.SqlClient;
+using System.Data;
 
 namespace iArsenal.Service
 {
@@ -20,7 +20,7 @@ namespace iArsenal.Service
                 throw new Exception("The OrderItem is not the type of ReplicaKitHome.");
         }
 
-        public void Place(Member m, SqlTransaction trans = null)
+        public void Place(Member m, IDbTransaction trans = null)
         {
             var product = Product.Cache.ProductList.Find(p =>
                 p.ProductType.Equals(ProductType.ReplicaKitHome));
@@ -42,7 +42,7 @@ namespace iArsenal.Service
                 throw new Exception("The OrderItem is not the type of ReplicaKitAway.");
         }
 
-        public void Place(Member m, SqlTransaction trans = null)
+        public void Place(Member m, IDbTransaction trans = null)
         {
             var product = Product.Cache.ProductList.Find(p =>
                 p.ProductType.Equals(ProductType.ReplicaKitAway));
@@ -64,7 +64,7 @@ namespace iArsenal.Service
                 throw new Exception("The OrderItem is not the type of ReplicaKitCup.");
         }
 
-        public void Place(Member m, SqlTransaction trans = null)
+        public void Place(Member m, IDbTransaction trans = null)
         {
             var product = Product.Cache.ProductList.Find(p =>
                 p.ProductType.Equals(ProductType.ReplicaKitCup));
@@ -86,7 +86,7 @@ namespace iArsenal.Service
                 throw new Exception("The OrderItem is not the type of PlayerNumber.");
         }
 
-        public void Place(Member m, SqlTransaction trans = null)
+        public void Place(Member m, IDbTransaction trans = null)
         {
             var product = Product.Cache.ProductList.Find(p =>
                 p.ProductType.Equals(ProductType.PlayerNumber));
@@ -131,7 +131,7 @@ namespace iArsenal.Service
                 throw new Exception("The OrderItem is not the type of PlayerName.");
         }
 
-        public void Place(Member m, SqlTransaction trans = null)
+        public void Place(Member m, IDbTransaction trans = null)
         {
             var product = Product.Cache.ProductList.Find(p =>
                 p.ProductType.Equals(ProductType.PlayerName));
@@ -176,7 +176,7 @@ namespace iArsenal.Service
                 throw new Exception("The OrderItem is not the type of ArsenalFont.");
         }
 
-        public void Place(Member m, SqlTransaction trans = null)
+        public void Place(Member m, IDbTransaction trans = null)
         {
             var product = Product.Cache.ProductList.Find(p =>
                 p.ProductType.Equals(ProductType.ArsenalFont));
@@ -198,7 +198,7 @@ namespace iArsenal.Service
                 throw new Exception("The OrderItem is not the type of PremiershipPatch.");
         }
 
-        public void Place(Member m, SqlTransaction trans = null)
+        public void Place(Member m, IDbTransaction trans = null)
         {
             var product = Product.Cache.ProductList.Find(p =>
                 p.ProductType.Equals(ProductType.PremiershipPatch));
@@ -220,7 +220,7 @@ namespace iArsenal.Service
                 throw new Exception("The OrderItem is not the type of ChampionshipPatch.");
         }
 
-        public void Place(Member m, SqlTransaction trans = null)
+        public void Place(Member m, IDbTransaction trans = null)
         {
             var product = Product.Cache.ProductList.Find(p =>
                 p.ProductType.Equals(ProductType.ChampionshipPatch));

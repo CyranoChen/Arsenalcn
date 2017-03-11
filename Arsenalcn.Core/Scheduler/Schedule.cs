@@ -96,7 +96,7 @@ namespace Arsenalcn.Core.Scheduler
         //    return list;
         //}
 
-        //public void Update(SqlTransaction trans = null)
+        //public void Update(IDbTransaction trans = null)
         //{
         //    Contract.Requires(Any());
 

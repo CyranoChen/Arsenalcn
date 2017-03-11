@@ -10,11 +10,8 @@ namespace iArsenal.Web
     {
         public void ProcessRequest(HttpContext context)
         {
-            using (var conn = new SqlConnection(DapperHelper.ConnectionString))
+            using (var trans = DapperHelper.MarsConnection.BeginTransaction())
             {
-                conn.Open();
-                var trans = conn.BeginTransaction();
-
                 try
                 {
                     var strOrderId = context.Request.QueryString["OrderID"];

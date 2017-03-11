@@ -12,11 +12,8 @@ namespace Arsenal.Service
         {
             if (AcnID != null)
             {
-                using (var conn = new SqlConnection(DapperHelper.ConnectionString))
+                using (var trans = DapperHelper.MarsConnection.BeginTransaction())
                 {
-                    conn.Open();
-                    var trans = conn.BeginTransaction();
-
                     try
                     {
                         IRepository repo = new Repository();

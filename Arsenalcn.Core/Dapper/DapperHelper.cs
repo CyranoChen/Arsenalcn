@@ -14,7 +14,7 @@ namespace Arsenalcn.Core
     public class DapperHelper : IDapperHelper, IDisposable
     {
         private static string _connectionString;
-        public static string ConnectionString => _connectionString ?? (_connectionString =
+        private static string ConnectionString => _connectionString ?? (_connectionString =
             ConfigurationManager.ConnectionStrings["Arsenalcn.ConnectionString"].ConnectionString);
 
         public static readonly IDbConnection Connection = GetOpenConnection();

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Reflection;
 
@@ -23,7 +24,7 @@ namespace Arsenalcn.Core
             ConfigSystemInfo = (ConfigSystem)Enum.Parse(typeof(ConfigSystem), ConfigSystem);
         }
 
-        public void Save(SqlTransaction trans = null)
+        public void Save(IDbTransaction trans = null)
         {
             IRepository repo = new Repository();
 

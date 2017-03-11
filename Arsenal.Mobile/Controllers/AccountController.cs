@@ -47,7 +47,7 @@ namespace Arsenal.Mobile.Controllers
             {
                 var client = new WeChatSnsClient();
 
-                var openUri = client.GetOpenUrl($"http://{HttpContext.Request.Url.Host}/Account/WeChatAuth", scope, user.ID.ToString());
+                var openUri = client.GetOpenUrl($"http://{HttpContext.Request.Url.Authority}/Account/WeChatAuth", scope, user.ID.ToString());
 
                 if (!string.IsNullOrEmpty(openUri))
                 {

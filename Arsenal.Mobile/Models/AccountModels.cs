@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Data.SqlClient;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Reflection;
@@ -574,24 +573,25 @@ namespace Arsenal.Mobile.Models
         public static UserWeChat Authorize(Guid userGuid, string accessToken, double expiresIn, string refreshToken,
             string openId, ScopeType scope, bool anonymous = false)
         {
-            using (var trans = DapperHelper.MarsConnection.BeginTransaction())
+
+            IRepository repo = new Repository();
+
+            // 保存微信用户
+            var user = anonymous ? repo.Single<User>(userGuid) : UserDto.GetSession();
+
+            if (user != null && user.ID == userGuid)
             {
-                try
+                var u = new UserWeChat();
+
+                if (repo.Any<UserWeChat>(userGuid))
                 {
-                    IRepository repo = new Repository();
+                    u = repo.Single<UserWeChat>(userGuid);
+                }
 
-                    // 保存微信用户
-                    var user = anonymous ? repo.Single<User>(userGuid) : UserDto.GetSession();
-
-                    if (user != null && user.ID == userGuid)
+                using (var trans = DapperHelper.MarsConnection.BeginTransaction())
+                {
+                    try
                     {
-                        var u = new UserWeChat();
-
-                        if (repo.Any<UserWeChat>(userGuid))
-                        {
-                            u = repo.Single<UserWeChat>(userGuid);
-                        }
-
                         u.ID = userGuid;
                         u.UserName = user.UserName;
                         u.LastAuthorizeDate = DateTime.Now;
@@ -610,7 +610,9 @@ namespace Arsenal.Mobile.Models
                         if (u.Privilege == null) u.Privilege = string.Empty;
                         if (u.UnionID == null) u.UnionID = string.Empty;
 
-                        repo.Save(u, trans);
+                        object key;
+
+                        repo.Save(u, out key, trans);
 
                         // 更新普通用户
                         user.WeChatOpenID = openId;
@@ -645,16 +647,15 @@ namespace Arsenal.Mobile.Models
 
                         return u;
                     }
+                    catch
+                    {
+                        trans.Rollback();
+                    }
 
-                    return null;
-                }
-                catch
-                {
-                    trans.Rollback();
-
-                    throw;
                 }
             }
+
+            return null;
         }
     }
 

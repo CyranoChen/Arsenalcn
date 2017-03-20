@@ -21,20 +21,20 @@ namespace Arsenalcn.Core
             _dapper = new DapperHelper(connection);
         }
 
-        public T Single<T>(object key) where T : class, IEntity, new()
+        public T Single<T>(object key, IDbTransaction trans = null) where T : class, IEntity, new()
         {
             var attr = GetTableAttr<T>();
 
             string sql = $"SELECT {BuildSelectSqlColumn(attr)} FROM {attr.Name} WHERE {attr.Key} = @key";
 
-            var instance = Dapper.QueryFirstOrDefault<T>(sql, new { key });
+            var instance = Dapper.QueryFirstOrDefault<T>(sql, new { key }, trans);
 
             instance?.Inital();
 
             return instance;
         }
 
-        public T Single<T>(Expression<Func<T, bool>> whereBy) where T : class, IDao, new()
+        public T Single<T>(Expression<Func<T, bool>> whereBy, IDbTransaction trans = null) where T : class, IDao, new()
         {
             var attr = GetTableAttr<T>();
 
@@ -54,14 +54,14 @@ namespace Arsenalcn.Core
                 sql.Append(" ORDER BY " + attr.Sort);
             }
 
-            var instance = Dapper.QueryFirstOrDefault<T>(sql.ToString(), condition.DapperArguments);
+            var instance = Dapper.QueryFirstOrDefault<T>(sql.ToString(), condition.DapperArguments, trans);
 
             instance?.Inital();
 
             return instance;
         }
 
-        public int Count<T>(Expression<Func<T, bool>> whereBy) where T : class, IDao
+        public int Count<T>(Expression<Func<T, bool>> whereBy, IDbTransaction trans = null) where T : class, IDao
         {
             var attr = GetTableAttr<T>();
 
@@ -76,24 +76,24 @@ namespace Arsenalcn.Core
                 sql.Append(" WHERE " + condition.Condition);
             }
 
-            return Dapper.ExecuteScalar<int>(sql.ToString(), condition.DapperArguments);
+            return Dapper.ExecuteScalar<int>(sql.ToString(), condition.DapperArguments, trans);
         }
 
-        public bool Any<T>(object key) where T : class, IEntity
+        public bool Any<T>(object key, IDbTransaction trans = null) where T : class, IEntity
         {
             var attr = GetTableAttr<T>();
 
             string sql = $"SELECT COUNT(*) FROM {attr.Name} WHERE {attr.Key} = @key";
 
-            return Dapper.ExecuteScalar<int>(sql, new { key }) > 0;
+            return Dapper.ExecuteScalar<int>(sql, new { key }, trans) > 0;
         }
 
-        public bool Any<T>(Expression<Func<T, bool>> whereBy) where T : class, IDao
+        public bool Any<T>(Expression<Func<T, bool>> whereBy, IDbTransaction trans = null) where T : class, IDao
         {
-            return Count(whereBy) > 0;
+            return Count(whereBy, trans) > 0;
         }
 
-        public List<T> All<T>() where T : class, IDao, new()
+        public List<T> All<T>(IDbTransaction trans = null) where T : class, IDao, new()
         {
             var attr = GetTableAttr<T>();
 
@@ -105,14 +105,14 @@ namespace Arsenalcn.Core
                 sql.Append(" ORDER BY " + attr.Sort);
             }
 
-            var list = Dapper.Query<T>(sql.ToString()).ToList();
+            var list = Dapper.Query<T>(sql.ToString(), trans).ToList();
 
             if (list.Count > 0) { list.ForEach(x => x.Inital()); }
 
             return list;
         }
 
-        public List<T> All<T>(IPager pager, string orderBy = null) where T : class, IDao, new()
+        public List<T> All<T>(IPager pager, string orderBy = null, IDbTransaction trans = null) where T : class, IDao, new()
         {
             var attr = GetTableAttr<T>();
 
@@ -126,7 +126,7 @@ namespace Arsenalcn.Core
             // Get TotalCount First
             var countSql = $"SELECT COUNT({attr.Key}) AS TotalCount FROM {attr.Name}";
 
-            pager.SetTotalCount(Dapper.ExecuteScalar<int>(countSql));
+            pager.SetTotalCount(Dapper.ExecuteScalar<int>(countSql, trans));
 
             // Get Query Result
             var innerSql = $"SELECT ROW_NUMBER() OVER(ORDER BY {strOrderBy}) AS RowNo, * FROM {attr.Name}";
@@ -136,14 +136,14 @@ namespace Arsenalcn.Core
 
             //sql += string.Format("SELECT COUNT({1}) AS TotalCount FROM {0}", attr.Name, attr.Key);
 
-            var list = Dapper.Query<T>(sql).ToList();
+            var list = Dapper.Query<T>(sql, trans).ToList();
 
             if (list.Count > 0) { list.ForEach(x => x.Inital()); }
 
             return list;
         }
 
-        public List<T> Query<T>(Expression<Func<T, bool>> whereBy) where T : class, IDao, new()
+        public List<T> Query<T>(Expression<Func<T, bool>> whereBy, IDbTransaction trans = null) where T : class, IDao, new()
         {
             var attr = GetTableAttr<T>();
 
@@ -163,14 +163,14 @@ namespace Arsenalcn.Core
                 sql.Append(" ORDER BY " + attr.Sort);
             }
 
-            var list = Dapper.Query<T>(sql.ToString(), condition.DapperArguments).ToList();
+            var list = Dapper.Query<T>(sql.ToString(), condition.DapperArguments, trans).ToList();
 
             if (list.Count > 0) { list.ForEach(x => x.Inital()); }
 
             return list;
         }
 
-        public List<T> Query<T>(IPager pager, Expression<Func<T, bool>> whereBy, string orderBy = null)
+        public List<T> Query<T>(IPager pager, Expression<Func<T, bool>> whereBy, string orderBy = null, IDbTransaction trans = null)
             where T : class, IDao, new()
         {
             var attr = GetTableAttr<T>();
@@ -190,7 +190,7 @@ namespace Arsenalcn.Core
             // Get TotalCount First
             var countSql = $"SELECT COUNT({attr.Key}) AS TotalCount FROM {attr.Name} WHERE {condition.Condition}";
 
-            pager.SetTotalCount(Dapper.ExecuteScalar<int>(countSql, condition.DapperArguments));
+            pager.SetTotalCount(Dapper.ExecuteScalar<int>(countSql, condition.DapperArguments, trans));
 
             // Build Sql and Execute
             var innerSql = $"SELECT ROW_NUMBER() OVER(ORDER BY {strOrderBy}) AS RowNo, * FROM {attr.Name} WHERE {condition.Condition}";
@@ -198,14 +198,14 @@ namespace Arsenalcn.Core
             string sql =
                 $"SELECT {BuildSelectSqlColumn(attr)} FROM ({innerSql}) AS t WHERE t.RowNo BETWEEN {pager.CurrentPage * pager.PagingSize + 1} AND {(pager.CurrentPage + 1) * pager.PagingSize}";
 
-            var list = Dapper.Query<T>(sql, condition.DapperArguments).ToList();
+            var list = Dapper.Query<T>(sql, condition.DapperArguments, trans).ToList();
 
             if (list.Count > 0) { list.ForEach(x => x.Inital()); }
 
             return list;
         }
 
-        public List<T> Query<T>(Criteria criteria) where T : class, IDao, new()
+        public List<T> Query<T>(Criteria criteria, IDbTransaction trans = null) where T : class, IDao, new()
         {
             var attr = GetTableAttr<T>();
 
@@ -225,7 +225,7 @@ namespace Arsenalcn.Core
                 // Get TotalCount First
                 var countSql = $"SELECT COUNT(*) AS TotalCount FROM {attr.Name} {strWhere}";
 
-                criteria.SetTotalCount(new DapperHelper().ExecuteScalar<int>(countSql, criteria.Parameters));
+                criteria.SetTotalCount(new DapperHelper().ExecuteScalar<int>(countSql, criteria.Parameters, trans));
 
                 // Get Query Result
                 var innerSql =
@@ -239,7 +239,7 @@ namespace Arsenalcn.Core
                 sql = $"SELECT {BuildSelectSqlColumn(attr)} FROM {attr.Name} {strWhere} {strOrderBy}";
             }
 
-            var list = Dapper.Query<T>(sql, criteria?.Parameters).ToList();
+            var list = Dapper.Query<T>(sql, criteria?.Parameters, trans).ToList();
 
             if (list.Count > 0) { list.ForEach(x => x.Inital()); }
 
@@ -427,11 +427,11 @@ namespace Arsenalcn.Core
             return -1;
         }
 
-        public int Save<T>(T instance, IDbTransaction trans = null) where T : class, IEntity
+        public int Save<T>(T instance, out object key, IDbTransaction trans = null) where T : class, IEntity
         {
-            var key = instance.GetType().GetProperty("ID").GetValue(instance, null);
+            key = instance.GetType().GetProperty("ID").GetValue(instance, null);
 
-            if (Any<T>(key))
+            if (Any<T>(key, trans))
             {
                 return Update(instance, trans);
             }
@@ -443,7 +443,7 @@ namespace Arsenalcn.Core
 
         public int Save<T>(T instance, Expression<Func<T, bool>> whereBy, IDbTransaction trans = null) where T : class, IDao
         {
-            if (Any(whereBy))
+            if (Any(whereBy, trans))
             {
                 return Update(instance, whereBy, trans);
             }
@@ -484,7 +484,7 @@ namespace Arsenalcn.Core
                 sql.Append(" WHERE " + condition.Condition);
             }
 
-            return Dapper.Execute(sql.ToString(), condition.DapperArguments);
+            return Dapper.Execute(sql.ToString(), condition.DapperArguments, trans);
         }
 
         public static DbSchema GetTableAttr<T>() where T : class

@@ -437,7 +437,7 @@ namespace Arsenalcn.Core
             }
             else
             {
-                return Insert((IDao)instance, trans);
+                return Insert(instance, out key, trans);
             }
         }
 

@@ -74,7 +74,7 @@ namespace Arsenalcn.Core
                 {
                     MethodInstance = MethodBase.GetCurrentMethod(),
                     ThreadInstance = Thread.CurrentThread
-                });
+                }, trans);
             }
 
             return MarsConnection.Execute(sql, para, trans, CommandTimeout, commandType);
@@ -88,7 +88,7 @@ namespace Arsenalcn.Core
                 {
                     MethodInstance = MethodBase.GetCurrentMethod(),
                     ThreadInstance = Thread.CurrentThread
-                });
+                }, trans);
             }
 
             return MarsConnection.ExecuteReader(sql, para, trans, CommandTimeout, commandType);
@@ -102,7 +102,7 @@ namespace Arsenalcn.Core
                 {
                     MethodInstance = MethodBase.GetCurrentMethod(),
                     ThreadInstance = Thread.CurrentThread
-                });
+                }, trans);
             }
 
             using (var reader = MarsConnection.ExecuteReader(sql, para, trans, CommandTimeout, commandType))
@@ -139,7 +139,7 @@ namespace Arsenalcn.Core
                 {
                     MethodInstance = MethodBase.GetCurrentMethod(),
                     ThreadInstance = Thread.CurrentThread
-                });
+                }, trans);
             }
 
             return MarsConnection.ExecuteScalar(sql, para, trans, CommandTimeout, commandType);
@@ -153,7 +153,7 @@ namespace Arsenalcn.Core
                 {
                     MethodInstance = MethodBase.GetCurrentMethod(),
                     ThreadInstance = Thread.CurrentThread
-                });
+                }, trans);
             }
 
             return MarsConnection.ExecuteScalar<T>(sql, para, trans, CommandTimeout, commandType);
@@ -167,7 +167,7 @@ namespace Arsenalcn.Core
                 {
                     MethodInstance = MethodBase.GetCurrentMethod(),
                     ThreadInstance = Thread.CurrentThread
-                });
+                }, trans);
             }
 
             return MarsConnection.QueryFirstOrDefault<T>(sql, para, trans, CommandTimeout, commandType);
@@ -182,7 +182,7 @@ namespace Arsenalcn.Core
                 {
                     MethodInstance = MethodBase.GetCurrentMethod(),
                     ThreadInstance = Thread.CurrentThread
-                });
+                }, trans);
             }
 
             return MarsConnection.Query(sql, para, trans, true, CommandTimeout, commandType);
@@ -197,14 +197,14 @@ namespace Arsenalcn.Core
                 {
                     MethodInstance = MethodBase.GetCurrentMethod(),
                     ThreadInstance = Thread.CurrentThread
-                });
+                }, trans);
             }
 
             return MarsConnection.Query<T>(sql, para, trans, true, CommandTimeout, commandType);
         }
 
         public IEnumerable<T> Query<T1, T2, T>(string sql, Func<T1, T2, T> map,
-            object para = null, string splitOn = "Id", CommandType? commandType = null)
+            object para = null, IDbTransaction trans = null, string splitOn = "Id", CommandType? commandType = null)
         {
             if (DebugMode)
             {
@@ -212,14 +212,14 @@ namespace Arsenalcn.Core
                 {
                     MethodInstance = MethodBase.GetCurrentMethod(),
                     ThreadInstance = Thread.CurrentThread
-                });
+                }, trans);
             }
 
-            return MarsConnection.Query(sql, map, para, null, true, splitOn, CommandTimeout, commandType);
+            return MarsConnection.Query(sql, map, para, trans, true, splitOn, CommandTimeout, commandType);
         }
 
         public IEnumerable<T> Query<T1, T2, T3, T>(string sql, Func<T1, T2, T3, T> map,
-            object para = null, string splitOn = "Id", CommandType? commandType = null)
+            object para = null, IDbTransaction trans = null, string splitOn = "Id", CommandType? commandType = null)
         {
             if (DebugMode)
             {
@@ -227,14 +227,14 @@ namespace Arsenalcn.Core
                 {
                     MethodInstance = MethodBase.GetCurrentMethod(),
                     ThreadInstance = Thread.CurrentThread
-                });
+                }, trans);
             }
 
-            return MarsConnection.Query(sql, map, para, null, true, splitOn, CommandTimeout, commandType);
+            return MarsConnection.Query(sql, map, para, trans, true, splitOn, CommandTimeout, commandType);
         }
 
         public IEnumerable<T> Query<T1, T2, T3, T4, T>(string sql, Func<T1, T2, T3, T4, T> map,
-            object para = null, string splitOn = "Id", CommandType? commandType = null)
+            object para = null, IDbTransaction trans = null, string splitOn = "Id", CommandType? commandType = null)
         {
             if (DebugMode)
             {
@@ -242,14 +242,14 @@ namespace Arsenalcn.Core
                 {
                     MethodInstance = MethodBase.GetCurrentMethod(),
                     ThreadInstance = Thread.CurrentThread
-                });
+                }, trans);
             }
 
-            return MarsConnection.Query(sql, map, para, null, true, splitOn, CommandTimeout, commandType);
+            return MarsConnection.Query(sql, map, para, trans, true, splitOn, CommandTimeout, commandType);
         }
 
         public IEnumerable<T> Query<T1, T2, T3, T4, T5, T>(string sql, Func<T1, T2, T3, T4, T5, T> map,
-            object para = null, string splitOn = "Id", CommandType? commandType = null)
+            object para = null, IDbTransaction trans = null, string splitOn = "Id", CommandType? commandType = null)
         {
             if (DebugMode)
             {
@@ -257,14 +257,14 @@ namespace Arsenalcn.Core
                 {
                     MethodInstance = MethodBase.GetCurrentMethod(),
                     ThreadInstance = Thread.CurrentThread
-                });
+                }, trans);
             }
 
-            return MarsConnection.Query(sql, map, para, null, true, splitOn, CommandTimeout, commandType);
+            return MarsConnection.Query(sql, map, para, trans, true, splitOn, CommandTimeout, commandType);
         }
 
         public IEnumerable<T> Query<T1, T2, T3, T4, T5, T6, T>(string sql, Func<T1, T2, T3, T4, T5, T6, T> map,
-            object para = null, string splitOn = "Id", CommandType? commandType = null)
+            object para = null, IDbTransaction trans = null, string splitOn = "Id", CommandType? commandType = null)
         {
             if (DebugMode)
             {
@@ -272,10 +272,10 @@ namespace Arsenalcn.Core
                 {
                     MethodInstance = MethodBase.GetCurrentMethod(),
                     ThreadInstance = Thread.CurrentThread
-                });
+                }, trans);
             }
 
-            return MarsConnection.Query(sql, map, para, null, true, splitOn, CommandTimeout, commandType);
+            return MarsConnection.Query(sql, map, para, trans, true, splitOn, CommandTimeout, commandType);
         }
 
         public void Dispose()

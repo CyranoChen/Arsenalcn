@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using Arsenalcn.Core;
 
@@ -37,7 +38,7 @@ namespace Arsenal.Service.Casino
             DbSchema = Repository.GetTableAttr<BonusView>();
         }
 
-        public BonusView Single(Criteria criteria)
+        public BonusView Single(Criteria criteria, IDbTransaction trans = null)
         {
             return Dapper.Query<BonusView, HomeTeam, AwayTeam, League, BonusView>(BuildSingleSql(criteria),
                 (x, h, a, l) =>
@@ -47,10 +48,10 @@ namespace Arsenal.Service.Casino
                     x.League = l;
 
                     return x;
-                }, criteria?.Parameters, SplitOn).FirstOrDefault();
+                }, criteria?.Parameters, trans, SplitOn).FirstOrDefault();
         }
 
-        public List<BonusView> All()
+        public List<BonusView> All(IDbTransaction trans = null)
         {
             return Dapper.Query<BonusView, HomeTeam, AwayTeam, League, BonusView>(BuildAllSql(),
                 (x, h, a, l) =>
@@ -60,10 +61,10 @@ namespace Arsenal.Service.Casino
                     x.League = l;
 
                     return x;
-                }, null, SplitOn).ToList();
+                }, null, trans, SplitOn).ToList();
         }
 
-        public List<BonusView> All(IPager pager, string orderBy = null)
+        public List<BonusView> All(IPager pager, string orderBy = null, IDbTransaction trans = null)
         {
             return Dapper.Query<BonusView, HomeTeam, AwayTeam, League, BonusView>(BuildAllSql(pager, orderBy),
                 (x, h, a, l) =>
@@ -73,10 +74,10 @@ namespace Arsenal.Service.Casino
                     x.League = l;
 
                     return x;
-                }, null, SplitOn).ToList();
+                }, null, trans, SplitOn).ToList();
         }
 
-        public List<BonusView> Query(Criteria criteria)
+        public List<BonusView> Query(Criteria criteria, IDbTransaction trans = null)
         {
             return Dapper.Query<BonusView, HomeTeam, AwayTeam, League, BonusView>(BuildQuerySql(criteria),
                 (x, h, a, l) =>
@@ -86,7 +87,7 @@ namespace Arsenal.Service.Casino
                     x.League = l;
 
                     return x;
-                }, criteria?.Parameters, SplitOn).ToList();
+                }, criteria?.Parameters, trans, SplitOn).ToList();
         }
     }
 }

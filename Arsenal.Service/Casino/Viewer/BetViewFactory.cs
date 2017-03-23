@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using Arsenalcn.Core;
 
@@ -28,7 +29,7 @@ namespace Arsenal.Service.Casino
             DbSchema = Repository.GetTableAttr<BetView>();
         }
 
-        public BetView Single(object key)
+        public BetView Single(object key, IDbTransaction trans = null)
         {
             return Dapper.Query<BetView, CasinoItem, Match, HomeTeam, AwayTeam, League, BetView>(BuildSingleSql(),
                         (x, c, m, h, a, l) =>
@@ -40,10 +41,10 @@ namespace Arsenal.Service.Casino
                             x.League = l;
 
                             return x;
-                        }, new { key }, SplitOn).FirstOrDefault();
+                        }, new { key }, trans, SplitOn).FirstOrDefault();
         }
 
-        public BetView Single(Criteria criteria)
+        public BetView Single(Criteria criteria, IDbTransaction trans = null)
         {
             return Dapper.Query<BetView, CasinoItem, Match, HomeTeam, AwayTeam, League, BetView>(BuildSingleSql(criteria),
                 (x, c, m, h, a, l) =>
@@ -55,10 +56,10 @@ namespace Arsenal.Service.Casino
                     x.League = l;
 
                     return x;
-                }, criteria?.Parameters, SplitOn).FirstOrDefault();
+                }, criteria?.Parameters, trans, SplitOn).FirstOrDefault();
         }
 
-        public List<BetView> All()
+        public List<BetView> All(IDbTransaction trans = null)
         {
             return Dapper.Query<BetView, CasinoItem, Match, HomeTeam, AwayTeam, League, BetView>(BuildAllSql(),
                 (x, c, m, h, a, l) =>
@@ -70,10 +71,10 @@ namespace Arsenal.Service.Casino
                     x.League = l;
 
                     return x;
-                }, null, SplitOn).ToList();
+                }, null, trans, SplitOn).ToList();
         }
 
-        public List<BetView> All(IPager pager, string orderBy = null)
+        public List<BetView> All(IPager pager, string orderBy = null, IDbTransaction trans = null)
         {
             return Dapper.Query<BetView, CasinoItem, Match, HomeTeam, AwayTeam, League, BetView>(BuildAllSql(pager, orderBy),
                 (x, c, m, h, a, l) =>
@@ -85,10 +86,10 @@ namespace Arsenal.Service.Casino
                     x.League = l;
 
                     return x;
-                }, null, SplitOn).ToList();
+                }, null, trans, SplitOn).ToList();
         }
 
-        public List<BetView> Query(Criteria criteria)
+        public List<BetView> Query(Criteria criteria, IDbTransaction trans = null)
         {
             return Dapper.Query<BetView, CasinoItem, Match, HomeTeam, AwayTeam, League, BetView>(BuildQuerySql(criteria),
                 (x, c, m, h, a, l) =>
@@ -100,7 +101,7 @@ namespace Arsenal.Service.Casino
                     x.League = l;
 
                     return x;
-                }, criteria?.Parameters, SplitOn).ToList();
+                }, criteria?.Parameters, trans, SplitOn).ToList();
         }
     }
 }

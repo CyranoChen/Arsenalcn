@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using Arsenalcn.Core;
 
@@ -29,7 +30,7 @@ namespace Arsenal.Service.Casino
             DbSchema = Repository.GetTableAttr<MatchView>();
         }
 
-        public MatchView Single(object key)
+        public MatchView Single(object key, IDbTransaction trans = null)
         {
             return Dapper.Query<MatchView, CasinoItem, HomeTeam, AwayTeam, Group, League, MatchView>(BuildSingleSql(),
                         (x, c, h, a, g, l) =>
@@ -41,10 +42,10 @@ namespace Arsenal.Service.Casino
                             x.League = l;
 
                             return x;
-                        }, new { key }, SplitOn).FirstOrDefault();
+                        }, new { key }, trans, SplitOn).FirstOrDefault();
         }
 
-        public MatchView Single(Criteria criteria)
+        public MatchView Single(Criteria criteria, IDbTransaction trans = null)
         {
             return Dapper.Query<MatchView, CasinoItem, HomeTeam, AwayTeam, Group, League, MatchView>(BuildSingleSql(criteria),
                         (x, c, h, a, g, l) =>
@@ -56,10 +57,10 @@ namespace Arsenal.Service.Casino
                             x.League = l;
 
                             return x;
-                        }, criteria?.Parameters, SplitOn).FirstOrDefault();
+                        }, criteria?.Parameters, trans, SplitOn).FirstOrDefault();
         }
 
-        public List<MatchView> All()
+        public List<MatchView> All(IDbTransaction trans = null)
         {
             return Dapper.Query<MatchView, CasinoItem, HomeTeam, AwayTeam, Group, League, MatchView>(BuildAllSql(),
                         (x, c, h, a, g, l) =>
@@ -71,10 +72,10 @@ namespace Arsenal.Service.Casino
                             x.League = l;
 
                             return x;
-                        }, null, SplitOn).ToList();
+                        }, null, trans, SplitOn).ToList();
         }
 
-        public List<MatchView> All(IPager pager, string orderBy = null)
+        public List<MatchView> All(IPager pager, string orderBy = null, IDbTransaction trans = null)
         {
             return Dapper.Query<MatchView, CasinoItem, HomeTeam, AwayTeam, Group, League, MatchView>(BuildAllSql(pager, orderBy),
                         (x, c, h, a, g, l) =>
@@ -86,10 +87,10 @@ namespace Arsenal.Service.Casino
                             x.League = l;
 
                             return x;
-                        }, null, SplitOn).ToList();
+                        }, null, trans, SplitOn).ToList();
         }
 
-        public List<MatchView> Query(Criteria criteria)
+        public List<MatchView> Query(Criteria criteria, IDbTransaction trans = null)
         {
             return Dapper.Query<MatchView, CasinoItem, HomeTeam, AwayTeam, Group, League, MatchView>(BuildQuerySql(criteria),
                         (x, c, h, a, g, l) =>
@@ -101,7 +102,7 @@ namespace Arsenal.Service.Casino
                             x.League = l;
 
                             return x;
-                        }, criteria?.Parameters, SplitOn).ToList();
+                        }, criteria?.Parameters, trans, SplitOn).ToList();
         }
     }
 }

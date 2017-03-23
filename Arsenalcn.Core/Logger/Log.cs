@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Data.SqlClient;
 using System.Reflection;
 using System.Threading;
@@ -10,7 +11,7 @@ namespace Arsenalcn.Core.Logger
     public class Log : Entity<int>
     {
         protected void Logging(string logger, DateTime createTime, LogLevel level, string message,
-            string stackTrace, UserClientInfo userClient = null)
+            string stackTrace, UserClientInfo userClient = null, IDbTransaction trans = null)
         {
             var sql =
                 @"INSERT INTO {0} (Logger, CreateTime, LogLevel, Message, IsException, StackTrace, Thread, Method, UserID, UserIP, UserBrowser, UserOS) 
@@ -35,11 +36,11 @@ namespace Arsenalcn.Core.Logger
             };
 
             // no logging method
-            DapperHelper.MarsConnection.Execute(sql, para.ToDapperParameters());
+            DapperHelper.MarsConnection.Execute(sql, para.ToDapperParameters(), trans);
         }
 
         protected void Logging(string logger, DateTime createTime, LogLevel level, string message,
-            string stackTrace, Thread thread, MethodBase method, UserClientInfo userClient = null)
+            string stackTrace, Thread thread, MethodBase method, UserClientInfo userClient = null, IDbTransaction trans = null)
         {
             var sql =
                 @"INSERT INTO {0} (Logger, CreateTime, LogLevel, Message, IsException, StackTrace, Thread, Method, UserID, UserIP, UserBrowser, UserOS) 
@@ -66,7 +67,7 @@ namespace Arsenalcn.Core.Logger
             };
 
             // no logging method
-            DapperHelper.MarsConnection.Execute(sql, para.ToDapperParameters());
+            DapperHelper.MarsConnection.Execute(sql, para.ToDapperParameters(), trans);
         }
 
         public static void Clean()

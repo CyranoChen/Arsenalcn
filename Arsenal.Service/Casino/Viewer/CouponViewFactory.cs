@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using Arsenalcn.Core;
 
@@ -29,7 +30,7 @@ namespace Arsenal.Service.Casino
             DbSchema = Repository.GetTableAttr<CouponView>();
         }
 
-        public CouponView Single(Criteria criteria)
+        public CouponView Single(Criteria criteria, IDbTransaction trans = null)
         {
             return Dapper.Query<CouponView, HomeTeam, AwayTeam, League, CouponView>(BuildSingleSql(criteria),
                 (x, h, a, l) =>
@@ -39,10 +40,10 @@ namespace Arsenal.Service.Casino
                     x.League = l;
 
                     return x;
-                }, criteria?.Parameters, SplitOn).FirstOrDefault();
+                }, criteria?.Parameters, trans, SplitOn).FirstOrDefault();
         }
 
-        public List<CouponView> All()
+        public List<CouponView> All(IDbTransaction trans = null)
         {
             return Dapper.Query<CouponView, HomeTeam, AwayTeam, League, CouponView>(BuildAllSql(),
                 (x, h, a, l) =>
@@ -52,10 +53,10 @@ namespace Arsenal.Service.Casino
                     x.League = l;
 
                     return x;
-                }, null, SplitOn).ToList();
+                }, null, trans, SplitOn).ToList();
         }
 
-        public List<CouponView> All(IPager pager, string orderBy = null)
+        public List<CouponView> All(IPager pager, string orderBy = null, IDbTransaction trans = null)
         {
             return Dapper.Query<CouponView, HomeTeam, AwayTeam, League, CouponView>(BuildAllSql(pager, orderBy),
                 (x, h, a, l) =>
@@ -65,10 +66,10 @@ namespace Arsenal.Service.Casino
                     x.League = l;
 
                     return x;
-                }, null, SplitOn).ToList();
+                }, null, trans, SplitOn).ToList();
         }
 
-        public List<CouponView> Query(Criteria criteria)
+        public List<CouponView> Query(Criteria criteria, IDbTransaction trans = null)
         {
             return Dapper.Query<CouponView, HomeTeam, AwayTeam, League, CouponView>(BuildQuerySql(criteria),
                 (x, h, a, l) =>
@@ -78,7 +79,7 @@ namespace Arsenal.Service.Casino
                     x.League = l;
 
                     return x;
-                }, criteria?.Parameters, SplitOn).ToList();
+                }, criteria?.Parameters, trans, SplitOn).ToList();
         }
     }
 }

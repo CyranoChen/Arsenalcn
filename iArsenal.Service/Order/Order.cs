@@ -182,11 +182,11 @@ namespace iArsenal.Service
             repo.Update(this, trans);
         }
 
-        public static Order Select(int key)
+        public static Order Select(int key, IDbTransaction trans = null)
         {
             IRepository repo = new Repository();
 
-            var o = repo.Single<Order>(key);
+            var o = repo.Single<Order>(key, trans);
 
             if (o == null) return null;
 

@@ -230,13 +230,13 @@ namespace iArsenal.Web
                         throw new Exception("请选择印字印号信息");
                     }
 
-                    var m = _repo.Single<Member>(Mid);
+                    var m = _repo.Single<Member>(Mid, trans);
 
                     if (!string.IsNullOrEmpty(tbMemberWeChat.Text.Trim()))
                     {
                         m.WeChat = tbMemberWeChat.Text.Trim();
 
-                        _repo.Update(m);
+                        _repo.Update(m, trans);
                     }
                     else
                     {
@@ -249,7 +249,7 @@ namespace iArsenal.Web
 
                     if (OrderID > 0)
                     {
-                        o = _repo.Single<Order>(OrderID);
+                        o = _repo.Single<Order>(OrderID, trans);
                     }
 
                     o.Mobile = tbOrderMobile.Text.Trim();
@@ -292,7 +292,7 @@ namespace iArsenal.Web
                     //Remove Order Item of this Order
                     if (OrderID > 0 && o.ID.Equals(OrderID))
                     {
-                        _repo.Query<OrderItem>(x => x.OrderID == OrderID).Delete(trans);
+                        _repo.Query<OrderItem>(x => x.OrderID == OrderID, trans).Delete(trans);
                     }
 
                     // New Order Item for Player Number & Name

@@ -311,7 +311,7 @@ namespace iArsenal.Web
                 {
                     if (OrderID > 0)
                     {
-                        var o = (OrdrMembership)Order.Select(OrderID);
+                        var o = (OrdrMembership)Order.Select(OrderID, trans);
 
                         if (ConfigGlobal.IsPluginAdmin(Uid) && o != null && o.Status.Equals(OrderStatusType.Confirmed))
                         {
@@ -362,10 +362,8 @@ namespace iArsenal.Web
                                     updateFlag = true;
                                 }
 
-                                if (!updateFlag && list.Exists(x => !x.MemberID.Equals(o.MemberID)
-                                                                     &&
-                                                                     x.MemberCardNo.Equals(oiMembership.MemberCardNo,
-                                                                         StringComparison.OrdinalIgnoreCase)))
+                                if (!updateFlag && list.Exists(x => !x.MemberID.Equals(o.MemberID) && 
+                                    x.MemberCardNo.Equals(oiMembership.MemberCardNo, StringComparison.OrdinalIgnoreCase)))
                                 {
                                     throw new Exception("此会员卡号已被其他会员占用");
                                 }

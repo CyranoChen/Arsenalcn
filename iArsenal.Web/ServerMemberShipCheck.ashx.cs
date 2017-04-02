@@ -22,7 +22,7 @@ namespace iArsenal.Web
                     if (!string.IsNullOrEmpty(strOrderId) && int.TryParse(strOrderId, out id))
                     {
                         // Get Current MatchTicket Order
-                        var oTicket = (OrdrTicket)Order.Select(id);
+                        var oTicket = (OrdrTicket)Order.Select(id, trans);
 
                         // Get Order MatchTicket Info
                         var oiMatchTicket = oTicket?.OIMatchTicket;

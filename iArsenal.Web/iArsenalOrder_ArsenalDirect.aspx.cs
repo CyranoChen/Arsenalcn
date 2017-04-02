@@ -130,7 +130,7 @@ namespace iArsenal.Web
                         {
                             throw new Exception("请填写订购纪念品的编号信息");
                         }
-                        if (wishList.Exists(oi => (oi.Quantity <= 0)))
+                        if (wishList.Exists(oi => oi.Quantity <= 0))
                         {
                             throw new Exception("请正确填写订购纪念品的数量");
                         }
@@ -140,13 +140,13 @@ namespace iArsenal.Web
                         throw new Exception("请填写订购纪念品信息");
                     }
 
-                    var m = _repo.Single<Member>(Mid);
+                    var m = _repo.Single<Member>(Mid, trans);
 
                     if (!string.IsNullOrEmpty(tbMemberWeChat.Text.Trim()))
                     {
                         m.WeChat = tbMemberWeChat.Text.Trim();
 
-                        _repo.Update(m);
+                        _repo.Update(m, trans);
                     }
                     else
                     {
@@ -159,7 +159,7 @@ namespace iArsenal.Web
 
                     if (OrderID > 0)
                     {
-                        o = _repo.Single<Order>(OrderID);
+                        o = _repo.Single<Order>(OrderID, trans);
                     }
 
                     if (!string.IsNullOrEmpty(tbOrderMobile.Text.Trim()))
@@ -211,7 +211,7 @@ namespace iArsenal.Web
                         //Remove Order Item of this Order
                         if (OrderID > 0 && o.ID.Equals(OrderID))
                         {
-                            _repo.Query<OrderItem>(x => x.OrderID == OrderID).Delete(trans);
+                            _repo.Query<OrderItem>(x => x.OrderID == OrderID, trans).Delete(trans);
                         }
 
                         //New Order Item for each WishOrderItem

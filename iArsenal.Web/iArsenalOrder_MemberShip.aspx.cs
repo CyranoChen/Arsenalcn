@@ -359,7 +359,7 @@ namespace iArsenal.Web
             {
                 try
                 {
-                    var m = _repo.Single<Member>(Mid);
+                    var m = _repo.Single<Member>(Mid, trans);
 
                     // Update Member Information
 
@@ -432,7 +432,7 @@ namespace iArsenal.Web
 
                     //m.MemberType = MemberType.Match;
 
-                    _repo.Update(m);
+                    _repo.Update(m, trans);
 
                     // New Order
                     var o = new Order();
@@ -440,7 +440,7 @@ namespace iArsenal.Web
 
                     if (OrderID > 0)
                     {
-                        o = _repo.Single<Order>(OrderID);
+                        o = _repo.Single<Order>(OrderID, trans);
                     }
 
                     o.Mobile = m.Mobile;
@@ -486,7 +486,7 @@ namespace iArsenal.Web
                         //Remove Order Item of this Order
                         if (OrderID > 0 && o.ID.Equals(OrderID))
                         {
-                            _repo.Query<OrderItem>(x => x.OrderID == OrderID).Delete(trans);
+                            _repo.Query<OrderItem>(x => x.OrderID == OrderID, trans).Delete(trans);
                         }
 
                         var currProductType = (ProductType)Enum.Parse(typeof(ProductType), tbMemberClass.Text.Trim());

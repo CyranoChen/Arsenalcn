@@ -61,7 +61,7 @@ namespace iArsenal.Service
         //            case ProductType.MatchTicket:
         //                retValue = "主场球票";
         //                break;
-        //            case ProductType.TicketBeijing:
+        //            case ProductType.TicketFriendly:
         //                retValue = "友谊赛球票";
         //                break;
         //            case ProductType.MembershipCore:
@@ -254,7 +254,7 @@ namespace iArsenal.Service
                 case ProductType.MatchTicket:
                     ProductTypeInfo = "主场球票";
                     break;
-                case ProductType.TicketBeijing:
+                case ProductType.TicketFriendly:
                     ProductTypeInfo = "友谊赛球票";
                     break;
                 case ProductType.MembershipCore:
@@ -497,7 +497,7 @@ namespace iArsenal.Service
         TravelPlan = 10,
         TravelPartner = 11,
         MatchTicket = 20,
-        TicketBeijing = 21,
+        TicketFriendly = 21,
         MembershipCore = 31,
         MembershipPremier = 32,
         Other = 0

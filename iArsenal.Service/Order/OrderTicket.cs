@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Linq;
 using Arsenalcn.Core;
 using AutoMapper;
@@ -7,11 +8,11 @@ namespace iArsenal.Service
 {
     public class OrdrTicket : Order
     {
-        public void Init()
+        public void Init(IDbTransaction trans)
         {
             IRepository repo = new Repository();
 
-            var list = repo.Query<OrderItem>(x => x.OrderID == ID)
+            var list = repo.Query<OrderItem>(x => x.OrderID == ID, trans)
                 .FindAll(x => x.IsActive && Product.Cache.Load(x.ProductGuid) != null);
 
             if (list.Any())
@@ -26,14 +27,26 @@ namespace iArsenal.Service
                     OIMatchTicket = mapperMatchTicket.Map<OrdrItmMatchTicket>(oiBase);
                 }
 
-                oiBase = list.Find(x => Product.Cache.Load(x.ProductGuid).ProductType.Equals(ProductType.TicketBeijing));
+                oiBase = list.Find(x => Product.Cache.Load(x.ProductGuid).ProductType.Equals(ProductType.TicketFriendly) && 
+                    Product.Cache.Load(x.ProductGuid).Code.StartsWith("20170722"));
+                if (oiBase != null)
+                {
+                    var mapperTicketBeijing = new MapperConfiguration(cfg =>
+                        cfg.CreateMap<OrderItem, OrdrItm2017TicketBeijing>().AfterMap((s, d) => d.Init()))
+                        .CreateMapper();
+
+                    OI2017TicketBeijing = mapperTicketBeijing.Map<OrdrItm2017TicketBeijing>(oiBase);
+                }
+
+                oiBase = list.Find(x => Product.Cache.Load(x.ProductGuid).ProductType.Equals(ProductType.TicketFriendly) && 
+                    Product.Cache.Load(x.ProductGuid).Code.StartsWith("20120727"));
                 if (oiBase != null)
                 {
                     var mapperTicketBeijing = new MapperConfiguration(cfg =>
                         cfg.CreateMap<OrderItem, OrdrItm2012TicketBeijing>().AfterMap((s, d) => d.Init()))
                         .CreateMapper();
 
-                    OITicketBeijing = mapperTicketBeijing.Map<OrdrItm2012TicketBeijing>(oiBase);
+                    OI2012TicketBeijing = mapperTicketBeijing.Map<OrdrItm2012TicketBeijing>(oiBase);
                 }
 
                 // Set the value of URLOrderView;
@@ -42,9 +55,9 @@ namespace iArsenal.Service
                 {
                     UrlOrderView = "iArsenalOrderView_MatchTicket.aspx";
                 }
-                else if (OITicketBeijing != null)
+                else if (OI2017TicketBeijing != null || OI2012TicketBeijing != null)
                 {
-                    UrlOrderView = "iArsenalOrderView_TicketBeijing.aspx";
+                    UrlOrderView = "iArsenalOrderView_TicketFriendly.aspx";
                 }
                 else
                 {
@@ -74,7 +87,9 @@ namespace iArsenal.Service
 
         public OrdrItmMatchTicket OIMatchTicket { get; set; }
 
-        public OrdrItm2012TicketBeijing OITicketBeijing { get; set; }
+        public OrdrItm2017TicketBeijing OI2017TicketBeijing { get; set; }
+
+        public OrdrItm2012TicketBeijing OI2012TicketBeijing { get; set; }
 
         #endregion
     }

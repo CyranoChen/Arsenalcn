@@ -192,6 +192,7 @@
     <Content Include="iArsenalMemberPeriod.aspx" />
     <Content Include="iArsenalOrderView_MatchTicket.aspx" />
     <Content Include="iArsenalOrder_LondonTravel.aspx" />
+    <Content Include="iArsenalOrder_2017TicketBeijing.aspx" />
     <Content Include="iArsenalOrder_Showcase.aspx" />
     <Content Include="iArsenalOrder_Membership.aspx" />
     <Content Include="iArsenalOrder_MatchTicket.aspx" />
@@ -263,6 +264,7 @@
     <Content Include="UploadFiles\Banner\banner20161104.png" />
     <Content Include="UploadFiles\Banner\banner20161114.png" />
     <Content Include="UploadFiles\Banner\banner20170320.png" />
+    <Content Include="UploadFiles\Banner\banner20170403.png" />
     <Content Include="UploadFiles\logo_ArsenalChina.png" />
     <Content Include="App_Themes\iArsenal\images\menu_ahover.gif" />
     <Content Include="App_Themes\iArsenal\portal.css" />
@@ -450,6 +452,13 @@
     </Compile>
     <Compile Include="iArsenalOrder_LondonTravel.aspx.designer.cs">
       <DependentUpon>iArsenalOrder_LondonTravel.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="iArsenalOrder_2017TicketBeijing.aspx.cs">
+      <DependentUpon>iArsenalOrder_2017TicketBeijing.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="iArsenalOrder_2017TicketBeijing.aspx.designer.cs">
+      <DependentUpon>iArsenalOrder_2017TicketBeijing.aspx</DependentUpon>
     </Compile>
     <Compile Include="iArsenalOrder_Showcase.aspx.cs">
       <DependentUpon>iArsenalOrder_Showcase.aspx</DependentUpon>

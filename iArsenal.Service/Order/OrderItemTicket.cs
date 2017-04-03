@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Data;
-using System.Data.SqlClient;
 
 namespace iArsenal.Service
 {
@@ -56,6 +55,20 @@ namespace iArsenal.Service
         #endregion
     }
 
+    public class OrdrItm2017TicketBeijing : OrderItem
+    {
+        public void Init()
+        {
+            if (ProductGuid == null)
+                throw new Exception("Loading OrderItem failed.");
+
+            var p = Product.Cache.Load(ProductGuid);
+
+            if (!p.ProductType.Equals(ProductType.TicketFriendly))
+                throw new Exception("The OrderItem is not the type of TicketFriendly.");
+        }
+    }
+
     public class OrdrItm2012TicketBeijing : OrderItem
     {
         #region Members and Properties
@@ -73,18 +86,15 @@ namespace iArsenal.Service
 
             var p = Product.Cache.Load(ProductGuid);
 
-            if (!p.ProductType.Equals(ProductType.TicketBeijing))
-                throw new Exception("The OrderItem is not the type of TicketBeijing.");
+            if (!p.ProductType.Equals(ProductType.TicketFriendly))
+                throw new Exception("The OrderItem is not the type of TicketFriendly.");
         }
 
-        public void Place(Member m, IDbTransaction trans = null)
+        public override void Place(Member m, Product p, IDbTransaction trans = null)
         {
             Size = SeatLevel;
 
-            var product = Product.Cache.ProductList.Find(p =>
-                p.ProductType.Equals(ProductType.TicketBeijing));
-
-            base.Place(m, product, trans);
+            base.Place(m, p, trans);
         }
     }
 }

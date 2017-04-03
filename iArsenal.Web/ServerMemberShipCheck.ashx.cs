@@ -30,7 +30,7 @@ namespace iArsenal.Web
                         if (oiMatchTicket != null && oiMatchTicket.IsActive)
                         {
                             var mt = MatchTicket.Cache.Load(oiMatchTicket.MatchGuid);
-                            var mp = MemberPeriod.GetCurrentMemberPeriodByMemberID(oTicket.MemberID);
+                            var mp = MemberPeriod.GetCurrentMemberPeriodByMemberID(oTicket.MemberID, 0, trans);
 
                             // isMemberCouldPurchase, should be false
                             if (!mt.CheckMemberCanPurchase(mp))
@@ -46,7 +46,7 @@ namespace iArsenal.Web
                                 #region isRenew
                                 var isRenew = false;
 
-                                var mpLast = MemberPeriod.GetCurrentMemberPeriodByMemberID(oTicket.MemberID, -1);
+                                var mpLast = MemberPeriod.GetCurrentMemberPeriodByMemberID(oTicket.MemberID, -1, trans);
 
                                 if (mpLast != null && mpLast.MemberClass.Equals(MemberClassType.Core))
                                 {
@@ -145,7 +145,7 @@ namespace iArsenal.Web
                         }
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
                     context.Response.Redirect("iArsenalOrder.aspx", false);
                     context.ApplicationInstance.CompleteRequest();

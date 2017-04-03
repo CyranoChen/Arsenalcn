@@ -31,13 +31,10 @@
             <a href="default.aspx">首页</a>
         </li>
         <li>
-            <a href="iArsenalOrder_ReplicaKit.aspx?Type=Home">1617主场球衣</a>
+            <a href="iArsenalOrder_ReplicaKit.aspx?Type=Home">1617赛季主场球衣</a>
         </li>
         <li>
-            <a href="iArsenalOrder_ReplicaKit.aspx?Type=Away">1617客场球衣</a>
-        </li>
-        <li>
-            <a href="iArsenalOrder_ReplicaKit.aspx?Type=Cup">1617杯赛球衣</a>
+            <a href="iArsenalOrder_2017TicketBeijing.aspx">阿森纳2107中国行北京站</a>
         </li>
         <li>
             <a href="iArsenalOrder_Printing.aspx">个性化印字印号</a>

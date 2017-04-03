@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using Arsenalcn.Core;
 
 namespace iArsenal.Service
@@ -12,14 +13,14 @@ namespace iArsenal.Service
             return EndDate.AddYears(-1) <= date && EndDate >= date;
         }
 
-        public static MemberPeriod GetCurrentMemberPeriodByMemberID(int id, int year = 0)
+        public static MemberPeriod GetCurrentMemberPeriodByMemberID(int id, int year = 0, IDbTransaction trans = null)
         {
             var date = DateTime.Now.AddYears(year);
 
             IRepository repo = new Repository();
 
             // StartDate change to the EndDate.Addyears(-1) for the correct date range
-            return repo.Query<MemberPeriod>(x => x.MemberID == id)
+            return repo.Query<MemberPeriod>(x => x.MemberID == id, trans)
                 .Find(x => x.IsActive && x.EndDate.AddYears(-1) <= date && x.EndDate >= date);
         }
 

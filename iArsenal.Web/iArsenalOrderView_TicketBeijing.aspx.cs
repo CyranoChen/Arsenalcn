@@ -88,7 +88,7 @@ namespace iArsenal.Web
                     var price = default(double);
                     var priceInfo = string.Empty;
 
-                    var oiTicket = o.OITicketBeijing;
+                    var oiTicket = o.OI2012TicketBeijing;
                     if (oiTicket != null && oiTicket.IsActive)
                     {
                         lblOrderItem_TicketBeijing.Text = $"<em>{oiTicket.ProductName}</em>";

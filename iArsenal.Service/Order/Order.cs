@@ -194,27 +194,27 @@ namespace iArsenal.Service
             {
                 case OrderBaseType.ReplicaKit:
                     var mapperReplicaKit = new MapperConfiguration(cfg =>
-                        cfg.CreateMap<Order, OrdrReplicaKit>().AfterMap((s, d) => d.Init())).CreateMapper();
+                        cfg.CreateMap<Order, OrdrReplicaKit>().AfterMap((s, d) => d.Init(trans))).CreateMapper();
                     return mapperReplicaKit.Map<OrdrReplicaKit>(o);
                 case OrderBaseType.Printing:
                     var mapperPrinting = new MapperConfiguration(cfg =>
-                        cfg.CreateMap<Order, OrdrPrinting>().AfterMap((s, d) => d.Init())).CreateMapper();
+                        cfg.CreateMap<Order, OrdrPrinting>().AfterMap((s, d) => d.Init(trans))).CreateMapper();
                     return mapperPrinting.Map<OrdrPrinting>(o);
                 case OrderBaseType.Ticket:
                     var mapperTicket = new MapperConfiguration(cfg =>
-                        cfg.CreateMap<Order, OrdrTicket>().AfterMap((s, d) => d.Init())).CreateMapper();
+                        cfg.CreateMap<Order, OrdrTicket>().AfterMap((s, d) => d.Init(trans))).CreateMapper();
                     return mapperTicket.Map<OrdrTicket>(o);
                 case OrderBaseType.Travel:
                     var mapperTravel = new MapperConfiguration(cfg =>
-                        cfg.CreateMap<Order, OrdrTravel>().AfterMap((s, d) => d.Init())).CreateMapper();
+                        cfg.CreateMap<Order, OrdrTravel>().AfterMap((s, d) => d.Init(trans))).CreateMapper();
                     return mapperTravel.Map<OrdrTravel>(o);
                 case OrderBaseType.Wish:
                     var mapperWish = new MapperConfiguration(cfg =>
-                        cfg.CreateMap<Order, OrdrWish>().AfterMap((s, d) => d.Init())).CreateMapper();
+                        cfg.CreateMap<Order, OrdrWish>().AfterMap((s, d) => d.Init(trans))).CreateMapper();
                     return mapperWish.Map<OrdrWish>(o);
                 case OrderBaseType.Membership:
                     var mapperMembership = new MapperConfiguration(cfg =>
-                        cfg.CreateMap<Order, OrdrMembership>().AfterMap((s, d) => d.Init())).CreateMapper();
+                        cfg.CreateMap<Order, OrdrMembership>().AfterMap((s, d) => d.Init(trans))).CreateMapper();
                     return mapperMembership.Map<OrdrMembership>(o);
                 default:
                     return o;
@@ -261,7 +261,7 @@ namespace iArsenal.Service
             if (list.Any(delegate (OrderItem x)
             {
                 var type = Product.Cache.Load(x.ProductGuid).ProductType;
-                return type.Equals(ProductType.MatchTicket) || type.Equals(ProductType.TicketBeijing);
+                return type.Equals(ProductType.MatchTicket) || type.Equals(ProductType.TicketFriendly);
             }))
             {
                 return OrderBaseType.Ticket;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using Arsenalcn.Core;
 
@@ -7,11 +8,11 @@ namespace iArsenal.Service
 {
     public class OrdrWish : Order
     {
-        public void Init()
+        public void Init(IDbTransaction trans)
         {
             IRepository repo = new Repository();
 
-            var list = repo.Query<OrderItem>(x => x.OrderID == ID).FindAll(x => x.IsActive);
+            var list = repo.Query<OrderItem>(x => x.OrderID == ID, trans).FindAll(x => x.IsActive);
 
             if (list.Any())
             {

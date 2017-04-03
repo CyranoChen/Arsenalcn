@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using Arsenalcn.Core;
 using AutoMapper;
 
@@ -6,11 +7,11 @@ namespace iArsenal.Service
 {
     public class OrdrReplicaKit : Order
     {
-        public void Init()
+        public void Init(IDbTransaction trans)
         {
             IRepository repo = new Repository();
 
-            var list = repo.Query<OrderItem>(x => x.OrderID == ID)
+            var list = repo.Query<OrderItem>(x => x.OrderID == ID, trans)
                 .FindAll(x => x.IsActive && Product.Cache.Load(x.ProductGuid) != null);
 
             if (list.Count > 0)

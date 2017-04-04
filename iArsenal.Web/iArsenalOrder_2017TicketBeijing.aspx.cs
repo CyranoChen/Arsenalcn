@@ -13,42 +13,41 @@ namespace iArsenal.Web
         {
             get
             {
-                int id;
+                int orderID;
                 if (!string.IsNullOrEmpty(Request.QueryString["OrderID"]) &&
-                    int.TryParse(Request.QueryString["OrderID"], out id))
+                    int.TryParse(Request.QueryString["OrderID"], out orderID))
                 {
-                    return id;
+                    return orderID;
                 }
-
                 return int.MinValue;
             }
         }
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            #region Bind rblTicket
-
-            var list = Product.Cache.Load(ProductType.TicketFriendly)
-                .FindAll(p => p.IsActive && p.Code.StartsWith("20170722"));
-
-            if (list.Count > 0)
-            {
-                var query = from p in list
-                            orderby p.Code ascending
-                            select new { p.ID, Text = $" {p.Description} {p.PriceInfo} " };
-
-                rblTicket.Items.Clear();
-                rblTicket.DataSource = query;
-                rblTicket.DataTextField = "Text";
-                rblTicket.DataTextFormatString = "<em>{0}</em>";
-                rblTicket.DataValueField = "ID";
-                rblTicket.DataBind();
-            }
-
-            #endregion
-
             if (!IsPostBack)
             {
+                #region Bind rblTicket
+
+                var list = Product.Cache.Load(ProductType.TicketFriendly)
+                    .FindAll(p => p.IsActive && p.Code.StartsWith("20170722"));
+
+                if (list.Count > 0)
+                {
+                    var query = from p in list
+                                orderby p.Code ascending
+                                select new { p.ID, Text = $" {p.Description} {p.PriceInfo} " };
+
+                    rblTicket.Items.Clear();
+                    rblTicket.DataSource = query;
+                    rblTicket.DataTextField = "Text";
+                    rblTicket.DataTextFormatString = "<em>{0}</em>";
+                    rblTicket.DataValueField = "ID";
+                    rblTicket.DataBind();
+                }
+
+                #endregion
+
                 InitForm();
             }
         }
@@ -81,6 +80,41 @@ namespace iArsenal.Web
                         }
 
                         lblMemberACNInfo.Text = $"<b>{m.AcnName}</b> (<em>ID.{m.AcnID}</em>)";
+
+                        #region Set Member Nation & Region
+
+                        if (!string.IsNullOrEmpty(m.Nation))
+                        {
+                            if (m.Nation.Equals("中国"))
+                            {
+                                ddlNation.SelectedValue = m.Nation;
+
+                                var region = m.Region.Split('|');
+                                if (region.Length > 1)
+                                {
+                                    tbRegion1.Text = region[0];
+                                    tbRegion2.Text = region[1];
+                                }
+                                else
+                                {
+                                    tbRegion1.Text = region[0];
+                                    tbRegion2.Text = string.Empty;
+                                }
+                            }
+                            else
+                            {
+                                ddlNation.SelectedValue = "其他";
+                                tbNation.Text = m.Nation.Equals("其他") ? string.Empty : m.Nation;
+                            }
+                        }
+                        else
+                        {
+                            ddlNation.SelectedValue = string.Empty;
+                        }
+
+                        #endregion
+
+                        tbIDCardNo.Text = m.IDCardNo;
                         tbMemberWeChat.Text = m.WeChat;
                     }
                     else
@@ -101,6 +135,41 @@ namespace iArsenal.Web
                     //Fill Member draft information into textbox
                     var m = _repo.Single<Member>(Mid);
 
+                    #region Set Member Nation & Region
+
+                    if (!string.IsNullOrEmpty(m.Nation))
+                    {
+                        if (m.Nation.Equals("中国"))
+                        {
+                            ddlNation.SelectedValue = m.Nation;
+
+                            var region = m.Region.Split('|');
+                            if (region.Length > 1)
+                            {
+                                tbRegion1.Text = region[0];
+                                tbRegion2.Text = region[1];
+                            }
+                            else
+                            {
+                                tbRegion1.Text = region[0];
+                                tbRegion2.Text = string.Empty;
+                            }
+                        }
+                        else
+                        {
+                            ddlNation.SelectedValue = "其他";
+                            tbNation.Text = m.Nation.Equals("其他") ? string.Empty : m.Nation;
+                        }
+                    }
+                    else
+                    {
+                        ddlNation.SelectedValue = string.Empty;
+                    }
+
+                    #endregion
+
+                    tbIDCardNo.Text = m.IDCardNo;
+
                     tbOrderMobile.Text = m.Mobile;
                     tbMemberWeChat.Text = m.WeChat;
                 }
@@ -117,18 +186,64 @@ namespace iArsenal.Web
             {
                 try
                 {
+                    Guid pid;
+
+                    if (!string.IsNullOrEmpty(rblTicket.SelectedValue))
+                        pid = new Guid(rblTicket.SelectedValue);
+                    else
+                        throw new Exception("请选择对应球票");
+
                     var m = _repo.Single<Member>(Mid, trans);
+
+                    m.IDCardNo = tbIDCardNo.Text.Trim();
 
                     if (!string.IsNullOrEmpty(tbMemberWeChat.Text.Trim()))
                     {
                         m.WeChat = tbMemberWeChat.Text.Trim();
-
-                        _repo.Update(m, trans);
                     }
                     else
                     {
                         throw new Exception("请输入会员微信号");
                     }
+
+                    #region Get Member Nation & Region
+
+                    var nation = ddlNation.SelectedValue;
+
+                    if (!string.IsNullOrEmpty(nation))
+                    {
+                        if (nation.Equals("中国"))
+                        {
+                            m.Nation = nation;
+                            if (!string.IsNullOrEmpty(tbRegion1.Text.Trim()))
+                            {
+                                m.Region = !string.IsNullOrEmpty(tbRegion2.Text.Trim()) ? $"{tbRegion1.Text.Trim()}|{tbRegion2.Text.Trim()}" : tbRegion1.Text.Trim();
+                            }
+                            else
+                            {
+                                m.Region = string.Empty;
+                            }
+                        }
+                        else if (!string.IsNullOrEmpty(tbNation.Text.Trim()))
+                        {
+                            m.Nation = tbNation.Text.Trim();
+                            m.Region = string.Empty;
+                        }
+                        else
+                        {
+                            m.Nation = nation;
+                            m.Region = string.Empty;
+                        }
+                    }
+                    else
+                    {
+                        m.Nation = string.Empty;
+                        m.Region = string.Empty;
+                    }
+
+                    #endregion
+
+                    _repo.Update(m, trans);
 
                     //New Order
                     var o = new Order();
@@ -146,7 +261,7 @@ namespace iArsenal.Web
                     o.Postage = 0;
                     o.UpdateTime = DateTime.Now;
                     o.Description = tbOrderDescription.Text.Trim();
-                    o.OrderType = OrderBaseType.Printing;
+                    o.OrderType = OrderBaseType.Ticket;
 
                     if (OrderID > 0)
                     {
@@ -175,13 +290,39 @@ namespace iArsenal.Web
                         newId = Convert.ToInt32(key);
                     }
 
+                    //New Order Items
+                    var p = Product.Cache.Load(pid);
+
+                    if (p == null)
+                        throw new Exception("无相关商品信息，请联系管理员");
+
+                    var oi = new OrdrItm2017TicketBeijing();
+
                     //Remove Order Item of this Order
                     if (OrderID > 0 && o.ID.Equals(OrderID))
                     {
                         _repo.Query<OrderItem>(x => x.OrderID == OrderID, trans).Delete(trans);
                     }
 
-                    // TODO OrderItem
+                    oi.OrderID = newId;
+                    oi.Size = string.Empty;
+
+                    int quantity;
+
+                    if (!string.IsNullOrEmpty(tbQuantity.Text.Trim()) &&
+                        int.TryParse(tbQuantity.Text.Trim(), out quantity))
+                    {
+                        oi.Quantity = quantity;
+                    }
+                    else
+                    {
+                        throw new Exception("请填写球票数量");
+                    }
+
+                    oi.Sale = null;
+                    oi.Remark = string.Empty;
+
+                    oi.Place(m, p, trans);
 
                     trans.Commit();
 

@@ -184,7 +184,7 @@ namespace iArsenal.Web
                         tbIDCardNo.Text = m.IDCardNo;
                         tbPassportNo.Text = m.PassportNo;
                         tbPassportName.Text = m.PassportName;
-                        tbMobile.Text = m.Mobile;
+                        tbMobile.Text = o.Mobile;
                         tbWeChat.Text = m.WeChat;
                         tbEmail.Text = m.Email;
 

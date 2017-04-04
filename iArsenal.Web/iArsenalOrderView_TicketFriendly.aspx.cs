@@ -1,22 +1,23 @@
 ﻿using System;
+using System.Globalization;
 using Arsenalcn.Core;
 using iArsenal.Service;
 
 namespace iArsenal.Web
 {
-    public partial class iArsenalOrderView_TicketBeijing : MemberPageBase
+    public partial class iArsenalOrderView_TicketFriendly : MemberPageBase
     {
-        private readonly IRepository repo = new Repository();
+        private readonly IRepository _repo = new Repository();
 
         private int OrderID
         {
             get
             {
-                int _orderID;
+                int orderID;
                 if (!string.IsNullOrEmpty(Request.QueryString["OrderID"]) &&
-                    int.TryParse(Request.QueryString["OrderID"], out _orderID))
+                    int.TryParse(Request.QueryString["OrderID"], out orderID))
                 {
-                    return _orderID;
+                    return orderID;
                 }
                 return int.MinValue;
             }
@@ -38,7 +39,7 @@ namespace iArsenal.Web
 
                 if (OrderID > 0)
                 {
-                    var o = (OrdrTicket) Order.Select(OrderID);
+                    var o = (OrdrTicket)Order.Select(OrderID);
 
                     if (ConfigGlobal.IsPluginAdmin(Uid) && o != null)
                     {
@@ -60,16 +61,16 @@ namespace iArsenal.Web
 
                     #endregion
 
-                    var m = repo.Single<Member>(o.MemberID);
+                    var m = _repo.Single<Member>(o.MemberID);
 
                     if (m == null || !m.IsActive)
                         throw new Exception("无此会员信息");
 
-                    lblMemberIDCardNo.Text = $"<em>{m.IDCardNo}</em>";
-                    lblMemberEmail.Text = $"<em>{m.Email}</em>";
-                    lblMemberRegion.Text = m.RegionInfo;
                     lblOrderMobile.Text = $"<em>{o.Mobile}</em>";
-                    lblOrderPayment.Text = o.PaymentInfo;
+                    lblMemberIDCardNo.Text = m.IDCardNo;
+                    lblMemberRegion.Text = m.RegionInfo;
+                    lblMemberEmail.Text = m.Email;
+                    lblMemberWeChat.Text = m.WeChat;
                     lblOrderDescription.Text = o.Description;
                     lblOrderID.Text = $"<em>{o.ID}</em>";
                     lblOrderCreateTime.Text = o.CreateTime.ToString("yyyy-MM-dd HH:mm");
@@ -85,24 +86,31 @@ namespace iArsenal.Web
                     }
 
                     // Should be Calculator in this Page
-                    var price = default(double);
-                    var priceInfo = string.Empty;
+                    double price;
+                    string priceInfo;
 
-                    var oiTicket = o.OI2012TicketBeijing;
-                    if (oiTicket != null && oiTicket.IsActive)
+                    OrderItem oiTicket;
+
+                    if (o.OI2012TicketBeijing != null && o.OI2012TicketBeijing.IsActive)
                     {
-                        lblOrderItem_TicketBeijing.Text = $"<em>{oiTicket.ProductName}</em>";
-                        tbOrderItem_TicketBeijing.Text = oiTicket.ProductGuid.ToString();
-                        lblOrderItemQuantity.Text = oiTicket.Quantity.ToString();
+                        var oi = o.OI2012TicketBeijing;
+                        oiTicket = o.OI2012TicketBeijing;
 
-                        if (oiTicket.Size.Equals("1"))
-                            lblOrderItemSize.Text = "一层看台";
-                        else if (oiTicket.Size.Equals("2"))
-                            lblOrderItemSize.Text = "二层看台";
-                        else
-                            lblOrderItemSize.Text = "不介意";
+                        lblOrderItem_TicketBeijing.Text = $"<em>{oi.ProductName}</em>";
+                        tbOrderItem_TicketBeijing.Text = oi.ProductGuid.ToString();
+                        lblOrderItemQuantity.Text = oi.Quantity.ToString();
 
-                        lblOrderItemRemak.Text = oiTicket.SeatLevel;
+                        lblOrderItemRemark.Text = oi.SeatLevel;
+                        phOrderItemRemark.Visible = true;
+                    }
+                    else if (o.OI2017TicketBeijing != null && o.OI2017TicketBeijing.IsActive)
+                    {
+                        var oi = o.OI2017TicketBeijing;
+                        oiTicket = o.OI2017TicketBeijing;
+
+                        lblOrderItem_TicketBeijing.Text = $"<em>{oi.ProductName}</em>";
+                        tbOrderItem_TicketBeijing.Text = oi.ProductGuid.ToString();
+                        lblOrderItemQuantity.Text = oi.Quantity.ToString();
                     }
                     else
                     {
@@ -110,7 +118,6 @@ namespace iArsenal.Web
                     }
 
                     // Set Order Price
-
                     price = oiTicket.TotalPrice;
                     priceInfo = $"<合计> {oiTicket.UnitPrice.ToString("f2")} × {oiTicket.Quantity}";
 
@@ -120,7 +127,7 @@ namespace iArsenal.Web
                         lblOrderPrice.Text =
                             $"{priceInfo} = <em>{price.ToString("f2")}</em>元<br /><结算价>：<em>{o.Sale.Value.ToString("f2")}</em>元 (CNY)";
 
-                    tbOrderPrice.Text = price.ToString();
+                    tbOrderPrice.Text = price.ToString(CultureInfo.CurrentCulture);
 
                     if (o.Status.Equals(OrderStatusType.Draft))
                     {
@@ -133,6 +140,14 @@ namespace iArsenal.Web
                         btnSubmit.Visible = false;
                         btnModify.Visible = false;
                         btnCancel.Visible = true;
+
+                        if (string.IsNullOrEmpty(o.Remark))
+                        {
+                            lblOrderRemark.Text = "<em>请尽快按右侧提示框的付款方式进行球票支付。--><br />我们会在收到您的款项后，为您确认球票预订成功。</em>";
+                            phOrderRemark.Visible = true;
+                        }
+
+                        ucPortalProductQrCode.IsLocalUrl = true;
                     }
                     else
                     {
@@ -148,7 +163,7 @@ namespace iArsenal.Web
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof (string), "failed",
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed",
                     $"alert('{ex.Message}');window.location.href = 'iArsenalOrder.aspx'", true);
             }
         }
@@ -159,7 +174,7 @@ namespace iArsenal.Web
             {
                 if (OrderID > 0)
                 {
-                    var o = repo.Single<Order>(OrderID);
+                    var o = _repo.Single<Order>(OrderID);
 
                     if (o == null || !o.MemberID.Equals(Mid) || !o.IsActive)
                         throw new Exception("此订单无效或非当前用户订单");
@@ -168,16 +183,16 @@ namespace iArsenal.Web
                     o.UpdateTime = DateTime.Now;
                     o.Price = Convert.ToSingle(tbOrderPrice.Text.Trim());
 
-                    repo.Update(o);
+                    _repo.Update(o);
 
-                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
                         $"alert('谢谢您的订购，您的订单已经提交成功。\\r\\n请尽快付款以完成订单确认，订单号为：{o.ID}'); window.location.href = window.location.href",
                         true);
                 }
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof (string), "failed", $"alert('{ex.Message}');", true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message}');", true);
             }
         }
 
@@ -187,18 +202,18 @@ namespace iArsenal.Web
             {
                 if (OrderID > 0)
                 {
-                    var o = repo.Single<Order>(OrderID);
+                    var o = _repo.Single<Order>(OrderID);
 
                     if (o == null || !o.MemberID.Equals(Mid) || !o.IsActive)
                         throw new Exception("此订单无效或非当前用户订单");
 
-                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
-                        $"window.location.href = 'iArsenalOrder_TicketBeijing.aspx?OrderID={o.ID}'", true);
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
+                        $"window.location.href = 'iArsenalOrder_2017TicketBeijing.aspx?OrderID={o.ID}'", true);
                 }
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof (string), "failed", $"alert('{ex.Message}');", true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message}');", true);
             }
         }
 
@@ -208,7 +223,7 @@ namespace iArsenal.Web
             {
                 if (OrderID > 0)
                 {
-                    var o = repo.Single<Order>(OrderID);
+                    var o = _repo.Single<Order>(OrderID);
 
                     if (o == null || !o.MemberID.Equals(Mid) || !o.IsActive)
                         throw new Exception("此订单无效或非当前用户订单");
@@ -217,15 +232,15 @@ namespace iArsenal.Web
                     o.UpdateTime = DateTime.Now;
                     o.Price = Convert.ToSingle(tbOrderPrice.Text.Trim());
 
-                    repo.Update(o);
+                    _repo.Update(o);
 
-                    ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
+                    ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
                         $"alert('此订单({o.ID})已经取消');window.location.href = 'iArsenalOrder.aspx'", true);
                 }
             }
             catch (Exception ex)
             {
-                ClientScript.RegisterClientScriptBlock(typeof (string), "failed", $"alert('{ex.Message}');", true);
+                ClientScript.RegisterClientScriptBlock(typeof(string), "failed", $"alert('{ex.Message}');", true);
             }
         }
     }

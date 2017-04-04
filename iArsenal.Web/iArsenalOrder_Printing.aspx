@@ -151,7 +151,7 @@
                         (3). 您可以下拉框中选择现役球员印字印号；如需自定义印字印号，请在下拉框选<em>自定义</em>，并出现的文本框中填写号码与印字即可。
                     </p>
                     <div class="Thumbnail">
-                        <img src="uploadfiles/qrcode-wechat-iarsenalcn.gif" alt="iArsenalCN" />
+                        <img src="uploadfiles/qrcode-iarsenalcn.gif" alt="iArsenalCN" />
                     </div>
                     <p>
                         (4). 【微信】订购操作中如有问题，请咨询官方球迷会客服微信号：<em>iArsenalCN</em>。加入时验证方式为您注册本服务中心的真实姓名和手机号码，并注明<em>【印字印号】</em>字样。

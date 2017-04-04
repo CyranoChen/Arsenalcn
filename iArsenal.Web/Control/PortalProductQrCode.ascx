@@ -5,6 +5,7 @@
         <asp:Literal ID="ltrlQrCodeProvider" runat="server"></asp:Literal>
     </h3>
     <div class="Block" style="text-align: center">
-        <asp:Image ID="imgQrCode" runat="server" Width="250px" Height="250px" />
+        <asp:Image ID="imgQrCode" runat="server" Width="125px" Height="125px" />
+        <asp:Image ID="imgWeChatQrCode" runat="server" Width="125px" Height="125px" />
     </div>
 </asp:Panel>

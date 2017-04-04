@@ -178,7 +178,7 @@
                     <p>(2). 您亦可通过上方付款信息栏中的支付宝或银行转账。此方式钱款将直接到账。</p>
                     <p>(3). 订票者可在预订截止时间之前，申请退票，我们会全额退还球票款项（暂不包括收费会员年费）；截止时间之后，原则上不可退票，如有特殊需求，请与负责人联系。</p>
                     <div class="Thumbnail">
-                        <img src="uploadfiles/qrcode-wechat-iarsenalcn.gif" alt="iArsenalCN" />
+                        <img src="uploadfiles/qrcode-iarsenalcn.gif" alt="iArsenalCN" />
                     </div>
                     <p>
                         (4). 【微信】申请操作中如有问题，请咨询官方球迷会服务微信号：<em>iArsenalCN</em>。加入时验证方式为您注册本服务中心的真实姓名和手机号码，并注明<em>【球票】</em>字样。

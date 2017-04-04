@@ -76,6 +76,24 @@ namespace iArsenal.Web {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvMemberWeChat;
         
         /// <summary>
+        /// tbIDCardNo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox tbIDCardNo;
+        
+        /// <summary>
+        /// rfvIDCardNo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvIDCardNo;
+        
+        /// <summary>
         /// ddlNation control.
         /// </summary>
         /// <remarks>

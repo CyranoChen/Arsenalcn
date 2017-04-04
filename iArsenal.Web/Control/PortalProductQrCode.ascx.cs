@@ -26,16 +26,18 @@ namespace iArsenal.Web.Control
                 ltrlQrCodeProvider.Text = "<a>快捷支付通道</a>";
             }
 
-            if (!string.IsNullOrEmpty(QrCodeUrl))
+            imgWeChatQrCode.ImageUrl = "~/UploadFiles/qrcode-wechat-iarsenalcn.png";
+
+            if (IsLocalUrl)
             {
-                if (IsLocalUrl)
+                // 使用本地二维码图片
+                imgQrCode.ImageUrl = "~/UploadFiles/qrcode-alipay-vicky.png";
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(QrCodeUrl))
                 {
-                    // 使用本地二维码图片
-                    imgQrCode.ImageUrl = QrCodeUrl;
-                }
-                else
-                {
-                    // 生成二维码
+                    #region 生成二维码
                     using (var ms = new MemoryStream())
                     {
                         if (GetQrCode(QrCodeUrl, ms))
@@ -67,11 +69,12 @@ namespace iArsenal.Web.Control
                             pnlQrCode.Visible = false;
                         }
                     }
+                    #endregion
                 }
-            }
-            else
-            {
-                pnlQrCode.Visible = false;
+                else
+                {
+                    pnlQrCode.Visible = false;
+                }
             }
         }
 

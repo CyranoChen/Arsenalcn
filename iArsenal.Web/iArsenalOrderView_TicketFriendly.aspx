@@ -1,9 +1,11 @@
 ﻿<%@ Page Language="C#" MasterPageFile="iArsenalMaster.Master" AutoEventWireup="true"
-    CodeBehind="iArsenalOrderView_TicketBeijing.aspx.cs" Inherits="iArsenal.Web.iArsenalOrderView_TicketBeijing"
+    CodeBehind="iArsenalOrderView_TicketFriendly.aspx.cs" Inherits="iArsenal.Web.iArsenalOrderView_TicketFriendly"
     Title="订单信息查看" Theme="iArsenal" %>
 
 <%@ Register Src="Control/PortalSitePath.ascx" TagName="PortalSitePath" TagPrefix="uc1" %>
 <%@ Register Src="Control/PortalWorkflowInfo.ascx" TagName="PortalWorkflowInfo" TagPrefix="uc2" %>
+<%@ Register Src="Control/PortalPaymentInfo.ascx" TagName="PortalPaymentInfo" TagPrefix="uc4" %>
+<%@ Register Src="Control/PortalProductQrCode.ascx" TagName="PortalProductQrCode" TagPrefix="uc5" %>
 <asp:Content ID="cphHead" ContentPlaceHolderID="cphHead" runat="server">
     <style type="text/css">
         .OrderProductGuid {
@@ -20,7 +22,7 @@
                 <thead>
                     <tr class="Header">
                         <th colspan="4" class="FieldColspan">
-                            <a name="anchorBack" id="anchorBack">感谢预订“阿森纳2012亚洲行北京圣殿杯比赛球票”，请仔细确认并提交订单信息：</a>
+                            <a name="anchorBack" id="anchorBack">感谢预订“阿森纳中国行官方球迷会专属看台球票”，请仔细确认并提交订单信息：</a>
                         </th>
                     </tr>
                 </thead>
@@ -30,43 +32,42 @@
                         </td>
                     </tr>
                     <tr class="Row">
-                        <td class="FieldHeader" style="width: 100px">真实姓名：
+                        <td class="FieldHeader" style="width: 110px">真实姓名：
                         </td>
                         <td class="FieldColumn">
                             <asp:Label ID="lblMemberName" runat="server"></asp:Label>
                         </td>
-                        <td class="FieldHeader" style="width: 100px">身份证号：
-                        </td>
-                        <td class="FieldColumn">
-                            <asp:Label ID="lblMemberIDCardNo" runat="server"></asp:Label>
-                        </td>
-                    </tr>
-                    <tr class="AlternatingRow">
-                        <td class="FieldHeader">邮箱：
-                        </td>
-                        <td class="FieldColumn">
-                            <asp:Label ID="lblMemberEmail" runat="server"></asp:Label>
-                        </td>
-                        <td class="FieldHeader">手机：
+                        <td class="FieldHeader" style="width: 110px">手机：
                         </td>
                         <td class="FieldColumn">
                             <asp:Label ID="lblOrderMobile" runat="server"></asp:Label>
                         </td>
                     </tr>
-                    <tr class="Row">
-                        <td class="FieldHeader">来自于：
+                    <tr class="AlternatingRow">
+                        <td class="FieldHeader">身份证号：
                         </td>
-                        <td class="FieldColspan" colspan="3">
+                        <td class="FieldColumn">
+                            <asp:Label ID="lblMemberIDCardNo" runat="server"></asp:Label>
+                        </td>
+                        <td class="FieldHeader">现居住地：
+                        </td>
+                        <td class="FieldColspan">
                             <asp:Label ID="lblMemberRegion" runat="server"></asp:Label>
                         </td>
                     </tr>
-                    <tr class="AlternatingRow">
-                        <td class="FieldHeader">付款方式：
+                    <tr class="Row">
+                        <td class="FieldHeader">邮箱：
                         </td>
-                        <td class="FieldColspan" colspan="3">
-                            <asp:Label ID="lblOrderPayment" runat="server"></asp:Label>
+                        <td class="FieldColumn">
+                            <asp:Label ID="lblMemberEmail" runat="server"></asp:Label>
+                        </td>
+                        <td class="FieldHeader">微信：
+                        </td>
+                        <td class="FieldColumn">
+                            <asp:Label ID="lblMemberWeChat" runat="server"></asp:Label>
                         </td>
                     </tr>
+
                     <tr class="CommandRow">
                         <td colspan="4">-- 请核对您的订单信息 --
                         </td>
@@ -94,22 +95,19 @@
                     <tr class="AlternatingRow">
                         <td class="FieldHeader">订购数量：
                         </td>
-                        <td class="FieldColumn">
+                        <td class="FieldColumn" colspan="3">
                             <asp:Label ID="lblOrderItemQuantity" runat="server"></asp:Label>
                         </td>
-                        <td class="FieldHeader">所在看台：
-                        </td>
-                        <td class="FieldColumn">
-                            <asp:Label ID="lblOrderItemSize" runat="server"></asp:Label>
-                        </td>
                     </tr>
-                    <tr class="Row">
-                        <td class="FieldHeader">活动情况：
-                        </td>
-                        <td class="FieldColspan" colspan="3">
-                            <asp:Label ID="lblOrderItemRemak" runat="server"></asp:Label>
-                        </td>
-                    </tr>
+                    <asp:PlaceHolder ID="phOrderItemRemark" runat="server" Visible="false">
+                        <tr class="Row">
+                            <td class="FieldHeader">活动情况：
+                            </td>
+                            <td class="FieldColspan" colspan="3">
+                                <asp:Label ID="lblOrderItemRemark" runat="server"></asp:Label>
+                            </td>
+                        </tr>
+                    </asp:PlaceHolder>
                     <tr class="Row">
                         <td class="FieldHeader">备注：
                         </td>
@@ -149,52 +147,27 @@
             </div>
         </div>
         <div id="rightPanel">
-            <div class="InfoPanel" id="pnlProductImage" style="display: none">
-                <h3 class="Col" onclick="$(this).toggleClass('Col'); $(this).toggleClass('Exp'); $(this).next('div').toggle('normal');">
-                    <a>商品图片</a>
-                </h3>
-                <div class="Block">
-                    <img src="" alt="" style="margin: 2px; width: 250px;" />
-                </div>
-            </div>
-            <div class="InfoPanel">
-                <h3 class="Col" onclick="$(this).toggleClass('Col'); $(this).toggleClass('Exp'); $(this).next('div').toggle('normal');">
-                    <a>付款信息</a>
-                </h3>
-                <div class="Block">
-                    <p>
-                        (1). 在此系统完成订票流程并确认后，会显示为“等待付款”状态。请通过相应的渠道方式进行全额付款。
-                    </p>
-                    <p>
-                        (2). 方式一：支付宝转账账户：vickie_ling@hotmail.com，户名：凌薇。
-                    </p>
-                    <p>
-                        (3). 方式二：银行转账账户：帐号6226 0902 1624 4489（开户地：招商银行上海分行闵行支行），户名：凌薇。
-                    </p>
-                    <p>
-                        (4). 方式三：淘宝交易：<a href="http://item.taobao.com/item.htm?id=17861408168" target="_blank">
-                            <em>点击打开</em>
-                        </a>，
-                请在买家留言中注明你在ACN球迷会服务中心的订票编号和ACN会员名。发货将以虚拟物品形式操作。之后请点击淘宝订单中“确认收货”，这样我们可以收到你的付款。
-                    </p>
-                    <p>
-                        (5). 收到您的全额付款后，我们会将订单改为“确认付款”状态。
-                    </p>
-                </div>
-            </div>
+            <uc4:PortalPaymentInfo ID="ucPortalPaymentInfo" runat="server" />
+            <uc5:PortalProductQrCode ID="ucPortalProductQrCode" runat="server" />
             <div class="InfoPanel">
                 <h3 class="Col" onclick="$(this).toggleClass('Col'); $(this).toggleClass('Exp'); $(this).next('div').toggle('normal');">
                     <a>取票信息</a>
                 </h3>
                 <div class="Block">
                     <p>
-                        (1). 在官方出票后，已确认付款的会员会以邮件方式收到一份<em>取票确认函</em>，大致注明会坐在几区几看台； 若多张票，会注明是否连号；以及相关的取票地点、时间和联系方式。（具体的几排几座，只有取票时才知道）
+                        (1). 在主办方出票后，已确认付款的会员会以邮件方式收到一份<em>取票确认函</em>，会注明具体看台的编号， 若有多张票，会尽量联号，以及相关的取票地点、时间和联系方式。
                     </p>
                     <p>
-                        (2). 比赛当日开始前约1个小时，会员凭打印的<em>取票确认函</em>和自己的<em>居民身份证</em>前往北京国家体育场附近指定位置，找ACN干事取票。
+                        (2). 比赛当日开始前约1个小时，请取票人凭打印的<em>取票确认函</em>和<em>居民身份证/护照</em>前往北京国家体育场附近指定位置，找ACN干事取票。
                     </p>
                     <p>
-                        (3). 原则上安排2名干事负责发票，或者亦可在比赛前1-2天的见面会活动或观看训练时也可找干事领取，但请事先自行与干事联系好。
+                        (3). 主办方出票后，我们也可提供球票快递服务（<em>仅限顺丰</em>）。但快递可能存在丢件和延迟送达的风险，请各位会员谨慎选择，快递费采用<em>到付</em>方式。
+                    </p>
+                    <p>
+                        (4). 预订球票成功者，将优先获得<em>训练课门票</em>和<em>球员见面会门票</em>，数量有限，送完为止。
+                    </p>
+                    <p>
+                        (5). 本次主办方提供的球票并无任何优惠和折扣，同时球迷会的所有干事（球票负责人、客服、发票人）均为<em>阿森纳球迷义务志愿服务</em>，不收取任何报酬。如在订购或咨询过程中，有响应较慢或差错，请各位理解原谅。
                     </p>
                 </div>
             </div>

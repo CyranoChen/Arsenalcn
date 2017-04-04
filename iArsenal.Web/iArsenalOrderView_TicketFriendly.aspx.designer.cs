@@ -10,7 +10,7 @@
 namespace iArsenal.Web {
     
     
-    public partial class iArsenalOrderView_TicketBeijing {
+    public partial class iArsenalOrderView_TicketFriendly {
         
         /// <summary>
         /// ucPortalSitePath control.
@@ -40,24 +40,6 @@ namespace iArsenal.Web {
         protected global::System.Web.UI.WebControls.Label lblMemberName;
         
         /// <summary>
-        /// lblMemberIDCardNo control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblMemberIDCardNo;
-        
-        /// <summary>
-        /// lblMemberEmail control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblMemberEmail;
-        
-        /// <summary>
         /// lblOrderMobile control.
         /// </summary>
         /// <remarks>
@@ -65,6 +47,15 @@ namespace iArsenal.Web {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblOrderMobile;
+        
+        /// <summary>
+        /// lblMemberIDCardNo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblMemberIDCardNo;
         
         /// <summary>
         /// lblMemberRegion control.
@@ -76,13 +67,22 @@ namespace iArsenal.Web {
         protected global::System.Web.UI.WebControls.Label lblMemberRegion;
         
         /// <summary>
-        /// lblOrderPayment control.
+        /// lblMemberEmail control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblOrderPayment;
+        protected global::System.Web.UI.WebControls.Label lblMemberEmail;
+        
+        /// <summary>
+        /// lblMemberWeChat control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblMemberWeChat;
         
         /// <summary>
         /// lblOrderID control.
@@ -130,22 +130,22 @@ namespace iArsenal.Web {
         protected global::System.Web.UI.WebControls.Label lblOrderItemQuantity;
         
         /// <summary>
-        /// lblOrderItemSize control.
+        /// phOrderItemRemark control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblOrderItemSize;
+        protected global::System.Web.UI.WebControls.PlaceHolder phOrderItemRemark;
         
         /// <summary>
-        /// lblOrderItemRemak control.
+        /// lblOrderItemRemark control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblOrderItemRemak;
+        protected global::System.Web.UI.WebControls.Label lblOrderItemRemark;
         
         /// <summary>
         /// lblOrderDescription control.
@@ -218,5 +218,23 @@ namespace iArsenal.Web {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnCancel;
+        
+        /// <summary>
+        /// ucPortalPaymentInfo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::iArsenal.Web.Control.PortalPaymentInfo ucPortalPaymentInfo;
+        
+        /// <summary>
+        /// ucPortalProductQrCode control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::iArsenal.Web.Control.PortalProductQrCode ucPortalProductQrCode;
     }
 }

@@ -197,7 +197,7 @@
     <Content Include="iArsenalOrder_Membership.aspx" />
     <Content Include="iArsenalOrder_MatchTicket.aspx" />
     <Content Include="iArsenalOrder_MatchList.aspx" />
-    <Content Include="iArsenalOrderView_TicketBeijing.aspx" />
+    <Content Include="iArsenalOrderView_TicketFriendly.aspx" />
     <Content Include="iArsenalOrder.aspx" />
     <Content Include="iArsenalOrderView_ReplicaKit.aspx" />
     <Content Include="iArsenalOrder_Printing.aspx" />
@@ -561,12 +561,12 @@
     <Compile Include="iArsenalOrder_MatchList.aspx.designer.cs">
       <DependentUpon>iArsenalOrder_MatchList.aspx</DependentUpon>
     </Compile>
-    <Compile Include="iArsenalOrderView_TicketBeijing.aspx.cs">
-      <DependentUpon>iArsenalOrderView_TicketBeijing.aspx</DependentUpon>
+    <Compile Include="iArsenalOrderView_TicketFriendly.aspx.cs">
+      <DependentUpon>iArsenalOrderView_TicketFriendly.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="iArsenalOrderView_TicketBeijing.aspx.designer.cs">
-      <DependentUpon>iArsenalOrderView_TicketBeijing.aspx</DependentUpon>
+    <Compile Include="iArsenalOrderView_TicketFriendly.aspx.designer.cs">
+      <DependentUpon>iArsenalOrderView_TicketFriendly.aspx</DependentUpon>
     </Compile>
     <Compile Include="iArsenalMemberRegister.aspx.cs">
       <DependentUpon>iArsenalMemberRegister.aspx</DependentUpon>
@@ -721,7 +721,8 @@
   <ItemGroup>
     <Content Include="UploadFiles\qrcode-arsenalcn.gif" />
     <Content Include="UploadFiles\qrcode-alipay-vicky.png" />
-    <Content Include="UploadFiles\qrcode-wechat-iarsenalcn.gif" />
+    <Content Include="UploadFiles\qrcode-iarsenalcn.gif" />
+    <Content Include="UploadFiles\qrcode-wechat-iarsenalcn.png" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

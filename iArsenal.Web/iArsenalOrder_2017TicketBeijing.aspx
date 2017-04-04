@@ -12,6 +12,9 @@
     <script type="text/javascript">
         $(function () {
             NationDataBindImpl($("#tdRegion"));
+            $(".idcardno").attr("placeholder", "领票时需核对证件信息，身份证/护照");
+            $(".quantity").attr("placeholder", "1 ~ 6");
+            $(".description").attr("placeholder", "可注明指定看台（123，124，125）");
         });
     </script>
 </asp:Content>
@@ -68,6 +71,15 @@
                         </td>
                     </tr>
                     <tr class="Row">
+                        <td class="FieldHeader">身份证号：
+                        </td>
+                        <td class="FieldColumn" colspan="3">
+                            <asp:TextBox ID="tbIDCardNo" runat="server" CssClass="TextBox idcardno" Width="300px"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="rfvIDCardNo" runat="server" ControlToValidate="tbIDCardNo"
+                                Display="Dynamic" ErrorMessage="*" CssClass="ValiSpan"></asp:RequiredFieldValidator>
+                        </td>
+                    </tr>
+                    <tr class="Row">
                         <td class="FieldHeader">现居住地：
                         </td>
                         <td class="FieldColumn" id="tdRegion" colspan="3">
@@ -99,7 +111,7 @@
                         <td class="FieldHeader">数量：
                         </td>
                         <td class="FieldColspan" colspan="3">
-                            <asp:TextBox ID="tbQuantity" runat="server" CssClass="TextBox" Width="100px"></asp:TextBox>
+                            <asp:TextBox ID="tbQuantity" runat="server" CssClass="TextBox quantity" Width="100px"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="rfvQuantity" runat="server" ControlToValidate="tbQuantity"
                                 Display="Dynamic" ErrorMessage="*" CssClass="ValiSpan">
                             </asp:RequiredFieldValidator>
@@ -110,7 +122,7 @@
                         <td class="FieldHeader">备注：
                         </td>
                         <td class="FieldColspan" colspan="3">
-                            <asp:TextBox ID="tbOrderDescription" runat="server" CssClass="TextBox" Width="300px"
+                            <asp:TextBox ID="tbOrderDescription" runat="server" CssClass="TextBox description" Width="300px"
                                 TextMode="MultiLine" Rows="4">
                             </asp:TextBox>
                         </td>
@@ -129,21 +141,19 @@
                 </h3>
                 <div class="Block">
                     <p>
-                        (1). 阿森纳中国官方球迷会（ACN）的从俱乐部官方商店预订赛季球衣的团购服务，已经运行了多个赛季。在预订球衣的同时，会员还可选择自行心仪的<em>联赛</em>和<em>杯赛</em>两个字体。（杯赛字体又称阿森纳字体）
+                        (1). 阿森纳2017中国行国际冠军杯北京站比赛， 将于7月22日在北京国家体育场（鸟巢）举行。阿森纳中国官方球迷会（ACN）和主办方合作推出球迷会专属看台，现在订购并付款，可选择具体看台（<em>123-124-125</em>）。
                     </p>
                     <p>
-                        (2). Arsenal官方专卖店，印字印号效果体验： <a href="http://arsenaldirect.arsenal.com/icat/kitbuilder/" target="_blank">
-                            <em>http://arsenaldirect.arsenal.com</em>
-                        </a>
-                    </p>
-                    <p>
-                        (3). 您可以下拉框中选择现役球员印字印号；如需自定义印字印号，请在下拉框选<em>自定义</em>，并出现的文本框中填写号码与印字即可。
+                        (2). 如需订购多张不同看台球票，请分开提交订单。每个订单对应一种类型的球票，并在同一看台联号。
                     </p>
                     <div class="Thumbnail">
-                        <img src="uploadfiles/qrcode-wechat-iarsenalcn.gif" alt="iArsenalCN" />
+                        <img src="uploadfiles/qrcode-iarsenalcn.gif" alt="iArsenalCN" />
                     </div>
                     <p>
-                        (4). 【微信】订购操作中如有问题，请咨询官方球迷会客服微信号：<em>iArsenalCN</em>。加入时验证方式为您注册本服务中心的真实姓名和手机号码，并注明<em>【印字印号】</em>字样。
+                        (3). 【微信】订购操作中如有问题，请咨询官方球迷会客服微信号：<em>iArsenalCN</em>。加入时验证方式为您注册本服务中心的真实姓名和手机号码，并注明<em>【北京站球票】</em>。
+                    </p>
+                    <p>
+                        (4). 如需大批量订购球票（<em>超过20张</em>），且希望选择看台并联号，可直接与球票负责人联系（<em>13818059707，陈先生</em>）。
                     </p>
                 </div>
             </div>
@@ -153,13 +163,13 @@
                 </h3>
                 <div class="Block">
                     <p>
-                        (1). 阿森纳字体（杯赛字体）印字印号服务，可在会员提供的本赛季各种球衣款式上印制，包括主场和即将推出的<em>客场、杯赛球衣</em>。
+                        (1). 各位如果购买公开渠道（大麦网）销售的球票，可能无法选坐，只能选票价，届时有可能无法保证你的看台，甚至无法保证所在球场的看台层次。我们的目标是为了让阿森纳球迷，特别是球迷会会员能集中坐在一起。所以向主办方申请了<em>专属看台</em>。
                     </p>
                     <p>
-                        (2). 阿森纳字体（杯赛字体）个性化服务，可根据会员要求，自行拼接印字名称、印号数字等，数字最多为2位(00-99)；名字最多为11个英文字母。（根据球衣大小，如婴儿版、儿童版，印字印号的字母数量可能会有所不同）
+                        (2). 因本次团购活动完全由主办方给予支持，如在后续团购或出票过程中，可能会因各种原因产生的意外，导致座位名额减少、看台减少或出票延迟的情况。届时我们将尽全力保障各位球迷的球票费用可得到退款。
                     </p>
                     <p>
-                        (3). 字体印制服务，可印制联赛字体、杯赛字体于各种球衣、T恤或其他非阿森纳的衣服上。（视具体印制条件评估）
+                        (3). 因球迷个人原因或行程改变，导致无法成行的，在正式出票前可申请<em>全额退款</em>。
                     </p>
                 </div>
             </div>

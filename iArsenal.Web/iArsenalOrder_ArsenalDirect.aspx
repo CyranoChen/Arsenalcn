@@ -187,7 +187,7 @@
                         </a>
                     </p>
                     <div class="Thumbnail">
-                        <img src="uploadfiles/qrcode-wechat-iarsenalcn.gif" alt="iArsenalCN"/>
+                        <img src="uploadfiles/qrcode-iarsenalcn.gif" alt="iArsenalCN"/>
                     </div>
                     <p>
                         (4). 【微信】订购操作中如有问题，请咨询官方球迷会服务微信号：<em>iArsenalCN</em>。加入时验证方式为您注册本服务中心的真实姓名和手机号码，并注明<em>【团购】</em>字样。

@@ -340,7 +340,7 @@ namespace iArsenal.Web
 
                             // Get all Member Period of current season
                             var list = _repo.Query<MemberPeriod>(x =>
-                                x.StartDate <= DateTime.Now && x.EndDate >= DateTime.Now)
+                                x.StartDate <= DateTime.Now && x.EndDate >= DateTime.Now, trans)
                                 .FindAll(x => x.IsActive);
 
                             var updateFlag = false;

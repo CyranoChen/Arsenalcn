@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Arsenalcn.Core;
+using Arsenalcn.Core.Dapper;
+using Arsenalcn.Core.Extension;
 
 namespace Arsenal.Service
 {

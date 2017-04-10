@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using Arsenalcn.Core;
+using Arsenalcn.Core.Dapper;
 
 namespace iArsenal.Service
 {
     public class OrdrWish : Order
     {
-        public void Init(IDbTransaction trans)
+        public void Init()
         {
             IRepository repo = new Repository();
 
-            var list = repo.Query<OrderItem>(x => x.OrderID == ID, trans).FindAll(x => x.IsActive);
+            var list = repo.Query<OrderItem>(x => x.OrderID == ID).FindAll(x => x.IsActive);
 
             if (list.Any())
             {

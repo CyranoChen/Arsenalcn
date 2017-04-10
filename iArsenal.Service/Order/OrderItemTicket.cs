@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data;
 
 namespace iArsenal.Service
 {
@@ -35,7 +34,7 @@ namespace iArsenal.Service
                 throw new Exception("The OrderItem is not the type of MatchTicket.");
         }
 
-        public override void Place(Member m, Product p, IDbTransaction trans = null)
+        public override void Place(Member m, Product p)
         {
             Remark = MatchGuid.ToString();
             Size = TravelDate.ToString("yyyy-MM-dd");
@@ -43,7 +42,7 @@ namespace iArsenal.Service
             //Product product = Product.Cache.ProductList.Find(p =>
             //    p.ProductType.Equals(ProductType.MatchTicket));
 
-            base.Place(m, p, trans);
+            base.Place(m, p);
         }
 
         #region Members and Properties
@@ -90,11 +89,11 @@ namespace iArsenal.Service
                 throw new Exception("The OrderItem is not the type of TicketFriendly.");
         }
 
-        public override void Place(Member m, Product p, IDbTransaction trans = null)
+        public override void Place(Member m, Product p)
         {
             Size = SeatLevel;
 
-            base.Place(m, p, trans);
+            base.Place(m, p);
         }
     }
 }

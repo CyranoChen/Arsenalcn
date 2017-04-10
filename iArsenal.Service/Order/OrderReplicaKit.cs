@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Data;
 using Arsenalcn.Core;
+using Arsenalcn.Core.Dapper;
 using AutoMapper;
 
 namespace iArsenal.Service
 {
     public class OrdrReplicaKit : Order
     {
-        public void Init(IDbTransaction trans)
+        public void Init()
         {
             IRepository repo = new Repository();
 
-            var list = repo.Query<OrderItem>(x => x.OrderID == ID, trans)
+            var list = repo.Query<OrderItem>(x => x.OrderID == ID)
                 .FindAll(x => x.IsActive && Product.Cache.Load(x.ProductGuid) != null);
 
             if (list.Count > 0)

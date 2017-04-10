@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Arsenal.Service;
 using Arsenal.Service.Casino;
+using Arsenalcn.Core.Dapper;
+using Arsenalcn.Core.Extension;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Arsenalcn.Core.Tests

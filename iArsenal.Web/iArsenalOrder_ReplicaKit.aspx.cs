@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Web.UI.WebControls;
-using Arsenalcn.Core;
+using Arsenalcn.Core.Dapper;
+using Arsenalcn.Core.Extension;
 using iArsenal.Service;
 using ArsenalPlayer = iArsenal.Service.Arsenal.Player;
 
@@ -364,8 +364,10 @@ namespace iArsenal.Web
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
-            using (var trans = DapperHelper.MarsConnection.BeginTransaction())
+            using (var dapper = DapperHelper.GetInstance())
             {
+                var trans = dapper.BeginTransaction();
+
                 try
                 {
                     if (string.IsNullOrEmpty(ddlReplicaKit.SelectedValue))
@@ -373,13 +375,13 @@ namespace iArsenal.Web
                         throw new Exception("请选择需要订购的球衣");
                     }
 
-                    var m = _repo.Single<Member>(Mid, trans);
+                    var m = _repo.Single<Member>(Mid);
 
                     if (!string.IsNullOrEmpty(tbMemberWeChat.Text.Trim()))
                     {
                         m.WeChat = tbMemberWeChat.Text.Trim();
 
-                        _repo.Update(m, trans);
+                        _repo.Update(m);
                     }
                     else
                     {
@@ -392,7 +394,7 @@ namespace iArsenal.Web
 
                     if (OrderID > 0)
                     {
-                        o = _repo.Single<Order>(OrderID, trans);
+                        o = _repo.Single<Order>(OrderID);
                     }
 
                     o.Mobile = tbOrderMobile.Text.Trim();
@@ -417,7 +419,7 @@ namespace iArsenal.Web
 
                     if (OrderID > 0)
                     {
-                        _repo.Update(o, trans);
+                        _repo.Update(o);
 
                         // used by setting OrderItem foreign key
                         newId = OrderID;
@@ -438,14 +440,14 @@ namespace iArsenal.Web
 
                         //Get the Order ID after Insert new one
                         object key;
-                        _repo.Insert(o, out key, trans);
+                        _repo.Insert(o, out key);
                         newId = Convert.ToInt32(key);
                     }
 
                     //Remove Order Item of this Order
                     if (OrderID > 0 && o.ID.Equals(OrderID))
                     {
-                        _repo.Query<OrderItem>(x => x.OrderID == OrderID, trans).Delete(trans);
+                        _repo.Query<OrderItem>(x => x.OrderID == OrderID).Delete();
                     }
 
                     //New Order Item for ReplicaKit
@@ -466,7 +468,7 @@ namespace iArsenal.Web
                     oi.Sale = null;
                     oi.Remark = string.Empty;
 
-                    oi.Place(m, pReplicaKit, trans);
+                    oi.Place(m, pReplicaKit);
 
                     // New Order Item for Home Player Number & Name
                     if (!string.IsNullOrEmpty(ddlPlayerDetail.SelectedValue))
@@ -509,17 +511,17 @@ namespace iArsenal.Web
                                 if (pFont == null)
                                     throw new Exception("无特殊字体信息，请联系管理员");
 
-                                oiFont.Place(m, trans);
+                                oiFont.Place(m);
 
                                 oiNumber.Size = tbPlayerNumber.Text.Trim();
                                 oiNumber.Sale = 0f;
                                 oiNumber.Remark = "custom";
-                                oiNumber.Place(m, trans);
+                                oiNumber.Place(m);
 
                                 oiName.Size = tbPlayerName.Text.Trim();
                                 oiName.Sale = 0f;
                                 oiName.Remark = "custom";
-                                oiName.Place(m, trans);
+                                oiName.Place(m);
                             }
                             else
                             {
@@ -532,7 +534,7 @@ namespace iArsenal.Web
                                 oiNumber.Sale = null;
 
                                 oiNumber.Remark = "custom";
-                                oiNumber.Place(m, trans);
+                                oiNumber.Place(m);
 
                                 oiName.Size = tbPlayerName.Text.Trim();
 
@@ -543,7 +545,7 @@ namespace iArsenal.Web
                                 oiName.Sale = null;
 
                                 oiName.Remark = "custom";
-                                oiName.Place(m, trans);
+                                oiName.Place(m);
                             }
                         }
                         else
@@ -564,17 +566,17 @@ namespace iArsenal.Web
                                 if (pFont == null)
                                     throw new Exception("无特殊字体信息，请联系管理员");
 
-                                oiFont.Place(m, trans);
+                                oiFont.Place(m);
 
                                 oiNumber.Size = player.SquadNumber.ToString();
                                 oiNumber.Sale = 0f;
                                 oiNumber.Remark = player.ID.ToString();
-                                oiNumber.Place(m, trans);
+                                oiNumber.Place(m);
 
                                 oiName.Size = printingName;
                                 oiName.Sale = 0f;
                                 oiName.Remark = player.ID.ToString();
-                                oiName.Place(m, trans);
+                                oiName.Place(m);
                             }
                             else
                             {
@@ -587,7 +589,7 @@ namespace iArsenal.Web
                                 oiNumber.Sale = null;
 
                                 oiNumber.Remark = player.ID.ToString();
-                                oiNumber.Place(m, trans);
+                                oiNumber.Place(m);
 
                                 oiName.Size = printingName;
 
@@ -598,7 +600,7 @@ namespace iArsenal.Web
                                 oiName.Sale = null;
 
                                 oiName.Remark = player.ID.ToString();
-                                oiName.Place(m, trans);
+                                oiName.Place(m);
                             }
                         }
                     }
@@ -625,7 +627,7 @@ namespace iArsenal.Web
                         };
 
 
-                        oiPremierPatch.Place(m, trans);
+                        oiPremierPatch.Place(m);
                     }
 
                     // New Order Item for Championship Patch
@@ -645,7 +647,7 @@ namespace iArsenal.Web
                             Remark = string.Empty
                         };
 
-                        oiChampionShipPatch.Place(m, trans);
+                        oiChampionShipPatch.Place(m);
                     }
 
                     //}

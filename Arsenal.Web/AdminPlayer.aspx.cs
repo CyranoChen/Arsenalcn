@@ -4,6 +4,7 @@ using System.Web.UI.WebControls;
 using Arsenal.Service;
 using Arsenal.Web.Control;
 using Arsenalcn.Core;
+using Arsenalcn.Core.Dapper;
 
 namespace Arsenal.Web
 {
@@ -44,7 +45,7 @@ namespace Arsenal.Web
             {
                 #region Bind ddlSquadNumber
 
-                ddlSquadNumber.DataSource = Player.Cache.ColList_SquadNumber;
+                ddlSquadNumber.DataSource = Player.Cache.ColListSquadNumber;
                 ddlSquadNumber.DataBind();
 
                 ddlSquadNumber.Items.Insert(0, new ListItem("--球员号码--", string.Empty));
@@ -53,7 +54,7 @@ namespace Arsenal.Web
 
                 #region Bind ddlPosition
 
-                ddlPosition.DataSource = Player.Cache.ColList_Position;
+                ddlPosition.DataSource = Player.Cache.ColListPosition;
                 ddlPosition.DataBind();
 
                 ddlPosition.Items.Insert(0, new ListItem("--球员位置--", string.Empty));

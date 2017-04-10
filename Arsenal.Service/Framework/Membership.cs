@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data.SqlTypes;
 using Arsenalcn.Core;
+using Arsenalcn.Core.Dapper;
 
 namespace Arsenal.Service
 {

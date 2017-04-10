@@ -1,15 +1,17 @@
 ﻿using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using Arsenalcn.Core;
+using Arsenalcn.Core.Dapper;
 
 namespace Arsenal.Service.Casino
 {
     public class BonusViewFactory : ViewerFactory, IViewerFactory<BonusView>
     {
-        public BonusViewFactory()
+        private IDapperHelper _dapper;
+
+        public BonusViewFactory(IDapperHelper dapper = null)
         {
-            Dapper = new DapperHelper();
+            _dapper = dapper ?? DapperHelper.GetInstance();
 
             ViewerSql = @"SELECT ISNULL(mr.MatchGuid, sc.MatchGuid) AS MatchGuid, ISNULL(mr.UserID, sc.UserID) AS UserID, ISNULL(mr.UserName, sc.UserName) AS UserName, 
                                   sc.Win, sc.Lose, sc.Earning, sc.TotalBet, mr.RPBonus, m.PlayTime, m.LeagueName, m.Round, 
@@ -38,9 +40,9 @@ namespace Arsenal.Service.Casino
             DbSchema = Repository.GetTableAttr<BonusView>();
         }
 
-        public BonusView Single(Criteria criteria, IDbTransaction trans = null)
+        public BonusView Single(Criteria criteria)
         {
-            return Dapper.Query<BonusView, HomeTeam, AwayTeam, League, BonusView>(BuildSingleSql(criteria),
+            return _dapper.Query<BonusView, HomeTeam, AwayTeam, League, BonusView>(BuildSingleSql(criteria),
                 (x, h, a, l) =>
                 {
                     x.Home = h;
@@ -48,12 +50,12 @@ namespace Arsenal.Service.Casino
                     x.League = l;
 
                     return x;
-                }, criteria?.Parameters, trans, SplitOn).FirstOrDefault();
+                }, criteria?.Parameters, SplitOn).FirstOrDefault();
         }
 
-        public List<BonusView> All(IDbTransaction trans = null)
+        public List<BonusView> All()
         {
-            return Dapper.Query<BonusView, HomeTeam, AwayTeam, League, BonusView>(BuildAllSql(),
+            return _dapper.Query<BonusView, HomeTeam, AwayTeam, League, BonusView>(BuildAllSql(),
                 (x, h, a, l) =>
                 {
                     x.Home = h;
@@ -61,12 +63,12 @@ namespace Arsenal.Service.Casino
                     x.League = l;
 
                     return x;
-                }, null, trans, SplitOn).ToList();
+                }, null, SplitOn).ToList();
         }
 
-        public List<BonusView> All(IPager pager, string orderBy = null, IDbTransaction trans = null)
+        public List<BonusView> All(IPager pager, string orderBy = null)
         {
-            return Dapper.Query<BonusView, HomeTeam, AwayTeam, League, BonusView>(BuildAllSql(pager, orderBy),
+            return _dapper.Query<BonusView, HomeTeam, AwayTeam, League, BonusView>(BuildAllSql(pager, orderBy),
                 (x, h, a, l) =>
                 {
                     x.Home = h;
@@ -74,12 +76,12 @@ namespace Arsenal.Service.Casino
                     x.League = l;
 
                     return x;
-                }, null, trans, SplitOn).ToList();
+                }, null, SplitOn).ToList();
         }
 
-        public List<BonusView> Query(Criteria criteria, IDbTransaction trans = null)
+        public List<BonusView> Query(Criteria criteria)
         {
-            return Dapper.Query<BonusView, HomeTeam, AwayTeam, League, BonusView>(BuildQuerySql(criteria),
+            return _dapper.Query<BonusView, HomeTeam, AwayTeam, League, BonusView>(BuildQuerySql(criteria),
                 (x, h, a, l) =>
                 {
                     x.Home = h;
@@ -87,7 +89,7 @@ namespace Arsenal.Service.Casino
                     x.League = l;
 
                     return x;
-                }, criteria?.Parameters, trans, SplitOn).ToList();
+                }, criteria?.Parameters, SplitOn).ToList();
         }
     }
 }

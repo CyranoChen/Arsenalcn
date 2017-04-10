@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Data.SqlClient;
 using System.Web.UI.WebControls;
-using Arsenalcn.Core;
+using Arsenalcn.Core.Dapper;
+using Arsenalcn.Core.Extension;
 using iArsenal.Service;
 using ArsenalPlayer = iArsenal.Service.Arsenal.Player;
 
@@ -221,8 +221,10 @@ namespace iArsenal.Web
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
-            using (var trans = DapperHelper.MarsConnection.BeginTransaction())
+            using (var dapper = DapperHelper.GetInstance())
             {
+                var trans = dapper.BeginTransaction();
+
                 try
                 {
                     if (string.IsNullOrEmpty(ddlPlayerDetail.SelectedValue))
@@ -230,13 +232,13 @@ namespace iArsenal.Web
                         throw new Exception("请选择印字印号信息");
                     }
 
-                    var m = _repo.Single<Member>(Mid, trans);
+                    var m = _repo.Single<Member>(Mid);
 
                     if (!string.IsNullOrEmpty(tbMemberWeChat.Text.Trim()))
                     {
                         m.WeChat = tbMemberWeChat.Text.Trim();
 
-                        _repo.Update(m, trans);
+                        _repo.Update(m);
                     }
                     else
                     {
@@ -249,7 +251,7 @@ namespace iArsenal.Web
 
                     if (OrderID > 0)
                     {
-                        o = _repo.Single<Order>(OrderID, trans);
+                        o = _repo.Single<Order>(OrderID);
                     }
 
                     o.Mobile = tbOrderMobile.Text.Trim();
@@ -264,7 +266,7 @@ namespace iArsenal.Web
 
                     if (OrderID > 0)
                     {
-                        _repo.Update(o, trans);
+                        _repo.Update(o);
 
                         // used by setting OrderItem foreign key
                         newId = OrderID;
@@ -285,14 +287,14 @@ namespace iArsenal.Web
 
                         //Get the Order ID after Insert new one
                         object key;
-                        _repo.Insert(o, out key, trans);
+                        _repo.Insert(o, out key);
                         newId = Convert.ToInt32(key);
                     }
 
                     //Remove Order Item of this Order
                     if (OrderID > 0 && o.ID.Equals(OrderID))
                     {
-                        _repo.Query<OrderItem>(x => x.OrderID == OrderID, trans).Delete(trans);
+                        _repo.Query<OrderItem>(x => x.OrderID == OrderID).Delete();
                     }
 
                     // New Order Item for Player Number & Name
@@ -337,17 +339,17 @@ namespace iArsenal.Web
 
                                 // 设置个性化印字印号价格
                                 oiFont.Sale = _priceArsenalFont;
-                                oiFont.Place(m, trans);
+                                oiFont.Place(m);
 
                                 oiNumber.PrintingNumber = tbPlayerNumber.Text.Trim();
                                 oiNumber.Sale = 0f;
                                 oiNumber.Remark = "custom";
-                                oiNumber.Place(m, trans);
+                                oiNumber.Place(m);
 
                                 oiName.PrintingName = tbPlayerName.Text.Trim().ToUpper();
                                 oiName.Sale = 0f;
                                 oiName.Remark = "custom";
-                                oiName.Place(m, trans);
+                                oiName.Place(m);
                             }
                             else
                             {
@@ -355,13 +357,13 @@ namespace iArsenal.Web
                                 // 设置个性化印字印号价格
                                 oiNumber.Sale = _pricePremierLeague / 2;
                                 oiNumber.Remark = "custom";
-                                oiNumber.Place(m, trans);
+                                oiNumber.Place(m);
 
                                 oiName.PrintingName = tbPlayerName.Text.Trim().ToUpper();
                                 // 设置个性化印字印号价格
                                 oiName.Sale = _pricePremierLeague / 2;
                                 oiName.Remark = "custom";
-                                oiName.Place(m, trans);
+                                oiName.Place(m);
                             }
                         }
                         else
@@ -384,17 +386,17 @@ namespace iArsenal.Web
 
                                 // 设置个性化印字印号价格
                                 oiFont.Sale = _priceArsenalFont;
-                                oiFont.Place(m, trans);
+                                oiFont.Place(m);
 
                                 oiNumber.PrintingNumber = player.SquadNumber.ToString();
                                 oiNumber.Sale = 0f;
                                 oiNumber.ArsenalPlayerGuid = player.ID;
-                                oiNumber.Place(m, trans);
+                                oiNumber.Place(m);
 
                                 oiName.PrintingName = printingName;
                                 oiName.Sale = 0f;
                                 oiName.ArsenalPlayerGuid = player.ID;
-                                oiName.Place(m, trans);
+                                oiName.Place(m);
                             }
                             else
                             {
@@ -402,13 +404,13 @@ namespace iArsenal.Web
                                 // 设置个性化印字印号价格
                                 oiNumber.Sale = _pricePremierLeague / 2;
                                 oiNumber.ArsenalPlayerGuid = player.ID;
-                                oiNumber.Place(m, trans);
+                                oiNumber.Place(m);
 
                                 oiName.PrintingName = printingName;
                                 // 设置个性化印字印号价格
                                 oiName.Sale = _pricePremierLeague / 2;
                                 oiName.ArsenalPlayerGuid = player.ID;
-                                oiName.Place(m, trans);
+                                oiName.Place(m);
                             }
                         }
                     }

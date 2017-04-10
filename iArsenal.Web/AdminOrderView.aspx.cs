@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Web.UI.WebControls;
 using Arsenalcn.Core;
+using Arsenalcn.Core.Dapper;
+using Arsenalcn.Core.Extension;
 using iArsenal.Service;
 using iArsenal.Web.Control;
 

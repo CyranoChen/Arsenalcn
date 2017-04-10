@@ -5,6 +5,8 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Web;
+using Arsenalcn.Core.Dapper;
+using Arsenalcn.Core.Extension;
 
 namespace Arsenalcn.Core
 {

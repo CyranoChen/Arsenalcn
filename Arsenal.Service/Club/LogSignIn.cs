@@ -2,6 +2,7 @@
 using System.Data;
 using System.Linq;
 using Arsenalcn.Core;
+using Arsenalcn.Core.Dapper;
 
 namespace Arsenal.Service.Club
 {
@@ -15,7 +16,7 @@ namespace Arsenal.Service.Club
         //    map.ForMember(d => d.Bonus, opt => opt.MapFrom(s => s.GetValue("Bonus")));
         //}
 
-        public double DoBonus(Guid userGuid, string keyword, IDbTransaction trans = null)
+        public double DoBonus(Guid userGuid, string keyword)
         {
             IRepository repo = new Repository();
 
@@ -43,7 +44,7 @@ namespace Arsenal.Service.Club
             Bonus = ConfigGlobal_AcnClub.SignInBonus * rate;
             Description = keyword;
 
-            repo.Insert(this, trans);
+            repo.Insert(this);
 
             return Bonus;
         }

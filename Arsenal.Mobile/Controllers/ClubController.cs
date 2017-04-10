@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Web.Mvc;
 using Arsenal.Mobile.Models;
@@ -9,6 +8,7 @@ using Arsenal.Service;
 using Arsenal.Service.Casino;
 using Arsenal.Service.Club;
 using Arsenalcn.Core;
+using Arsenalcn.Core.Dapper;
 
 namespace Arsenal.Mobile.Controllers
 {
@@ -53,8 +53,10 @@ namespace Arsenal.Mobile.Controllers
             var model = new SignInDailyDto();
             var user = UserDto.GetSession();
 
-            using (var trans = DapperHelper.MarsConnection.BeginTransaction())
+            using (var dapper = DapperHelper.GetInstance())
             {
+                var trans = dapper.BeginTransaction();
+
                 try
                 {
 
@@ -76,14 +78,14 @@ namespace Arsenal.Mobile.Controllers
                             // do SignIn Bonus
                             var logSignIn = new LogSignIn();
 
-                            var bonus = logSignIn.DoBonus(user.ID, ConfigGlobal_AcnClub.SignInKeyword, trans);
+                            var bonus = logSignIn.DoBonus(user.ID, ConfigGlobal_AcnClub.SignInKeyword);
 
                             // QSB
                             if (bonus > 0)
                             {
                                 gambler.Cash += bonus * ConfigGlobal_AcnCasino.ExchangeRate;
 
-                                _repo.Update(gambler, trans);
+                                _repo.Update(gambler);
                             }
 
                             trans.Commit();
@@ -123,8 +125,10 @@ namespace Arsenal.Mobile.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ContestBonus()
         {
-            using (var trans = DapperHelper.MarsConnection.BeginTransaction())
+            using (var dapper = DapperHelper.GetInstance())
             {
+                var trans = dapper.BeginTransaction();
+
                 try
                 {
                     var user = UserDto.GetSession();
@@ -154,14 +158,14 @@ namespace Arsenal.Mobile.Controllers
                                 Description = ConfigGlobal_AcnClub.SignInKeywordBonus
                             };
 
-                            _repo.Insert(logSignIn, trans);
+                            _repo.Insert(logSignIn);
 
                             // QSB
                             if (bonus > 0)
                             {
                                 gambler.Cash += bonus * ConfigGlobal_AcnCasino.ExchangeRate;
 
-                                _repo.Update(gambler, trans);
+                                _repo.Update(gambler);
                             }
 
                             trans.Commit();

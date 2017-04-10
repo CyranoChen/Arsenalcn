@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using Arsenalcn.Core;
+using Arsenalcn.Core.Dapper;
+using Arsenalcn.Core.Extension;
 
 namespace Arsenal.Service
 {
@@ -12,10 +14,10 @@ namespace Arsenal.Service
         public static class Cache
         {
             public static List<Player> PlayerList;
-            public static List<Player> PlayerList_HasSquadNumber;
+            public static List<Player> PlayerListHasSquadNumber;
 
-            public static IEnumerable<int> ColList_SquadNumber;
-            public static IEnumerable<string> ColList_Position;
+            public static IEnumerable<int> ColListSquadNumber;
+            public static IEnumerable<string> ColListPosition;
 
             static Cache()
             {
@@ -33,12 +35,12 @@ namespace Arsenal.Service
 
                 PlayerList = repo.All<Player>();
 
-                PlayerList_HasSquadNumber = PlayerList.FindAll(x => x.SquadNumber > 0)
+                PlayerListHasSquadNumber = PlayerList.FindAll(x => x.SquadNumber > 0)
                     .OrderBy(x => x.SquadNumber).ThenBy(x => x.DisplayName).ToList();
 
-                ColList_SquadNumber = repo.All<Player>().DistinctOrderBy(x => x.SquadNumber);
+                ColListSquadNumber = repo.All<Player>().DistinctOrderBy(x => x.SquadNumber);
 
-                ColList_Position = repo.All<Player>().DistinctOrderBy(x => x.Position.ToString());
+                ColListPosition = repo.All<Player>().DistinctOrderBy(x => x.Position.ToString());
             }
 
             public static Player Load(Guid guid)
@@ -53,7 +55,7 @@ namespace Arsenal.Service
 
                 var sql = $"SELECT * FROM {attr.Name} WHERE {attr.Key} = @key";
 
-                IDapperHelper dapper = new DapperHelper();
+                var dapper = DapperHelper.GetInstance();
 
                 return dapper.ExecuteDataTable(sql, new { key = guid })?.Rows[0];
             }

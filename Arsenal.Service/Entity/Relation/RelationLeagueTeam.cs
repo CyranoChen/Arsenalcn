@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using Arsenalcn.Core;
+using Arsenalcn.Core.Dapper;
 
 namespace Arsenal.Service
 {
@@ -15,23 +16,23 @@ namespace Arsenal.Service
             return repo.Any<RelationLeagueTeam>(x => x.TeamGuid == TeamGuid && x.LeagueGuid == LeagueGuid);
         }
 
-        public void Delete(IDbTransaction trans = null)
+        public void Delete()
         {
             IRepository repo = new Repository();
 
-            repo.Delete<RelationLeagueTeam>(x => x.LeagueGuid == LeagueGuid && x.TeamGuid == TeamGuid, trans);
+            repo.Delete<RelationLeagueTeam>(x => x.LeagueGuid == LeagueGuid && x.TeamGuid == TeamGuid);
         }
 
-        public static void Clean(IDbTransaction trans = null)
+        public static void Clean()
         {
             var sql =
                 $@"DELETE FROM {Repository.GetTableAttr<RelationLeagueTeam>().Name} WHERE 
                      (TeamGuid NOT IN (SELECT TeamGuid FROM {Repository.GetTableAttr<Team>().Name})) 
                      OR (LeagueGuid NOT IN (SELECT LeagueGuid FROM {Repository.GetTableAttr<League>().Name}))";
 
-            IDapperHelper dapper = new DapperHelper();
+            IDapperHelper dapper = DapperHelper.GetInstance();
 
-            dapper.Execute(sql, trans);
+            dapper.Execute(sql);
         }
 
         public static class Cache

@@ -2,14 +2,17 @@
 using System.Data;
 using System.Linq;
 using Arsenalcn.Core;
+using Arsenalcn.Core.Dapper;
 
 namespace Arsenal.Service.Casino
 {
     public class MatchViewFactory : ViewerFactory, IViewerFactory<MatchView>
     {
-        public MatchViewFactory()
+        private IDapperHelper _dapper;
+
+        public MatchViewFactory(IDapperHelper dapper = null)
         {
-            Dapper = new DapperHelper();
+            _dapper = dapper ?? DapperHelper.GetInstance();
 
             ViewerSql = @"SELECT m.MatchGuid AS ID, m.ResultHome, m.ResultAway, m.PlayTime, m.LeagueName, m.Round, 
                                       c.CasinoItemGuid, c.ItemType, c.MatchGuid, c.CloseTime, c.Earning, 
@@ -30,9 +33,9 @@ namespace Arsenal.Service.Casino
             DbSchema = Repository.GetTableAttr<MatchView>();
         }
 
-        public MatchView Single(object key, IDbTransaction trans = null)
+        public MatchView Single(object key)
         {
-            return Dapper.Query<MatchView, CasinoItem, HomeTeam, AwayTeam, Group, League, MatchView>(BuildSingleSql(),
+            return _dapper.Query<MatchView, CasinoItem, HomeTeam, AwayTeam, Group, League, MatchView>(BuildSingleSql(),
                         (x, c, h, a, g, l) =>
                         {
                             x.CasinoItem = c;
@@ -42,12 +45,12 @@ namespace Arsenal.Service.Casino
                             x.League = l;
 
                             return x;
-                        }, new { key }, trans, SplitOn).FirstOrDefault();
+                        }, new { key }, SplitOn).FirstOrDefault();
         }
 
-        public MatchView Single(Criteria criteria, IDbTransaction trans = null)
+        public MatchView Single(Criteria criteria)
         {
-            return Dapper.Query<MatchView, CasinoItem, HomeTeam, AwayTeam, Group, League, MatchView>(BuildSingleSql(criteria),
+            return _dapper.Query<MatchView, CasinoItem, HomeTeam, AwayTeam, Group, League, MatchView>(BuildSingleSql(criteria),
                         (x, c, h, a, g, l) =>
                         {
                             x.CasinoItem = c;
@@ -57,12 +60,12 @@ namespace Arsenal.Service.Casino
                             x.League = l;
 
                             return x;
-                        }, criteria?.Parameters, trans, SplitOn).FirstOrDefault();
+                        }, criteria?.Parameters, SplitOn).FirstOrDefault();
         }
 
-        public List<MatchView> All(IDbTransaction trans = null)
+        public List<MatchView> All()
         {
-            return Dapper.Query<MatchView, CasinoItem, HomeTeam, AwayTeam, Group, League, MatchView>(BuildAllSql(),
+            return _dapper.Query<MatchView, CasinoItem, HomeTeam, AwayTeam, Group, League, MatchView>(BuildAllSql(),
                         (x, c, h, a, g, l) =>
                         {
                             x.CasinoItem = c;
@@ -72,12 +75,12 @@ namespace Arsenal.Service.Casino
                             x.League = l;
 
                             return x;
-                        }, null, trans, SplitOn).ToList();
+                        }, null, SplitOn).ToList();
         }
 
-        public List<MatchView> All(IPager pager, string orderBy = null, IDbTransaction trans = null)
+        public List<MatchView> All(IPager pager, string orderBy = null)
         {
-            return Dapper.Query<MatchView, CasinoItem, HomeTeam, AwayTeam, Group, League, MatchView>(BuildAllSql(pager, orderBy),
+            return _dapper.Query<MatchView, CasinoItem, HomeTeam, AwayTeam, Group, League, MatchView>(BuildAllSql(pager, orderBy),
                         (x, c, h, a, g, l) =>
                         {
                             x.CasinoItem = c;
@@ -87,12 +90,12 @@ namespace Arsenal.Service.Casino
                             x.League = l;
 
                             return x;
-                        }, null, trans, SplitOn).ToList();
+                        }, null, SplitOn).ToList();
         }
 
-        public List<MatchView> Query(Criteria criteria, IDbTransaction trans = null)
+        public List<MatchView> Query(Criteria criteria)
         {
-            return Dapper.Query<MatchView, CasinoItem, HomeTeam, AwayTeam, Group, League, MatchView>(BuildQuerySql(criteria),
+            return _dapper.Query<MatchView, CasinoItem, HomeTeam, AwayTeam, Group, League, MatchView>(BuildQuerySql(criteria),
                         (x, c, h, a, g, l) =>
                         {
                             x.CasinoItem = c;
@@ -102,7 +105,7 @@ namespace Arsenal.Service.Casino
                             x.League = l;
 
                             return x;
-                        }, criteria?.Parameters, trans, SplitOn).ToList();
+                        }, criteria?.Parameters, SplitOn).ToList();
         }
     }
 }

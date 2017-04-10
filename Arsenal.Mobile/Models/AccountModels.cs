@@ -10,7 +10,7 @@ using System.Web.Security;
 using Arsenal.Service;
 using Arsenal.Service.Casino;
 using Arsenal.Service.Rest;
-using Arsenalcn.Core;
+using Arsenalcn.Core.Dapper;
 using Arsenalcn.Core.Logger;
 using Arsenalcn.Core.Utility;
 using Newtonsoft.Json.Linq;
@@ -208,15 +208,17 @@ namespace Arsenal.Mobile.Models
 
             #endregion
 
-            using (var trans = DapperHelper.MarsConnection.BeginTransaction())
+            using (var dapper = DapperHelper.GetInstance())
             {
+                var trans = dapper.BeginTransaction();
+
                 try
                 {
                     IRepository repo = new Repository();
 
                     object providerUserKey;
 
-                    repo.Insert<Membership>(this, out providerUserKey, trans);
+                    repo.Insert<Membership>(this, out providerUserKey);
 
                     var user = new User
                     {
@@ -233,7 +235,7 @@ namespace Arsenal.Mobile.Models
                     };
 
 
-                    repo.Insert(user, trans);
+                    repo.Insert(user);
 
                     trans.Commit();
 
@@ -268,8 +270,10 @@ namespace Arsenal.Mobile.Models
         public void CreateUser(string username, string email, string password, out object providerUserKey,
             out MembershipCreateStatus status)
         {
-            using (var trans = DapperHelper.MarsConnection.BeginTransaction())
+            using (var dapper = DapperHelper.GetInstance())
             {
+                var trans = dapper.BeginTransaction();
+
                 try
                 {
                     IRepository repo = new Repository();
@@ -311,7 +315,7 @@ namespace Arsenal.Mobile.Models
                     Mobile = string.Empty;
                     Email = email;
 
-                    repo.Insert<Membership>(this, out providerUserKey, trans);
+                    repo.Insert<Membership>(this, out providerUserKey);
 
                     #region Check user in the data store
 
@@ -354,7 +358,7 @@ namespace Arsenal.Mobile.Models
                     user.WeChatOpenID = null;
                     user.WeChatNickName = string.Empty;
 
-                    repo.Insert(user, trans);
+                    repo.Insert(user);
 
                     trans.Commit();
 
@@ -417,8 +421,10 @@ namespace Arsenal.Mobile.Models
                 throw new Exception("用户旧密码验证不正确");
             }
 
-            using (var trans = DapperHelper.MarsConnection.BeginTransaction())
+            using (var dapper = DapperHelper.GetInstance())
             {
+                var trans = dapper.BeginTransaction();
+
                 try
                 {
                     IRepository repo = new Repository();
@@ -426,7 +432,7 @@ namespace Arsenal.Mobile.Models
                     instance.Password = Encrypt.GetMd5Hash(newPassword);
                     instance.LastPasswordChangedDate = DateTime.Now;
 
-                    repo.Update(instance, trans);
+                    repo.Update(instance);
 
                     #region Sync Acn User Password
 
@@ -521,8 +527,6 @@ namespace Arsenal.Mobile.Models
 
         private static int UserGamblerSync(object providerUserKey)
         {
-            Contract.Requires(providerUserKey != null);
-
             object gamblerKey = null;
 
             var user = Single(providerUserKey);
@@ -588,8 +592,10 @@ namespace Arsenal.Mobile.Models
                     u = repo.Single<UserWeChat>(userGuid);
                 }
 
-                using (var trans = DapperHelper.MarsConnection.BeginTransaction())
+                using (var dapper = DapperHelper.GetInstance())
                 {
+                    var trans = dapper.BeginTransaction();
+
                     try
                     {
                         u.ID = userGuid;
@@ -612,7 +618,7 @@ namespace Arsenal.Mobile.Models
 
                         object key;
 
-                        repo.Save(u, out key, trans);
+                        repo.Save(u, out key);
 
                         // 更新普通用户
                         user.WeChatOpenID = openId;
@@ -636,12 +642,12 @@ namespace Arsenal.Mobile.Models
                                 u.Privilege = json["privilege"].Value<JArray>().ToString();
                                 u.UnionID = json["unionid"] != null ? json["unionid"].Value<string>() : string.Empty;
 
-                                repo.Update(u, trans);
+                                repo.Update(u);
                             }
                         }
 
                         // 更新user的openId, nickname
-                        repo.Update(user, trans);
+                        repo.Update(user);
 
                         trans.Commit();
 

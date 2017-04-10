@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data;
 using System.Web.Script.Serialization;
 
 namespace iArsenal.Service
@@ -48,7 +47,7 @@ namespace iArsenal.Service
             TravelOption = !string.IsNullOrEmpty(Remark) ? Remark.ToUpper().Split('|') : null;
         }
 
-        public void Place(Member m, IDbTransaction trans = null)
+        public void Place(Member m)
         {
             Size = $"{TravelFromDate.ToString("yyyy-MM-dd")}|{TravelToDate.ToString("yyyy-MM-dd")}";
 
@@ -56,7 +55,7 @@ namespace iArsenal.Service
 
             var product = Product.Cache.Load("iETPL");
 
-            base.Place(m, product, trans);
+            base.Place(m, product);
         }
 
         #region Members and Properties
@@ -104,7 +103,7 @@ namespace iArsenal.Service
             }
         }
 
-        public void Place(Member m, IDbTransaction trans = null)
+        public void Place(Member m)
         {
             Size = IsTicketOnly.ToString();
 
@@ -120,7 +119,7 @@ namespace iArsenal.Service
 
             var product = Product.Cache.Load("2015ATPL");
 
-            base.Place(m, product, trans);
+            base.Place(m, product);
         }
 
         #region Members and Properties
@@ -168,7 +167,7 @@ namespace iArsenal.Service
                 throw new Exception("The OrderItem is not the type of TravelPartner.");
         }
 
-        public override void Place(Member m, Product p, IDbTransaction trans = null)
+        public override void Place(Member m, Product p)
         {
             if (Partner != null)
             {
@@ -180,7 +179,7 @@ namespace iArsenal.Service
                 Remark = string.Empty;
             }
 
-            base.Place(m, p, trans);
+            base.Place(m, p);
         }
     }
 }

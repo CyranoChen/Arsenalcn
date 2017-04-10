@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Web;
 using Arsenalcn.Core;
+using Arsenalcn.Core.Dapper;
 using Arsenalcn.Core.Utility;
 using iArsenal.Service;
 

@@ -17,7 +17,7 @@ namespace iArsenal.Web
                 {
                     var rid = int.Parse(context.Request.QueryString["RegionID"]);
 
-                    var itemList = DictionaryItem.Cache.DictionaryItemList_Region;
+                    var itemList = DictionaryItem.Cache.DictionaryItemListRegion;
 
                     itemList = itemList.FindAll(item => item.ParentID.Equals(rid));
                     itemList.RemoveAll(
@@ -25,7 +25,7 @@ namespace iArsenal.Web
                             item.Name.Equals("市辖区") || item.Name.Equals("县") || item.Name.Equals("市") ||
                             item.Name.Contains("行政单位"));
 
-                    if (itemList != null)
+                    if (itemList.Count > 0)
                     {
                         var jsonSerializer = new JavaScriptSerializer();
                         responseText = jsonSerializer.Serialize(itemList);

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Arsenalcn.Core;
+using Arsenalcn.Core.Dapper;
 using CasinoMatch = Arsenal.Service.Casino.Match;
 
 namespace Arsenal.Service

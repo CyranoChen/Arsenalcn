@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Web.Script.Serialization;
-using Arsenalcn.Core;
+using Arsenalcn.Core.Dapper;
+using Arsenalcn.Core.Extension;
 using iArsenal.Service;
 
 namespace iArsenal.Web
@@ -107,8 +107,10 @@ namespace iArsenal.Web
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
-            using (var trans = DapperHelper.MarsConnection.BeginTransaction())
+            using (var dapper = DapperHelper.GetInstance())
             {
+                var trans = dapper.BeginTransaction();
+
                 try
                 {
                     if (string.IsNullOrEmpty(tbWishOrderItemListInfo.Text.Trim()))
@@ -140,13 +142,13 @@ namespace iArsenal.Web
                         throw new Exception("请填写订购纪念品信息");
                     }
 
-                    var m = _repo.Single<Member>(Mid, trans);
+                    var m = _repo.Single<Member>(Mid);
 
                     if (!string.IsNullOrEmpty(tbMemberWeChat.Text.Trim()))
                     {
                         m.WeChat = tbMemberWeChat.Text.Trim();
 
-                        _repo.Update(m, trans);
+                        _repo.Update(m);
                     }
                     else
                     {
@@ -159,7 +161,7 @@ namespace iArsenal.Web
 
                     if (OrderID > 0)
                     {
-                        o = _repo.Single<Order>(OrderID, trans);
+                        o = _repo.Single<Order>(OrderID);
                     }
 
                     if (!string.IsNullOrEmpty(tbOrderMobile.Text.Trim()))
@@ -179,7 +181,7 @@ namespace iArsenal.Web
 
                     if (OrderID > 0)
                     {
-                        _repo.Update(o, trans);
+                        _repo.Update(o);
 
                         // used by setting OrderItem foreign key
                         newID = OrderID;
@@ -202,7 +204,7 @@ namespace iArsenal.Web
 
                         //Get the Order ID after Insert new one
                         object key;
-                        _repo.Insert(o, out key, trans);
+                        _repo.Insert(o, out key);
                         newID = Convert.ToInt32(key);
                     }
 
@@ -211,7 +213,7 @@ namespace iArsenal.Web
                         //Remove Order Item of this Order
                         if (OrderID > 0 && o.ID.Equals(OrderID))
                         {
-                            _repo.Query<OrderItem>(x => x.OrderID == OrderID, trans).Delete(trans);
+                            _repo.Query<OrderItem>(x => x.OrderID == OrderID).Delete();
                         }
 
                         //New Order Item for each WishOrderItem
@@ -228,7 +230,7 @@ namespace iArsenal.Web
                                     oi.Remark = oi.Remark ?? string.Empty;
                                     oi.OrderID = newID;
 
-                                    oi.Place(m, p, trans);
+                                    oi.Place(m, p);
                                 }
                                 else
                                 {
@@ -251,7 +253,7 @@ namespace iArsenal.Web
                                 oi.Sale = null;
                                 oi.Remark = new JavaScriptSerializer().Serialize(oi);
 
-                                _repo.Insert(oi, trans);
+                                _repo.Insert(oi);
                             }
                         }
                     }

@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Data.SqlClient;
 using System.Web;
-using Arsenalcn.Core;
+using Arsenalcn.Core.Dapper;
 using iArsenal.Service;
 
 namespace iArsenal.Web
@@ -10,8 +9,10 @@ namespace iArsenal.Web
     {
         public void ProcessRequest(HttpContext context)
         {
-            using (var trans = DapperHelper.MarsConnection.BeginTransaction())
+            using (var dapper = DapperHelper.GetInstance())
             {
+                var trans = dapper.BeginTransaction();
+
                 try
                 {
                     var strOrderId = context.Request.QueryString["OrderID"];
@@ -22,7 +23,7 @@ namespace iArsenal.Web
                     if (!string.IsNullOrEmpty(strOrderId) && int.TryParse(strOrderId, out id))
                     {
                         // Get Current MatchTicket Order
-                        var oTicket = (OrdrTicket)Order.Select(id, trans);
+                        var oTicket = (OrdrTicket)Order.Select(id);
 
                         // Get Order MatchTicket Info
                         var oiMatchTicket = oTicket?.OIMatchTicket;
@@ -30,7 +31,7 @@ namespace iArsenal.Web
                         if (oiMatchTicket != null && oiMatchTicket.IsActive)
                         {
                             var mt = MatchTicket.Cache.Load(oiMatchTicket.MatchGuid);
-                            var mp = MemberPeriod.GetCurrentMemberPeriodByMemberID(oTicket.MemberID, 0, trans);
+                            var mp = MemberPeriod.GetCurrentMemberPeriodByMemberID(oTicket.MemberID, 0);
 
                             // isMemberCouldPurchase, should be false
                             if (!mt.CheckMemberCanPurchase(mp))
@@ -46,7 +47,7 @@ namespace iArsenal.Web
                                 #region isRenew
                                 var isRenew = false;
 
-                                var mpLast = MemberPeriod.GetCurrentMemberPeriodByMemberID(oTicket.MemberID, -1, trans);
+                                var mpLast = MemberPeriod.GetCurrentMemberPeriodByMemberID(oTicket.MemberID, -1);
 
                                 if (mpLast != null && mpLast.MemberClass.Equals(MemberClassType.Core))
                                 {
@@ -82,7 +83,7 @@ namespace iArsenal.Web
 
                                 //Get the Order ID after Insert new one
                                 object key;
-                                repo.Insert(o, out key, trans);
+                                repo.Insert(o, out key);
                                 var newId = Convert.ToInt32(key);
                                 #endregion
 
@@ -133,7 +134,7 @@ namespace iArsenal.Web
                                 }
                                 #endregion
 
-                                oi.Place(Member.Cache.Load(o.MemberID), p, trans);
+                                oi.Place(Member.Cache.Load(o.MemberID), p);
 
                                 #endregion
 
@@ -145,7 +146,7 @@ namespace iArsenal.Web
                         }
                     }
                 }
-                catch (Exception ex)
+                catch
                 {
                     context.Response.Redirect("iArsenalOrder.aspx", false);
                     context.ApplicationInstance.CompleteRequest();

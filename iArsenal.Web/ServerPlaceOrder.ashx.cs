@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Web;
 using System.Web.Script.Serialization;
-using Arsenalcn.Core;
+using Arsenalcn.Core.Dapper;
 using iArsenal.Service;
 
 namespace iArsenal.Web
@@ -15,10 +14,11 @@ namespace iArsenal.Web
         public override void ProcessRequest(HttpContext context)
         {
             var responseText = string.Empty;
+            var jsonSerializer = new JavaScriptSerializer();
 
-            using (var trans = DapperHelper.MarsConnection.BeginTransaction())
+            using (var dapper = DapperHelper.GetInstance())
             {
-                var jsonSerializer = new JavaScriptSerializer();
+                var trans = dapper.BeginTransaction();
 
                 try
                 {
@@ -75,7 +75,7 @@ namespace iArsenal.Web
 
                                     //Get the Order ID after Insert new one
                                     object key;
-                                    _repo.Insert(o, out key, trans);
+                                    _repo.Insert(o, out key);
                                     oid = Convert.ToInt32(key);
 
                                     // Place OrderItem
@@ -111,7 +111,7 @@ namespace iArsenal.Web
                                                     OrderID = oid
                                                 };
 
-                                                oi.Place(m, p, trans);
+                                                oi.Place(m, p);
                                             }
                                         }
                                     }

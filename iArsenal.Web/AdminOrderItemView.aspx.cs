@@ -1,5 +1,6 @@
 ﻿using System;
 using Arsenalcn.Core;
+using Arsenalcn.Core.Dapper;
 using iArsenal.Service;
 
 namespace iArsenal.Web

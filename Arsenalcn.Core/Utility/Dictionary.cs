@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Arsenalcn.Core.Dapper;
 
 namespace Arsenalcn.Core
 {
@@ -66,7 +67,7 @@ namespace Arsenalcn.Core
 
         public static class Cache
         {
-            public static List<DictionaryItem> DictionaryItemList_Region;
+            public static List<DictionaryItem> DictionaryItemListRegion;
 
             static Cache()
             {
@@ -82,12 +83,12 @@ namespace Arsenalcn.Core
             {
                 IRepository repo = new Repository();
 
-                DictionaryItemList_Region = repo.Query<DictionaryItem>(x => x.DictionaryID == 108);
+                DictionaryItemListRegion = repo.Query<DictionaryItem>(x => x.DictionaryID == 108);
             }
 
             public static DictionaryItem Load(int id)
             {
-                return DictionaryItemList_Region.Find(x => x.ID.Equals(id));
+                return DictionaryItemListRegion.Find(x => x.ID.Equals(id));
             }
         }
 

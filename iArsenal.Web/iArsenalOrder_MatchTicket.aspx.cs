@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Data.SqlClient;
-using Arsenalcn.Core;
+using Arsenalcn.Core.Dapper;
+using Arsenalcn.Core.Extension;
 using iArsenal.Service;
 
 namespace iArsenal.Web
@@ -264,8 +264,10 @@ namespace iArsenal.Web
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
-            using (var trans = DapperHelper.MarsConnection.BeginTransaction())
+            using (var dapper = DapperHelper.GetInstance())
             {
+                var trans = dapper.BeginTransaction();
+
                 try
                 {
                     if (MatchGuid.Equals(Guid.Empty))
@@ -281,7 +283,7 @@ namespace iArsenal.Web
                         throw new Exception("无相关比赛信息，请联系管理员");
                     }
 
-                    var m = _repo.Single<Member>(Mid, trans);
+                    var m = _repo.Single<Member>(Mid);
 
                     // Update Member Information
 
@@ -354,7 +356,7 @@ namespace iArsenal.Web
 
                     //m.MemberType = MemberType.Match;
 
-                    _repo.Update(m, trans);
+                    _repo.Update(m);
 
                     // New Order
                     var o = new Order();
@@ -362,7 +364,7 @@ namespace iArsenal.Web
 
                     if (OrderID > 0)
                     {
-                        o = _repo.Single<Order>(OrderID, trans);
+                        o = _repo.Single<Order>(OrderID);
                     }
 
                     o.Mobile = m.Mobile;
@@ -372,7 +374,7 @@ namespace iArsenal.Web
 
                     if (OrderID > 0)
                     {
-                        _repo.Update(o, trans);
+                        _repo.Update(o);
 
                         // used by setting OrderItem foreign key
                         newID = OrderID;
@@ -396,7 +398,7 @@ namespace iArsenal.Web
 
                         //Get the Order ID after Insert new one
                         object key;
-                        _repo.Insert(o, out key, trans);
+                        _repo.Insert(o, out key);
                         newID = Convert.ToInt32(key);
                     }
 
@@ -411,7 +413,7 @@ namespace iArsenal.Web
                     //Remove Order Item of this Order
                     if (OrderID > 0 && o.ID.Equals(OrderID))
                     {
-                        _repo.Query<OrderItem>(x => x.OrderID == OrderID, trans).Delete(trans);
+                        _repo.Query<OrderItem>(x => x.OrderID == OrderID).Delete();
                     }
 
                     // Genernate Travel Date
@@ -433,7 +435,7 @@ namespace iArsenal.Web
                     oi.Quantity = 1;
                     oi.Sale = null;
 
-                    oi.Place(m, p, trans);
+                    oi.Place(m, p);
 
                     trans.Commit();
 

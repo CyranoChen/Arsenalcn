@@ -1,5 +1,6 @@
 ﻿using System;
 using Arsenalcn.Core;
+using Arsenalcn.Core.Dapper;
 using Arsenalcn.Core.Logger;
 
 namespace Arsenal.Web

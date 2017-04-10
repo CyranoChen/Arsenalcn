@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Linq;
 using Arsenalcn.Core;
+using Arsenalcn.Core.Dapper;
 using iArsenal.Service;
 
 namespace iArsenal.Web
@@ -305,13 +306,15 @@ namespace iArsenal.Web
 
         protected void btnGenMemberPeriod_Click(object sender, EventArgs e)
         {
-            using (var trans = DapperHelper.MarsConnection.BeginTransaction())
+            using (var dapper = DapperHelper.GetInstance())
             {
+                var trans = dapper.BeginTransaction();
+
                 try
                 {
                     if (OrderID > 0)
                     {
-                        var o = (OrdrMembership)Order.Select(OrderID, trans);
+                        var o = (OrdrMembership)Order.Select(OrderID);
 
                         if (ConfigGlobal.IsPluginAdmin(Uid) && o != null && o.Status.Equals(OrderStatusType.Confirmed))
                         {
@@ -340,7 +343,7 @@ namespace iArsenal.Web
 
                             // Get all Member Period of current season
                             var list = _repo.Query<MemberPeriod>(x =>
-                                x.StartDate <= DateTime.Now && x.EndDate >= DateTime.Now, trans)
+                                x.StartDate <= DateTime.Now && x.EndDate >= DateTime.Now)
                                 .FindAll(x => x.IsActive);
 
                             var updateFlag = false;
@@ -391,7 +394,7 @@ namespace iArsenal.Web
 
                                     mpCore.OrderID = OrderID;
 
-                                    _repo.Update(mpCore, trans);
+                                    _repo.Update(mpCore);
                                 }
                             }
                             else
@@ -423,14 +426,14 @@ namespace iArsenal.Web
                                 mp.Description = $"Season {oiMembership.Season}";
                                 mp.Remark = string.Empty;
 
-                                _repo.Insert(mp, trans);
+                                _repo.Insert(mp);
                             }
 
                             // Update Order Status
                             o.Status = OrderStatusType.Delivered;
                             o.UpdateTime = DateTime.Now;
 
-                            _repo.Update(o, trans);
+                            _repo.Update(o);
 
                             trans.Commit();
 

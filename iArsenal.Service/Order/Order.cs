@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using Arsenalcn.Core;
+using Arsenalcn.Core.Dapper;
 using AutoMapper;
 
 namespace iArsenal.Service
@@ -179,14 +180,14 @@ namespace iArsenal.Service
 
             Price = price + Postage;
 
-            repo.Update(this, trans);
+            repo.Update(this);
         }
 
-        public static Order Select(int key, IDbTransaction trans = null)
+        public static Order Select(int key)
         {
             IRepository repo = new Repository();
 
-            var o = repo.Single<Order>(key, trans);
+            var o = repo.Single<Order>(key);
 
             if (o == null) return null;
 
@@ -194,27 +195,27 @@ namespace iArsenal.Service
             {
                 case OrderBaseType.ReplicaKit:
                     var mapperReplicaKit = new MapperConfiguration(cfg =>
-                        cfg.CreateMap<Order, OrdrReplicaKit>().AfterMap((s, d) => d.Init(trans))).CreateMapper();
+                        cfg.CreateMap<Order, OrdrReplicaKit>().AfterMap((s, d) => d.Init())).CreateMapper();
                     return mapperReplicaKit.Map<OrdrReplicaKit>(o);
                 case OrderBaseType.Printing:
                     var mapperPrinting = new MapperConfiguration(cfg =>
-                        cfg.CreateMap<Order, OrdrPrinting>().AfterMap((s, d) => d.Init(trans))).CreateMapper();
+                        cfg.CreateMap<Order, OrdrPrinting>().AfterMap((s, d) => d.Init())).CreateMapper();
                     return mapperPrinting.Map<OrdrPrinting>(o);
                 case OrderBaseType.Ticket:
                     var mapperTicket = new MapperConfiguration(cfg =>
-                        cfg.CreateMap<Order, OrdrTicket>().AfterMap((s, d) => d.Init(trans))).CreateMapper();
+                        cfg.CreateMap<Order, OrdrTicket>().AfterMap((s, d) => d.Init())).CreateMapper();
                     return mapperTicket.Map<OrdrTicket>(o);
                 case OrderBaseType.Travel:
                     var mapperTravel = new MapperConfiguration(cfg =>
-                        cfg.CreateMap<Order, OrdrTravel>().AfterMap((s, d) => d.Init(trans))).CreateMapper();
+                        cfg.CreateMap<Order, OrdrTravel>().AfterMap((s, d) => d.Init())).CreateMapper();
                     return mapperTravel.Map<OrdrTravel>(o);
                 case OrderBaseType.Wish:
                     var mapperWish = new MapperConfiguration(cfg =>
-                        cfg.CreateMap<Order, OrdrWish>().AfterMap((s, d) => d.Init(trans))).CreateMapper();
+                        cfg.CreateMap<Order, OrdrWish>().AfterMap((s, d) => d.Init())).CreateMapper();
                     return mapperWish.Map<OrdrWish>(o);
                 case OrderBaseType.Membership:
                     var mapperMembership = new MapperConfiguration(cfg =>
-                        cfg.CreateMap<Order, OrdrMembership>().AfterMap((s, d) => d.Init(trans))).CreateMapper();
+                        cfg.CreateMap<Order, OrdrMembership>().AfterMap((s, d) => d.Init())).CreateMapper();
                     return mapperMembership.Map<OrdrMembership>(o);
                 default:
                     return o;

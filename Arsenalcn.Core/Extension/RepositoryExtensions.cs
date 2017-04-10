@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using Arsenalcn.Core.Dapper;
 using Dapper;
 
-namespace Arsenalcn.Core
+namespace Arsenalcn.Core.Extension
 {
     public static class RepositoryExtensions
     {
@@ -46,7 +46,7 @@ namespace Arsenalcn.Core
         }
 
 
-        public static int Insert<T>(this IEnumerable<T> source, IDbTransaction trans = null) where T : class, IEntity
+        public static int Insert<T>(this IEnumerable<T> source) where T : class, IEntity
         {
             var list = source as IList<T> ?? source.ToList();
 
@@ -56,14 +56,14 @@ namespace Arsenalcn.Core
 
                 foreach (var instance in list)
                 {
-                    repo.Insert((IDao)instance, trans);
+                    repo.Insert((IDao)instance);
                 }
             }
 
             return list.Count;
         }
 
-        public static int Update<T>(this IEnumerable<T> source, IDbTransaction trans = null) where T : class, IEntity
+        public static int Update<T>(this IEnumerable<T> source) where T : class, IEntity
         {
             var list = source as IList<T> ?? source.ToList();
 
@@ -73,14 +73,14 @@ namespace Arsenalcn.Core
 
                 foreach (var instance in list)
                 {
-                    repo.Update(instance, trans);
+                    repo.Update(instance);
                 }
             }
 
             return list.Count;
         }
 
-        public static int Delete<T>(this IEnumerable<T> source, IDbTransaction trans = null) where T : class, IEntity
+        public static int Delete<T>(this IEnumerable<T> source) where T : class, IEntity
         {
             var list = source as IList<T> ?? source.ToList();
 
@@ -90,7 +90,7 @@ namespace Arsenalcn.Core
 
                 foreach (var instance in list)
                 {
-                    repo.Delete(instance, trans);
+                    repo.Delete(instance);
                 }
             }
 

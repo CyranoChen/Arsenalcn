@@ -5,6 +5,8 @@ using System.Reflection;
 using System.Threading;
 using Arsenal.Service;
 using Arsenalcn.Core;
+using Arsenalcn.Core.Dapper;
+using Arsenalcn.Core.Extension;
 using Arsenalcn.Core.Logger;
 using Arsenalcn.Core.Scheduler;
 using AutoMapper;

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Arsenalcn.Core;
+using Arsenalcn.Core.Dapper;
+using Arsenalcn.Core.Extension;
 using AutoMapper;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Reflection;
+using Arsenalcn.Core.Dapper;
 
 namespace Arsenalcn.Core
 {
@@ -24,7 +25,7 @@ namespace Arsenalcn.Core
             ConfigSystemInfo = (ConfigSystem)Enum.Parse(typeof(ConfigSystem), ConfigSystem);
         }
 
-        public void Save(IDbTransaction trans = null)
+        public void Save()
         {
             IRepository repo = new Repository();
 
@@ -33,7 +34,7 @@ namespace Arsenalcn.Core
                 ConfigSystem = ConfigSystemInfo.ToString();
             }
 
-            repo.Save(this, x => x.ConfigSystem == ConfigSystem && x.ConfigKey == ConfigKey, trans);
+            repo.Save(this, x => x.ConfigSystem == ConfigSystem && x.ConfigKey == ConfigKey);
         }
 
         public static void UpdateAssemblyInfo(Assembly assembly, ConfigSystem configSystem)

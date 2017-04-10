@@ -3,24 +3,25 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using Arsenalcn.Core;
+using Arsenalcn.Core.Dapper;
 
 namespace Arsenal.Service
 {
     [DbSchema("Arsenal_RelationGroupTeam", Sort = "GroupGuid, PositionNo")]
     public class RelationGroupTeam : Dao
     {
-        public void Update(IDbTransaction trans = null)
+        public void Update()
         {
             IRepository repo = new Repository();
 
-            repo.Update(this, x => x.GroupGuid == GroupGuid && x.TeamGuid == TeamGuid, trans);
+            repo.Update(this, x => x.GroupGuid == GroupGuid && x.TeamGuid == TeamGuid);
         }
 
-        public void Delete(IDbTransaction trans = null)
+        public void Delete()
         {
             IRepository repo = new Repository();
 
-            repo.Delete<RelationGroupTeam>(x => x.GroupGuid == GroupGuid && x.TeamGuid == TeamGuid, trans);
+            repo.Delete<RelationGroupTeam>(x => x.GroupGuid == GroupGuid && x.TeamGuid == TeamGuid);
         }
 
         public void Statistic(IEnumerable<Casino.Match> matches)
@@ -109,7 +110,7 @@ namespace Arsenal.Service
                      (TeamGuid NOT IN (SELECT TeamGuid FROM {Repository.GetTableAttr<Team>().Name})) 
                      OR (GroupGuid NOT IN (SELECT GroupGuid FROM {Repository.GetTableAttr<Group>().Name}))";
 
-            IDapperHelper dapper = new DapperHelper();
+            IDapperHelper dapper = DapperHelper.GetInstance();
 
             dapper.Execute(sql, trans);
         }

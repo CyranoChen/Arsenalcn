@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Arsenalcn.Core.Extension;
 
 namespace Arsenalcn.Core
 {

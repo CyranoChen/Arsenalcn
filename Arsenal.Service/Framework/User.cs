@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Data.SqlClient;
 using Arsenalcn.Core;
+using Arsenalcn.Core.Dapper;
 using Newtonsoft.Json.Linq;
 
 namespace Arsenal.Service
@@ -12,8 +12,10 @@ namespace Arsenal.Service
         {
             if (AcnID != null)
             {
-                using (var trans = DapperHelper.MarsConnection.BeginTransaction())
+                using (var dapper = DapperHelper.GetInstance())
                 {
+                    var trans = dapper.BeginTransaction();
+
                     try
                     {
                         IRepository repo = new Repository();
@@ -31,7 +33,7 @@ namespace Arsenal.Service
                                 MemberID = json["ID"].Value<int>();
                                 MemberName = json["Name"].Value<string>();
 
-                                repo.Update(this, trans);
+                                repo.Update(this);
                             }
 
                             var mem = repo.Single<Membership>(ID);
@@ -42,7 +44,7 @@ namespace Arsenal.Service
                                 mem.Mobile = json["Mobile"].Value<string>();
                                 mem.Email = json["Email"].Value<string>();
 
-                                repo.Update(mem, trans);
+                                repo.Update(mem);
                             }
 
                             trans.Commit();

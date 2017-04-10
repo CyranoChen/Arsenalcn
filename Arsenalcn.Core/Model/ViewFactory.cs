@@ -1,8 +1,11 @@
-﻿namespace Arsenalcn.Core
+﻿using Arsenalcn.Core.Dapper;
+
+namespace Arsenalcn.Core
 {
     public abstract class ViewerFactory
     {
-        protected IDapperHelper Dapper { get; set; }
+        private readonly IDapperHelper _dapper = DapperHelper.GetInstance();
+
         protected string ViewerSql { get; set; }
         protected string SplitOn { get; set; }
         protected DbSchema DbSchema { get; set; }
@@ -36,7 +39,7 @@
             // Get TotalCount First
             var countSql = $"SELECT COUNT(*) AS TotalCount FROM ({ViewerSql}) AS {DbSchema.Name}";
 
-            pager.SetTotalCount(new DapperHelper().ExecuteScalar<int>(countSql));
+            pager.SetTotalCount(_dapper.ExecuteScalar<int>(countSql));
 
             // Get Query Result
             var innerSql = $"SELECT ROW_NUMBER() OVER({strOrderBy}) AS RowNo, * FROM ({ViewerSql}) AS {DbSchema.Name}";
@@ -62,7 +65,7 @@
                 // Get TotalCount First
                 var countSql = $"SELECT COUNT(*) AS TotalCount FROM ({ViewerSql}) AS {DbSchema.Name} {strWhere}";
 
-                criteria.SetTotalCount(new DapperHelper().ExecuteScalar<int>(countSql, criteria.Parameters));
+                criteria.SetTotalCount(_dapper.ExecuteScalar<int>(countSql, criteria.Parameters));
 
                 // Get Query Result
                 var innerSql =

@@ -2,6 +2,7 @@
 using System.Reflection;
 using System.Threading;
 using Arsenalcn.Core;
+using Arsenalcn.Core.Dapper;
 using Arsenalcn.Core.Logger;
 using Arsenalcn.Core.Scheduler;
 using ArsenalMatch = Arsenal.Service.Match;

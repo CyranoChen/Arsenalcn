@@ -7,6 +7,7 @@ using Arsenal.Mobile.Models;
 using Arsenal.Service;
 using Arsenal.Service.Rest;
 using Arsenalcn.Core;
+using Arsenalcn.Core.Dapper;
 using Arsenalcn.Core.Utility;
 using AutoMapper;
 using Newtonsoft.Json.Linq;

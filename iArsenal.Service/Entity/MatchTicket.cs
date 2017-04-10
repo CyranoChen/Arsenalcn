@@ -4,6 +4,8 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using Arsenalcn.Core;
+using Arsenalcn.Core.Dapper;
+using Arsenalcn.Core.Extension;
 
 namespace iArsenal.Service
 {
@@ -92,7 +94,7 @@ namespace iArsenal.Service
         {
             var sql = $"SELECT * FROM {Repository.GetTableAttr<MatchTicket>().Name} WHERE MatchGuid = @key";
 
-            IDapperHelper dapper = new DapperHelper();
+            var dapper = DapperHelper.GetInstance();
 
             var dt = dapper.ExecuteDataTable(sql, new { key = ID });
 
@@ -105,7 +107,7 @@ namespace iArsenal.Service
 
             //SqlParameter[] para = { new SqlParameter("@key", ID) };
 
-            IDapperHelper dapper = new DapperHelper();
+            var dapper = DapperHelper.GetInstance();
 
             return dapper.ExecuteScalar<int>(sql, new { key = ID }) > 0;
         }
@@ -121,7 +123,7 @@ namespace iArsenal.Service
                 var attr = Repository.GetTableAttr<MatchTicket>();
                 var sql = $"SELECT * FROM {attr.Name} ORDER BY {attr.Sort}";
 
-                IDapperHelper dapper = new DapperHelper();
+                var dapper = DapperHelper.GetInstance();
 
                 var dt = dapper.ExecuteDataTable(sql);
 
@@ -154,7 +156,7 @@ namespace iArsenal.Service
             return null;
         }
 
-        public void Create(IDbTransaction trans = null)
+        public void Create()
         {
             var sql =
                 @"INSERT INTO {0} (MatchGuid, ProductCode, Deadline, WaitingDeadline, AllowMemberClass, TicketCount, IsActive, Remark) 
@@ -175,12 +177,12 @@ namespace iArsenal.Service
                 new SqlParameter("@remark", Remark)
             };
 
-            IDapperHelper dapper = new DapperHelper();
+            var dapper = DapperHelper.GetInstance();
 
-            dapper.Execute(sql, para.ToDapperParameters(), trans);
+            dapper.Execute(sql, para.ToDapperParameters());
         }
 
-        public void Update(IDbTransaction trans = null)
+        public void Update()
         {
             var sql =
                 @"UPDATE {0} SET ProductCode = @productCode, Deadline = @deadline, WaitingDeadline = @waitingDeadline, 
@@ -201,18 +203,18 @@ namespace iArsenal.Service
                 new SqlParameter("@remark", Remark)
             };
 
-            IDapperHelper dapper = new DapperHelper();
+            var dapper = DapperHelper.GetInstance();
 
-            dapper.Execute(sql, para.ToDapperParameters(), trans);
+            dapper.Execute(sql, para.ToDapperParameters());
         }
 
-        public void Delete(IDbTransaction trans = null)
+        public void Delete()
         {
             var sql = $"DELETE FROM {Repository.GetTableAttr<MatchTicket>().Name} WHERE MatchGuid = @key";
 
-            IDapperHelper dapper = new DapperHelper();
+            var dapper = DapperHelper.GetInstance();
 
-            dapper.Execute(sql, new { key = ID }, trans);
+            dapper.Execute(sql, new { key = ID });
         }
 
         public static void MatchTicketCountStatistics()

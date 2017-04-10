@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using Arsenalcn.Core;
+using Arsenalcn.Core.Dapper;
 
 namespace Arsenal.Service.Casino
 {
@@ -13,7 +14,7 @@ namespace Arsenal.Service.Casino
                 $@"SELECT ISNULL(SUM(BetAmount), 0) - ISNULL(SUM(Earning), 0) AS TotalEarning 
                    FROM {Repository.GetTableAttr<Bet>().Name} WHERE CasinoItemGuid = @key";
 
-            IDapperHelper dapper = new DapperHelper();
+            var dapper = DapperHelper.GetInstance();
 
             Earning = dapper.ExecuteScalar<double>(sql, new { key = ID });
 
@@ -31,7 +32,7 @@ namespace Arsenal.Service.Casino
                 Repository.GetTableAttr<CasinoItem>().Name,
                 Repository.GetTableAttr<Match>().Name);
 
-            IDapperHelper dapper = new DapperHelper();
+            var dapper = DapperHelper.GetInstance();
 
             dapper.Execute(sql, trans);
         }

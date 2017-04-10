@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Reflection;
 using System.Threading;
+using Arsenalcn.Core.Dapper;
 using Arsenalcn.Core.Logger;
 
 namespace Arsenalcn.Core.Scheduler

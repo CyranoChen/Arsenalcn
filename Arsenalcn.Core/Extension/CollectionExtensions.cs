@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Arsenalcn.Core.Dapper;
 
-namespace Arsenalcn.Core
+namespace Arsenalcn.Core.Extension
 {
     public static class CollectionExtensions
     {

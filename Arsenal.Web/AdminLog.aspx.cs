@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Web.UI.WebControls;
 using Arsenal.Web.Control;
 using Arsenalcn.Core;
+using Arsenalcn.Core.Dapper;
 using Arsenalcn.Core.Logger;
 
 namespace Arsenal.Web

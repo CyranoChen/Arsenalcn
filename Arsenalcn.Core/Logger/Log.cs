@@ -3,7 +3,8 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Reflection;
 using System.Threading;
-using Dapper;
+using Arsenalcn.Core.Dapper;
+using Arsenalcn.Core.Extension;
 
 namespace Arsenalcn.Core.Logger
 {
@@ -36,7 +37,8 @@ namespace Arsenalcn.Core.Logger
             };
 
             // no logging method
-            DapperHelper.MarsConnection.Execute(sql, para.ToDapperParameters(), trans);
+            var dapper = DapperHelper.GetInstance();
+            dapper.Execute(sql, para.ToDapperParameters(), null, ignoreLog: true);
         }
 
         protected void Logging(string logger, DateTime createTime, LogLevel level, string message,
@@ -67,7 +69,8 @@ namespace Arsenalcn.Core.Logger
             };
 
             // no logging method
-            DapperHelper.MarsConnection.Execute(sql, para.ToDapperParameters(), trans);
+            var dapper = DapperHelper.GetInstance();
+            dapper.Execute(sql, para.ToDapperParameters(), null, ignoreLog: true);
         }
 
         public static void Clean()

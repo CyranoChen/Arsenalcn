@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Data.SqlClient;
 using Arsenalcn.Core;
+using Arsenalcn.Core.Dapper;
+using Arsenalcn.Core.Extension;
 using iArsenal.Service;
 
 namespace iArsenal.Web
@@ -355,11 +357,13 @@ namespace iArsenal.Web
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
-            using (var trans = DapperHelper.MarsConnection.BeginTransaction())
+            using (var dapper = DapperHelper.GetInstance())
             {
+                var trans = dapper.BeginTransaction();
+
                 try
                 {
-                    var m = _repo.Single<Member>(Mid, trans);
+                    var m = _repo.Single<Member>(Mid);
 
                     // Update Member Information
 
@@ -432,7 +436,7 @@ namespace iArsenal.Web
 
                     //m.MemberType = MemberType.Match;
 
-                    _repo.Update(m, trans);
+                    _repo.Update(m);
 
                     // New Order
                     var o = new Order();
@@ -440,7 +444,7 @@ namespace iArsenal.Web
 
                     if (OrderID > 0)
                     {
-                        o = _repo.Single<Order>(OrderID, trans);
+                        o = _repo.Single<Order>(OrderID);
                     }
 
                     o.Mobile = m.Mobile;
@@ -450,7 +454,7 @@ namespace iArsenal.Web
 
                     if (OrderID > 0)
                     {
-                        _repo.Update(o, trans);
+                        _repo.Update(o);
 
                         // used by setting OrderItem foreign key
                         newId = OrderID;
@@ -474,7 +478,7 @@ namespace iArsenal.Web
 
                         //Get the Order ID after Insert new one
                         object key;
-                        _repo.Insert(o, out key, trans);
+                        _repo.Insert(o, out key);
                         newId = Convert.ToInt32(key);
                     }
 
@@ -486,7 +490,7 @@ namespace iArsenal.Web
                         //Remove Order Item of this Order
                         if (OrderID > 0 && o.ID.Equals(OrderID))
                         {
-                            _repo.Query<OrderItem>(x => x.OrderID == OrderID, trans).Delete(trans);
+                            _repo.Query<OrderItem>(x => x.OrderID == OrderID).Delete();
                         }
 
                         var currProductType = (ProductType)Enum.Parse(typeof(ProductType), tbMemberClass.Text.Trim());
@@ -534,7 +538,7 @@ namespace iArsenal.Web
                             oi.Sale = null;
                         }
 
-                        oi.Place(m, pMembership, trans);
+                        oi.Place(m, pMembership);
                     }
                     else
                     {

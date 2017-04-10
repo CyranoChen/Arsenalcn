@@ -4,6 +4,7 @@ using System.Threading;
 using Arsenal.Service;
 using Arsenal.Service.Casino;
 using Arsenalcn.Core;
+using Arsenalcn.Core.Dapper;
 using Arsenalcn.Core.Logger;
 using Arsenalcn.Core.Scheduler;
 

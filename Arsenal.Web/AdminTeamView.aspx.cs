@@ -2,6 +2,7 @@
 using System.Web.UI.WebControls;
 using Arsenal.Service;
 using Arsenalcn.Core;
+using Arsenalcn.Core.Dapper;
 
 namespace Arsenal.Web
 {

@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using Arsenalcn.Core;
+using Arsenalcn.Core.Dapper;
+using Arsenalcn.Core.Extension;
 using iArsenal.Service;
 
 namespace iArsenal.Web
@@ -14,11 +15,11 @@ namespace iArsenal.Web
         {
             get
             {
-                int _orderID;
+                int orderID;
                 if (!string.IsNullOrEmpty(Request.QueryString["OrderID"]) &&
-                    int.TryParse(Request.QueryString["OrderID"], out _orderID))
+                    int.TryParse(Request.QueryString["OrderID"], out orderID))
                 {
-                    return _orderID;
+                    return orderID;
                 }
                 return int.MinValue;
             }
@@ -124,7 +125,7 @@ namespace iArsenal.Web
                     var listPartner = o.OITravelPartnerList.FindAll(oi =>
                         oi.IsActive && !string.IsNullOrEmpty(oi.Remark));
 
-                    if (oiTP != null && oiTP.IsActive)
+                    if (oiTP.IsActive)
                     {
                         // Set Order Travel Date
                         tbFromDate.Text = oiTP.TravelFromDate.ToString("yyyy-MM-dd");
@@ -149,7 +150,7 @@ namespace iArsenal.Web
                         throw new Exception("此订单未填写观赛信息");
                     }
 
-                    if (listPartner != null && listPartner.Count > 0)
+                    if (listPartner.Count > 0)
                     {
                         cbPartner.Checked = true;
 
@@ -234,23 +235,25 @@ namespace iArsenal.Web
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
-            using (var trans = DapperHelper.MarsConnection.BeginTransaction())
+            using (var dapper = DapperHelper.GetInstance())
             {
+                var trans = dapper.BeginTransaction();
+
                 try
                 {
-                    var m = repo.Single<Member>(Mid, trans);
+                    var m = repo.Single<Member>(Mid);
 
                     // Update Member Information
 
                     #region Get Member Nation & Region
 
-                    var _nation = ddlNation.SelectedValue;
+                    var nation = ddlNation.SelectedValue;
 
-                    if (!string.IsNullOrEmpty(_nation))
+                    if (!string.IsNullOrEmpty(nation))
                     {
-                        if (_nation.Equals("中国"))
+                        if (nation.Equals("中国"))
                         {
-                            m.Nation = _nation;
+                            m.Nation = nation;
                             if (!string.IsNullOrEmpty(tbRegion1.Text.Trim()))
                             {
                                 if (!string.IsNullOrEmpty(tbRegion2.Text.Trim()))
@@ -274,7 +277,7 @@ namespace iArsenal.Web
                         }
                         else
                         {
-                            m.Nation = _nation;
+                            m.Nation = nation;
                             m.Region = string.Empty;
                         }
                     }
@@ -318,15 +321,15 @@ namespace iArsenal.Web
 
                     //m.MemberType = MemberType.Match;
 
-                    repo.Update(m, trans);
+                    repo.Update(m);
 
                     // New Order
                     var o = new Order();
-                    var _newID = int.MinValue;
+                    int newID;
 
                     if (OrderID > 0)
                     {
-                        o = repo.Single<Order>(OrderID, trans);
+                        o = repo.Single<Order>(OrderID);
                     }
 
                     o.Mobile = m.Mobile;
@@ -336,10 +339,10 @@ namespace iArsenal.Web
 
                     if (OrderID > 0)
                     {
-                        repo.Update(o, trans);
+                        repo.Update(o);
 
                         // used by setting OrderItem foreign key
-                        _newID = OrderID;
+                        newID = OrderID;
                     }
                     else
                     {
@@ -359,15 +362,15 @@ namespace iArsenal.Web
                         o.Remark = string.Empty;
 
                         //Get the Order ID after Insert new one
-                        object _key = null;
-                        repo.Insert(o, out _key, trans);
-                        _newID = Convert.ToInt32(_key);
+                        object key;
+                        repo.Insert(o, out key);
+                        newID = Convert.ToInt32(key);
                     }
 
                     //Remove Order Item of this Order
                     if (OrderID > 0 && o.ID.Equals(OrderID))
                     {
-                        var count = repo.Query<OrderItem>(x => x.OrderID == OrderID, trans).Delete(trans);
+                        var count = repo.Query<OrderItem>(x => x.OrderID == OrderID).Delete();
                     }
 
                     //New Order Items
@@ -417,12 +420,12 @@ namespace iArsenal.Web
 
                         oiPartner.Partner = pa;
 
-                        oiPartner.OrderID = _newID;
+                        oiPartner.OrderID = newID;
                         oiPartner.Size = string.Empty;
                         oiPartner.Quantity = 1;
                         oiPartner.Sale = null;
 
-                        oiPartner.Place(m, pETPA, trans);
+                        oiPartner.Place(m, pETPA);
                     }
 
                     // Generate OrderItemTravelPlan
@@ -454,17 +457,17 @@ namespace iArsenal.Web
 
                     oiPlan.TravelOption = listTravelOption.Count > 0 ? listTravelOption.ToArray() : null;
 
-                    oiPlan.OrderID = _newID;
+                    oiPlan.OrderID = newID;
                     oiPlan.Quantity = 1;
                     oiPlan.Sale = null;
 
-                    oiPlan.Place(m, trans);
+                    oiPlan.Place(m);
 
                     trans.Commit();
 
                     ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
                         string.Format("alert('订单({0})保存成功');window.location.href = 'ServerOrderView.ashx?OrderID={0}'",
-                            _newID), true);
+                            newID), true);
                 }
                 catch (Exception ex)
                 {

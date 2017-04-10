@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using Arsenalcn.Core;
+using Arsenalcn.Core.Dapper;
 
 namespace iArsenal.Service
 {
@@ -16,7 +17,7 @@ namespace iArsenal.Service
             #endregion
         }
 
-        public virtual void Place(Member m, Product p, IDbTransaction trans = null)
+        public virtual void Place(Member m, Product p)
         {
             MemberID = m.ID;
             MemberName = m.Name;
@@ -35,7 +36,8 @@ namespace iArsenal.Service
             //oi.Remark = remark;
 
             IRepository repo = new Repository();
-            repo.Insert(this, trans);
+
+            repo.Insert(this);
         }
 
         #region Members and Properties

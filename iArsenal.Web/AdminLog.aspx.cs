@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Web.UI.WebControls;
 using Arsenalcn.Core;
+using Arsenalcn.Core.Dapper;
 using Arsenalcn.Core.Logger;
 using iArsenal.Web.Control;
 

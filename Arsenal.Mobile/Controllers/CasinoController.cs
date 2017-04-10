@@ -7,6 +7,8 @@ using Arsenal.Mobile.Models.Casino;
 using Arsenal.Service;
 using Arsenal.Service.Casino;
 using Arsenalcn.Core;
+using Arsenalcn.Core.Dapper;
+using Arsenalcn.Core.Extension;
 using AutoMapper;
 using IndexDto = Arsenal.Mobile.Models.Casino.IndexDto;
 using Match = Arsenal.Service.Casino.Match;

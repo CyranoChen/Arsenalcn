@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Arsenalcn.Core;
+using Arsenalcn.Core.Dapper;
 
 namespace Arsenal.Service.Casino
 {
@@ -38,7 +39,7 @@ namespace Arsenal.Service.Casino
 
             //SqlParameter[] para = { new SqlParameter("@key", key), new SqlParameter("@leagueGuid", leagueGuid) };
 
-            IDapperHelper dapper = new DapperHelper();
+            var dapper = DapperHelper.GetInstance();
 
             var instance = dapper.Query<GamblerDW>(sql, new { key, leagueGuid }).FirstOrDefault();
 
@@ -71,7 +72,7 @@ namespace Arsenal.Service.Casino
 
             //SqlParameter[] para = { new SqlParameter("@leagueGuid", leagueGuid) };
 
-            IDapperHelper dapper = new DapperHelper();
+            var dapper = DapperHelper.GetInstance();
 
             var list = dapper.Query<GamblerDW>(sql, new { leagueGuid }).ToList();
 
@@ -235,7 +236,7 @@ namespace Arsenal.Service.Casino
 
             //SqlParameter[] para = { new SqlParameter("@monthStart", monthStart), new SqlParameter("@monthEnd", monthEnd) };
 
-            IDapperHelper dapper = new DapperHelper();
+            var dapper = DapperHelper.GetInstance();
 
             var instance = dapper.Query<GamblerDW>(sql, new { monthStart, monthEnd }).FirstOrDefault();
 

@@ -2,6 +2,7 @@
 using System.Web.UI.WebControls;
 using Arsenal.Service;
 using Arsenalcn.Core;
+using Arsenalcn.Core.Dapper;
 
 namespace Arsenal.Web
 {
@@ -50,7 +51,7 @@ namespace Arsenal.Web
 
                 #region Bind ddlGoalPlayer, ddlAssistPlayer
 
-                var list = Player.Cache.PlayerList_HasSquadNumber;
+                var list = Player.Cache.PlayerListHasSquadNumber;
 
                 if (list != null && list.Count > 0)
                 {

@@ -3,6 +3,7 @@ using System.Data;
 using System.Linq;
 using Arsenal.Service;
 using Arsenal.Service.Casino;
+using Arsenalcn.Core.Dapper;
 using Dapper;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -14,62 +15,66 @@ namespace Arsenalcn.Core.Tests
         [TestMethod]
         public void Test_Single()
         {
-            IRepository repo = new Repository();
+            using (IRepository repo = new Repository())
+            {
+                var key1 = new Guid("FD32F77D-47A7-4D5F-B7CE-068E3E1A0833");
 
-            var key1 = new Guid("FD32F77D-47A7-4D5F-B7CE-068E3E1A0833");
+                var instance1 = repo.Single<League>(key1);
 
-            var instance1 = repo.Single<League>(key1);
+                Assert.IsNotNull(instance1);
+                Assert.IsInstanceOfType(instance1, typeof(League));
+                Assert.IsNotNull(instance1.LeagueNameInfo);
+                Assert.AreEqual(key1, instance1.ID);
 
-            Assert.IsNotNull(instance1);
-            Assert.IsInstanceOfType(instance1, typeof(League));
-            Assert.IsNotNull(instance1.LeagueNameInfo);
-            Assert.AreEqual(key1, instance1.ID);
+                // wrong value of argument
+                var key2 = new Guid();
 
-            // wrong value of argument
-            var key2 = new Guid();
+                var instance2 = repo.Single<League>(key2);
 
-            var instance2 = repo.Single<League>(key2);
-
-            Assert.IsNull(instance2);
+                Assert.IsNull(instance2);
+            }
         }
 
         [TestMethod]
         public void Test_Count()
         {
-            IRepository repo = new Repository();
-
-            Assert.IsTrue(repo.Count<League>(x => x.IsActive == true) > 0);
-            Assert.IsTrue(repo.Count<League>(x => x.LeagueName == "AA") == 0);
+            using (IRepository repo = new Repository())
+            {
+                Assert.IsTrue(repo.Count<League>(x => x.IsActive == true) > 0);
+                Assert.IsTrue(repo.Count<League>(x => x.LeagueName == "AA") == 0);
+            }
         }
 
         [TestMethod]
         public void Test_All()
         {
-            IRepository repo = new Repository();
+            using (IRepository repo = new Repository())
+            {
+                var list1 = repo.All<League>();
 
-            var list1 = repo.All<League>();
+                Assert.IsTrue(list1.Count > 0);
 
-            Assert.IsTrue(list1.Count > 0);
+                var list2 = repo.All<Config>();
 
-            var list2 = repo.All<Config>();
-
-            Assert.IsTrue(list2.Count > 0);
+                Assert.IsTrue(list2.Count > 0);
+            }
         }
 
         [TestMethod]
         public void Test_Query()
         {
-            IRepository repo = new Repository();
+            using (IRepository repo = new Repository())
+            {
+                var list1 = repo.Query<League>(x => x.LeagueName == "");
 
-            var list1 = repo.Query<League>(x => x.LeagueName == "");
+                Assert.IsNotNull(list1);
+                Assert.IsTrue(list1.Count == 0);
 
-            Assert.IsNotNull(list1);
-            Assert.IsTrue(list1.Count == 0);
+                var list2 = repo.Query<Config>(x => x.ConfigSystem == ConfigSystem.Arsenal.ToString());
 
-            var list2 = repo.Query<Config>(x => x.ConfigSystem == ConfigSystem.Arsenal.ToString());
-
-            Assert.IsNotNull(list2);
-            Assert.IsTrue(list2.Count > 0);
+                Assert.IsNotNull(list2);
+                Assert.IsTrue(list2.Count > 0);
+            }
         }
 
         [TestMethod]
@@ -89,25 +94,28 @@ namespace Arsenalcn.Core.Tests
                       dbo.Arsenal_Group AS g ON m.GroupGuid = g.GroupGuid
                   WHERE  (c.ItemType = 2)";
 
-            var list = DapperHelper.MarsConnection.Query<MatchView, CasinoItem, HomeTeam, AwayTeam, Group, League, MatchView>(sql,
-                            (x, c, h, a, g, l) =>
-                            {
-                                x.CasinoItem = c;
-                                x.Home = h;
-                                x.Away = a;
-                                x.Group = g;
-                                x.League = l;
+            using (var dapper = DapperHelper.GetInstance())
+            {
+                var list = dapper.Query<MatchView, CasinoItem, HomeTeam, AwayTeam, Group, League, MatchView>(sql,
+                                (x, c, h, a, g, l) =>
+                                {
+                                    x.CasinoItem = c;
+                                    x.Home = h;
+                                    x.Away = a;
+                                    x.Group = g;
+                                    x.League = l;
 
-                                return x;
-                            }, splitOn: "ID, CasinoItemGuid, HomeTeamGuid, AwayTeamGuid, GroupGuid, LeagueGuid").ToList<IViewer>();
+                                    return x;
+                                }, splitOn: "ID, CasinoItemGuid, HomeTeamGuid, AwayTeamGuid, GroupGuid, LeagueGuid").ToList<IViewer>();
 
-            Assert.IsTrue(list.Count > 0);
+                Assert.IsTrue(list.Count > 0);
 
-            IViewerFactory<MatchView> factory = new MatchViewFactory();
+                IViewerFactory<MatchView> factory = new MatchViewFactory();
 
-            var result = factory.All();
+                var result = factory.All();
 
-            Assert.IsInstanceOfType(result[0], typeof(MatchView));
+                Assert.IsInstanceOfType(result[0], typeof(MatchView));
+            }
         }
 
         [TestMethod]

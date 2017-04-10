@@ -1,5 +1,6 @@
 ﻿using System;
 using Arsenalcn.Core;
+using Arsenalcn.Core.Dapper;
 
 namespace Arsenal.Service.Casino
 {
@@ -14,7 +15,7 @@ namespace Arsenal.Service.Casino
                            INNER JOIN {Repository.GetTableAttr<Bet>().Name} b ON c.CasinoItemGuid = b.CasinoItemGuid
                            WHERE (c.BankerID = @key)";
 
-            IDapperHelper dapper = new DapperHelper();
+            var dapper = DapperHelper.GetInstance();
 
             Cash = dapper.ExecuteScalar<double>(sql, new { key = ID });
 

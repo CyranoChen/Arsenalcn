@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using Arsenalcn.Core;
+using Arsenalcn.Core.Dapper;
 
 namespace Arsenal.Service.Casino
 {
@@ -14,7 +15,7 @@ namespace Arsenal.Service.Casino
                 $@"DELETE FROM {Repository.GetTableAttr<ChoiceOption>().Name} 
                      WHERE (CasinoItemGuid NOT IN (SELECT CasinoItemGuid FROM {Repository.GetTableAttr<CasinoItem>().Name}))";
 
-            IDapperHelper dapper = new DapperHelper();
+            var dapper = DapperHelper.GetInstance();
 
             dapper.Execute(sql, trans);
         }

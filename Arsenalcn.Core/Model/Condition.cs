@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Data.SqlClient;
 using System.Linq.Expressions;
 using System.Reflection;
+using Arsenalcn.Core.Dapper;
 
 namespace Arsenalcn.Core
 {
@@ -111,14 +112,7 @@ namespace Arsenalcn.Core
             if (c == null) return null;
 
             // Convent "" to '' in sql
-            if (c.Value.ToString() == string.Empty)
-            {
-                _mArguments.Add(string.Empty);
-            }
-            else
-            {
-                _mArguments.Add(c.Value);
-            }
+            _mArguments.Add(!string.IsNullOrEmpty(c.Value.ToString()) ? c.Value : string.Empty);
 
             //this.m_conditionParts.Push(String.Format("{{{0}}}", this.m_arguments.Count - 1));
             //use @para{0} instead of {0}

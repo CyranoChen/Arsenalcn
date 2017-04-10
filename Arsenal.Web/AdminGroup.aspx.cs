@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web.UI.WebControls;
 using Arsenal.Service;
 using Arsenalcn.Core;
+using Arsenalcn.Core.Dapper;
 using CasinoMatch = Arsenal.Service.Casino.Match;
 
 namespace Arsenal.Web

@@ -2,6 +2,7 @@
 using System.Linq;
 using Arsenal.Service.Casino;
 using Arsenalcn.Core;
+using Arsenalcn.Core.Dapper;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ArsenalMatch = Arsenal.Service.Match;
 using CasinoMatch = Arsenal.Service.Casino.Match;

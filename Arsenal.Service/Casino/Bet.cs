@@ -2,6 +2,8 @@
 using System.Data;
 using System.Linq;
 using Arsenalcn.Core;
+using Arsenalcn.Core.Dapper;
+using Arsenalcn.Core.Extension;
 
 namespace Arsenal.Service.Casino
 {
@@ -11,11 +13,13 @@ namespace Arsenal.Service.Casino
         // Place Bet of SingleChoice
         public void Place(Guid matchGuid, string selectedOption)
         {
-            using (var trans = DapperHelper.MarsConnection.BeginTransaction())
+            using (var dapper = DapperHelper.GetInstance())
             {
+                var trans = dapper.BeginTransaction();
+
                 try
                 {
-                    IRepository repo = new Repository();
+                    IRepository repo = new Repository(dapper);
 
                     #region Get CasinoItem & Check
 
@@ -83,15 +87,15 @@ namespace Arsenal.Service.Casino
                     gambler.TotalBet += BetAmount.Value;
                     banker.Cash += BetAmount.Value;
 
-                    repo.Update(gambler, trans);
-                    repo.Update(banker, trans);
+                    repo.Update(gambler);
+                    repo.Update(banker);
 
                     CasinoItemGuid = item.ID;
                     BetTime = DateTime.Now;
                     BetRate = choiceOption.OptionRate;
 
                     object key;
-                    repo.Insert(this, out key, trans);
+                    repo.Insert(this, out key);
                     ID = Convert.ToInt32(key);
 
                     var betDetail = new BetDetail { BetID = ID };
@@ -103,7 +107,7 @@ namespace Arsenal.Service.Casino
                     else if (selectedOption.ToLower() == "draw")
                         betDetail.DetailName = "Draw";
 
-                    repo.Insert(betDetail, trans);
+                    repo.Insert(betDetail);
 
                     trans.Commit();
                 }
@@ -119,11 +123,13 @@ namespace Arsenal.Service.Casino
         // Place Bet of MatchResult
         public void Place(Guid matchGuid, short resultHome, short resultAway)
         {
-            using (var trans = DapperHelper.MarsConnection.BeginTransaction())
+            using (var dapper = DapperHelper.GetInstance())
             {
+                var trans = dapper.BeginTransaction();
+
                 try
                 {
-                    IRepository repo = new Repository();
+                    IRepository repo = new Repository(dapper);
 
                     #region Get CasinoItem & Check
 
@@ -169,7 +175,7 @@ namespace Arsenal.Service.Casino
                     BetTime = DateTime.Now;
 
                     object key;
-                    repo.Insert(this, out key, trans);
+                    repo.Insert(this, out key);
                     ID = Convert.ToInt32(key);
 
                     var betDetailHome = new BetDetail
@@ -180,15 +186,16 @@ namespace Arsenal.Service.Casino
                     };
 
 
-                    repo.Insert(betDetailHome, trans);
+                    repo.Insert(betDetailHome);
 
-                    var betDetailAway = new BetDetail();
+                    var betDetailAway = new BetDetail
+                    {
+                        BetID = ID,
+                        DetailName = "Away",
+                        DetailValue = resultAway.ToString()
+                    };
 
-                    betDetailAway.BetID = ID;
-                    betDetailAway.DetailName = "Away";
-                    betDetailAway.DetailValue = resultAway.ToString();
-
-                    repo.Insert(betDetailAway, trans);
+                    repo.Insert(betDetailAway);
 
                     trans.Commit();
                 }
@@ -203,11 +210,13 @@ namespace Arsenal.Service.Casino
 
         public void ReturnBet()
         {
-            using (var trans = DapperHelper.MarsConnection.BeginTransaction())
+            using (var dapper = DapperHelper.GetInstance())
             {
+                var trans = dapper.BeginTransaction();
+
                 try
                 {
-                    IRepository repo = new Repository();
+                    IRepository repo = new Repository(dapper);
 
                     if (BetAmount.HasValue && BetAmount >= 0f)
                     {
@@ -234,13 +243,13 @@ namespace Arsenal.Service.Casino
                         gambler.TotalBet -= betAmount;
                         banker.Cash -= betAmount;
 
-                        repo.Update(gambler, trans);
-                        repo.Update(banker, trans);
+                        repo.Update(gambler);
+                        repo.Update(banker);
                     }
 
                     var list = repo.Query<BetDetail>(x => x.BetID == ID);
 
-                    list.Delete(trans);
+                    list.Delete();
 
                     repo.Delete(this);
 
@@ -261,7 +270,7 @@ namespace Arsenal.Service.Casino
             var sql =
                 $@"DELETE FROM {Repository.GetTableAttr<Bet>().Name} WHERE (CasinoItemGuid NOT IN (SELECT CasinoItemGuid FROM {Repository.GetTableAttr<CasinoItem>().Name}))";
 
-            IDapperHelper dapper = new DapperHelper();
+            var dapper = DapperHelper.GetInstance();
 
             dapper.Execute(sql, trans);
         }

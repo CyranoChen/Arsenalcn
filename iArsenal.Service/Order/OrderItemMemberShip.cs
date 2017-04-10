@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Data;
-using System.Data.SqlClient;
 
 namespace iArsenal.Service
 {
@@ -34,13 +32,13 @@ namespace iArsenal.Service
             Season = $"{EndDate.AddYears(-1).Year}/{EndDate.ToString("yy")}";
         }
 
-        public override void Place(Member m, Product p, IDbTransaction trans = null)
+        public override void Place(Member m, Product p)
         {
             Remark = !string.IsNullOrEmpty(AlterMethod) ? $"{MemberCardNo}|{AlterMethod}" : MemberCardNo;
 
             Size = EndDate.ToString("yyyy-MM-dd");
 
-            base.Place(m, p, trans);
+            base.Place(m, p);
         }
 
         #region Members and Properties
@@ -71,12 +69,12 @@ namespace iArsenal.Service
                 throw new Exception("The OrderItem is not the type of MembershipCore.");
         }
 
-        public void Place(Member m, IDbTransaction trans = null)
+        public void Place(Member m)
         {
             var product = Product.Cache.ProductList.Find(p =>
                 p.ProductType.Equals(ProductType.MembershipCore));
 
-            base.Place(m, product, trans);
+            base.Place(m, product);
         }
     }
 
@@ -95,12 +93,12 @@ namespace iArsenal.Service
                 throw new Exception("The OrderItem is not the type of MembershipPremier.");
         }
 
-        public void Place(Member m, IDbTransaction trans = null)
+        public void Place(Member m)
         {
             var product = Product.Cache.ProductList.Find(p =>
                 p.ProductType.Equals(ProductType.MembershipPremier));
 
-            base.Place(m, product, trans);
+            base.Place(m, product);
         }
     }
 }

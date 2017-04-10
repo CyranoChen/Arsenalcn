@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data;
 
 namespace iArsenal.Service
 {
@@ -20,12 +19,12 @@ namespace iArsenal.Service
                 throw new Exception("The OrderItem is not the type of ReplicaKitHome.");
         }
 
-        public void Place(Member m, IDbTransaction trans = null)
+        public void Place(Member m)
         {
             var product = Product.Cache.ProductList.Find(p =>
                 p.ProductType.Equals(ProductType.ReplicaKitHome));
 
-            base.Place(m, product, trans);
+            base.Place(m, product);
         }
     }
 
@@ -42,12 +41,12 @@ namespace iArsenal.Service
                 throw new Exception("The OrderItem is not the type of ReplicaKitAway.");
         }
 
-        public void Place(Member m, IDbTransaction trans = null)
+        public void Place(Member m)
         {
             var product = Product.Cache.ProductList.Find(p =>
                 p.ProductType.Equals(ProductType.ReplicaKitAway));
 
-            base.Place(m, product, trans);
+            base.Place(m, product);
         }
     }
 
@@ -64,12 +63,12 @@ namespace iArsenal.Service
                 throw new Exception("The OrderItem is not the type of ReplicaKitCup.");
         }
 
-        public void Place(Member m, IDbTransaction trans = null)
+        public void Place(Member m)
         {
             var product = Product.Cache.ProductList.Find(p =>
                 p.ProductType.Equals(ProductType.ReplicaKitCup));
 
-            base.Place(m, product, trans);
+            base.Place(m, product);
         }
     }
 
@@ -86,12 +85,12 @@ namespace iArsenal.Service
                 throw new Exception("The OrderItem is not the type of PlayerNumber.");
         }
 
-        public void Place(Member m, IDbTransaction trans = null)
+        public void Place(Member m)
         {
             var product = Product.Cache.ProductList.Find(p =>
                 p.ProductType.Equals(ProductType.PlayerNumber));
 
-            base.Place(m, product, trans);
+            base.Place(m, product);
         }
 
         #region Members and Properties
@@ -131,12 +130,12 @@ namespace iArsenal.Service
                 throw new Exception("The OrderItem is not the type of PlayerName.");
         }
 
-        public void Place(Member m, IDbTransaction trans = null)
+        public void Place(Member m)
         {
             var product = Product.Cache.ProductList.Find(p =>
                 p.ProductType.Equals(ProductType.PlayerName));
 
-            base.Place(m, product, trans);
+            base.Place(m, product);
         }
 
         #region Members and Properties
@@ -176,12 +175,12 @@ namespace iArsenal.Service
                 throw new Exception("The OrderItem is not the type of ArsenalFont.");
         }
 
-        public void Place(Member m, IDbTransaction trans = null)
+        public void Place(Member m)
         {
             var product = Product.Cache.ProductList.Find(p =>
                 p.ProductType.Equals(ProductType.ArsenalFont));
 
-            base.Place(m, product, trans);
+            base.Place(m, product);
         }
     }
 
@@ -198,12 +197,12 @@ namespace iArsenal.Service
                 throw new Exception("The OrderItem is not the type of PremiershipPatch.");
         }
 
-        public void Place(Member m, IDbTransaction trans = null)
+        public void Place(Member m)
         {
             var product = Product.Cache.ProductList.Find(p =>
                 p.ProductType.Equals(ProductType.PremiershipPatch));
 
-            base.Place(m, product, trans);
+            base.Place(m, product);
         }
     }
 
@@ -220,12 +219,12 @@ namespace iArsenal.Service
                 throw new Exception("The OrderItem is not the type of ChampionshipPatch.");
         }
 
-        public void Place(Member m, IDbTransaction trans = null)
+        public void Place(Member m)
         {
             var product = Product.Cache.ProductList.Find(p =>
                 p.ProductType.Equals(ProductType.ChampionshipPatch));
 
-            base.Place(m, product, trans);
+            base.Place(m, product);
         }
     }
 }

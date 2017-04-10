@@ -3,6 +3,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Script.Serialization;
 using Arsenalcn.Core;
+using Arsenalcn.Core.Dapper;
 using iArsenal.Service;
 
 namespace iArsenal.Web

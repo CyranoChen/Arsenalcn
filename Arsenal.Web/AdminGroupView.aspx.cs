@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Web.UI.WebControls;
 using Arsenal.Service;
-using Arsenalcn.Core;
+using Arsenalcn.Core.Dapper;
 
 namespace Arsenal.Web
 {
@@ -91,8 +91,10 @@ namespace Arsenal.Web
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
-            using (var trans = DapperHelper.MarsConnection.BeginTransaction())
+            using (var dapper = DapperHelper.GetInstance())
             {
+                var trans = dapper.BeginTransaction();
+
                 try
                 {
                     if (string.IsNullOrEmpty(ddlGroupLeague.SelectedValue) ||
@@ -127,7 +129,7 @@ namespace Arsenal.Web
                         {
                             foreach (var rgt in rgts)
                             {
-                                rgt.Delete(trans);
+                                rgt.Delete();
                             }
                         }
                     }
@@ -143,7 +145,7 @@ namespace Arsenal.Web
                                 TeamGuid = tGuid
                             };
 
-                            _repo.Insert(gt, trans);
+                            _repo.Insert(gt);
                         }
                     }
 
@@ -151,14 +153,14 @@ namespace Arsenal.Web
 
                     if (GroupGuid != Guid.Empty)
                     {
-                        _repo.Update(g, trans);
+                        _repo.Update(g);
                         trans.Commit();
 
                         ClientScript.RegisterClientScriptBlock(typeof(string), "success", "alert('更新分组成功');", true);
                     }
                     else
                     {
-                        _repo.Insert(g, trans);
+                        _repo.Insert(g);
                         trans.Commit();
 
                         ClientScript.RegisterClientScriptBlock(typeof(string), "success", "alert('添加分组成功');", true);

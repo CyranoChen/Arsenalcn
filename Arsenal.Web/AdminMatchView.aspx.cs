@@ -183,12 +183,18 @@ namespace Arsenal.Web
                 if (MatchGuid != Guid.Empty)
                 {
                     _repo.Update(m);
+
+                    Match.Cache.RefreshCache();
+
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
                         "alert('更新成功');window.location.href = window.location.href", true);
                 }
                 else
                 {
                     _repo.Insert(m);
+
+                    Match.Cache.RefreshCache();
+
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
                         "alert('添加成功');window.location.href = 'AdminMatch.aspx'", true);
                 }
@@ -218,6 +224,8 @@ namespace Arsenal.Web
                 if (MatchGuid != Guid.Empty)
                 {
                     _repo.Delete<Match>(MatchGuid);
+
+                    Match.Cache.RefreshCache();
 
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
                         "alert('删除成功');window.location.href='AdminMatch.aspx'", true);

@@ -153,7 +153,7 @@ namespace Arsenalcn.Core.Dapper
 
                 dt.EndLoadData();
 
-                return dt;
+                return dt.Rows.Count > 0 ? dt : null;
             }
         }
 

@@ -36,6 +36,40 @@ namespace Arsenalcn.Core.Tests
         }
 
         [TestMethod]
+        public void Test_DataTable()
+        {
+            var dapper = DapperHelper.GetInstance();
+
+            var sql = "SELECT * FROM Arsenalcn_Config WHERE ConfigKey = 'test'";
+
+            using (var reader = dapper.ExecuteReader(sql))
+            {
+                var dt = new DataTable();
+
+                var intFieldCount = reader.FieldCount;
+
+                for (var intCounter = 0; intCounter < intFieldCount; ++intCounter)
+                {
+                    dt.Columns.Add(reader.GetName(intCounter).ToUpper(), reader.GetFieldType(intCounter));
+                }
+
+                dt.BeginLoadData();
+
+                var values = new object[intFieldCount];
+                while (reader.Read())
+                {
+                    reader.GetValues(values);
+                    dt.LoadDataRow(values, true);
+                }
+
+                dt.EndLoadData();
+
+                Assert.IsNotNull(dt);
+                Assert.AreEqual(0, dt.Rows.Count);
+            }
+        }
+
+        [TestMethod]
         public void Test_Count()
         {
             using (IRepository repo = new Repository())

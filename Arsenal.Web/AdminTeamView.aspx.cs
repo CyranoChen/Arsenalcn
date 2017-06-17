@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Web.UI.WebControls;
 using Arsenal.Service;
-using Arsenalcn.Core;
 using Arsenalcn.Core.Dapper;
 
 namespace Arsenal.Web
@@ -117,12 +116,20 @@ namespace Arsenal.Web
                 if (TeamGuid != Guid.Empty)
                 {
                     _repo.Update(t);
+
+                    Team.Cache.RefreshCache();
+                    RelationLeagueTeam.Cache.RefreshCache();
+
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
                         "alert('更新成功');window.location.href = window.location.href", true);
                 }
                 else
                 {
                     _repo.Insert(t);
+
+                    Team.Cache.RefreshCache();
+                    RelationLeagueTeam.Cache.RefreshCache();
+
                     ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
                         "alert('添加成功');window.location.href = 'AdminTeam.aspx'", true);
                 }
@@ -155,9 +162,12 @@ namespace Arsenal.Web
 
                     if (list != null && list.Count > 0)
                     {
-                        list.ForEach(x => x.Delete());
+                        list.ForEach(x => x.Delete(_repo));
 
                         _repo.Delete<Team>(TeamGuid);
+
+                        Team.Cache.RefreshCache();
+                        RelationLeagueTeam.Cache.RefreshCache();
 
                         ClientScript.RegisterClientScriptBlock(typeof(string), "succeed", $"alert('删除成功(包括{list.Count}个分类关联)');window.location.href='AdminTeam.aspx'", true);
                     }

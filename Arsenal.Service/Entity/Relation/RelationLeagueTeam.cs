@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using Arsenalcn.Core;
 using Arsenalcn.Core.Dapper;
 
@@ -11,15 +10,12 @@ namespace Arsenal.Service
     {
         public bool Any()
         {
-            IRepository repo = new Repository();
-
-            return repo.Any<RelationLeagueTeam>(x => x.TeamGuid == TeamGuid && x.LeagueGuid == LeagueGuid);
+            return Cache.RelationLeagueTeamList.Exists(x =>
+                x.TeamGuid == TeamGuid && x.LeagueGuid == LeagueGuid);
         }
 
-        public void Delete()
+        public void Delete(IRepository repo)
         {
-            IRepository repo = new Repository();
-
             repo.Delete<RelationLeagueTeam>(x => x.LeagueGuid == LeagueGuid && x.TeamGuid == TeamGuid);
         }
 

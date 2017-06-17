@@ -62,7 +62,7 @@ namespace Arsenal.Web
 
         private void BindData()
         {
-            var list = _repo.All<Team>().ToList().FindAll(x =>
+            var list = _repo.All<Team>().FindAll(x =>
             {
                 var returnValue = true;
                 string tmpString;
@@ -205,6 +205,7 @@ namespace Arsenal.Web
         protected void btnRefreshCache_Click(object sender, EventArgs e)
         {
             Team.Cache.RefreshCache();
+            RelationLeagueTeam.Cache.RefreshCache();
 
             ClientScript.RegisterClientScriptBlock(typeof(string), "succeed",
                 "alert('更新缓存成功');window.location.href=window.location.href", true);

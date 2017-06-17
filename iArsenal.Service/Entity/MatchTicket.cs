@@ -83,6 +83,7 @@ namespace iArsenal.Service
                 ProductCode = string.Empty;
                 ProductInfo = string.Empty;
                 Deadline = m.PlayTime.AddMonths(-2).AddDays(-7);
+                WaitingDeadline = m.PlayTime.AddMonths(-1).AddDays(-7);
                 AllowMemberClass = null;
                 TicketCount = null;
                 IsActive = false;

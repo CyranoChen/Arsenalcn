@@ -42,6 +42,8 @@ namespace Arsenal.Service
 
             public static List<Team> GetTeamsByLeagueGuid(Guid guid)
             {
+                IRepository repo = new Repository();
+
                 return TeamList.FindAll(x =>
                     new RelationLeagueTeam { TeamGuid = x.ID, LeagueGuid = guid }.Any());
             }

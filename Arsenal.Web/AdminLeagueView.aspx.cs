@@ -86,12 +86,18 @@ namespace Arsenal.Web
                 if (LeagueGuid != Guid.Empty)
                 {
                     _repo.Update(l);
+
+                    League.Cache.RefreshCache();
+
                     ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
                         "alert('更新成功');window.location.href = window.location.href", true);
                 }
                 else
                 {
                     _repo.Insert(l);
+
+                    League.Cache.RefreshCache();
+
                     ClientScript.RegisterClientScriptBlock(typeof (string), "save",
                         "alert('添加成功');window.location.href = 'AdminLeague.aspx';", true);
                 }
@@ -121,6 +127,8 @@ namespace Arsenal.Web
                 if (LeagueGuid != Guid.Empty)
                 {
                     _repo.Delete<League>(LeagueGuid);
+
+                    League.Cache.RefreshCache();
 
                     ClientScript.RegisterClientScriptBlock(typeof (string), "succeed",
                         "alert('删除成功');window.location.href='AdminLeague.aspx'", true);

@@ -10,7 +10,7 @@ namespace Arsenalcn.CasinoSys.DataAccess
     {
         public static DataTable GetChoiceOptions(Guid itemGuid)
         {
-            var sql = "SELECT * FROM AcnCasino_ChoiceOption WHERE CasinoItemGuid = @guid ORDER BY OrderID";
+            var sql = "SELECT * FROM AcnCasino_ChoiceOption WHERE CasinoItemGuid = @guid ORDER BY OptionOrder";
 
             var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql,
                 new SqlParameter("@guid", itemGuid));
@@ -53,7 +53,7 @@ namespace Arsenalcn.CasinoSys.DataAccess
 
         public static float GetOptionTotalBet(Guid itemGuid, string name)
         {
-            var sql = @"SELECT ISNULL(SUM(BET), 0) FROM dbo.AcnCasino_Bet bet
+            var sql = @"SELECT ISNULL(SUM(BETAmount), 0) FROM dbo.AcnCasino_Bet bet
                         INNER JOIN dbo.AcnCasino_BetDetail detail
                         ON bet.[ID] = detail.[BetID]
                         WHERE bet.CasinoItemGuid = @guid AND detail.DetailName = @name";

@@ -139,8 +139,8 @@ namespace Arsenalcn.CasinoSys.DataAccess
                 var nextStart = monthStart.AddMonths(1);
 
                 var sql = $@"SELECT TOP 5 * FROM dbo.AcnCasino_Gambler gambler INNER JOIN 
-                        (SELECT UserID, SUM(ISNULL(Earning, 0) - ISNULL(Bet, 0)) AS profit FROM dbo.AcnCasino_Bet 
-                        WHERE (Earning IS NOT NULL) AND (Bet IS NOT NULL) AND (BetTime >= '{monthStart}') AND (BetTime < '{nextStart}')
+                        (SELECT UserID, SUM(ISNULL(Earning, 0) - ISNULL(BetAmount, 0)) AS profit FROM dbo.AcnCasino_Bet 
+                        WHERE (Earning IS NOT NULL) AND (BetAmount IS NOT NULL) AND (BetTime >= '{monthStart}') AND (BetTime < '{nextStart}')
                         GROUP BY UserID) bet ON gambler.UserID = bet.UserID ORDER BY Profit DESC";
 
                 var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql);
@@ -162,8 +162,8 @@ namespace Arsenalcn.CasinoSys.DataAccess
                 var nextStart = monthStart.AddMonths(1);
 
                 var sql = $@"SELECT TOP 5 * FROM dbo.AcnCasino_Gambler gambler INNER JOIN
-                        (SELECT UserID, SUM(ISNULL(Bet, 0)) AS TotalBetMonthly FROM dbo.AcnCasino_Bet 
-                        WHERE (Bet IS NOT NULL) AND (BetTime >= '{monthStart}') AND (BetTime < '{nextStart}')
+                        (SELECT UserID, SUM(ISNULL(BetAmount, 0)) AS TotalBetMonthly FROM dbo.AcnCasino_Bet 
+                        WHERE (BetAmount IS NOT NULL) AND (BetTime >= '{monthStart}') AND (BetTime < '{nextStart}')
                         GROUP BY UserID) bet ON gambler.UserID = bet.UserID ORDER BY TotalBetMonthly DESC";
 
                 var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql);

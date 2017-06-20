@@ -17,10 +17,10 @@ namespace Arsenal.Mobile.Models.Casino
                     MatchGuid = s.Match.ID,
                     ItemType = s.CasinoItem.ItemType,
                     CloseTime = s.CasinoItem.CloseTime,
-                    TeamHomeName = s.Home.TeamDisplayName,
-                    TeamHomeLogo = ConfigGlobal_Arsenal.PluginAcnCasinoPath + s.Home.TeamLogo,
-                    TeamAwayName = s.Away.TeamDisplayName,
-                    TeamAwayLogo = ConfigGlobal_Arsenal.PluginAcnCasinoPath + s.Away.TeamLogo,
+                    TeamHomeName = s.Home.HomeDisplayName,
+                    TeamHomeLogo = ConfigGlobal_Arsenal.PluginAcnCasinoPath + s.Home.HomeLogo,
+                    TeamAwayName = s.Away.AwayDisplayName,
+                    TeamAwayLogo = ConfigGlobal_Arsenal.PluginAcnCasinoPath + s.Away.AwayLogo,
                     LeagueName = s.Match.LeagueName,
                     LeagueLogo = ConfigGlobal_Arsenal.PluginAcnCasinoPath + s.League.LeagueLogo
                 })

@@ -12,10 +12,10 @@ namespace Arsenal.Mobile.Models.Casino
             var config = new MapperConfiguration(cfg => cfg.CreateMap<BonusView, BonusDto>()
                 .ConstructUsing(s => new BonusDto
                 {
-                    TeamHomeName = s.Home.TeamDisplayName,
-                    TeamHomeLogo = ConfigGlobal_Arsenal.PluginAcnCasinoPath + s.Home.TeamLogo,
-                    TeamAwayName = s.Away.TeamDisplayName,
-                    TeamAwayLogo = ConfigGlobal_Arsenal.PluginAcnCasinoPath + s.Away.TeamLogo,
+                    TeamHomeName = s.Home.HomeDisplayName,
+                    TeamHomeLogo = ConfigGlobal_Arsenal.PluginAcnCasinoPath + s.Home.HomeLogo,
+                    TeamAwayName = s.Away.AwayDisplayName,
+                    TeamAwayLogo = ConfigGlobal_Arsenal.PluginAcnCasinoPath + s.Away.AwayLogo,
                     LeagueLogo = ConfigGlobal_Arsenal.PluginAcnCasinoPath + s.League.LeagueLogo
                 })
                 .ForMember(d => d.Profit, opt =>

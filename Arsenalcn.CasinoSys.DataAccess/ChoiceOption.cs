@@ -20,7 +20,7 @@ namespace Arsenalcn.CasinoSys.DataAccess
             return ds.Tables[0];
         }
 
-        public static void InsertChoiceOption(Guid itemGuid, string display, string name, float rate,
+        public static void InsertChoiceOption(Guid itemGuid, string display, string value, float rate,
             int order, SqlTransaction trans)
         {
             var sql = "INSERT INTO AcnCasino_ChoiceOption VALUES (@guid, @order, @display, @value, @rate)";
@@ -30,7 +30,7 @@ namespace Arsenalcn.CasinoSys.DataAccess
             SqlParameter[] para =
             {
                 new SqlParameter("@guid", itemGuid), new SqlParameter("@order", order),
-                new SqlParameter("@display", display), new SqlParameter("@name", name),
+                new SqlParameter("@display", display), new SqlParameter("@value", value),
                 new SqlParameter("@rate", rate)
             };
 

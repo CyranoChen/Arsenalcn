@@ -150,8 +150,9 @@ namespace Arsenalcn.CasinoSys.Entity
                     trans.Commit();
                 }
                 catch
-                {
+                {                   
                     trans.Rollback();
+                    throw;
                 }
             }
         }

@@ -52,7 +52,7 @@ namespace Arsenalcn.CasinoSys.Entity
                     var option = new ChoiceOption
                     {
                         CasinoItemGuid = (Guid) drOption["CasinoItemGuid"],
-                        OptionName = Convert.ToString(drOption["OptionName"]),
+                        OptionName = Convert.ToString(drOption["OptionValue"]),
                         OptionDisplay = Convert.ToString(drOption["OptionDisplay"])
                     };
 

@@ -51,8 +51,8 @@ namespace Arsenal.Web
                 tbFirstName.Text = !string.IsNullOrEmpty(p.FirstName) ? p.FirstName : string.Empty;
                 tbLastName.Text = !string.IsNullOrEmpty(p.LastName) ? p.LastName : string.Empty;
                 tbPrintingName.Text = !string.IsNullOrEmpty(p.PrintingName) ? p.PrintingName : string.Empty;
-                ddlPosition.SelectedValue = !p.Position.Equals(PlayerPositionType.None)
-                    ? p.Position.ToString()
+                ddlPosition.SelectedValue = !p.PlayerPosition.Equals(PlayerPositionType.None)
+                    ? p.PlayerPosition.ToString()
                     : string.Empty;
                 tbSquadNumber.Text = p.SquadNumber.ToString();
                 tbFaceURL.Text = p.FaceURL;
@@ -118,11 +118,11 @@ namespace Arsenal.Web
 
                 if (!string.IsNullOrEmpty(ddlPosition.SelectedValue))
                 {
-                    p.Position = (PlayerPositionType)Enum.Parse(typeof(PlayerPositionType), ddlPosition.SelectedValue);
+                    p.PlayerPosition = (PlayerPositionType)Enum.Parse(typeof(PlayerPositionType), ddlPosition.SelectedValue);
                 }
                 else
                 {
-                    p.Position = PlayerPositionType.None;
+                    p.PlayerPosition = PlayerPositionType.None;
                 }
 
                 p.SquadNumber = Convert.ToInt16(tbSquadNumber.Text.Trim());

@@ -79,12 +79,12 @@ namespace Arsenal.Web
                         returnValue = x.SquadNumber.Equals(Convert.ToInt16(tmpString));
                 }
 
-                if (ViewState["Position"] != null)
+                if (ViewState["PlayerPosition"] != null)
                 {
-                    tmpString = ViewState["Position"].ToString();
+                    tmpString = ViewState["PlayerPosition"].ToString();
                     if (!string.IsNullOrEmpty(tmpString))
                         returnValue = returnValue &&
-                                      x.Position.ToString().Equals(tmpString, StringComparison.OrdinalIgnoreCase);
+                                      x.PlayerPosition.ToString().Equals(tmpString, StringComparison.OrdinalIgnoreCase);
                 }
 
                 if (ViewState["IsLegend"] != null)
@@ -203,9 +203,9 @@ namespace Arsenal.Web
         protected void ddlPosition_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (!string.IsNullOrEmpty(ddlPosition.SelectedValue))
-                ViewState["Position"] = ddlPosition.SelectedValue;
+                ViewState["PlayerPosition"] = ddlPosition.SelectedValue;
             else
-                ViewState["Position"] = string.Empty;
+                ViewState["PlayerPosition"] = string.Empty;
 
             PlayerGuid = null;
             gvPlayer.PageIndex = 0;

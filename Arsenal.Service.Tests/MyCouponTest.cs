@@ -6,10 +6,10 @@ using Arsenal.Service.Casino;
 using Arsenalcn.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Arsenal.Mobile.Tests
+namespace Arsenal.Service.Tests
 {
     [TestClass]
-    public class MyCouponTests
+    public class MyCouponTest
     {
         [TestMethod]
         public void MyCouponJsonSerializeAndDeserialize_Test()

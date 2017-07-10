@@ -236,13 +236,14 @@ namespace Arsenal.Service.Casino
 
             //SqlParameter[] para = { new SqlParameter("@monthStart", monthStart), new SqlParameter("@monthEnd", monthEnd) };
 
-            var dapper = DapperHelper.GetInstance();
+            using (IDapperHelper dapper = DapperHelper.GetInstance())
+            {
+                var instance = dapper.Query<GamblerDW>(sql, new { monthStart, monthEnd }).FirstOrDefault();
 
-            var instance = dapper.Query<GamblerDW>(sql, new { monthStart, monthEnd }).FirstOrDefault();
+                instance?.Inital();
 
-            instance?.Inital();
-
-            return instance;
+                return instance;
+            }
         }
 
         #region Members and Properties

@@ -1,9 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Arsenal.Mobile.Tests
+namespace Arsenal.Service.Tests
 {
     [TestClass]
-    public class LogSignInTests
+    public class LogSignInTest
     {
         [Ignore]
         [TestMethod]

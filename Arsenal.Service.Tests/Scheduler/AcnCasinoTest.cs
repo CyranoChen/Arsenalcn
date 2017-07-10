@@ -138,40 +138,41 @@ namespace Arsenal.Service.Tests.Scheduler
         {
             try
             {
-                IRepository repo = new Repository();
-
-                var iDay = DateTime.Today;
-
-                var firstBetDate = repo.Single<Bet>(1).BetTime;
-
-                while (!(iDay.Year <= firstBetDate.Year && iDay.Month < firstBetDate.Month))
+                using (IRepository repo = new Repository())
                 {
-                    var winner = GamblerDW.GetTopGamblerMonthly(iDay, RankType.Winner);
-                    var loser = GamblerDW.GetTopGamblerMonthly(iDay, RankType.Loser);
-                    var rper = GamblerDW.GetTopGamblerMonthly(iDay, RankType.RP);
+                    var iDay = DateTime.Today;
 
-                    if (winner != null && loser != null)
+                    var firstBetDate = repo.Single<Bet>(1).BetTime;
+
+                    while (!(iDay.Year <= firstBetDate.Year && iDay.Month < firstBetDate.Month))
                     {
-                        var day = iDay;
-                        var rank = repo.Query<Rank>(x => x.RankYear == day.Year && x.RankMonth == day.Month).FirstOrDefault();
+                        var winner = GamblerDW.GetTopGamblerMonthly(iDay, RankType.Winner);
+                        var loser = GamblerDW.GetTopGamblerMonthly(iDay, RankType.Loser);
+                        var rper = GamblerDW.GetTopGamblerMonthly(iDay, RankType.RP);
 
-                        if (rank != null)
+                        if (winner != null && loser != null)
                         {
-                            //update
-                            rank.Init(winner, loser, rper);
+                            var day = iDay;
+                            var rank = repo.Query<Rank>(x => x.RankYear == day.Year && x.RankMonth == day.Month).FirstOrDefault();
 
-                            repo.Update(rank);
-                        }
-                        else
-                        {
-                            //insert
-                            var instance = new Rank { RankYear = day.Year, RankMonth = day.Month };
-                            instance.Init(winner, loser, rper);
+                            if (rank != null)
+                            {
+                                //update
+                                rank.Init(winner, loser, rper);
 
-                            repo.Insert(instance);
+                                repo.Update(rank);
+                            }
+                            else
+                            {
+                                //insert
+                                var instance = new Rank { RankYear = day.Year, RankMonth = day.Month };
+                                instance.Init(winner, loser, rper);
+
+                                repo.Insert(instance);
+                            }
                         }
+                        iDay = iDay.AddMonths(-1);
                     }
-                    iDay = iDay.AddMonths(-1);
                 }
             }
             catch (Exception ex)

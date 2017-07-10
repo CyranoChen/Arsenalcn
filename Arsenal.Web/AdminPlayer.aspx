@@ -52,7 +52,7 @@ CodeBehind="AdminPlayer.aspx.cs" Inherits="Arsenal.Web.AdminPlayer" Title="后�
                 <asp:BoundField DataField="SquadNumber" HeaderText="号码" DataFormatString="<em>{0}</em>"
                                 HtmlEncode="false" ControlStyle-CssClass="TextBox" ControlStyle-Width="15px"/>
                 <asp:BoundField DataField="DisplayName" HeaderText="球员名" ReadOnly="true"/>
-                <asp:BoundField DataField="Position" HeaderText="位置" DataFormatString="<em>{0}</em>"
+                <asp:BoundField DataField="PlayerPosition" HeaderText="位置" DataFormatString="<em>{0}</em>"
                                 HtmlEncode="false" ControlStyle-CssClass="TextBox" ControlStyle-Width="80px"/>
                 <asp:BoundField DataField="FaceUrl" HeaderText="头像" ControlStyle-CssClass="TextBox"
                                 ControlStyle-Width="200px" ItemStyle-HorizontalAlign="Left"/>

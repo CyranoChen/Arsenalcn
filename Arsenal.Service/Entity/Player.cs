@@ -40,7 +40,7 @@ namespace Arsenal.Service
 
                 ColListSquadNumber = repo.All<Player>().DistinctOrderBy(x => x.SquadNumber);
 
-                ColListPosition = repo.All<Player>().DistinctOrderBy(x => x.Position.ToString());
+                ColListPosition = repo.All<Player>().DistinctOrderBy(x => x.PlayerPosition.ToString());
             }
 
             public static Player Load(Guid guid)
@@ -76,7 +76,7 @@ namespace Arsenal.Service
         public string PrintingName { get; set; }
 
         [DbColumn("PlayerPosition")]
-        public PlayerPositionType Position { get; set; }
+        public PlayerPositionType PlayerPosition { get; set; }
 
         [DbColumn("SquadNumber")]
         public int SquadNumber { get; set; }

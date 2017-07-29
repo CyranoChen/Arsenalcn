@@ -82,8 +82,8 @@ namespace iArsenal.Web
                 if (pt.Equals(ProductType.ReplicaKitAway))
                 {
                     Page.Title = "阿森纳2017/18赛季客场PUMA球衣许愿单";
-                    hlReplicaKitPage.NavigateUrl = "http://arsenaldirect.arsenal.com/puma-kit/puma-away-kit/icat/pumaaway";
-                    ltrlBannerImage.Text = $"<img src=\"uploadfiles/banner/banner20160731-a.png\" alt=\"{Page.Title}\" />";
+                    hlReplicaKitPage.NavigateUrl = "https://arsenaldirect.arsenal.com/Football-Shirts-and-Kit/Away/c/away-kit";
+                    ltrlBannerImage.Text = $"<img src=\"uploadfiles/banner/banner20170729.png\" alt=\"{Page.Title}\" />";
                 }
                 else if (pt.Equals(ProductType.ReplicaKitCup))
                 {

@@ -31,10 +31,13 @@
             <a href="default.aspx">首页</a>
         </li>
         <li>
-            <a href="iArsenalOrder_ReplicaKit.aspx?Type=Home">201718赛季主场球衣</a>
+            <a href="iArsenalOrder_ReplicaKit.aspx?Type=Home">1718赛季主场球衣</a>
         </li>
         <li>
-            <a href="iArsenalOrder_ReplicaKit.aspx?Type=Cup">201718赛季杯赛球衣</a>
+            <a href="iArsenalOrder_ReplicaKit.aspx?Type=Away">1718赛季客场球衣</a>
+        </li>
+        <li>
+            <a href="iArsenalOrder_ReplicaKit.aspx?Type=Cup">1718赛季杯赛球衣</a>
         </li>
         <li style="display: none">
             <a href="iArsenalOrder_Printing.aspx">个性化印字印号</a>

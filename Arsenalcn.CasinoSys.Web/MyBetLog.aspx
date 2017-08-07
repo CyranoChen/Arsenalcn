@@ -46,7 +46,7 @@ CodeBehind="MyBetLog.aspx.cs" Inherits="Arsenalcn.CasinoSys.Web.MyBetLog" Title=
                         <asp:Literal ID="ltrlResult" runat="server"></asp:Literal>
                     </ItemTemplate>
                 </asp:TemplateField>
-                <asp:BoundField DataField="Bet" HeaderText="投注金额" DataFormatString="{0:N0}" NullDisplayText="/"/>
+                <asp:BoundField DataField="BetAmount" HeaderText="投注金额" DataFormatString="{0:N0}" NullDisplayText="/"/>
                 <asp:TemplateField HeaderText="投注赔率">
                     <ItemTemplate>
                         <asp:Literal ID="ltrlBetRate" runat="server"></asp:Literal>

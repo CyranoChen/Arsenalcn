@@ -25,17 +25,17 @@ namespace Arsenal.Service.Casino
         [DbColumn("CasinoItemGuid")]
         public Guid CasinoItemGuid { get; set; }
 
-        [DbColumn("OptionName")]
-        public string OptionName { get; set; }
+        [DbColumn("OptionOrder")]
+        public int OptionOrder { get; set; }
 
         [DbColumn("OptionDisplay")]
         public string OptionDisplay { get; set; }
 
+        [DbColumn("OptionValue")]
+        public string OptionValue { get; set; }
+
         [DbColumn("OptionRate")]
         public float OptionRate { get; set; }
-
-        [DbColumn("OptionOrder")]
-        public int OptionOrder { get; set; }
 
         #endregion
     }

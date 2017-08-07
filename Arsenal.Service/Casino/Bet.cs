@@ -62,7 +62,7 @@ namespace Arsenal.Service.Casino
                     #region Get ChoiceOption & Check
 
                     var choiceOption = repo.Query<ChoiceOption>(x => x.CasinoItemGuid == item.ID)
-                        .Find(x => x.OptionName.Equals(selectedOption, StringComparison.OrdinalIgnoreCase));
+                        .Find(x => x.OptionValue.Equals(selectedOption, StringComparison.OrdinalIgnoreCase));
 
                     if (choiceOption == null)
                     {

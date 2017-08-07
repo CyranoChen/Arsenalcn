@@ -14,13 +14,15 @@ namespace Arsenal.Service.Casino
                 $@"SELECT ISNULL(SUM(BetAmount), 0) - ISNULL(SUM(Earning), 0) AS TotalEarning 
                    FROM {Repository.GetTableAttr<Bet>().Name} WHERE CasinoItemGuid = @key";
 
-            var dapper = DapperHelper.GetInstance();
+            using (IDapperHelper dapper = DapperHelper.GetInstance())
+            {
+                Earning = dapper.ExecuteScalar<double>(sql, new { key = ID });
+            }
 
-            Earning = dapper.ExecuteScalar<double>(sql, new { key = ID });
-
-            IRepository repo = new Repository();
-
-            repo.Update(this);
+            using (IRepository repo = new Repository())
+            {
+                repo.Update(this);
+            }
         }
 
         public static void Clean(IDbTransaction trans = null)
@@ -32,9 +34,10 @@ namespace Arsenal.Service.Casino
                 Repository.GetTableAttr<CasinoItem>().Name,
                 Repository.GetTableAttr<Match>().Name);
 
-            var dapper = DapperHelper.GetInstance();
-
-            dapper.Execute(sql, trans);
+            using (IDapperHelper dapper = DapperHelper.GetInstance())
+            {
+                dapper.Execute(sql, trans);
+            }
         }
 
         #region Members and Properties
@@ -99,11 +102,4 @@ namespace Arsenal.Service.Casino
         SingleChoice = 2,
         MatchResult = 1
     }
-
-    //public class CasinoItemLite : CasinoItem
-    //{
-    //    public override Guid ID => CasinoItemGuid;
-
-    //    private Guid CasinoItemGuid { get; set; }
-    //}
 }

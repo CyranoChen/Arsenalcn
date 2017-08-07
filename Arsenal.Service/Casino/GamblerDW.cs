@@ -23,21 +23,19 @@ namespace Arsenal.Service.Casino
                                                     COUNT(CASE IsWin WHEN 0 THEN 0 ELSE NULL END) AS Lose, 
                                                     COUNT(distinct CAST(CasinoItemGuid AS CHAR(50))) AS MatchBet, 
                                                     SUM(ISNULL(Earning, 0)) AS Earning, 
-                                                    SUM(ISNULL(Bet, 0)) AS TotalBet
+                                                    SUM(ISNULL(BetAmount, 0)) AS TotalBet
                                         FROM dbo.vw_AcnCasino_BetInfo 
-                                        WHERE (UserID = @key) AND (Earning IS NOT NULL) AND (Bet IS NOT NULL) AND (ItemType = 2) AND (LeagueGuid = @leagueGuid)
+                                        WHERE (UserID = @key) AND (Earning IS NOT NULL) AND (BetAmount IS NOT NULL) AND (ItemType = 2) AND (LeagueGuid = @leagueGuid)
                                         GROUP BY UserID, UserName) AS BetInfo
                                     LEFT OUTER JOIN
                                         (SELECT UserID, UserName, 
                                                     COUNT(ID) AS RPBet, 
                                                     COUNT(CASE EarningDesc WHEN 'RP+1' THEN 1 ELSE NULL END) AS RPBonus
                                         FROM dbo.vw_AcnCasino_BetInfo 
-                                        WHERE (UserID = @key) AND (Earning = 0) AND (Bet IS NULL) AND (ItemType = 1) AND (LeagueGuid = @leagueGuid)
+                                        WHERE (UserID = @key) AND (Earning = 0) AND (BetAmount IS NULL) AND (ItemType = 1) AND (LeagueGuid = @leagueGuid)
                                         GROUP BY UserID, UserName) AS RPInfo
                                     ON BetInfo.UserID = RPInfo.UserID AND BetInfo.UserName = RPInfo.UserName
                                     ORDER BY BetInfo.TotalBet DESC";
-
-            //SqlParameter[] para = { new SqlParameter("@key", key), new SqlParameter("@leagueGuid", leagueGuid) };
 
             var dapper = DapperHelper.GetInstance();
 
@@ -70,41 +68,41 @@ namespace Arsenal.Service.Casino
                                     ON BetInfo.UserID = RPInfo.UserID AND BetInfo.UserName = RPInfo.UserName
                                     ORDER BY BetInfo.TotalBet DESC";
 
-            //SqlParameter[] para = { new SqlParameter("@leagueGuid", leagueGuid) };
+            using (IDapperHelper dapper = DapperHelper.GetInstance())
+            {
+                var list = dapper.Query<GamblerDW>(sql, new { leagueGuid }).ToList();
 
-            var dapper = DapperHelper.GetInstance();
+                list.ForEach(x => x.Inital());
 
-            var list = dapper.Query<GamblerDW>(sql, new { leagueGuid }).ToList();
-
-            list.ForEach(x => x.Inital());
-
-            return list;
+                return list;
+            }
         }
 
         public static double GetGamblerBetLimit(int userId, Guid leagueGuid)
         {
-            IRepository repo = new Repository();
-
-            var gambler = repo.Query<Gambler>(x => x.UserID == userId).FirstOrDefault();
-            var cash = gambler?.Cash ?? 0f;
-
-            if (leagueGuid.Equals(ConfigGlobal_AcnCasino.DefaultLeagueID))
+            using (IRepository repo = new Repository())
             {
-                var g = Single(userId, leagueGuid);
+                var gambler = repo.Query<Gambler>(x => x.UserID == userId).FirstOrDefault();
+                var cash = gambler?.Cash ?? 0f;
 
-                // 如果没有投过注，或投注量小于标准，判断是否在下半赛区
-                if (g == null || g.TotalBet < ConfigGlobal_AcnCasino.TotalBetStandard)
+                if (leagueGuid.Equals(ConfigGlobal_AcnCasino.DefaultLeagueID))
                 {
-                    var singleBetLimit = ConfigGlobal_AcnCasino.SingleBetLimit;
+                    var g = Single(userId, leagueGuid);
 
-                    if (singleBetLimit > 0)
+                    // 如果没有投过注，或投注量小于标准，判断是否在下半赛区
+                    if (g == null || g.TotalBet < ConfigGlobal_AcnCasino.TotalBetStandard)
                     {
-                        return cash < singleBetLimit ? cash : singleBetLimit;
+                        var singleBetLimit = ConfigGlobal_AcnCasino.SingleBetLimit;
+
+                        if (singleBetLimit > 0)
+                        {
+                            return cash < singleBetLimit ? cash : singleBetLimit;
+                        }
                     }
                 }
-            }
 
-            return cash;
+                return cash;
+            }
         }
 
         public static List<GamblerDW> SortRank(List<GamblerDW> list, string orderKeyword)

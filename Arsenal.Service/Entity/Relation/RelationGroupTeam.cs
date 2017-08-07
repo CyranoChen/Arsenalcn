@@ -12,16 +12,18 @@ namespace Arsenal.Service
     {
         public void Update()
         {
-            IRepository repo = new Repository();
-
-            repo.Update(this, x => x.GroupGuid == GroupGuid && x.TeamGuid == TeamGuid);
+            using (IRepository repo = new Repository())
+            {
+                repo.Update(this, x => x.GroupGuid == GroupGuid && x.TeamGuid == TeamGuid);
+            }
         }
 
         public void Delete()
         {
-            IRepository repo = new Repository();
-
-            repo.Delete<RelationGroupTeam>(x => x.GroupGuid == GroupGuid && x.TeamGuid == TeamGuid);
+            using (IRepository repo = new Repository())
+            {
+                repo.Delete<RelationGroupTeam>(x => x.GroupGuid == GroupGuid && x.TeamGuid == TeamGuid);
+            }
         }
 
         public void Statistic(IEnumerable<Casino.Match> matches)
@@ -110,9 +112,10 @@ namespace Arsenal.Service
                      (TeamGuid NOT IN (SELECT TeamGuid FROM {Repository.GetTableAttr<Team>().Name})) 
                      OR (GroupGuid NOT IN (SELECT GroupGuid FROM {Repository.GetTableAttr<Group>().Name}))";
 
-            IDapperHelper dapper = DapperHelper.GetInstance();
-
-            dapper.Execute(sql, trans);
+            using (IDapperHelper dapper = DapperHelper.GetInstance())
+            {
+                dapper.Execute(sql, trans);
+            }
         }
 
         public static class Cache

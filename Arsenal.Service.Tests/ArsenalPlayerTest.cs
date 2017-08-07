@@ -10,7 +10,7 @@ namespace Arsenal.Service.Tests
         [TestMethod]
         public void ArsenalPlayer_Test()
         {
-            using (var repo = new Repository())
+            using (IRepository repo = new Repository())
             {
                 var player = repo.Single<Player>(new Guid("4a43c418-9140-4c1b-a04f-d3789336d690"));
 

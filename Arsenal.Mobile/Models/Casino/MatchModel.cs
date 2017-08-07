@@ -2,7 +2,6 @@
 using System.Linq;
 using Arsenal.Service;
 using Arsenal.Service.Casino;
-using Arsenalcn.Core;
 using AutoMapper;
 
 namespace Arsenal.Mobile.Models.Casino
@@ -21,21 +20,21 @@ namespace Arsenal.Mobile.Models.Casino
                 })
                 .ForMember(d => d.HomeRate, opt =>
                 {
-                    opt.Condition(s => s.ChoiceOptions != null);
+                    opt.PreCondition(s => s.ChoiceOptions != null);
                     opt.MapFrom(s => s.ChoiceOptions.SingleOrDefault(x =>
-                        x.OptionName.Equals("home", StringComparison.OrdinalIgnoreCase)).OptionRate);
+                        x.OptionValue.Equals("home", StringComparison.OrdinalIgnoreCase)).OptionRate);
                 })
                 .ForMember(d => d.DrawRate, opt =>
                 {
-                    opt.Condition(s => s.ChoiceOptions != null);
+                    opt.PreCondition(s => s.ChoiceOptions != null);
                     opt.MapFrom(s => s.ChoiceOptions.SingleOrDefault(x =>
-                        x.OptionName.Equals("draw", StringComparison.OrdinalIgnoreCase)).OptionRate);
+                        x.OptionValue.Equals("draw", StringComparison.OrdinalIgnoreCase)).OptionRate);
                 })
                 .ForMember(d => d.AwayRate, opt =>
                 {
-                    opt.Condition(s => s.ChoiceOptions != null);
+                    opt.PreCondition(s => s.ChoiceOptions != null);
                     opt.MapFrom(s => s.ChoiceOptions.SingleOrDefault(x =>
-                        x.OptionName.Equals("away", StringComparison.OrdinalIgnoreCase)).OptionRate);
+                        x.OptionValue.Equals("away", StringComparison.OrdinalIgnoreCase)).OptionRate);
                 })
             );
 

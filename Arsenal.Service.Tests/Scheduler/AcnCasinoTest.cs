@@ -45,7 +45,7 @@ namespace Arsenal.Service.Tests.Scheduler
                             });
                         }
 
-                        if (cm != null && cm.ResultHome.HasValue && cm.ResultAway.HasValue)
+                        if (cm?.ResultHome != null && cm.ResultAway.HasValue)
                         {
                             if (m.ResultHome.Equals(cm.ResultHome) && m.ResultAway.Equals(cm.ResultAway)
                                 && m.PlayTime.Equals(cm.PlayTime) && m.CasinoMatchGuid.Equals(cm.ID))
@@ -74,14 +74,16 @@ namespace Arsenal.Service.Tests.Scheduler
         {
             try
             {
-                IRepository repo = new Repository();
-
-                var list = repo.All<CasinoItem>().FindAll(x =>
-                    x.ItemType.Equals(CasinoType.SingleChoice) && x.Earning.HasValue);
-
-                foreach (var c in list.Take(10))
+                using (IRepository repo = new Repository())
                 {
-                    c.Statistics();
+
+                    var list = repo.All<CasinoItem>().FindAll(x =>
+                        x.ItemType.Equals(CasinoType.SingleChoice) && x.Earning.HasValue);
+
+                    foreach (var c in list.Take(10))
+                    {
+                        c.Statistics();
+                    }
                 }
             }
             catch (Exception ex)
@@ -95,13 +97,14 @@ namespace Arsenal.Service.Tests.Scheduler
         {
             try
             {
-                IRepository repo = new Repository();
-
-                var list = repo.All<Banker>().FindAll(x => x.IsActive);
-
-                foreach (var b in list)
+                using (IRepository repo = new Repository())
                 {
-                    b.Statistic();
+                    var list = repo.All<Banker>().FindAll(x => x.IsActive);
+
+                    foreach (var b in list)
+                    {
+                        b.Statistic();
+                    }
                 }
             }
             catch (Exception ex)

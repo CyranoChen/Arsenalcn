@@ -2,7 +2,6 @@
 using System.Linq;
 using Arsenal.Service;
 using Arsenal.Service.Casino;
-using Arsenalcn.Core;
 using AutoMapper;
 
 namespace Arsenal.Mobile.Models.Casino
@@ -26,7 +25,7 @@ namespace Arsenal.Mobile.Models.Casino
                 })
                 .ForMember(d => d.BetResultHome, opt =>
                 {
-                    opt.Condition(s => s.CasinoItem.ItemType.Equals(CasinoType.MatchResult));
+                    opt.PreCondition(s => s.CasinoItem.ItemType.Equals(CasinoType.MatchResult));
                     opt.MapFrom(
                         s =>
                             Convert.ToInt16(
@@ -35,7 +34,7 @@ namespace Arsenal.Mobile.Models.Casino
                 })
                 .ForMember(d => d.BetResultAway, opt =>
                 {
-                    opt.Condition(s => s.CasinoItem.ItemType.Equals(CasinoType.MatchResult));
+                    opt.PreCondition(s => s.CasinoItem.ItemType.Equals(CasinoType.MatchResult));
                     opt.MapFrom(
                         s =>
                             Convert.ToInt16(
@@ -44,7 +43,7 @@ namespace Arsenal.Mobile.Models.Casino
                 })
                 .ForMember(d => d.BetResult, opt =>
                 {
-                    opt.Condition(s => s.CasinoItem.ItemType.Equals(CasinoType.SingleChoice));
+                    opt.PreCondition(s => s.CasinoItem.ItemType.Equals(CasinoType.SingleChoice));
                     opt.MapFrom(s => Enum.Parse(typeof(BetResultType), s.BetDetails.FirstOrDefault().DetailName));
                 })
                 .ForMember(d => d.BetIcon, opt => opt.ResolveUsing(s =>
@@ -55,14 +54,7 @@ namespace Arsenal.Mobile.Models.Casino
                     {
                         if (s.IsWin.Value)
                         {
-                            if (s.CasinoItem.ItemType.Equals(CasinoType.SingleChoice))
-                            {
-                                icon = BetIconType.star;
-                            }
-                            else
-                            {
-                                icon = BetIconType.check;
-                            }
+                            icon = s.CasinoItem.ItemType.Equals(CasinoType.SingleChoice) ? BetIconType.star : BetIconType.check;
                         }
                         else
                         {

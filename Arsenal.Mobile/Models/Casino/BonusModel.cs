@@ -20,7 +20,7 @@ namespace Arsenal.Mobile.Models.Casino
                 })
                 .ForMember(d => d.Profit, opt =>
                 {
-                    opt.Condition(s => s.Earning.HasValue && s.TotalBet.HasValue);
+                    opt.PreCondition(s => s.Earning.HasValue && s.TotalBet.HasValue);
                     opt.MapFrom(s => s.Earning.Value - s.TotalBet.Value);
                 })
                 .ForMember(d => d.BetIcon, opt => opt.ResolveUsing(s =>

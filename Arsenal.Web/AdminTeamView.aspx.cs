@@ -162,7 +162,7 @@ namespace Arsenal.Web
 
                     if (list != null && list.Count > 0)
                     {
-                        list.ForEach(x => x.Delete(_repo));
+                        list.ForEach(x => x.Delete());
 
                         _repo.Delete<Team>(TeamGuid);
 

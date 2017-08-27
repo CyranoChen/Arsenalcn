@@ -1,5 +1,5 @@
 ﻿/* CSS Version Base */
-/* Version: 1.1 || Date: 2009-4-27 || Author: Cyrano */
+/* Version: 1.1.1 || Date: 2009-4-27 || Author: Cyrano */
 /* Cascading Style Sheets Level 2 Revision 1 */
 
 body {
@@ -85,3 +85,5 @@ li {
 }
 
 .Clear { clear: both; }
+
+.hidden { display: none;}

@@ -1,6 +1,5 @@
 ﻿using System;
 using Arsenal.Service;
-using Arsenalcn.Core;
 using Arsenalcn.Core.Dapper;
 
 namespace Arsenal.Web
@@ -52,6 +51,8 @@ namespace Arsenal.Web
                 tbLeagueLogo.Text = l.LeagueLogo;
                 tbLeagueOrder.Text = l.LeagueOrder.ToString();
                 cbIsActive.Checked = l.IsActive;
+
+                btnLeagueTeam.Text = $"球队管理【{l.TeamCountInfo}】";
             }
             else
             {
@@ -105,6 +106,14 @@ namespace Arsenal.Web
             catch (Exception ex)
             {
                 ClientScript.RegisterClientScriptBlock(typeof (string), "failed", $"alert('{ex.Message}')", true);
+            }
+        }
+
+        protected void btnLeagueTeam_Click(object sender, EventArgs e)
+        {
+            if (LeagueGuid != Guid.Empty)
+            {
+                Response.Redirect("AdminLeagueTeamView.aspx?LeagueGuid=" + LeagueGuid);
             }
         }
 

@@ -11,6 +11,7 @@ namespace Arsenal.Service
     {
         public override void Inital()
         {
+            TeamNameInfo = $"{TeamDisplayName} ({TeamEnglishName})";
             LeagueCountInfo = RelationLeagueTeam.Cache.RelationLeagueTeamList.Count(x => x.TeamGuid.Equals(this.ID));
         }
 
@@ -42,8 +43,6 @@ namespace Arsenal.Service
 
             public static List<Team> GetTeamsByLeagueGuid(Guid guid)
             {
-                IRepository repo = new Repository();
-
                 return TeamList.FindAll(x =>
                     new RelationLeagueTeam { TeamGuid = x.ID, LeagueGuid = guid }.Any());
             }
@@ -82,6 +81,8 @@ namespace Arsenal.Service
         public Guid LeagueGuid { get; set; }
 
         public int LeagueCountInfo { get; set; }
+
+        public string TeamNameInfo { get; set; }
 
         #endregion
     }

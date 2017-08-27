@@ -10,7 +10,7 @@
 namespace Arsenal.Web {
     
     
-    public partial class AdminLeagueView {
+    public partial class AdminLeagueTeamView {
         
         /// <summary>
         /// pnlAdmin control.
@@ -31,94 +31,67 @@ namespace Arsenal.Web {
         protected global::Arsenal.Web.Control.AdminFieldToolBar ctrlAdminFieldToolBar;
         
         /// <summary>
-        /// tbLeagueGuid control.
+        /// lblLeagueGuid control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbLeagueGuid;
+        protected global::System.Web.UI.WebControls.Label lblLeagueGuid;
         
         /// <summary>
-        /// tbLeagueName control.
+        /// lblLeagueName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbLeagueName;
+        protected global::System.Web.UI.WebControls.Label lblLeagueName;
         
         /// <summary>
-        /// tbLeagueOrgName control.
+        /// tbTeamFilter control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbLeagueOrgName;
+        protected global::System.Web.UI.WebControls.TextBox tbTeamFilter;
         
         /// <summary>
-        /// tbLeagueSeason control.
+        /// tbTeamSelected control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbLeagueSeason;
+        protected global::System.Web.UI.WebControls.TextBox tbTeamSelected;
         
         /// <summary>
-        /// tbLeagueTime control.
+        /// btnAddTeam control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbLeagueTime;
+        protected global::System.Web.UI.WebControls.LinkButton btnAddTeam;
         
         /// <summary>
-        /// tbLeagueLogo control.
+        /// btnRemoveTeam control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbLeagueLogo;
+        protected global::System.Web.UI.WebControls.LinkButton btnRemoveTeam;
         
         /// <summary>
-        /// tbLeagueOrder control.
+        /// lbLeagueTeam control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbLeagueOrder;
-        
-        /// <summary>
-        /// cbIsActive control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox cbIsActive;
-        
-        /// <summary>
-        /// btnSubmit control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSubmit;
-        
-        /// <summary>
-        /// btnLeagueTeam control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnLeagueTeam;
+        protected global::System.Web.UI.WebControls.ListBox lbLeagueTeam;
         
         /// <summary>
         /// btnCancel control.

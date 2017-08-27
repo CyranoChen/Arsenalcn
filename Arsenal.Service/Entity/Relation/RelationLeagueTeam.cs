@@ -14,9 +14,12 @@ namespace Arsenal.Service
                 x.TeamGuid == TeamGuid && x.LeagueGuid == LeagueGuid);
         }
 
-        public void Delete(IRepository repo)
+        public void Delete()
         {
-            repo.Delete<RelationLeagueTeam>(x => x.LeagueGuid == LeagueGuid && x.TeamGuid == TeamGuid);
+            using (IRepository repo = new Repository())
+            {
+                repo.Delete<RelationLeagueTeam>(x => x.LeagueGuid == LeagueGuid && x.TeamGuid == TeamGuid);
+            }
         }
 
         public static void Clean()

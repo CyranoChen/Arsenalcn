@@ -12,12 +12,12 @@ namespace iArsenal.Service
     [DbSchema("iArsenal_MatchTicket", Key = "MatchGuid", Sort = "Deadline DESC")]
     public class MatchTicket
     {
-        public MatchTicket() { }
+        //public MatchTicket() { }
 
-        private MatchTicket(DataRow dr)
-        {
-            Init(dr);
-        }
+        //private MatchTicket(DataRow dr)
+        //{
+        //    Init(dr);
+        //}
 
         private void Init(DataRow dr = null)
         {
@@ -204,18 +204,20 @@ namespace iArsenal.Service
                 new SqlParameter("@remark", Remark)
             };
 
-            var dapper = DapperHelper.GetInstance();
-
-            dapper.Execute(sql, para.ToDapperParameters());
+            using (var dapper = DapperHelper.GetInstance())
+            {
+                dapper.Execute(sql, para.ToDapperParameters());
+            }
         }
 
         public void Delete()
         {
             var sql = $"DELETE FROM {Repository.GetTableAttr<MatchTicket>().Name} WHERE MatchGuid = @key";
 
-            var dapper = DapperHelper.GetInstance();
-
-            dapper.Execute(sql, new { key = ID });
+            using (var dapper = DapperHelper.GetInstance())
+            {
+                dapper.Execute(sql, new { key = ID });
+            }
         }
 
         public static void MatchTicketCountStatistics()
@@ -224,32 +226,51 @@ namespace iArsenal.Service
 
             if (matches.Any())
             {
-                IRepository repo = new Repository();
-
-                var oQuery = repo.Query<Order>(o => o.OrderType == OrderBaseType.Ticket)
-                    .FindAll(o => o.IsActive && !o.Status.Equals(OrderStatusType.Error));
-                var oiQuery = repo.Query<OrderItem>(oi => oi.Remark != string.Empty)
-                    .FindAll(x => x.IsActive);
-
-                foreach (var mt in matches)
+                using (var repo = new Repository())
                 {
-                    var list = oiQuery.FindAll(oi => oi.Remark.Equals(mt.ID.ToString()));
-                    var count = oQuery.FindAll(o => list.Any(oi => oi.OrderID.Equals(o.ID))).Count;
 
-                    if (count > 0 && !mt.TicketCount.Equals(count))
-                    {
-                        mt.TicketCount = count;
-                    }
-                    else if (count == 0 && mt.TicketCount.HasValue)
-                    {
-                        mt.TicketCount = null;
-                    }
-                    else
-                    {
-                        continue;
-                    }
+                    var oQuery = repo.Query<Order>(o => o.OrderType == OrderBaseType.Ticket)
+                    .FindAll(o => o.IsActive && !o.Status.Equals(OrderStatusType.Error));
+                    var oiQuery = repo.Query<OrderItem>(oi => oi.Remark != string.Empty)
+                        .FindAll(x => x.IsActive);
 
-                    mt.Update();
+                    foreach (var mt in matches)
+                    {
+                        var list = oiQuery.FindAll(oi => oi.Remark.Equals(mt.ID.ToString()));
+                        var orders = oQuery.FindAll(o => list.Any(oi => oi.OrderID.Equals(o.ID)));
+
+                        var count = orders.Count;
+
+                        // count = order count + (orderitem quantity > 1 - 1)
+                        if (count > 0)
+                        {
+                            foreach (var o in orders)
+                            {
+                                var oTicket = (OrdrTicket)Order.Select(o.ID);
+
+                                // if One order has many tickets, should be add orderitem.quantity
+                                if (oTicket.OIMatchTicket != null && oTicket.OIMatchTicket.Quantity > 1)
+                                {
+                                    count += (oTicket.OIMatchTicket.Quantity - 1);
+                                }
+                            }
+                        }
+
+                        if (count > 0 && !mt.TicketCount.Equals(count))
+                        {
+                            mt.TicketCount = count;
+                        }
+                        else if (count == 0 && mt.TicketCount.HasValue)
+                        {
+                            mt.TicketCount = null;
+                        }
+                        else
+                        {
+                            continue;
+                        }
+
+                        mt.Update();
+                    }
                 }
 
                 Cache.RefreshCache();

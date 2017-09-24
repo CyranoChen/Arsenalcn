@@ -6,7 +6,7 @@ Inherits="iArsenal.Web.iArsenalMaster" %>
 <!DOCTYPE html>
 <html lang="en">
 <head id="masterHead" runat="server">
-    <title>阿森纳中国官方球迷会 服务中心 iArsenal.com</title>
+    <title>阿森纳官方球迷会 服务中心 iArsenal.com</title>
     <link rel="icon" href="http://www.arsenalcn.com/favicon.ico" type="image/x-icon"/>
     <link rel="shortcut icon" href="http://www.arsenalcn.com/favicon.ico" type="image/x-icon"/>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>

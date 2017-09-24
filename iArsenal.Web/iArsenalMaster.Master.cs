@@ -69,7 +69,7 @@ namespace iArsenal.Web
 
             if (!string.IsNullOrEmpty(masterHead.Title))
             {
-                masterHead.Title = $"Arsenal China 阿森纳官方球迷会 服务中心 iArsenal.cn | {Page.Title}";
+                masterHead.Title = $"阿森纳官方球迷会 服务中心 iArsenal.com | {Page.Title}";
             }
         }
     }

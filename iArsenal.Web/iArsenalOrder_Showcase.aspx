@@ -132,9 +132,9 @@
     </script>
 </asp:Content>
 <asp:Content ID="cphMain" ContentPlaceHolderID="cphMain" runat="server">
-    <div id="banner" style="height: 350px">
-        <a href="https://arsenaldirect.arsenal.com/FA-Cup-Essentials/c/fa_cup" target="_blank">
-            <img src="uploadfiles/banner/banner20170529.png" alt="阿森纳2017年足总杯冠军纪念品" />
+    <div id="banner" style="height: 400px">
+        <a href="https://arsenaldirect.arsenal.com/Gifts/Christmas/c/christmas-gifts" target="_blank">
+            <img src="uploadfiles/banner/banner20171104.png" alt="阿森纳2017年圣诞季专题团购" />
         </a>
     </div>
     <div id="ACN_Main">

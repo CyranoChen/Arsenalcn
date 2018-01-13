@@ -143,18 +143,13 @@
                         (1). 阿森纳中国官方球迷会（ACN）的从俱乐部官方商店预订赛季球衣的团购服务，已经运行了多个赛季。在预订球衣的同时，会员还可选择自行心仪的<em>联赛</em>和<em>杯赛</em>两个字体。（杯赛字体又称阿森纳字体）
                     </p>
                     <p>
-                        (2). Arsenal官方专卖店，印字印号效果体验： <a href="http://arsenaldirect.arsenal.com/icat/kitbuilder/" target="_blank">
-                            <em>http://arsenaldirect.arsenal.com</em>
-                        </a>
-                    </p>
-                    <p>
-                        (3). 您可以下拉框中选择现役球员印字印号；如需自定义印字印号，请在下拉框选<em>自定义</em>，并出现的文本框中填写号码与印字即可。
+                        (2). 您可以下拉框中选择现役球员印字印号；如需自定义印字印号，请在下拉框选<em>自定义</em>，并出现的文本框中填写号码与印字即可。
                     </p>
                     <div class="Thumbnail">
                         <img src="uploadfiles/qrcode-iarsenalcn.gif" alt="iArsenalCN" />
                     </div>
                     <p>
-                        (4). 【微信】订购操作中如有问题，请咨询官方球迷会客服微信号：<em>iArsenalCN</em>。加入时验证方式为您注册本服务中心的真实姓名和手机号码，并注明<em>【印字印号】</em>字样。
+                        (3). 【微信】订购操作中如有问题，请咨询官方球迷会客服微信号：<em>iArsenalCN</em>。加入时验证方式为您注册本服务中心的真实姓名和手机号码，并注明<em>【印字印号】</em>字样。
                     </p>
                 </div>
             </div>

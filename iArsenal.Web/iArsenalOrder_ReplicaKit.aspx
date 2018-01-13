@@ -179,7 +179,7 @@
                         <td class="FieldColspan" colspan="3" id="tdReplicaKit">
                             <asp:DropDownList ID="ddlReplicaKit" runat="server" OnDataBound="ddlReplicaKit_DataBound">
                             </asp:DropDownList>
-                            <asp:HyperLink ID="hlReplicaKitPage" runat="server" Text="【官网链接】" Target="_blank"></asp:HyperLink>
+                            <asp:HyperLink ID="hlReplicaKitPage" runat="server" Text="【官网链接】" Target="_blank" Visible="false"></asp:HyperLink>
                             <asp:RequiredFieldValidator ID="rfvReplicaKit" runat="server" ControlToValidate="ddlReplicaKit"
                                 Display="Dynamic" ErrorMessage="*" CssClass="ValiSpan">
                             </asp:RequiredFieldValidator>
@@ -220,11 +220,11 @@
                         </td>
                     </tr>
                     <tr class="AlternatingRow ArsenalFont" id="trArsenalFont">
-                        <td class="FieldHeader">特殊字体：
+                        <td class="FieldHeader">特殊字体：s
                         </td>
                         <td class="FieldColspan" colspan="3" id="tdArsenalFont">
                             <asp:CheckBox ID="cbArsenalFont" runat="server" Text="阿森纳杯赛字体" />
-                            <a href="http://arsenaldirect.arsenal.com/icat/kitbuilder/" target="_blank">【效果体验】</a>
+                            <%--<a href="http://arsenaldirect.arsenal.com/icat/kitbuilder/" target="_blank">【效果体验】</a>--%>
                             <asp:Label ID="lblPriceArsenalFont" runat="server" CssClass="PriceArsenalFont"></asp:Label>
                         </td>
                     </tr>
@@ -289,7 +289,7 @@
                         (2).【运费】约定汇率含全部国际运费和海关关税分摊；国内快递费自理（从中国上海发到国内各地的运费，只发<em>【顺丰速运】</em>）
                     </p>
                     <p>
-                        (3).【货源】Arsenal官方专卖店网址： <a href="http://arsenaldirect.arsenal.com/" target="_blank">
+                        (3).【货源】Arsenal英国官方商城 (需VPN)： <a href="http://arsenaldirect.arsenal.com/" target="_blank">
                             <em>http://arsenaldirect.arsenal.com</em>
                         </a>
                     </p>
@@ -316,9 +316,9 @@
                         (1). 您可以下拉框中选择现役球员印字印号；如需自定义印字印号，请在下拉框选<em>自定义</em>，并出现的文本框中填写号码与印字即可。
                     </p>
                     <p style="display: none">
-                        (2). 特殊字体“阿森纳字体”为胶印，具体效果可<a href="http://arsenaldirect.arsenal.com/icat/kitbuilder/" target="_blank">【点击体验】</a>，选择了阿森纳字体后，印字印号会自动按阿森纳字体的费用结算。
+                        (2). 特殊字体“阿森纳字体”为胶印，选择了阿森纳字体后，印字印号会自动按阿森纳字体的费用结算。
                     </p>
-                    <p>(2). 因球衣定制的特殊性（选印名字、号码、袖标等个性化选择），应提交订单后尽快付款；若拒付全额款项的，我们将视为无效的订单，敬请配合和谅解。</p>
+                    <p>(3). 因球衣定制的特殊性（选印名字、号码、袖标等个性化选择），应提交订单后尽快付款；若拒付全额款项的，我们将视为无效的订单，敬请配合和谅解。</p>
                 </div>
             </div>
         </div>

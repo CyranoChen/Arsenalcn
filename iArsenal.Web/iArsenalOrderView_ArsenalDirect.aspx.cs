@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Web.UI.WebControls;
-using Arsenalcn.Core;
 using Arsenalcn.Core.Dapper;
 using iArsenal.Service;
 
@@ -114,7 +113,7 @@ namespace iArsenal.Web
                         btnCancel.Visible = true;
 
                         ucPortalProductQrCode.QrCodeUrl = "~/UploadFiles/qrcode-alipay-vicky.png";
-                        ucPortalProductQrCode.QrCodeProvider = "支付宝";
+                        //ucPortalProductQrCode.QrCodeProvider = "支付宝";
                         ucPortalProductQrCode.IsLocalUrl = true;
                     }
                     else if (o.Status.Equals(OrderStatusType.Approved))
@@ -125,7 +124,7 @@ namespace iArsenal.Web
                         btnCancel.Visible = true;
 
                         ucPortalProductQrCode.QrCodeUrl = "~/UploadFiles/qrcode-alipay-vicky.png";
-                        ucPortalProductQrCode.QrCodeProvider = "支付宝";
+                        //ucPortalProductQrCode.QrCodeProvider = "支付宝";
                         ucPortalProductQrCode.IsLocalUrl = true;
                     }
                     else

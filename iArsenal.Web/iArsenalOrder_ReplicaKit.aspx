@@ -220,7 +220,7 @@
                         </td>
                     </tr>
                     <tr class="AlternatingRow ArsenalFont" id="trArsenalFont">
-                        <td class="FieldHeader">特殊字体：s
+                        <td class="FieldHeader">特殊字体：
                         </td>
                         <td class="FieldColspan" colspan="3" id="tdArsenalFont">
                             <asp:CheckBox ID="cbArsenalFont" runat="server" Text="阿森纳杯赛字体" />
@@ -241,7 +241,7 @@
                         </td>
                     </tr>
                     <tr class="AlternatingRow">
-                        <td class="FieldHeader">欧冠袖标：
+                        <td class="FieldHeader">欧战袖标：
                         </td>
                         <td class="FieldColspan" colspan="3" id="tdChampionPatch">
                             <asp:RadioButtonList ID="rblChampionPatch" runat="server" RepeatDirection="Horizontal"

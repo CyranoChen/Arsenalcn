@@ -19,97 +19,98 @@ namespace Arsenal.Service.Casino
 
                 try
                 {
-                    IRepository repo = new Repository(dapper);
-
-                    #region Get CasinoItem & Check
-
-                    var item = repo.Query<CasinoItem>(x =>
-                        x.MatchGuid == matchGuid && x.ItemType == CasinoType.SingleChoice).FirstOrDefault();
-
-                    if (item == null)
+                    using (IRepository repo = new Repository(dapper))
                     {
-                        throw new Exception("对应投注项不存在(SingleChoice)");
+                        #region Get CasinoItem & Check
+
+                        var item = repo.Query<CasinoItem>(x =>
+                            x.MatchGuid == matchGuid && x.ItemType == CasinoType.SingleChoice).FirstOrDefault();
+
+                        if (item == null)
+                        {
+                            throw new Exception("对应投注项不存在(SingleChoice)");
+                        }
+
+                        if (item.CloseTime < DateTime.Now)
+                        {
+                            throw new Exception("已超出投注截止时间");
+                        }
+
+                        #endregion
+
+                        #region Get Gambler & Check
+
+                        var gambler = repo.Query<Gambler>(x => x.UserID == UserID)[0];
+
+                        if (gambler == null)
+                        {
+                            throw new Exception("当前用户不存在博彩帐户(Gambler)");
+                        }
+
+                        if (BetAmount == null)
+                        {
+                            throw new Exception("投注金额无效");
+                        }
+
+                        if (BetAmount != null && gambler.Cash < BetAmount.Value)
+                        {
+                            throw new Exception($"博彩帐户余额不足(博彩币余额: {gambler.Cash.ToString("f2")})");
+                        }
+
+                        #endregion
+
+                        #region Get ChoiceOption & Check
+
+                        var choiceOption = repo.Query<ChoiceOption>(x => x.CasinoItemGuid == item.ID)
+                            .Find(x => x.OptionValue.Equals(selectedOption, StringComparison.OrdinalIgnoreCase));
+
+                        if (choiceOption == null)
+                        {
+                            throw new Exception("对应投注项不存在(ChoiceOption)");
+                        }
+
+                        #endregion
+
+                        #region Get Banker & Check
+
+                        var banker = repo.Single<Banker>(item.BankerID);
+
+                        if (banker == null)
+                        {
+                            throw new Exception("对应庄家不存在(Banker)");
+                        }
+
+                        #endregion
+
+                        //update gambler statistics
+                        gambler.Cash -= BetAmount.Value;
+                        gambler.TotalBet += BetAmount.Value;
+                        banker.Cash += BetAmount.Value;
+
+                        repo.Update(gambler);
+                        repo.Update(banker);
+
+                        CasinoItemGuid = item.ID;
+                        BetTime = DateTime.Now;
+                        BetRate = choiceOption.OptionRate;
+
+                        object key;
+                        repo.Insert(this, out key);
+                        ID = Convert.ToInt32(key);
+
+                        var betDetail = new BetDetail { BetID = ID };
+
+                        if (selectedOption.ToLower() == "home")
+                            betDetail.DetailName = "Home";
+                        else if (selectedOption.ToLower() == "away")
+                            betDetail.DetailName = "Away";
+                        else if (selectedOption.ToLower() == "draw")
+                            betDetail.DetailName = "Draw";
+
+                        repo.Insert(betDetail);
+
+                        trans.Commit();
                     }
-
-                    if (item.CloseTime < DateTime.Now)
-                    {
-                        throw new Exception("已超出投注截止时间");
-                    }
-
-                    #endregion
-
-                    #region Get Gambler & Check
-
-                    var gambler = repo.Query<Gambler>(x => x.UserID == UserID)[0];
-
-                    if (gambler == null)
-                    {
-                        throw new Exception("当前用户不存在博彩帐户(Gambler)");
-                    }
-
-                    if (BetAmount == null)
-                    {
-                        throw new Exception("投注金额无效");
-                    }
-
-                    if (BetAmount != null && gambler.Cash < BetAmount.Value)
-                    {
-                        throw new Exception($"博彩帐户余额不足(博彩币余额: {gambler.Cash.ToString("f2")})");
-                    }
-
-                    #endregion
-
-                    #region Get ChoiceOption & Check
-
-                    var choiceOption = repo.Query<ChoiceOption>(x => x.CasinoItemGuid == item.ID)
-                        .Find(x => x.OptionValue.Equals(selectedOption, StringComparison.OrdinalIgnoreCase));
-
-                    if (choiceOption == null)
-                    {
-                        throw new Exception("对应投注项不存在(ChoiceOption)");
-                    }
-
-                    #endregion
-
-                    #region Get Banker & Check
-
-                    var banker = repo.Single<Banker>(item.BankerID);
-
-                    if (banker == null)
-                    {
-                        throw new Exception("对应庄家不存在(Banker)");
-                    }
-
-                    #endregion
-
-                    //update gambler statistics
-                    gambler.Cash -= BetAmount.Value;
-                    gambler.TotalBet += BetAmount.Value;
-                    banker.Cash += BetAmount.Value;
-
-                    repo.Update(gambler);
-                    repo.Update(banker);
-
-                    CasinoItemGuid = item.ID;
-                    BetTime = DateTime.Now;
-                    BetRate = choiceOption.OptionRate;
-
-                    object key;
-                    repo.Insert(this, out key);
-                    ID = Convert.ToInt32(key);
-
-                    var betDetail = new BetDetail { BetID = ID };
-
-                    if (selectedOption.ToLower() == "home")
-                        betDetail.DetailName = "Home";
-                    else if (selectedOption.ToLower() == "away")
-                        betDetail.DetailName = "Away";
-                    else if (selectedOption.ToLower() == "draw")
-                        betDetail.DetailName = "Draw";
-
-                    repo.Insert(betDetail);
-
-                    trans.Commit();
                 }
                 catch
                 {
@@ -129,75 +130,76 @@ namespace Arsenal.Service.Casino
 
                 try
                 {
-                    IRepository repo = new Repository(dapper);
-
-                    #region Get CasinoItem & Check
-
-                    var item = repo.Query<CasinoItem>(x =>
-                        x.MatchGuid == matchGuid && x.ItemType == CasinoType.MatchResult)[0];
-
-                    if (item == null)
+                    using (IRepository repo = new Repository(dapper))
                     {
-                        throw new Exception("对应投注项不存在(MatchResult)");
+                        #region Get CasinoItem & Check
+
+                        var item = repo.Query<CasinoItem>(x =>
+                            x.MatchGuid == matchGuid && x.ItemType == CasinoType.MatchResult)[0];
+
+                        if (item == null)
+                        {
+                            throw new Exception("对应投注项不存在(MatchResult)");
+                        }
+
+                        if (item.CloseTime < DateTime.Now)
+                        {
+                            throw new Exception("已超出投注截止时间");
+                        }
+
+                        #endregion
+
+                        #region Get Gambler & Check
+
+                        var gambler = repo.Query<Gambler>(x => x.UserID == UserID)[0];
+
+                        if (gambler == null)
+                        {
+                            throw new Exception("当前用户不存在博彩帐户(Gambler)");
+                        }
+
+                        #endregion
+
+                        #region Get RepeatBet & Check
+
+                        var historyBets = repo.Query<Bet>(x =>
+                            x.CasinoItemGuid == item.ID && x.UserID == UserID);
+
+                        if (historyBets.Count > 0)
+                        {
+                            throw new Exception("已经投过此注，不能重复猜比分");
+                        }
+
+                        #endregion
+
+                        CasinoItemGuid = item.ID;
+                        BetTime = DateTime.Now;
+
+                        object key;
+                        repo.Insert(this, out key);
+                        ID = Convert.ToInt32(key);
+
+                        var betDetailHome = new BetDetail
+                        {
+                            BetID = ID,
+                            DetailName = "Home",
+                            DetailValue = resultHome.ToString()
+                        };
+
+
+                        repo.Insert(betDetailHome);
+
+                        var betDetailAway = new BetDetail
+                        {
+                            BetID = ID,
+                            DetailName = "Away",
+                            DetailValue = resultAway.ToString()
+                        };
+
+                        repo.Insert(betDetailAway);
+
+                        trans.Commit();
                     }
-
-                    if (item.CloseTime < DateTime.Now)
-                    {
-                        throw new Exception("已超出投注截止时间");
-                    }
-
-                    #endregion
-
-                    #region Get Gambler & Check
-
-                    var gambler = repo.Query<Gambler>(x => x.UserID == UserID)[0];
-
-                    if (gambler == null)
-                    {
-                        throw new Exception("当前用户不存在博彩帐户(Gambler)");
-                    }
-
-                    #endregion
-
-                    #region Get RepeatBet & Check
-
-                    var historyBets = repo.Query<Bet>(x =>
-                        x.CasinoItemGuid == item.ID && x.UserID == UserID);
-
-                    if (historyBets.Count > 0)
-                    {
-                        throw new Exception("已经投过此注，不能重复猜比分");
-                    }
-
-                    #endregion
-
-                    CasinoItemGuid = item.ID;
-                    BetTime = DateTime.Now;
-
-                    object key;
-                    repo.Insert(this, out key);
-                    ID = Convert.ToInt32(key);
-
-                    var betDetailHome = new BetDetail
-                    {
-                        BetID = ID,
-                        DetailName = "Home",
-                        DetailValue = resultHome.ToString()
-                    };
-
-
-                    repo.Insert(betDetailHome);
-
-                    var betDetailAway = new BetDetail
-                    {
-                        BetID = ID,
-                        DetailName = "Away",
-                        DetailValue = resultAway.ToString()
-                    };
-
-                    repo.Insert(betDetailAway);
-
-                    trans.Commit();
                 }
                 catch
                 {

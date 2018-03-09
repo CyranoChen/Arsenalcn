@@ -8,6 +8,22 @@ namespace Arsenal.Service.Casino
     {
         #region Members and Properties
 
+        public override Guid ID
+        {
+            get
+            {
+                if (MatchGuid.Equals(Guid.Empty))
+                {
+                    MatchGuid = Guid.NewGuid();
+                }
+
+                return MatchGuid;
+            }
+            set { MatchGuid = value; }
+        }
+
+        private Guid MatchGuid { get; set; }
+
         [DbColumn("Home")]
         public Guid Home { get; set; }
 

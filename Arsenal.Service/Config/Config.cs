@@ -369,6 +369,28 @@ namespace Arsenal.Service
             }
         }
 
+        public static int[] AutoBetUsers
+        {
+            get
+            {
+                try
+                {
+                    var configValue = ConfigDictionary["AutoBetUsers"];
+                    var tmpStrings = configValue.Split('|');
+                    var retInts = new int[tmpStrings.Length];
+
+                    for (var i = 0; i < tmpStrings.Length; i++)
+                    {
+                        int.TryParse(tmpStrings[i], out retInts[i]);
+                    }
+
+                    return retInts;
+                }
+                catch
+                { return new[] { 17650 }; }
+            }
+        }
+
         #endregion
     }
 

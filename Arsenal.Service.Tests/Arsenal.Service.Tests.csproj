@@ -66,6 +66,7 @@
     <Compile Include="MyCouponTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scheduler\AcnCasinoTest.cs" />
+    <Compile Include="Scheduler\AutoCreateBetsTest.cs" />
     <Compile Include="Scheduler\RefreshCacheTest.cs" />
     <Compile Include="Scheduler\AutoUpdateUserInfoTest.cs" />
     <Compile Include="ArsenalPlayerTest.cs" />

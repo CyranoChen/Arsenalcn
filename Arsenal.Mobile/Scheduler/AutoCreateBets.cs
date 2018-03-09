@@ -12,7 +12,7 @@ using Arsenalcn.Core.Extension;
 using Arsenalcn.Core.Logger;
 using Arsenalcn.Core.Scheduler;
 
-namespace Arsenal.Mobile.Scheduler
+namespace Arsenal.Scheduler
 {
     internal class AutoCreateBets : ISchedule
     {

@@ -35,19 +35,27 @@ namespace Arsenal.Service.Tests.Scheduler
                 //}
 
                 var mapper = UserWeChatRequestDto.ConfigMapper().CreateMapper();
+                var userList = mapper.Map<IEnumerable<UserWeChatRequestDto>>(users.DistinctBy(x => x.WeChatOpenID))
+                    .ToList();
 
-                var userList = new { user_list = mapper.Map<IEnumerable<UserWeChatRequestDto>>(users.DistinctBy(x => x.WeChatOpenID)).ToList() };
-                var openIds = JsonConvert.SerializeObject(userList);
-
-                var client = new WeChatApiClient();
-                var result = client.BatchGetUserInfo(openIds);
-
-                var json = JToken.Parse(result);
-                if (!string.IsNullOrEmpty(json["user_info_list"].ToString()))
+                const int pageSize = 100;
+                for (var index = 0; index <= userList.Count / pageSize; index++)
                 {
-                    var list = JsonConvert.DeserializeObject<List<UserWeChatResponseDto>>(json["user_info_list"].ToString());
+                    var openIds = JsonConvert.SerializeObject(new
+                    {
+                        user_list = userList.Skip(index*pageSize).Take(pageSize).ToList()
+                    });
 
-                    Assert.IsTrue(list.Count > 0);
+                    var client = new WeChatApiClient();
+                    var result = client.BatchGetUserInfo(openIds);
+
+                    var json = JToken.Parse(result);
+                    if (!string.IsNullOrEmpty(json["user_info_list"].ToString()))
+                    {
+                        var list = JsonConvert.DeserializeObject<List<UserWeChatResponseDto>>(json["user_info_list"].ToString());
+
+                        Assert.IsTrue(list.Count > 0);
+                    }
                 }
             }
         }

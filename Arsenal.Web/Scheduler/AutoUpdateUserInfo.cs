@@ -4,7 +4,6 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using Arsenal.Service;
-using Arsenalcn.Core;
 using Arsenalcn.Core.Dapper;
 using Arsenalcn.Core.Extension;
 using Arsenalcn.Core.Logger;
@@ -88,65 +87,75 @@ namespace Arsenal.Scheduler
                 //}
 
                 var mapper = UserWeChatRequestDto.ConfigMapper().CreateMapper();
+                var userList = mapper.Map<IEnumerable<UserWeChatRequestDto>>(users.DistinctBy(x => x.WeChatOpenID))
+                    .ToList();
 
-                var userList = new { user_list = mapper.Map<IEnumerable<UserWeChatRequestDto>>(users.DistinctBy(x => x.WeChatOpenID)).ToList() };
-                var openIds = JsonConvert.SerializeObject(userList);
-
-                var client = new WeChatApiClient();
-                var result = client.BatchGetUserInfo(openIds);
-
-                var json = JToken.Parse(result);
-                if (!string.IsNullOrEmpty(json["user_info_list"].ToString()))
+                // 每次输入100个，按类似分页方式实现
+                const int pageSize = 100;
+                for (var index = 0; index <= userList.Count / pageSize; index++)
                 {
-                    var list = JsonConvert.DeserializeObject<List<UserWeChatResponseDto>>(json["user_info_list"].ToString());
-
-                    if (list.Count > 0)
+                    var openIds = JsonConvert.SerializeObject(new
                     {
-                        foreach (var u in users)
+                        user_list = userList.Skip(index * pageSize).Take(pageSize).ToList()
+                    });
+
+                    var client = new WeChatApiClient();
+                    var result = client.BatchGetUserInfo(openIds);
+
+                    var json = JToken.Parse(result);
+                    if (!string.IsNullOrEmpty(json["user_info_list"].ToString()))
+                    {
+                        var list = JsonConvert.DeserializeObject<List<UserWeChatResponseDto>>(json["user_info_list"]
+                            .ToString());
+
+                        if (list.Count > 0)
                         {
-                            var uResp = list.Find(x => x.openid == u.WeChatOpenID);
-                            var uWeChat = repo.Single<UserWeChat>(u.ID);
-
-                            if (uResp != null)
+                            foreach (var u in users)
                             {
-                                u.WeChatOpenID = uResp.openid;
-                                u.WeChatNickName = uResp.nickname;
+                                var uResp = list.Find(x => x.openid == u.WeChatOpenID);
+                                var uWeChat = repo.Single<UserWeChat>(u.ID);
 
-                                repo.Update(u);
-
-                                if (uWeChat != null)
+                                if (uResp != null)
                                 {
-                                    uWeChat.Gender = uResp.sex;
-                                    uWeChat.LastAuthorizeDate = DateTime.Now;
-                                    uWeChat.City = uResp.city ?? string.Empty;
-                                    uWeChat.Province = uResp.province ?? string.Empty;
-                                    uWeChat.Country = uResp.country ?? string.Empty;
-                                    uWeChat.HeadImgUrl = uResp.headimgurl ?? string.Empty;
-                                    uWeChat.UnionID = uResp.unionid ?? string.Empty;
+                                    u.WeChatOpenID = uResp.openid;
+                                    u.WeChatNickName = uResp.nickname;
 
-                                    repo.Update(uWeChat);
-                                }
-                                else
-                                {
-                                    var instance = new UserWeChat
+                                    repo.Update(u);
+
+                                    if (uWeChat != null)
                                     {
-                                        ID = u.ID,
-                                        UserName = u.UserName,
-                                        LastAuthorizeDate = DateTime.Now,
-                                        AccessToken = string.Empty,
-                                        AccessTokenExpiredDate = DateTime.Now,
-                                        RefreshToken = string.Empty,
-                                        RefreshTokenExpiredDate = DateTime.Now,
-                                        Gender = uResp.sex,
-                                        Province = uResp.province ?? string.Empty,
-                                        City = uResp.city ?? string.Empty,
-                                        Country = uResp.country ?? string.Empty,
-                                        HeadImgUrl = uResp.headimgurl ?? string.Empty,
-                                        Privilege = string.Empty,
-                                        UnionID = uResp.unionid ?? string.Empty
-                                    };
+                                        uWeChat.Gender = uResp.sex;
+                                        uWeChat.LastAuthorizeDate = DateTime.Now;
+                                        uWeChat.City = uResp.city ?? string.Empty;
+                                        uWeChat.Province = uResp.province ?? string.Empty;
+                                        uWeChat.Country = uResp.country ?? string.Empty;
+                                        uWeChat.HeadImgUrl = uResp.headimgurl ?? string.Empty;
+                                        uWeChat.UnionID = uResp.unionid ?? string.Empty;
 
-                                    repo.Insert(instance);
+                                        repo.Update(uWeChat);
+                                    }
+                                    else
+                                    {
+                                        var instance = new UserWeChat
+                                        {
+                                            ID = u.ID,
+                                            UserName = u.UserName,
+                                            LastAuthorizeDate = DateTime.Now,
+                                            AccessToken = string.Empty,
+                                            AccessTokenExpiredDate = DateTime.Now,
+                                            RefreshToken = string.Empty,
+                                            RefreshTokenExpiredDate = DateTime.Now,
+                                            Gender = uResp.sex,
+                                            Province = uResp.province ?? string.Empty,
+                                            City = uResp.city ?? string.Empty,
+                                            Country = uResp.country ?? string.Empty,
+                                            HeadImgUrl = uResp.headimgurl ?? string.Empty,
+                                            Privilege = string.Empty,
+                                            UnionID = uResp.unionid ?? string.Empty
+                                        };
+
+                                        repo.Insert(instance);
+                                    }
                                 }
                             }
                         }

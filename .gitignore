@@ -3,8 +3,6 @@
 
 # User-customerize 
 .vs/
-workspace/
-Arsenalcn.ClientTools/
 
 # User-specific files
 *.suo

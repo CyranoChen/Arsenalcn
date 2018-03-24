@@ -10,8 +10,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Arsenalcn.ClubSys.Service</RootNamespace>
     <AssemblyName>Arsenalcn.ClubSys.Service</AssemblyName>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -32,10 +33,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Discuz.Entity">
-      <HintPath>..\workspace\backup\3.6.Custom\Discuz.Entity.dll</HintPath>
+      <HintPath>..\backup\3.6.Custom\Discuz.Entity.dll</HintPath>
     </Reference>
     <Reference Include="Discuz.Forum">
-      <HintPath>..\workspace\backup\3.6.Custom\Discuz.Forum.dll</HintPath>
+      <HintPath>..\backup\3.6.Custom\Discuz.Forum.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

@@ -12,7 +12,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Arsenalcn.ClubSys.Web</RootNamespace>
     <AssemblyName>Arsenalcn.ClubSys.Web</AssemblyName>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>4.0</OldToolsVersion>
@@ -24,6 +24,8 @@
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
+    <TargetFrameworkProfile />
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -47,15 +49,21 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Discuz.Entity">
-      <HintPath>..\workspace\backup\3.6.Custom\Discuz.Entity.dll</HintPath>
+      <HintPath>..\backup\3.6.Custom\Discuz.Entity.dll</HintPath>
     </Reference>
     <Reference Include="Discuz.Forum">
-      <HintPath>..\workspace\backup\3.6.Custom\Discuz.Forum.dll</HintPath>
+      <HintPath>..\backup\3.6.Custom\Discuz.Forum.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="AdminConfig.aspx" />
@@ -609,6 +617,13 @@
   <ItemGroup>
     <None Include="Properties\PublishProfiles\Arsenalcn.ClubSys.Deployment.pubxml" />
     <Content Include="ServerVideoPreview.ashx" />
+    <Content Include="Web.config" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -176,7 +176,7 @@
                     </tr>
                 </tbody>
             </table>
-            <asp:GridView ID="gvAvatar" runat="server" DataKeyNames="ID" OnSelectedIndexChanged="gvAvatar_SelectedIndexChanged">
+            <asp:GridView ID="gvAvatar" runat="server" DataKeyNames="ID" OnSelectedIndexChanged="gvAvatar_SelectedIndexChanged" PageSize="100" AllowPaging="False">
                 <Columns>
                     <asp:BoundField DataField="ID" Visible="false" />
                     <asp:BoundField HeaderText="用户名" DataField="UserName" />

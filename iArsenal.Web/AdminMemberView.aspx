@@ -255,7 +255,7 @@
                     </tr>
                 </tbody>
             </table>
-            <asp:GridView ID="gvMemberPeriod" runat="server" DataKeyNames="ID" OnSelectedIndexChanged="gvMemberPeriod_SelectedIndexChanged">
+            <asp:GridView ID="gvMemberPeriod" runat="server" DataKeyNames="ID" OnSelectedIndexChanged="gvMemberPeriod_SelectedIndexChanged" AllowPaging="False">
                 <Columns>
                     <asp:BoundField HeaderText="标识" DataField="ID" />
                     <asp:BoundField HeaderText="会员编号" DataField="MemberID" DataFormatString="<em>{0}</em>"

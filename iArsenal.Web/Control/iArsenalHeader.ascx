@@ -34,6 +34,9 @@
             <a href="iArsenalOrder_ReplicaKit.aspx?Type=Home">2018-19赛季主场球衣</a>
         </li>
         <li>
+            <a href="iArsenalOrder_ReplicaKit.aspx?Type=Away">2018-19赛季客场球衣</a>
+        </li>
+        <li>
             <a href="iArsenalOrder_MatchList.aspx">阿森纳主场球票预订</a>
         </li>
         <li>

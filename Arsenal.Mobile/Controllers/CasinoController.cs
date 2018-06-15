@@ -79,7 +79,8 @@ namespace Arsenal.Mobile.Controllers
             var criteria = new Criteria
             {
                 WhereClause = $@"(PlayTime BETWEEN '{DateTime.Now}' AND '{DateTime.Now.AddDays(days)}') AND 
-                                            (ResultHome IS NULL) AND (ResultAway IS NULL) "
+                                            (ResultHome IS NULL) AND (ResultAway IS NULL) ",
+                PagingSize = 0
             };
 
             var query = new MatchViewFactory().Query(criteria).OrderBy(x => x.PlayTime)

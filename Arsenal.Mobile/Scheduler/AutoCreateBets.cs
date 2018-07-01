@@ -101,7 +101,7 @@ namespace Arsenal.Scheduler
                                 var bet = new Bet
                                 {
                                     UserID = uid,
-                                    UserName = g.UserName,
+                                    UserName = g.UserName.Trim(),
                                     BetAmount = amount
                                 };
 

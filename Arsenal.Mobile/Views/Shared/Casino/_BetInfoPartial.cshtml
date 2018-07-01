@@ -6,11 +6,10 @@
         <h3>
             <img src="@Model.TeamHomeLogo" alt="@Model.TeamHomeName"/>
             @Model.TeamHomeName
-            <em>vs</em>
+            <em title="@Model.MatchGuid">vs</em>
             @Model.TeamAwayName
             <img src="@Model.TeamAwayLogo" alt="@Model.TeamAwayName"/>
         </h3>
-        <p>@Model.MatchGuid</p>
         @if (Model.ItemType.Equals(CasinoType.SingleChoice) && Model.BetRate.HasValue && Model.BetAmount.HasValue)
         {
             <p>[@Model.BetResult] [@Model.BetRate.Value.ToString("f2")] @Model.BetAmount.Value.ToString("N0")</p>

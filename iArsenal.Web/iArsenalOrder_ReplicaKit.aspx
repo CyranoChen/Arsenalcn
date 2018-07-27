@@ -235,7 +235,7 @@
                             <asp:RadioButtonList ID="rblPremierPatch" runat="server" RepeatDirection="Horizontal"
                                 RepeatLayout="Flow" CssClass="RadioButtonList">
                                 <asp:ListItem Text="无需" Value="0" Selected="True"></asp:ListItem>
-                                <asp:ListItem Text="2个" Value="2"></asp:ListItem>
+                                <asp:ListItem Text="1个（另送广告章）" Value="1"></asp:ListItem>
                             </asp:RadioButtonList>
                             <asp:Label ID="lblPricePremierPatch" runat="server"></asp:Label>
                         </td>

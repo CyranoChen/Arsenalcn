@@ -31,16 +31,19 @@
             <a href="default.aspx">首页</a>
         </li>
         <li>
-            <a href="iArsenalOrder_ReplicaKit.aspx?Type=Home">2018-19赛季主场球衣</a>
+            <a href="iArsenalOrder_ReplicaKit.aspx?Type=Home">本赛季主场球衣</a>
         </li>
         <li>
-            <a href="iArsenalOrder_ReplicaKit.aspx?Type=Away">2018-19赛季客场球衣</a>
+            <a href="iArsenalOrder_ReplicaKit.aspx?Type=Away">本赛季客场球衣</a>
+        </li>
+        <li>
+            <a href="iArsenalOrder_ReplicaKit.aspx?Type=Cup">本赛季杯赛球衣</a>
         </li>
         <li>
             <a href="iArsenalOrder_MatchList.aspx">阿森纳主场球票预订</a>
         </li>
         <li>
-            <a href="iArsenalOrder_Showcase.aspx">阿森纳英国官方商城纪念品团代购</a>
+            <a href="iArsenalOrder_Showcase.aspx">英国官方商城纪念品团代购</a>
         </li>
         <li class="nor">
             <a href="iArsenalOrder.aspx">订单查询</a>

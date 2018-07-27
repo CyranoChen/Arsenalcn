@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="PortalPaymentInfo.ascx.cs" Inherits="iArsenal.Web.Control.PortalPaymentInfo" %>
-<div class="InfoPanel">
+<div class="InfoPanel" style="display: none">
     <h3 class="Col" onclick="$(this).toggleClass('Col'); $(this).toggleClass('Exp'); $(this).next('div').toggle('normal');">
         <a>付款方式信息</a>
     </h3>

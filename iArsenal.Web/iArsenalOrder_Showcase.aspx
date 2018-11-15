@@ -132,9 +132,9 @@
     </script>
 </asp:Content>
 <asp:Content ID="cphMain" ContentPlaceHolderID="cphMain" runat="server">
-    <div id="banner" style="height: 400px">
+    <div id="banner" style="height: 300px">
         <a href="https://arsenaldirect.arsenal.com/" target="_blank" title="访问英国官方商城（需VPN）">
-            <img src="uploadfiles/banner/banner20170320.png" alt="阿森纳英国官方商城纪念品代购服务" />
+            <img src="uploadfiles/banner/banner20181107.png" alt="阿森纳英国官方商城纪念品代购服务" />
         </a>
     </div>
     <div id="ACN_Main">

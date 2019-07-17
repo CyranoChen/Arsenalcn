@@ -83,7 +83,7 @@ namespace iArsenal.Web
                 {
                     Page.Title = "阿森纳本赛季客场球衣许愿单";
                     hlReplicaKitPage.NavigateUrl = "https://arsenaldirect.arsenal.com/Football-Shirts-and-Kit/Away/c/away-kit";
-                    ltrlBannerImage.Text = $"<img src=\"uploadfiles/banner/banner20180610.png\" alt=\"{Page.Title}\" />";
+                    ltrlBannerImage.Text = $"<img src=\"uploadfiles/banner/banner20190716.png\" alt=\"{Page.Title}\" />";
                 }
                 else if (pt.Equals(ProductType.ReplicaKitCup))
                 {

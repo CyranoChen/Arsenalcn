@@ -33,6 +33,9 @@ Inherits="iArsenal.Web._Default" Title="首页" Theme="iArsenal" %>
             <a href="iArsenalOrder_ReplicaKit.aspx">
                 <img src="uploadfiles/banner/banner20190702.png" alt="阿森纳新赛季主客场球衣许愿单"/>
             </a>
+            <a href="iArsenalOrder_ReplicaKit.aspx?Type=Away">
+                <img src="uploadfiles/banner/banner20190717.png" alt="阿森纳新赛季主客场球衣许愿单"/>
+            </a>
             <!-- a href="iArsenalOrder_AsiaTrophy2015.aspx">
             <img src="uploadfiles/banner/banner20150503.png" alt="2015英超亚洲杯阿森纳观赛团"/></a -->
             <!-- a href="iArsenalOrder_LondonTravel.aspx">

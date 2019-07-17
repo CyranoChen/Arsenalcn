@@ -33,7 +33,7 @@
         <li>
             <a href="iArsenalOrder_ReplicaKit.aspx?Type=Home">本赛季主场球衣</a>
         </li>
-        <li style="display: none">
+        <li>
             <a href="iArsenalOrder_ReplicaKit.aspx?Type=Away">本赛季客场球衣</a>
         </li>
         <li style="display: none">

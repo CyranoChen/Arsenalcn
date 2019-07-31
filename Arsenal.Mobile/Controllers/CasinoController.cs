@@ -51,7 +51,7 @@ namespace Arsenal.Mobile.Controllers
             var query = factory.All()
                .FindAll(x => x.PlayTime > DateTime.Now && x.PlayTime < DateTime.Now.AddDays(days))
                .FindAll(x => !x.ResultHome.HasValue && !x.ResultAway.HasValue)
-               .OrderByDescending(x => x.PlayTime)
+               .OrderBy(x => x.PlayTime)
                .Many<MatchView, ChoiceOption, Guid>(t => t.CasinoItem.ID);
 
             var mapper = MatchDto.ConfigMapper().CreateMapper();

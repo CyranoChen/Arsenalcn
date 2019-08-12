@@ -89,7 +89,7 @@ namespace iArsenal.Web
                 {
                     Page.Title = "阿森纳本赛季杯赛球衣许愿单";
                     hlReplicaKitPage.NavigateUrl = "https://arsenaldirect.arsenal.com/Football-Shirts-and-Kit/Third/c/third-kit";
-                    ltrlBannerImage.Text = $"<img src=\"uploadfiles/banner/banner20180726.png\" alt=\"{Page.Title}\" />";
+                    ltrlBannerImage.Text = $"<img src=\"uploadfiles/banner/banner20190812.png\" alt=\"{Page.Title}\" />";
                 }
                 else
                 {

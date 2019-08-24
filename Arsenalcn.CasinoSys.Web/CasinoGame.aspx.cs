@@ -58,6 +58,13 @@ namespace Arsenalcn.CasinoSys.Web
             }
         }
 
+        protected override void OnInit(EventArgs e)
+        {
+            AnonymousRedirect = true;
+
+            base.OnInit(e);
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             #region Assign Control Property

@@ -9,6 +9,13 @@ namespace Arsenalcn.CasinoSys.Web
 {
     public partial class CasinoRank : BasePage
     {
+        protected override void OnInit(EventArgs e)
+        {
+            AnonymousRedirect = true;
+
+            base.OnInit(e);
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             #region Assign Control Property

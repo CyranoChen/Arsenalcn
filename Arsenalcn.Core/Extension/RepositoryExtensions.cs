@@ -13,14 +13,12 @@ namespace Arsenalcn.Core.Extension
         {
             if (para != null)
             {
-                var dp = para as DynamicParameters;
-
-                if (dp != null)
+                if (para is DynamicParameters dp)
                 {
                     return new
                     {
                         sql,
-                        para = (object) dp.ParameterNames.ToDictionary(x => x, x => dp.Get<dynamic>(x))
+                        para = (object)dp.ParameterNames.ToDictionary(x => x, x => dp.Get<dynamic>(x))
                     }
                     .ToJson();
                 }
@@ -56,7 +54,7 @@ namespace Arsenalcn.Core.Extension
 
                 foreach (var instance in list)
                 {
-                    repo.Insert((IDao)instance);
+                    repo.Insert(instance, out _);
                 }
             }
 

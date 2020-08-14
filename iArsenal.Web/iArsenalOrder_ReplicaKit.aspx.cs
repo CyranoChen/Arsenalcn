@@ -95,7 +95,7 @@ namespace iArsenal.Web
                 {
                     Page.Title = "阿森纳本赛季主场球衣许愿单";
                     hlReplicaKitPage.NavigateUrl = "https://arsenaldirect.arsenal.com/Football-Shirts-and-Kit/Home/c/home-kit";
-                    ltrlBannerImage.Text = $"<img src=\"uploadfiles/banner/banner20190701.png\" alt=\"{Page.Title}\" />";
+                    ltrlBannerImage.Text = $"<img src=\"uploadfiles/banner/banner20200814.png\" alt=\"{Page.Title}\" />";
                 }
 
                 return pt;

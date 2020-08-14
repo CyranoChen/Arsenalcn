@@ -47,8 +47,8 @@
 </asp:Content>
 <asp:Content ID="cphMain" ContentPlaceHolderID="cphMain" runat="server">
     <div id="banner" style="height: 250px">
-        <a href="http://arsenaldirect.arsenal.com/" target="_blank" title="访问英国官方商城（需VPN）">
-            <img src="uploadfiles/banner/banner20160805.png" alt="阿森纳官方纪念品团购服务" />
+        <a href="http://arsenaldirect.arsenal.com/" target="_blank" title="访问英国官方商城">
+            <img src="uploadfiles/banner/banner20200802.png" alt="阿森纳官方纪念品团购服务" />
         </a>
     </div>
     <div id="ACN_Main">
@@ -182,7 +182,7 @@
                         (2).【运费】约定汇率含全部国际运费和海关关税分摊；国内快递费自理（从中国上海发到国内各地的运费，只发<em>【顺丰速运】</em>）
                     </p>
                     <p>
-                        (3).【货源】Arsenal英国官方商城 (需VPN)： <a href="http://arsenaldirect.arsenal.com/" target="_blank">
+                        (3).【货源】Arsenal英国官方商城： <a href="http://arsenaldirect.arsenal.com/" target="_blank">
                             <em>http://arsenaldirect.arsenal.com</em>
                         </a>
                     </p>

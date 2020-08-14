@@ -289,7 +289,7 @@
                         (2).【运费】约定汇率含全部国际运费和海关关税分摊；国内快递费自理（从中国上海发到国内各地的运费，只发<em>【顺丰速运】</em>）
                     </p>
                     <p>
-                        (3).【货源】Arsenal英国官方商城 (需VPN)： <a href="http://arsenaldirect.arsenal.com/" target="_blank">
+                        (3).【货源】Arsenal英国官方商城： <a href="http://arsenaldirect.arsenal.com/" target="_blank">
                             <em>http://arsenaldirect.arsenal.com</em>
                         </a>
                     </p>

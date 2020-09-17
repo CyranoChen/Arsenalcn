@@ -83,13 +83,13 @@ namespace iArsenal.Web
                 {
                     Page.Title = "阿森纳本赛季客场球衣许愿单";
                     hlReplicaKitPage.NavigateUrl = "https://arsenaldirect.arsenal.com/Football-Shirts-and-Kit/Away/c/away-kit";
-                    ltrlBannerImage.Text = $"<img src=\"uploadfiles/banner/banner20190716.png\" alt=\"{Page.Title}\" />";
+                    ltrlBannerImage.Text = $"<img src=\"uploadfiles/banner/banner20200916.png\" alt=\"{Page.Title}\" />";
                 }
                 else if (pt.Equals(ProductType.ReplicaKitCup))
                 {
                     Page.Title = "阿森纳本赛季杯赛球衣许愿单";
                     hlReplicaKitPage.NavigateUrl = "https://arsenaldirect.arsenal.com/Football-Shirts-and-Kit/Third/c/third-kit";
-                    ltrlBannerImage.Text = $"<img src=\"uploadfiles/banner/banner20190812.png\" alt=\"{Page.Title}\" />";
+                    ltrlBannerImage.Text = $"<img src=\"uploadfiles/banner/banner20200917.png\" alt=\"{Page.Title}\" />";
                 }
                 else
                 {

@@ -6,8 +6,7 @@
         <p>
             <a href="http://www.arsenalcn.com" target="_blank">
                 <%= ConfigGlobal.Assembly.Trademark %>
-            </a>- 
-            <a href="http://www.beian.miit.gov.cn/" target="_blank"><%= ConfigGlobal.Assembly.Description %></a> 
+            </a>
             - <span class="scrolltop" onclick="window.scrollTo(0, 0);">TOP</span>
         </p>
         <p>

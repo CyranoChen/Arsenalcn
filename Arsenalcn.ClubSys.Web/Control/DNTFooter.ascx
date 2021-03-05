@@ -3,12 +3,9 @@
 <div id="footer">
     <div id="footlinks">
         <p>
-            <a href="http://www.arsenalcn.com" target="_blank">ArsenalCN</a> - 沪ICP备12045527号
-            - <span class="scrolltop" onclick="window.scrollTo(0, 0);">TOP</span>
+            <a href="http://www.arsenalcn.com" target="_blank">ArsenalCN</a> - <span class="scrolltop" onclick="window.scrollTo(0, 0);">TOP</span>
         </p>
         <p>
-            <script src="http://s117.cnzz.com/stat.php?id=1267977&web_id=1267977&show=pic1" type="text/javascript"
-                    charset="gb2312"></script>
             <a href="mailto:webmaster@arsenalcn.com" target="_blank">webmaster@arsenalcn.com</a>
             - <a href="/archiver/index.aspx" target="_blank">简洁版本</a>
         </p>
@@ -24,6 +21,6 @@
         </a>
     </p>
     <p id="debuginfo">
-        Arsenal China Official Supporters Club &copy; 2003 - 2016 Willing co., ltd.
+        Arsenal China Official Supporters Club &copy; 2003 - 2021 Willing co., ltd.
     </p>
 </div>

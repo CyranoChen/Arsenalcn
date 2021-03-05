@@ -6,12 +6,10 @@
         <p>
             <a href="http://www.arsenalcn.com" target="_blank">
                 <%= ConfigGlobal.Assembly.Trademark %>
-            </a>- <%= ConfigGlobal.Assembly.Description %>
-            - <span class="scrolltop" onclick="window.scrollTo(0, 0);">TOP</span>
+            </a>- 
+            <span class="scrolltop" onclick="window.scrollTo(0, 0);">TOP</span>
         </p>
         <p>
-            <script src="http://s22.cnzz.com/stat.php?id=4134306&web_id=4134306&show=pic1" type="text/javascript"
-                charset="gb2312"></script>
             <a href="mailto:webmaster@arsenalcn.com" target="_blank"><%= ConfigGlobal.Assembly.Configuration %></a>
         </p>
     </div>

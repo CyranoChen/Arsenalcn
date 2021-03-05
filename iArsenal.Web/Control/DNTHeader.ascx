@@ -54,8 +54,6 @@
         <asp:Literal ID="ltrlTitle" runat="server"></asp:Literal>
     </div>
     <div id="stats">
-        <script src="http://s22.cnzz.com/stat.php?id=4134306&web_id=4134306&online=1&show=line"
-            type="text/javascript"></script>
     </div>
     <div class="Clear">
     </div>

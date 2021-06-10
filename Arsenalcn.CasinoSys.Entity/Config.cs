@@ -199,6 +199,21 @@ namespace Arsenalcn.CasinoSys.Entity
             }
         }
 
+        public static int HistoricalYears
+        {
+            get
+            {
+                try
+                {
+                    return Convert.ToInt16(ConfigDictionary["HistoricalYears"]);
+                }
+                catch
+                {
+                    return 1;
+                }
+            }
+        }
+
         #endregion
     }
 

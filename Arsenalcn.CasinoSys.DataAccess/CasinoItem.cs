@@ -115,7 +115,7 @@ namespace Arsenalcn.CasinoSys.DataAccess
             //                      Arsenal_League AS league ON match.LeagueGuid = league.LeagueGuid ORDER BY match.PlayTime, HomeEng";
 
             var sql =
-                @"SELECT match.* FROM (SELECT DISTINCT MatchGuid FROM AcnCasino_CasinoItem WHERE (MatchGuid IS NOT NULL) AND (CloseTime > GETDATE()) AND (CloseTime < DATEADD(d, @casinoValidDays, GETDATE())) AND (Earning IS NULL)) AS item 
+                @"SELECT match.* FROM (SELECT DISTINCT MatchGuid FROM AcnCasino_CasinoItem WHERE (MatchGuid IS NOT NULL) AND (CloseTime > GETDATE()) AND (CloseTime < DATEADD(day, @casinoValidDays, GETDATE())) AND (Earning IS NULL)) AS item 
                       INNER JOIN AcnCasino_Match AS match ON match.MatchGuid = item.MatchGuid AND match.ResultHome IS NULL AND match.ResultAway IS NULL ORDER BY match.PlayTime";
 
             var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql,
@@ -126,13 +126,14 @@ namespace Arsenalcn.CasinoSys.DataAccess
             return ds.Tables[0];
         }
 
-        public static DataTable GetAllMatchView()
+        public static DataTable GetAllMatchView(int historicalYears)
         {
             var sql =
-                @"SELECT match.* FROM (SELECT DISTINCT MatchGuid FROM dbo.AcnCasino_CasinoItem WHERE MatchGuid IS NOT NULL) item
+                @"SELECT match.* FROM (SELECT DISTINCT MatchGuid FROM dbo.AcnCasino_CasinoItem WHERE (MatchGuid IS NOT NULL) AND (CloseTime > DATEADD(year, @historicalYears, GETDATE()))) AS item
                         INNER JOIN acncasino_match match ON match.MatchGuid = item.MatchGuid ORDER BY match.PlayTime DESC";
 
-            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql);
+            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql,
+                new SqlParameter("@historicalYears", -historicalYears));
 
             if (ds.Tables[0].Rows.Count == 0)
                 return null;

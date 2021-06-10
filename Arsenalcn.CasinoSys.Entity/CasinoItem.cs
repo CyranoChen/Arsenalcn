@@ -155,7 +155,7 @@ namespace Arsenalcn.CasinoSys.Entity
             else
             {
                 //AllMatchView
-                dt = DataAccess.CasinoItem.GetAllMatchView();
+                dt = DataAccess.CasinoItem.GetAllMatchView(ConfigGlobal.HistoricalYears);
             }
 
             return dt;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Linq;
 using System.Web.UI.WebControls;
 using Arsenalcn.CasinoSys.Entity;
 using Arsenalcn.CasinoSys.Web.Common;
@@ -115,18 +116,25 @@ namespace Arsenalcn.CasinoSys.Web
                                     ltrlLoseRate.Text =
                                         $"<em title=\"客队胜赔率\">{Convert.ToSingle(loseOption.OptionRate.Value).ToString("f2")}</em>";
 
+                                    var betDetails = BetDetail.GetBetDetails(guid.Value);
+
                                     var lbWinInfo = e.Row.FindControl("lbWinInfo") as Label;
                                     var lbDrawInfo = e.Row.FindControl("lbDrawInfo") as Label;
                                     var lbLoseInfo = e.Row.FindControl("lbLoseInfo") as Label;
 
                                     if (lbWinInfo != null && lbDrawInfo != null && lbLoseInfo != null)
                                     {
+                                        var betWinDetails = betDetails.FindAll(x => x.DetailName.Equals(winOption.OptionName));
                                         lbWinInfo.Text =
-                                            $"{ChoiceOption.GetOptionTotalCount(guid.Value, winOption.OptionName)} | {ChoiceOption.GetOptionTotalBet(guid.Value, winOption.OptionName).ToString("N0")}";
+                                            $"{betWinDetails.Count} | {betWinDetails.Sum(x => x.BetAmount ?? 0):N0}";
+
+                                        var betDrawDetails = betDetails.FindAll(x => x.DetailName.Equals(drawOption.OptionName));
                                         lbDrawInfo.Text =
-                                            $"{ChoiceOption.GetOptionTotalCount(guid.Value, drawOption.OptionName)} | {ChoiceOption.GetOptionTotalBet(guid.Value, drawOption.OptionName).ToString("N0")}";
+                                            $"{betDrawDetails.Count} | {betDrawDetails.Sum(x => x.BetAmount ?? 0):N0}";
+
+                                        var betLoseDetails = betDetails.FindAll(x => x.DetailName.Equals(loseOption.OptionName));
                                         lbLoseInfo.Text =
-                                            $"{ChoiceOption.GetOptionTotalCount(guid.Value, loseOption.OptionName)} | {ChoiceOption.GetOptionTotalBet(guid.Value, loseOption.OptionName).ToString("N0")}";
+                                            $"{betLoseDetails.Count} | {betLoseDetails.Sum(x => x.BetAmount ?? 0):N0}";
                                     }
 
                                     var btnBet = e.Row.FindControl("btnBet") as HyperLink;

@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 using System.Data.SqlClient;
 using Arsenalcn.Common;
 using Microsoft.ApplicationBlocks.Data;
@@ -13,6 +14,21 @@ namespace Arsenalcn.CasinoSys.DataAccess
 
             var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql,
                 new SqlParameter("@id", id));
+
+            if (ds.Tables[0].Rows.Count == 0)
+                return null;
+            return ds.Tables[0];
+        }
+
+        public static DataTable GetBetDetailByCasinoItemGuid(Guid itemGuid)
+        {
+            var sql = @"SELECT * FROM dbo.AcnCasino_Bet bet
+                        INNER JOIN dbo.AcnCasino_BetDetail detail
+                        ON bet.[ID] = detail.[BetID]
+                        WHERE bet.CasinoItemGuid = @guid";
+
+            var ds = SqlHelper.ExecuteDataset(SQLConn.GetConnection(), CommandType.Text, sql,
+                new SqlParameter("@guid", itemGuid));
 
             if (ds.Tables[0].Rows.Count == 0)
                 return null;

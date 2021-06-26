@@ -178,19 +178,21 @@ namespace Arsenal.Service
                     }
                 }
 
-                if (goal1 == goal2)
-                {
-                    return goalAway1.CompareTo(goalAway2);
-                }
-                else
+                if (goal1 != goal2)
                 {
                     return goal1.CompareTo(goal2);
                 }
+
+                if (goal1 == goal2 && matchResult.Count > 1) // Home and away match
+                {
+                    if (goalAway1 != goalAway2)
+                    {
+                        return goalAway1.CompareTo(goalAway2);
+                    }
+                }
             }
-            else
-            {
-                return 0;
-            }
+
+            return 0;
         }
     }
 
